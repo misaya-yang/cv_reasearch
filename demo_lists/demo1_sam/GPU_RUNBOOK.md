@@ -23,7 +23,7 @@ Owner：对话 `01a0f783-6584-7e60-b6d3-5bf227e7e7bc` 负责本SAM研究。用�
 
 ### 持续研究与当前队列（2026-10-01，最新）
 
-**用户最新转向demo9（覆盖GIC后续）**：GIC当前失败构造不恢复，整体研究继续集中demo9。独立`/root/autodl-tmp/demo9_transductive_ics/results/open_pool_v1`四折连续GPU队列主管182188、当前f0 child182189评分100标准queries（400episodes内每类前5）。固定support/query/M≤15，对比清洁池与替换半数不含目标图池；单图/naive/全pooled/agree topHalf/RT.5共同4轮，target/donor GT只评分，推理槽位全部零。复用DINO/INSID3/COCO，不改demo4旧文件、不消息其他会话，无下载。f0去重486图缓存2.117GB已完成，每折评完自动清理再接下一折。接口核查发现原始官方BF16后端不同于旧缓存FP32后处理；三对相同FP32后端native和缓存mask IoU1.0、缓存旧新reader bitwise。故另报真正官方BF16单图控制，不把precision收益混成转导收益，错误回执保留，不重抽健康cache。结果尚未完成，不宣称新方法。看demo9 README接续和own queue/status/log，健康不重复；错误从已有文件修复，保持GPU开机，不干涉他人作业。
+**当前 owner 接续：demo9；所有旧 GIC/SAM 调度关闭。** 主入口改为 `docs/harness/STATUS.md`、`demo_lists/demo9_transductive_ics/HANDOFF.md` 与 `PLAN.md`（E0/E1/E1b TPA）。本会话400-query open-pool及100-query路径消融已完成，大特征已删；不恢复182188旧队列。paired interface烟测10/10 exact、90MB临时cache已删；30-episode confidence-free centroid弱于1shot，停止扩展，不能冒充完整TPA强对照。其他执行者正在建立E0/E1官方/重建掩码paired缓存，本会话不重复/干涉。TPA原型扩充列为必做近邻，需公平置信度/输出融合适配及独立收益与整流程代价。六份重复大JSON已校验无损gzip，释放67,642,429bytes，aggregate与完整小证据保护；heartbeat sam已同步这一状态。
 
 **一次更新也有害，当前构造停止（覆盖下方接续）**：`extension_one_step_diagnostic_v1`全1260对/84场景已完成、零失败。GIC−native AUC5为−2.1169pp，scene CI[-3.0616,-1.1967]；对共同一次diagonal为−2.0759pp CI[-2.9818,-1.1757]，对shuffle−2.4705pp。因此不是仅因八次迭代漂移；首个由该空间field+profile REML推定的innovation就不可靠。不调rho/网格/迭代数包装正结果，不接旧矩阵，不再宣称此等方差构造能利用跨匹配残差提高精度。数学固定正确协方差下的PSD结论与实测并不矛盾；真实残差似然改善未验证跨几何切向—法向耦合正确。整体研究目标继续，下一项须解决这一可观察证据缺口或换成有实际强基线信号的问题；不是继续局部solver工程。主结果及诊断的本机紧凑paired JSON保护，完整文本/位姿/源码证据打包保留。
 
