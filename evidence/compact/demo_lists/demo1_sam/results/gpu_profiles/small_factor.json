@@ -1,0 +1,253 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo1_sam/results/gpu_profiles/small_factor.json",
+  "source_bytes": 77032,
+  "source_sha256": "63b314b57d3a73df2a5280a0cbf6f42583e6f0fe01526186d05890ba7e14544f",
+  "data": {
+    "created_at_utc": "2026-10-01T11:48:01.822932+00:00",
+    "torch": "2.12.1+cu130",
+    "python": "3.12.3",
+    "platform": "Linux-5.4.0-153-generic-x86_64-with-glibc2.35",
+    "device": "cuda:0",
+    "hardware": "NVIDIA GeForce RTX 4080",
+    "options": {
+      "device": "cuda:0",
+      "dtype": "float32",
+      "prompt_batch": 1,
+      "microbatch": 1,
+      "grid": 64,
+      "tokens": 7,
+      "method": "factor_projected",
+      "attention": "sdpa",
+      "order": "auto",
+      "write_output": "auto",
+      "mode": "compile",
+      "compiler_backend": "inductor",
+      "compile_mode": "default",
+      "warmup": 3,
+      "repetitions": 3,
+      "threads": 2,
+      "seed": 0,
+      "tolerance": 5e-05,
+      "tf32": false,
+      "diagnostic_on_failure": false,
+      "profile_dir": "/root/autodl-tmp/demo1_sam/results/gpu_profiles/small_factor",
+      "output": "/root/autodl-tmp/demo1_sam/results/gpu_profiles/small_factor.json"
+    },
+    "fixture": {
+      "model_fp32_state_sha256": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+      "provenance": [
+        {
+          "file": "official_cpu_validation/official_sam/common.py",
+          "sha256": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+          "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/common.py",
+          "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+        },
+        {
+          "file": "official_cpu_validation/official_sam/transformer.py",
+          "sha256": "566a8f6db8b608398de939548bd0f485b21752fda2bdda36900e6444ef938d11",
+          "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/transformer.py",
+          "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+        },
+        {
+          "file": "official_cpu_validation/official_sam/mask_decoder.py",
+          "sha256": "6a2455e990515c67a061187c92c236b879b189f21ef6ebfce1627cae9a6b2f93",
+          "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/mask_decoder.py",
+          "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+        }
+      ],
+      "seed": 0,
+      "T": 7,
+      "N": 4096
+    },
+    "outputs": "All four low-resolution masks plus all four IoU; no output-token pruning",
+    "timed_scope": "Complete mask decoder; no encoder, prompt encoder or full-resolution predictor postprocessing. Prompt batches share one image and identical dense embedding. Output copying/concatenation across microbatches excluded equally; final microbatch outputs returned.",
+    "cpu_warning": null,
+    "compile_warning": "eager/aot_eager compiler backends are diagnostic; only an optimizing backend such as inductor is a performance-compilation trial. Fullgraph mode raises on unsupported graph breaks. Actual CUDA SDPA backend dispatch is not inferred from the API name.",
+    "precision_warning": "Random-weight same-dtype numerical gate does not establish pretrained, binary decision, TF32 or lower-precision fidelity.",
+    "methods": [
+      {
+        "method": "factor_projected",
+        "effective_attention": "sdpa",
+        "verification": {
+          "passed": true,
+          "microbatch_checks": [
+            {
+              "offset": 0,
+              "size": 1,
+              "masks": {
+                "max_abs": 3.5390257835388184e-07,
+                "mean_abs": 4.3507476732429495e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 2.9802322387695312e-08,
+                "mean_abs": 1.862645149230957e-08,
+                "finite": true
+              },
+              "passed": true
+            }
+          ]
+        },
+        "verification_ms_excluded": 125.82701072096825,
+        "first_complete_prompt_batch_ms_excluded": 2527.199115604162,
+        "first_complete_prompt_batch_memory": {
+          "start_allocated_bytes": 69061632,
+          "peak_allocated_bytes": 81654272,
+          "peak_increment_bytes": 12592640,
+          "peak_reserved_bytes": 96468992
+        },
+        "numeric_status": "passed_random_fixture_only",
+        "compile_status": "optimizing_inductor_fullgraph",
+        "attention_coverage": "Candidate writes remain explicit to form factors; SDPA applies to reads and token self-attention",
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            3.3288002014160156,
+            2.792704850435257,
+            2.5983359664678574
+          ],
+          "median_ms": 2.792704850435257,
+          "min_ms": 2.5983359664678574,
+          "max_ms": 3.3288002014160156,
+          "memory": {
+            "start_allocated_bytes": 69061632,
+            "peak_allocated_bytes": 81654272,
+            "peak_increment_bytes": 12592640,
+            "peak_reserved_bytes": 119537664
+          }
+        },
+        "warm_prompts_per_second": 358.07579159113254,
+        "warm_ms_per_prompt": 2.792704850435257,
+        "execution_plan": null,
+        "fixed_PE_build": {
+          "milliseconds": [
+            0.33271685242652893,
+            0.12325681746006012,
+            0.10749325156211853
+          ],
+          "median_ms": 0.12325681746006012,
+          "min_ms": 0.10749325156211853,
+          "max_ms": 0.33271685242652893,
+          "memory": {
+            "start_allocated_bytes": 69061632,
+            "peak_allocated_bytes": 75353088,
+            "peak_increment_bytes": 6291456,
+            "peak_reserved_bytes": 119537664
+          }
+        },
+        "image_cache_build_fixed_PE_warm": {
+          "milliseconds": [
+            0.8918214589357376,
+            0.5275905132293701,
+            0.5011837929487228
+          ],
+          "median_ms": 0.5275905132293701,
+          "min_ms": 0.5011837929487228,
+          "max_ms": 0.8918214589357376,
+          "memory": {
+            "start_allocated_bytes": 69061632,
+            "peak_allocated_bytes": 102879232,
+            "peak_increment_bytes": 33817600,
+            "peak_reserved_bytes": 119537664
+          }
+        },
+        "cold_cache_build_including_fixed_PE": {
+          "milliseconds": [
+            0.9607337415218353,
+            0.6155446171760559,
+            0.5898661911487579
+          ],
+          "median_ms": 0.6155446171760559,
+          "min_ms": 0.5898661911487579,
+          "max_ms": 0.9607337415218353,
+          "memory": {
+            "start_allocated_bytes": 69061632,
+            "peak_allocated_bytes": 109170688,
+            "peak_increment_bytes": 40109056,
+            "peak_reserved_bytes": 119537664
+          }
+        },
+        "logical_persistent_cache_bytes": 35914752,
+        "profile": {
+          "trace": "/root/autodl-tmp/demo1_sam/results/gpu_profiles/small_factor/factor_projected.json",
+          "operators": {
+            "_omitted": "array exceeds 64 items",
+            "item_count": 125
+          },
+          "observed_cuda_events": [
+            "## Call CompiledFxGraph fi6dfxmblh4gbmmo36uqxntdeccghriqlyc4scnxmsy3z3fmv7xr ##",
+            "ampere_sgemm_128x128_tn",
+            "ampere_sgemm_32x32_sliced1x4_tn",
+            "ampere_sgemm_64x32_sliced1x4_nn",
+            "ampere_sgemm_64x32_sliced1x4_tn",
+            "fmha_cutlassF_f32_aligned_64x64_rf_sm80(PyTorchMemEffAttention::AttentionKernel<float, cutlass::arch::Sm80, true, 64, 64, 64, true, true>::Params)",
+            "std::enable_if<!(false), void>::type internal::gemvx::kernel<int, int, float, float, float, float, false, true, true, false, 6, false, cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float> >(cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float>)",
+            "triton_per_fused__unsafe_view_add_bmm_clone_convolution_div_expand_gelu_mean_mul_native_layer_norm_permute_pow_sqrt_sub_unsqueeze_view_27",
+            "triton_per_fused_add_addmm_native_layer_norm_view_11",
+            "triton_per_fused_add_addmm_native_layer_norm_view_17",
+            "triton_per_fused_add_addmm_native_layer_norm_view_2",
+            "triton_per_fused_add_addmm_native_layer_norm_view_4",
+            "triton_per_fused_add_bmm_expand_native_layer_norm_unsqueeze_10",
+            "triton_per_fused_add_cat_select_slice_sub_sum_unsqueeze_view_8",
+            "triton_per_fused_add_native_layer_norm_view_1",
+            "triton_per_fused_mean_mul_sub_14",
+            "triton_per_fused_mean_mul_sub_23",
+            "triton_per_fused_select_sum_view_18",
+            "triton_poi_fused__scaled_dot_product_efficient_attention_add_bmm_expand_mul_native_layer_norm_transpose_unsqueeze_view_16",
+            "triton_poi_fused__scaled_dot_product_efficient_attention_add_bmm_expand_mul_native_layer_norm_transpose_unsqueeze_view_24",
+            "triton_poi_fused__softmax__unsafe_view_add_amax_bmm_cat_clone_expand_mul_native_layer_norm_ones_like_permute_slice_sub_unsqueeze_view_12",
+            "triton_poi_fused__softmax__unsafe_view_amax_cat_clone_mul_native_layer_norm_permute_slice_sub_view_20",
+            "triton_poi_fused__softmax_amax_clone_mul_permute_slice_sub_view_6",
+            "triton_poi_fused__softmax_amax_mul_sub_view_5",
+            "triton_poi_fused_add_bmm_clone_expand_mul_native_layer_norm_permute_unsqueeze_view_26",
+            "triton_poi_fused_add_cat_slice_sub_unsqueeze_view_7",
+            "triton_poi_fused_add_cat_slice_unsqueeze_22",
+            "triton_poi_fused_addmm_relu_25",
+            "triton_poi_fused_addmm_relu_view_3",
+            "triton_poi_fused_cat_expand_mean_mul_sub_unsqueeze_15",
+            "triton_poi_fused_cat_expand_unsqueeze_0",
+            "triton_poi_fused_convolution_gelu_28",
+            "triton_poi_fused_ones_like_13",
+            "triton_poi_fused_ones_like_21",
+            "triton_red_fused_add_bmm_expand_mul_native_layer_norm_unsqueeze_19",
+            "triton_red_fused_add_bmm_expand_native_layer_norm_unsqueeze_9",
+            "void cublasLt::splitKreduce_kernel<32, 16, int, float, float, float, float, false, float, float, float, true, false, false, false>(cublasLt::cublasSplitKParams<float>, float const*, float const*, float*, float*, float const*, float const*, float const*, float const*, float*, void*, long, float*, int*, float*, float*, float const*, float const*, float const*, float const*, float const*)",
+            "void cudnn::detail::dgrad_engine<float, 512, 6, 5, 3, 3, 3, false>(int, int, int, float const*, int, float const*, int, float*, kernel_grad_params, unsigned long long, int, unsigned long long, int, float, int, int, int)",
+            "void cudnn::engines_precompiled::scalePackedTensor_kernel<float, float>(long, float*, float)",
+            "void cutlass::Kernel2<cutlass_80_simt_sgemm_128x64_8x5_nn_align1>(cutlass_80_simt_sgemm_128x64_8x5_nn_align1::Params)",
+            "void dot_kernel<float, 128, 0, cublasDotParams<cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float> > >(cublasDotParams<cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float> >)",
+            "void gemmSN_NN_kernel<float, 128, 2, 4, 8, 4, 4, false, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float> >(cublasGemmSmallNParams<cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float>)",
+            "void gemmSN_TN_kernel<float, 128, 16, 2, 4, 8, 9, false, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float> >(cublasGemmSmallNParams<cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float>)",
+            "void reduce_1Block_kernel<float, 128, 7, cublasGemvTensorStridedBatched<float>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float> >(float const*, float, cublasGemvTensorStridedBatched<float>, int, float const*, float, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, cublasPointerMode_t, cublasLtEpilogue_t, cublasGemvTensorStridedBatched<biasType<cublasGemvTensorStridedBatched<float>::value_type, float>::type const>)"
+          ],
+          "sdpa_note": "Dispatch must be read from these events; API usage alone is not FlashAttention evidence."
+        },
+        "fresh_cache_first_forward_ms_excluded": 4.990832880139351,
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            4.851477220654488,
+            4.129383713006973,
+            3.959227353334427
+          ],
+          "median_ms": 4.129383713006973,
+          "min_ms": 3.959227353334427,
+          "max_ms": 4.851477220654488,
+          "memory": {
+            "start_allocated_bytes": 37341184,
+            "peak_allocated_bytes": 81654272,
+            "peak_increment_bytes": 44313088,
+            "peak_reserved_bytes": 119537664
+          }
+        }
+      }
+    ],
+    "source_sha256": {
+      "baselines.py": "3ed23810ab06c10c485001f9d82929d87f5837c69c3706a0d62de6dd82890ca5",
+      "factor_candidate.py": "e831ed3b462c4e6def3a2f44c9c06333cc297544577d3bbe8149948db33b1c5c",
+      "official_sdpa.py": "50277e4a1a8e2763e8cd1171c01b274be18d5f0457ae5747d8b68731612867b7",
+      "benchmark.py": "3567913ca438b2f672f01a56d4f4b417faadca128524335c5bfb52cbaa87a8e9"
+    },
+    "completed": true,
+    "all_numerical_checks_passed": true
+  }
+}

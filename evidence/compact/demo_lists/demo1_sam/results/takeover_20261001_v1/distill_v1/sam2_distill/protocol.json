@@ -1,0 +1,16 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo1_sam/results/takeover_20261001_v1/distill_v1/sam2_distill/protocol.json",
+  "source_bytes": 623,
+  "source_sha256": "47bfc1283a8d95624f15701ca3fcfdad0f4408170c98d511b66e607151ac8e4b",
+  "data": {
+    "method": "single original decode response-distilled ranker, native SAM2.1-L states and same original-view features",
+    "train": "previous256 COCO images",
+    "validation": "previous128 COCO images",
+    "test_primary": "new384 seed2031 excluding all prior920 images",
+    "secondary": "previous512 cohort follow-up and DAVIS30 first frames; no DAVIS training",
+    "models": "same four ranker variants and same fixed three seeds/hyperparameters as SAM1, no retuning",
+    "artifact_storage": "compressed compact features and metrics only; no full repeated masks or model-weight copies",
+    "concurrent_GPU_runs_allowed": true
+  }
+}

@@ -1,0 +1,2020 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo1_sam/results/takeover_cpu_harness_v1/report.json",
+  "source_bytes": 61073,
+  "source_sha256": "47ee314c3c870be00447c5cc6811a031c46a795ee8e464e3975875e9fad52849",
+  "data": {
+    "status": "COMPLETED",
+    "started_at_utc": "2026-10-01T13:29:37.129663+00:00",
+    "options": {
+      "device": "cpu",
+      "mode": "eager",
+      "output_dir": "results/takeover_cpu_harness_v1",
+      "prompts": 3,
+      "grid": 4,
+      "seed": 0,
+      "microbatches": [
+        2
+      ],
+      "rounds": 2,
+      "warmup": 1,
+      "repetitions": 2,
+      "threads": 2
+    },
+    "torch": "2.8.0",
+    "precision": "float32",
+    "tf32": false,
+    "tolerance": 5e-05,
+    "compiler": "eager",
+    "scope": "Random fixed weights and synthetic encoded image, complete four-mask/four-IoU decoder; encoder, prompt encoder, final resize, persistence and cross-microbatch concatenation excluded equally",
+    "round_contract": "Same fixture; reverse arm order in round 2. These are measurement rounds, not independent seeds.",
+    "arms": [
+      [
+        "dense_phase_associated",
+        "dense_phase",
+        "explicit",
+        "associated",
+        "sparse"
+      ],
+      [
+        "dense_phase_projected",
+        "dense_phase",
+        "explicit",
+        "projected",
+        "dense"
+      ],
+      [
+        "cached_merged_phase_explicit",
+        "cached_merged_phase",
+        "explicit",
+        "auto",
+        "auto"
+      ],
+      [
+        "cached_merged_phase_sdpa",
+        "cached_merged_phase",
+        "sdpa",
+        "auto",
+        "auto"
+      ],
+      [
+        "factor_merged_phase",
+        "factor_merged_phase",
+        "explicit",
+        "auto",
+        "auto"
+      ],
+      [
+        "factor_implicit_phase",
+        "factor_implicit_phase",
+        "explicit",
+        "auto",
+        "auto"
+      ],
+      [
+        "factor_phase",
+        "factor_phase",
+        "explicit",
+        "auto",
+        "auto"
+      ],
+      [
+        "cached_merged_control",
+        "cached_merged",
+        "explicit",
+        "auto",
+        "auto"
+      ]
+    ],
+    "records": [
+      {
+        "arm": "dense_phase_associated",
+        "method": "dense_phase",
+        "attention": "explicit",
+        "plans": [
+          {
+            "role": "read",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "cached",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "sparse"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "associated",
+            "value": "associated",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": false,
+            "qk": "associated",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "sparse"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "associated",
+            "value": "associated",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          }
+        ],
+        "microbatch": 2,
+        "round": 1,
+        "numeric_status": "PASSED_RANDOM_FIXTURE_ONLY",
+        "verification": [
+          {
+            "masks": {
+              "max_abs": 2.086162567138672e-07,
+              "mean_abs": 3.966466266547286e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 6.705522537231445e-08,
+              "mean_abs": 2.7474015951156616e-08,
+              "finite": true
+            },
+            "passed": true
+          },
+          {
+            "masks": {
+              "max_abs": 1.6391277313232422e-07,
+              "mean_abs": 3.0436325459959335e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 4.470348358154297e-08,
+              "mean_abs": 2.7939677238464355e-08,
+              "finite": true
+            },
+            "passed": true
+          }
+        ],
+        "first_call_ms_excluded": 16.499959000000118,
+        "logical_persistent_cache_bytes": 353792,
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            3.7880409999999642,
+            3.0588339999999548
+          ],
+          "median_ms": 3.4234374999999595,
+          "min_ms": 3.0588339999999548,
+          "max_ms": 3.7880409999999642,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            3.3892920000000437,
+            3.37287499999972
+          ],
+          "median_ms": 3.381083499999882,
+          "min_ms": 3.37287499999972,
+          "max_ms": 3.3892920000000437,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_cache_build_including_fixed_PE": {
+          "milliseconds": [
+            0.1666250000003089,
+            0.09741700000009956
+          ],
+          "median_ms": 0.13202100000020422,
+          "min_ms": 0.09741700000009956,
+          "max_ms": 0.1666250000003089,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "wall_seconds": 0.17768158300000025
+      },
+      {
+        "arm": "dense_phase_projected",
+        "method": "dense_phase",
+        "attention": "explicit",
+        "plans": [
+          {
+            "role": "read",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "cached",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "dense"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "projected",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "dense"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "projected",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          }
+        ],
+        "microbatch": 2,
+        "round": 1,
+        "numeric_status": "PASSED_RANDOM_FIXTURE_ONLY",
+        "verification": [
+          {
+            "masks": {
+              "max_abs": 1.825392246246338e-07,
+              "mean_abs": 3.296091577453808e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 5.960464477539063e-08,
+              "mean_abs": 2.421438694000244e-08,
+              "finite": true
+            },
+            "passed": true
+          },
+          {
+            "masks": {
+              "max_abs": 1.6391277313232422e-07,
+              "mean_abs": 3.015895799762802e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 1.4901161193847656e-08,
+              "mean_abs": 7.450580596923828e-09,
+              "finite": true
+            },
+            "passed": true
+          }
+        ],
+        "first_call_ms_excluded": 2.9545409999998107,
+        "logical_persistent_cache_bytes": 378368,
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            2.9817500000000052,
+            2.7365839999999864
+          ],
+          "median_ms": 2.859166999999996,
+          "min_ms": 2.7365839999999864,
+          "max_ms": 2.9817500000000052,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            3.2449999999997203,
+            2.9502919999999655
+          ],
+          "median_ms": 3.097645999999843,
+          "min_ms": 2.9502919999999655,
+          "max_ms": 3.2449999999997203,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_cache_build_including_fixed_PE": {
+          "milliseconds": [
+            0.23499999999998522,
+            0.1365840000002727
+          ],
+          "median_ms": 0.18579200000012897,
+          "min_ms": 0.1365840000002727,
+          "max_ms": 0.23499999999998522,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "wall_seconds": 0.14175225000000014
+      },
+      {
+        "arm": "cached_merged_phase_explicit",
+        "method": "cached_merged_phase",
+        "attention": "explicit",
+        "plans": [
+          {
+            "role": "read",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "cached",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "dense"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "projected",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "dense"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "projected",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          }
+        ],
+        "microbatch": 2,
+        "round": 1,
+        "numeric_status": "PASSED_RANDOM_FIXTURE_ONLY",
+        "verification": [
+          {
+            "masks": {
+              "max_abs": 1.7881393432617188e-07,
+              "mean_abs": 3.558154304528216e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 5.960464477539063e-08,
+              "mean_abs": 2.421438694000244e-08,
+              "finite": true
+            },
+            "passed": true
+          },
+          {
+            "masks": {
+              "max_abs": 2.086162567138672e-07,
+              "mean_abs": 3.099540890616481e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 1.4901161193847656e-08,
+              "mean_abs": 7.450580596923828e-09,
+              "finite": true
+            },
+            "passed": true
+          }
+        ],
+        "first_call_ms_excluded": 3.080542000000186,
+        "logical_persistent_cache_bytes": 1093632,
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            3.0618749999997696,
+            3.382750000000101
+          ],
+          "median_ms": 3.2223124999999353,
+          "min_ms": 3.0618749999997696,
+          "max_ms": 3.382750000000101,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            3.335792000000115,
+            3.423082999999938
+          ],
+          "median_ms": 3.3794375000000265,
+          "min_ms": 3.335792000000115,
+          "max_ms": 3.423082999999938,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_cache_build_including_fixed_PE": {
+          "milliseconds": [
+            0.33525000000000915,
+            0.18641699999966121
+          ],
+          "median_ms": 0.2608334999998352,
+          "min_ms": 0.18641699999966121,
+          "max_ms": 0.33525000000000915,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "wall_seconds": 0.16330129199999988
+      },
+      {
+        "arm": "cached_merged_phase_sdpa",
+        "method": "cached_merged_phase",
+        "attention": "sdpa",
+        "plans": [
+          {
+            "role": "read",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "cached",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "dense"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "projected",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "dense"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "projected",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          }
+        ],
+        "microbatch": 2,
+        "round": 1,
+        "numeric_status": "PASSED_RANDOM_FIXTURE_ONLY",
+        "verification": [
+          {
+            "masks": {
+              "max_abs": 1.825392246246338e-07,
+              "mean_abs": 4.267944930802514e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 1.1175870895385742e-07,
+              "mean_abs": 4.1443854570388794e-08,
+              "finite": true
+            },
+            "passed": true
+          },
+          {
+            "masks": {
+              "max_abs": 1.9371509552001953e-07,
+              "mean_abs": 3.576182905362657e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 5.21540641784668e-08,
+              "mean_abs": 4.284083843231201e-08,
+              "finite": true
+            },
+            "passed": true
+          }
+        ],
+        "first_call_ms_excluded": 6.688625000000226,
+        "logical_persistent_cache_bytes": 1093632,
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            3.795959000000071,
+            3.096166000000178
+          ],
+          "median_ms": 3.4460625000001244,
+          "min_ms": 3.096166000000178,
+          "max_ms": 3.795959000000071,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            2.9538330000002944,
+            2.6215000000000543
+          ],
+          "median_ms": 2.7876665000001744,
+          "min_ms": 2.6215000000000543,
+          "max_ms": 2.9538330000002944,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_cache_build_including_fixed_PE": {
+          "milliseconds": [
+            0.29100000000026327,
+            0.18645799999994495
+          ],
+          "median_ms": 0.2387290000001041,
+          "min_ms": 0.18645799999994495,
+          "max_ms": 0.29100000000026327,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "wall_seconds": 0.1632519590000001
+      },
+      {
+        "arm": "factor_merged_phase",
+        "method": "factor_merged_phase",
+        "attention": "explicit",
+        "plans": null,
+        "microbatch": 2,
+        "round": 1,
+        "numeric_status": "PASSED_RANDOM_FIXTURE_ONLY",
+        "verification": [
+          {
+            "masks": {
+              "max_abs": 2.1606683731079102e-07,
+              "mean_abs": 4.511491269454382e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 6.705522537231445e-08,
+              "mean_abs": 2.7474015951156616e-08,
+              "finite": true
+            },
+            "passed": true
+          },
+          {
+            "masks": {
+              "max_abs": 2.086162567138672e-07,
+              "mean_abs": 3.8389785572690016e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 4.470348358154297e-08,
+              "mean_abs": 2.7939677238464355e-08,
+              "finite": true
+            },
+            "passed": true
+          }
+        ],
+        "first_call_ms_excluded": 4.126749999999735,
+        "logical_persistent_cache_bytes": 1150976,
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            3.6613330000001554,
+            3.076708000000039
+          ],
+          "median_ms": 3.3690205000000972,
+          "min_ms": 3.076708000000039,
+          "max_ms": 3.6613330000001554,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            4.1959999999998665,
+            3.786917000000223
+          ],
+          "median_ms": 3.9914585000000447,
+          "min_ms": 3.786917000000223,
+          "max_ms": 4.1959999999998665,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_cache_build_including_fixed_PE": {
+          "milliseconds": [
+            0.3991660000002284,
+            0.24500000000005073
+          ],
+          "median_ms": 0.32208300000013956,
+          "min_ms": 0.24500000000005073,
+          "max_ms": 0.3991660000002284,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "wall_seconds": 0.16549020800000003
+      },
+      {
+        "arm": "factor_implicit_phase",
+        "method": "factor_implicit_phase",
+        "attention": "explicit",
+        "plans": null,
+        "microbatch": 2,
+        "round": 1,
+        "numeric_status": "PASSED_RANDOM_FIXTURE_ONLY",
+        "verification": [
+          {
+            "masks": {
+              "max_abs": 2.384185791015625e-07,
+              "mean_abs": 4.516205365234782e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 5.960464477539063e-08,
+              "mean_abs": 3.166496753692627e-08,
+              "finite": true
+            },
+            "passed": true
+          },
+          {
+            "masks": {
+              "max_abs": 2.1606683731079102e-07,
+              "mean_abs": 4.1187888655258575e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 5.960464477539063e-08,
+              "mean_abs": 3.166496753692627e-08,
+              "finite": true
+            },
+            "passed": true
+          }
+        ],
+        "first_call_ms_excluded": 4.245875000000066,
+        "logical_persistent_cache_bytes": 435712,
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            3.9974589999998145,
+            3.9419579999999677
+          ],
+          "median_ms": 3.969708499999891,
+          "min_ms": 3.9419579999999677,
+          "max_ms": 3.9974589999998145,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            4.1883329999996555,
+            4.143417000000316
+          ],
+          "median_ms": 4.165874999999986,
+          "min_ms": 4.143417000000316,
+          "max_ms": 4.1883329999996555,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_cache_build_including_fixed_PE": {
+          "milliseconds": [
+            0.32058300000015194,
+            0.1718749999999325
+          ],
+          "median_ms": 0.24622900000004222,
+          "min_ms": 0.1718749999999325,
+          "max_ms": 0.32058300000015194,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "wall_seconds": 0.1495974170000003
+      },
+      {
+        "arm": "factor_phase",
+        "method": "factor_phase",
+        "attention": "explicit",
+        "plans": null,
+        "microbatch": 2,
+        "round": 1,
+        "numeric_status": "PASSED_RANDOM_FIXTURE_ONLY",
+        "verification": [
+          {
+            "masks": {
+              "max_abs": 2.1606683731079102e-07,
+              "mean_abs": 4.511491269454382e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 6.705522537231445e-08,
+              "mean_abs": 2.7474015951156616e-08,
+              "finite": true
+            },
+            "passed": true
+          },
+          {
+            "masks": {
+              "max_abs": 2.086162567138672e-07,
+              "mean_abs": 3.8389785572690016e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 4.470348358154297e-08,
+              "mean_abs": 2.7939677238464355e-08,
+              "finite": true
+            },
+            "passed": true
+          }
+        ],
+        "first_call_ms_excluded": 4.1526659999999715,
+        "logical_persistent_cache_bytes": 435712,
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            3.484375000000206,
+            3.1790840000001097
+          ],
+          "median_ms": 3.331729500000158,
+          "min_ms": 3.1790840000001097,
+          "max_ms": 3.484375000000206,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            3.789291000000361,
+            3.9267910000000406
+          ],
+          "median_ms": 3.858041000000201,
+          "min_ms": 3.789291000000361,
+          "max_ms": 3.9267910000000406,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_cache_build_including_fixed_PE": {
+          "milliseconds": [
+            0.30849999999960076,
+            0.1567080000000054
+          ],
+          "median_ms": 0.23260399999980308,
+          "min_ms": 0.1567080000000054,
+          "max_ms": 0.30849999999960076,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "wall_seconds": 0.15061158299999988
+      },
+      {
+        "arm": "cached_merged_control",
+        "method": "cached_merged",
+        "attention": "explicit",
+        "plans": [
+          {
+            "role": "read",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "cached",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "dense"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "projected",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "dense"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "projected",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          }
+        ],
+        "microbatch": 2,
+        "round": 1,
+        "numeric_status": "PASSED_RANDOM_FIXTURE_ONLY",
+        "verification": [
+          {
+            "masks": {
+              "max_abs": 2.086162567138672e-07,
+              "mean_abs": 3.583428309639203e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 5.960464477539063e-08,
+              "mean_abs": 2.421438694000244e-08,
+              "finite": true
+            },
+            "passed": true
+          },
+          {
+            "masks": {
+              "max_abs": 1.6391277313232422e-07,
+              "mean_abs": 3.148417704323947e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 1.4901161193847656e-08,
+              "mean_abs": 7.450580596923828e-09,
+              "finite": true
+            },
+            "passed": true
+          }
+        ],
+        "first_call_ms_excluded": 3.878708999999869,
+        "logical_persistent_cache_bytes": 1060352,
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            3.2487080000001,
+            3.1347079999997085
+          ],
+          "median_ms": 3.1917079999999043,
+          "min_ms": 3.1347079999997085,
+          "max_ms": 3.2487080000001,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            3.582041000000036,
+            3.3315410000001044
+          ],
+          "median_ms": 3.45679100000007,
+          "min_ms": 3.3315410000001044,
+          "max_ms": 3.582041000000036,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_cache_build_including_fixed_PE": {
+          "milliseconds": [
+            0.35612499999970737,
+            0.19954200000027456
+          ],
+          "median_ms": 0.27783349999999096,
+          "min_ms": 0.19954200000027456,
+          "max_ms": 0.35612499999970737,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "wall_seconds": 0.15310629199999992
+      },
+      {
+        "arm": "cached_merged_control",
+        "method": "cached_merged",
+        "attention": "explicit",
+        "plans": [
+          {
+            "role": "read",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "cached",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "dense"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "projected",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "dense"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "projected",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          }
+        ],
+        "microbatch": 2,
+        "round": 2,
+        "numeric_status": "PASSED_RANDOM_FIXTURE_ONLY",
+        "verification": [
+          {
+            "masks": {
+              "max_abs": 2.086162567138672e-07,
+              "mean_abs": 3.583428309639203e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 5.960464477539063e-08,
+              "mean_abs": 2.421438694000244e-08,
+              "finite": true
+            },
+            "passed": true
+          },
+          {
+            "masks": {
+              "max_abs": 1.6391277313232422e-07,
+              "mean_abs": 3.148417704323947e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 1.4901161193847656e-08,
+              "mean_abs": 7.450580596923828e-09,
+              "finite": true
+            },
+            "passed": true
+          }
+        ],
+        "first_call_ms_excluded": 3.422000000000036,
+        "logical_persistent_cache_bytes": 1060352,
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            3.0570829999998494,
+            3.2453329999997393
+          ],
+          "median_ms": 3.1512079999997944,
+          "min_ms": 3.0570829999998494,
+          "max_ms": 3.2453329999997393,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            3.320291999999725,
+            3.1547080000002836
+          ],
+          "median_ms": 3.2375000000000043,
+          "min_ms": 3.1547080000002836,
+          "max_ms": 3.320291999999725,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_cache_build_including_fixed_PE": {
+          "milliseconds": [
+            0.28533399999997044,
+            0.1763750000001174
+          ],
+          "median_ms": 0.23085450000004393,
+          "min_ms": 0.1763750000001174,
+          "max_ms": 0.28533399999997044,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "wall_seconds": 0.14726250000000007
+      },
+      {
+        "arm": "factor_phase",
+        "method": "factor_phase",
+        "attention": "explicit",
+        "plans": null,
+        "microbatch": 2,
+        "round": 2,
+        "numeric_status": "PASSED_RANDOM_FIXTURE_ONLY",
+        "verification": [
+          {
+            "masks": {
+              "max_abs": 2.1606683731079102e-07,
+              "mean_abs": 4.511491269454382e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 6.705522537231445e-08,
+              "mean_abs": 2.7474015951156616e-08,
+              "finite": true
+            },
+            "passed": true
+          },
+          {
+            "masks": {
+              "max_abs": 2.086162567138672e-07,
+              "mean_abs": 3.8389785572690016e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 4.470348358154297e-08,
+              "mean_abs": 2.7939677238464355e-08,
+              "finite": true
+            },
+            "passed": true
+          }
+        ],
+        "first_call_ms_excluded": 3.3079169999998825,
+        "logical_persistent_cache_bytes": 435712,
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            3.474165999999723,
+            3.0084999999999695
+          ],
+          "median_ms": 3.2413329999998464,
+          "min_ms": 3.0084999999999695,
+          "max_ms": 3.474165999999723,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            3.494832999999975,
+            3.2140419999997505
+          ],
+          "median_ms": 3.3544374999998627,
+          "min_ms": 3.2140419999997505,
+          "max_ms": 3.494832999999975,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_cache_build_including_fixed_PE": {
+          "milliseconds": [
+            0.2861249999996929,
+            0.17333400000030252
+          ],
+          "median_ms": 0.2297294999999977,
+          "min_ms": 0.17333400000030252,
+          "max_ms": 0.2861249999996929,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "wall_seconds": 0.13965533299999988
+      },
+      {
+        "arm": "factor_implicit_phase",
+        "method": "factor_implicit_phase",
+        "attention": "explicit",
+        "plans": null,
+        "microbatch": 2,
+        "round": 2,
+        "numeric_status": "PASSED_RANDOM_FIXTURE_ONLY",
+        "verification": [
+          {
+            "masks": {
+              "max_abs": 2.384185791015625e-07,
+              "mean_abs": 4.516205365234782e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 5.960464477539063e-08,
+              "mean_abs": 3.166496753692627e-08,
+              "finite": true
+            },
+            "passed": true
+          },
+          {
+            "masks": {
+              "max_abs": 2.1606683731079102e-07,
+              "mean_abs": 4.1187888655258575e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 5.960464477539063e-08,
+              "mean_abs": 3.166496753692627e-08,
+              "finite": true
+            },
+            "passed": true
+          }
+        ],
+        "first_call_ms_excluded": 3.7981250000003186,
+        "logical_persistent_cache_bytes": 435712,
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            3.801417000000029,
+            3.540458999999885
+          ],
+          "median_ms": 3.670937999999957,
+          "min_ms": 3.540458999999885,
+          "max_ms": 3.801417000000029,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            4.487332999999705,
+            4.136625000000116
+          ],
+          "median_ms": 4.31197899999991,
+          "min_ms": 4.136625000000116,
+          "max_ms": 4.487332999999705,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_cache_build_including_fixed_PE": {
+          "milliseconds": [
+            0.30912499999979914,
+            0.20237500000019892
+          ],
+          "median_ms": 0.25574999999999903,
+          "min_ms": 0.20237500000019892,
+          "max_ms": 0.30912499999979914,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "wall_seconds": 0.15214016700000021
+      },
+      {
+        "arm": "factor_merged_phase",
+        "method": "factor_merged_phase",
+        "attention": "explicit",
+        "plans": null,
+        "microbatch": 2,
+        "round": 2,
+        "numeric_status": "PASSED_RANDOM_FIXTURE_ONLY",
+        "verification": [
+          {
+            "masks": {
+              "max_abs": 2.1606683731079102e-07,
+              "mean_abs": 4.511491269454382e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 6.705522537231445e-08,
+              "mean_abs": 2.7474015951156616e-08,
+              "finite": true
+            },
+            "passed": true
+          },
+          {
+            "masks": {
+              "max_abs": 2.086162567138672e-07,
+              "mean_abs": 3.8389785572690016e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 4.470348358154297e-08,
+              "mean_abs": 2.7939677238464355e-08,
+              "finite": true
+            },
+            "passed": true
+          }
+        ],
+        "first_call_ms_excluded": 3.3668749999997694,
+        "logical_persistent_cache_bytes": 1150976,
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            3.3740830000001942,
+            3.1536659999997774
+          ],
+          "median_ms": 3.263874499999986,
+          "min_ms": 3.1536659999997774,
+          "max_ms": 3.3740830000001942,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            3.5766669999999223,
+            3.1564589999995007
+          ],
+          "median_ms": 3.3665629999997115,
+          "min_ms": 3.1564589999995007,
+          "max_ms": 3.5766669999999223,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_cache_build_including_fixed_PE": {
+          "milliseconds": [
+            0.3522089999998812,
+            0.25708299999926965
+          ],
+          "median_ms": 0.3046459999995754,
+          "min_ms": 0.25708299999926965,
+          "max_ms": 0.3522089999998812,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "wall_seconds": 0.1373370829999998
+      },
+      {
+        "arm": "cached_merged_phase_sdpa",
+        "method": "cached_merged_phase",
+        "attention": "sdpa",
+        "plans": [
+          {
+            "role": "read",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "cached",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "dense"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "projected",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "dense"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "projected",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          }
+        ],
+        "microbatch": 2,
+        "round": 2,
+        "numeric_status": "PASSED_RANDOM_FIXTURE_ONLY",
+        "verification": [
+          {
+            "masks": {
+              "max_abs": 1.825392246246338e-07,
+              "mean_abs": 4.267944930802514e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 1.1175870895385742e-07,
+              "mean_abs": 4.1443854570388794e-08,
+              "finite": true
+            },
+            "passed": true
+          },
+          {
+            "masks": {
+              "max_abs": 1.9371509552001953e-07,
+              "mean_abs": 3.576182905362657e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 5.21540641784668e-08,
+              "mean_abs": 4.284083843231201e-08,
+              "finite": true
+            },
+            "passed": true
+          }
+        ],
+        "first_call_ms_excluded": 2.5990839999998627,
+        "logical_persistent_cache_bytes": 1093632,
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            2.821458000000554,
+            2.7873339999997526
+          ],
+          "median_ms": 2.8043960000001533,
+          "min_ms": 2.7873339999997526,
+          "max_ms": 2.821458000000554,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            3.0307919999996713,
+            2.5494999999997603
+          ],
+          "median_ms": 2.790145999999716,
+          "min_ms": 2.5494999999997603,
+          "max_ms": 3.0307919999996713,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_cache_build_including_fixed_PE": {
+          "milliseconds": [
+            0.31766700000002146,
+            0.19174999999993503
+          ],
+          "median_ms": 0.25470849999997824,
+          "min_ms": 0.19174999999993503,
+          "max_ms": 0.31766700000002146,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "wall_seconds": 0.14688987500000028
+      },
+      {
+        "arm": "cached_merged_phase_explicit",
+        "method": "cached_merged_phase",
+        "attention": "explicit",
+        "plans": [
+          {
+            "role": "read",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "cached",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "dense"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "projected",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "dense"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "projected",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          }
+        ],
+        "microbatch": 2,
+        "round": 2,
+        "numeric_status": "PASSED_RANDOM_FIXTURE_ONLY",
+        "verification": [
+          {
+            "masks": {
+              "max_abs": 1.7881393432617188e-07,
+              "mean_abs": 3.558154304528216e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 5.960464477539063e-08,
+              "mean_abs": 2.421438694000244e-08,
+              "finite": true
+            },
+            "passed": true
+          },
+          {
+            "masks": {
+              "max_abs": 2.086162567138672e-07,
+              "mean_abs": 3.099540890616481e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 1.4901161193847656e-08,
+              "mean_abs": 7.450580596923828e-09,
+              "finite": true
+            },
+            "passed": true
+          }
+        ],
+        "first_call_ms_excluded": 2.954583000000177,
+        "logical_persistent_cache_bytes": 1093632,
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            2.766750000000151,
+            2.6493329999999204
+          ],
+          "median_ms": 2.7080415000000357,
+          "min_ms": 2.6493329999999204,
+          "max_ms": 2.766750000000151,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            2.9994579999996773,
+            2.6862090000001615
+          ],
+          "median_ms": 2.8428334999999194,
+          "min_ms": 2.6862090000001615,
+          "max_ms": 2.9994579999996773,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_cache_build_including_fixed_PE": {
+          "milliseconds": [
+            0.3058750000004551,
+            0.18795799999971052
+          ],
+          "median_ms": 0.2469165000000828,
+          "min_ms": 0.18795799999971052,
+          "max_ms": 0.3058750000004551,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "wall_seconds": 0.13555537500000003
+      },
+      {
+        "arm": "dense_phase_projected",
+        "method": "dense_phase",
+        "attention": "explicit",
+        "plans": [
+          {
+            "role": "read",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "cached",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "dense"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "projected",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "dense"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "projected",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          }
+        ],
+        "microbatch": 2,
+        "round": 2,
+        "numeric_status": "PASSED_RANDOM_FIXTURE_ONLY",
+        "verification": [
+          {
+            "masks": {
+              "max_abs": 1.825392246246338e-07,
+              "mean_abs": 3.296091577453808e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 5.960464477539063e-08,
+              "mean_abs": 2.421438694000244e-08,
+              "finite": true
+            },
+            "passed": true
+          },
+          {
+            "masks": {
+              "max_abs": 1.6391277313232422e-07,
+              "mean_abs": 3.015895799762802e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 1.4901161193847656e-08,
+              "mean_abs": 7.450580596923828e-09,
+              "finite": true
+            },
+            "passed": true
+          }
+        ],
+        "first_call_ms_excluded": 2.8797499999999587,
+        "logical_persistent_cache_bytes": 378368,
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            3.1265419999995103,
+            3.0353750000005064
+          ],
+          "median_ms": 3.0809585000000084,
+          "min_ms": 3.0353750000005064,
+          "max_ms": 3.1265419999995103,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            3.262417000000184,
+            2.7547920000001724
+          ],
+          "median_ms": 3.008604500000178,
+          "min_ms": 2.7547920000001724,
+          "max_ms": 3.262417000000184,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_cache_build_including_fixed_PE": {
+          "milliseconds": [
+            0.2191250000000977,
+            0.11887500000007378
+          ],
+          "median_ms": 0.16900000000008575,
+          "min_ms": 0.11887500000007378,
+          "max_ms": 0.2191250000000977,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "wall_seconds": 0.14283283400000002
+      },
+      {
+        "arm": "dense_phase_associated",
+        "method": "dense_phase",
+        "attention": "explicit",
+        "plans": [
+          {
+            "role": "read",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "cached",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "sparse"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "associated",
+            "value": "associated",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": false,
+            "qk": "associated",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "sparse"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "associated",
+            "value": "associated",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          }
+        ],
+        "microbatch": 2,
+        "round": 2,
+        "numeric_status": "PASSED_RANDOM_FIXTURE_ONLY",
+        "verification": [
+          {
+            "masks": {
+              "max_abs": 2.086162567138672e-07,
+              "mean_abs": 3.966466266547286e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 6.705522537231445e-08,
+              "mean_abs": 2.7474015951156616e-08,
+              "finite": true
+            },
+            "passed": true
+          },
+          {
+            "masks": {
+              "max_abs": 1.6391277313232422e-07,
+              "mean_abs": 3.0436325459959335e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 4.470348358154297e-08,
+              "mean_abs": 2.7939677238464355e-08,
+              "finite": true
+            },
+            "passed": true
+          }
+        ],
+        "first_call_ms_excluded": 3.6317080000003443,
+        "logical_persistent_cache_bytes": 353792,
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            3.4021250000000336,
+            2.9107909999996906
+          ],
+          "median_ms": 3.156457999999862,
+          "min_ms": 2.9107909999996906,
+          "max_ms": 3.4021250000000336,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            3.436625000000859,
+            3.032541999999694
+          ],
+          "median_ms": 3.2345835000002765,
+          "min_ms": 3.032541999999694,
+          "max_ms": 3.436625000000859,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_cache_build_including_fixed_PE": {
+          "milliseconds": [
+            0.1812500000006878,
+            0.10633299999973644
+          ],
+          "median_ms": 0.14379150000021212,
+          "min_ms": 0.10633299999973644,
+          "max_ms": 0.1812500000006878,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "wall_seconds": 0.1448954579999997
+      }
+    ],
+    "fixture": {
+      "model_fp32_state_sha256": "f7e0f1f7381ab28edd8758d690d83a35cbd77dd4806e5091dd9fb262d5a8eab2",
+      "provenance": [
+        {
+          "file": "official_cpu_validation/official_sam/common.py",
+          "sha256": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+          "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/common.py",
+          "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+        },
+        {
+          "file": "official_cpu_validation/official_sam/transformer.py",
+          "sha256": "566a8f6db8b608398de939548bd0f485b21752fda2bdda36900e6444ef938d11",
+          "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/transformer.py",
+          "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+        },
+        {
+          "file": "official_cpu_validation/official_sam/mask_decoder.py",
+          "sha256": "6a2455e990515c67a061187c92c236b879b189f21ef6ebfce1627cae9a6b2f93",
+          "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/mask_decoder.py",
+          "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+        }
+      ],
+      "seed": 0,
+      "T": 7,
+      "N": 16
+    },
+    "hardware": "CPU smoke only",
+    "finished_at_utc": "2026-10-01T13:29:40.070679+00:00",
+    "source_sha256": {
+      "tools/takeover_benchmark.py": "97c844ac0849c2e8bb8c8164dd0573f0a479508fdac1b1f41f6bb61c1018ea4d",
+      "tools/takeover_common.py": "f75220e550e3cd2e8d79368be1fed8aa982ebc82f82ce88f0df4b7d1165c4fa7",
+      "sam_shared_decoder/execution_baselines/experimental_methods.py": "74995f22cfc528601b9cd89308c047077466f483832b517956e0154df5d18287",
+      "research/projection_merge/merged_phase.py": "3dab53263a0d422e6c1b3d2d9e0bd9c31885280da211cfa34c16834df9929a5b"
+    }
+  }
+}

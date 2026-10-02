@@ -1,0 +1,3434 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo1_sam/results/takeover_20261001_v1/real_p128_perf/mb8_round1/report.json",
+  "source_bytes": 73189,
+  "source_sha256": "475729bcc316489ed0079b907f489505dc1384bfe97c2d4ed9c5ba081cd6b0bb",
+  "data": {
+    "started_at_utc": "2026-10-01T14:18:09.606566+00:00",
+    "status": "FAILED_DIAGNOSTIC_TIMING_ONLY",
+    "options": {
+      "encoded_inputs": "/root/autodl-tmp/demo1_sam/results/takeover_20261001_v1/real_p128_inputs/encoded_inputs.npz",
+      "decoder_state": "/root/autodl-tmp/demo1_sam/results/takeover_20261001_v1/real_original/mask_decoder_state.pt",
+      "output_dir": "/root/autodl-tmp/demo1_sam/results/takeover_20261001_v1/real_p128_perf/mb8_round1",
+      "device": "cuda:0",
+      "variants": [
+        [
+          "dense_phase",
+          "explicit"
+        ],
+        [
+          "cached_merged_phase",
+          "explicit"
+        ],
+        [
+          "factor_implicit_phase",
+          "explicit"
+        ]
+      ],
+      "regimes": "perf",
+      "microbatch": 8,
+      "prompt_limit": 0,
+      "mode": "compile",
+      "compiler_backend": "inductor",
+      "timings": true,
+      "diagnostic_on_failure": true,
+      "warmup": 10,
+      "repetitions": 30,
+      "threads": 2
+    },
+    "precision": "float32",
+    "tf32": false,
+    "tolerance": 5e-05,
+    "torch": "2.12.1+cu130",
+    "input_scope": "exported encoded real inputs; image and prompt encoders not executed in this replay",
+    "timed_scope": "complete four-mask+IoU low-resolution decoder; no diagnostics, final resize, GT metrics, I/O, or input slicing inside timing",
+    "quality_scope": "implementation numerical checks only; no GT accuracy or SOTA claim",
+    "records": [
+      {
+        "regime": "perf",
+        "method": "dense_phase",
+        "attention": "explicit",
+        "attention_coverage": "Dense baseline eligible routes use explicit; associated sparse writes remain explicit",
+        "prompt_count": 128,
+        "microbatch": 8,
+        "requested_microbatch": 8,
+        "numeric_status": "FAILED",
+        "checks": [
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.00212860107421875,
+              "iou": 1.239776611328125e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                3,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                2,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.00084686279296875,
+              "iou": 1.704692840576172e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.0030670166015625,
+              "iou": 2.142786979675293e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                3,
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                2,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                2,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.00144195556640625,
+              "iou": 1.704692840576172e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                2
+              ],
+              [
+                0,
+                3,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.00322723388671875,
+              "iou": 1.627206802368164e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                2,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                2,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.0020751953125,
+              "iou": 2.580881118774414e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                9,
+                2
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.0016727447509765625,
+              "iou": 1.6510486602783203e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.0014190673828125,
+              "iou": 2.4557113647460938e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.003997802734375,
+              "iou": 1.823902130126953e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                3,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                2,
+                0,
+                0
+              ],
+              [
+                0,
+                2,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.002471923828125,
+              "iou": 1.5079975128173828e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                4,
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                1,
+                5,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                1
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.0024161338806152344,
+              "iou": 2.5272369384765625e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                2
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.0016937255859375,
+              "iou": 1.71661376953125e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.003078460693359375,
+              "iou": 1.1622905731201172e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                1
+              ],
+              [
+                1,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.0012531280517578125,
+              "iou": 8.940696716308594e-06
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                2,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.00250244140625,
+              "iou": 7.271766662597656e-06
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.0014476776123046875,
+              "iou": 2.2858381271362305e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                1,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                2,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                2,
+                0,
+                3,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          }
+        ],
+        "compile_status": "optimizing_inductor_fullgraph",
+        "first_complete_decode_ms_excluded": 2964.749937877059,
+        "first_complete_decode_memory": {
+          "start_allocated_bytes": 48383488,
+          "peak_allocated_bytes": 249947648,
+          "peak_increment_bytes": 201564160,
+          "peak_reserved_bytes": 297795584
+        },
+        "timing_status": "FAILED_DIAGNOSTIC_TIMING_ONLY",
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            50.24896189570427,
+            47.87019081413746,
+            44.005317613482475,
+            52.81416140496731,
+            42.37598367035389,
+            54.60718087852001,
+            42.7178293466568,
+            54.47917431592941,
+            42.39231161773205,
+            54.863739758729935,
+            42.469894513487816,
+            54.82352711260319,
+            42.787300422787666,
+            54.57140691578388,
+            42.88926161825657,
+            54.01787348091602,
+            42.448559775948524,
+            54.02979254722595,
+            42.48477891087532,
+            54.207807406783104,
+            42.54201613366604,
+            53.903596475720406,
+            42.52534545958042,
+            54.02854457497597,
+            43.08618791401386,
+            53.1765129417181,
+            43.054020032286644,
+            50.012100487947464,
+            45.169929042458534,
+            44.202204793691635
+          ],
+          "median_ms": 46.520059928298,
+          "min_ms": 42.37598367035389,
+          "max_ms": 54.863739758729935,
+          "memory": {
+            "start_allocated_bytes": 48383488,
+            "peak_allocated_bytes": 165416448,
+            "peak_increment_bytes": 117032960,
+            "peak_reserved_bytes": 503316480
+          }
+        },
+        "warm_prompts_per_second": 2751.5011845919403,
+        "cache_build_including_PE": {
+          "milliseconds": [
+            0.6852522492408752,
+            0.3504958003759384,
+            0.3417041152715683,
+            0.3282874822616577,
+            0.35408884286880493,
+            0.3212634474039078,
+            0.32077543437480927,
+            0.31995587050914764,
+            0.32310374081134796,
+            0.32997503876686096,
+            0.32206811010837555,
+            0.3187675029039383,
+            0.3186371177434921,
+            0.31869858503341675,
+            0.3175754100084305,
+            0.3430750221014023,
+            0.3247857093811035,
+            0.31805597245693207,
+            0.31456537544727325,
+            0.4185158759355545,
+            0.6404612213373184,
+            0.6975717842578888,
+            0.8161813020706177,
+            0.8549503982067108,
+            0.8270870894193649,
+            0.8060410618782043,
+            0.7976703345775604,
+            0.8408818393945694,
+            0.7936917245388031,
+            0.7117893546819687
+          ],
+          "median_ms": 0.3423895686864853,
+          "min_ms": 0.31456537544727325,
+          "max_ms": 0.8549503982067108,
+          "memory": {
+            "start_allocated_bytes": 37601280,
+            "peak_allocated_bytes": 52281344,
+            "peak_increment_bytes": 14680064,
+            "peak_reserved_bytes": 503316480
+          }
+        },
+        "cold_complete_prompt_batch": {
+          "milliseconds": [
+            44.83291320502758,
+            54.82944846153259,
+            43.57999563217163,
+            55.37718161940575,
+            72.7055836468935,
+            66.1393478512764,
+            53.12572792172432,
+            47.89403639733791,
+            55.367182940244675,
+            62.790654599666595,
+            58.39845724403858,
+            45.188359916210175,
+            62.37078085541725,
+            45.182790607213974,
+            56.63413926959038,
+            43.71539130806923,
+            56.37912638485432,
+            43.9789779484272,
+            57.29275569319725,
+            44.105906039476395,
+            60.081372037529945,
+            43.666549026966095,
+            55.95456063747406,
+            43.86916942894459,
+            55.773183703422546,
+            43.8565481454134,
+            56.16461858153343,
+            45.68847827613354,
+            57.26928636431694,
+            43.76256838440895
+          ],
+          "median_ms": 55.098315700888634,
+          "min_ms": 43.57999563217163,
+          "max_ms": 72.7055836468935,
+          "memory": {
+            "start_allocated_bytes": 37601280,
+            "peak_allocated_bytes": 165416448,
+            "peak_increment_bytes": 127815168,
+            "peak_reserved_bytes": 503316480
+          }
+        }
+      },
+      {
+        "regime": "perf",
+        "method": "cached_merged_phase",
+        "attention": "explicit",
+        "attention_coverage": "Dense baseline eligible routes use explicit; associated sparse writes remain explicit",
+        "prompt_count": 128,
+        "microbatch": 8,
+        "requested_microbatch": 8,
+        "numeric_status": "FAILED",
+        "checks": [
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.004547119140625,
+              "iou": 2.4616718292236328e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                2
+              ],
+              [
+                0,
+                0,
+                3,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                3,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.0015716552734375,
+              "iou": 2.6106834411621094e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.00290679931640625,
+              "iou": 1.2993812561035156e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                2,
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                2,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                2,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.0023193359375,
+              "iou": 1.33514404296875e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                2
+              ],
+              [
+                0,
+                3,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.00152587890625,
+              "iou": 1.6748905181884766e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                2,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.00228118896484375,
+              "iou": 2.384185791015625e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                5,
+                3
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                2,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.002262115478515625,
+              "iou": 1.2874603271484375e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                6
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.0026979446411132812,
+              "iou": 2.0384788513183594e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.00476837158203125,
+              "iou": 2.682209014892578e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                2,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                2,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.00201416015625,
+              "iou": 1.9043684005737305e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                4,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                1,
+                3,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.002674102783203125,
+              "iou": 3.552436828613281e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.002349853515625,
+              "iou": 2.2411346435546875e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.002643585205078125,
+              "iou": 1.3887882232666016e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                1
+              ],
+              [
+                1,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.0022678375244140625,
+              "iou": 1.1861324310302734e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.0060577392578125,
+              "iou": 1.5914440155029297e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                3
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.0013303756713867188,
+              "iou": 1.2993812561035156e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                3,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          }
+        ],
+        "compile_status": "optimizing_inductor_fullgraph",
+        "first_complete_decode_ms_excluded": 2913.829702883959,
+        "first_complete_decode_memory": {
+          "start_allocated_bytes": 70012928,
+          "peak_allocated_bytes": 197722112,
+          "peak_increment_bytes": 127709184,
+          "peak_reserved_bytes": 503316480
+        },
+        "timing_status": "FAILED_DIAGNOSTIC_TIMING_ONLY",
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            54.078420624136925,
+            42.59449616074562,
+            52.858831360936165,
+            42.60069876909256,
+            52.57626622915268,
+            42.65722446143627,
+            52.1262027323246,
+            42.63835959136486,
+            51.52229405939579,
+            42.70041920244694,
+            43.20904426276684,
+            50.4338052123785,
+            42.87627525627613,
+            53.27919311821461,
+            42.67366975545883,
+            53.50420065224171,
+            42.69612766802311,
+            53.30050177872181,
+            42.639970779418945,
+            52.837127819657326,
+            48.858704045414925,
+            63.53425979614258,
+            42.76186041533947,
+            53.07217314839363,
+            42.69191063940525,
+            58.11237916350365,
+            43.056728318333626,
+            57.37821198999882,
+            42.65314340591431,
+            53.2037690281868
+          ],
+          "median_ms": 49.64625462889671,
+          "min_ms": 42.59449616074562,
+          "max_ms": 63.53425979614258,
+          "memory": {
+            "start_allocated_bytes": 70012928,
+            "peak_allocated_bytes": 197722112,
+            "peak_increment_bytes": 127709184,
+            "peak_reserved_bytes": 503316480
+          }
+        },
+        "warm_prompts_per_second": 2578.2408150784713,
+        "cache_build_including_PE": {
+          "milliseconds": [
+            1.1393893510103226,
+            0.6662625819444656,
+            0.6233751773834229,
+            0.603213906288147,
+            0.5876142531633377,
+            0.5779340863227844,
+            0.5707349628210068,
+            0.5841534584760666,
+            0.5700532346963882,
+            0.5735345184803009,
+            0.5629435181617737,
+            0.5688518285751343,
+            0.5631335079669952,
+            0.5619749426841736,
+            0.5745831876993179,
+            0.5654916167259216,
+            0.5612913519144058,
+            0.5653034895658493,
+            0.5641654133796692,
+            0.5641337484121323,
+            0.5624443292617798,
+            0.5926042795181274,
+            0.5624834448099136,
+            0.5621947348117828,
+            0.5719345062971115,
+            0.5680043250322342,
+            0.5688313394784927,
+            0.57237409055233,
+            0.5860235542058945,
+            0.5654916167259216
+          ],
+          "median_ms": 0.5694525316357613,
+          "min_ms": 0.5612913519144058,
+          "max_ms": 1.1393893510103226,
+          "memory": {
+            "start_allocated_bytes": 37601280,
+            "peak_allocated_bytes": 76534272,
+            "peak_increment_bytes": 38932992,
+            "peak_reserved_bytes": 503316480
+          }
+        },
+        "cold_complete_prompt_batch": {
+          "milliseconds": [
+            56.7758996039629,
+            43.33239607512951,
+            58.236824348568916,
+            43.40628534555435,
+            55.320147424936295,
+            43.49049739539623,
+            53.05986478924751,
+            43.370092287659645,
+            52.92201600968838,
+            43.59004832804203,
+            53.00324410200119,
+            43.401679024100304,
+            52.3649025708437,
+            43.69385540485382,
+            46.768100932240486,
+            48.35060611367226,
+            43.43002662062645,
+            53.283095359802246,
+            43.425269424915314,
+            54.67376671731472,
+            43.41195896267891,
+            54.72429655492306,
+            43.37132163345814,
+            54.560586810112,
+            43.36901009082794,
+            54.44750376045704,
+            43.49695146083832,
+            53.94979938864708,
+            43.38819347321987,
+            58.56965854763985
+          ],
+          "median_ms": 47.55935352295637,
+          "min_ms": 43.33239607512951,
+          "max_ms": 58.56965854763985,
+          "memory": {
+            "start_allocated_bytes": 37601280,
+            "peak_allocated_bytes": 197722112,
+            "peak_increment_bytes": 160120832,
+            "peak_reserved_bytes": 503316480
+          }
+        }
+      },
+      {
+        "regime": "perf",
+        "method": "factor_implicit_phase",
+        "attention": "explicit",
+        "attention_coverage": "Implicit factor read/write use explicit contractions after first layer; SDPA applies only where actually called",
+        "prompt_count": 128,
+        "microbatch": 8,
+        "requested_microbatch": 8,
+        "numeric_status": "FAILED",
+        "checks": [
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.00275421142578125,
+              "iou": 2.193450927734375e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                1,
+                0,
+                2
+              ],
+              [
+                2,
+                0,
+                3,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                2
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                3,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.00098419189453125,
+              "iou": 1.800060272216797e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.0044708251953125,
+              "iou": 2.86102294921875e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                2,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.00284576416015625,
+              "iou": 1.3530254364013672e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                2
+              ],
+              [
+                0,
+                3,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.005462646484375,
+              "iou": 1.2516975402832031e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                5,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                2,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.00171661376953125,
+              "iou": 1.8656253814697266e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                2,
+                8,
+                3
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                3,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.0018825531005859375,
+              "iou": 1.4901161193847656e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.00339508056640625,
+              "iou": 1.7642974853515625e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.0046844482421875,
+              "iou": 2.0325183868408203e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                5,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                2,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.00189208984375,
+              "iou": 1.3947486877441406e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                2,
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                1,
+                0,
+                0
+              ],
+              [
+                1,
+                5,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                1
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.0018324851989746094,
+              "iou": 2.9325485229492188e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.00171661376953125,
+              "iou": 9.953975677490234e-06
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                1,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.0014867782592773438,
+              "iou": 1.4543533325195312e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.0017242431640625,
+              "iou": 1.049041748046875e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.00159454345703125,
+              "iou": 8.940696716308594e-06
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          },
+          {
+            "passed": false,
+            "finite": true,
+            "max_abs": {
+              "masks": 0.0009624958038330078,
+              "iou": 2.8431415557861328e-05
+            },
+            "full_resolution_binary_flips_per_prompt_per_mask": [
+              [
+                0,
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                2,
+                0,
+                3,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "all_four_iou_argmax_changes": 0,
+            "multimask_iou_argmax_changes": 0
+          }
+        ],
+        "compile_status": "optimizing_inductor_fullgraph",
+        "first_complete_decode_ms_excluded": 1282.69019164145,
+        "first_complete_decode_memory": {
+          "start_allocated_bytes": 69355008,
+          "peak_allocated_bytes": 179235840,
+          "peak_increment_bytes": 109880832,
+          "peak_reserved_bytes": 507510784
+        },
+        "timing_status": "FAILED_DIAGNOSTIC_TIMING_ONLY",
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            64.45873901247978,
+            52.29865573346615,
+            62.931615859270096,
+            50.67161098122597,
+            65.03073312342167,
+            50.68282224237919,
+            63.19763697683811,
+            61.68920360505581,
+            51.27318203449249,
+            64.06673789024353,
+            51.586078479886055,
+            66.73510931432247,
+            62.4514427036047,
+            50.90401507914066,
+            62.67048418521881,
+            50.89203454554081,
+            63.04756924510002,
+            50.691697746515274,
+            66.64527207612991,
+            62.39938549697399,
+            50.9309247136116,
+            62.48220428824425,
+            51.110535860061646,
+            62.818754464387894,
+            61.05988472700119,
+            53.21687273681164,
+            62.67149746417999,
+            50.902098417282104,
+            66.92244485020638,
+            51.00174807012081
+          ],
+          "median_ms": 62.0442945510149,
+          "min_ms": 50.67161098122597,
+          "max_ms": 66.92244485020638,
+          "memory": {
+            "start_allocated_bytes": 69355008,
+            "peak_allocated_bytes": 179235840,
+            "peak_increment_bytes": 109880832,
+            "peak_reserved_bytes": 507510784
+          }
+        },
+        "warm_prompts_per_second": 2063.0422333959186,
+        "cache_build_including_PE": {
+          "milliseconds": [
+            2.5180447846651077,
+            1.7736516892910004,
+            1.6756318509578705,
+            1.5688631683588028,
+            1.5525035560131073,
+            1.638513058423996,
+            1.5281736850738525,
+            1.5399511903524399,
+            1.515991985797882,
+            1.4986246824264526,
+            1.4815647155046463,
+            1.417534425854683,
+            1.386735588312149,
+            0.7974524050951004,
+            0.6700344383716583,
+            0.6589833647012711,
+            0.6523430347442627,
+            0.6503332406282425,
+            0.6577223539352417,
+            0.6494931876659393,
+            0.6406363099813461,
+            0.6421320140361786,
+            0.6393734365701675,
+            0.6421636790037155,
+            0.6625223904848099,
+            0.6438940763473511,
+            0.6416123360395432,
+            0.6422735750675201,
+            0.6353911012411118,
+            0.6386041641235352
+          ],
+          "median_ms": 0.6662784144282341,
+          "min_ms": 0.6353911012411118,
+          "max_ms": 2.5180447846651077,
+          "memory": {
+            "start_allocated_bytes": 37601280,
+            "peak_allocated_bytes": 77710336,
+            "peak_increment_bytes": 40109056,
+            "peak_reserved_bytes": 507510784
+          }
+        },
+        "cold_complete_prompt_batch": {
+          "milliseconds": [
+            54.590482264757156,
+            63.81560117006302,
+            52.03410983085632,
+            63.726622611284256,
+            63.82838077843189,
+            52.12534964084625,
+            68.45906190574169,
+            52.04327031970024,
+            64.00701031088829,
+            63.74580040574074,
+            52.338916808366776,
+            68.23845393955708,
+            52.756417542696,
+            66.91090762615204,
+            63.60393203794956,
+            51.74878612160683,
+            64.04360197484493,
+            51.57859995961189,
+            68.34593787789345,
+            68.27305071055889,
+            53.17743308842182,
+            63.649438321590424,
+            54.47573959827423,
+            61.07158400118351,
+            64.65001590549946,
+            51.87361687421799,
+            65.63067808747292,
+            51.79961770772934,
+            63.524819910526276,
+            64.69120644032955
+          ],
+          "median_ms": 63.62668517976999,
+          "min_ms": 51.57859995961189,
+          "max_ms": 68.45906190574169,
+          "memory": {
+            "start_allocated_bytes": 37601280,
+            "peak_allocated_bytes": 179235840,
+            "peak_increment_bytes": 141634560,
+            "peak_reserved_bytes": 507510784
+          }
+        }
+      }
+    ],
+    "decoder_state_metadata": {
+      "schema_version": 1,
+      "model": "sam_vit_b_mask_decoder",
+      "dtype": "float32",
+      "source_revision": "dca509fe793f601edb92606367a655c15ac00fdf",
+      "architecture": {
+        "transformer_dim": 256,
+        "num_multimask_outputs": 3,
+        "depth": 2,
+        "num_heads": 8,
+        "mlp_dim": 2048
+      }
+    },
+    "official_source_provenance": [
+      {
+        "file": "official_cpu_validation/official_sam/common.py",
+        "sha256": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+        "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/common.py",
+        "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+      },
+      {
+        "file": "official_cpu_validation/official_sam/transformer.py",
+        "sha256": "566a8f6db8b608398de939548bd0f485b21752fda2bdda36900e6444ef938d11",
+        "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/transformer.py",
+        "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+      },
+      {
+        "file": "official_cpu_validation/official_sam/mask_decoder.py",
+        "sha256": "6a2455e990515c67a061187c92c236b879b189f21ef6ebfce1627cae9a6b2f93",
+        "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/mask_decoder.py",
+        "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+      }
+    ],
+    "encoded_metadata": {
+      "original_size": [
+        360,
+        640
+      ],
+      "input_size": [
+        576,
+        1024
+      ],
+      "image_id": 517687,
+      "mask_threshold": 0.0,
+      "annotation_ids": {
+        "_omitted": "array exceeds 64 items",
+        "item_count": 128
+      }
+    },
+    "all_numeric_passed": false,
+    "execution_completed": true,
+    "finished_at_utc": "2026-10-01T14:18:33.004273+00:00"
+  }
+}

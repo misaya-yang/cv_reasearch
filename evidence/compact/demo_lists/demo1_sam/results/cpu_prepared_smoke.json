@@ -1,0 +1,638 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo1_sam/results/cpu_prepared_smoke.json",
+  "source_bytes": 1173877,
+  "source_sha256": "5ee9d359a1227636d47c3ad983d295c80afc95ff5c833e3f35d0314ee027736a",
+  "data": {
+    "created_at_utc": "2026-10-01T10:32:14.196925+00:00",
+    "torch": "2.8.0",
+    "python": "3.9.6",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "device": "cpu",
+    "hardware": "arm",
+    "options": {
+      "device": "cpu",
+      "dtype": "float32",
+      "prompt_batch": 3,
+      "microbatch": 2,
+      "grid": 4,
+      "tokens": 7,
+      "method": "all",
+      "attention": "explicit",
+      "order": "auto",
+      "write_output": "auto",
+      "mode": "eager",
+      "compiler_backend": "inductor",
+      "compile_mode": "default",
+      "warmup": 1,
+      "repetitions": 1,
+      "threads": 2,
+      "seed": 0,
+      "tolerance": 5e-05,
+      "tf32": false,
+      "diagnostic_on_failure": false,
+      "profile_dir": "results/cpu_profile",
+      "output": "results/cpu_prepared_smoke.json"
+    },
+    "fixture": {
+      "model_fp32_state_sha256": "f7e0f1f7381ab28edd8758d690d83a35cbd77dd4806e5091dd9fb262d5a8eab2",
+      "provenance": [
+        {
+          "file": "official_cpu_validation/official_sam/common.py",
+          "sha256": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+          "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/common.py",
+          "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+        },
+        {
+          "file": "official_cpu_validation/official_sam/transformer.py",
+          "sha256": "566a8f6db8b608398de939548bd0f485b21752fda2bdda36900e6444ef938d11",
+          "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/transformer.py",
+          "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+        },
+        {
+          "file": "official_cpu_validation/official_sam/mask_decoder.py",
+          "sha256": "6a2455e990515c67a061187c92c236b879b189f21ef6ebfce1627cae9a6b2f93",
+          "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/mask_decoder.py",
+          "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+        }
+      ],
+      "seed": 0,
+      "T": 7,
+      "N": 16
+    },
+    "outputs": "All four low-resolution masks plus all four IoU; no output-token pruning",
+    "timed_scope": "Complete mask decoder; no encoder, prompt encoder or full-resolution predictor postprocessing. Prompt batches share one image and identical dense embedding. Output copying/concatenation across microbatches excluded equally; final microbatch outputs returned.",
+    "cpu_warning": "CPU smoke measurements test harness plumbing only; they are not a GPU ranking or speedup prediction.",
+    "compile_warning": "eager/aot_eager compiler backends are diagnostic; only an optimizing backend such as inductor is a performance-compilation trial. Fullgraph mode raises on unsupported graph breaks. Actual CUDA SDPA backend dispatch is not inferred from the API name.",
+    "precision_warning": "Random-weight same-dtype numerical gate does not establish pretrained, binary decision, TF32 or lower-precision fidelity.",
+    "methods": [
+      {
+        "method": "official",
+        "effective_attention": "original explicit official",
+        "verification": {
+          "passed": true,
+          "microbatch_checks": [
+            {
+              "offset": 0,
+              "size": 2,
+              "masks": {
+                "max_abs": 0.0,
+                "mean_abs": 0.0,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 0.0,
+                "mean_abs": 0.0,
+                "finite": true
+              },
+              "passed": true
+            },
+            {
+              "offset": 2,
+              "size": 1,
+              "masks": {
+                "max_abs": 0.0,
+                "mean_abs": 0.0,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 0.0,
+                "mean_abs": 0.0,
+                "finite": true
+              },
+              "passed": true
+            }
+          ]
+        },
+        "verification_and_compile_first_forward_ms_excluded": 8.661542000000022,
+        "first_complete_prompt_batch_ms_excluded": 21.79633400000003,
+        "numeric_status": "passed_random_fixture_only",
+        "compile_status": "eager",
+        "attention_coverage": "Original explicit throughout",
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            3.152374999999985
+          ],
+          "median_ms": 3.152374999999985,
+          "min_ms": 3.152374999999985,
+          "max_ms": 3.152374999999985,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "warm_prompts_per_second": 951.6634283675052,
+        "warm_ms_per_prompt": 1.0507916666666617,
+        "cache_build": "None: original official decoder; shared encoder inputs already supplied",
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            3.1893330000000164
+          ],
+          "median_ms": 3.1893330000000164,
+          "min_ms": 3.1893330000000164,
+          "max_ms": 3.1893330000000164,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "profile": {
+          "trace": "results/cpu_profile/official.json",
+          "operators": {
+            "_omitted": "array exceeds 64 items",
+            "item_count": 577
+          },
+          "observed_cuda_events": [],
+          "sdpa_note": "Dispatch must be read from these events; API usage alone is not FlashAttention evidence."
+        }
+      },
+      {
+        "method": "cached",
+        "effective_attention": "explicit",
+        "verification": {
+          "passed": true,
+          "microbatch_checks": [
+            {
+              "offset": 0,
+              "size": 2,
+              "masks": {
+                "max_abs": 1.825392246246338e-07,
+                "mean_abs": 3.296091577453808e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 5.960464477539063e-08,
+                "mean_abs": 2.421438694000244e-08,
+                "finite": true
+              },
+              "passed": true
+            },
+            {
+              "offset": 2,
+              "size": 1,
+              "masks": {
+                "max_abs": 2.086162567138672e-07,
+                "mean_abs": 3.0823230190435424e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 1.4901161193847656e-08,
+                "mean_abs": 7.450580596923828e-09,
+                "finite": true
+              },
+              "passed": true
+            }
+          ]
+        },
+        "verification_and_compile_first_forward_ms_excluded": 5.838875000000021,
+        "first_complete_prompt_batch_ms_excluded": 3.0659160000001684,
+        "numeric_status": "passed_random_fixture_only",
+        "compile_status": "eager",
+        "attention_coverage": "SDPA applies only to eligible routes; associated sparse writes stay explicit",
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            3.0756670000000597
+          ],
+          "median_ms": 3.0756670000000597,
+          "min_ms": 3.0756670000000597,
+          "max_ms": 3.0756670000000597,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "warm_prompts_per_second": 975.3981819227965,
+        "warm_ms_per_prompt": 1.0252223333333532,
+        "execution_plan": [
+          {
+            "role": "read",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "cached",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "dense"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "projected",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "dense"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "projected",
+            "value": "projected",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          }
+        ],
+        "fixed_PE_build": {
+          "milliseconds": [
+            0.07374999999987253
+          ],
+          "median_ms": 0.07374999999987253,
+          "min_ms": 0.07374999999987253,
+          "max_ms": 0.07374999999987253,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "image_cache_build_fixed_PE_warm": {
+          "milliseconds": [
+            0.09799999999993148
+          ],
+          "median_ms": 0.09799999999993148,
+          "min_ms": 0.09799999999993148,
+          "max_ms": 0.09799999999993148,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_cache_build_including_fixed_PE": {
+          "milliseconds": [
+            0.14650000000004937
+          ],
+          "median_ms": 0.14650000000004937,
+          "min_ms": 0.14650000000004937,
+          "max_ms": 0.14650000000004937,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "logical_persistent_cache_bytes": 81920,
+        "profile": {
+          "trace": "results/cpu_profile/cached.json",
+          "operators": {
+            "_omitted": "array exceeds 64 items",
+            "item_count": 544
+          },
+          "observed_cuda_events": [],
+          "sdpa_note": "Dispatch must be read from these events; API usage alone is not FlashAttention evidence."
+        },
+        "fresh_cache_first_forward_ms_excluded": 3.638749999999913,
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            3.212875000000004
+          ],
+          "median_ms": 3.212875000000004,
+          "min_ms": 3.212875000000004,
+          "max_ms": 3.212875000000004,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        }
+      },
+      {
+        "method": "dense_assoc",
+        "effective_attention": "explicit",
+        "verification": {
+          "passed": true,
+          "microbatch_checks": [
+            {
+              "offset": 0,
+              "size": 2,
+              "masks": {
+                "max_abs": 2.086162567138672e-07,
+                "mean_abs": 3.966466266547286e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 6.705522537231445e-08,
+                "mean_abs": 2.7474015951156616e-08,
+                "finite": true
+              },
+              "passed": true
+            },
+            {
+              "offset": 2,
+              "size": 1,
+              "masks": {
+                "max_abs": 1.6391277313232422e-07,
+                "mean_abs": 3.045366270271188e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 4.470348358154297e-08,
+                "mean_abs": 2.7939677238464355e-08,
+                "finite": true
+              },
+              "passed": true
+            }
+          ]
+        },
+        "verification_and_compile_first_forward_ms_excluded": 7.62733399999993,
+        "first_complete_prompt_batch_ms_excluded": 3.7524589999997637,
+        "numeric_status": "passed_random_fixture_only",
+        "compile_status": "eager",
+        "attention_coverage": "SDPA applies only to eligible routes; associated sparse writes stay explicit",
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            3.3045000000000435
+          ],
+          "median_ms": 3.3045000000000435,
+          "min_ms": 3.3045000000000435,
+          "max_ms": 3.3045000000000435,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "warm_prompts_per_second": 907.8529278256802,
+        "warm_ms_per_prompt": 1.1015000000000146,
+        "execution_plan": [
+          {
+            "role": "read",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "cached",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "sparse"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "associated",
+            "value": "associated",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": false,
+            "qk": "associated",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "write_dense": 1077248,
+              "write_sparse": 851968
+            },
+            "output": "sparse"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "associated",
+            "value": "associated",
+            "comparison_flops": {
+              "qk_projected": 1077248,
+              "qk_associated": 917504,
+              "value_projected": 1077248,
+              "value_associated": 917504
+            }
+          }
+        ],
+        "fixed_PE_build": {
+          "milliseconds": [
+            0.035208000000341855
+          ],
+          "median_ms": 0.035208000000341855,
+          "min_ms": 0.035208000000341855,
+          "max_ms": 0.035208000000341855,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "image_cache_build_fixed_PE_warm": {
+          "milliseconds": [
+            0.09741700000009956
+          ],
+          "median_ms": 0.09741700000009956,
+          "min_ms": 0.09741700000009956,
+          "max_ms": 0.09741700000009956,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_cache_build_including_fixed_PE": {
+          "milliseconds": [
+            0.12212499999986193
+          ],
+          "median_ms": 0.12212499999986193,
+          "min_ms": 0.12212499999986193,
+          "max_ms": 0.12212499999986193,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "logical_persistent_cache_bytes": 57344,
+        "profile": {
+          "trace": "results/cpu_profile/dense_assoc.json",
+          "operators": {
+            "_omitted": "array exceeds 64 items",
+            "item_count": 722
+          },
+          "observed_cuda_events": [],
+          "sdpa_note": "Dispatch must be read from these events; API usage alone is not FlashAttention evidence."
+        },
+        "fresh_cache_first_forward_ms_excluded": 3.8562500000001165,
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            3.870582999999872
+          ],
+          "median_ms": 3.870582999999872,
+          "min_ms": 3.870582999999872,
+          "max_ms": 3.870582999999872,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        }
+      },
+      {
+        "method": "factor_projected",
+        "effective_attention": "explicit",
+        "verification": {
+          "passed": true,
+          "microbatch_checks": [
+            {
+              "offset": 0,
+              "size": 2,
+              "masks": {
+                "max_abs": 2.3096799850463867e-07,
+                "mean_abs": 4.500866523926561e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 6.705522537231445e-08,
+                "mean_abs": 2.7474015951156616e-08,
+                "finite": true
+              },
+              "passed": true
+            },
+            {
+              "offset": 2,
+              "size": 1,
+              "masks": {
+                "max_abs": 2.086162567138672e-07,
+                "mean_abs": 3.846923846140271e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 4.470348358154297e-08,
+                "mean_abs": 2.7939677238464355e-08,
+                "finite": true
+              },
+              "passed": true
+            }
+          ]
+        },
+        "verification_and_compile_first_forward_ms_excluded": 6.167625000000232,
+        "first_complete_prompt_batch_ms_excluded": 3.7127089999997587,
+        "numeric_status": "passed_random_fixture_only",
+        "compile_status": "eager",
+        "attention_coverage": "Candidate writes remain explicit to form factors; SDPA applies to reads and token self-attention",
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            3.38358300000019
+          ],
+          "median_ms": 3.38358300000019,
+          "min_ms": 3.38358300000019,
+          "max_ms": 3.38358300000019,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "warm_prompts_per_second": 886.6340799087334,
+        "warm_ms_per_prompt": 1.1278610000000633,
+        "execution_plan": null,
+        "fixed_PE_build": {
+          "milliseconds": [
+            0.06966699999999548
+          ],
+          "median_ms": 0.06966699999999548,
+          "min_ms": 0.06966699999999548,
+          "max_ms": 0.06966699999999548,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "image_cache_build_fixed_PE_warm": {
+          "milliseconds": [
+            0.2777499999999655
+          ],
+          "median_ms": 0.2777499999999655,
+          "min_ms": 0.2777499999999655,
+          "max_ms": 0.2777499999999655,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "cold_cache_build_including_fixed_PE": {
+          "milliseconds": [
+            0.2911249999999477
+          ],
+          "median_ms": 0.2911249999999477,
+          "min_ms": 0.2911249999999477,
+          "max_ms": 0.2911249999999477,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        },
+        "logical_persistent_cache_bytes": 402432,
+        "profile": {
+          "trace": "results/cpu_profile/factor_projected.json",
+          "operators": {
+            "_omitted": "array exceeds 64 items",
+            "item_count": 778
+          },
+          "observed_cuda_events": [],
+          "sdpa_note": "Dispatch must be read from these events; API usage alone is not FlashAttention evidence."
+        },
+        "fresh_cache_first_forward_ms_excluded": 4.442083000000263,
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            3.7209169999998792
+          ],
+          "median_ms": 3.7209169999998792,
+          "min_ms": 3.7209169999998792,
+          "max_ms": 3.7209169999998792,
+          "memory": {
+            "peak_allocated_bytes": null,
+            "reason": "PyTorch allocator peak accounting is implemented here only for CUDA; CPU/MPS peak is not measured."
+          }
+        }
+      }
+    ],
+    "source_sha256": {
+      "baselines.py": "3ed23810ab06c10c485001f9d82929d87f5837c69c3706a0d62de6dd82890ca5",
+      "factor_candidate.py": "e831ed3b462c4e6def3a2f44c9c06333cc297544577d3bbe8149948db33b1c5c",
+      "benchmark.py": "157beaf768b37896d6d9f8ed4696f4e1898c3afa5e34a0fc51b2d1df65257ed7"
+    },
+    "completed": true,
+    "all_numerical_checks_passed": true
+  }
+}

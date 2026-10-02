@@ -1,0 +1,161 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo1_sam/results/takeover_20261001_v1/sam2_local_student_v2_converge/report.json",
+  "source_bytes": 318191,
+  "source_sha256": "b43cdb0412945595cf39be5f700f9eff21285110464e77edead77f6273b85ae1",
+  "data": {
+    "status": "COMPLETED_SAM2_REAL_HEAD_DEVELOPMENT",
+    "pid": 107118,
+    "curves": {
+      "_omitted": "array exceeds 64 items",
+      "item_count": 961
+    },
+    "rows": {
+      "_omitted": "array exceeds 64 items",
+      "item_count": 315
+    },
+    "summary": {
+      "central": {
+        "0": {
+          "mean_head_delta_iou": -0.012975825173712216,
+          "head_image_cluster95": [
+            -0.02131705038364702,
+            -0.006233204656952415
+          ],
+          "mean_native_dynamic_delta_iou": -0.03842435520140985,
+          "dynamic_image_cluster95": [
+            -0.07857347060319665,
+            -0.010718338113563953
+          ],
+          "head_choice_changes": 0,
+          "dynamic_choice_changes": 8
+        },
+        "0.05": {
+          "mean_head_delta_iou": -0.0014824922652119897,
+          "head_image_cluster95": [
+            -0.003778038429154166,
+            0.00013873962998414783
+          ],
+          "mean_native_dynamic_delta_iou": -0.0022050997222592557,
+          "dynamic_image_cluster95": [
+            -0.00489659482114804,
+            -0.000171519979570206
+          ],
+          "head_choice_changes": 0,
+          "dynamic_choice_changes": 0
+        },
+        "0.1": {
+          "mean_head_delta_iou": -0.0009900039089192454,
+          "head_image_cluster95": [
+            -0.0024344367621010046,
+            0.00012080387756358882
+          ],
+          "mean_native_dynamic_delta_iou": -0.0015830617142820354,
+          "dynamic_image_cluster95": [
+            -0.003890490187839512,
+            -2.7333206392706332e-05
+          ],
+          "head_choice_changes": 0,
+          "dynamic_choice_changes": 1
+        }
+      },
+      "near_boundary": {
+        "0": {
+          "mean_head_delta_iou": -0.014949202608686447,
+          "head_image_cluster95": [
+            -0.02359423815729203,
+            -0.006475270694671547
+          ],
+          "mean_native_dynamic_delta_iou": -0.013939349852937533,
+          "dynamic_image_cluster95": [
+            -0.021257842985941185,
+            -0.006035461486248461
+          ],
+          "head_choice_changes": 0,
+          "dynamic_choice_changes": 3
+        },
+        "0.05": {
+          "mean_head_delta_iou": -0.0011827180836073627,
+          "head_image_cluster95": [
+            -0.003168638660850474,
+            0.00033368644986161105
+          ],
+          "mean_native_dynamic_delta_iou": -0.0007537032387226326,
+          "dynamic_image_cluster95": [
+            -0.0019035894741845408,
+            0.00038173411831718965
+          ],
+          "head_choice_changes": 0,
+          "dynamic_choice_changes": 1
+        },
+        "0.1": {
+          "mean_head_delta_iou": -0.0010338573286435054,
+          "head_image_cluster95": [
+            -0.002744861274908922,
+            0.0001441306016596708
+          ],
+          "mean_native_dynamic_delta_iou": -0.0007094403943493326,
+          "dynamic_image_cluster95": [
+            -0.0015420713699362705,
+            -0.00011859048465273175
+          ],
+          "head_choice_changes": 0,
+          "dynamic_choice_changes": 2
+        }
+      },
+      "box": {
+        "0": {
+          "mean_head_delta_iou": -0.01382271742682182,
+          "head_image_cluster95": [
+            -0.023219470293527424,
+            -0.003918364116690495
+          ],
+          "mean_native_dynamic_delta_iou": -0.012027555999138462,
+          "dynamic_image_cluster95": [
+            -0.02024835231626074,
+            -0.0040733273665804265
+          ],
+          "head_choice_changes": 0,
+          "dynamic_choice_changes": 2
+        },
+        "0.05": {
+          "mean_head_delta_iou": -0.0028715752893979257,
+          "head_image_cluster95": [
+            -0.0056750720508459,
+            -0.0005944434337035692
+          ],
+          "mean_native_dynamic_delta_iou": -0.0010690163309208943,
+          "dynamic_image_cluster95": [
+            -0.004388776696931416,
+            0.0018626763801601314
+          ],
+          "head_choice_changes": 0,
+          "dynamic_choice_changes": 2
+        },
+        "0.1": {
+          "mean_head_delta_iou": -0.0010374068550204048,
+          "head_image_cluster95": [
+            -0.002314369110705363,
+            -1.2671699758950831e-05
+          ],
+          "mean_native_dynamic_delta_iou": 0.00032781159571163406,
+          "dynamic_image_cluster95": [
+            -0.0020298050913517053,
+            0.0035322381756424078
+          ],
+          "head_choice_changes": 0,
+          "dynamic_choice_changes": 1
+        }
+      }
+    },
+    "protocol": "Native frozen SAM2.1-L, FP32/TF32off. Old24 images sorted by ID: first12 fit PCA/train, last12 teacher-MSE validation/development diagnosis; no independent test claim. Rank64, Linear1024->64/GELU/Linear64; inputs final parent256 plus two highres tiles256+512. Static768 affine contribution+bias cached once/image, dynamic256 contribution per prompt, all4mask/IQ/masktoken/objscore preserved. Teacher coefficient MSE only, seed2027 AdamW.001 wd.01, min100/max600 epochs patience80. Budgets0/5/10% fixed from SAM1; real selected phase patches include both skips; no full teacher upscaler in candidate path. Compact losslessly compressed FLOAT32 pairs use one static bank/image and indexed parent features. Quality references native head1..3 and actual dynamic token0; no latency or publication claim. NEW convergence experiment: continue saved epoch/optimizer/CUDA RNG from completed capped training in a separate directory; reuse identical indexed pairs/basis without extraction or duplication. 2400 total maximum epochs, patience100, best teacher validation MSE only. Prior epoch598/600 had not reached plateau; this tests inadequate optimization rather than a new head architecture. Prior deployment/test results preserved, no GT epoch or budget selection; subsequent existing-cohort replays are development/implementation evidence.",
+    "continuation_source": "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/sam2_local_student_v1",
+    "max_epochs": 2400,
+    "patience": 100,
+    "parameters": 69760,
+    "train_samples": 73728,
+    "validation_samples": 73728,
+    "selected_epoch": 861,
+    "plateau_before_cap": true
+  }
+}

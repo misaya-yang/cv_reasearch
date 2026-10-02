@@ -1,0 +1,183 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo1_sam/results/gpu_compile/p1_requested1_mb1_official_explicit_auto_auto.json",
+  "source_bytes": 6873,
+  "source_sha256": "e268953118498d78e2230f6e4d4df4fbfc3ef0358156ab067801f3b7d36004e9",
+  "data": {
+    "created_at_utc": "2026-10-01T11:20:58.887886+00:00",
+    "torch": "2.12.1+cu130",
+    "python": "3.12.3",
+    "platform": "Linux-5.4.0-153-generic-x86_64-with-glibc2.35",
+    "device": "cuda:0",
+    "hardware": "NVIDIA GeForce RTX 4080",
+    "options": {
+      "device": "cuda:0",
+      "dtype": "float32",
+      "prompt_batch": 1,
+      "microbatch": 1,
+      "grid": 64,
+      "tokens": 7,
+      "method": "official",
+      "attention": "explicit",
+      "order": "auto",
+      "write_output": "auto",
+      "mode": "compile",
+      "compiler_backend": "inductor",
+      "compile_mode": "default",
+      "warmup": 10,
+      "repetitions": 20,
+      "threads": 2,
+      "seed": 0,
+      "tolerance": 5e-05,
+      "tf32": false,
+      "diagnostic_on_failure": false,
+      "profile_dir": null,
+      "output": "results/gpu_compile/p1_requested1_mb1_official_explicit_auto_auto.json"
+    },
+    "fixture": {
+      "model_fp32_state_sha256": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+      "provenance": [
+        {
+          "file": "official_cpu_validation/official_sam/common.py",
+          "sha256": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+          "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/common.py",
+          "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+        },
+        {
+          "file": "official_cpu_validation/official_sam/transformer.py",
+          "sha256": "566a8f6db8b608398de939548bd0f485b21752fda2bdda36900e6444ef938d11",
+          "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/transformer.py",
+          "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+        },
+        {
+          "file": "official_cpu_validation/official_sam/mask_decoder.py",
+          "sha256": "6a2455e990515c67a061187c92c236b879b189f21ef6ebfce1627cae9a6b2f93",
+          "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/mask_decoder.py",
+          "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+        }
+      ],
+      "seed": 0,
+      "T": 7,
+      "N": 4096
+    },
+    "outputs": "All four low-resolution masks plus all four IoU; no output-token pruning",
+    "timed_scope": "Complete mask decoder; no encoder, prompt encoder or full-resolution predictor postprocessing. Prompt batches share one image and identical dense embedding. Output copying/concatenation across microbatches excluded equally; final microbatch outputs returned.",
+    "cpu_warning": null,
+    "compile_warning": "eager/aot_eager compiler backends are diagnostic; only an optimizing backend such as inductor is a performance-compilation trial. Fullgraph mode raises on unsupported graph breaks. Actual CUDA SDPA backend dispatch is not inferred from the API name.",
+    "precision_warning": "Random-weight same-dtype numerical gate does not establish pretrained, binary decision, TF32 or lower-precision fidelity.",
+    "methods": [
+      {
+        "method": "official",
+        "effective_attention": "original explicit official",
+        "verification": {
+          "passed": true,
+          "microbatch_checks": [
+            {
+              "offset": 0,
+              "size": 1,
+              "masks": {
+                "max_abs": 2.086162567138672e-07,
+                "mean_abs": 2.8719050249037537e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 4.470348358154297e-08,
+                "mean_abs": 1.862645149230957e-08,
+                "finite": true
+              },
+              "passed": true
+            }
+          ]
+        },
+        "verification_ms_excluded": 153.34198623895645,
+        "first_complete_prompt_batch_ms_excluded": 12844.95702944696,
+        "first_complete_prompt_batch_memory": {
+          "start_allocated_bytes": 28821504,
+          "peak_allocated_bytes": 125472256,
+          "peak_increment_bytes": 96650752,
+          "peak_reserved_bytes": 186646528
+        },
+        "numeric_status": "passed_random_fixture_only",
+        "compile_status": "optimizing_inductor_fullgraph",
+        "attention_coverage": "Original explicit throughout",
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            3.224726766347885,
+            2.693425863981247,
+            2.556232735514641,
+            2.499369904398918,
+            2.488458529114723,
+            2.476608380675316,
+            2.4903472512960434,
+            2.4704691022634506,
+            2.460705116391182,
+            2.459729090332985,
+            2.456778660416603,
+            2.4662185460329056,
+            2.4941880255937576,
+            2.483747899532318,
+            2.4900902062654495,
+            2.362404018640518,
+            2.4415384978055954,
+            2.520287409424782,
+            2.433275803923607,
+            2.4991780519485474
+          ],
+          "median_ms": 2.4861032143235207,
+          "min_ms": 2.362404018640518,
+          "max_ms": 3.224726766347885,
+          "memory": {
+            "start_allocated_bytes": 37341184,
+            "peak_allocated_bytes": 62582784,
+            "peak_increment_bytes": 25241600,
+            "peak_reserved_bytes": 190840832
+          }
+        },
+        "warm_prompts_per_second": 402.2359145181767,
+        "warm_ms_per_prompt": 2.4861032143235207,
+        "cache_build": "None: original official decoder; shared encoder inputs already supplied",
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            3.1981952488422394,
+            2.6874560862779617,
+            2.537032589316368,
+            2.4899784475564957,
+            2.4938080459833145,
+            2.504916861653328,
+            2.468707039952278,
+            2.530200406908989,
+            2.4912208318710327,
+            2.4708863347768784,
+            2.496829256415367,
+            2.4703573435544968,
+            2.479277551174164,
+            2.4924688041210175,
+            2.4695079773664474,
+            2.4853497743606567,
+            2.4702083319425583,
+            2.455946058034897,
+            2.473188564181328,
+            2.4542082101106644
+          ],
+          "median_ms": 2.487664110958576,
+          "min_ms": 2.4542082101106644,
+          "max_ms": 3.1981952488422394,
+          "memory": {
+            "start_allocated_bytes": 37341184,
+            "peak_allocated_bytes": 62582784,
+            "peak_increment_bytes": 25241600,
+            "peak_reserved_bytes": 190840832
+          }
+        }
+      }
+    ],
+    "source_sha256": {
+      "baselines.py": "3ed23810ab06c10c485001f9d82929d87f5837c69c3706a0d62de6dd82890ca5",
+      "factor_candidate.py": "e831ed3b462c4e6def3a2f44c9c06333cc297544577d3bbe8149948db33b1c5c",
+      "official_sdpa.py": "50277e4a1a8e2763e8cd1171c01b274be18d5f0457ae5747d8b68731612867b7",
+      "benchmark.py": "3567913ca438b2f672f01a56d4f4b417faadca128524335c5bfb52cbaa87a8e9"
+    },
+    "completed": true,
+    "all_numerical_checks_passed": true
+  }
+}

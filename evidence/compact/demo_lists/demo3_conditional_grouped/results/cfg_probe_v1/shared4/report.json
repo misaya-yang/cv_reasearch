@@ -1,0 +1,47 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo3_conditional_grouped/results/cfg_probe_v1/shared4/report.json",
+  "source_bytes": 1305,
+  "source_sha256": "18a52a7a54ffcefe13533f8290d9f4c6b145fd388a39e3b3b023337a717e526b",
+  "data": {
+    "precision": "FP32",
+    "tf32": false,
+    "solver": "Unmodified vendor AdamLMSampler._impl_sampling; bypass BF16 forward decorator uniformly",
+    "steps": 25,
+    "cfg": 4.0,
+    "cfg_gate": "shared_uncond",
+    "selected_indices": [
+      0,
+      4
+    ],
+    "timeshift": 3.0,
+    "order": 2,
+    "image_side": 1024,
+    "status": "PAIRED_VISUAL_DIAGNOSTIC_ONLY",
+    "rows": [
+      {
+        "arm": "neighborhood_gated",
+        "adapter": "results/native_adapt_v1/neighborhood_gated/resume.pt",
+        "image_id": 546829,
+        "caption": "A small white dog on a wooden bench.",
+        "seed": 31000,
+        "file": "neighborhood_gated_0_546829.png",
+        "seconds": 14.042620586231351,
+        "output_rms": 0.47994616627693176,
+        "clipped_fraction": 0.005525271408259869
+      },
+      {
+        "arm": "neighborhood_gated",
+        "adapter": "results/native_adapt_v1/neighborhood_gated/resume.pt",
+        "image_id": 228214,
+        "caption": "A Marine that is looking at his cell phone.",
+        "seed": 31004,
+        "file": "neighborhood_gated_4_228214.png",
+        "seconds": 14.147890539839864,
+        "output_rms": 0.6982117891311646,
+        "clipped_fraction": 0.17496363818645477
+      }
+    ],
+    "warning": "Pretrained vs finetuned comparison includes training. Neighbor vs gate uses matched training. No FID/GenEval/SOTA claim."
+  }
+}

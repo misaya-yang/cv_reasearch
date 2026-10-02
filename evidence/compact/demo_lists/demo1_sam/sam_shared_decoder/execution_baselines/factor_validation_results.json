@@ -1,0 +1,3075 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo1_sam/sam_shared_decoder/execution_baselines/factor_validation_results.json",
+  "source_bytes": 93167,
+  "source_sha256": "39755dcc191d4f6a5c143838aade8fc1f5141f6acce5852b527e751408440bac",
+  "data": {
+    "created_at_utc": "2026-10-01T10:05:52.176181+00:00",
+    "device": "cpu",
+    "dtype": "float32",
+    "torch": "2.14.1+cpu",
+    "python": "3.12.14",
+    "absolute_tolerance": 5e-05,
+    "scope": "Inference-only projected factors with dense LN companion, native-order first-image caches. Same frozen random fixtures as baseline suite. No trained weights, GPU or implicit attention schedule.",
+    "frozen_baseline_results_sha256": "3524081284e7a82eced1dc7a3d21e287ab82f706440c8ed2ee19d3ea527830d3",
+    "cases": [
+      {
+        "model_fp32_state_sha256": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+        "provenance": [
+          {
+            "file": "official_cpu_validation/official_sam/common.py",
+            "sha256": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/common.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          },
+          {
+            "file": "official_cpu_validation/official_sam/transformer.py",
+            "sha256": "566a8f6db8b608398de939548bd0f485b21752fda2bdda36900e6444ef938d11",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/transformer.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          },
+          {
+            "file": "official_cpu_validation/official_sam/mask_decoder.py",
+            "sha256": "6a2455e990515c67a061187c92c236b879b189f21ef6ebfce1627cae9a6b2f93",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/mask_decoder.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          }
+        ],
+        "seed": 0,
+        "T": 7,
+        "N": 64,
+        "grid": 8,
+        "batch": 2,
+        "dense_prompt": "shared constant vector",
+        "variants": [
+          {
+            "backend": "explicit",
+            "errors": {
+              "layer0.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 0.0,
+                "mean_abs": 0.0,
+                "finite": true
+              },
+              "layer0.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 7.152557373046875e-07,
+                "mean_abs": 4.469972125775712e-08,
+                "finite": true
+              },
+              "layer1.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 7.152557373046875e-07,
+                "mean_abs": 8.011886620806763e-08,
+                "finite": true
+              },
+              "layer1.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 1.1920928955078125e-06,
+                "mean_abs": 8.525525885261231e-08,
+                "finite": true
+              },
+              "final.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 1.430511474609375e-06,
+                "mean_abs": 1.1049835535459351e-07,
+                "finite": true
+              },
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 2.384185791015625e-07,
+                "mean_abs": 3.858918518062637e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 5.960464477539063e-08,
+                "mean_abs": 3.166496753692627e-08,
+                "finite": true
+              },
+              "public_False_masks": {
+                "shape": [
+                  2,
+                  1,
+                  32,
+                  32
+                ],
+                "max_abs": 2.253800630569458e-07,
+                "mean_abs": 3.933990200266635e-08,
+                "finite": true
+              },
+              "public_False_iou": {
+                "shape": [
+                  2,
+                  1
+                ],
+                "max_abs": 4.470348358154297e-08,
+                "mean_abs": 2.2351741790771484e-08,
+                "finite": true
+              },
+              "public_True_masks": {
+                "shape": [
+                  2,
+                  3,
+                  32,
+                  32
+                ],
+                "max_abs": 2.384185791015625e-07,
+                "mean_abs": 3.833894623994638e-08,
+                "finite": true
+              },
+              "public_True_iou": {
+                "shape": [
+                  2,
+                  3
+                ],
+                "max_abs": 5.960464477539063e-08,
+                "mean_abs": 3.476937493473997e-08,
+                "finite": true
+              }
+            },
+            "ranks": [
+              50,
+              99
+            ],
+            "microbatch_1_vs_2": {
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 2.2351741790771484e-07,
+                "mean_abs": 3.573132900669407e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 8.195638656616211e-08,
+                "mean_abs": 3.166496753692627e-08,
+                "finite": true
+              }
+            },
+            "decisions": {
+              "mask_threshold": 0.0,
+              "binary_disagreements": 0,
+              "mask_logits_count": 8192,
+              "minimum_abs_mask_logit": 1.3979728464619257e-05,
+              "reference_logits_within_error_of_zero": 0,
+              "all_four_iou_argmax_disagreements": 0,
+              "multimask_iou_argmax_disagreements": 0,
+              "minimum_all_four_iou_top_two_margin": 0.06489244848489761,
+              "decoder_selection": "Single returns mask token 0; multimask returns tokens 1:4. Both slices checked; argmax is an additional downstream diagnostic."
+            },
+            "passed": true,
+            "failed": []
+          },
+          {
+            "backend": "sdpa",
+            "errors": {
+              "layer0.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 1.6689300537109375e-06,
+                "mean_abs": 1.6015005144254246e-07,
+                "finite": true
+              },
+              "layer0.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 7.152557373046875e-07,
+                "mean_abs": 5.1875623796604486e-08,
+                "finite": true
+              },
+              "layer1.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 1.9073486328125e-06,
+                "mean_abs": 1.9264680872765894e-07,
+                "finite": true
+              },
+              "layer1.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 9.5367431640625e-07,
+                "mean_abs": 9.298079106656587e-08,
+                "finite": true
+              },
+              "final.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 2.1457672119140625e-06,
+                "mean_abs": 2.0438140779788228e-07,
+                "finite": true
+              },
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 2.1606683731079102e-07,
+                "mean_abs": 4.2300616343027286e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 7.450580596923828e-08,
+                "mean_abs": 3.818422555923462e-08,
+                "finite": true
+              },
+              "public_False_masks": {
+                "shape": [
+                  2,
+                  1,
+                  32,
+                  32
+                ],
+                "max_abs": 2.0489096641540527e-07,
+                "mean_abs": 4.047291213282733e-08,
+                "finite": true
+              },
+              "public_False_iou": {
+                "shape": [
+                  2,
+                  1
+                ],
+                "max_abs": 7.450580596923828e-08,
+                "mean_abs": 5.960464477539063e-08,
+                "finite": true
+              },
+              "public_True_masks": {
+                "shape": [
+                  2,
+                  3,
+                  32,
+                  32
+                ],
+                "max_abs": 2.1606683731079102e-07,
+                "mean_abs": 4.290984634280903e-08,
+                "finite": true
+              },
+              "public_True_iou": {
+                "shape": [
+                  2,
+                  3
+                ],
+                "max_abs": 4.470348358154297e-08,
+                "mean_abs": 3.104408463627806e-08,
+                "finite": true
+              }
+            },
+            "ranks": [
+              50,
+              99
+            ],
+            "microbatch_1_vs_2": {
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 2.0070001482963562e-07,
+                "mean_abs": 3.5537283338271664e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 6.705522537231445e-08,
+                "mean_abs": 3.632158041000366e-08,
+                "finite": true
+              }
+            },
+            "decisions": {
+              "mask_threshold": 0.0,
+              "binary_disagreements": 0,
+              "mask_logits_count": 8192,
+              "minimum_abs_mask_logit": 1.3979728464619257e-05,
+              "reference_logits_within_error_of_zero": 0,
+              "all_four_iou_argmax_disagreements": 0,
+              "multimask_iou_argmax_disagreements": 0,
+              "minimum_all_four_iou_top_two_margin": 0.06489244848489761,
+              "decoder_selection": "Single returns mask token 0; multimask returns tokens 1:4. Both slices checked; argmax is an additional downstream diagnostic."
+            },
+            "passed": true,
+            "failed": []
+          }
+        ]
+      },
+      {
+        "model_fp32_state_sha256": "e97914197606b25b4d543b954fe03fb96ff26eb689728a7d22fba4586740f8da",
+        "provenance": [
+          {
+            "file": "official_cpu_validation/official_sam/common.py",
+            "sha256": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/common.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          },
+          {
+            "file": "official_cpu_validation/official_sam/transformer.py",
+            "sha256": "566a8f6db8b608398de939548bd0f485b21752fda2bdda36900e6444ef938d11",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/transformer.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          },
+          {
+            "file": "official_cpu_validation/official_sam/mask_decoder.py",
+            "sha256": "6a2455e990515c67a061187c92c236b879b189f21ef6ebfce1627cae9a6b2f93",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/mask_decoder.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          }
+        ],
+        "seed": 1,
+        "T": 7,
+        "N": 64,
+        "grid": 8,
+        "batch": 2,
+        "dense_prompt": "shared constant vector",
+        "variants": [
+          {
+            "backend": "explicit",
+            "errors": {
+              "layer0.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 0.0,
+                "mean_abs": 0.0,
+                "finite": true
+              },
+              "layer0.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 9.5367431640625e-07,
+                "mean_abs": 4.889731997081981e-08,
+                "finite": true
+              },
+              "layer1.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 9.5367431640625e-07,
+                "mean_abs": 8.910188853405998e-08,
+                "finite": true
+              },
+              "layer1.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 1.1920928955078125e-06,
+                "mean_abs": 9.156123326192755e-08,
+                "finite": true
+              },
+              "final.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 1.430511474609375e-06,
+                "mean_abs": 1.1063816884870903e-07,
+                "finite": true
+              },
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 2.682209014892578e-07,
+                "mean_abs": 4.0574846593699476e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 5.960464477539063e-08,
+                "mean_abs": 2.3981556296348572e-08,
+                "finite": true
+              },
+              "public_False_masks": {
+                "shape": [
+                  2,
+                  1,
+                  32,
+                  32
+                ],
+                "max_abs": 2.384185791015625e-07,
+                "mean_abs": 3.8018022507912974e-08,
+                "finite": true
+              },
+              "public_False_iou": {
+                "shape": [
+                  2,
+                  1
+                ],
+                "max_abs": 2.9802322387695312e-08,
+                "mean_abs": 2.0489096641540527e-08,
+                "finite": true
+              },
+              "public_True_masks": {
+                "shape": [
+                  2,
+                  3,
+                  32,
+                  32
+                ],
+                "max_abs": 2.682209014892578e-07,
+                "mean_abs": 4.142712484167532e-08,
+                "finite": true
+              },
+              "public_True_iou": {
+                "shape": [
+                  2,
+                  3
+                ],
+                "max_abs": 5.960464477539063e-08,
+                "mean_abs": 2.514570951461792e-08,
+                "finite": true
+              }
+            },
+            "ranks": [
+              50,
+              99
+            ],
+            "microbatch_1_vs_2": {
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 2.4586915969848633e-07,
+                "mean_abs": 3.7747575731827965e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 8.940696716308594e-08,
+                "mean_abs": 4.284083843231201e-08,
+                "finite": true
+              }
+            },
+            "decisions": {
+              "mask_threshold": 0.0,
+              "binary_disagreements": 0,
+              "mask_logits_count": 8192,
+              "minimum_abs_mask_logit": 4.0788869227981195e-05,
+              "reference_logits_within_error_of_zero": 0,
+              "all_four_iou_argmax_disagreements": 0,
+              "multimask_iou_argmax_disagreements": 0,
+              "minimum_all_four_iou_top_two_margin": 0.04170220345258713,
+              "decoder_selection": "Single returns mask token 0; multimask returns tokens 1:4. Both slices checked; argmax is an additional downstream diagnostic."
+            },
+            "passed": true,
+            "failed": []
+          },
+          {
+            "backend": "sdpa",
+            "errors": {
+              "layer0.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 1.1920928955078125e-06,
+                "mean_abs": 1.7221479708950937e-07,
+                "finite": true
+              },
+              "layer0.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 9.5367431640625e-07,
+                "mean_abs": 5.6343608889619645e-08,
+                "finite": true
+              },
+              "layer1.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 1.3113021850585938e-06,
+                "mean_abs": 1.9462092382127594e-07,
+                "finite": true
+              },
+              "layer1.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 1.430511474609375e-06,
+                "mean_abs": 9.982815640796616e-08,
+                "finite": true
+              },
+              "final.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 1.430511474609375e-06,
+                "mean_abs": 1.9904329917608266e-07,
+                "finite": true
+              },
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 2.4586915969848633e-07,
+                "mean_abs": 4.497575645245888e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 5.960464477539063e-08,
+                "mean_abs": 3.0850060284137726e-08,
+                "finite": true
+              },
+              "public_False_masks": {
+                "shape": [
+                  2,
+                  1,
+                  32,
+                  32
+                ],
+                "max_abs": 2.086162567138672e-07,
+                "mean_abs": 4.671252185062258e-08,
+                "finite": true
+              },
+              "public_False_iou": {
+                "shape": [
+                  2,
+                  1
+                ],
+                "max_abs": 3.725290298461914e-08,
+                "mean_abs": 3.3527612686157227e-08,
+                "finite": true
+              },
+              "public_True_masks": {
+                "shape": [
+                  2,
+                  3,
+                  32,
+                  32
+                ],
+                "max_abs": 2.4586915969848633e-07,
+                "mean_abs": 4.4396831100357304e-08,
+                "finite": true
+              },
+              "public_True_iou": {
+                "shape": [
+                  2,
+                  3
+                ],
+                "max_abs": 5.960464477539063e-08,
+                "mean_abs": 2.9957544001035785e-08,
+                "finite": true
+              }
+            },
+            "ranks": [
+              50,
+              99
+            ],
+            "microbatch_1_vs_2": {
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 2.1606683731079102e-07,
+                "mean_abs": 3.425269312629098e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 6.705522537231445e-08,
+                "mean_abs": 3.585591912269592e-08,
+                "finite": true
+              }
+            },
+            "decisions": {
+              "mask_threshold": 0.0,
+              "binary_disagreements": 0,
+              "mask_logits_count": 8192,
+              "minimum_abs_mask_logit": 4.0788869227981195e-05,
+              "reference_logits_within_error_of_zero": 0,
+              "all_four_iou_argmax_disagreements": 0,
+              "multimask_iou_argmax_disagreements": 0,
+              "minimum_all_four_iou_top_two_margin": 0.04170220345258713,
+              "decoder_selection": "Single returns mask token 0; multimask returns tokens 1:4. Both slices checked; argmax is an additional downstream diagnostic."
+            },
+            "passed": true,
+            "failed": []
+          }
+        ]
+      },
+      {
+        "model_fp32_state_sha256": "c922b6ca5970431add2bd9447d7a899b9700a4a30cbe2fa3972b67db6af17a5b",
+        "provenance": [
+          {
+            "file": "official_cpu_validation/official_sam/common.py",
+            "sha256": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/common.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          },
+          {
+            "file": "official_cpu_validation/official_sam/transformer.py",
+            "sha256": "566a8f6db8b608398de939548bd0f485b21752fda2bdda36900e6444ef938d11",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/transformer.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          },
+          {
+            "file": "official_cpu_validation/official_sam/mask_decoder.py",
+            "sha256": "6a2455e990515c67a061187c92c236b879b189f21ef6ebfce1627cae9a6b2f93",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/mask_decoder.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          }
+        ],
+        "seed": 2,
+        "T": 7,
+        "N": 64,
+        "grid": 8,
+        "batch": 2,
+        "dense_prompt": "shared constant vector",
+        "variants": [
+          {
+            "backend": "explicit",
+            "errors": {
+              "layer0.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 0.0,
+                "mean_abs": 0.0,
+                "finite": true
+              },
+              "layer0.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 9.5367431640625e-07,
+                "mean_abs": 4.7480028797508567e-08,
+                "finite": true
+              },
+              "layer1.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 9.5367431640625e-07,
+                "mean_abs": 7.757189024459876e-08,
+                "finite": true
+              },
+              "layer1.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 9.5367431640625e-07,
+                "mean_abs": 8.889104918807789e-08,
+                "finite": true
+              },
+              "final.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 7.152557373046875e-07,
+                "mean_abs": 1.003196601345735e-07,
+                "finite": true
+              },
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 2.60770320892334e-07,
+                "mean_abs": 4.1975766862378805e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 3.725290298461914e-08,
+                "mean_abs": 2.2118911147117615e-08,
+                "finite": true
+              },
+              "public_False_masks": {
+                "shape": [
+                  2,
+                  1,
+                  32,
+                  32
+                ],
+                "max_abs": 1.9371509552001953e-07,
+                "mean_abs": 3.904576928448478e-08,
+                "finite": true
+              },
+              "public_False_iou": {
+                "shape": [
+                  2,
+                  1
+                ],
+                "max_abs": 2.9802322387695312e-08,
+                "mean_abs": 1.4901161193847656e-08,
+                "finite": true
+              },
+              "public_True_masks": {
+                "shape": [
+                  2,
+                  3,
+                  32,
+                  32
+                ],
+                "max_abs": 2.60770320892334e-07,
+                "mean_abs": 4.295243627439049e-08,
+                "finite": true
+              },
+              "public_True_iou": {
+                "shape": [
+                  2,
+                  3
+                ],
+                "max_abs": 3.725290298461914e-08,
+                "mean_abs": 2.4524828390326547e-08,
+                "finite": true
+              }
+            },
+            "ranks": [
+              50,
+              99
+            ],
+            "microbatch_1_vs_2": {
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 2.086162567138672e-07,
+                "mean_abs": 3.512654700443818e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 5.960464477539063e-08,
+                "mean_abs": 3.166496753692627e-08,
+                "finite": true
+              }
+            },
+            "decisions": {
+              "mask_threshold": 0.0,
+              "binary_disagreements": 0,
+              "mask_logits_count": 8192,
+              "minimum_abs_mask_logit": 5.778256308985874e-06,
+              "reference_logits_within_error_of_zero": 0,
+              "all_four_iou_argmax_disagreements": 0,
+              "multimask_iou_argmax_disagreements": 0,
+              "minimum_all_four_iou_top_two_margin": 0.15307380259037018,
+              "decoder_selection": "Single returns mask token 0; multimask returns tokens 1:4. Both slices checked; argmax is an additional downstream diagnostic."
+            },
+            "passed": true,
+            "failed": []
+          },
+          {
+            "backend": "sdpa",
+            "errors": {
+              "layer0.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 1.6689300537109375e-06,
+                "mean_abs": 1.7868264023945812e-07,
+                "finite": true
+              },
+              "layer0.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 9.5367431640625e-07,
+                "mean_abs": 5.6482043930827786e-08,
+                "finite": true
+              },
+              "layer1.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 1.6689300537109375e-06,
+                "mean_abs": 2.028414485266694e-07,
+                "finite": true
+              },
+              "layer1.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 1.1920928955078125e-06,
+                "mean_abs": 9.791510535706038e-08,
+                "finite": true
+              },
+              "final.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 1.430511474609375e-06,
+                "mean_abs": 2.0886616880488873e-07,
+                "finite": true
+              },
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 3.129243850708008e-07,
+                "mean_abs": 4.445718104761909e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 8.940696716308594e-08,
+                "mean_abs": 3.003515303134918e-08,
+                "finite": true
+              },
+              "public_False_masks": {
+                "shape": [
+                  2,
+                  1,
+                  32,
+                  32
+                ],
+                "max_abs": 2.5331974029541016e-07,
+                "mean_abs": 4.521404406432339e-08,
+                "finite": true
+              },
+              "public_False_iou": {
+                "shape": [
+                  2,
+                  1
+                ],
+                "max_abs": 0.0,
+                "mean_abs": 0.0,
+                "finite": true
+              },
+              "public_True_masks": {
+                "shape": [
+                  2,
+                  3,
+                  32,
+                  32
+                ],
+                "max_abs": 3.129243850708008e-07,
+                "mean_abs": 4.420489219114643e-08,
+                "finite": true
+              },
+              "public_True_iou": {
+                "shape": [
+                  2,
+                  3
+                ],
+                "max_abs": 8.940696716308594e-08,
+                "mean_abs": 4.0046870708465576e-08,
+                "finite": true
+              }
+            },
+            "ranks": [
+              50,
+              99
+            ],
+            "microbatch_1_vs_2": {
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 2.1606683731079102e-07,
+                "mean_abs": 3.7890011128638434e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 6.332993507385254e-08,
+                "mean_abs": 3.026798367500305e-08,
+                "finite": true
+              }
+            },
+            "decisions": {
+              "mask_threshold": 0.0,
+              "binary_disagreements": 0,
+              "mask_logits_count": 8192,
+              "minimum_abs_mask_logit": 5.778256308985874e-06,
+              "reference_logits_within_error_of_zero": 0,
+              "all_four_iou_argmax_disagreements": 0,
+              "multimask_iou_argmax_disagreements": 0,
+              "minimum_all_four_iou_top_two_margin": 0.15307380259037018,
+              "decoder_selection": "Single returns mask token 0; multimask returns tokens 1:4. Both slices checked; argmax is an additional downstream diagnostic."
+            },
+            "passed": true,
+            "failed": []
+          }
+        ]
+      },
+      {
+        "model_fp32_state_sha256": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+        "provenance": [
+          {
+            "file": "official_cpu_validation/official_sam/common.py",
+            "sha256": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/common.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          },
+          {
+            "file": "official_cpu_validation/official_sam/transformer.py",
+            "sha256": "566a8f6db8b608398de939548bd0f485b21752fda2bdda36900e6444ef938d11",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/transformer.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          },
+          {
+            "file": "official_cpu_validation/official_sam/mask_decoder.py",
+            "sha256": "6a2455e990515c67a061187c92c236b879b189f21ef6ebfce1627cae9a6b2f93",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/mask_decoder.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          }
+        ],
+        "seed": 0,
+        "T": 5,
+        "N": 64,
+        "grid": 8,
+        "batch": 2,
+        "dense_prompt": "shared constant vector",
+        "variants": [
+          {
+            "backend": "explicit",
+            "errors": {
+              "layer0.sparse": {
+                "shape": [
+                  2,
+                  5,
+                  256
+                ],
+                "max_abs": 0.0,
+                "mean_abs": 0.0,
+                "finite": true
+              },
+              "layer0.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 7.152557373046875e-07,
+                "mean_abs": 4.7217053378290075e-08,
+                "finite": true
+              },
+              "layer1.sparse": {
+                "shape": [
+                  2,
+                  5,
+                  256
+                ],
+                "max_abs": 1.430511474609375e-06,
+                "mean_abs": 8.431178599721534e-08,
+                "finite": true
+              },
+              "layer1.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 9.5367431640625e-07,
+                "mean_abs": 8.812676810521225e-08,
+                "finite": true
+              },
+              "final.sparse": {
+                "shape": [
+                  2,
+                  5,
+                  256
+                ],
+                "max_abs": 1.430511474609375e-06,
+                "mean_abs": 1.0989081999923656e-07,
+                "finite": true
+              },
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 2.2351741790771484e-07,
+                "mean_abs": 3.869510223353245e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 6.705522537231445e-08,
+                "mean_abs": 3.67872416973114e-08,
+                "finite": true
+              },
+              "public_False_masks": {
+                "shape": [
+                  2,
+                  1,
+                  32,
+                  32
+                ],
+                "max_abs": 1.7881393432617188e-07,
+                "mean_abs": 3.416889882146279e-08,
+                "finite": true
+              },
+              "public_False_iou": {
+                "shape": [
+                  2,
+                  1
+                ],
+                "max_abs": 5.960464477539063e-08,
+                "mean_abs": 2.9802322387695312e-08,
+                "finite": true
+              },
+              "public_True_masks": {
+                "shape": [
+                  2,
+                  3,
+                  32,
+                  32
+                ],
+                "max_abs": 2.2351741790771484e-07,
+                "mean_abs": 4.020383315150866e-08,
+                "finite": true
+              },
+              "public_True_iou": {
+                "shape": [
+                  2,
+                  3
+                ],
+                "max_abs": 6.705522537231445e-08,
+                "mean_abs": 3.91155481338501e-08,
+                "finite": true
+              }
+            },
+            "ranks": [
+              34,
+              67
+            ],
+            "microbatch_1_vs_2": {
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 1.564621925354004e-07,
+                "mean_abs": 3.0799299111095024e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 4.470348358154297e-08,
+                "mean_abs": 2.421438694000244e-08,
+                "finite": true
+              }
+            },
+            "decisions": {
+              "mask_threshold": 0.0,
+              "binary_disagreements": 0,
+              "mask_logits_count": 8192,
+              "minimum_abs_mask_logit": 2.6478235668037087e-05,
+              "reference_logits_within_error_of_zero": 0,
+              "all_four_iou_argmax_disagreements": 0,
+              "multimask_iou_argmax_disagreements": 0,
+              "minimum_all_four_iou_top_two_margin": 0.14693905413150787,
+              "decoder_selection": "Single returns mask token 0; multimask returns tokens 1:4. Both slices checked; argmax is an additional downstream diagnostic."
+            },
+            "passed": true,
+            "failed": []
+          },
+          {
+            "backend": "sdpa",
+            "errors": {
+              "layer0.sparse": {
+                "shape": [
+                  2,
+                  5,
+                  256
+                ],
+                "max_abs": 9.5367431640625e-07,
+                "mean_abs": 1.5522618923569098e-07,
+                "finite": true
+              },
+              "layer0.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 9.5367431640625e-07,
+                "mean_abs": 5.758066734529166e-08,
+                "finite": true
+              },
+              "layer1.sparse": {
+                "shape": [
+                  2,
+                  5,
+                  256
+                ],
+                "max_abs": 1.6689300537109375e-06,
+                "mean_abs": 1.8630642273365083e-07,
+                "finite": true
+              },
+              "layer1.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 1.1920928955078125e-06,
+                "mean_abs": 9.93232163182256e-08,
+                "finite": true
+              },
+              "final.sparse": {
+                "shape": [
+                  2,
+                  5,
+                  256
+                ],
+                "max_abs": 1.430511474609375e-06,
+                "mean_abs": 1.9704039289081265e-07,
+                "finite": true
+              },
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 2.1606683731079102e-07,
+                "mean_abs": 3.8868062546271176e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 6.332993507385254e-08,
+                "mean_abs": 3.4924596548080444e-08,
+                "finite": true
+              },
+              "public_False_masks": {
+                "shape": [
+                  2,
+                  1,
+                  32,
+                  32
+                ],
+                "max_abs": 1.955777406692505e-07,
+                "mean_abs": 3.298168138599067e-08,
+                "finite": true
+              },
+              "public_False_iou": {
+                "shape": [
+                  2,
+                  1
+                ],
+                "max_abs": 4.470348358154297e-08,
+                "mean_abs": 3.725290298461914e-08,
+                "finite": true
+              },
+              "public_True_masks": {
+                "shape": [
+                  2,
+                  3,
+                  32,
+                  32
+                ],
+                "max_abs": 2.1606683731079102e-07,
+                "mean_abs": 4.0830190783935905e-08,
+                "finite": true
+              },
+              "public_True_iou": {
+                "shape": [
+                  2,
+                  3
+                ],
+                "max_abs": 6.332993507385254e-08,
+                "mean_abs": 3.414849558680544e-08,
+                "finite": true
+              }
+            },
+            "ranks": [
+              34,
+              67
+            ],
+            "microbatch_1_vs_2": {
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 1.9185245037078857e-07,
+                "mean_abs": 2.996073789063303e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 8.940696716308594e-08,
+                "mean_abs": 3.3527612686157227e-08,
+                "finite": true
+              }
+            },
+            "decisions": {
+              "mask_threshold": 0.0,
+              "binary_disagreements": 0,
+              "mask_logits_count": 8192,
+              "minimum_abs_mask_logit": 2.6478235668037087e-05,
+              "reference_logits_within_error_of_zero": 0,
+              "all_four_iou_argmax_disagreements": 0,
+              "multimask_iou_argmax_disagreements": 0,
+              "minimum_all_four_iou_top_two_margin": 0.14693905413150787,
+              "decoder_selection": "Single returns mask token 0; multimask returns tokens 1:4. Both slices checked; argmax is an additional downstream diagnostic."
+            },
+            "passed": true,
+            "failed": []
+          }
+        ]
+      },
+      {
+        "model_fp32_state_sha256": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+        "provenance": [
+          {
+            "file": "official_cpu_validation/official_sam/common.py",
+            "sha256": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/common.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          },
+          {
+            "file": "official_cpu_validation/official_sam/transformer.py",
+            "sha256": "566a8f6db8b608398de939548bd0f485b21752fda2bdda36900e6444ef938d11",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/transformer.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          },
+          {
+            "file": "official_cpu_validation/official_sam/mask_decoder.py",
+            "sha256": "6a2455e990515c67a061187c92c236b879b189f21ef6ebfce1627cae9a6b2f93",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/mask_decoder.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          }
+        ],
+        "seed": 0,
+        "T": 9,
+        "N": 64,
+        "grid": 8,
+        "batch": 2,
+        "dense_prompt": "shared constant vector",
+        "variants": [
+          {
+            "backend": "explicit",
+            "errors": {
+              "layer0.sparse": {
+                "shape": [
+                  2,
+                  9,
+                  256
+                ],
+                "max_abs": 0.0,
+                "mean_abs": 0.0,
+                "finite": true
+              },
+              "layer0.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 7.152557373046875e-07,
+                "mean_abs": 4.456265401131532e-08,
+                "finite": true
+              },
+              "layer1.sparse": {
+                "shape": [
+                  2,
+                  9,
+                  256
+                ],
+                "max_abs": 9.5367431640625e-07,
+                "mean_abs": 8.494473036080308e-08,
+                "finite": true
+              },
+              "layer1.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 9.5367431640625e-07,
+                "mean_abs": 8.339150525671357e-08,
+                "finite": true
+              },
+              "final.sparse": {
+                "shape": [
+                  2,
+                  9,
+                  256
+                ],
+                "max_abs": 1.9073486328125e-06,
+                "mean_abs": 1.0890580171007969e-07,
+                "finite": true
+              },
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 2.4586915969848633e-07,
+                "mean_abs": 3.931028658143987e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 4.470348358154297e-08,
+                "mean_abs": 2.0023435354232788e-08,
+                "finite": true
+              },
+              "public_False_masks": {
+                "shape": [
+                  2,
+                  1,
+                  32,
+                  32
+                ],
+                "max_abs": 1.6577541828155518e-07,
+                "mean_abs": 3.2817666806295165e-08,
+                "finite": true
+              },
+              "public_False_iou": {
+                "shape": [
+                  2,
+                  1
+                ],
+                "max_abs": 1.4901161193847656e-08,
+                "mean_abs": 7.450580596923828e-09,
+                "finite": true
+              },
+              "public_True_masks": {
+                "shape": [
+                  2,
+                  3,
+                  32,
+                  32
+                ],
+                "max_abs": 2.4586915969848633e-07,
+                "mean_abs": 4.147449317315477e-08,
+                "finite": true
+              },
+              "public_True_iou": {
+                "shape": [
+                  2,
+                  3
+                ],
+                "max_abs": 4.470348358154297e-08,
+                "mean_abs": 2.421438694000244e-08,
+                "finite": true
+              }
+            },
+            "ranks": [
+              66,
+              131
+            ],
+            "microbatch_1_vs_2": {
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 1.9744038581848145e-07,
+                "mean_abs": 3.0677625773023465e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 5.960464477539063e-08,
+                "mean_abs": 3.166496753692627e-08,
+                "finite": true
+              }
+            },
+            "decisions": {
+              "mask_threshold": 0.0,
+              "binary_disagreements": 0,
+              "mask_logits_count": 8192,
+              "minimum_abs_mask_logit": 8.420953236054629e-06,
+              "reference_logits_within_error_of_zero": 0,
+              "all_four_iou_argmax_disagreements": 0,
+              "multimask_iou_argmax_disagreements": 0,
+              "minimum_all_four_iou_top_two_margin": 0.03059905767440796,
+              "decoder_selection": "Single returns mask token 0; multimask returns tokens 1:4. Both slices checked; argmax is an additional downstream diagnostic."
+            },
+            "passed": true,
+            "failed": []
+          },
+          {
+            "backend": "sdpa",
+            "errors": {
+              "layer0.sparse": {
+                "shape": [
+                  2,
+                  9,
+                  256
+                ],
+                "max_abs": 1.1920928955078125e-06,
+                "mean_abs": 1.618228111510689e-07,
+                "finite": true
+              },
+              "layer0.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 9.5367431640625e-07,
+                "mean_abs": 5.2021917440470133e-08,
+                "finite": true
+              },
+              "layer1.sparse": {
+                "shape": [
+                  2,
+                  9,
+                  256
+                ],
+                "max_abs": 1.9073486328125e-06,
+                "mean_abs": 1.858718121638958e-07,
+                "finite": true
+              },
+              "layer1.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 9.5367431640625e-07,
+                "mean_abs": 9.250889831946552e-08,
+                "finite": true
+              },
+              "final.sparse": {
+                "shape": [
+                  2,
+                  9,
+                  256
+                ],
+                "max_abs": 1.9073486328125e-06,
+                "mean_abs": 1.9394803985051112e-07,
+                "finite": true
+              },
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 2.7194619178771973e-07,
+                "mean_abs": 4.239817030793347e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 7.450580596923828e-08,
+                "mean_abs": 3.189779818058014e-08,
+                "finite": true
+              },
+              "public_False_masks": {
+                "shape": [
+                  2,
+                  1,
+                  32,
+                  32
+                ],
+                "max_abs": 2.086162567138672e-07,
+                "mean_abs": 3.486333355340321e-08,
+                "finite": true
+              },
+              "public_False_iou": {
+                "shape": [
+                  2,
+                  1
+                ],
+                "max_abs": 1.4901161193847656e-08,
+                "mean_abs": 7.450580596923828e-09,
+                "finite": true
+              },
+              "public_True_masks": {
+                "shape": [
+                  2,
+                  3,
+                  32,
+                  32
+                ],
+                "max_abs": 2.7194619178771973e-07,
+                "mean_abs": 4.490977900672988e-08,
+                "finite": true
+              },
+              "public_True_iou": {
+                "shape": [
+                  2,
+                  3
+                ],
+                "max_abs": 7.450580596923828e-08,
+                "mean_abs": 4.0046870708465576e-08,
+                "finite": true
+              }
+            },
+            "ranks": [
+              66,
+              131
+            ],
+            "microbatch_1_vs_2": {
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 1.7881393432617188e-07,
+                "mean_abs": 3.035560069974963e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 7.450580596923828e-08,
+                "mean_abs": 2.9802322387695312e-08,
+                "finite": true
+              }
+            },
+            "decisions": {
+              "mask_threshold": 0.0,
+              "binary_disagreements": 0,
+              "mask_logits_count": 8192,
+              "minimum_abs_mask_logit": 8.420953236054629e-06,
+              "reference_logits_within_error_of_zero": 0,
+              "all_four_iou_argmax_disagreements": 0,
+              "multimask_iou_argmax_disagreements": 0,
+              "minimum_all_four_iou_top_two_margin": 0.03059905767440796,
+              "decoder_selection": "Single returns mask token 0; multimask returns tokens 1:4. Both slices checked; argmax is an additional downstream diagnostic."
+            },
+            "passed": true,
+            "failed": []
+          }
+        ]
+      },
+      {
+        "model_fp32_state_sha256": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+        "provenance": [
+          {
+            "file": "official_cpu_validation/official_sam/common.py",
+            "sha256": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/common.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          },
+          {
+            "file": "official_cpu_validation/official_sam/transformer.py",
+            "sha256": "566a8f6db8b608398de939548bd0f485b21752fda2bdda36900e6444ef938d11",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/transformer.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          },
+          {
+            "file": "official_cpu_validation/official_sam/mask_decoder.py",
+            "sha256": "6a2455e990515c67a061187c92c236b879b189f21ef6ebfce1627cae9a6b2f93",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/mask_decoder.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          }
+        ],
+        "seed": 0,
+        "T": 17,
+        "N": 64,
+        "grid": 8,
+        "batch": 2,
+        "dense_prompt": "shared constant vector",
+        "variants": [
+          {
+            "backend": "explicit",
+            "errors": {
+              "layer0.sparse": {
+                "shape": [
+                  2,
+                  17,
+                  256
+                ],
+                "max_abs": 0.0,
+                "mean_abs": 0.0,
+                "finite": true
+              },
+              "layer0.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 7.152557373046875e-07,
+                "mean_abs": 4.6416971599683166e-08,
+                "finite": true
+              },
+              "layer1.sparse": {
+                "shape": [
+                  2,
+                  17,
+                  256
+                ],
+                "max_abs": 9.5367431640625e-07,
+                "mean_abs": 7.767243914713617e-08,
+                "finite": true
+              },
+              "layer1.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 9.5367431640625e-07,
+                "mean_abs": 8.301708476210479e-08,
+                "finite": true
+              },
+              "final.sparse": {
+                "shape": [
+                  2,
+                  17,
+                  256
+                ],
+                "max_abs": 1.430511474609375e-06,
+                "mean_abs": 1.055636715818764e-07,
+                "finite": true
+              },
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 2.2351741790771484e-07,
+                "mean_abs": 3.7212309678125166e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 1.341104507446289e-07,
+                "mean_abs": 4.377216100692749e-08,
+                "finite": true
+              },
+              "public_False_masks": {
+                "shape": [
+                  2,
+                  1,
+                  32,
+                  32
+                ],
+                "max_abs": 1.4901161193847656e-07,
+                "mean_abs": 3.0439167630902375e-08,
+                "finite": true
+              },
+              "public_False_iou": {
+                "shape": [
+                  2,
+                  1
+                ],
+                "max_abs": 1.341104507446289e-07,
+                "mean_abs": 8.195638656616211e-08,
+                "finite": true
+              },
+              "public_True_masks": {
+                "shape": [
+                  2,
+                  3,
+                  32,
+                  32
+                ],
+                "max_abs": 2.2351741790771484e-07,
+                "mean_abs": 3.947002014115242e-08,
+                "finite": true
+              },
+              "public_True_iou": {
+                "shape": [
+                  2,
+                  3
+                ],
+                "max_abs": 7.450580596923828e-08,
+                "mean_abs": 3.104408463627806e-08,
+                "finite": true
+              }
+            },
+            "ranks": [
+              130,
+              259
+            ],
+            "microbatch_1_vs_2": {
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 1.1920928955078125e-07,
+                "mean_abs": 1.9502259362980112e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 4.470348358154297e-08,
+                "mean_abs": 2.421438694000244e-08,
+                "finite": true
+              }
+            },
+            "decisions": {
+              "mask_threshold": 0.0,
+              "binary_disagreements": 0,
+              "mask_logits_count": 8192,
+              "minimum_abs_mask_logit": 4.92163781018462e-06,
+              "reference_logits_within_error_of_zero": 0,
+              "all_four_iou_argmax_disagreements": 0,
+              "multimask_iou_argmax_disagreements": 0,
+              "minimum_all_four_iou_top_two_margin": 0.047839485108852386,
+              "decoder_selection": "Single returns mask token 0; multimask returns tokens 1:4. Both slices checked; argmax is an additional downstream diagnostic."
+            },
+            "passed": true,
+            "failed": []
+          },
+          {
+            "backend": "sdpa",
+            "errors": {
+              "layer0.sparse": {
+                "shape": [
+                  2,
+                  17,
+                  256
+                ],
+                "max_abs": 1.9073486328125e-06,
+                "mean_abs": 1.780718150712346e-07,
+                "finite": true
+              },
+              "layer0.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 7.152557373046875e-07,
+                "mean_abs": 4.809364995139731e-08,
+                "finite": true
+              },
+              "layer1.sparse": {
+                "shape": [
+                  2,
+                  17,
+                  256
+                ],
+                "max_abs": 2.384185791015625e-06,
+                "mean_abs": 1.947961720816238e-07,
+                "finite": true
+              },
+              "layer1.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 9.5367431640625e-07,
+                "mean_abs": 8.814581775595798e-08,
+                "finite": true
+              },
+              "final.sparse": {
+                "shape": [
+                  2,
+                  17,
+                  256
+                ],
+                "max_abs": 2.86102294921875e-06,
+                "mean_abs": 1.9976592113835068e-07,
+                "finite": true
+              },
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 2.5331974029541016e-07,
+                "mean_abs": 3.969901740674686e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 8.940696716308594e-08,
+                "mean_abs": 3.166496753692627e-08,
+                "finite": true
+              },
+              "public_False_masks": {
+                "shape": [
+                  2,
+                  1,
+                  32,
+                  32
+                ],
+                "max_abs": 1.7136335372924805e-07,
+                "mean_abs": 3.3531673437892096e-08,
+                "finite": true
+              },
+              "public_False_iou": {
+                "shape": [
+                  2,
+                  1
+                ],
+                "max_abs": 8.940696716308594e-08,
+                "mean_abs": 5.21540641784668e-08,
+                "finite": true
+              },
+              "public_True_masks": {
+                "shape": [
+                  2,
+                  3,
+                  32,
+                  32
+                ],
+                "max_abs": 2.5331974029541016e-07,
+                "mean_abs": 4.175480228241213e-08,
+                "finite": true
+              },
+              "public_True_iou": {
+                "shape": [
+                  2,
+                  3
+                ],
+                "max_abs": 4.470348358154297e-08,
+                "mean_abs": 2.4835268064293814e-08,
+                "finite": true
+              }
+            },
+            "ranks": [
+              130,
+              259
+            ],
+            "microbatch_1_vs_2": {
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 1.9371509552001953e-07,
+                "mean_abs": 2.8578007515989157e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 4.470348358154297e-08,
+                "mean_abs": 2.3283064365386963e-08,
+                "finite": true
+              }
+            },
+            "decisions": {
+              "mask_threshold": 0.0,
+              "binary_disagreements": 0,
+              "mask_logits_count": 8192,
+              "minimum_abs_mask_logit": 4.92163781018462e-06,
+              "reference_logits_within_error_of_zero": 0,
+              "all_four_iou_argmax_disagreements": 0,
+              "multimask_iou_argmax_disagreements": 0,
+              "minimum_all_four_iou_top_two_margin": 0.047839485108852386,
+              "decoder_selection": "Single returns mask token 0; multimask returns tokens 1:4. Both slices checked; argmax is an additional downstream diagnostic."
+            },
+            "passed": true,
+            "failed": []
+          }
+        ]
+      },
+      {
+        "model_fp32_state_sha256": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+        "provenance": [
+          {
+            "file": "official_cpu_validation/official_sam/common.py",
+            "sha256": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/common.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          },
+          {
+            "file": "official_cpu_validation/official_sam/transformer.py",
+            "sha256": "566a8f6db8b608398de939548bd0f485b21752fda2bdda36900e6444ef938d11",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/transformer.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          },
+          {
+            "file": "official_cpu_validation/official_sam/mask_decoder.py",
+            "sha256": "6a2455e990515c67a061187c92c236b879b189f21ef6ebfce1627cae9a6b2f93",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/mask_decoder.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          }
+        ],
+        "seed": 0,
+        "T": 7,
+        "N": 64,
+        "grid": 8,
+        "batch": 2,
+        "dense_prompt": "shared spatial random",
+        "variants": [
+          {
+            "backend": "explicit",
+            "errors": {
+              "layer0.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 0.0,
+                "mean_abs": 0.0,
+                "finite": true
+              },
+              "layer0.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 7.152557373046875e-07,
+                "mean_abs": 4.5885180099958234e-08,
+                "finite": true
+              },
+              "layer1.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 2.384185791015625e-06,
+                "mean_abs": 6.194471779963351e-08,
+                "finite": true
+              },
+              "layer1.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 9.5367431640625e-07,
+                "mean_abs": 8.639983661851147e-08,
+                "finite": true
+              },
+              "final.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 1.430511474609375e-06,
+                "mean_abs": 8.549811525426776e-08,
+                "finite": true
+              },
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 1.9371509552001953e-07,
+                "mean_abs": 3.658173142184751e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 8.195638656616211e-08,
+                "mean_abs": 2.0489096641540527e-08,
+                "finite": true
+              },
+              "public_False_masks": {
+                "shape": [
+                  2,
+                  1,
+                  32,
+                  32
+                ],
+                "max_abs": 1.564621925354004e-07,
+                "mean_abs": 3.491365418994974e-08,
+                "finite": true
+              },
+              "public_False_iou": {
+                "shape": [
+                  2,
+                  1
+                ],
+                "max_abs": 1.4901161193847656e-08,
+                "mean_abs": 7.450580596923828e-09,
+                "finite": true
+              },
+              "public_True_masks": {
+                "shape": [
+                  2,
+                  3,
+                  32,
+                  32
+                ],
+                "max_abs": 1.9371509552001953e-07,
+                "mean_abs": 3.7137759534289216e-08,
+                "finite": true
+              },
+              "public_True_iou": {
+                "shape": [
+                  2,
+                  3
+                ],
+                "max_abs": 8.195638656616211e-08,
+                "mean_abs": 2.4835268064293814e-08,
+                "finite": true
+              }
+            },
+            "ranks": [
+              50,
+              99
+            ],
+            "microbatch_1_vs_2": {
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 1.7881393432617188e-07,
+                "mean_abs": 3.0962667096900987e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 6.146728992462158e-08,
+                "mean_abs": 2.9569491744041443e-08,
+                "finite": true
+              }
+            },
+            "decisions": {
+              "mask_threshold": 0.0,
+              "binary_disagreements": 0,
+              "mask_logits_count": 8192,
+              "minimum_abs_mask_logit": 2.5022585759870708e-05,
+              "reference_logits_within_error_of_zero": 0,
+              "all_four_iou_argmax_disagreements": 0,
+              "multimask_iou_argmax_disagreements": 0,
+              "minimum_all_four_iou_top_two_margin": 0.012205410748720169,
+              "decoder_selection": "Single returns mask token 0; multimask returns tokens 1:4. Both slices checked; argmax is an additional downstream diagnostic."
+            },
+            "passed": true,
+            "failed": []
+          },
+          {
+            "backend": "sdpa",
+            "errors": {
+              "layer0.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 1.6689300537109375e-06,
+                "mean_abs": 1.563167444373903e-07,
+                "finite": true
+              },
+              "layer0.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 7.152557373046875e-07,
+                "mean_abs": 5.324804419615248e-08,
+                "finite": true
+              },
+              "layer1.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 1.6689300537109375e-06,
+                "mean_abs": 1.846391768367539e-07,
+                "finite": true
+              },
+              "layer1.dense": {
+                "shape": [
+                  2,
+                  64,
+                  256
+                ],
+                "max_abs": 9.5367431640625e-07,
+                "mean_abs": 9.445305693134287e-08,
+                "finite": true
+              },
+              "final.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 1.9073486328125e-06,
+                "mean_abs": 1.8803778800702275e-07,
+                "finite": true
+              },
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 2.905726432800293e-07,
+                "mean_abs": 4.161062605589905e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 2.9802322387695312e-08,
+                "mean_abs": 1.4901161193847656e-08,
+                "finite": true
+              },
+              "public_False_masks": {
+                "shape": [
+                  2,
+                  1,
+                  32,
+                  32
+                ],
+                "max_abs": 2.086162567138672e-07,
+                "mean_abs": 4.444259715796761e-08,
+                "finite": true
+              },
+              "public_False_iou": {
+                "shape": [
+                  2,
+                  1
+                ],
+                "max_abs": 2.9802322387695312e-08,
+                "mean_abs": 1.4901161193847656e-08,
+                "finite": true
+              },
+              "public_True_masks": {
+                "shape": [
+                  2,
+                  3,
+                  32,
+                  32
+                ],
+                "max_abs": 2.905726432800293e-07,
+                "mean_abs": 4.0666634504304966e-08,
+                "finite": true
+              },
+              "public_True_iou": {
+                "shape": [
+                  2,
+                  3
+                ],
+                "max_abs": 2.2351741790771484e-08,
+                "mean_abs": 1.4901161193847656e-08,
+                "finite": true
+              }
+            },
+            "ranks": [
+              50,
+              99
+            ],
+            "microbatch_1_vs_2": {
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  32,
+                  32
+                ],
+                "max_abs": 1.6763806343078613e-07,
+                "mean_abs": 3.1799835653600894e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 5.960464477539063e-08,
+                "mean_abs": 3.329478204250336e-08,
+                "finite": true
+              }
+            },
+            "decisions": {
+              "mask_threshold": 0.0,
+              "binary_disagreements": 0,
+              "mask_logits_count": 8192,
+              "minimum_abs_mask_logit": 2.5022585759870708e-05,
+              "reference_logits_within_error_of_zero": 0,
+              "all_four_iou_argmax_disagreements": 0,
+              "multimask_iou_argmax_disagreements": 0,
+              "minimum_all_four_iou_top_two_margin": 0.012205410748720169,
+              "decoder_selection": "Single returns mask token 0; multimask returns tokens 1:4. Both slices checked; argmax is an additional downstream diagnostic."
+            },
+            "passed": true,
+            "failed": []
+          }
+        ]
+      },
+      {
+        "model_fp32_state_sha256": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+        "provenance": [
+          {
+            "file": "official_cpu_validation/official_sam/common.py",
+            "sha256": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/common.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          },
+          {
+            "file": "official_cpu_validation/official_sam/transformer.py",
+            "sha256": "566a8f6db8b608398de939548bd0f485b21752fda2bdda36900e6444ef938d11",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/transformer.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          },
+          {
+            "file": "official_cpu_validation/official_sam/mask_decoder.py",
+            "sha256": "6a2455e990515c67a061187c92c236b879b189f21ef6ebfce1627cae9a6b2f93",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/mask_decoder.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          }
+        ],
+        "seed": 0,
+        "T": 7,
+        "N": 4096,
+        "grid": 64,
+        "batch": 2,
+        "dense_prompt": "shared constant vector",
+        "variants": [
+          {
+            "backend": "explicit",
+            "errors": {
+              "layer0.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 0.0,
+                "mean_abs": 0.0,
+                "finite": true
+              },
+              "layer0.dense": {
+                "shape": [
+                  2,
+                  4096,
+                  256
+                ],
+                "max_abs": 1.1920928955078125e-06,
+                "mean_abs": 4.5968668871410046e-08,
+                "finite": true
+              },
+              "layer1.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 1.430511474609375e-06,
+                "mean_abs": 7.713516225749117e-08,
+                "finite": true
+              },
+              "layer1.dense": {
+                "shape": [
+                  2,
+                  4096,
+                  256
+                ],
+                "max_abs": 1.430511474609375e-06,
+                "mean_abs": 8.845896104503481e-08,
+                "finite": true
+              },
+              "final.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 1.1920928955078125e-06,
+                "mean_abs": 9.988873728161707e-08,
+                "finite": true
+              },
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  256,
+                  256
+                ],
+                "max_abs": 3.026798367500305e-07,
+                "mean_abs": 3.789730484982101e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 7.450580596923828e-08,
+                "mean_abs": 2.8638169169425964e-08,
+                "finite": true
+              },
+              "public_False_masks": {
+                "shape": [
+                  2,
+                  1,
+                  256,
+                  256
+                ],
+                "max_abs": 2.484302967786789e-07,
+                "mean_abs": 3.6981347761866346e-08,
+                "finite": true
+              },
+              "public_False_iou": {
+                "shape": [
+                  2,
+                  1
+                ],
+                "max_abs": 2.9802322387695312e-08,
+                "mean_abs": 1.4901161193847656e-08,
+                "finite": true
+              },
+              "public_True_masks": {
+                "shape": [
+                  2,
+                  3,
+                  256,
+                  256
+                ],
+                "max_abs": 3.026798367500305e-07,
+                "mean_abs": 3.820261795794977e-08,
+                "finite": true
+              },
+              "public_True_iou": {
+                "shape": [
+                  2,
+                  3
+                ],
+                "max_abs": 7.450580596923828e-08,
+                "mean_abs": 3.321717301218996e-08,
+                "finite": true
+              }
+            },
+            "ranks": [
+              50,
+              99
+            ],
+            "microbatch_1_vs_2": {
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  256,
+                  256
+                ],
+                "max_abs": 2.421438694000244e-07,
+                "mean_abs": 3.067177800630816e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 2.9802322387695312e-08,
+                "mean_abs": 1.862645149230957e-08,
+                "finite": true
+              }
+            },
+            "decisions": {
+              "mask_threshold": 0.0,
+              "binary_disagreements": 0,
+              "mask_logits_count": 524288,
+              "minimum_abs_mask_logit": 9.206232931546765e-08,
+              "reference_logits_within_error_of_zero": 1,
+              "all_four_iou_argmax_disagreements": 0,
+              "multimask_iou_argmax_disagreements": 0,
+              "minimum_all_four_iou_top_two_margin": 0.0016215573996305466,
+              "decoder_selection": "Single returns mask token 0; multimask returns tokens 1:4. Both slices checked; argmax is an additional downstream diagnostic."
+            },
+            "passed": true,
+            "failed": []
+          },
+          {
+            "backend": "sdpa",
+            "errors": {
+              "layer0.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 1.430511474609375e-06,
+                "mean_abs": 1.6022161730688822e-07,
+                "finite": true
+              },
+              "layer0.dense": {
+                "shape": [
+                  2,
+                  4096,
+                  256
+                ],
+                "max_abs": 1.1920928955078125e-06,
+                "mean_abs": 5.527251190073912e-08,
+                "finite": true
+              },
+              "layer1.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 1.9073486328125e-06,
+                "mean_abs": 1.8730820272594428e-07,
+                "finite": true
+              },
+              "layer1.dense": {
+                "shape": [
+                  2,
+                  4096,
+                  256
+                ],
+                "max_abs": 1.430511474609375e-06,
+                "mean_abs": 9.737566131207132e-08,
+                "finite": true
+              },
+              "final.sparse": {
+                "shape": [
+                  2,
+                  7,
+                  256
+                ],
+                "max_abs": 1.3709068298339844e-06,
+                "mean_abs": 1.9468635059638473e-07,
+                "finite": true
+              },
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  256,
+                  256
+                ],
+                "max_abs": 2.9848888516426086e-07,
+                "mean_abs": 4.0614452245790744e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 5.960464477539063e-08,
+                "mean_abs": 2.444721758365631e-08,
+                "finite": true
+              },
+              "public_False_masks": {
+                "shape": [
+                  2,
+                  1,
+                  256,
+                  256
+                ],
+                "max_abs": 2.384185791015625e-07,
+                "mean_abs": 3.753422461727496e-08,
+                "finite": true
+              },
+              "public_False_iou": {
+                "shape": [
+                  2,
+                  1
+                ],
+                "max_abs": 2.9802322387695312e-08,
+                "mean_abs": 2.9802322387695312e-08,
+                "finite": true
+              },
+              "public_True_masks": {
+                "shape": [
+                  2,
+                  3,
+                  256,
+                  256
+                ],
+                "max_abs": 2.9848888516426086e-07,
+                "mean_abs": 4.1641197157105125e-08,
+                "finite": true
+              },
+              "public_True_iou": {
+                "shape": [
+                  2,
+                  3
+                ],
+                "max_abs": 5.960464477539063e-08,
+                "mean_abs": 2.266218324109559e-08,
+                "finite": true
+              }
+            },
+            "ranks": [
+              50,
+              99
+            ],
+            "microbatch_1_vs_2": {
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  256,
+                  256
+                ],
+                "max_abs": 2.421438694000244e-07,
+                "mean_abs": 3.427369321684637e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 6.705522537231445e-08,
+                "mean_abs": 2.8870999813079834e-08,
+                "finite": true
+              }
+            },
+            "decisions": {
+              "mask_threshold": 0.0,
+              "binary_disagreements": 0,
+              "mask_logits_count": 524288,
+              "minimum_abs_mask_logit": 9.206232931546765e-08,
+              "reference_logits_within_error_of_zero": 1,
+              "all_four_iou_argmax_disagreements": 0,
+              "multimask_iou_argmax_disagreements": 0,
+              "minimum_all_four_iou_top_two_margin": 0.0016215573996305466,
+              "decoder_selection": "Single returns mask token 0; multimask returns tokens 1:4. Both slices checked; argmax is an additional downstream diagnostic."
+            },
+            "passed": true,
+            "failed": []
+          }
+        ]
+      },
+      {
+        "model_fp32_state_sha256": "e97914197606b25b4d543b954fe03fb96ff26eb689728a7d22fba4586740f8da",
+        "provenance": [
+          {
+            "file": "official_cpu_validation/official_sam/common.py",
+            "sha256": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/common.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          },
+          {
+            "file": "official_cpu_validation/official_sam/transformer.py",
+            "sha256": "566a8f6db8b608398de939548bd0f485b21752fda2bdda36900e6444ef938d11",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/transformer.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          },
+          {
+            "file": "official_cpu_validation/official_sam/mask_decoder.py",
+            "sha256": "6a2455e990515c67a061187c92c236b879b189f21ef6ebfce1627cae9a6b2f93",
+            "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/mask_decoder.py",
+            "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+          }
+        ],
+        "seed": 1,
+        "T": 9,
+        "N": 4096,
+        "grid": 64,
+        "batch": 2,
+        "dense_prompt": "shared constant vector",
+        "variants": [
+          {
+            "backend": "explicit",
+            "errors": {
+              "layer0.sparse": {
+                "shape": [
+                  2,
+                  9,
+                  256
+                ],
+                "max_abs": 0.0,
+                "mean_abs": 0.0,
+                "finite": true
+              },
+              "layer0.dense": {
+                "shape": [
+                  2,
+                  4096,
+                  256
+                ],
+                "max_abs": 1.430511474609375e-06,
+                "mean_abs": 4.8911719119359987e-08,
+                "finite": true
+              },
+              "layer1.sparse": {
+                "shape": [
+                  2,
+                  9,
+                  256
+                ],
+                "max_abs": 7.152557373046875e-07,
+                "mean_abs": 7.281914093937303e-08,
+                "finite": true
+              },
+              "layer1.dense": {
+                "shape": [
+                  2,
+                  4096,
+                  256
+                ],
+                "max_abs": 1.430511474609375e-06,
+                "mean_abs": 8.552074604040172e-08,
+                "finite": true
+              },
+              "final.sparse": {
+                "shape": [
+                  2,
+                  9,
+                  256
+                ],
+                "max_abs": 8.344650268554688e-07,
+                "mean_abs": 1.0320709264988182e-07,
+                "finite": true
+              },
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  256,
+                  256
+                ],
+                "max_abs": 3.129243850708008e-07,
+                "mean_abs": 3.7482820403056394e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 4.842877388000488e-08,
+                "mean_abs": 2.9802322387695312e-08,
+                "finite": true
+              },
+              "public_False_masks": {
+                "shape": [
+                  2,
+                  1,
+                  256,
+                  256
+                ],
+                "max_abs": 2.980232238769531e-07,
+                "mean_abs": 4.124144581396649e-08,
+                "finite": true
+              },
+              "public_False_iou": {
+                "shape": [
+                  2,
+                  1
+                ],
+                "max_abs": 4.842877388000488e-08,
+                "mean_abs": 4.284083843231201e-08,
+                "finite": true
+              },
+              "public_True_masks": {
+                "shape": [
+                  2,
+                  3,
+                  256,
+                  256
+                ],
+                "max_abs": 3.129243850708008e-07,
+                "mean_abs": 3.622994526608636e-08,
+                "finite": true
+              },
+              "public_True_iou": {
+                "shape": [
+                  2,
+                  3
+                ],
+                "max_abs": 4.470348358154297e-08,
+                "mean_abs": 2.5456150964942026e-08,
+                "finite": true
+              }
+            },
+            "ranks": [
+              66,
+              131
+            ],
+            "microbatch_1_vs_2": {
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  256,
+                  256
+                ],
+                "max_abs": 2.682209014892578e-07,
+                "mean_abs": 3.3267422594462914e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 8.195638656616211e-08,
+                "mean_abs": 3.050081431865692e-08,
+                "finite": true
+              }
+            },
+            "decisions": {
+              "mask_threshold": 0.0,
+              "binary_disagreements": 0,
+              "mask_logits_count": 524288,
+              "minimum_abs_mask_logit": 8.366949799665235e-08,
+              "reference_logits_within_error_of_zero": 1,
+              "all_four_iou_argmax_disagreements": 0,
+              "multimask_iou_argmax_disagreements": 0,
+              "minimum_all_four_iou_top_two_margin": 0.013813452795147896,
+              "decoder_selection": "Single returns mask token 0; multimask returns tokens 1:4. Both slices checked; argmax is an additional downstream diagnostic."
+            },
+            "passed": true,
+            "failed": []
+          },
+          {
+            "backend": "sdpa",
+            "errors": {
+              "layer0.sparse": {
+                "shape": [
+                  2,
+                  9,
+                  256
+                ],
+                "max_abs": 1.430511474609375e-06,
+                "mean_abs": 1.8381759048224922e-07,
+                "finite": true
+              },
+              "layer0.dense": {
+                "shape": [
+                  2,
+                  4096,
+                  256
+                ],
+                "max_abs": 1.430511474609375e-06,
+                "mean_abs": 5.6711115803409484e-08,
+                "finite": true
+              },
+              "layer1.sparse": {
+                "shape": [
+                  2,
+                  9,
+                  256
+                ],
+                "max_abs": 1.430511474609375e-06,
+                "mean_abs": 1.991630966813318e-07,
+                "finite": true
+              },
+              "layer1.dense": {
+                "shape": [
+                  2,
+                  4096,
+                  256
+                ],
+                "max_abs": 1.9073486328125e-06,
+                "mean_abs": 9.641965448281553e-08,
+                "finite": true
+              },
+              "final.sparse": {
+                "shape": [
+                  2,
+                  9,
+                  256
+                ],
+                "max_abs": 1.6689300537109375e-06,
+                "mean_abs": 1.963349518518953e-07,
+                "finite": true
+              },
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  256,
+                  256
+                ],
+                "max_abs": 4.6193599700927734e-07,
+                "mean_abs": 4.070844283887709e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 5.960464477539063e-08,
+                "mean_abs": 3.4691765904426575e-08,
+                "finite": true
+              },
+              "public_False_masks": {
+                "shape": [
+                  2,
+                  1,
+                  256,
+                  256
+                ],
+                "max_abs": 3.725290298461914e-07,
+                "mean_abs": 4.1215528767679643e-08,
+                "finite": true
+              },
+              "public_False_iou": {
+                "shape": [
+                  2,
+                  1
+                ],
+                "max_abs": 5.21540641784668e-08,
+                "mean_abs": 4.842877388000488e-08,
+                "finite": true
+              },
+              "public_True_masks": {
+                "shape": [
+                  2,
+                  3,
+                  256,
+                  256
+                ],
+                "max_abs": 4.6193599700927734e-07,
+                "mean_abs": 4.053941893289448e-08,
+                "finite": true
+              },
+              "public_True_iou": {
+                "shape": [
+                  2,
+                  3
+                ],
+                "max_abs": 5.960464477539063e-08,
+                "mean_abs": 3.011276206166258e-08,
+                "finite": true
+              }
+            },
+            "ranks": [
+              66,
+              131
+            ],
+            "microbatch_1_vs_2": {
+              "masks": {
+                "shape": [
+                  2,
+                  4,
+                  256,
+                  256
+                ],
+                "max_abs": 2.980232238769531e-07,
+                "mean_abs": 3.4230758672038064e-08,
+                "finite": true
+              },
+              "iou": {
+                "shape": [
+                  2,
+                  4
+                ],
+                "max_abs": 5.21540641784668e-08,
+                "mean_abs": 2.0954757928848267e-08,
+                "finite": true
+              }
+            },
+            "decisions": {
+              "mask_threshold": 0.0,
+              "binary_disagreements": 0,
+              "mask_logits_count": 524288,
+              "minimum_abs_mask_logit": 8.366949799665235e-08,
+              "reference_logits_within_error_of_zero": 1,
+              "all_four_iou_argmax_disagreements": 0,
+              "multimask_iou_argmax_disagreements": 0,
+              "minimum_all_four_iou_top_two_margin": 0.013813452795147896,
+              "decoder_selection": "Single returns mask token 0; multimask returns tokens 1:4. Both slices checked; argmax is an additional downstream diagnostic."
+            },
+            "passed": true,
+            "failed": []
+          }
+        ]
+      }
+    ],
+    "all_passed": true,
+    "source_sha256": {
+      "baselines.py": "3ed23810ab06c10c485001f9d82929d87f5837c69c3706a0d62de6dd82890ca5",
+      "factor_candidate.py": "e831ed3b462c4e6def3a2f44c9c06333cc297544577d3bbe8149948db33b1c5c",
+      "validate_factor.py": "ba5fa3a24961fbe1361a487068bf86398ce0f797136a3a01a2c74d72d4eaef3a"
+    }
+  }
+}

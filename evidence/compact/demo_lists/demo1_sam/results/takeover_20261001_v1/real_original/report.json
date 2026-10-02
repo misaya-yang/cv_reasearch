@@ -1,0 +1,3302 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo1_sam/results/takeover_20261001_v1/real_original/report.json",
+  "source_bytes": 1105961,
+  "source_sha256": "0eb0258a5d66de7066abc233e14db80f84199966c571d943bf6e31a261139912",
+  "data": {
+    "schema_version": 2,
+    "started_at_utc": "2026-10-01T13:48:27.508273+00:00",
+    "status": "FAILED_DIAGNOSTIC_OUTPUTS_ONLY",
+    "precision": "float32",
+    "tf32_matmul": false,
+    "tf32_cudnn": false,
+    "numeric_status": "FAILED",
+    "quality_status": "DEFERRED",
+    "npz_compression": "none",
+    "matmul_precision": "highest",
+    "numerical_tolerance": 5e-05,
+    "model": "official_pretrained_sam_vit_b",
+    "torch": "2.12.1+cu130",
+    "python": "3.12.3",
+    "device": "cuda:0",
+    "gpu_name": "NVIDIA GeForce RTX 4080",
+    "options": {
+      "subset_dir": "assets/coco_quality_seed2027_v1",
+      "checkpoint": "assets/checkpoints/sam_vit_b_01ec64.pth",
+      "source_dir": "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/source/segment-anything",
+      "output_dir": "/root/autodl-tmp/demo1_sam/results/takeover_20261001_v1/real_original",
+      "device": "cuda:0",
+      "limit_images": 24,
+      "microbatch": 4,
+      "attention": "explicit",
+      "assoc_order": "auto",
+      "assoc_write_output": "auto",
+      "diagnostic_on_failure": true,
+      "defer_quality": true,
+      "npz_compression": "none",
+      "save_encoded_inputs": true,
+      "threads": 2
+    },
+    "official_decoder_provenance": [
+      {
+        "file": "segment_anything/modeling/common.py",
+        "sha256": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+        "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+      },
+      {
+        "file": "segment_anything/modeling/transformer.py",
+        "sha256": "566a8f6db8b608398de939548bd0f485b21752fda2bdda36900e6444ef938d11",
+        "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+      },
+      {
+        "file": "segment_anything/modeling/mask_decoder.py",
+        "sha256": "6a2455e990515c67a061187c92c236b879b189f21ef6ebfce1627cae9a6b2f93",
+        "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+      }
+    ],
+    "checkpoint": {
+      "path": "assets/checkpoints/sam_vit_b_01ec64.pth",
+      "bytes": 375042383
+    },
+    "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+    "prompt_protocol": "one independent positive point or one tight GT box per row; no mask inputs; no extra clicks or fusion",
+    "timing_contract": "DIAGNOSTIC_ONLY: one-pass synchronized eager segment times, no warmup/repeated performance inference; full per-image wall includes comparisons, CPU copies, exports/NPZ I/O and quality metrics unless deferred",
+    "quality_limits": "small fixed development diagnosis, not SOTA; GT oracles use extra ground truth and are not deployable",
+    "images": [
+      {
+        "image_id": 517687,
+        "image_encoder_executions": 1,
+        "original_size": [
+          360,
+          640
+        ],
+        "input_size": [
+          576,
+          1024
+        ],
+        "resize_ms": 10.744057595729828,
+        "input_transfer_ms": 6.623312830924988,
+        "preprocess_ms": 2.4303626269102097,
+        "encoder_ms": 249.37819503247738,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 123.46010841429234,
+            "cache_build_including_PE_ms": {
+              "cached": 0.5173366516828537,
+              "dense_assoc": 0.22315047681331635,
+              "factor_projected": 0.9963363409042358
+            },
+            "prompt_count": 3,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 2.316657453775406,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 3,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 0.7077604532241821,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 3,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 517687,
+          "npz": "image_000000517687/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 1966251,
+              "category_id": 67,
+              "annotation_area": 120125.13944999997,
+              "decoded_area": 120121,
+              "gt_index": 0,
+              "central_xy": [
+                80.0,
+                116.0
+              ],
+              "near_boundary_xy": [
+                1.0,
+                286.0
+              ],
+              "tight_box_xyxy": [
+                0,
+                1,
+                640,
+                356
+              ],
+              "central_erosion_depth": 74
+            },
+            {
+              "annotation_id": 330273,
+              "category_id": 77,
+              "annotation_area": 51849.09435,
+              "decoded_area": 51846,
+              "gt_index": 1,
+              "central_xy": [
+                411.0,
+                154.0
+              ],
+              "near_boundary_xy": [
+                335.0,
+                267.0
+              ],
+              "tight_box_xyxy": [
+                324,
+                19,
+                502,
+                349
+              ],
+              "central_erosion_depth": 78
+            },
+            {
+              "annotation_id": 323985,
+              "category_id": 77,
+              "annotation_area": 42679.5579,
+              "decoded_area": 42707,
+              "gt_index": 2,
+              "central_xy": [
+                229.0,
+                156.0
+              ],
+              "near_boundary_xy": [
+                163.0,
+                172.0
+              ],
+              "tight_box_xyxy": [
+                159,
+                24,
+                306,
+                347
+              ],
+              "central_erosion_depth": 66
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 726.4751084148884
+      },
+      {
+        "image_id": 373382,
+        "image_encoder_executions": 1,
+        "original_size": [
+          640,
+          480
+        ],
+        "input_size": [
+          1024,
+          768
+        ],
+        "resize_ms": 10.147225111722946,
+        "input_transfer_ms": 0.49838051199913025,
+        "preprocess_ms": 0.16493722796440125,
+        "encoder_ms": 87.79934048652649,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 1.1990629136562347,
+            "cache_build_including_PE_ms": {
+              "cached": 0.33097900450229645,
+              "dense_assoc": 0.2055298537015915,
+              "factor_projected": 0.6410535424947739
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 1.3456158339977264,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 0.7395017892122269,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 373382,
+          "npz": "image_000000373382/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 2012409,
+              "category_id": 1,
+              "annotation_area": 1924.1474499999995,
+              "decoded_area": 1926,
+              "gt_index": 0,
+              "central_xy": [
+                467.0,
+                211.0
+              ],
+              "near_boundary_xy": [
+                479.0,
+                199.0
+              ],
+              "tight_box_xyxy": [
+                450,
+                153,
+                480,
+                252
+              ],
+              "central_erosion_depth": 13
+            },
+            {
+              "annotation_id": 1275097,
+              "category_id": 1,
+              "annotation_area": 2295.399249999999,
+              "decoded_area": 2295,
+              "gt_index": 1,
+              "central_xy": [
+                376.0,
+                253.0
+              ],
+              "near_boundary_xy": [
+                376.0,
+                275.0
+              ],
+              "tight_box_xyxy": [
+                352,
+                204,
+                402,
+                280
+              ],
+              "central_erosion_depth": 17
+            },
+            {
+              "annotation_id": 656650,
+              "category_id": 43,
+              "annotation_area": 3797.1934499999993,
+              "decoded_area": 3801,
+              "gt_index": 2,
+              "central_xy": [
+                171.0,
+                122.0
+              ],
+              "near_boundary_xy": [
+                160.0,
+                190.0
+              ],
+              "tight_box_xyxy": [
+                142,
+                84,
+                203,
+                231
+              ],
+              "central_erosion_depth": 20
+            },
+            {
+              "annotation_id": 502335,
+              "category_id": 1,
+              "annotation_area": 1547.6504000000002,
+              "decoded_area": 1542,
+              "gt_index": 3,
+              "central_xy": [
+                369.0,
+                193.0
+              ],
+              "near_boundary_xy": [
+                392.0,
+                196.0
+              ],
+              "tight_box_xyxy": [
+                343,
+                163,
+                394,
+                261
+              ],
+              "central_erosion_depth": 12
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 366.8984193354845
+      },
+      {
+        "image_id": 393282,
+        "image_encoder_executions": 1,
+        "original_size": [
+          640,
+          640
+        ],
+        "input_size": [
+          1024,
+          1024
+        ],
+        "resize_ms": 13.29931989312172,
+        "input_transfer_ms": 0.5098674446344376,
+        "preprocess_ms": 0.12761913239955902,
+        "encoder_ms": 87.46710419654846,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 1.0755117982625961,
+            "cache_build_including_PE_ms": {
+              "cached": 0.32277777791023254,
+              "dense_assoc": 0.200590118765831,
+              "factor_projected": 0.7368698716163635
+            },
+            "prompt_count": 2,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 1.3123713433742523,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 2,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 0.7294267416000366,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 2,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 393282,
+          "npz": "image_000000393282/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 595206,
+              "category_id": 25,
+              "annotation_area": 12660.640399999995,
+              "decoded_area": 12649,
+              "gt_index": 0,
+              "central_xy": [
+                387.0,
+                398.0
+              ],
+              "near_boundary_xy": [
+                427.0,
+                352.0
+              ],
+              "tight_box_xyxy": [
+                321,
+                245,
+                471,
+                533
+              ],
+              "central_erosion_depth": 29
+            },
+            {
+              "annotation_id": 597225,
+              "category_id": 25,
+              "annotation_area": 4617.7076,
+              "decoded_area": 4618,
+              "gt_index": 1,
+              "central_xy": [
+                171.0,
+                426.0
+              ],
+              "near_boundary_xy": [
+                197.0,
+                406.0
+              ],
+              "tight_box_xyxy": [
+                124,
+                348,
+                236,
+                485
+              ],
+              "central_erosion_depth": 17
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 282.2303883731365
+      },
+      {
+        "image_id": 428562,
+        "image_encoder_executions": 1,
+        "original_size": [
+          480,
+          640
+        ],
+        "input_size": [
+          768,
+          1024
+        ],
+        "resize_ms": 10.13929583132267,
+        "input_transfer_ms": 0.35408884286880493,
+        "preprocess_ms": 0.13491883873939514,
+        "encoder_ms": 87.08278089761734,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 1.0550599545240402,
+            "cache_build_including_PE_ms": {
+              "cached": 0.32706744968891144,
+              "dense_assoc": 0.19973888993263245,
+              "factor_projected": 0.6064120680093765
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 2.47182697057724,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 0.8681472390890121,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 428562,
+          "npz": "image_000000428562/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 65508,
+              "category_id": 20,
+              "annotation_area": 43720.33205000001,
+              "decoded_area": 43760,
+              "gt_index": 0,
+              "central_xy": [
+                560.0,
+                246.0
+              ],
+              "near_boundary_xy": [
+                463.0,
+                304.0
+              ],
+              "tight_box_xyxy": [
+                455,
+                98,
+                639,
+                410
+              ],
+              "central_erosion_depth": 78
+            },
+            {
+              "annotation_id": 1818516,
+              "category_id": 20,
+              "annotation_area": 2472.870649999999,
+              "decoded_area": 2466,
+              "gt_index": 1,
+              "central_xy": [
+                160.0,
+                136.0
+              ],
+              "near_boundary_xy": [
+                134.0,
+                127.0
+              ],
+              "tight_box_xyxy": [
+                132,
+                114,
+                207,
+                159
+              ],
+              "central_erosion_depth": 19
+            },
+            {
+              "annotation_id": 184267,
+              "category_id": 1,
+              "annotation_area": 10403.510250000001,
+              "decoded_area": 10424,
+              "gt_index": 2,
+              "central_xy": [
+                83.0,
+                37.0
+              ],
+              "near_boundary_xy": [
+                101.0,
+                2.0
+              ],
+              "tight_box_xyxy": [
+                28,
+                2,
+                141,
+                161
+              ],
+              "central_erosion_depth": 35
+            },
+            {
+              "annotation_id": 68404,
+              "category_id": 20,
+              "annotation_area": 2816.352299999999,
+              "decoded_area": 2825,
+              "gt_index": 3,
+              "central_xy": [
+                521.0,
+                92.0
+              ],
+              "near_boundary_xy": [
+                503.0,
+                87.0
+              ],
+              "tight_box_xyxy": [
+                483,
+                66,
+                561,
+                146
+              ],
+              "central_erosion_depth": 19
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 364.4869979470968
+      },
+      {
+        "image_id": 534605,
+        "image_encoder_executions": 1,
+        "original_size": [
+          400,
+          600
+        ],
+        "input_size": [
+          683,
+          1024
+        ],
+        "resize_ms": 8.349966257810593,
+        "input_transfer_ms": 0.4019197076559067,
+        "preprocess_ms": 0.14266744256019592,
+        "encoder_ms": 87.31838501989841,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 1.0485779494047165,
+            "cache_build_including_PE_ms": {
+              "cached": 0.3131069242954254,
+              "dense_assoc": 0.19865110516548157,
+              "factor_projected": 0.5963407456874847
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 1.3046525418758392,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 0.7631201297044754,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 534605,
+          "npz": "image_000000534605/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 207094,
+              "category_id": 1,
+              "annotation_area": 1761.3294499999993,
+              "decoded_area": 1761,
+              "gt_index": 0,
+              "central_xy": [
+                307.0,
+                169.0
+              ],
+              "near_boundary_xy": [
+                307.0,
+                142.0
+              ],
+              "tight_box_xyxy": [
+                284,
+                97,
+                323,
+                216
+              ],
+              "central_erosion_depth": 11
+            },
+            {
+              "annotation_id": 213188,
+              "category_id": 1,
+              "annotation_area": 19606.1891,
+              "decoded_area": 19620,
+              "gt_index": 1,
+              "central_xy": [
+                105.0,
+                151.0
+              ],
+              "near_boundary_xy": [
+                74.0,
+                309.0
+              ],
+              "tight_box_xyxy": [
+                63,
+                49,
+                152,
+                371
+              ],
+              "central_erosion_depth": 37
+            },
+            {
+              "annotation_id": 2148311,
+              "category_id": 1,
+              "annotation_area": 1715.4159499999994,
+              "decoded_area": 1723,
+              "gt_index": 2,
+              "central_xy": [
+                392.0,
+                140.0
+              ],
+              "near_boundary_xy": [
+                388.0,
+                172.0
+              ],
+              "tight_box_xyxy": [
+                372,
+                101,
+                408,
+                182
+              ],
+              "central_erosion_depth": 13
+            },
+            {
+              "annotation_id": 150635,
+              "category_id": 4,
+              "annotation_area": 3231.111950000001,
+              "decoded_area": 3231,
+              "gt_index": 3,
+              "central_xy": [
+                500.0,
+                214.0
+              ],
+              "near_boundary_xy": [
+                541.0,
+                212.0
+              ],
+              "tight_box_xyxy": [
+                472,
+                150,
+                553,
+                246
+              ],
+              "central_erosion_depth": 15
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 319.8990263044834
+      },
+      {
+        "image_id": 263796,
+        "image_encoder_executions": 1,
+        "original_size": [
+          640,
+          480
+        ],
+        "input_size": [
+          1024,
+          768
+        ],
+        "resize_ms": 9.823160246014595,
+        "input_transfer_ms": 0.4116520285606384,
+        "preprocess_ms": 0.14433637261390686,
+        "encoder_ms": 87.53252774477005,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 1.155402511358261,
+            "cache_build_including_PE_ms": {
+              "cached": 0.3129858523607254,
+              "dense_assoc": 0.19958987832069397,
+              "factor_projected": 0.60226209461689
+            },
+            "prompt_count": 1,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 1.019556075334549,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 1,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 0.7835943251848221,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 1,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 263796,
+          "npz": "image_000000263796/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 1092667,
+              "category_id": 70,
+              "annotation_area": 40003.32489999999,
+              "decoded_area": 39997,
+              "gt_index": 0,
+              "central_xy": [
+                262.0,
+                339.0
+              ],
+              "near_boundary_xy": [
+                351.0,
+                485.0
+              ],
+              "tight_box_xyxy": [
+                183,
+                262,
+                354,
+                592
+              ],
+              "central_erosion_depth": 55
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 288.42682018876076
+      },
+      {
+        "image_id": 297562,
+        "image_encoder_executions": 1,
+        "original_size": [
+          480,
+          640
+        ],
+        "input_size": [
+          768,
+          1024
+        ],
+        "resize_ms": 9.803429245948792,
+        "input_transfer_ms": 0.38490258157253265,
+        "preprocess_ms": 0.1412574201822281,
+        "encoder_ms": 87.75726705789566,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 1.0870713740587234,
+            "cache_build_including_PE_ms": {
+              "cached": 0.3199465572834015,
+              "dense_assoc": 0.21330267190933228,
+              "factor_projected": 0.6129313260316849
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 1.3810563832521439,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 0.767221674323082,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 297562,
+          "npz": "image_000000297562/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 1738238,
+              "category_id": 1,
+              "annotation_area": 1938.4193000000005,
+              "decoded_area": 1943,
+              "gt_index": 0,
+              "central_xy": [
+                462.0,
+                195.0
+              ],
+              "near_boundary_xy": [
+                474.0,
+                215.0
+              ],
+              "tight_box_xyxy": [
+                445,
+                145,
+                481,
+                232
+              ],
+              "central_erosion_depth": 13
+            },
+            {
+              "annotation_id": 1271671,
+              "category_id": 1,
+              "annotation_area": 2472.6872000000008,
+              "decoded_area": 2481,
+              "gt_index": 1,
+              "central_xy": [
+                248.0,
+                173.0
+              ],
+              "near_boundary_xy": [
+                232.0,
+                103.0
+              ],
+              "tight_box_xyxy": [
+                229,
+                98,
+                264,
+                195
+              ],
+              "central_erosion_depth": 14
+            },
+            {
+              "annotation_id": 482039,
+              "category_id": 1,
+              "annotation_area": 8667.286649999998,
+              "decoded_area": 8663,
+              "gt_index": 2,
+              "central_xy": [
+                520.0,
+                99.0
+              ],
+              "near_boundary_xy": [
+                514.0,
+                272.0
+              ],
+              "tight_box_xyxy": [
+                487,
+                38,
+                561,
+                279
+              ],
+              "central_erosion_depth": 19
+            },
+            {
+              "annotation_id": 499615,
+              "category_id": 1,
+              "annotation_area": 6187.243100000001,
+              "decoded_area": 6179,
+              "gt_index": 3,
+              "central_xy": [
+                428.0,
+                174.0
+              ],
+              "near_boundary_xy": [
+                445.0,
+                172.0
+              ],
+              "tight_box_xyxy": [
+                397,
+                44,
+                465,
+                263
+              ],
+              "central_erosion_depth": 17
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 365.7916411757469
+      },
+      {
+        "image_id": 275791,
+        "image_encoder_executions": 1,
+        "original_size": [
+          427,
+          640
+        ],
+        "input_size": [
+          683,
+          1024
+        ],
+        "resize_ms": 9.72314178943634,
+        "input_transfer_ms": 0.35230815410614014,
+        "preprocess_ms": 0.1367870718240738,
+        "encoder_ms": 87.3480811715126,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 2.215910702943802,
+            "cache_build_including_PE_ms": {
+              "cached": 0.6086546927690506,
+              "dense_assoc": 0.40676072239875793,
+              "factor_projected": 1.2539010494947433
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 1.3112612068653107,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 0.713469460606575,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 275791,
+          "npz": "image_000000275791/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 1378045,
+              "category_id": 9,
+              "annotation_area": 8726.570000000002,
+              "decoded_area": 8729,
+              "gt_index": 0,
+              "central_xy": [
+                123.0,
+                390.0
+              ],
+              "near_boundary_xy": [
+                49.0,
+                421.0
+              ],
+              "tight_box_xyxy": [
+                0,
+                354,
+                179,
+                422
+              ],
+              "central_erosion_depth": 31
+            },
+            {
+              "annotation_id": 1377969,
+              "category_id": 9,
+              "annotation_area": 9270.622049999996,
+              "decoded_area": 9277,
+              "gt_index": 1,
+              "central_xy": [
+                603.0,
+                383.0
+              ],
+              "near_boundary_xy": [
+                639.0,
+                403.0
+              ],
+              "tight_box_xyxy": [
+                514,
+                325,
+                640,
+                422
+              ],
+              "central_erosion_depth": 36
+            },
+            {
+              "annotation_id": 1802349,
+              "category_id": 9,
+              "annotation_area": 1888.0319999999995,
+              "decoded_area": 1888,
+              "gt_index": 2,
+              "central_xy": [
+                620.0,
+                231.0
+              ],
+              "near_boundary_xy": [
+                566.0,
+                230.0
+              ],
+              "tight_box_xyxy": [
+                562,
+                210,
+                640,
+                251
+              ],
+              "central_erosion_depth": 16
+            },
+            {
+              "annotation_id": 1802158,
+              "category_id": 9,
+              "annotation_area": 21118.17514999999,
+              "decoded_area": 21111,
+              "gt_index": 3,
+              "central_xy": [
+                283.0,
+                371.0
+              ],
+              "near_boundary_xy": [
+                368.0,
+                322.0
+              ],
+              "tight_box_xyxy": [
+                150,
+                294,
+                387,
+                421
+              ],
+              "central_erosion_depth": 49
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 347.96941466629505
+      },
+      {
+        "image_id": 410650,
+        "image_encoder_executions": 1,
+        "original_size": [
+          480,
+          640
+        ],
+        "input_size": [
+          768,
+          1024
+        ],
+        "resize_ms": 10.259971022605896,
+        "input_transfer_ms": 0.3519989550113678,
+        "preprocess_ms": 0.13459846377372742,
+        "encoder_ms": 87.0748795568943,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 1.0450556874275208,
+            "cache_build_including_PE_ms": {
+              "cached": 0.3111865371465683,
+              "dense_assoc": 0.19812025129795074,
+              "factor_projected": 0.6246436387300491
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 1.389855518937111,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 0.7268805056810379,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 410650,
+          "npz": "image_000000410650/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 1297737,
+              "category_id": 1,
+              "annotation_area": 1047.7948999999994,
+              "decoded_area": 1051,
+              "gt_index": 0,
+              "central_xy": [
+                132.0,
+                133.0
+              ],
+              "near_boundary_xy": [
+                131.0,
+                144.0
+              ],
+              "tight_box_xyxy": [
+                117,
+                103,
+                148,
+                154
+              ],
+              "central_erosion_depth": 11
+            },
+            {
+              "annotation_id": 1321520,
+              "category_id": 1,
+              "annotation_area": 1187.4184999999995,
+              "decoded_area": 1188,
+              "gt_index": 1,
+              "central_xy": [
+                328.0,
+                133.0
+              ],
+              "near_boundary_xy": [
+                324.0,
+                113.0
+              ],
+              "tight_box_xyxy": [
+                315,
+                101,
+                349,
+                156
+              ],
+              "central_erosion_depth": 12
+            },
+            {
+              "annotation_id": 1209194,
+              "category_id": 1,
+              "annotation_area": 8364.31705,
+              "decoded_area": 8337,
+              "gt_index": 2,
+              "central_xy": [
+                236.0,
+                272.0
+              ],
+              "near_boundary_xy": [
+                217.0,
+                324.0
+              ],
+              "tight_box_xyxy": [
+                171,
+                113,
+                261,
+                381
+              ],
+              "central_erosion_depth": 20
+            },
+            {
+              "annotation_id": 1319585,
+              "category_id": 1,
+              "annotation_area": 1562.9208000000003,
+              "decoded_area": 1558,
+              "gt_index": 3,
+              "central_xy": [
+                211.0,
+                96.0
+              ],
+              "near_boundary_xy": [
+                219.0,
+                70.0
+              ],
+              "tight_box_xyxy": [
+                188,
+                63,
+                241,
+                142
+              ],
+              "central_erosion_depth": 13
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 366.55459739267826
+      },
+      {
+        "image_id": 64718,
+        "image_encoder_executions": 1,
+        "original_size": [
+          464,
+          640
+        ],
+        "input_size": [
+          742,
+          1024
+        ],
+        "resize_ms": 9.242096915841103,
+        "input_transfer_ms": 0.41564181447029114,
+        "preprocess_ms": 0.16493722796440125,
+        "encoder_ms": 87.19168417155743,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 1.0671298950910568,
+            "cache_build_including_PE_ms": {
+              "cached": 0.31374581158161163,
+              "dense_assoc": 0.19846297800540924,
+              "factor_projected": 0.5930233746767044
+            },
+            "prompt_count": 2,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 1.2363456189632416,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 2,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 0.6678886711597443,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 2,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 64718,
+          "npz": "image_000000064718/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 656133,
+              "category_id": 43,
+              "annotation_area": 1468.1388000000002,
+              "decoded_area": 1471,
+              "gt_index": 0,
+              "central_xy": [
+                102.0,
+                189.0
+              ],
+              "near_boundary_xy": [
+                138.0,
+                263.0
+              ],
+              "tight_box_xyxy": [
+                65,
+                124,
+                143,
+                265
+              ],
+              "central_erosion_depth": 5
+            },
+            {
+              "annotation_id": 492587,
+              "category_id": 1,
+              "annotation_area": 45446.20845,
+              "decoded_area": 45462,
+              "gt_index": 1,
+              "central_xy": [
+                328.0,
+                292.0
+              ],
+              "near_boundary_xy": [
+                406.0,
+                349.0
+              ],
+              "tight_box_xyxy": [
+                122,
+                45,
+                435,
+                458
+              ],
+              "central_erosion_depth": 50
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 312.103770673275
+      },
+      {
+        "image_id": 558421,
+        "image_encoder_executions": 1,
+        "original_size": [
+          427,
+          640
+        ],
+        "input_size": [
+          683,
+          1024
+        ],
+        "resize_ms": 8.582578971982002,
+        "input_transfer_ms": 0.3629904240369797,
+        "preprocess_ms": 0.13876892626285553,
+        "encoder_ms": 87.33916096389294,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 1.1861156672239304,
+            "cache_build_including_PE_ms": {
+              "cached": 0.3083758056163788,
+              "dense_assoc": 0.19842945039272308,
+              "factor_projected": 0.5964729934930801
+            },
+            "prompt_count": 1,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 1.173531636595726,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 1,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 0.5226600915193558,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 1,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 558421,
+          "npz": "image_000000558421/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 170317,
+              "category_id": 7,
+              "annotation_area": 17391.442149999995,
+              "decoded_area": 17388,
+              "gt_index": 0,
+              "central_xy": [
+                483.0,
+                296.0
+              ],
+              "near_boundary_xy": [
+                517.0,
+                252.0
+              ],
+              "tight_box_xyxy": [
+                300,
+                242,
+                533,
+                352
+              ],
+              "central_erosion_depth": 43
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 288.9214847236872
+      },
+      {
+        "image_id": 513181,
+        "image_encoder_executions": 1,
+        "original_size": [
+          423,
+          640
+        ],
+        "input_size": [
+          677,
+          1024
+        ],
+        "resize_ms": 16.193585470318794,
+        "input_transfer_ms": 0.5184579640626907,
+        "preprocess_ms": 0.30743516981601715,
+        "encoder_ms": 86.87563613057137,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 2.0438097417354584,
+            "cache_build_including_PE_ms": {
+              "cached": 0.6408132612705231,
+              "dense_assoc": 0.42259320616722107,
+              "factor_projected": 1.3608429580926895
+            },
+            "prompt_count": 1,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 1.1958368122577667,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 1,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 0.5433522164821625,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 1,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 513181,
+          "npz": "image_000000513181/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 176031,
+              "category_id": 9,
+              "annotation_area": 9505.01005,
+              "decoded_area": 9520,
+              "gt_index": 0,
+              "central_xy": [
+                190.0,
+                268.0
+              ],
+              "near_boundary_xy": [
+                72.0,
+                278.0
+              ],
+              "tight_box_xyxy": [
+                68,
+                237,
+                274,
+                299
+              ],
+              "central_erosion_depth": 27
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 291.43319465219975
+      },
+      {
+        "image_id": 541123,
+        "image_encoder_executions": 1,
+        "original_size": [
+          427,
+          640
+        ],
+        "input_size": [
+          683,
+          1024
+        ],
+        "resize_ms": 9.126430377364159,
+        "input_transfer_ms": 0.34922733902931213,
+        "preprocess_ms": 0.1380760222673416,
+        "encoder_ms": 86.75856702029705,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 2.2246018052101135,
+            "cache_build_including_PE_ms": {
+              "cached": 0.6527155637741089,
+              "dense_assoc": 0.4159044474363327,
+              "factor_projected": 1.2700296938419342
+            },
+            "prompt_count": 2,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 1.1333003640174866,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 2,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 0.6428863853216171,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 2,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 541123,
+          "npz": "image_000000541123/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 1309097,
+              "category_id": 1,
+              "annotation_area": 1501.1092,
+              "decoded_area": 1505,
+              "gt_index": 0,
+              "central_xy": [
+                139.0,
+                294.0
+              ],
+              "near_boundary_xy": [
+                112.0,
+                325.0
+              ],
+              "tight_box_xyxy": [
+                111,
+                257,
+                167,
+                339
+              ],
+              "central_erosion_depth": 11
+            },
+            {
+              "annotation_id": 1256354,
+              "category_id": 1,
+              "annotation_area": 1851.5800499999991,
+              "decoded_area": 1859,
+              "gt_index": 1,
+              "central_xy": [
+                335.0,
+                297.0
+              ],
+              "near_boundary_xy": [
+                315.0,
+                330.0
+              ],
+              "tight_box_xyxy": [
+                304,
+                267,
+                364,
+                355
+              ],
+              "central_erosion_depth": 11
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 317.66922026872635
+      },
+      {
+        "image_id": 389812,
+        "image_encoder_executions": 1,
+        "original_size": [
+          480,
+          640
+        ],
+        "input_size": [
+          768,
+          1024
+        ],
+        "resize_ms": 9.51680913567543,
+        "input_transfer_ms": 0.3535281866788864,
+        "preprocess_ms": 0.13491883873939514,
+        "encoder_ms": 87.12866343557835,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 1.186152920126915,
+            "cache_build_including_PE_ms": {
+              "cached": 0.31669624149799347,
+              "dense_assoc": 0.20129047334194183,
+              "factor_projected": 0.6291177123785019
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 1.3012010604143143,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 0.7645320147275925,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 389812,
+          "npz": "image_000000389812/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 425732,
+              "category_id": 1,
+              "annotation_area": 73482.12650000001,
+              "decoded_area": 73519,
+              "gt_index": 0,
+              "central_xy": [
+                366.0,
+                135.0
+              ],
+              "near_boundary_xy": [
+                535.0,
+                416.0
+              ],
+              "tight_box_xyxy": [
+                137,
+                42,
+                551,
+                474
+              ],
+              "central_erosion_depth": 59
+            },
+            {
+              "annotation_id": 1043643,
+              "category_id": 52,
+              "annotation_area": 1730.2064499999992,
+              "decoded_area": 1729,
+              "gt_index": 1,
+              "central_xy": [
+                288.0,
+                397.0
+              ],
+              "near_boundary_xy": [
+                320.0,
+                403.0
+              ],
+              "tight_box_xyxy": [
+                244,
+                376,
+                327,
+                419
+              ],
+              "central_erosion_depth": 11
+            },
+            {
+              "annotation_id": 1046161,
+              "category_id": 52,
+              "annotation_area": 22110.795300000005,
+              "decoded_area": 22043,
+              "gt_index": 2,
+              "central_xy": [
+                326.0,
+                357.0
+              ],
+              "near_boundary_xy": [
+                206.0,
+                437.0
+              ],
+              "tight_box_xyxy": [
+                182,
+                308,
+                425,
+                473
+              ],
+              "central_erosion_depth": 30
+            },
+            {
+              "annotation_id": 1043460,
+              "category_id": 52,
+              "annotation_area": 3234.7289500000006,
+              "decoded_area": 3255,
+              "gt_index": 3,
+              "central_xy": [
+                371.0,
+                456.0
+              ],
+              "near_boundary_xy": [
+                374.0,
+                418.0
+              ],
+              "tight_box_xyxy": [
+                314,
+                414,
+                397,
+                479
+              ],
+              "central_erosion_depth": 20
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 391.0778034478426
+      },
+      {
+        "image_id": 513484,
+        "image_encoder_executions": 1,
+        "original_size": [
+          425,
+          640
+        ],
+        "input_size": [
+          680,
+          1024
+        ],
+        "resize_ms": 8.451011031866074,
+        "input_transfer_ms": 0.36049075424671173,
+        "preprocess_ms": 0.1364573836326599,
+        "encoder_ms": 87.36286871135235,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 1.1528562754392624,
+            "cache_build_including_PE_ms": {
+              "cached": 0.31463801860809326,
+              "dense_assoc": 0.19919313490390778,
+              "factor_projected": 0.59555284678936
+            },
+            "prompt_count": 1,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 1.069268211722374,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 1,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 0.4833657294511795,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 1,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 513484,
+          "npz": "image_000000513484/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 586378,
+              "category_id": 23,
+              "annotation_area": 91241.15099999998,
+              "decoded_area": 91281,
+              "gt_index": 0,
+              "central_xy": [
+                302.0,
+                254.0
+              ],
+              "near_boundary_xy": [
+                161.0,
+                212.0
+              ],
+              "tight_box_xyxy": [
+                8,
+                31,
+                481,
+                401
+              ],
+              "central_erosion_depth": 97
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 299.9800741672516
+      },
+      {
+        "image_id": 384616,
+        "image_encoder_executions": 1,
+        "original_size": [
+          480,
+          640
+        ],
+        "input_size": [
+          768,
+          1024
+        ],
+        "resize_ms": 13.507608324289322,
+        "input_transfer_ms": 0.5608703941106796,
+        "preprocess_ms": 0.2561639994382858,
+        "encoder_ms": 87.49864622950554,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 1.3179425150156021,
+            "cache_build_including_PE_ms": {
+              "cached": 0.6056521087884903,
+              "dense_assoc": 0.4124809056520462,
+              "factor_projected": 1.406107097864151
+            },
+            "prompt_count": 1,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 1.218976452946663,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 1,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 0.5425009876489639,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 1,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 384616,
+          "npz": "image_000000384616/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 417048,
+              "category_id": 11,
+              "annotation_area": 14025.7156,
+              "decoded_area": 14027,
+              "gt_index": 0,
+              "central_xy": [
+                416.0,
+                247.0
+              ],
+              "near_boundary_xy": [
+                440.0,
+                362.0
+              ],
+              "tight_box_xyxy": [
+                371,
+                192,
+                453,
+                466
+              ],
+              "central_erosion_depth": 27
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 325.43859258294106
+      },
+      {
+        "image_id": 530836,
+        "image_encoder_executions": 1,
+        "original_size": [
+          464,
+          640
+        ],
+        "input_size": [
+          742,
+          1024
+        ],
+        "resize_ms": 9.379802271723747,
+        "input_transfer_ms": 0.36691129207611084,
+        "preprocess_ms": 0.14065764844417572,
+        "encoder_ms": 87.72828616201878,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 1.0681673884391785,
+            "cache_build_including_PE_ms": {
+              "cached": 0.31703710556030273,
+              "dense_assoc": 0.2011433243751526,
+              "factor_projected": 0.629054382443428
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 1.7249565571546555,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 1.00654736161232,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 530836,
+          "npz": "image_000000530836/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 1641309,
+              "category_id": 79,
+              "annotation_area": 13470.522049999998,
+              "decoded_area": 13482,
+              "gt_index": 0,
+              "central_xy": [
+                144.0,
+                301.0
+              ],
+              "near_boundary_xy": [
+                194.0,
+                377.0
+              ],
+              "tight_box_xyxy": [
+                77,
+                246,
+                197,
+                384
+              ],
+              "central_erosion_depth": 53
+            },
+            {
+              "annotation_id": 332553,
+              "category_id": 82,
+              "annotation_area": 10909.034500000002,
+              "decoded_area": 10914,
+              "gt_index": 1,
+              "central_xy": [
+                27.0,
+                287.0
+              ],
+              "near_boundary_xy": [
+                0.0,
+                310.0
+              ],
+              "tight_box_xyxy": [
+                0,
+                207,
+                55,
+                416
+              ],
+              "central_erosion_depth": 28
+            },
+            {
+              "annotation_id": 333508,
+              "category_id": 82,
+              "annotation_area": 10995.503049999996,
+              "decoded_area": 10976,
+              "gt_index": 2,
+              "central_xy": [
+                608.0,
+                253.0
+              ],
+              "near_boundary_xy": [
+                582.0,
+                351.0
+              ],
+              "tight_box_xyxy": [
+                575,
+                214,
+                640,
+                395
+              ],
+              "central_erosion_depth": 32
+            },
+            {
+              "annotation_id": 1618849,
+              "category_id": 67,
+              "annotation_area": 6081.462949999999,
+              "decoded_area": 6105,
+              "gt_index": 3,
+              "central_xy": [
+                293.0,
+                325.0
+              ],
+              "near_boundary_xy": [
+                379.0,
+                312.0
+              ],
+              "tight_box_xyxy": [
+                265,
+                294,
+                411,
+                429
+              ],
+              "central_erosion_depth": 19
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 435.4097153991461
+      },
+      {
+        "image_id": 533493,
+        "image_encoder_executions": 1,
+        "original_size": [
+          281,
+          500
+        ],
+        "input_size": [
+          575,
+          1024
+        ],
+        "resize_ms": 7.612856104969978,
+        "input_transfer_ms": 0.36588869988918304,
+        "preprocess_ms": 0.1490078866481781,
+        "encoder_ms": 87.21817657351494,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 2.1918006241321564,
+            "cache_build_including_PE_ms": {
+              "cached": 0.6226040422916412,
+              "dense_assoc": 0.4095733165740967,
+              "factor_projected": 1.2587886303663254
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 2.7353987097740173,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 0.7557421922683716,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 533493,
+          "npz": "image_000000533493/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 460886,
+              "category_id": 1,
+              "annotation_area": 18179.137100000004,
+              "decoded_area": 18139,
+              "gt_index": 0,
+              "central_xy": [
+                386.0,
+                198.0
+              ],
+              "near_boundary_xy": [
+                452.0,
+                236.0
+              ],
+              "tight_box_xyxy": [
+                320,
+                80,
+                453,
+                277
+              ],
+              "central_erosion_depth": 44
+            },
+            {
+              "annotation_id": 444072,
+              "category_id": 1,
+              "annotation_area": 19931.566400000003,
+              "decoded_area": 19928,
+              "gt_index": 1,
+              "central_xy": [
+                51.0,
+                232.0
+              ],
+              "near_boundary_xy": [
+                131.0,
+                112.0
+              ],
+              "tight_box_xyxy": [
+                15,
+                9,
+                208,
+                278
+              ],
+              "central_erosion_depth": 31
+            },
+            {
+              "annotation_id": 424665,
+              "category_id": 1,
+              "annotation_area": 19670.746250000004,
+              "decoded_area": 19646,
+              "gt_index": 2,
+              "central_xy": [
+                131.0,
+                235.0
+              ],
+              "near_boundary_xy": [
+                158.0,
+                130.0
+              ],
+              "tight_box_xyxy": [
+                84,
+                34,
+                281,
+                281
+              ],
+              "central_erosion_depth": 38
+            },
+            {
+              "annotation_id": 604214,
+              "category_id": 34,
+              "annotation_area": 2516.157600000001,
+              "decoded_area": 2513,
+              "gt_index": 3,
+              "central_xy": [
+                223.0,
+                73.0
+              ],
+              "near_boundary_xy": [
+                208.0,
+                95.0
+              ],
+              "tight_box_xyxy": [
+                192,
+                48,
+                260,
+                128
+              ],
+              "central_erosion_depth": 17
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 382.2921011596918
+      },
+      {
+        "image_id": 462904,
+        "image_encoder_executions": 1,
+        "original_size": [
+          480,
+          640
+        ],
+        "input_size": [
+          768,
+          1024
+        ],
+        "resize_ms": 10.219398885965347,
+        "input_transfer_ms": 0.42692385613918304,
+        "preprocess_ms": 0.15553832054138184,
+        "encoder_ms": 87.49862015247345,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 1.195523887872696,
+            "cache_build_including_PE_ms": {
+              "cached": 0.3335680812597275,
+              "dense_assoc": 0.19984319806098938,
+              "factor_projected": 0.6203446537256241
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 1.3525839895009995,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 0.872146338224411,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 462904,
+          "npz": "image_000000462904/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 2124963,
+              "category_id": 62,
+              "annotation_area": 1049.3382999999992,
+              "decoded_area": 1041,
+              "gt_index": 0,
+              "central_xy": [
+                157.0,
+                236.0
+              ],
+              "near_boundary_xy": [
+                180.0,
+                221.0
+              ],
+              "tight_box_xyxy": [
+                148,
+                196,
+                186,
+                272
+              ],
+              "central_erosion_depth": 8
+            },
+            {
+              "annotation_id": 2008402,
+              "category_id": 1,
+              "annotation_area": 1815.7373,
+              "decoded_area": 1803,
+              "gt_index": 1,
+              "central_xy": [
+                12.0,
+                181.0
+              ],
+              "near_boundary_xy": [
+                12.0,
+                240.0
+              ],
+              "tight_box_xyxy": [
+                0,
+                149,
+                43,
+                247
+              ],
+              "central_erosion_depth": 11
+            },
+            {
+              "annotation_id": 120232,
+              "category_id": 67,
+              "annotation_area": 2933.8809500000034,
+              "decoded_area": 2949,
+              "gt_index": 2,
+              "central_xy": [
+                633.0,
+                195.0
+              ],
+              "near_boundary_xy": [
+                495.0,
+                187.0
+              ],
+              "tight_box_xyxy": [
+                340,
+                177,
+                640,
+                290
+              ],
+              "central_erosion_depth": 6
+            },
+            {
+              "annotation_id": 1425549,
+              "category_id": 28,
+              "annotation_area": 1653.2828,
+              "decoded_area": 1643,
+              "gt_index": 3,
+              "central_xy": [
+                510.0,
+                120.0
+              ],
+              "near_boundary_xy": [
+                508.0,
+                132.0
+              ],
+              "tight_box_xyxy": [
+                468,
+                106,
+                547,
+                177
+              ],
+              "central_erosion_depth": 13
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 448.97390715777874
+      },
+      {
+        "image_id": 165351,
+        "image_encoder_executions": 1,
+        "original_size": [
+          612,
+          612
+        ],
+        "input_size": [
+          1024,
+          1024
+        ],
+        "resize_ms": 13.524090871214867,
+        "input_transfer_ms": 0.5338005721569061,
+        "preprocess_ms": 0.15592947602272034,
+        "encoder_ms": 87.86983974277973,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 1.097479835152626,
+            "cache_build_including_PE_ms": {
+              "cached": 0.3379266709089279,
+              "dense_assoc": 0.20092912018299103,
+              "factor_projected": 0.6250441074371338
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 1.408316195011139,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 1.199185848236084,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 165351,
+          "npz": "image_000000165351/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 2130280,
+              "category_id": 67,
+              "annotation_area": 4172.950100000001,
+              "decoded_area": 4164,
+              "gt_index": 0,
+              "central_xy": [
+                17.0,
+                17.0
+              ],
+              "near_boundary_xy": [
+                26.0,
+                34.0
+              ],
+              "tight_box_xyxy": [
+                0,
+                0,
+                612,
+                52
+              ],
+              "central_erosion_depth": 16
+            },
+            {
+              "annotation_id": 1544669,
+              "category_id": 52,
+              "annotation_area": 10159.1862,
+              "decoded_area": 10173,
+              "gt_index": 1,
+              "central_xy": [
+                342.0,
+                97.0
+              ],
+              "near_boundary_xy": [
+                158.0,
+                102.0
+              ],
+              "tight_box_xyxy": [
+                137,
+                67,
+                550,
+                176
+              ],
+              "central_erosion_depth": 27
+            },
+            {
+              "annotation_id": 1042872,
+              "category_id": 52,
+              "annotation_area": 33158.610649999995,
+              "decoded_area": 33164,
+              "gt_index": 2,
+              "central_xy": [
+                201.0,
+                287.0
+              ],
+              "near_boundary_xy": [
+                313.0,
+                270.0
+              ],
+              "tight_box_xyxy": [
+                0,
+                240,
+                544,
+                418
+              ],
+              "central_erosion_depth": 45
+            },
+            {
+              "annotation_id": 1542953,
+              "category_id": 52,
+              "annotation_area": 9404.344550000002,
+              "decoded_area": 9400,
+              "gt_index": 3,
+              "central_xy": [
+                303.0,
+                217.0
+              ],
+              "near_boundary_xy": [
+                279.0,
+                182.0
+              ],
+              "tight_box_xyxy": [
+                185,
+                178,
+                355,
+                259
+              ],
+              "central_erosion_depth": 31
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 530.3661711513996
+      },
+      {
+        "image_id": 66886,
+        "image_encoder_executions": 1,
+        "original_size": [
+          427,
+          640
+        ],
+        "input_size": [
+          683,
+          1024
+        ],
+        "resize_ms": 13.25305551290512,
+        "input_transfer_ms": 0.47645531594753265,
+        "preprocess_ms": 0.16437843441963196,
+        "encoder_ms": 86.60822175443172,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 2.1900590509176254,
+            "cache_build_including_PE_ms": {
+              "cached": 0.6725173443555832,
+              "dense_assoc": 0.4475060850381851,
+              "factor_projected": 1.4209672808647156
+            },
+            "prompt_count": 1,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 1.038428395986557,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 1,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 0.6890371441841125,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 1,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 66886,
+          "npz": "image_000000066886/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 449505,
+              "category_id": 1,
+              "annotation_area": 145264.453,
+              "decoded_area": 145281,
+              "gt_index": 0,
+              "central_xy": [
+                379.0,
+                254.0
+              ],
+              "near_boundary_xy": [
+                500.0,
+                419.0
+              ],
+              "tight_box_xyxy": [
+                119,
+                33,
+                599,
+                427
+              ],
+              "central_erosion_depth": 161
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 346.4217949658632
+      },
+      {
+        "image_id": 529528,
+        "image_encoder_executions": 1,
+        "original_size": [
+          333,
+          500
+        ],
+        "input_size": [
+          682,
+          1024
+        ],
+        "resize_ms": 8.001677691936493,
+        "input_transfer_ms": 0.3652498126029968,
+        "preprocess_ms": 0.13898871839046478,
+        "encoder_ms": 87.54670061171055,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 1.1098086833953857,
+            "cache_build_including_PE_ms": {
+              "cached": 0.3145858645439148,
+              "dense_assoc": 0.19668973982334137,
+              "factor_projected": 0.6098728626966476
+            },
+            "prompt_count": 3,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 1.3037137687206268,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 3,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 0.7194485515356064,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 3,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 529528,
+          "npz": "image_000000529528/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 714741,
+              "category_id": 51,
+              "annotation_area": 37467.48475000001,
+              "decoded_area": 37459,
+              "gt_index": 0,
+              "central_xy": [
+                153.0,
+                225.0
+              ],
+              "near_boundary_xy": [
+                101.0,
+                320.0
+              ],
+              "tight_box_xyxy": [
+                26,
+                124,
+                266,
+                326
+              ],
+              "central_erosion_depth": 76
+            },
+            {
+              "annotation_id": 1578169,
+              "category_id": 61,
+              "annotation_area": 22565.29445000001,
+              "decoded_area": 22551,
+              "gt_index": 1,
+              "central_xy": [
+                137.0,
+                213.0
+              ],
+              "near_boundary_xy": [
+                183.0,
+                149.0
+              ],
+              "tight_box_xyxy": [
+                43,
+                143,
+                260,
+                271
+              ],
+              "central_erosion_depth": 57
+            },
+            {
+              "annotation_id": 1537739,
+              "category_id": 51,
+              "annotation_area": 4173.626800000001,
+              "decoded_area": 4178,
+              "gt_index": 2,
+              "central_xy": [
+                423.0,
+                69.0
+              ],
+              "near_boundary_xy": [
+                440.0,
+                41.0
+              ],
+              "tight_box_xyxy": [
+                387,
+                35,
+                473,
+                103
+              ],
+              "central_erosion_depth": 25
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 375.5954559892416
+      },
+      {
+        "image_id": 569976,
+        "image_encoder_executions": 1,
+        "original_size": [
+          640,
+          480
+        ],
+        "input_size": [
+          1024,
+          768
+        ],
+        "resize_ms": 15.22437110543251,
+        "input_transfer_ms": 0.36531873047351837,
+        "preprocess_ms": 0.13661757111549377,
+        "encoder_ms": 87.02224120497704,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 2.2152718156576157,
+            "cache_build_including_PE_ms": {
+              "cached": 0.6786063313484192,
+              "dense_assoc": 0.4311744123697281,
+              "factor_projected": 1.3640262186527252
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 1.382574439048767,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 0.7378906011581421,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 569976,
+          "npz": "image_000000569976/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 433720,
+              "category_id": 1,
+              "annotation_area": 46489.71965,
+              "decoded_area": 46491,
+              "gt_index": 0,
+              "central_xy": [
+                228.0,
+                160.0
+              ],
+              "near_boundary_xy": [
+                319.0,
+                106.0
+              ],
+              "tight_box_xyxy": [
+                129,
+                1,
+                341,
+                411
+              ],
+              "central_erosion_depth": 65
+            },
+            {
+              "annotation_id": 1582191,
+              "category_id": 62,
+              "annotation_area": 21503.676999999996,
+              "decoded_area": 21531,
+              "gt_index": 1,
+              "central_xy": [
+                67.0,
+                585.0
+              ],
+              "near_boundary_xy": [
+                150.0,
+                599.0
+              ],
+              "tight_box_xyxy": [
+                0,
+                522,
+                264,
+                640
+              ],
+              "central_erosion_depth": 55
+            },
+            {
+              "annotation_id": 1239516,
+              "category_id": 1,
+              "annotation_area": 10687.444850000005,
+              "decoded_area": 10721,
+              "gt_index": 2,
+              "central_xy": [
+                290.0,
+                305.0
+              ],
+              "near_boundary_xy": [
+                264.0,
+                298.0
+              ],
+              "tight_box_xyxy": [
+                188,
+                266,
+                334,
+                450
+              ],
+              "central_erosion_depth": 26
+            },
+            {
+              "annotation_id": 1188281,
+              "category_id": 89,
+              "annotation_area": 10347.806049999994,
+              "decoded_area": 10347,
+              "gt_index": 3,
+              "central_xy": [
+                307.0,
+                242.0
+              ],
+              "near_boundary_xy": [
+                293.0,
+                405.0
+              ],
+              "tight_box_xyxy": [
+                195,
+                210,
+                339,
+                438
+              ],
+              "central_erosion_depth": 24
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 466.7576942592859
+      },
+      {
+        "image_id": 572388,
+        "image_encoder_executions": 1,
+        "original_size": [
+          500,
+          349
+        ],
+        "input_size": [
+          1024,
+          715
+        ],
+        "resize_ms": 10.625418275594711,
+        "input_transfer_ms": 0.4138816148042679,
+        "preprocess_ms": 0.14914758503437042,
+        "encoder_ms": 86.6098701953888,
+        "regimes": [
+          {
+            "regime": "central",
+            "prompt_encoder_ms": 2.061573788523674,
+            "cache_build_including_PE_ms": {
+              "cached": 0.6396528333425522,
+              "dense_assoc": 0.43641403317451477,
+              "factor_projected": 1.4538895338773727
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": false
+          },
+          {
+            "regime": "near_boundary",
+            "prompt_encoder_ms": 2.5028157979249954,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          },
+          {
+            "regime": "box",
+            "prompt_encoder_ms": 1.2382082641124725,
+            "cache_build_including_PE_ms": {
+              "cached": 0.0,
+              "dense_assoc": 0.0,
+              "factor_projected": 0.0
+            },
+            "prompt_count": 4,
+            "total_tokens": 7,
+            "image_cache_reused_from_prior_regime": true
+          }
+        ],
+        "encoded_inputs": {
+          "schema_version": 1,
+          "image_id": 572388,
+          "npz": "image_000000572388/encoded_inputs.npz",
+          "decoder_state": "mask_decoder_state.pt",
+          "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+          "regimes_exported": [
+            "central",
+            "near_boundary",
+            "box"
+          ],
+          "objects": [
+            {
+              "annotation_id": 1079131,
+              "category_id": 60,
+              "annotation_area": 20001.321749999996,
+              "decoded_area": 19985,
+              "gt_index": 0,
+              "central_xy": [
+                220.0,
+                430.0
+              ],
+              "near_boundary_xy": [
+                215.0,
+                321.0
+              ],
+              "tight_box_xyxy": [
+                124,
+                312,
+                302,
+                492
+              ],
+              "central_erosion_depth": 49
+            },
+            {
+              "annotation_id": 1574698,
+              "category_id": 60,
+              "annotation_area": 14463.928649999996,
+              "decoded_area": 14459,
+              "gt_index": 1,
+              "central_xy": [
+                305.0,
+                332.0
+              ],
+              "near_boundary_xy": [
+                274.0,
+                390.0
+              ],
+              "tight_box_xyxy": [
+                241,
+                264,
+                349,
+                443
+              ],
+              "central_erosion_depth": 44
+            },
+            {
+              "annotation_id": 1816556,
+              "category_id": 17,
+              "annotation_area": 66025.8684,
+              "decoded_area": 65924,
+              "gt_index": 2,
+              "central_xy": [
+                81.0,
+                262.0
+              ],
+              "near_boundary_xy": [
+                184.0,
+                371.0
+              ],
+              "tight_box_xyxy": [
+                0,
+                1,
+                185,
+                453
+              ],
+              "central_erosion_depth": 80
+            },
+            {
+              "annotation_id": 1573331,
+              "category_id": 60,
+              "annotation_area": 8774.940399999998,
+              "decoded_area": 8788,
+              "gt_index": 3,
+              "central_xy": [
+                310.0,
+                179.0
+              ],
+              "near_boundary_xy": [
+                272.0,
+                162.0
+              ],
+              "tight_box_xyxy": [
+                259,
+                125,
+                349,
+                244
+              ],
+              "central_erosion_depth": 39
+            }
+          ],
+          "contract": "real encoded FP32 tensors; each sparse row is an independent original prompt; no GT encoded in inputs"
+        },
+        "complete_diagnostic_wall_ms": 413.4949781000614
+      }
+    ],
+    "records": {
+      "_omitted": "array exceeds 64 items",
+      "item_count": 288
+    },
+    "model_load_ms": 1082.6558247208595,
+    "decoder_export": {
+      "path": "mask_decoder_state.pt",
+      "bytes": 16273913,
+      "diagnostic_export_ms": 32.73538686335087,
+      "save_count": 1,
+      "checkpoint_rehashed": false
+    },
+    "quality_summary": {},
+    "finished_at_utc": "2026-10-01T13:48:38.359874+00:00"
+  }
+}

@@ -1,0 +1,363 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo1_sam/results/takeover_20261001_v1/sam2_local_student_v1/perf_p128_mb64_shared_report.json",
+  "source_bytes": 404076,
+  "source_sha256": "72720b181e00835f5e2c0d1b0ab11d75eb051b0545d093a452ef607af4ce5410",
+  "data": {
+    "status": "COMPLETED_SHARED_SAM2_DECODER_DIAGNOSTIC_NOT_EXCLUSIVE",
+    "pid": 92588,
+    "microbatch": 64,
+    "records": {
+      "_omitted": "array exceeds 64 items",
+      "item_count": 98
+    },
+    "protocol": "Shared-GPU SAM2.1-L complete lowresolution decoder diagnostic,128 distinct actual original-image grid point prompts, common MB; native original SDPA/deconvolution and full exact-function phase head controls vs real static-skip student5/10%. All4masks/4IQ/masktokens/objscore retained. True Inductor fullgraph/dynamicFalse, no compiler fallback. FP32 TF32off; separate decoder-FP16 precision arms ALL use the SAME FP32 encoder/highres features cast toFP16, not an FP16 full encoder or end-to-end claim. Warm timing includes entire decoder across all128 prompts, excludes encoder/promptencoder/image-static cache/model load/postprocess. Seven cyclic orders plus reversed orders, reps10 perblock. Contention means no exclusive latency/publication speed claim; numerical drift is diagnostic, not old5e-5 equivalence pass. Cold static cache setup measured separately and cannot be free in end-to-end claims.",
+    "image_id": 64718,
+    "sparse_shape": [
+      128,
+      2,
+      256
+    ],
+    "static_cache_fp32_seconds": 0.005003808066248894,
+    "static_cache_fp16_seconds": 0.12472841143608093,
+    "current_arm": "student10_fp16",
+    "output_dtypes": {
+      "native_fp32": [
+        "torch.float32",
+        "torch.float32",
+        "torch.float32",
+        "torch.float32"
+      ],
+      "phase_exact_fp32": [
+        "torch.float32",
+        "torch.float32",
+        "torch.float32",
+        "torch.float32"
+      ],
+      "student5_fp32": [
+        "torch.float32",
+        "torch.float32",
+        "torch.float32",
+        "torch.float32"
+      ],
+      "student10_fp32": [
+        "torch.float32",
+        "torch.float32",
+        "torch.float32",
+        "torch.float32"
+      ],
+      "native_fp16": [
+        "torch.float16",
+        "torch.float16",
+        "torch.float16",
+        "torch.float16"
+      ],
+      "phase_exact_fp16": [
+        "torch.float16",
+        "torch.float16",
+        "torch.float16",
+        "torch.float16"
+      ],
+      "student10_fp16": [
+        "torch.float16",
+        "torch.float16",
+        "torch.float16",
+        "torch.float16"
+      ]
+    },
+    "compile_seconds": {
+      "native_fp32": 14.781130934134126,
+      "phase_exact_fp32": 9.650545025244355,
+      "student5_fp32": 11.091326517984271,
+      "student10_fp32": 9.800563890486956,
+      "native_fp16": 12.75528821349144,
+      "phase_exact_fp16": 9.230253748595715,
+      "student10_fp16": 11.211744340136647
+    },
+    "first_microbatch_numeric_diagnostics": {
+      "native_fp32": {
+        "max_logit_difference_vs_native_fp32": 0.0,
+        "lowres_flip_fraction": 0.0,
+        "max_IQ_difference": 0.0,
+        "max_masktoken_difference": 0.0,
+        "max_objscore_difference": 0.0
+      },
+      "phase_exact_fp32": {
+        "max_logit_difference_vs_native_fp32": 3.0517578125e-05,
+        "lowres_flip_fraction": 0.0,
+        "max_IQ_difference": 0.0,
+        "max_masktoken_difference": 0.0,
+        "max_objscore_difference": 0.0
+      },
+      "student5_fp32": {
+        "max_logit_difference_vs_native_fp32": 41.39511489868164,
+        "lowres_flip_fraction": 0.0088881254196167,
+        "max_IQ_difference": 0.0,
+        "max_masktoken_difference": 0.0,
+        "max_objscore_difference": 0.0
+      },
+      "student10_fp32": {
+        "max_logit_difference_vs_native_fp32": 39.345916748046875,
+        "lowres_flip_fraction": 0.004831910133361816,
+        "max_IQ_difference": 0.0,
+        "max_masktoken_difference": 0.0,
+        "max_objscore_difference": 0.0
+      },
+      "native_fp16": {
+        "max_logit_difference_vs_native_fp32": 0.28075408935546875,
+        "lowres_flip_fraction": 4.601478576660156e-05,
+        "max_IQ_difference": 0.0034036636352539062,
+        "max_masktoken_difference": 0.0731043815612793,
+        "max_objscore_difference": 0.01031494140625
+      },
+      "phase_exact_fp16": {
+        "max_logit_difference_vs_native_fp32": 0.28075408935546875,
+        "lowres_flip_fraction": 4.601478576660156e-05,
+        "max_IQ_difference": 0.0034036636352539062,
+        "max_masktoken_difference": 0.0731043815612793,
+        "max_objscore_difference": 0.01031494140625
+      },
+      "student10_fp16": {
+        "max_logit_difference_vs_native_fp32": 39.32508087158203,
+        "lowres_flip_fraction": 0.004863440990447998,
+        "max_IQ_difference": 0.0034036636352539062,
+        "max_masktoken_difference": 0.0731043815612793,
+        "max_objscore_difference": 0.01031494140625
+      }
+    },
+    "profiles": {
+      "native_fp32": {
+        "trace": "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/sam2_local_student_v1/perf_p128_mb64_shared/native_fp32.trace.json",
+        "operators": {
+          "_omitted": "array exceeds 64 items",
+          "item_count": 102
+        },
+        "observed_cuda_events": [
+          "## Call CompiledFxGraph fbueo2sovbbxv6k56d2see4d2va6udtefdaqdhgs5azycwz6grzp ##",
+          "ampere_sgemm_128x128_tn",
+          "ampere_sgemm_128x128_tt",
+          "ampere_sgemm_128x64_tn",
+          "ampere_sgemm_32x32_sliced1x4_tn",
+          "fmha_cutlassF_f32_aligned_64x64_rf_sm80(PyTorchMemEffAttention::AttentionKernel<float, cutlass::arch::Sm80, true, 64, 64, 64, true, true>::Params)",
+          "std::enable_if<!(false), void>::type internal::gemvx::kernel<int, int, float, float, float, float, false, true, true, false, 6, false, cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float> >(cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float>)",
+          "triton_per_fused_add_addmm_clone_expand_native_layer_norm_permute_unsqueeze_view_10",
+          "triton_per_fused_add_addmm_native_layer_norm_view_5",
+          "triton_per_fused_add_addmm_native_layer_norm_view_7",
+          "triton_per_fused_add_addmm_native_layer_norm_view_8",
+          "triton_per_fused_add_convolution_div_gelu_mean_mul_pow_sqrt_sub_transpose_unsqueeze_view_15",
+          "triton_per_fused_add_native_layer_norm_view_1",
+          "triton_poi_fused__scaled_dot_product_efficient_attention_add_transpose_view_4",
+          "triton_poi_fused_add_clone_expand_permute_unsqueeze_view_3",
+          "triton_poi_fused_add_clone_expand_unsqueeze_view_2",
+          "triton_poi_fused_add_convolution_gelu_16",
+          "triton_poi_fused_addmm_relu_11",
+          "triton_poi_fused_addmm_relu_view_6",
+          "triton_poi_fused_addmm_sigmoid_12",
+          "triton_poi_fused_cat_expand_unsqueeze_0",
+          "triton_poi_fused_convolution_gelu_13",
+          "triton_poi_fused_convolution_transpose_view_14",
+          "triton_red_fused_add_addmm_clone_expand_native_layer_norm_permute_unsqueeze_view_9",
+          "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1} const&)::{lambda(int)#1})",
+          "void cublasLt::splitKreduce_kernel<32, 16, int, float, float, float, float, false, float, float, float, true, false, false, false>(cublasLt::cublasSplitKParams<float>, float const*, float const*, float*, float*, float const*, float const*, float const*, float const*, float*, void*, long, float*, int*, float*, float*, float const*, float const*, float const*, float const*, float const*)",
+          "void cudnn::detail::dgrad_engine<float, 128, 6, 8, 3, 3, 5, false>(int, int, int, float const*, int, float const*, int, float*, kernel_grad_params, unsigned long long, int, unsigned long long, int, float, int, int, int)",
+          "void cudnn::detail::dgrad_engine<float, 512, 6, 5, 3, 3, 3, false>(int, int, int, float const*, int, float const*, int, float*, kernel_grad_params, unsigned long long, int, unsigned long long, int, float, int, int, int)",
+          "void cudnn::engines_precompiled::nchwToNhwcKernel<float, float, float, false, true, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<float>, float const*, float*)",
+          "void cudnn::engines_precompiled::nhwcToNchwKernel<float, float, float, true, false, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nhwc2nchw_params_t<float>, float const*, float*)",
+          "void cudnn::engines_precompiled::scalePackedTensor_kernel<float, float>(long, float*, float)",
+          "void gemmSN_TN_kernel<float, 128, 16, 2, 4, 4, 4, true, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float> >(cublasGemmSmallNParams<cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float>)"
+        ],
+        "sdpa_note": "Dispatch must be read from these events; API usage alone is not FlashAttention evidence."
+      },
+      "phase_exact_fp32": {
+        "trace": "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/sam2_local_student_v1/perf_p128_mb64_shared/phase_exact_fp32.trace.json",
+        "operators": {
+          "_omitted": "array exceeds 64 items",
+          "item_count": 94
+        },
+        "observed_cuda_events": [
+          "## Call CompiledFxGraph fkbkbod4rcmlazpm6j7iksvxsuqlsijoni3hh7qurujv2hyu4kkm ##",
+          "ampere_sgemm_128x128_nn",
+          "ampere_sgemm_128x128_tn",
+          "ampere_sgemm_128x128_tt",
+          "ampere_sgemm_128x64_tn",
+          "ampere_sgemm_32x32_sliced1x4_tn",
+          "ampere_sgemm_64x32_sliced1x4_nn",
+          "fmha_cutlassF_f32_aligned_64x64_rf_sm80(PyTorchMemEffAttention::AttentionKernel<float, cutlass::arch::Sm80, true, 64, 64, 64, true, true>::Params)",
+          "std::enable_if<!(false), void>::type internal::gemvx::kernel<int, int, float, float, float, float, false, true, true, false, 6, false, cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float> >(cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float>)",
+          "triton_per_fused__unsafe_view_add_div_gelu_mean_mul_permute_pow_sqrt_sub_unsqueeze_view_11",
+          "triton_per_fused_add_addmm_clone_expand_native_layer_norm_permute_unsqueeze_view_10",
+          "triton_per_fused_add_addmm_native_layer_norm_view_5",
+          "triton_per_fused_add_addmm_native_layer_norm_view_7",
+          "triton_per_fused_add_addmm_native_layer_norm_view_8",
+          "triton_per_fused_add_native_layer_norm_view_1",
+          "triton_poi_fused__scaled_dot_product_efficient_attention_add_transpose_view_3",
+          "triton_poi_fused__unsafe_view_add_clone_gelu_permute_unsqueeze_view_14",
+          "triton_poi_fused_add_clone_expand_permute_unsqueeze_view_4",
+          "triton_poi_fused_add_clone_expand_unsqueeze_view_2",
+          "triton_poi_fused_addmm_relu_12",
+          "triton_poi_fused_addmm_relu_view_6",
+          "triton_poi_fused_addmm_sigmoid_13",
+          "triton_poi_fused_cat_expand_unsqueeze_0",
+          "triton_poi_fused_clone_permute_view_15",
+          "triton_red_fused_add_addmm_clone_expand_native_layer_norm_permute_unsqueeze_view_9",
+          "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1} const&)::{lambda(int)#1})",
+          "void cublasLt::splitKreduce_kernel<32, 16, int, float, float, float, float, false, float, float, float, true, false, false, false>(cublasLt::cublasSplitKParams<float>, float const*, float const*, float*, float*, float const*, float const*, float const*, float const*, float*, void*, long, float*, int*, float*, float*, float const*, float const*, float const*, float const*, float const*)",
+          "void cutlass::Kernel2<cutlass_80_simt_sgemm_128x64_8x5_nn_align1>(cutlass_80_simt_sgemm_128x64_8x5_nn_align1::Params)",
+          "void gemmSN_NN_kernel<float, 128, 2, 4, 8, 4, 4, false, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float> >(cublasGemmSmallNParams<cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float>)"
+        ],
+        "sdpa_note": "Dispatch must be read from these events; API usage alone is not FlashAttention evidence."
+      },
+      "student10_fp32": {
+        "trace": "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/sam2_local_student_v1/perf_p128_mb64_shared/student10_fp32.trace.json",
+        "operators": {
+          "_omitted": "array exceeds 64 items",
+          "item_count": 117
+        },
+        "observed_cuda_events": [
+          "## Call CompiledFxGraph frd5ug4bsmjc2tgppdl3p64rafrtyzv6rhwq4todzyh3ekb66jgn ##",
+          "ampere_sgemm_128x128_tn",
+          "ampere_sgemm_128x128_tt",
+          "ampere_sgemm_128x64_nn",
+          "ampere_sgemm_128x64_tn",
+          "ampere_sgemm_32x128_nn",
+          "ampere_sgemm_32x32_sliced1x4_tn",
+          "ampere_sgemm_64x64_tn",
+          "fmha_cutlassF_f32_aligned_64x64_rf_sm80(PyTorchMemEffAttention::AttentionKernel<float, cutlass::arch::Sm80, true, 64, 64, 64, true, true>::Params)",
+          "std::enable_if<!(false), void>::type internal::gemvx::kernel<int, int, float, float, float, float, false, true, true, false, 6, false, cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float> >(cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float>)",
+          "triton_per_fused_abs_add_amin_bmm_clamp_min_div_linalg_vector_norm_permute_unsqueeze_view_15",
+          "triton_per_fused_add_addmm_clone_expand_native_layer_norm_permute_unsqueeze_view_10",
+          "triton_per_fused_add_addmm_native_layer_norm_view_5",
+          "triton_per_fused_add_addmm_native_layer_norm_view_7",
+          "triton_per_fused_add_addmm_native_layer_norm_view_8",
+          "triton_per_fused_add_div_gelu_index_mean_mul_permute_pow_sqrt_sub_view_19",
+          "triton_per_fused_add_native_layer_norm_view_1",
+          "triton_per_fused_linalg_vector_norm_stack_12",
+          "triton_poi_fused__scaled_dot_product_efficient_attention_add_transpose_view_4",
+          "triton_poi_fused__unsafe_view_add_clone_gelu_index_permute_view_20",
+          "triton_poi_fused__unsafe_view_add_gelu_unsqueeze_14",
+          "triton_poi_fused_add_arange_bmm_index_put_permute_unsqueeze_view_21",
+          "triton_poi_fused_add_bmm_clone_permute_unsqueeze_view_22",
+          "triton_poi_fused_add_clone_expand_permute_unsqueeze_view_3",
+          "triton_poi_fused_add_clone_expand_unsqueeze_view_2",
+          "triton_poi_fused_addmm_relu_11",
+          "triton_poi_fused_addmm_relu_view_6",
+          "triton_poi_fused_addmm_sigmoid_16",
+          "triton_poi_fused_arange_index_unsqueeze_18",
+          "triton_poi_fused_cat_expand_unsqueeze_0",
+          "triton_poi_fused_clone_expand_stack_unsqueeze_17",
+          "triton_poi_fused_clone_permute_unsqueeze_view_13",
+          "triton_red_fused_add_addmm_clone_expand_native_layer_norm_permute_unsqueeze_view_9",
+          "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1} const&)::{lambda(int)#1})",
+          "void at::native::radixSortKVInPlace<2, -1, 32, 32, float, long, unsigned int>(at::cuda::detail::TensorInfo<float, unsigned int>, unsigned int, unsigned int, unsigned int, at::cuda::detail::TensorInfo<long, unsigned int>, unsigned int, bool)",
+          "void at::native::sbtopk::gatherTopK<float, unsigned int, 2, false>(at::cuda::detail::TensorInfo<float const, unsigned int>, unsigned int, unsigned int, bool, unsigned int, unsigned int, at::cuda::detail::TensorInfo<float, unsigned int>, unsigned int, at::cuda::detail::TensorInfo<long, unsigned int>, unsigned int, float*)",
+          "void cublasLt::splitKreduce_kernel<32, 16, int, float, float, float, float, false, float, float, float, true, false, false, false>(cublasLt::cublasSplitKParams<float>, float const*, float const*, float*, float*, float const*, float const*, float const*, float const*, float*, void*, long, float*, int*, float*, float*, float const*, float const*, float const*, float const*, float const*)",
+          "void cutlass::Kernel2<cutlass_80_simt_sgemm_128x64_8x5_nn_align1>(cutlass_80_simt_sgemm_128x64_8x5_nn_align1::Params)",
+          "void gemmSN_NN_kernel<float, 128, 2, 4, 8, 4, 4, false, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float> >(cublasGemmSmallNParams<cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float>)"
+        ],
+        "sdpa_note": "Dispatch must be read from these events; API usage alone is not FlashAttention evidence."
+      },
+      "native_fp16": {
+        "trace": "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/sam2_local_student_v1/perf_p128_mb64_shared/native_fp16.trace.json",
+        "operators": {
+          "_omitted": "array exceeds 64 items",
+          "item_count": 111
+        },
+        "observed_cuda_events": [
+          "## Call CompiledFxGraph fv4ujw7ib2s6pk5jk3b7jaqih65frcplyqfrsi5wjiyqnmjztkq4 ##",
+          "Memset (Device)",
+          "ampere_fp16_s16816gemm_fp16_128x64_ldg8_relu_f2f_tn",
+          "ampere_fp16_s16816gemm_fp16_64x64_ldg8_f2f_tn",
+          "ampere_fp16_s16816gemm_fp16_64x64_ldg8_relu_f2f_stages_64x5_tn",
+          "ampere_fp16_s1688gemm_fp16_128x128_ldg8_relu_f2f_stages_32x1_tn",
+          "ampere_fp16_s1688gemm_fp16_256x64_ldg8_f2f_stages_32x1_tt",
+          "sm80_xmma_dgrad_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize128x32x32_stage4_warpsize4x1x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+          "std::enable_if<!(false), void>::type internal::gemvx::kernel<int, int, __half, __half, __half, float, false, true, true, false, 5, false, cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<__half const>, cublasGemvTensorStridedBatched<__half const>, cublasGemvTensorStridedBatched<__half>, float> >(cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<__half const>, cublasGemvTensorStridedBatched<__half const>, cublasGemvTensorStridedBatched<__half>, float>)",
+          "triton_per_fused_add_clone_expand_native_layer_norm_permute_unsqueeze_view_10",
+          "triton_per_fused_add_convolution_div_gelu_mean_mul_pow_sqrt_sub_transpose_unsqueeze_view_15",
+          "triton_per_fused_add_native_layer_norm_view_1",
+          "triton_per_fused_add_native_layer_norm_view_5",
+          "triton_per_fused_add_native_layer_norm_view_7",
+          "triton_per_fused_add_native_layer_norm_view_8",
+          "triton_poi_fused__scaled_dot_product_flash_attention_add_transpose_view_4",
+          "triton_poi_fused_add_clone_expand_permute_unsqueeze_view_3",
+          "triton_poi_fused_add_clone_expand_unsqueeze_view_2",
+          "triton_poi_fused_add_convolution_gelu_16",
+          "triton_poi_fused_cat_expand_unsqueeze_0",
+          "triton_poi_fused_convolution_gelu_13",
+          "triton_poi_fused_convolution_transpose_view_14",
+          "triton_poi_fused_relu_11",
+          "triton_poi_fused_relu_view_6",
+          "triton_poi_fused_sigmoid_12",
+          "triton_red_fused_add_clone_expand_native_layer_norm_permute_unsqueeze_view_9",
+          "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#10}::operator()() const::{lambda(c10::Half)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#10}::operator()() const::{lambda(c10::Half)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#10}::operator()() const::{lambda(c10::Half)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#10}::operator()() const::{lambda(c10::Half)#1} const&)::{lambda(int)#1})",
+          "void cutlass::Kernel2<cutlass_80_tensorop_f16_s16816gemm_relu_f16_64x64_32x6_tn_align8>(cutlass_80_tensorop_f16_s16816gemm_relu_f16_64x64_32x6_tn_align8::Params)",
+          "void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_16x16_128x2_tn_align8>(cutlass_80_wmma_tensorop_f16_s161616gemm_f16_16x16_128x2_tn_align8::Params)",
+          "void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_128x1_tn_align2>(cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_128x1_tn_align2::Params)",
+          "void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_128x2_tn_align8>(cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_128x2_tn_align8::Params)",
+          "void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align8>(cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align8::Params)",
+          "void cutlass__5x_cudnn::Kernel<cutlass_tensorop_f16_s16816dgrad_optimized_f16_256x64_32x4_nhwc_align8>(cutlass_tensorop_f16_s16816dgrad_optimized_f16_256x64_32x4_nhwc_align8::Params)",
+          "void gemmSN_TN_kernel<float, 128, 16, 2, 4, 4, 4, true, cublasGemvTensorStridedBatched<__half const>, cublasGemvTensorStridedBatched<__half const>, cublasGemvTensorStridedBatched<__half> >(cublasGemmSmallNParams<cublasGemvTensorStridedBatched<__half const>, cublasGemvTensorStridedBatched<__half const>, cublasGemvTensorStridedBatched<__half>, float>)",
+          "void pytorch_flash::flash_fwd_kernel<Flash_fwd_kernel_traits<32, 128, 128, 4, false, false, cutlass::half_t, Flash_kernel_traits<32, 128, 128, 4, cutlass::half_t> >, false, false, false, false, false, false, false, false>(pytorch_flash::Flash_fwd_params)",
+          "void pytorch_flash::flash_fwd_kernel<Flash_fwd_kernel_traits<32, 128, 128, 4, false, false, cutlass::half_t, Flash_kernel_traits<32, 128, 128, 4, cutlass::half_t> >, false, false, false, false, false, true, false, false>(pytorch_flash::Flash_fwd_params)"
+        ],
+        "sdpa_note": "Dispatch must be read from these events; API usage alone is not FlashAttention evidence."
+      },
+      "student10_fp16": {
+        "trace": "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/sam2_local_student_v1/perf_p128_mb64_shared/student10_fp16.trace.json",
+        "operators": {
+          "_omitted": "array exceeds 64 items",
+          "item_count": 126
+        },
+        "observed_cuda_events": [
+          "## Call CompiledFxGraph feevwsjtoi6jz4y64spfsz4ou7egxiphiiiqw773kgj4madmjx7k ##",
+          "Memset (Device)",
+          "ampere_fp16_s16816gemm_fp16_128x64_ldg8_relu_f2f_tn",
+          "ampere_fp16_s16816gemm_fp16_64x128_ldg8_f2f_stages_64x3_tn",
+          "ampere_fp16_s16816gemm_fp16_64x64_ldg8_f2f_tn",
+          "ampere_fp16_s16816gemm_fp16_64x64_ldg8_relu_f2f_stages_64x5_tn",
+          "ampere_fp16_s1688gemm_fp16_128x128_ldg8_f2f_nn",
+          "ampere_fp16_s1688gemm_fp16_128x128_ldg8_f2f_stages_32x1_nn",
+          "ampere_fp16_s1688gemm_fp16_128x128_ldg8_relu_f2f_stages_32x1_tn",
+          "ampere_fp16_s1688gemm_fp16_256x64_ldg8_f2f_stages_32x1_tt",
+          "std::enable_if<!(false), void>::type internal::gemvx::kernel<int, int, __half, __half, __half, float, false, true, true, false, 5, false, cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<__half const>, cublasGemvTensorStridedBatched<__half const>, cublasGemvTensorStridedBatched<__half>, float> >(cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<__half const>, cublasGemvTensorStridedBatched<__half const>, cublasGemvTensorStridedBatched<__half>, float>)",
+          "triton_per_fused_abs_add_amin_bmm_clamp_min_div_linalg_vector_norm_permute_unsqueeze_view_15",
+          "triton_per_fused_add_clone_expand_native_layer_norm_permute_unsqueeze_view_10",
+          "triton_per_fused_add_div_gelu_index_mean_mul_permute_pow_sqrt_sub_view_19",
+          "triton_per_fused_add_native_layer_norm_view_1",
+          "triton_per_fused_add_native_layer_norm_view_5",
+          "triton_per_fused_add_native_layer_norm_view_7",
+          "triton_per_fused_add_native_layer_norm_view_8",
+          "triton_per_fused_linalg_vector_norm_stack_12",
+          "triton_poi_fused__scaled_dot_product_flash_attention_add_transpose_view_4",
+          "triton_poi_fused__unsafe_view_add_clone_gelu_index_permute_view_20",
+          "triton_poi_fused__unsafe_view_add_gelu_unsqueeze_14",
+          "triton_poi_fused_add_arange_bmm_index_put_permute_unsqueeze_view_21",
+          "triton_poi_fused_add_bmm_clone_permute_unsqueeze_view_22",
+          "triton_poi_fused_add_clone_expand_permute_unsqueeze_view_3",
+          "triton_poi_fused_add_clone_expand_unsqueeze_view_2",
+          "triton_poi_fused_arange_index_unsqueeze_18",
+          "triton_poi_fused_cat_expand_unsqueeze_0",
+          "triton_poi_fused_clone_expand_stack_unsqueeze_17",
+          "triton_poi_fused_clone_permute_unsqueeze_view_13",
+          "triton_poi_fused_relu_11",
+          "triton_poi_fused_relu_view_6",
+          "triton_poi_fused_sigmoid_16",
+          "triton_red_fused_add_clone_expand_native_layer_norm_permute_unsqueeze_view_9",
+          "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#10}::operator()() const::{lambda(c10::Half)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#10}::operator()() const::{lambda(c10::Half)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#10}::operator()() const::{lambda(c10::Half)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#10}::operator()() const::{lambda(c10::Half)#1} const&)::{lambda(int)#1})",
+          "void at::native::radixSortKVInPlace<2, -1, 32, 32, c10::Half, long, unsigned int>(at::cuda::detail::TensorInfo<c10::Half, unsigned int>, unsigned int, unsigned int, unsigned int, at::cuda::detail::TensorInfo<long, unsigned int>, unsigned int, bool)",
+          "void at::native::sbtopk::gatherTopK<c10::Half, unsigned int, 2, false>(at::cuda::detail::TensorInfo<c10::Half const, unsigned int>, unsigned int, unsigned int, bool, unsigned int, unsigned int, at::cuda::detail::TensorInfo<c10::Half, unsigned int>, unsigned int, at::cuda::detail::TensorInfo<long, unsigned int>, unsigned int, c10::Half*)",
+          "void cutlass::Kernel2<cutlass_80_tensorop_f16_s16816gemm_relu_f16_64x64_32x6_tn_align8>(cutlass_80_tensorop_f16_s16816gemm_relu_f16_64x64_32x6_tn_align8::Params)",
+          "void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_16x16_128x2_tn_align8>(cutlass_80_wmma_tensorop_f16_s161616gemm_f16_16x16_128x2_tn_align8::Params)",
+          "void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_16x16_64x1_nn_align8>(cutlass_80_wmma_tensorop_f16_s161616gemm_f16_16x16_64x1_nn_align8::Params)",
+          "void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_128x1_tn_align2>(cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_128x1_tn_align2::Params)",
+          "void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_128x2_tn_align8>(cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_128x2_tn_align8::Params)",
+          "void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_nn_align8>(cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_nn_align8::Params)",
+          "void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align8>(cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align8::Params)",
+          "void pytorch_flash::flash_fwd_kernel<Flash_fwd_kernel_traits<32, 128, 128, 4, false, false, cutlass::half_t, Flash_kernel_traits<32, 128, 128, 4, cutlass::half_t> >, false, false, false, false, false, false, false, false>(pytorch_flash::Flash_fwd_params)",
+          "void pytorch_flash::flash_fwd_kernel<Flash_fwd_kernel_traits<32, 128, 128, 4, false, false, cutlass::half_t, Flash_kernel_traits<32, 128, 128, 4, cutlass::half_t> >, false, false, false, false, false, true, false, false>(pytorch_flash::Flash_fwd_params)"
+        ],
+        "sdpa_note": "Dispatch must be read from these events; API usage alone is not FlashAttention evidence."
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "purpose": "Audit image independence of existing demo4 cross-class-fold development experiments",
+  "source": "/root/demo4_cache/data/COCO2014/splits/val/fold{0,1,2,3}.pkl",
+  "sampling": "Exact numpy seed=0 episode generator in icx/common.py, one support per query; no model inference or query labels read",
+  "overlap_definition": "A test query or support image also appears in either role in any of the three training folds",
+  "n300": [
+    {"fold": 0, "test_unique_images": 572, "shared_images": 21, "affected_test_episodes": 21},
+    {"fold": 1, "test_unique_images": 574, "shared_images": 16, "affected_test_episodes": 15},
+    {"fold": 2, "test_unique_images": 569, "shared_images": 19, "affected_test_episodes": 19},
+    {"fold": 3, "test_unique_images": 572, "shared_images": 28, "affected_test_episodes": 30}
+  ],
+  "n1000": [
+    {"fold": 0, "test_unique_images": 1782, "shared_images": 166, "affected_test_episodes": 174},
+    {"fold": 1, "test_unique_images": 1802, "shared_images": 169, "affected_test_episodes": 174},
+    {"fold": 2, "test_unique_images": 1738, "shared_images": 147, "affected_test_episodes": 155},
+    {"fold": 3, "test_unique_images": 1730, "shared_images": 168, "affected_test_episodes": 181}
+  ],
+  "interpretation": "Class-disjoint validation is confirmed to share photos. This does not quantify inflation or invalidate all gains; it prevents a strict image-independent generalization claim. Existing cohorts remain development evidence. New experiments should group all support/query image IDs across training, validation and test."
+}

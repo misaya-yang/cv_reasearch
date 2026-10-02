@@ -1,0 +1,236 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo2_where_what_decoding/results/ade20k/h4_eomt-large.json",
+  "source_bytes": 5587,
+  "source_sha256": "d00f6a5b0057ca05908e931792dec12c58e89242938300bd8643612fb56a7d37",
+  "data": {
+    "segmenter": "eomt-large-ade",
+    "dataset": "ade20k",
+    "images": 2000,
+    "tta": false,
+    "recognisers": [
+      "dino=dinov2l:rec/dinov2l_gt.pt",
+      "sig=siglip2:rec/siglip2_gt.pt",
+      "both=dinov2l+siglip2:rec/dinov2l+siglip2_gt.pt"
+    ],
+    "pixel_heads": [],
+    "second_segmenters": [],
+    "views": "",
+    "protocol": {
+      "gamma": 2.0,
+      "hyperparameters_selected_on": "none"
+    },
+    "diagnostics": {
+      "error_pixels_predicting_absent_class": 0.4535,
+      "predicted_classes_per_image": 10.082,
+      "gt_classes_per_image": 8.454,
+      "spurious_classes_per_image": 2.651
+    },
+    "argmax": {
+      "mIoU": 58.381,
+      "mAcc": 71.304,
+      "aAcc": 86.681
+    },
+    "oracle/presence": {
+      "mIoU": 70.814,
+      "mAcc": 79.034,
+      "aAcc": 91.102
+    },
+    "oracle/region_majority": {
+      "mIoU": 78.691,
+      "mAcc": 85.611,
+      "aAcc": 93.4
+    },
+    "oracle/query_majority": {
+      "mIoU": 79.686,
+      "mAcc": 86.284,
+      "aAcc": 93.735
+    },
+    "oracle/gt_regions+seg_what": {
+      "mIoU": 68.575,
+      "mAcc": 77.494,
+      "aAcc": 91.735
+    },
+    "dino/fuse^1": {
+      "mIoU": 59.717,
+      "mAcc": 71.929,
+      "aAcc": 87.003
+    },
+    "dino/fuse^2": {
+      "mIoU": 59.769,
+      "mAcc": 71.9,
+      "aAcc": 87.033
+    },
+    "dino/fuse^4": {
+      "mIoU": 59.828,
+      "mAcc": 71.509,
+      "aAcc": 87.0
+    },
+    "dino/fuse^2_prior": {
+      "mIoU": 59.594,
+      "mAcc": 74.573,
+      "aAcc": 86.854
+    },
+    "dino/relabel^2": {
+      "mIoU": 59.783,
+      "mAcc": 71.914,
+      "aAcc": 87.032
+    },
+    "dino/rec_only": {
+      "mIoU": 58.509,
+      "mAcc": 70.264,
+      "aAcc": 86.391
+    },
+    "dino/gt_regions": {
+      "mIoU": 75.205,
+      "mAcc": 81.9,
+      "aAcc": 93.313
+    },
+    "dino/query^2": {
+      "mIoU": 59.198,
+      "mAcc": 71.731,
+      "aAcc": 86.912
+    },
+    "dino/query^2+fuse^2": {
+      "mIoU": 59.767,
+      "mAcc": 71.762,
+      "aAcc": 87.031
+    },
+    "sig/fuse^1": {
+      "mIoU": 59.643,
+      "mAcc": 71.787,
+      "aAcc": 87.009
+    },
+    "sig/fuse^2": {
+      "mIoU": 59.795,
+      "mAcc": 71.653,
+      "aAcc": 87.092
+    },
+    "sig/fuse^4": {
+      "mIoU": 59.504,
+      "mAcc": 71.036,
+      "aAcc": 86.964
+    },
+    "sig/fuse^2_prior": {
+      "mIoU": 60.198,
+      "mAcc": 75.34,
+      "aAcc": 86.97
+    },
+    "sig/relabel^2": {
+      "mIoU": 59.723,
+      "mAcc": 71.496,
+      "aAcc": 87.049
+    },
+    "sig/rec_only": {
+      "mIoU": 58.338,
+      "mAcc": 69.505,
+      "aAcc": 86.463
+    },
+    "sig/gt_regions": {
+      "mIoU": 73.835,
+      "mAcc": 80.547,
+      "aAcc": 93.472
+    },
+    "sig/query^2": {
+      "mIoU": 59.598,
+      "mAcc": 72.029,
+      "aAcc": 87.005
+    },
+    "sig/query^2+fuse^2": {
+      "mIoU": 59.897,
+      "mAcc": 71.602,
+      "aAcc": 87.094
+    },
+    "both/fuse^1": {
+      "mIoU": 60.007,
+      "mAcc": 72.21,
+      "aAcc": 87.068
+    },
+    "both/fuse^2": {
+      "mIoU": 60.215,
+      "mAcc": 72.223,
+      "aAcc": 87.135
+    },
+    "both/fuse^4": {
+      "mIoU": 60.201,
+      "mAcc": 72.086,
+      "aAcc": 87.003
+    },
+    "both/fuse^2_prior": {
+      "mIoU": 59.959,
+      "mAcc": 75.045,
+      "aAcc": 87.038
+    },
+    "both/relabel^2": {
+      "mIoU": 60.211,
+      "mAcc": 72.112,
+      "aAcc": 87.073
+    },
+    "both/rec_only": {
+      "mIoU": 59.25,
+      "mAcc": 71.309,
+      "aAcc": 86.767
+    },
+    "both/gt_regions": {
+      "mIoU": 76.603,
+      "mAcc": 83.043,
+      "aAcc": 93.794
+    },
+    "both/query^2": {
+      "mIoU": 59.701,
+      "mAcc": 72.156,
+      "aAcc": 87.01
+    },
+    "both/query^2+fuse^2": {
+      "mIoU": 60.543,
+      "mAcc": 72.611,
+      "aAcc": 87.182
+    },
+    "dino/regions": {
+      "n": 19575,
+      "seg_acc": 0.7063,
+      "rec_acc": 0.7141,
+      "fused_acc": 0.7223,
+      "seg_acc_area": 0.9044,
+      "rec_acc_area": 0.9028,
+      "fused_acc_area": 0.9086,
+      "rec_fixes_seg_wrong": 0.1275,
+      "rec_breaks_seg_right": 0.042,
+      "fused_fixes_seg_wrong": 0.1063,
+      "fused_breaks_seg_right": 0.0216,
+      "verifier_auc": 0.7801
+    },
+    "sig/regions": {
+      "n": 19575,
+      "seg_acc": 0.7063,
+      "rec_acc": 0.716,
+      "fused_acc": 0.726,
+      "seg_acc_area": 0.9044,
+      "rec_acc_area": 0.9049,
+      "fused_acc_area": 0.9101,
+      "rec_fixes_seg_wrong": 0.1477,
+      "rec_breaks_seg_right": 0.0477,
+      "fused_fixes_seg_wrong": 0.1259,
+      "fused_breaks_seg_right": 0.0244,
+      "verifier_auc": 0.7961
+    },
+    "both/regions": {
+      "n": 19575,
+      "seg_acc": 0.7063,
+      "rec_acc": 0.7194,
+      "fused_acc": 0.7248,
+      "seg_acc_area": 0.9044,
+      "rec_acc_area": 0.9065,
+      "fused_acc_area": 0.9103,
+      "rec_fixes_seg_wrong": 0.1338,
+      "rec_breaks_seg_right": 0.0371,
+      "fused_fixes_seg_wrong": 0.1099,
+      "fused_breaks_seg_right": 0.0195,
+      "verifier_auc": 0.7895
+    },
+    "class_iou_argmax": {
+      "_omitted": "array exceeds 64 items",
+      "item_count": 150
+    }
+  }
+}

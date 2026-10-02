@@ -1,0 +1,14 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo1_sam/results/takeover_20261001_v1/distill_v1/interior_v1/protocol.json",
+  "source_bytes": 729,
+  "source_sha256": "fc121cdb9775e20d1547baa6866b1a587323e80d1478729efd1f1aa00e4d0c13",
+  "data": {
+    "hypothesis": "Constrain common counterfactual point probes to the original head foreground to reduce off-object boundary perturbations; distill the resulting decision into one original-view decode.",
+    "frozen_rule": "8-segment foreground ray, radius8 longest-edge1024; radius1/4/8 strong controls; boxes original head",
+    "models": "same fixed 4 ranker variants, 3 seeds, hyperparameters; no test selection",
+    "test": "384 fresh COCO images seed2032 excluding all prior1304; DAVIS30 firstframes secondary",
+    "native_control": "official SAM2 dynamic token0 stability .05/.98, plus original threecandidate head and largest",
+    "storage": "only compressed compact features and task metrics; canonical base weights reused"
+  }
+}

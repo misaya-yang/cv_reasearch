@@ -1,0 +1,108 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo1_sam/results/takeover_20261001_v1/distill_v1/sam2_distill/davis30_teacher.json",
+  "source_bytes": 179628,
+  "source_sha256": "96358748b567447c3e1d556849f407209a11cdd7579c2637a6e77b5b5dd64710",
+  "data": {
+    "status": "COMPLETED_ACTUAL_PRETRAINED_MODEL",
+    "model": "configs/sam2.1/sam2.1_hiera_l.yaml",
+    "checkpoint": "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/checkpoints/sam2.1_hiera_large.pt",
+    "subset": "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/davis_val_firstframe_v1",
+    "precision": "FP32 TF32 off",
+    "protocol": "native official SAM2.1 encoder/preprocess/prompt encoder/four raw mask outputs; same original clicks and GT boxes; tokens1..3 selectable; teacher offsets measured in longest-edge1024 reference coordinates; no GT selection",
+    "concurrent_run_not_latency_evidence": true,
+    "rows": {
+      "_omitted": "array exceeds 64 items",
+      "item_count": 183
+    },
+    "summary": {
+      "central": {
+        "original_iou_head": {
+          "mean_iou": 0.6733250594795016,
+          "mean_boundary_iou": 0.6429311950867964,
+          "mean_delta_iou": 0.0,
+          "image_cluster_delta95": [
+            0.0,
+            0.0
+          ]
+        },
+        "largest_original_mask": {
+          "mean_iou": 0.7537359883621833,
+          "mean_boundary_iou": 0.7216677798894267,
+          "mean_delta_iou": 0.08041092888268163,
+          "image_cluster_delta95": [
+            0.007984998238033763,
+            0.16905905828280818
+          ]
+        },
+        "perturb_consistency": {
+          "mean_iou": 0.7659831696979457,
+          "mean_boundary_iou": 0.7333857224024672,
+          "mean_delta_iou": 0.09265811021844397,
+          "image_cluster_delta95": [
+            0.02770858505440979,
+            0.1771172413967851
+          ]
+        }
+      },
+      "near_boundary": {
+        "original_iou_head": {
+          "mean_iou": 0.5014190353214131,
+          "mean_boundary_iou": 0.4841196875222836,
+          "mean_delta_iou": 0.0,
+          "image_cluster_delta95": [
+            0.0,
+            0.0
+          ]
+        },
+        "largest_original_mask": {
+          "mean_iou": 0.7399419917804138,
+          "mean_boundary_iou": 0.6989789115555939,
+          "mean_delta_iou": 0.23852295645900043,
+          "image_cluster_delta95": [
+            0.15282324747649814,
+            0.3539031641419799
+          ]
+        },
+        "perturb_consistency": {
+          "mean_iou": 0.6080093813771783,
+          "mean_boundary_iou": 0.5831701841057937,
+          "mean_delta_iou": 0.10659034605576508,
+          "image_cluster_delta95": [
+            0.016426262012913095,
+            0.2001925889617455
+          ]
+        }
+      },
+      "box": {
+        "original_iou_head": {
+          "mean_iou": 0.8226921898808036,
+          "mean_boundary_iou": 0.790824673206208,
+          "mean_delta_iou": 0.0,
+          "image_cluster_delta95": [
+            0.0,
+            0.0
+          ]
+        },
+        "largest_original_mask": {
+          "mean_iou": 0.7821916695425939,
+          "mean_boundary_iou": 0.7493615405864864,
+          "mean_delta_iou": -0.04050052033820956,
+          "image_cluster_delta95": [
+            -0.06919112203378548,
+            -0.014991826008097982
+          ]
+        },
+        "perturb_consistency": {
+          "mean_iou": 0.803833720854972,
+          "mean_boundary_iou": 0.7724838292360898,
+          "mean_delta_iou": -0.018858469025831492,
+          "image_cluster_delta95": [
+            -0.03585699127630394,
+            -0.004861711736584482
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo1_sam/results/takeover_20261001_v1/local_student_head_v1/phase_perf_p128_shared_report.json",
+  "source_bytes": 86830,
+  "source_sha256": "f0fde008650257478c0bf77a0e86703380eff91e727f5503e8d41be9a0df5192",
+  "data": {
+    "status": "COMPLETED_SHARED_GPU_DIAGNOSTIC_NOT_EXCLUSIVE",
+    "pid": 83135,
+    "protocol": "FP32 TF32off, same real128 distinct original prompts, MB128, same dense-associated transformer/cache; strong dense phase and real compact head5/10%, all4 masks and4 IQ scores; Inductor fullgraph True/dynamic False, no fallback compiler. Compilation and untimed checks may prepare concurrently; formal timing waits for exclusive GPU. Complete warm lowresolution decoder excludes encoder/fullresolution resize/model load/GT diagnostics. Approximate candidate, not a relaxed original5e-5 equivalence pass. Add phase5/10 local original-function fallback using identical frozen student, selector and budgets, same cached phase matrices as the dense control. Six arms; comparison retains fastest implicit-phase baseline. OVERRIDE: shared-GPU diagnostic only; balanced rotating/reversed rounds, every arm in each position twice, ten repetitions per arm/block. GPU contention is uncontrolled; these samples cannot establish exclusive speedup or publication latency. Formal exclusive queue remains separate.",
+    "records": {
+      "_omitted": "array exceeds 64 items",
+      "item_count": 72
+    },
+    "concurrent_diagnostic": true,
+    "minimum_free_mib": 6000,
+    "current_arm": "phase10",
+    "compile_seconds": {
+      "dense_phase": 5.475352108478546,
+      "implicit_phase": 2.1431412119418383,
+      "compact5": 4.626151490956545,
+      "compact10": 3.629560997709632,
+      "phase5": 11.904698826372623,
+      "phase10": 12.000640876591206
+    },
+    "approximation_diagnostics": {
+      "compact5": {
+        "max_logit_difference": 145.20541381835938,
+        "lowres_mask_flip_fraction": 0.006536126136779785,
+        "max_IQ_drift": 1.3589859008789062e-05
+      },
+      "compact10": {
+        "max_logit_difference": 90.78960418701172,
+        "lowres_mask_flip_fraction": 0.003584831953048706,
+        "max_IQ_drift": 0.0
+      },
+      "phase5": {
+        "max_logit_difference": 145.20541381835938,
+        "lowres_mask_flip_fraction": 0.006536126136779785,
+        "max_IQ_drift": 1.3589859008789062e-05
+      },
+      "phase10": {
+        "max_logit_difference": 90.78950500488281,
+        "lowres_mask_flip_fraction": 0.0035850703716278076,
+        "max_IQ_drift": 1.3589859008789062e-05
+      }
+    },
+    "phase_vs_cudnn_diagnostics": {
+      "5": {
+        "max_logit_difference": 6.866455078125e-05,
+        "lowres_pixel_flip_fraction": 0.0,
+        "max_IQ_difference": 0.0
+      },
+      "10": {
+        "max_logit_difference": 2.0481412410736084,
+        "lowres_pixel_flip_fraction": 1.5497207641601562e-06,
+        "max_IQ_difference": 1.3589859008789062e-05
+      }
+    }
+  }
+}

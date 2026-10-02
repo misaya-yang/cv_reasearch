@@ -1,0 +1,101 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo1_sam/results/takeover_20261001_v1/local_student_head_v1/report.json",
+  "source_bytes": 157240,
+  "source_sha256": "ddd373d5d1b1c87e53bc62bb9ba8d99b608a97457fafa5c46b10fef772a77508",
+  "data": {
+    "status": "COMPLETED_REAL_SURROGATE_DEVELOPMENT",
+    "protocol": "Real head surrogate: final256-channel parent state -> Linear64/GELU/Linear64 PCA coefficients; fixed rank64, seed2027. Teacher-feature MSE only; first12 old development images train, last12 validate and diagnose. Min100/max300 epochs, patience50, AdamW lr.001. Epoch selection teacher MSE, never GT. Deployment uses coefficients directly contracted with mask hypervectors, avoids reconstructing512 feature channels. Selected parent patches run actual original upscaling on gathered256x1x1 states; no full original head at inference. 0/5/10% margin budgets fixed. Original full head executed only to measure task quality. Development study, no heldout/SOTA/exclusive timing claim.",
+    "curves": {
+      "_omitted": "array exceeds 64 items",
+      "item_count": 300
+    },
+    "rows": {
+      "_omitted": "array exceeds 64 items",
+      "item_count": 315
+    },
+    "summary": {
+      "central": {
+        "0": {
+          "mean_delta_iou": -0.024380638827147402,
+          "image_cluster_delta95": [
+            -0.03569138137537115,
+            -0.013769731518066038
+          ],
+          "mean_flip_fraction": 0.00406119470052155
+        },
+        "0.05": {
+          "mean_delta_iou": -0.00233239641748331,
+          "image_cluster_delta95": [
+            -0.004942680602866313,
+            -0.0007751904537412641
+          ],
+          "mean_flip_fraction": 0.001364637746590753
+        },
+        "0.1": {
+          "mean_delta_iou": -0.0007384877049894206,
+          "image_cluster_delta95": [
+            -0.0017175244035483204,
+            -2.3196504999931164e-05
+          ],
+          "mean_flip_fraction": 0.0004550631032868426
+        }
+      },
+      "near_boundary": {
+        "0": {
+          "mean_delta_iou": -0.01671325988422055,
+          "image_cluster_delta95": [
+            -0.026906720523362158,
+            -0.008289925115243645
+          ],
+          "mean_flip_fraction": 0.003979369934365553
+        },
+        "0.05": {
+          "mean_delta_iou": -0.0006332192267371095,
+          "image_cluster_delta95": [
+            -0.0016151075578577129,
+            -7.832015300225573e-05
+          ],
+          "mean_flip_fraction": 0.0016797966409220473
+        },
+        "0.1": {
+          "mean_delta_iou": -0.00030104827404331744,
+          "image_cluster_delta95": [
+            -0.000873432524337705,
+            0.0002582028402788048
+          ],
+          "mean_flip_fraction": 0.0007627402488976389
+        }
+      },
+      "box": {
+        "0": {
+          "mean_delta_iou": -0.011676696703673849,
+          "image_cluster_delta95": [
+            -0.017760987050172917,
+            -0.004689457226860912
+          ],
+          "mean_flip_fraction": 0.004293417729370828
+        },
+        "0.05": {
+          "mean_delta_iou": 0.0007106685930275584,
+          "image_cluster_delta95": [
+            -0.0009637322449259948,
+            0.0028754152934624003
+          ],
+          "mean_flip_fraction": 0.0012264638542806745
+        },
+        "0.1": {
+          "mean_delta_iou": 0.00027611640694653764,
+          "image_cluster_delta95": [
+            -0.000512807831629739,
+            0.001361527689512147
+          ],
+          "mean_flip_fraction": 0.0005156214898566499
+        }
+      }
+    },
+    "pid": 61233,
+    "selected_epoch": 288,
+    "parameters": 20608
+  }
+}

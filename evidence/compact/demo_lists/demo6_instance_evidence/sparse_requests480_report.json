@@ -1,0 +1,43 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo6_instance_evidence/sparse_requests480_report.json",
+  "source_bytes": 1385,
+  "source_sha256": "7506e44c2f97c6328c5e001838aeb91a91ce5e9740fdab887c9683b16325380c",
+  "data": {
+    "methods": {
+      "request_fixed": {
+        "present_frames": 1070,
+        "point_hit_fraction": 0.8766355140186916,
+        "wrong_object_fraction": 0.059813084112149535,
+        "macro_object_absence_auc": 0.9444192507828872,
+        "objects_with_real_absence": 33
+      },
+      "request_global": {
+        "present_frames": 1070,
+        "point_hit_fraction": 0.8869158878504673,
+        "wrong_object_fraction": 0.052336448598130844,
+        "macro_object_absence_auc": 0.9399877899877901,
+        "objects_with_real_absence": 33
+      },
+      "request_time": {
+        "present_frames": 1070,
+        "point_hit_fraction": 0.8869158878504673,
+        "wrong_object_fraction": 0.052336448598130844,
+        "macro_object_absence_auc": 0.9399877899877901,
+        "objects_with_real_absence": 33
+      }
+    },
+    "sequences": 40,
+    "object_frames": 1249,
+    "total_frames": 384,
+    "real_absent_sampled": 176,
+    "split": "development",
+    "no_query_gt_in_inference": true,
+    "no_new_method_claim": true,
+    "input_short_side": 480,
+    "notes": "Continuous causal predictions for all intermediate frames. Partial paper-inspired controls, not exact official tuned replication.",
+    "cadence": "externally supplied evaluation requests only",
+    "encoder_forwards": 424,
+    "request_origin": "fixed development evaluation manifest stratified by GT visibility, common across all controls; not deployment timestamp distribution"
+  }
+}

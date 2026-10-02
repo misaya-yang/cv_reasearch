@@ -1,0 +1,77 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo1_sam/results/takeover_20261001_v1/flip_validation_128/flip/official_view/report.json",
+  "source_bytes": 962948,
+  "source_sha256": "8c9fdd0584ed52c7874e39d36c479f3ad8170b8eee630537c88175482f27855a",
+  "data": {
+    "schema_version": 2,
+    "started_at_utc": "2026-10-01T14:38:24.480858+00:00",
+    "status": "PASSED_NUMERIC_OUTPUTS_EXPORTED_QUALITY_DEFERRED",
+    "precision": "float32",
+    "tf32_matmul": false,
+    "tf32_cudnn": false,
+    "numeric_status": "PASSED",
+    "quality_status": "DEFERRED",
+    "npz_compression": "none",
+    "matmul_precision": "highest",
+    "numerical_tolerance": 5e-05,
+    "model": "official_pretrained_sam_vit_b",
+    "torch": "2.12.1+cu130",
+    "python": "3.12.3",
+    "device": "cuda:0",
+    "gpu_name": "NVIDIA GeForce RTX 4080",
+    "options": {
+      "subset_dir": "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/flip_validation_128/flip/mirror_subset",
+      "checkpoint": "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/checkpoints/sam_vit_b_01ec64.pth",
+      "source_dir": "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/source/segment-anything",
+      "output_dir": "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/flip_validation_128/flip/official_view",
+      "device": "cuda:0",
+      "limit_images": 128,
+      "microbatch": 4,
+      "attention": "explicit",
+      "assoc_order": "auto",
+      "assoc_write_output": "auto",
+      "diagnostic_on_failure": false,
+      "defer_quality": true,
+      "npz_compression": "none",
+      "save_encoded_inputs": false,
+      "threads": 2
+    },
+    "official_decoder_provenance": [
+      {
+        "file": "segment_anything/modeling/common.py",
+        "sha256": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+        "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+      },
+      {
+        "file": "segment_anything/modeling/transformer.py",
+        "sha256": "566a8f6db8b608398de939548bd0f485b21752fda2bdda36900e6444ef938d11",
+        "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+      },
+      {
+        "file": "segment_anything/modeling/mask_decoder.py",
+        "sha256": "6a2455e990515c67a061187c92c236b879b189f21ef6ebfce1627cae9a6b2f93",
+        "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+      }
+    ],
+    "checkpoint": {
+      "path": "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/checkpoints/sam_vit_b_01ec64.pth",
+      "bytes": 375042383
+    },
+    "subset_manifest_sha256": "0d5efa14337b3d6d29024871997973a313d7867ca4cb07f72f8cc11f6cf3f988",
+    "prompt_protocol": "one independent positive point or one tight GT box per row; no mask inputs; no extra clicks or fusion",
+    "timing_contract": "DIAGNOSTIC_ONLY: one-pass synchronized eager segment times, no warmup/repeated performance inference; full per-image wall includes comparisons, CPU copies, exports/NPZ I/O and quality metrics unless deferred",
+    "quality_limits": "small fixed development diagnosis, not SOTA; GT oracles use extra ground truth and are not deployable",
+    "images": {
+      "_omitted": "array exceeds 64 items",
+      "item_count": 128
+    },
+    "records": {
+      "_omitted": "array exceeds 64 items",
+      "item_count": 384
+    },
+    "model_load_ms": 1085.957920178771,
+    "quality_summary": {},
+    "finished_at_utc": "2026-10-01T14:38:56.104192+00:00"
+  }
+}

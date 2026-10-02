@@ -1,0 +1,329 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo1_sam/results/gpu_profiles/large_base.json",
+  "source_bytes": 82944,
+  "source_sha256": "5319728b076fd0ba5a4f1e5353fa1e422a87f4fa12951b882344b26686510413",
+  "data": {
+    "created_at_utc": "2026-10-01T11:48:10.618412+00:00",
+    "torch": "2.12.1+cu130",
+    "python": "3.12.3",
+    "platform": "Linux-5.4.0-153-generic-x86_64-with-glibc2.35",
+    "device": "cuda:0",
+    "hardware": "NVIDIA GeForce RTX 4080",
+    "options": {
+      "device": "cuda:0",
+      "dtype": "float32",
+      "prompt_batch": 128,
+      "microbatch": 128,
+      "grid": 64,
+      "tokens": 7,
+      "method": "dense_assoc",
+      "attention": "explicit",
+      "order": "associated",
+      "write_output": "sparse",
+      "mode": "compile",
+      "compiler_backend": "inductor",
+      "compile_mode": "default",
+      "warmup": 3,
+      "repetitions": 3,
+      "threads": 2,
+      "seed": 0,
+      "tolerance": 5e-05,
+      "tf32": false,
+      "diagnostic_on_failure": false,
+      "profile_dir": "/root/autodl-tmp/demo1_sam/results/gpu_profiles/large_base",
+      "output": "/root/autodl-tmp/demo1_sam/results/gpu_profiles/large_base.json"
+    },
+    "fixture": {
+      "model_fp32_state_sha256": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+      "provenance": [
+        {
+          "file": "official_cpu_validation/official_sam/common.py",
+          "sha256": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+          "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/common.py",
+          "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+        },
+        {
+          "file": "official_cpu_validation/official_sam/transformer.py",
+          "sha256": "566a8f6db8b608398de939548bd0f485b21752fda2bdda36900e6444ef938d11",
+          "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/transformer.py",
+          "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+        },
+        {
+          "file": "official_cpu_validation/official_sam/mask_decoder.py",
+          "sha256": "6a2455e990515c67a061187c92c236b879b189f21ef6ebfce1627cae9a6b2f93",
+          "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/mask_decoder.py",
+          "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+        }
+      ],
+      "seed": 0,
+      "T": 7,
+      "N": 4096
+    },
+    "outputs": "All four low-resolution masks plus all four IoU; no output-token pruning",
+    "timed_scope": "Complete mask decoder; no encoder, prompt encoder or full-resolution predictor postprocessing. Prompt batches share one image and identical dense embedding. Output copying/concatenation across microbatches excluded equally; final microbatch outputs returned.",
+    "cpu_warning": null,
+    "compile_warning": "eager/aot_eager compiler backends are diagnostic; only an optimizing backend such as inductor is a performance-compilation trial. Fullgraph mode raises on unsupported graph breaks. Actual CUDA SDPA backend dispatch is not inferred from the API name.",
+    "precision_warning": "Random-weight same-dtype numerical gate does not establish pretrained, binary decision, TF32 or lower-precision fidelity.",
+    "methods": [
+      {
+        "method": "dense_assoc",
+        "effective_attention": "explicit",
+        "verification": {
+          "passed": true,
+          "microbatch_checks": [
+            {
+              "offset": 0,
+              "size": 128,
+              "masks": {
+                "max_abs": 3.650784492492676e-07,
+                "mean_abs": 3.758540856324544e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 1.7881393432617188e-07,
+                "mean_abs": 3.897730493918061e-08,
+                "finite": true
+              },
+              "passed": true
+            }
+          ]
+        },
+        "verification_ms_excluded": 284.5648732036352,
+        "first_complete_prompt_batch_ms_excluded": 3135.322544723749,
+        "first_complete_prompt_batch_memory": {
+          "start_allocated_bytes": 48087040,
+          "peak_allocated_bytes": 3270623744,
+          "peak_increment_bytes": 3222536704,
+          "peak_reserved_bytes": 4764729344
+        },
+        "numeric_status": "passed_random_fixture_only",
+        "compile_status": "optimizing_inductor_fullgraph",
+        "attention_coverage": "SDPA applies only to eligible routes; associated sparse writes stay explicit",
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            66.51368550956249,
+            66.1202184855938,
+            66.3974080234766
+          ],
+          "median_ms": 66.3974080234766,
+          "min_ms": 66.1202184855938,
+          "max_ms": 66.51368550956249,
+          "memory": {
+            "start_allocated_bytes": 48087040,
+            "peak_allocated_bytes": 3270623744,
+            "peak_increment_bytes": 3222536704,
+            "peak_reserved_bytes": 6377439232
+          }
+        },
+        "warm_prompts_per_second": 1927.7860960286603,
+        "warm_ms_per_prompt": 0.5187297501834109,
+        "execution_plan": [
+          {
+            "role": "read",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "cached",
+            "comparison_flops": {
+              "qk_projected": 275775488,
+              "qk_associated": 117899264,
+              "value_projected": 275775488,
+              "value_associated": 117899264
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": true,
+            "qk": "cached",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 275775488,
+              "qk_associated": 117899264,
+              "write_dense": 275775488,
+              "write_sparse": 101122048
+            },
+            "output": "sparse"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "associated",
+            "value": "associated",
+            "comparison_flops": {
+              "qk_projected": 275775488,
+              "qk_associated": 117899264,
+              "value_projected": 275775488,
+              "value_associated": 117899264
+            }
+          },
+          {
+            "role": "write",
+            "first_image_cache": false,
+            "qk": "associated",
+            "value": "sparse",
+            "comparison_flops": {
+              "qk_projected": 275775488,
+              "qk_associated": 117899264,
+              "write_dense": 275775488,
+              "write_sparse": 101122048
+            },
+            "output": "sparse"
+          },
+          {
+            "role": "read",
+            "first_image_cache": false,
+            "qk": "associated",
+            "value": "associated",
+            "comparison_flops": {
+              "qk_projected": 275775488,
+              "qk_associated": 117899264,
+              "value_projected": 275775488,
+              "value_associated": 117899264
+            }
+          }
+        ],
+        "fixed_PE_build": {
+          "milliseconds": [
+            0.09566359221935272,
+            0.02826005220413208,
+            0.02234242856502533
+          ],
+          "median_ms": 0.02826005220413208,
+          "min_ms": 0.02234242856502533,
+          "max_ms": 0.09566359221935272,
+          "memory": {
+            "start_allocated_bytes": 48087040,
+            "peak_allocated_bytes": 48087040,
+            "peak_increment_bytes": 0,
+            "peak_reserved_bytes": 6377439232
+          }
+        },
+        "image_cache_build_fixed_PE_warm": {
+          "milliseconds": [
+            0.40697865188121796,
+            0.18110685050487518,
+            0.1701880246400833
+          ],
+          "median_ms": 0.18110685050487518,
+          "min_ms": 0.1701880246400833,
+          "max_ms": 0.40697865188121796,
+          "memory": {
+            "start_allocated_bytes": 48087040,
+            "peak_allocated_bytes": 62767104,
+            "peak_increment_bytes": 14680064,
+            "peak_reserved_bytes": 6377439232
+          }
+        },
+        "cold_cache_build_including_fixed_PE": {
+          "milliseconds": [
+            0.4473496228456497,
+            0.21271966397762299,
+            0.19769743084907532
+          ],
+          "median_ms": 0.21271966397762299,
+          "min_ms": 0.19769743084907532,
+          "max_ms": 0.4473496228456497,
+          "memory": {
+            "start_allocated_bytes": 48087040,
+            "peak_allocated_bytes": 62767104,
+            "peak_increment_bytes": 14680064,
+            "peak_reserved_bytes": 6377439232
+          }
+        },
+        "logical_persistent_cache_bytes": 14680064,
+        "profile": {
+          "trace": "/root/autodl-tmp/demo1_sam/results/gpu_profiles/large_base/dense_assoc.json",
+          "operators": {
+            "_omitted": "array exceeds 64 items",
+            "item_count": 138
+          },
+          "observed_cuda_events": [
+            "## Call CompiledFxGraph fmueioldjclzx7pwcssk6fvu32vlwmp3pwhyrussk5hzm5a27yl5 ##",
+            "Memset (Device)",
+            "ampere_sgemm_128x128_nn",
+            "ampere_sgemm_128x128_tn",
+            "ampere_sgemm_128x64_tn",
+            "ampere_sgemm_32x128_tn",
+            "ampere_sgemm_32x32_sliced1x4_tn",
+            "ampere_sgemm_64x32_sliced1x4_tn",
+            "ampere_sgemm_64x64_tn",
+            "triton_per_fused_add_addmm_native_layer_norm_view_12",
+            "triton_per_fused_add_addmm_native_layer_norm_view_14",
+            "triton_per_fused_add_addmm_native_layer_norm_view_22",
+            "triton_per_fused_add_addmm_native_layer_norm_view_28",
+            "triton_per_fused_add_convolution_div_gelu_mean_mul_pow_sqrt_sub_transpose_unsqueeze_view_35",
+            "triton_per_fused_add_native_layer_norm_view_6",
+            "triton_per_fused_addmm_clone_mul_sum_transpose_view_23",
+            "triton_per_fused_addmm_clone_mul_sum_transpose_view_29",
+            "triton_per_fused_select_sum_view_20",
+            "triton_poi_fused__softmax_add_clone_div_permute_slice_unsqueeze_view_31",
+            "triton_poi_fused__softmax_add_div_permute_prepare_softmax_online_unsqueeze_view_30",
+            "triton_poi_fused__softmax_amax_clone_mul_permute_slice_sub_view_18",
+            "triton_poi_fused__softmax_amax_mul_sub_view_16",
+            "triton_poi_fused__softmax_amax_mul_sub_view_3",
+            "triton_poi_fused__softmax_amax_mul_sub_view_4",
+            "triton_poi_fused_add_clone_transpose_view_27",
+            "triton_poi_fused_addmm_clone_permute_transpose_view_2",
+            "triton_poi_fused_addmm_clone_transpose_view_1",
+            "triton_poi_fused_addmm_clone_transpose_view_15",
+            "triton_poi_fused_addmm_clone_transpose_view_7",
+            "triton_poi_fused_addmm_relu_33",
+            "triton_poi_fused_addmm_relu_view_13",
+            "triton_poi_fused_cat_expand_unsqueeze_0",
+            "triton_poi_fused_clone_expand_permute_view_17",
+            "triton_poi_fused_clone_expand_transpose_view_10",
+            "triton_poi_fused_clone_expand_transpose_view_26",
+            "triton_poi_fused_clone_expand_transpose_view_8",
+            "triton_poi_fused_clone_expand_view_24",
+            "triton_poi_fused_clone_transpose_view_11",
+            "triton_poi_fused_clone_transpose_view_5",
+            "triton_poi_fused_convolution_gelu_36",
+            "triton_poi_fused_convolution_gelu_37",
+            "triton_poi_fused_convolution_transpose_view_34",
+            "triton_poi_fused_slice_sub_view_19",
+            "triton_red_fused__softmax_add_amax_mul_sub_view_25",
+            "triton_red_fused__softmax_amax_mul_sub_view_9",
+            "triton_red_fused_add_expand_native_layer_norm_unsqueeze_21",
+            "triton_red_fused_add_native_layer_norm_unsqueeze_32",
+            "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1} const&)::{lambda(int)#1})",
+            "void cublasLt::splitKreduce_kernel<32, 16, int, float, float, float, float, false, float, float, float, true, false, false, false>(cublasLt::cublasSplitKParams<float>, float const*, float const*, float*, float*, float const*, float const*, float const*, float const*, float*, void*, long, float*, int*, float*, float*, float const*, float const*, float const*, float const*, float const*)",
+            "void cublasLt::splitKreduce_kernel<32, 16, int, float, float, float, float, false, float, float, float, true, true, false, false>(cublasLt::cublasSplitKParams<float>, float const*, float const*, float*, float*, float const*, float const*, float const*, float const*, float*, void*, long, float*, int*, float*, float*, float const*, float const*, float const*, float const*, float const*)",
+            "void cudnn::detail::dgrad2d_alg1_1<float, 0, 6, 7, 5, 4, 5, false, true>(int, int, int, float const*, int, float const*, int, float*, kernel_grad_params, unsigned long long, int, unsigned long long, int, float, int, int)",
+            "void cudnn::detail::dgrad_engine<float, 128, 6, 8, 3, 3, 5, false>(int, int, int, float const*, int, float const*, int, float*, kernel_grad_params, unsigned long long, int, unsigned long long, int, float, int, int, int)",
+            "void cudnn::engines_precompiled::nchwToNhwcKernel<float, float, float, false, true, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<float>, float const*, float*)",
+            "void cudnn::engines_precompiled::nhwcToNchwKernel<float, float, float, true, false, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nhwc2nchw_params_t<float>, float const*, float*)",
+            "void cudnn::engines_precompiled::scalePackedTensor_kernel<float, float>(long, float*, float)",
+            "void gemmSN_NN_kernel<float, 128, 2, 4, 8, 4, 4, false, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float> >(cublasGemmSmallNParams<cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float>)",
+            "void gemmSN_TN_kernel<float, 128, 16, 2, 4, 4, 4, true, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float> >(cublasGemmSmallNParams<cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float>)"
+          ],
+          "sdpa_note": "Dispatch must be read from these events; API usage alone is not FlashAttention evidence."
+        },
+        "fresh_cache_first_forward_ms_excluded": 66.92083366215229,
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            66.70649163424969,
+            66.25808402895927,
+            66.16286933422089
+          ],
+          "median_ms": 66.25808402895927,
+          "min_ms": 66.16286933422089,
+          "max_ms": 66.70649163424969,
+          "memory": {
+            "start_allocated_bytes": 37601280,
+            "peak_allocated_bytes": 3270623744,
+            "peak_increment_bytes": 3233022464,
+            "peak_reserved_bytes": 6377439232
+          }
+        }
+      }
+    ],
+    "source_sha256": {
+      "baselines.py": "3ed23810ab06c10c485001f9d82929d87f5837c69c3706a0d62de6dd82890ca5",
+      "factor_candidate.py": "e831ed3b462c4e6def3a2f44c9c06333cc297544577d3bbe8149948db33b1c5c",
+      "official_sdpa.py": "50277e4a1a8e2763e8cd1171c01b274be18d5f0457ae5747d8b68731612867b7",
+      "benchmark.py": "3567913ca438b2f672f01a56d4f4b417faadca128524335c5bfb52cbaa87a8e9"
+    },
+    "completed": true,
+    "all_numerical_checks_passed": true
+  }
+}

@@ -1,0 +1,201 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo2_where_what_decoding/results/coco/ens_m2f-swin-large.json",
+  "source_bytes": 4623,
+  "source_sha256": "ec636c1ce10758205c3f6820451dca648d65e2d2feea2d8ace0aff6fed012ccd",
+  "data": {
+    "segmenter": "m2f-swin-large-coco",
+    "dataset": "coco",
+    "images": 5000,
+    "tta": false,
+    "recognisers": [
+      "ext=dinov2l:rec/coco_dinov2l_gt.pt"
+    ],
+    "pixel_heads": [],
+    "second_segmenters": [],
+    "views": "flip",
+    "protocol": {
+      "gamma": 2.0,
+      "hyperparameters_selected_on": "none"
+    },
+    "diagnostics": {
+      "error_pixels_predicting_absent_class": 0.5269,
+      "predicted_classes_per_image": 9.411,
+      "gt_classes_per_image": 6.946,
+      "spurious_classes_per_image": 3.075
+    },
+    "argmax": {
+      "mIoU": 67.409,
+      "mAcc": 78.933,
+      "aAcc": 83.2
+    },
+    "oracle/presence": {
+      "mIoU": 77.414,
+      "mAcc": 85.727,
+      "aAcc": 90.148
+    },
+    "oracle/region_majority": {
+      "mIoU": 83.492,
+      "mAcc": 89.855,
+      "aAcc": 93.305
+    },
+    "oracle/query_majority": {
+      "mIoU": 85.694,
+      "mAcc": 90.941,
+      "aAcc": 94.163
+    },
+    "mc/sum_pow^2": {
+      "mIoU": 67.492,
+      "mAcc": 78.991,
+      "aAcc": 83.377
+    },
+    "mc/sum_pow^4": {
+      "mIoU": 67.433,
+      "mAcc": 78.943,
+      "aAcc": 83.349
+    },
+    "mc/self_sharpen^2": {
+      "mIoU": 67.099,
+      "mAcc": 78.767,
+      "aAcc": 82.99
+    },
+    "mc/drop_conf<0.3": {
+      "mIoU": 67.313,
+      "mAcc": 78.621,
+      "aAcc": 83.24
+    },
+    "mc/drop_conf<0.5": {
+      "mIoU": 67.343,
+      "mAcc": 78.508,
+      "aAcc": 83.232
+    },
+    "oracle/gt_regions+seg_what": {
+      "mIoU": 77.217,
+      "mAcc": 84.441,
+      "aAcc": 88.642
+    },
+    "v:flip/alone": {
+      "mIoU": 67.223,
+      "mAcc": 78.75,
+      "aAcc": 83.242
+    },
+    "v:flip/mean": {
+      "mIoU": 67.597,
+      "mAcc": 78.997,
+      "aAcc": 83.358
+    },
+    "v:flip/ens^0.25": {
+      "mIoU": 67.543,
+      "mAcc": 78.986,
+      "aAcc": 83.314
+    },
+    "v:flip/ens^0.5": {
+      "mIoU": 67.566,
+      "mAcc": 78.979,
+      "aAcc": 83.313
+    },
+    "v:flip/ens^1": {
+      "mIoU": 67.604,
+      "mAcc": 78.987,
+      "aAcc": 83.351
+    },
+    "v:flip/ens^2": {
+      "mIoU": 67.558,
+      "mAcc": 78.944,
+      "aAcc": 83.348
+    },
+    "v:flip/ens^4": {
+      "mIoU": 67.44,
+      "mAcc": 78.858,
+      "aAcc": 83.322
+    },
+    "v:flip/region_vote/fuse^0.5": {
+      "mIoU": 67.485,
+      "mAcc": 78.934,
+      "aAcc": 83.269
+    },
+    "v:flip/region_vote/fuse^1": {
+      "mIoU": 67.545,
+      "mAcc": 78.941,
+      "aAcc": 83.29
+    },
+    "v:flip/region_vote/fuse^2": {
+      "mIoU": 67.541,
+      "mAcc": 78.902,
+      "aAcc": 83.308
+    },
+    "v:flip/region_vote/relabel": {
+      "mIoU": 67.524,
+      "mAcc": 78.936,
+      "aAcc": 83.28
+    },
+    "ext/fuse^1": {
+      "mIoU": 67.869,
+      "mAcc": 78.96,
+      "aAcc": 83.514
+    },
+    "ext/fuse^2": {
+      "mIoU": 67.771,
+      "mAcc": 78.789,
+      "aAcc": 83.377
+    },
+    "ext/fuse^4": {
+      "mIoU": 67.353,
+      "mAcc": 78.359,
+      "aAcc": 83.12
+    },
+    "ext/fuse^2_prior": {
+      "mIoU": 67.066,
+      "mAcc": 79.921,
+      "aAcc": 83.03
+    },
+    "ext/fuse^2*v:flip/region_vote^1": {
+      "mIoU": 67.847,
+      "mAcc": 78.902,
+      "aAcc": 83.494
+    },
+    "ext/relabel^2": {
+      "mIoU": 67.601,
+      "mAcc": 78.602,
+      "aAcc": 83.292
+    },
+    "ext/rec_only": {
+      "mIoU": 66.205,
+      "mAcc": 77.31,
+      "aAcc": 82.392
+    },
+    "ext/gt_regions": {
+      "mIoU": 78.539,
+      "mAcc": 85.906,
+      "aAcc": 89.443
+    },
+    "ext/query^2": {
+      "mIoU": 68.224,
+      "mAcc": 79.316,
+      "aAcc": 83.768
+    },
+    "ext/query^2+fuse^2": {
+      "mIoU": 67.621,
+      "mAcc": 78.634,
+      "aAcc": 83.267
+    },
+    "ext/regions": {
+      "n": 45789,
+      "seg_acc": 0.6227,
+      "rec_acc": 0.6271,
+      "fused_acc": 0.6388,
+      "seg_acc_area": 0.8703,
+      "rec_acc_area": 0.8614,
+      "fused_acc_area": 0.8717,
+      "rec_fixes_seg_wrong": 0.1213,
+      "rec_breaks_seg_right": 0.0665,
+      "fused_fixes_seg_wrong": 0.1176,
+      "fused_breaks_seg_right": 0.0454,
+      "verifier_auc": 0.7754
+    },
+    "class_iou_argmax": {
+      "_omitted": "array exceeds 64 items",
+      "item_count": 133
+    }
+  }
+}

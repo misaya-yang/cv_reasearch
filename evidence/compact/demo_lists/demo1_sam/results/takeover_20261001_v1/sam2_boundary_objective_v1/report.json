@@ -1,0 +1,108 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo1_sam/results/takeover_20261001_v1/sam2_boundary_objective_v1/report.json",
+  "source_bytes": 410195,
+  "source_sha256": "e90e9a63f6c39258925167edf5324fac09fba7d975c807eb88c620e5275d1949",
+  "data": {
+    "status": "COMPLETED_MATCHED_OBJECTIVE_DEVELOPMENT",
+    "pid": 108494,
+    "stages": [
+      {
+        "arm": "coefficient",
+        "pid": 108720,
+        "command": [
+          "/root/miniconda3/bin/python",
+          "tools/takeover_eval_sam2_local_head.py",
+          "--subset",
+          "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/coco_quality_seed2027_v1",
+          "--old-development",
+          "--student-path",
+          "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/sam2_boundary_objective_v1/coefficient/deployment.pt",
+          "--compiled-decoder-fp16",
+          "--output",
+          "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/sam2_boundary_objective_v1/coefficient/development_compiled_fp16.json",
+          "--scope",
+          "Old24 sorted-ID last12 development only; matched objective intervention, no new test or GT epoch selection"
+        ]
+      },
+      {
+        "arm": "response_uniform",
+        "pid": 108917,
+        "command": [
+          "/root/miniconda3/bin/python",
+          "tools/takeover_eval_sam2_local_head.py",
+          "--subset",
+          "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/coco_quality_seed2027_v1",
+          "--old-development",
+          "--student-path",
+          "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/sam2_boundary_objective_v1/response_uniform/deployment.pt",
+          "--compiled-decoder-fp16",
+          "--output",
+          "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/sam2_boundary_objective_v1/response_uniform/development_compiled_fp16.json",
+          "--scope",
+          "Old24 sorted-ID last12 development only; matched objective intervention, no new test or GT epoch selection"
+        ]
+      },
+      {
+        "arm": "response_boundary",
+        "pid": 109132,
+        "command": [
+          "/root/miniconda3/bin/python",
+          "tools/takeover_eval_sam2_local_head.py",
+          "--subset",
+          "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/coco_quality_seed2027_v1",
+          "--old-development",
+          "--student-path",
+          "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/sam2_boundary_objective_v1/response_boundary/deployment.pt",
+          "--compiled-decoder-fp16",
+          "--output",
+          "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/sam2_boundary_objective_v1/response_boundary/development_compiled_fp16.json",
+          "--scope",
+          "Old24 sorted-ID last12 development only; matched objective intervention, no new test or GT epoch selection"
+        ]
+      }
+    ],
+    "curves": {
+      "coefficient": {
+        "_omitted": "array exceeds 64 items",
+        "item_count": 698
+      },
+      "response_uniform": {
+        "_omitted": "array exceeds 64 items",
+        "item_count": 846
+      },
+      "response_boundary": {
+        "_omitted": "array exceeds 64 items",
+        "item_count": 835
+      }
+    },
+    "protocol": "Objective alignment intervention on old24 only: sorted first12 train/PCA, last12 teacher-only validation and development. Same original FLOAT32 indexed dynamic/static inputs, rank64 PCA,69760-parameter Linear1024->64/GELU/Linear64 and exact10% fallback deployment unchanged. All three objectives initialize identical converged v2 best raw model, reset matched AdamW lr0.0003 wd0.01 and seed2035; min100/max1200 patience100 per-arm teacher validation objective, no GT earlystop. Controls coefficientMSE, actual native four-mask logits divided by original hyper norms MSE, boundary-weighted same response MSE. Fixed boundary weight1+9*exp(-abs(normalized teacher logit)/sigma); sigma is train-only10th percentile abs normalized teacher logit; one train-only global weight normalization preserves parent importance. No teacher/GT accessed at deployment. Actual native teacher state replay must match all indexed original inputs before augmentation. Save only small prompt hyper/projection bank, indexed FLOAT32 teacher responses and small checkpoints; reuse original456MB input archive and model weights. Not independent test, latency, policy preservation or publication evidence.",
+    "aligned_images": 24,
+    "max_state_replay_error": 0.0,
+    "boundary_sigma_train_only": 0.1427343487739563,
+    "train_samples": 73728,
+    "validation_samples": 73728,
+    "response_archive_bytes": 33692275,
+    "current_arm": null,
+    "selected": {
+      "coefficient": {
+        "epoch": 598,
+        "last_epoch": 698,
+        "plateau_before_cap": true,
+        "validation_objective": 0.0012126990121841016
+      },
+      "response_uniform": {
+        "epoch": 746,
+        "last_epoch": 846,
+        "plateau_before_cap": true,
+        "validation_objective": 0.00024064821263891645
+      },
+      "response_boundary": {
+        "epoch": 735,
+        "last_epoch": 835,
+        "plateau_before_cap": true,
+        "validation_objective": 0.0003360053459699783
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo3_conditional_grouped/results/context_gate_lr/neighborhood_gated/report.json",
+  "source_bytes": 43273,
+  "source_sha256": "924d51e6fa635ee0d796f282900e2b21e562d66d49c1a12e872012bbdeb8f1fa",
+  "data": {
+    "phase": "train",
+    "mode": "neighborhood_gated",
+    "numerical": {
+      "max_abs": 0.0,
+      "rtol": 1e-05,
+      "atol": 1e-05,
+      "status": "PASS_CURRENT_FIXTURE"
+    },
+    "torch": "2.12.1+cu130",
+    "precision": "FP32",
+    "tf32": false,
+    "image_side": 1024,
+    "semantic_tokens": 1024,
+    "patch_positions": 1024,
+    "trainable_parameters": 50401475,
+    "first_update_seconds": 0.5608200617134571,
+    "warmed_update_seconds": {
+      "_omitted": "array exceeds 64 items",
+      "item_count": 255
+    },
+    "peak_allocated_bytes": 11376830464,
+    "peak_reserved_bytes": 11756634112,
+    "losses": {
+      "_omitted": "array exceeds 64 items",
+      "item_count": 256
+    },
+    "data_sha256": "1cdcb87c1be91f298fd7ea15bda36fba4993c3ef4f8ffe02a5372ec73f917199",
+    "timing_scope": "Complete semantic+pixel forward/backward/AdamW GPU update; excludes image IO/text-cache IO. Shared GPU, not isolated performance evidence.",
+    "seed": 2027,
+    "parameter_group_lrs": [
+      1e-05,
+      0.001
+    ],
+    "training_loop_wall_seconds": 86.07090934365988,
+    "training_times": {
+      "_omitted": "array exceeds 64 items",
+      "item_count": 256
+    },
+    "time_sampling": "stratified",
+    "butterfly_backend": "eager",
+    "optimizer_restarted": true,
+    "initial_state": "results/time_probe/neighborhood-stratified/resume.pt",
+    "adapter_source_sha256": "46cc015277d582fed7b85d40cdd246dee803ccb0b4fd0ef35f143ff94d4bd6e1",
+    "heldout_paired_scores": {
+      "_omitted": "array exceeds 64 items",
+      "item_count": 192
+    }
+  }
+}

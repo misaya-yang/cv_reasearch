@@ -1,0 +1,50 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo3_conditional_grouped/results/model_backend_check.json",
+  "source_bytes": 1328,
+  "source_sha256": "6d0d7d0838537e18f76a3d6bb094fd08f8fd4a294e474455e15bf68321a78029",
+  "data": {
+    "status": "PASS_CURRENT_PRETRAINED_TRAINED_FIXTURE",
+    "max_velocity_abs": 0.0,
+    "angle_gradient_abs": 3.4924596548080444e-10,
+    "precision": "FP32",
+    "tf32": false,
+    "bench": {
+      "eager": {
+        "forward_backward_seconds": [
+          0.1538205910474062,
+          0.15106305293738842,
+          0.15322507172822952,
+          0.15291206538677216,
+          0.15333823300898075,
+          0.15329286456108093,
+          0.15169000811874866,
+          0.15272109769284725,
+          0.15289444290101528,
+          0.1526140235364437
+        ],
+        "median_seconds": 0.15290325414389372,
+        "peak_allocated_bytes": 10122598400,
+        "peak_reserved_bytes": 10689183744
+      },
+      "triton": {
+        "forward_backward_seconds": [
+          0.14634649269282818,
+          0.1445305161178112,
+          0.1461424734443426,
+          0.1512569971382618,
+          0.1462089605629444,
+          0.15040484257042408,
+          0.1465272679924965,
+          0.15346097201108932,
+          0.14671744033694267,
+          0.15597340650856495
+        ],
+        "median_seconds": 0.14662235416471958,
+        "peak_allocated_bytes": 9970685952,
+        "peak_reserved_bytes": 10689183744
+      }
+    },
+    "scope": "Complete semantic+pixel forward/backward; excludes AdamW/data/text encoding. Same weights/input/target, shared GPU. No isolated-throughput or quality gain claim."
+  }
+}

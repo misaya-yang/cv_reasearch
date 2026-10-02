@@ -1,0 +1,60 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo2_where_what_decoding/pilots/results/pilot5_m2f-swin-large-ade.json",
+  "source_bytes": 790,
+  "source_sha256": "b3a11a6f8d221b7a4159358379e84667c35132b89fa3ba20cbefd5bed1adc827",
+  "data": {
+    "family": "mask2former",
+    "model": "models/m2f-swin-large-ade",
+    "images": 2000,
+    "argmax": {
+      "mIoU": 56.054,
+      "mAcc": 69.62,
+      "aAcc": 85.236
+    },
+    "T_star": 1.25,
+    "plugin_labelfree_T=1.0": {
+      "mIoU": 56.549,
+      "mAcc": 71.243,
+      "aAcc": 84.833
+    },
+    "plugin_labelfree_T=1.0_traj": [
+      56.054,
+      56.597,
+      56.543,
+      56.545,
+      56.549
+    ],
+    "plugin_labelfree_T=1.0_expected": [
+      66.103,
+      66.922,
+      66.93,
+      66.931,
+      66.932
+    ],
+    "plugin_labelfree_T=1.25": {
+      "mIoU": 56.478,
+      "mAcc": 71.482,
+      "aAcc": 84.639
+    },
+    "plugin_labelfree_T=1.25_traj": [
+      56.054,
+      56.372,
+      56.401,
+      56.416,
+      56.478
+    ],
+    "plugin_labelfree_T=1.25_expected": [
+      57.639,
+      58.712,
+      58.724,
+      58.726,
+      58.727
+    ],
+    "plugin_crossfit_labeled_T=1": {
+      "mIoU": 55.867,
+      "mAcc": 71.79,
+      "aAcc": 84.451
+    }
+  }
+}

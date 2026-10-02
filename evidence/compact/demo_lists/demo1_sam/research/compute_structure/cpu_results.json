@@ -1,0 +1,63 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo1_sam/research/compute_structure/cpu_results.json",
+  "source_bytes": 103320,
+  "source_sha256": "1aba3ea6de88199838a0d0f17001d6e86f5139d2c02712b844a15f9e491e4de4",
+  "data": {
+    "scope": "CPU random-weight complete decoder, synthetic encoded input. No GPU or trained accuracy claim.",
+    "torch": "2.8.0",
+    "python": "3.9.6",
+    "absolute_tolerance": 5e-05,
+    "cases": {
+      "_omitted": "array exceeds 64 items",
+      "item_count": 126
+    },
+    "variants": {
+      "phase": [
+        false,
+        false,
+        true
+      ],
+      "implicit": [
+        true,
+        false,
+        false
+      ],
+      "statistics": [
+        false,
+        true,
+        false
+      ],
+      "all": [
+        true,
+        true,
+        true
+      ]
+    },
+    "cancellation_stress": [
+      {
+        "scale": 1.0,
+        "direct_variance": 9.623262303648517e-05,
+        "statistic_variance": 9.632110595703125e-05,
+        "statistic_finite_rstd": true
+      },
+      {
+        "scale": 100.0,
+        "direct_variance": 9.623012010706589e-05,
+        "statistic_variance": -0.0009765625,
+        "statistic_finite_rstd": false
+      },
+      {
+        "scale": 10000.0,
+        "direct_variance": 9.595390292815864e-05,
+        "statistic_variance": 16.0,
+        "statistic_finite_rstd": true
+      }
+    ],
+    "all_random_passed": true,
+    "source_sha256": {
+      "validate.py": "b06843f102c4cb8095e1c5526c326eec4c487710f0b0e5bbdc7d5c799efeb16a",
+      "prototype.py": "7d73bd85adfc9c2e56bc262a52b6ea5af077ee45d52b737736b2d6cf2975f9cd"
+    }
+  }
+}

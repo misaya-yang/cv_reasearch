@@ -1,0 +1,33 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo1_sam/results/takeover_20261001_v1/distill_v1/models/protocol.json",
+  "source_bytes": 935,
+  "source_sha256": "fe742668c46a870c541a35435a7a0c5b1443c4e7fef4d580cd65a3feab1405dd",
+  "data": {
+    "seeds": [
+      2027,
+      2028,
+      2029
+    ],
+    "variants": [
+      "geometry_distilled",
+      "latent_distilled",
+      "geometry_supervised",
+      "latent_supervised"
+    ],
+    "max_epochs": 500,
+    "minimum_epochs": 100,
+    "patience": 50,
+    "batch_size": 128,
+    "lr": 0.001,
+    "weight_decay": 0.01,
+    "dropout": 0.1,
+    "training_images": 256,
+    "validation_images": 128,
+    "inference": "one original frozen SAM decode plus candidate ranker, tokens1..3 only",
+    "teacher": "fixed four-prompt consistency choice; no GT quality labels used in distilled loss or epoch selection; benchmark prompts are annotation-derived, not annotation-free sampling",
+    "supervised_control": "same architecture, training oracle choice; epoch chosen by validation meanIoU across original three regimes",
+    "candidate_permutation": "shared pointwise scorer; sorted pairwise-IoU features; no candidate index feature",
+    "test_data_read_during_training": false
+  }
+}

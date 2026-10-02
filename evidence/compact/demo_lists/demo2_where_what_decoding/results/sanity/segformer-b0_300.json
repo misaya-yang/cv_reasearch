@@ -1,0 +1,99 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo2_where_what_decoding/results/sanity/segformer-b0_300.json",
+  "source_bytes": 11856,
+  "source_sha256": "88def45f1fef7829c5caf1cf940d0a2771144bd71fe53a21c43b34bf3829234d",
+  "data": {
+    "args": {
+      "dataset": "ade20k",
+      "data_root": "/root/autodl-tmp/demo2_pilot/data/ADEChallengeData2016",
+      "family": "segformer",
+      "model_dir": "/root/autodl-tmp/demo2_pilot/models/segformer-b0-ade",
+      "short_side": 512,
+      "num_images": 300,
+      "iters": 3,
+      "metrics": "miou",
+      "out": "results/sanity/segformer-b0_300.json",
+      "device": "cuda:0"
+    },
+    "images": 300,
+    "num_classes": 150,
+    "argmax": {
+      "mIoU": 31.455,
+      "mDice": 41.168,
+      "mAcc": 46.664,
+      "aAcc": 78.823,
+      "per_image_mIoU": 48.528,
+      "changed_pixel_fraction": 0.0,
+      "class_iou": {
+        "_omitted": "array exceeds 64 items",
+        "item_count": 150
+      }
+    },
+    "class_pixel_fraction": {
+      "_omitted": "array exceeds 64 items",
+      "item_count": 150
+    },
+    "T_star": 1.25,
+    "labelfree_miou_T=1.0": {
+      "mIoU": 30.698,
+      "mDice": 40.271,
+      "mAcc": 48.424,
+      "aAcc": 76.8,
+      "per_image_mIoU": 48.183,
+      "changed_pixel_fraction": 0.07358,
+      "class_iou": {
+        "_omitted": "array exceeds 64 items",
+        "item_count": 150
+      },
+      "expected_metric_history": [
+        38.325,
+        39.348,
+        40.287,
+        40.477
+      ]
+    },
+    "labelfree_miou_T=1.25": {
+      "mIoU": 30.454,
+      "mDice": 40.07,
+      "mAcc": 49.486,
+      "aAcc": 75.528,
+      "per_image_mIoU": 47.656,
+      "changed_pixel_fraction": 0.10677,
+      "class_iou": {
+        "_omitted": "array exceeds 64 items",
+        "item_count": 150
+      },
+      "expected_metric_history": [
+        31.274,
+        32.27,
+        33.348,
+        33.532
+      ]
+    },
+    "crossfit_labeled_miou_T=1.0": {
+      "mIoU": 28.492,
+      "mDice": 37.636,
+      "mAcc": 49.454,
+      "aAcc": 75.521,
+      "per_image_mIoU": 46.957,
+      "changed_pixel_fraction": NaN,
+      "class_iou": {
+        "_omitted": "array exceeds 64 items",
+        "item_count": 150
+      }
+    },
+    "crossfit_labelfree_miou_T=1.0": {
+      "mIoU": 29.786,
+      "mDice": 39.333,
+      "mAcc": 50.356,
+      "aAcc": 76.489,
+      "per_image_mIoU": 47.977,
+      "changed_pixel_fraction": NaN,
+      "class_iou": {
+        "_omitted": "array exceeds 64 items",
+        "item_count": 150
+      }
+    }
+  }
+}

@@ -1,0 +1,509 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo1_sam/results/gpu_compile/p128_requested8_mb8_factor_projected_explicit_auto_auto.json",
+  "source_bytes": 16468,
+  "source_sha256": "6323067d7f997c2ea74beb2b87b41736065f2d8b4b38e3a8b72ef77c50d38114",
+  "data": {
+    "created_at_utc": "2026-10-01T11:28:01.733886+00:00",
+    "torch": "2.12.1+cu130",
+    "python": "3.12.3",
+    "platform": "Linux-5.4.0-153-generic-x86_64-with-glibc2.35",
+    "device": "cuda:0",
+    "hardware": "NVIDIA GeForce RTX 4080",
+    "options": {
+      "device": "cuda:0",
+      "dtype": "float32",
+      "prompt_batch": 128,
+      "microbatch": 8,
+      "grid": 64,
+      "tokens": 7,
+      "method": "factor_projected",
+      "attention": "explicit",
+      "order": "auto",
+      "write_output": "auto",
+      "mode": "compile",
+      "compiler_backend": "inductor",
+      "compile_mode": "default",
+      "warmup": 10,
+      "repetitions": 20,
+      "threads": 2,
+      "seed": 0,
+      "tolerance": 5e-05,
+      "tf32": false,
+      "diagnostic_on_failure": false,
+      "profile_dir": null,
+      "output": "results/gpu_compile/p128_requested8_mb8_factor_projected_explicit_auto_auto.json"
+    },
+    "fixture": {
+      "model_fp32_state_sha256": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+      "provenance": [
+        {
+          "file": "official_cpu_validation/official_sam/common.py",
+          "sha256": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+          "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/common.py",
+          "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+        },
+        {
+          "file": "official_cpu_validation/official_sam/transformer.py",
+          "sha256": "566a8f6db8b608398de939548bd0f485b21752fda2bdda36900e6444ef938d11",
+          "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/transformer.py",
+          "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+        },
+        {
+          "file": "official_cpu_validation/official_sam/mask_decoder.py",
+          "sha256": "6a2455e990515c67a061187c92c236b879b189f21ef6ebfce1627cae9a6b2f93",
+          "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/mask_decoder.py",
+          "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+        }
+      ],
+      "seed": 0,
+      "T": 7,
+      "N": 4096
+    },
+    "outputs": "All four low-resolution masks plus all four IoU; no output-token pruning",
+    "timed_scope": "Complete mask decoder; no encoder, prompt encoder or full-resolution predictor postprocessing. Prompt batches share one image and identical dense embedding. Output copying/concatenation across microbatches excluded equally; final microbatch outputs returned.",
+    "cpu_warning": null,
+    "compile_warning": "eager/aot_eager compiler backends are diagnostic; only an optimizing backend such as inductor is a performance-compilation trial. Fullgraph mode raises on unsupported graph breaks. Actual CUDA SDPA backend dispatch is not inferred from the API name.",
+    "precision_warning": "Random-weight same-dtype numerical gate does not establish pretrained, binary decision, TF32 or lower-precision fidelity.",
+    "methods": [
+      {
+        "method": "factor_projected",
+        "effective_attention": "explicit",
+        "verification": {
+          "passed": true,
+          "microbatch_checks": [
+            {
+              "offset": 0,
+              "size": 8,
+              "masks": {
+                "max_abs": 3.2782554626464844e-07,
+                "mean_abs": 3.748383647916853e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 8.940696716308594e-08,
+                "mean_abs": 2.9045622795820236e-08,
+                "finite": true
+              },
+              "passed": true
+            },
+            {
+              "offset": 8,
+              "size": 8,
+              "masks": {
+                "max_abs": 3.3527612686157227e-07,
+                "mean_abs": 3.8218384901256286e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 8.940696716308594e-08,
+                "mean_abs": 2.6309862732887268e-08,
+                "finite": true
+              },
+              "passed": true
+            },
+            {
+              "offset": 16,
+              "size": 8,
+              "masks": {
+                "max_abs": 3.6694109439849854e-07,
+                "mean_abs": 3.7489776616439485e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 5.960464477539063e-08,
+                "mean_abs": 2.246815711259842e-08,
+                "finite": true
+              },
+              "passed": true
+            },
+            {
+              "offset": 24,
+              "size": 8,
+              "masks": {
+                "max_abs": 3.501772880554199e-07,
+                "mean_abs": 3.7651993523013516e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 7.450580596923828e-08,
+                "mean_abs": 2.2118911147117615e-08,
+                "finite": true
+              },
+              "passed": true
+            },
+            {
+              "offset": 32,
+              "size": 8,
+              "masks": {
+                "max_abs": 3.520399332046509e-07,
+                "mean_abs": 3.877246967931569e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 5.960464477539063e-08,
+                "mean_abs": 1.8830178305506706e-08,
+                "finite": true
+              },
+              "passed": true
+            },
+            {
+              "offset": 40,
+              "size": 8,
+              "masks": {
+                "max_abs": 3.2782554626464844e-07,
+                "mean_abs": 3.7197025903878966e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 7.078051567077637e-08,
+                "mean_abs": 2.6135239750146866e-08,
+                "finite": true
+              },
+              "passed": true
+            },
+            {
+              "offset": 48,
+              "size": 8,
+              "masks": {
+                "max_abs": 3.2782554626464844e-07,
+                "mean_abs": 3.830260553172593e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 1.1920928955078125e-07,
+                "mean_abs": 2.514570951461792e-08,
+                "finite": true
+              },
+              "passed": true
+            },
+            {
+              "offset": 56,
+              "size": 8,
+              "masks": {
+                "max_abs": 3.390014171600342e-07,
+                "mean_abs": 3.79056359633978e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 5.960464477539063e-08,
+                "mean_abs": 1.9470462575554848e-08,
+                "finite": true
+              },
+              "passed": true
+            },
+            {
+              "offset": 64,
+              "size": 8,
+              "masks": {
+                "max_abs": 3.0547380447387695e-07,
+                "mean_abs": 3.798639980345797e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 6.705522537231445e-08,
+                "mean_abs": 2.3690517991781235e-08,
+                "finite": true
+              },
+              "passed": true
+            },
+            {
+              "offset": 72,
+              "size": 8,
+              "masks": {
+                "max_abs": 3.2782554626464844e-07,
+                "mean_abs": 3.7725747858985414e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 1.341104507446289e-07,
+                "mean_abs": 2.7066562324762344e-08,
+                "finite": true
+              },
+              "passed": true
+            },
+            {
+              "offset": 80,
+              "size": 8,
+              "masks": {
+                "max_abs": 3.413297235965729e-07,
+                "mean_abs": 3.798809444788276e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 5.960464477539063e-08,
+                "mean_abs": 2.939486876130104e-08,
+                "finite": true
+              },
+              "passed": true
+            },
+            {
+              "offset": 88,
+              "size": 8,
+              "masks": {
+                "max_abs": 3.2782554626464844e-07,
+                "mean_abs": 3.8013961756178105e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 9.685754776000977e-08,
+                "mean_abs": 2.6309862732887268e-08,
+                "finite": true
+              },
+              "passed": true
+            },
+            {
+              "offset": 96,
+              "size": 8,
+              "masks": {
+                "max_abs": 4.6193599700927734e-07,
+                "mean_abs": 3.797090641910472e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 8.940696716308594e-08,
+                "mean_abs": 2.6426278054714203e-08,
+                "finite": true
+              },
+              "passed": true
+            },
+            {
+              "offset": 104,
+              "size": 8,
+              "masks": {
+                "max_abs": 4.023313522338867e-07,
+                "mean_abs": 3.8309966754468405e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 7.82310962677002e-08,
+                "mean_abs": 2.9569491744041443e-08,
+                "finite": true
+              },
+              "passed": true
+            },
+            {
+              "offset": 112,
+              "size": 8,
+              "masks": {
+                "max_abs": 3.427267074584961e-07,
+                "mean_abs": 3.7538647745805065e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 1.1920928955078125e-07,
+                "mean_abs": 2.9453076422214508e-08,
+                "finite": true
+              },
+              "passed": true
+            },
+            {
+              "offset": 120,
+              "size": 8,
+              "masks": {
+                "max_abs": 3.129243850708008e-07,
+                "mean_abs": 3.8321072537428336e-08,
+                "finite": true
+              },
+              "iou": {
+                "max_abs": 5.960464477539063e-08,
+                "mean_abs": 2.427259460091591e-08,
+                "finite": true
+              },
+              "passed": true
+            }
+          ]
+        },
+        "verification_ms_excluded": 296.2385658174753,
+        "first_complete_prompt_batch_ms_excluded": 2769.600685685873,
+        "first_complete_prompt_batch_memory": {
+          "start_allocated_bytes": 69321728,
+          "peak_allocated_bytes": 210916352,
+          "peak_increment_bytes": 141594624,
+          "peak_reserved_bytes": 333447168
+        },
+        "numeric_status": "passed_random_fixture_only",
+        "compile_status": "optimizing_inductor_fullgraph",
+        "attention_coverage": "Candidate writes remain explicit to form factors; SDPA applies to reads and token self-attention",
+        "warm_complete_prompt_batch": {
+          "milliseconds": [
+            48.232778906822205,
+            52.75589041411877,
+            58.873722329735756,
+            48.58594201505184,
+            47.056226059794426,
+            51.36455222964287,
+            47.76995815336704,
+            46.95557616651058,
+            47.04330302774906,
+            46.93888872861862,
+            49.32274669408798,
+            50.57720094919205,
+            59.97271649539471,
+            53.69383655488491,
+            50.30160769820213,
+            49.45041425526142,
+            47.708483412861824,
+            48.20241592824459,
+            53.75993065536022,
+            51.32635310292244
+          ],
+          "median_ms": 49.3865804746747,
+          "min_ms": 46.93888872861862,
+          "max_ms": 59.97271649539471,
+          "memory": {
+            "start_allocated_bytes": 69321728,
+            "peak_allocated_bytes": 210916352,
+            "peak_increment_bytes": 141594624,
+            "peak_reserved_bytes": 606076928
+          }
+        },
+        "warm_prompts_per_second": 2591.7971799168813,
+        "warm_ms_per_prompt": 0.3858326599583961,
+        "execution_plan": null,
+        "fixed_PE_build": {
+          "milliseconds": [
+            0.37014298141002655,
+            0.10935589671134949,
+            0.10103732347488403,
+            0.1004151999950409,
+            0.09859539568424225,
+            0.0986885279417038,
+            0.09804591536521912,
+            0.09659677743911743,
+            0.09697675704956055,
+            0.09624473750591278,
+            0.09878724813461304,
+            0.09774789214134216,
+            0.096125528216362,
+            0.0953972339630127,
+            0.09696930646896362,
+            0.10605715215206146,
+            0.09639561176300049,
+            0.09707547724246979,
+            0.09759515523910522,
+            0.09587593376636505
+          ],
+          "median_ms": 0.0976715236902237,
+          "min_ms": 0.0953972339630127,
+          "max_ms": 0.37014298141002655,
+          "memory": {
+            "start_allocated_bytes": 69321728,
+            "peak_allocated_bytes": 75613184,
+            "peak_increment_bytes": 6291456,
+            "peak_reserved_bytes": 606076928
+          }
+        },
+        "image_cache_build_fixed_PE_warm": {
+          "milliseconds": [
+            0.9208675473928452,
+            0.6121862679719925,
+            0.5013514310121536,
+            0.49661286175251007,
+            0.48590078949928284,
+            0.4791188985109329,
+            0.48905983567237854,
+            0.478917732834816,
+            0.48479996621608734,
+            0.5665048956871033,
+            0.4884004592895508,
+            0.4798509180545807,
+            0.5780160427093506,
+            0.5047116428613663,
+            0.4916731268167496,
+            0.4846286028623581,
+            0.47522783279418945,
+            0.4769694060087204,
+            0.4925001412630081,
+            0.4718806594610214
+          ],
+          "median_ms": 0.48873014748096466,
+          "min_ms": 0.4718806594610214,
+          "max_ms": 0.9208675473928452,
+          "memory": {
+            "start_allocated_bytes": 69321728,
+            "peak_allocated_bytes": 103139328,
+            "peak_increment_bytes": 33817600,
+            "peak_reserved_bytes": 606076928
+          }
+        },
+        "cold_cache_build_including_fixed_PE": {
+          "milliseconds": [
+            1.3265330344438553,
+            0.7389150559902191,
+            0.638868659734726,
+            0.6049387156963348,
+            0.5855876952409744,
+            0.5866382271051407,
+            0.5764644593000412,
+            0.581786036491394,
+            0.5685444921255112,
+            0.5765073001384735,
+            0.5777888000011444,
+            0.5705151706933975,
+            0.5622655153274536,
+            0.58719702064991,
+            0.5933456122875214,
+            0.5576927214860916,
+            0.6291810423135757,
+            0.6134491413831711,
+            0.5804877728223801,
+            0.6133168935775757
+          ],
+          "median_ms": 0.5861129611730576,
+          "min_ms": 0.5576927214860916,
+          "max_ms": 1.3265330344438553,
+          "memory": {
+            "start_allocated_bytes": 69321728,
+            "peak_allocated_bytes": 109430784,
+            "peak_increment_bytes": 40109056,
+            "peak_reserved_bytes": 606076928
+          }
+        },
+        "logical_persistent_cache_bytes": 35914752,
+        "fresh_cache_first_forward_ms_excluded": 50.97990669310093,
+        "cold_image_including_cache_and_prompt_batch": {
+          "milliseconds": [
+            51.01734772324562,
+            48.642370849847794,
+            48.43096062541008,
+            48.24713617563248,
+            48.95489290356636,
+            49.75898005068302,
+            48.81854169070721,
+            49.14864897727966,
+            51.148856058716774,
+            51.91880278289318,
+            49.78905990719795,
+            47.91937582194805,
+            47.68977873027325,
+            47.773415222764015,
+            49.007732421159744,
+            49.16282370686531,
+            47.962116077542305,
+            48.772815614938736,
+            49.61324855685234,
+            49.766067415475845
+          ],
+          "median_ms": 48.98131266236305,
+          "min_ms": 47.68977873027325,
+          "max_ms": 51.91880278289318,
+          "memory": {
+            "start_allocated_bytes": 37601280,
+            "peak_allocated_bytes": 211702784,
+            "peak_increment_bytes": 174101504,
+            "peak_reserved_bytes": 606076928
+          }
+        }
+      }
+    ],
+    "source_sha256": {
+      "baselines.py": "3ed23810ab06c10c485001f9d82929d87f5837c69c3706a0d62de6dd82890ca5",
+      "factor_candidate.py": "e831ed3b462c4e6def3a2f44c9c06333cc297544577d3bbe8149948db33b1c5c",
+      "official_sdpa.py": "50277e4a1a8e2763e8cd1171c01b274be18d5f0457ae5747d8b68731612867b7",
+      "benchmark.py": "3567913ca438b2f672f01a56d4f4b417faadca128524335c5bfb52cbaa87a8e9"
+    },
+    "completed": true,
+    "all_numerical_checks_passed": true
+  }
+}

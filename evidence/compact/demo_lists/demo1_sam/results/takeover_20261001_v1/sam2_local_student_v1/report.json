@@ -1,0 +1,166 @@
+{
+  "export_note": "Arrays longer than 64 items are omitted; retained values are unchanged. No metrics are recomputed.",
+  "source": "demo_lists/demo1_sam/results/takeover_20261001_v1/sam2_local_student_v1/report.json",
+  "source_bytes": 262288,
+  "source_sha256": "1fc5970f9a8e4fbb5c8fbe10ed879c33ceca0cedda4b6801dae7302147c617c1",
+  "data": {
+    "status": "COMPLETED_SAM2_REAL_HEAD_DEVELOPMENT",
+    "pid": 86812,
+    "curves": {
+      "_omitted": "array exceeds 64 items",
+      "item_count": 600
+    },
+    "rows": {
+      "_omitted": "array exceeds 64 items",
+      "item_count": 315
+    },
+    "summary": {
+      "central": {
+        "0": {
+          "mean_head_delta_iou": -0.011660526654176469,
+          "head_image_cluster95": [
+            -0.02010513512157625,
+            -0.005019298879904647
+          ],
+          "mean_native_dynamic_delta_iou": -0.03834304963081304,
+          "dynamic_image_cluster95": [
+            -0.07814436920633876,
+            -0.010536752232888394
+          ],
+          "head_choice_changes": 0,
+          "dynamic_choice_changes": 6
+        },
+        "0.05": {
+          "mean_head_delta_iou": -0.0011290978265678317,
+          "head_image_cluster95": [
+            -0.0030802189974868536,
+            0.00022939184650912805
+          ],
+          "mean_native_dynamic_delta_iou": -0.0018274861664958912,
+          "dynamic_image_cluster95": [
+            -0.003963968320738358,
+            -0.0003242507638770843
+          ],
+          "head_choice_changes": 0,
+          "dynamic_choice_changes": 0
+        },
+        "0.1": {
+          "mean_head_delta_iou": -0.0007525153557642078,
+          "head_image_cluster95": [
+            -0.002066453919199758,
+            0.00015300889933440298
+          ],
+          "mean_native_dynamic_delta_iou": -0.0012433423561369872,
+          "dynamic_image_cluster95": [
+            -0.0032552071440152546,
+            8.635922037568457e-05
+          ],
+          "head_choice_changes": 0,
+          "dynamic_choice_changes": 1
+        }
+      },
+      "near_boundary": {
+        "0": {
+          "mean_head_delta_iou": -0.014981730959572743,
+          "head_image_cluster95": [
+            -0.024017436269863742,
+            -0.00613571055501738
+          ],
+          "mean_native_dynamic_delta_iou": -0.013001868400265805,
+          "dynamic_image_cluster95": [
+            -0.02005655815593939,
+            -0.005230777166924126
+          ],
+          "head_choice_changes": 0,
+          "dynamic_choice_changes": 4
+        },
+        "0.05": {
+          "mean_head_delta_iou": -0.0012273567939885765,
+          "head_image_cluster95": [
+            -0.002955114843026955,
+            0.0002859642166628817
+          ],
+          "mean_native_dynamic_delta_iou": -0.0007721478147333562,
+          "dynamic_image_cluster95": [
+            -0.002239491638513595,
+            0.00044870326766180863
+          ],
+          "head_choice_changes": 0,
+          "dynamic_choice_changes": 1
+        },
+        "0.1": {
+          "mean_head_delta_iou": -0.0006178661166273988,
+          "head_image_cluster95": [
+            -0.001789840993433637,
+            0.00025252116213299883
+          ],
+          "mean_native_dynamic_delta_iou": -0.0002703619322415568,
+          "dynamic_image_cluster95": [
+            -0.0006068189793094134,
+            3.820368476951524e-05
+          ],
+          "head_choice_changes": 0,
+          "dynamic_choice_changes": 2
+        }
+      },
+      "box": {
+        "0": {
+          "mean_head_delta_iou": -0.012978212688427393,
+          "head_image_cluster95": [
+            -0.024472013622141835,
+            -0.0022511701940606844
+          ],
+          "mean_native_dynamic_delta_iou": -0.01170061865999929,
+          "dynamic_image_cluster95": [
+            -0.022104549552355992,
+            -0.0015325234779335203
+          ],
+          "head_choice_changes": 0,
+          "dynamic_choice_changes": 1
+        },
+        "0.05": {
+          "mean_head_delta_iou": -0.002655437823476124,
+          "head_image_cluster95": [
+            -0.005168562192454741,
+            -0.0005792777035771666
+          ],
+          "mean_native_dynamic_delta_iou": -0.0007784350974484456,
+          "dynamic_image_cluster95": [
+            -0.004098595844762159,
+            0.0023580812250393584
+          ],
+          "head_choice_changes": 0,
+          "dynamic_choice_changes": 1
+        },
+        "0.1": {
+          "mean_head_delta_iou": -0.0009266358198149122,
+          "head_image_cluster95": [
+            -0.002041080076225305,
+            -2.2094280582054863e-05
+          ],
+          "mean_native_dynamic_delta_iou": 0.0006375529817464682,
+          "dynamic_image_cluster95": [
+            -0.001304628684238751,
+            0.0036555328722622372
+          ],
+          "head_choice_changes": 0,
+          "dynamic_choice_changes": 1
+        }
+      }
+    },
+    "protocol": "Native frozen SAM2.1-L, FP32/TF32off. Old24 images sorted by ID: first12 fit PCA/train, last12 teacher-MSE validation/development diagnosis; no independent test claim. Rank64, Linear1024->64/GELU/Linear64; inputs final parent256 plus two highres tiles256+512. Static768 affine contribution+bias cached once/image, dynamic256 contribution per prompt, all4mask/IQ/masktoken/objscore preserved. Teacher coefficient MSE only, seed2027 AdamW.001 wd.01, min100/max600 epochs patience80. Budgets0/5/10% fixed from SAM1; real selected phase patches include both skips; no full teacher upscaler in candidate path. Compact losslessly compressed FLOAT32 pairs use one static bank/image and indexed parent features. Quality references native head1..3 and actual dynamic token0; no latency or publication claim.",
+    "new_phase_head_only_FP64_check": {
+      "parents": 64,
+      "max_error": 3.3306690738754696e-16,
+      "tolerance": 1e-10,
+      "passed": true
+    },
+    "extracted_images": 24,
+    "PCA_rank64_retained_variance": 0.9607488328515433,
+    "parameters": 69760,
+    "train_samples": 73728,
+    "validation_samples": 73728,
+    "selected_epoch": 598,
+    "plateau_before_cap": false
+  }
+}
