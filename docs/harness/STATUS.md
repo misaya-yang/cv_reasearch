@@ -65,11 +65,8 @@ method, reliability selection, is worth about 1 point on current evidence.
 
 ## Server jobs
 
-- Codex open-pool diagnostic completed (400 queries/80 classes): clean AG 60.525 vs pooled 59.829;
-  mixed 59.704 vs 58.725, difference CI crosses zero. Separate protocol; fold feature caches removed.
-- E0/E1 paired-cache rebuild live in `/root/autodl-tmp/demo9`, another owner; do not duplicate.
-- Codex E1b completed: exact interface 10/10, 90 MB smoke cache removed; centroid pilot 30 episodes
-  49.686 vs 1shot 60.872. Stop weak readout, full TPA adaptation unverified; no own GPU job pending.
+- Codex diagnostics completed; no own GPU job pending. Open-pool 400 queries: clean AG60.525/pooled59.829, mixed59.704/58.725 (difference CI crosses zero), separate protocol, caches removed. E1b exact interface10/10; centroid pilot30:49.686 vs1shot60.872, stop weak readout; full TPA adaptation unverified. See direction README/PLAN.
+- E0/E1 paired-cache rebuild live in `/root/autodl-tmp/demo9`, another owner; do not duplicate or delete its caches.
 - 2026-10-02: data prepared with `scripts/get_data.sh` into `/root/autodl-tmp/datasets/ics/` (INSID3's
   layout); check with `scripts/check_data.py`. Ready: COCO-20i official masks, Pascal-Part, SUIM, chest
   X-ray, PACO-Part and LVIS-92i annotations (their train2017 images are being extracted). Postponed at the
