@@ -1,0 +1,853 @@
+{
+  "source_manifest": "/root/autodl-tmp/demo9_transductive_ics/results/conditional_ranker_pilot_v1/manifest.json",
+  "limit": 40,
+  "active_split_counts": {
+    "train": 21,
+    "dev": 7,
+    "test": 12
+  },
+  "train_classes": [
+    0,
+    4,
+    8
+  ],
+  "excluded_classes": [
+    12,
+    16,
+    20
+  ],
+  "train_role_photo_count": 62,
+  "forbidden_photo_overlap": 0,
+  "clean_patch_rule": {
+    "grid": 64,
+    "foreground_fraction": 0.9,
+    "min_clean_patches": 16
+  },
+  "existing_pair_alternative_present": 3,
+  "existing_pair_clean_count": 1,
+  "existing_pairs": [
+    {
+      "source_episode": 50,
+      "support": "val2014/COCO_val2014_000000219848.jpg",
+      "query": "val2014/COCO_val2014_000000104629.jpg",
+      "classes": [
+        8,
+        0
+      ],
+      "support_stats": {
+        "8": {
+          "area_pixels": 106666,
+          "area_fraction": 0.29086496509598603,
+          "foreground_patch_mass": 1192.27783203125,
+          "clean_patches": 1124,
+          "centroid_xy": [
+            0.5119874626169538,
+            0.8433837888188371
+          ]
+        },
+        "0": {
+          "area_pixels": 140472,
+          "area_fraction": 0.3830497382198953,
+          "foreground_patch_mass": 1568.48193359375,
+          "clean_patches": 1452,
+          "centroid_xy": [
+            0.48048501213765016,
+            0.47037042503523646
+          ]
+        }
+      },
+      "query_stats": {
+        "8": {
+          "area_pixels": 11251,
+          "area_fraction": 0.0384675875273523,
+          "foreground_patch_mass": 157.92498779296875,
+          "clean_patches": 134,
+          "centroid_xy": [
+            0.5879717636210114,
+            0.603360518209225
+          ]
+        },
+        "0": {
+          "area_pixels": 3852,
+          "area_fraction": 0.013170131291028446,
+          "foreground_patch_mass": 53.926788330078125,
+          "clean_patches": 29,
+          "centroid_xy": [
+            0.5656708365784009,
+            0.500402757611494
+          ]
+        }
+      },
+      "area_ratio_support_to_query": [
+        0.13225239249649032,
+        0.03438230072217916
+      ],
+      "centroid_displacements": [
+        0.25176335005955564,
+        0.09032477891266241
+      ],
+      "direct_oracle": {
+        "state": "CPU_FIXED_EXISTING_BANK",
+        "scores": {
+          "8": {
+            "iou": [
+              0.7875935312575428,
+              0.7875935312575428,
+              0.7875935312575428,
+              0.20921314382954245
+            ],
+            "argmax": 0,
+            "oracle": 0.7875935312575428,
+            "direct": 0.7875935312575428
+          },
+          "0": {
+            "iou": [
+              0.02539440907832826,
+              0.02539440907832826,
+              0.02539440907832826,
+              0.002211462358582802
+            ],
+            "argmax": 0,
+            "oracle": 0.02539440907832826,
+            "direct": 0.02539440907832826
+          }
+        },
+        "same_candidate_bank": true,
+        "new_semantic_pass": false,
+        "resolution": "original_HxW"
+      }
+    }
+  ],
+  "cooccurring_train_photos": {
+    "0,4": [
+      "val2014/COCO_val2014_000000255096.jpg",
+      "val2014/COCO_val2014_000000300066.jpg",
+      "val2014/COCO_val2014_000000371330.jpg"
+    ],
+    "0,8": [
+      "val2014/COCO_val2014_000000018783.jpg",
+      "val2014/COCO_val2014_000000104629.jpg",
+      "val2014/COCO_val2014_000000186218.jpg",
+      "val2014/COCO_val2014_000000190140.jpg",
+      "val2014/COCO_val2014_000000219848.jpg",
+      "val2014/COCO_val2014_000000484551.jpg",
+      "val2014/COCO_val2014_000000519945.jpg",
+      "val2014/COCO_val2014_000000571970.jpg"
+    ],
+    "4,8": []
+  },
+  "recombined_train_pair_count": 31,
+  "minimal_recombined_examples": [
+    {
+      "source_episode": null,
+      "support": "val2014/COCO_val2014_000000255096.jpg",
+      "query": "val2014/COCO_val2014_000000300066.jpg",
+      "classes": [
+        0,
+        4
+      ],
+      "support_stats": {
+        "0": {
+          "area_pixels": 7695,
+          "area_fraction": 0.025048828125,
+          "foreground_patch_mass": 102.36963653564453,
+          "clean_patches": 82,
+          "centroid_xy": [
+            0.7994702322936973,
+            0.8657607753952783
+          ]
+        },
+        "4": {
+          "area_pixels": 10428,
+          "area_fraction": 0.0339453125,
+          "foreground_patch_mass": 139.1714324951172,
+          "clean_patches": 114,
+          "centroid_xy": [
+            0.7831999784234752,
+            0.5535569300600947
+          ]
+        }
+      },
+      "query_stats": {
+        "0": {
+          "area_pixels": 3098,
+          "area_fraction": 0.010084635416666666,
+          "foreground_patch_mass": 41.44285583496094,
+          "clean_patches": 20,
+          "centroid_xy": [
+            0.1595212637185281,
+            0.8849351732300409
+          ]
+        },
+        "4": {
+          "area_pixels": 21092,
+          "area_fraction": 0.06865885416666667,
+          "foreground_patch_mass": 280.9428405761719,
+          "clean_patches": 226,
+          "centroid_xy": [
+            0.4186376943864973,
+            0.7137672656299386
+          ]
+        }
+      },
+      "area_ratio_support_to_query": [
+        0.4025990903183886,
+        2.022631377061757
+      ],
+      "centroid_displacements": [
+        0.6402361594855047,
+        0.39821226822595535
+      ],
+      "direct_oracle": "NOT_MEASURED: requires shared fixed candidate bank scored against both training masks"
+    },
+    {
+      "source_episode": null,
+      "support": "val2014/COCO_val2014_000000018783.jpg",
+      "query": "val2014/COCO_val2014_000000104629.jpg",
+      "classes": [
+        0,
+        8
+      ],
+      "support_stats": {
+        "0": {
+          "area_pixels": 18588,
+          "area_fraction": 0.05532142857142857,
+          "foreground_patch_mass": 226.47500610351562,
+          "clean_patches": 176,
+          "centroid_xy": [
+            0.40867991109855817,
+            0.5503391845225286
+          ]
+        },
+        "8": {
+          "area_pixels": 14275,
+          "area_fraction": 0.04248511904761905,
+          "foreground_patch_mass": 173.60694885253906,
+          "clean_patches": 138,
+          "centroid_xy": [
+            0.7317055604203152,
+            0.3692812275873572
+          ]
+        }
+      },
+      "query_stats": {
+        "0": {
+          "area_pixels": 3852,
+          "area_fraction": 0.013170131291028446,
+          "foreground_patch_mass": 53.926788330078125,
+          "clean_patches": 29,
+          "centroid_xy": [
+            0.5656708365784009,
+            0.500402757611494
+          ]
+        },
+        "8": {
+          "area_pixels": 11251,
+          "area_fraction": 0.0384675875273523,
+          "foreground_patch_mass": 157.92498779296875,
+          "clean_patches": 134,
+          "centroid_xy": [
+            0.5879717636210114,
+            0.603360518209225
+          ]
+        }
+      },
+      "area_ratio_support_to_query": [
+        0.2380656398636517,
+        0.9054367361954726
+      ],
+      "centroid_displacements": [
+        0.16474160802802257,
+        0.2746862185119239
+      ],
+      "direct_oracle": "NOT_MEASURED: requires shared fixed candidate bank scored against both training masks"
+    },
+    {
+      "source_episode": null,
+      "support": "val2014/COCO_val2014_000000186218.jpg",
+      "query": "val2014/COCO_val2014_000000190140.jpg",
+      "classes": [
+        0,
+        8
+      ],
+      "support_stats": {
+        "0": {
+          "area_pixels": 66205,
+          "area_fraction": 0.331025,
+          "foreground_patch_mass": 1356.014404296875,
+          "clean_patches": 1244,
+          "centroid_xy": [
+            0.4843087002492259,
+            0.6495930216751001
+          ]
+        },
+        "8": {
+          "area_pixels": 27959,
+          "area_fraction": 0.139795,
+          "foreground_patch_mass": 572.5467529296875,
+          "clean_patches": 456,
+          "centroid_xy": [
+            0.4786557101470009,
+            0.5827242032976859
+          ]
+        }
+      },
+      "query_stats": {
+        "0": {
+          "area_pixels": 7721,
+          "area_fraction": 0.02818706191588785,
+          "foreground_patch_mass": 115.35000610351562,
+          "clean_patches": 95,
+          "centroid_xy": [
+            0.32880111870224066,
+            0.5112955079422911
+          ]
+        },
+        "8": {
+          "area_pixels": 138521,
+          "area_fraction": 0.5056987441588785,
+          "foreground_patch_mass": 2070.928466796875,
+          "clean_patches": 1926,
+          "centroid_xy": [
+            0.4409438483154179,
+            0.37595092535313146
+          ]
+        }
+      },
+      "area_ratio_support_to_query": [
+        0.08515085542145714,
+        3.617430839149315
+      ],
+      "centroid_displacements": [
+        0.20810768900564144,
+        0.2101841406832123
+      ],
+      "direct_oracle": "NOT_MEASURED: requires shared fixed candidate bank scored against both training masks"
+    },
+    {
+      "source_episode": null,
+      "support": "val2014/COCO_val2014_000000219848.jpg",
+      "query": "val2014/COCO_val2014_000000484551.jpg",
+      "classes": [
+        0,
+        8
+      ],
+      "support_stats": {
+        "0": {
+          "area_pixels": 140472,
+          "area_fraction": 0.3830497382198953,
+          "foreground_patch_mass": 1568.48193359375,
+          "clean_patches": 1452,
+          "centroid_xy": [
+            0.48048501213765016,
+            0.47037042503523646
+          ]
+        },
+        "8": {
+          "area_pixels": 106666,
+          "area_fraction": 0.29086496509598603,
+          "foreground_patch_mass": 1192.27783203125,
+          "clean_patches": 1124,
+          "centroid_xy": [
+            0.5119874626169538,
+            0.8433837888188371
+          ]
+        }
+      },
+      "query_stats": {
+        "0": {
+          "area_pixels": 64075,
+          "area_fraction": 0.20857747395833334,
+          "foreground_patch_mass": 854.1196899414062,
+          "clean_patches": 799,
+          "centroid_xy": [
+            0.7133505657432696,
+            0.65116195213942
+          ]
+        },
+        "8": {
+          "area_pixels": 65142,
+          "area_fraction": 0.21205078125,
+          "foreground_patch_mass": 867.7267456054688,
+          "clean_patches": 802,
+          "centroid_xy": [
+            0.43708492121058606,
+            0.812857808070574
+          ]
+        }
+      },
+      "area_ratio_support_to_query": [
+        0.544517991129905,
+        0.7290351424071401
+      ],
+      "centroid_displacements": [
+        0.29480831455153084,
+        0.08088402938637498
+      ],
+      "direct_oracle": "NOT_MEASURED: requires shared fixed candidate bank scored against both training masks"
+    },
+    {
+      "source_episode": null,
+      "support": "val2014/COCO_val2014_000000519945.jpg",
+      "query": "val2014/COCO_val2014_000000571970.jpg",
+      "classes": [
+        0,
+        8
+      ],
+      "support_stats": {
+        "0": {
+          "area_pixels": 3029,
+          "area_fraction": 0.011083870023419203,
+          "foreground_patch_mass": 45.20476150512695,
+          "clean_patches": 18,
+          "centroid_xy": [
+            0.47943834598877516,
+            0.5826371616141545
+          ]
+        },
+        "8": {
+          "area_pixels": 39063,
+          "area_fraction": 0.1429413056206089,
+          "foreground_patch_mass": 584.9381103515625,
+          "clean_patches": 511,
+          "centroid_xy": [
+            0.46717434016844583,
+            0.6349314663198541
+          ]
+        }
+      },
+      "query_stats": {
+        "0": {
+          "area_pixels": 22307,
+          "area_fraction": 0.06125604130052724,
+          "foreground_patch_mass": 250.06527709960938,
+          "clean_patches": 198,
+          "centroid_xy": [
+            0.49009692865468235,
+            0.45794289513099795
+          ]
+        },
+        "8": {
+          "area_pixels": 41884,
+          "area_fraction": 0.11501537785588752,
+          "foreground_patch_mass": 471.2805480957031,
+          "clean_patches": 381,
+          "centroid_xy": [
+            0.6210911013155382,
+            0.5101695636404101
+          ]
+        }
+      },
+      "area_ratio_support_to_query": [
+        5.5265932540799225,
+        0.8046336036775706
+      ],
+      "centroid_displacements": [
+        0.12514897314088688,
+        0.1981310216049121
+      ],
+      "direct_oracle": "NOT_MEASURED: requires shared fixed candidate bank scored against both training masks"
+    },
+    {
+      "source_episode": null,
+      "support": "val2014/COCO_val2014_000000255096.jpg",
+      "query": "val2014/COCO_val2014_000000371330.jpg",
+      "classes": [
+        0,
+        4
+      ],
+      "support_stats": {
+        "0": {
+          "area_pixels": 7695,
+          "area_fraction": 0.025048828125,
+          "foreground_patch_mass": 102.36963653564453,
+          "clean_patches": 82,
+          "centroid_xy": [
+            0.7994702322936973,
+            0.8657607753952783
+          ]
+        },
+        "4": {
+          "area_pixels": 10428,
+          "area_fraction": 0.0339453125,
+          "foreground_patch_mass": 139.1714324951172,
+          "clean_patches": 114,
+          "centroid_xy": [
+            0.7831999784234752,
+            0.5535569300600947
+          ]
+        }
+      },
+      "query_stats": {
+        "0": {
+          "area_pixels": 34967,
+          "area_fraction": 0.12795301522248242,
+          "foreground_patch_mass": 523.5357055664062,
+          "clean_patches": 401,
+          "centroid_xy": [
+            0.4318873866788686,
+            0.624291796299877
+          ]
+        },
+        "4": {
+          "area_pixels": 49407,
+          "area_fraction": 0.180792593676815,
+          "foreground_patch_mass": 740.1286010742188,
+          "clean_patches": 660,
+          "centroid_xy": [
+            0.5217614343615277,
+            0.34132597145470805
+          ]
+        }
+      },
+      "area_ratio_support_to_query": [
+        5.108143765607096,
+        5.325995855151282
+      ],
+      "centroid_displacements": [
+        0.43980042775748907,
+        0.33673742309370996
+      ],
+      "direct_oracle": "NOT_MEASURED: requires shared fixed candidate bank scored against both training masks"
+    },
+    {
+      "source_episode": null,
+      "support": "val2014/COCO_val2014_000000300066.jpg",
+      "query": "val2014/COCO_val2014_000000371330.jpg",
+      "classes": [
+        0,
+        4
+      ],
+      "support_stats": {
+        "0": {
+          "area_pixels": 3098,
+          "area_fraction": 0.010084635416666666,
+          "foreground_patch_mass": 41.44285583496094,
+          "clean_patches": 20,
+          "centroid_xy": [
+            0.1595212637185281,
+            0.8849351732300409
+          ]
+        },
+        "4": {
+          "area_pixels": 21092,
+          "area_fraction": 0.06865885416666667,
+          "foreground_patch_mass": 280.9428405761719,
+          "clean_patches": 226,
+          "centroid_xy": [
+            0.4186376943864973,
+            0.7137672656299386
+          ]
+        }
+      },
+      "query_stats": {
+        "0": {
+          "area_pixels": 34967,
+          "area_fraction": 0.12795301522248242,
+          "foreground_patch_mass": 523.5357055664062,
+          "clean_patches": 401,
+          "centroid_xy": [
+            0.4318873866788686,
+            0.624291796299877
+          ]
+        },
+        "4": {
+          "area_pixels": 49407,
+          "area_fraction": 0.180792593676815,
+          "foreground_patch_mass": 740.1286010742188,
+          "clean_patches": 660,
+          "centroid_xy": [
+            0.5217614343615277,
+            0.34132597145470805
+          ]
+        }
+      },
+      "area_ratio_support_to_query": [
+        12.687916809666431,
+        2.6332014402388375
+      ],
+      "centroid_displacements": [
+        0.3769857754266159,
+        0.38645442597201335
+      ],
+      "direct_oracle": "NOT_MEASURED: requires shared fixed candidate bank scored against both training masks"
+    },
+    {
+      "source_episode": null,
+      "support": "val2014/COCO_val2014_000000018783.jpg",
+      "query": "val2014/COCO_val2014_000000186218.jpg",
+      "classes": [
+        0,
+        8
+      ],
+      "support_stats": {
+        "0": {
+          "area_pixels": 18588,
+          "area_fraction": 0.05532142857142857,
+          "foreground_patch_mass": 226.47500610351562,
+          "clean_patches": 176,
+          "centroid_xy": [
+            0.40867991109855817,
+            0.5503391845225286
+          ]
+        },
+        "8": {
+          "area_pixels": 14275,
+          "area_fraction": 0.04248511904761905,
+          "foreground_patch_mass": 173.60694885253906,
+          "clean_patches": 138,
+          "centroid_xy": [
+            0.7317055604203152,
+            0.3692812275873572
+          ]
+        }
+      },
+      "query_stats": {
+        "0": {
+          "area_pixels": 66205,
+          "area_fraction": 0.331025,
+          "foreground_patch_mass": 1356.014404296875,
+          "clean_patches": 1244,
+          "centroid_xy": [
+            0.4843087002492259,
+            0.6495930216751001
+          ]
+        },
+        "8": {
+          "area_pixels": 27959,
+          "area_fraction": 0.139795,
+          "foreground_patch_mass": 572.5467529296875,
+          "clean_patches": 456,
+          "centroid_xy": [
+            0.4786557101470009,
+            0.5827242032976859
+          ]
+        }
+      },
+      "area_ratio_support_to_query": [
+        5.983666881859264,
+        3.290446234676007
+      ],
+      "centroid_displacements": [
+        0.12478396506725271,
+        0.3310470217407593
+      ],
+      "direct_oracle": "NOT_MEASURED: requires shared fixed candidate bank scored against both training masks"
+    },
+    {
+      "source_episode": null,
+      "support": "val2014/COCO_val2014_000000104629.jpg",
+      "query": "val2014/COCO_val2014_000000190140.jpg",
+      "classes": [
+        0,
+        8
+      ],
+      "support_stats": {
+        "0": {
+          "area_pixels": 3852,
+          "area_fraction": 0.013170131291028446,
+          "foreground_patch_mass": 53.926788330078125,
+          "clean_patches": 29,
+          "centroid_xy": [
+            0.5656708365784009,
+            0.500402757611494
+          ]
+        },
+        "8": {
+          "area_pixels": 11251,
+          "area_fraction": 0.0384675875273523,
+          "foreground_patch_mass": 157.92498779296875,
+          "clean_patches": 134,
+          "centroid_xy": [
+            0.5879717636210114,
+            0.603360518209225
+          ]
+        }
+      },
+      "query_stats": {
+        "0": {
+          "area_pixels": 7721,
+          "area_fraction": 0.02818706191588785,
+          "foreground_patch_mass": 115.35000610351562,
+          "clean_patches": 95,
+          "centroid_xy": [
+            0.32880111870224066,
+            0.5112955079422911
+          ]
+        },
+        "8": {
+          "area_pixels": 138521,
+          "area_fraction": 0.5056987441588785,
+          "foreground_patch_mass": 2070.928466796875,
+          "clean_patches": 1926,
+          "centroid_xy": [
+            0.4409438483154179,
+            0.37595092535313146
+          ]
+        }
+      },
+      "area_ratio_support_to_query": [
+        2.1402263419415575,
+        13.14609978593803
+      ],
+      "centroid_displacements": [
+        0.23712004397878478,
+        0.2707994291022103
+      ],
+      "direct_oracle": "NOT_MEASURED: requires shared fixed candidate bank scored against both training masks"
+    },
+    {
+      "source_episode": null,
+      "support": "val2014/COCO_val2014_000000219848.jpg",
+      "query": "val2014/COCO_val2014_000000519945.jpg",
+      "classes": [
+        0,
+        8
+      ],
+      "support_stats": {
+        "0": {
+          "area_pixels": 140472,
+          "area_fraction": 0.3830497382198953,
+          "foreground_patch_mass": 1568.48193359375,
+          "clean_patches": 1452,
+          "centroid_xy": [
+            0.48048501213765016,
+            0.47037042503523646
+          ]
+        },
+        "8": {
+          "area_pixels": 106666,
+          "area_fraction": 0.29086496509598603,
+          "foreground_patch_mass": 1192.27783203125,
+          "clean_patches": 1124,
+          "centroid_xy": [
+            0.5119874626169538,
+            0.8433837888188371
+          ]
+        }
+      },
+      "query_stats": {
+        "0": {
+          "area_pixels": 3029,
+          "area_fraction": 0.011083870023419203,
+          "foreground_patch_mass": 45.20476150512695,
+          "clean_patches": 18,
+          "centroid_xy": [
+            0.47943834598877516,
+            0.5826371616141545
+          ]
+        },
+        "8": {
+          "area_pixels": 39063,
+          "area_fraction": 0.1429413056206089,
+          "foreground_patch_mass": 584.9381103515625,
+          "clean_patches": 511,
+          "centroid_xy": [
+            0.46717434016844583,
+            0.6349314663198541
+          ]
+        }
+      },
+      "area_ratio_support_to_query": [
+        0.028935850667665373,
+        0.4914352801941546
+      ],
+      "centroid_displacements": [
+        0.11227161552283536,
+        0.21321488385852663
+      ],
+      "direct_oracle": "NOT_MEASURED: requires shared fixed candidate bank scored against both training masks"
+    }
+  ],
+  "geometry_shortcut_diagnostic": {
+    "tasks": 20,
+    "area_correct": 12,
+    "centroid_correct": 13,
+    "scope": "Annotation-only: choose between two TRUE query masks by support/query area or centroid; not legal candidate performance"
+  },
+  "selected_photo_reuse": {
+    "val2014/COCO_val2014_000000255096.jpg": 2,
+    "val2014/COCO_val2014_000000300066.jpg": 2,
+    "val2014/COCO_val2014_000000018783.jpg": 2,
+    "val2014/COCO_val2014_000000104629.jpg": 2,
+    "val2014/COCO_val2014_000000186218.jpg": 2,
+    "val2014/COCO_val2014_000000190140.jpg": 2,
+    "val2014/COCO_val2014_000000219848.jpg": 2,
+    "val2014/COCO_val2014_000000484551.jpg": 1,
+    "val2014/COCO_val2014_000000519945.jpg": 2,
+    "val2014/COCO_val2014_000000571970.jpg": 1,
+    "val2014/COCO_val2014_000000371330.jpg": 2
+  },
+  "all_role_connected_photo_groups": [
+    [
+      "val2014/COCO_val2014_000000006417.jpg",
+      "val2014/COCO_val2014_000000037209.jpg",
+      "val2014/COCO_val2014_000000081248.jpg",
+      "val2014/COCO_val2014_000000083049.jpg",
+      "val2014/COCO_val2014_000000114453.jpg",
+      "val2014/COCO_val2014_000000156236.jpg",
+      "val2014/COCO_val2014_000000156497.jpg",
+      "val2014/COCO_val2014_000000157581.jpg",
+      "val2014/COCO_val2014_000000166948.jpg",
+      "val2014/COCO_val2014_000000221669.jpg",
+      "val2014/COCO_val2014_000000239351.jpg",
+      "val2014/COCO_val2014_000000252135.jpg",
+      "val2014/COCO_val2014_000000285451.jpg",
+      "val2014/COCO_val2014_000000337305.jpg",
+      "val2014/COCO_val2014_000000373571.jpg",
+      "val2014/COCO_val2014_000000415183.jpg",
+      "val2014/COCO_val2014_000000457334.jpg",
+      "val2014/COCO_val2014_000000527038.jpg"
+    ],
+    [
+      "val2014/COCO_val2014_000000013420.jpg",
+      "val2014/COCO_val2014_000000014845.jpg",
+      "val2014/COCO_val2014_000000018136.jpg",
+      "val2014/COCO_val2014_000000018783.jpg",
+      "val2014/COCO_val2014_000000104629.jpg",
+      "val2014/COCO_val2014_000000111867.jpg",
+      "val2014/COCO_val2014_000000117704.jpg",
+      "val2014/COCO_val2014_000000120860.jpg",
+      "val2014/COCO_val2014_000000128669.jpg",
+      "val2014/COCO_val2014_000000172850.jpg",
+      "val2014/COCO_val2014_000000186218.jpg",
+      "val2014/COCO_val2014_000000190140.jpg",
+      "val2014/COCO_val2014_000000219848.jpg",
+      "val2014/COCO_val2014_000000223496.jpg",
+      "val2014/COCO_val2014_000000242529.jpg",
+      "val2014/COCO_val2014_000000382850.jpg",
+      "val2014/COCO_val2014_000000428856.jpg",
+      "val2014/COCO_val2014_000000440486.jpg",
+      "val2014/COCO_val2014_000000442822.jpg",
+      "val2014/COCO_val2014_000000475244.jpg",
+      "val2014/COCO_val2014_000000484551.jpg",
+      "val2014/COCO_val2014_000000506004.jpg",
+      "val2014/COCO_val2014_000000519945.jpg",
+      "val2014/COCO_val2014_000000571970.jpg"
+    ],
+    [
+      "val2014/COCO_val2014_000000021496.jpg",
+      "val2014/COCO_val2014_000000024790.jpg",
+      "val2014/COCO_val2014_000000056736.jpg",
+      "val2014/COCO_val2014_000000084752.jpg",
+      "val2014/COCO_val2014_000000148531.jpg",
+      "val2014/COCO_val2014_000000204611.jpg",
+      "val2014/COCO_val2014_000000237060.jpg",
+      "val2014/COCO_val2014_000000246425.jpg",
+      "val2014/COCO_val2014_000000255096.jpg",
+      "val2014/COCO_val2014_000000268944.jpg",
+      "val2014/COCO_val2014_000000289173.jpg",
+      "val2014/COCO_val2014_000000295765.jpg",
+      "val2014/COCO_val2014_000000300066.jpg",
+      "val2014/COCO_val2014_000000323709.jpg",
+      "val2014/COCO_val2014_000000371330.jpg",
+      "val2014/COCO_val2014_000000424776.jpg",
+      "val2014/COCO_val2014_000000545913.jpg",
+      "val2014/COCO_val2014_000000553094.jpg",
+      "val2014/COCO_val2014_000000565230.jpg",
+      "val2014/COCO_val2014_000000579158.jpg"
+    ]
+  ],
+  "condition_contract": "same RGB, same frozen candidate bank, same P1/provenance/donors for both tasks; only support mask/task truth changes",
+  "generation_limit": "No alternate semantic pass run. New union bank needs both semantic passes before freezing; current oracle is not its ceiling."
+}

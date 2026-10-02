@@ -13,6 +13,8 @@ ap = argparse.ArgumentParser()
 ap.add_argument('--prepared-root', default='/root/autodl-tmp/demo9')
 ap.add_argument('--out', required=True)
 ap.add_argument('--n', type=int, default=10)
+ap.add_argument('--fold', type=int, default=0)
+ap.add_argument('--keep-cache', action='store_true', help='Keep own cache for the authorized downstream experiment; caller must clean it after use.')
 a = ap.parse_args()
 out = Path(a.out)
 out.mkdir(parents=True, exist_ok=True)
@@ -34,13 +36,13 @@ def checked_iu(p, g):
 common.iu = checked_iu
 src = Path(a.prepared_root) / 'scripts/cache_episodes.py'
 report = dict(state='RUNNING', source=str(src), source_sha256=hashlib.sha256(src.read_bytes()).hexdigest(),
-              n=a.n, fold=0, contract='Unmodified paired encoding/cache script versus released INSID3; exact masks required. No method score.')
+              n=a.n, fold=a.fold, keep_cache=a.keep_cache, contract='Unmodified paired encoding/cache script versus released INSID3; exact masks required. No method score.')
 def save():
     (out / 'report.json').write_text(json.dumps(report, indent=2))
 save()
 t0 = time.time()
 try:
-    sys.argv = [str(src), '--fold', '0', '--n', str(a.n), '--check', str(a.n)]
+    sys.argv = [str(src), '--fold', str(a.fold), '--n', str(a.n), '--check', str(a.n)]
     runpy.run_path(str(src), run_name='__main__')
     if calls != 3 * a.n or len(checks) != a.n:
         raise RuntimeError(f'Unexpected audit call count: {calls}; checks={len(checks)}')
@@ -53,7 +55,7 @@ finally:
     # This smoke cache has no further scientific use. Delete only files created under this own run's cache.
     removed = []
     cache = out / 'cache'
-    if cache.exists():
+    if cache.exists() and not a.keep_cache:
         for path in cache.iterdir():
             if path.is_file():
                 removed.append(dict(path=str(path), bytes=path.stat().st_size))

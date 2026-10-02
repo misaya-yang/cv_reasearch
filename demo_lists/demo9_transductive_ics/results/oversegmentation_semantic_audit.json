@@ -1,0 +1,538 @@
+{
+  "state": "COMPLETED_CPU_ONLY",
+  "scope": "Legacy development semantic false-positive diagnosis, not strict-native method score",
+  "selection": "class_id36 first three frozen manifest episodes sorted by episode, no GT-based selection",
+  "manifest_path": "/root/autodl-tmp/demo9_transductive_ics/results/open_pool_v1/f0/manifest.json",
+  "manifest_sha256": "c118cfc238ff7d74994915ac88a7eff58ef4ab5b11f84676fd7b0f3c532a4611",
+  "feature_contract": "Native BF16 encoder as INSID3 source; historical compact FP32 normalization/debias/decoder + FP16 complement coordinates. Genuine original BF16 decoder added separately; not falsely an identical precision config.",
+  "projection_contract": {
+    "patch_mask": "np.unpackbits uint8, square inferred from bit count",
+    "prediction": "torch CPU float32 bilinear align_corners=False to square1024, strict >0.5",
+    "semantic": "PNG palette/index IDs, nearest-neighbour resize to square1024",
+    "class_mapping": "COCO contiguous zero-based class36 skateboard -> PNG37; class0 person -> PNG1; 0 background;255 ignore if present",
+    "class_mapping_evidence": [
+      "INSID3/datasets/coco.py load_frame compares class_sample+1",
+      "demo4/scripts/stream_fast.py COCO names list index0 person index36 skateboard"
+    ]
+  },
+  "semantic_sources": {
+    "rebuilt": "/root/demo4_cache/data/COCO2014/annotations",
+    "official": "/root/autodl-tmp/datasets/ics/COCO2014/annotations"
+  },
+  "records": [
+    {
+      "episode": 3,
+      "class_id": 36,
+      "support": "val2014/COCO_val2014_000000332987.jpg",
+      "query": "val2014/COCO_val2014_000000057286.jpg",
+      "record_path": "/root/autodl-tmp/demo9_transductive_ics/results/open_pool_v1/f0/episode0003.json",
+      "record_sha256": "73006237e8dc7fb7d311d0fed8b899d3b033b7f62dab2b0d2c5455e105ca19c8",
+      "conditions": {
+        "clean_agree": {
+          "patch_shape": [
+            64,
+            64
+          ],
+          "predicted_pixels": 114783,
+          "semantics": {
+            "rebuilt": {
+              "annotation_path": "/root/demo4_cache/data/COCO2014/annotations/val2014/COCO_val2014_000000057286.png",
+              "annotation_sha256": "3b8ef63b2f764ca2f7e61458a668630abe84b6dd91ba791b4574388b28d8a9d7",
+              "native_shape": [
+                457,
+                640
+              ],
+              "native_label_ids": [
+                0,
+                1,
+                37
+              ],
+              "true_positive_pixels": 13782,
+              "false_positive_pixels": 101001,
+              "false_negative_pixels": 2230,
+              "precision": 0.12007004521575494,
+              "recall": 0.8607294529103172,
+              "iou": 0.11778178492987959,
+              "fp_person_pixels": 1654,
+              "fp_person_fraction": 0.016376075484401145,
+              "fp_other_annotated_object_pixels": 0,
+              "fp_other_annotated_object_fraction": 0,
+              "fp_background_pixels": 99347,
+              "fp_background_fraction": 0.9836239245155989,
+              "fp_ignore_pixels": 0,
+              "fp_semantic_label_histogram": {
+                "0": 99347,
+                "1": 1654
+              },
+              "saved_legacy_intersection_union_exactly_reproduced": true
+            },
+            "official": {
+              "annotation_path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000057286.png",
+              "annotation_sha256": "db1e17a9f4e64596dadc7b86efad1e785479fc750ef7539a1220f055f32017c7",
+              "native_shape": [
+                457,
+                640
+              ],
+              "native_label_ids": [
+                0,
+                1,
+                37
+              ],
+              "true_positive_pixels": 14172,
+              "false_positive_pixels": 100611,
+              "false_negative_pixels": 2515,
+              "precision": 0.12346776090536055,
+              "recall": 0.8492838736741176,
+              "iou": 0.1208204743473887,
+              "fp_person_pixels": 2024,
+              "fp_person_fraction": 0.02011708461301448,
+              "fp_other_annotated_object_pixels": 0,
+              "fp_other_annotated_object_fraction": 0,
+              "fp_background_pixels": 98587,
+              "fp_background_fraction": 0.9798829153869855,
+              "fp_ignore_pixels": 0,
+              "fp_semantic_label_histogram": {
+                "0": 98587,
+                "1": 2024
+              }
+            }
+          }
+        },
+        "mixed_agree": {
+          "patch_shape": [
+            64,
+            64
+          ],
+          "predicted_pixels": 114783,
+          "semantics": {
+            "rebuilt": {
+              "annotation_path": "/root/demo4_cache/data/COCO2014/annotations/val2014/COCO_val2014_000000057286.png",
+              "annotation_sha256": "3b8ef63b2f764ca2f7e61458a668630abe84b6dd91ba791b4574388b28d8a9d7",
+              "native_shape": [
+                457,
+                640
+              ],
+              "native_label_ids": [
+                0,
+                1,
+                37
+              ],
+              "true_positive_pixels": 13782,
+              "false_positive_pixels": 101001,
+              "false_negative_pixels": 2230,
+              "precision": 0.12007004521575494,
+              "recall": 0.8607294529103172,
+              "iou": 0.11778178492987959,
+              "fp_person_pixels": 1654,
+              "fp_person_fraction": 0.016376075484401145,
+              "fp_other_annotated_object_pixels": 0,
+              "fp_other_annotated_object_fraction": 0,
+              "fp_background_pixels": 99347,
+              "fp_background_fraction": 0.9836239245155989,
+              "fp_ignore_pixels": 0,
+              "fp_semantic_label_histogram": {
+                "0": 99347,
+                "1": 1654
+              },
+              "saved_legacy_intersection_union_exactly_reproduced": true
+            },
+            "official": {
+              "annotation_path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000057286.png",
+              "annotation_sha256": "db1e17a9f4e64596dadc7b86efad1e785479fc750ef7539a1220f055f32017c7",
+              "native_shape": [
+                457,
+                640
+              ],
+              "native_label_ids": [
+                0,
+                1,
+                37
+              ],
+              "true_positive_pixels": 14172,
+              "false_positive_pixels": 100611,
+              "false_negative_pixels": 2515,
+              "precision": 0.12346776090536055,
+              "recall": 0.8492838736741176,
+              "iou": 0.1208204743473887,
+              "fp_person_pixels": 2024,
+              "fp_person_fraction": 0.02011708461301448,
+              "fp_other_annotated_object_pixels": 0,
+              "fp_other_annotated_object_fraction": 0,
+              "fp_background_pixels": 98587,
+              "fp_background_fraction": 0.9798829153869855,
+              "fp_ignore_pixels": 0,
+              "fp_semantic_label_histogram": {
+                "0": 98587,
+                "1": 2024
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "episode": 35,
+      "class_id": 36,
+      "support": "val2014/COCO_val2014_000000218721.jpg",
+      "query": "val2014/COCO_val2014_000000102848.jpg",
+      "record_path": "/root/autodl-tmp/demo9_transductive_ics/results/open_pool_v1/f0/episode0035.json",
+      "record_sha256": "a2ef10b9998c60f75ae9341ac6ab086b3885220a67f8ea71f5f040876d4edeae",
+      "conditions": {
+        "clean_agree": {
+          "patch_shape": [
+            64,
+            64
+          ],
+          "predicted_pixels": 59939,
+          "semantics": {
+            "rebuilt": {
+              "annotation_path": "/root/demo4_cache/data/COCO2014/annotations/val2014/COCO_val2014_000000102848.png",
+              "annotation_sha256": "99608afea5d6a5929f05597734a2b7854aa4f745423de60b8aa0af60516f7cfd",
+              "native_shape": [
+                427,
+                640
+              ],
+              "native_label_ids": [
+                0,
+                1,
+                14,
+                25,
+                28,
+                37
+              ],
+              "true_positive_pixels": 48106,
+              "false_positive_pixels": 11833,
+              "false_negative_pixels": 11023,
+              "precision": 0.8025826256694306,
+              "recall": 0.8135770941500786,
+              "iou": 0.6779121219807784,
+              "fp_person_pixels": 2469,
+              "fp_person_fraction": 0.20865376489478576,
+              "fp_other_annotated_object_pixels": 0,
+              "fp_other_annotated_object_fraction": 0,
+              "fp_background_pixels": 9364,
+              "fp_background_fraction": 0.7913462351052142,
+              "fp_ignore_pixels": 0,
+              "fp_semantic_label_histogram": {
+                "0": 9364,
+                "1": 2469
+              },
+              "saved_legacy_intersection_union_exactly_reproduced": true
+            },
+            "official": {
+              "annotation_path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000102848.png",
+              "annotation_sha256": "79df3bb98340c63c773a0d36a034d147033e1b96b7b5f6c8bcffaa04fa5fab71",
+              "native_shape": [
+                427,
+                640
+              ],
+              "native_label_ids": [
+                0,
+                1,
+                14,
+                25,
+                28,
+                37
+              ],
+              "true_positive_pixels": 49865,
+              "false_positive_pixels": 10074,
+              "false_negative_pixels": 9491,
+              "precision": 0.8319291279467459,
+              "recall": 0.8401004110789136,
+              "iou": 0.7182053867204379,
+              "fp_person_pixels": 2181,
+              "fp_person_fraction": 0.21649791542584873,
+              "fp_other_annotated_object_pixels": 0,
+              "fp_other_annotated_object_fraction": 0,
+              "fp_background_pixels": 7893,
+              "fp_background_fraction": 0.7835020845741513,
+              "fp_ignore_pixels": 0,
+              "fp_semantic_label_histogram": {
+                "0": 7893,
+                "1": 2181
+              }
+            }
+          }
+        },
+        "mixed_agree": {
+          "patch_shape": [
+            64,
+            64
+          ],
+          "predicted_pixels": 65079,
+          "semantics": {
+            "rebuilt": {
+              "annotation_path": "/root/demo4_cache/data/COCO2014/annotations/val2014/COCO_val2014_000000102848.png",
+              "annotation_sha256": "99608afea5d6a5929f05597734a2b7854aa4f745423de60b8aa0af60516f7cfd",
+              "native_shape": [
+                427,
+                640
+              ],
+              "native_label_ids": [
+                0,
+                1,
+                14,
+                25,
+                28,
+                37
+              ],
+              "true_positive_pixels": 50097,
+              "false_positive_pixels": 14982,
+              "false_negative_pixels": 9032,
+              "precision": 0.7697874890517679,
+              "recall": 0.8472492347240779,
+              "iou": 0.6759725276949441,
+              "fp_person_pixels": 2476,
+              "fp_person_fraction": 0.16526498464824457,
+              "fp_other_annotated_object_pixels": 0,
+              "fp_other_annotated_object_fraction": 0,
+              "fp_background_pixels": 12506,
+              "fp_background_fraction": 0.8347350153517554,
+              "fp_ignore_pixels": 0,
+              "fp_semantic_label_histogram": {
+                "0": 12506,
+                "1": 2476
+              },
+              "saved_legacy_intersection_union_exactly_reproduced": true
+            },
+            "official": {
+              "annotation_path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000102848.png",
+              "annotation_sha256": "79df3bb98340c63c773a0d36a034d147033e1b96b7b5f6c8bcffaa04fa5fab71",
+              "native_shape": [
+                427,
+                640
+              ],
+              "native_label_ids": [
+                0,
+                1,
+                14,
+                25,
+                28,
+                37
+              ],
+              "true_positive_pixels": 52061,
+              "false_positive_pixels": 13018,
+              "false_negative_pixels": 7295,
+              "precision": 0.799966194932313,
+              "recall": 0.8770975133095222,
+              "iou": 0.7193329096084229,
+              "fp_person_pixels": 2188,
+              "fp_person_fraction": 0.16807497311414965,
+              "fp_other_annotated_object_pixels": 0,
+              "fp_other_annotated_object_fraction": 0,
+              "fp_background_pixels": 10830,
+              "fp_background_fraction": 0.8319250268858503,
+              "fp_ignore_pixels": 0,
+              "fp_semantic_label_histogram": {
+                "0": 10830,
+                "1": 2188
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "episode": 43,
+      "class_id": 36,
+      "support": "val2014/COCO_val2014_000000429726.jpg",
+      "query": "val2014/COCO_val2014_000000514550.jpg",
+      "record_path": "/root/autodl-tmp/demo9_transductive_ics/results/open_pool_v1/f0/episode0043.json",
+      "record_sha256": "156e46587e326839ceea8d3733363c6235fbc7e0760cceaa9abcd85e4a619f6c",
+      "conditions": {
+        "clean_agree": {
+          "patch_shape": [
+            64,
+            64
+          ],
+          "predicted_pixels": 212880,
+          "semantics": {
+            "rebuilt": {
+              "annotation_path": "/root/demo4_cache/data/COCO2014/annotations/val2014/COCO_val2014_000000514550.png",
+              "annotation_sha256": "5e87a655310c561a0db6c75092153cb9ad1c04b6162049de55d630806525fd70",
+              "native_shape": [
+                640,
+                424
+              ],
+              "native_label_ids": [
+                0,
+                1,
+                37
+              ],
+              "true_positive_pixels": 9937,
+              "false_positive_pixels": 202943,
+              "false_negative_pixels": 603,
+              "precision": 0.04667888012025554,
+              "recall": 0.9427893738140417,
+              "iou": 0.046547031847969156,
+              "fp_person_pixels": 1128,
+              "fp_person_fraction": 0.005558210926220663,
+              "fp_other_annotated_object_pixels": 0,
+              "fp_other_annotated_object_fraction": 0,
+              "fp_background_pixels": 201815,
+              "fp_background_fraction": 0.9944417890737793,
+              "fp_ignore_pixels": 0,
+              "fp_semantic_label_histogram": {
+                "0": 201815,
+                "1": 1128
+              },
+              "saved_legacy_intersection_union_exactly_reproduced": true
+            },
+            "official": {
+              "annotation_path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000514550.png",
+              "annotation_sha256": "eb05bb5f9936c543b5f8b84a52ab0675dfb7fc190f9fcb91d3b01597cef87206",
+              "native_shape": [
+                640,
+                424
+              ],
+              "native_label_ids": [
+                0,
+                1,
+                37
+              ],
+              "true_positive_pixels": 10306,
+              "false_positive_pixels": 202574,
+              "false_negative_pixels": 612,
+              "precision": 0.048412251033446076,
+              "recall": 0.9439457776149478,
+              "iou": 0.04827347160549342,
+              "fp_person_pixels": 1370,
+              "fp_person_fraction": 0.006762960695844481,
+              "fp_other_annotated_object_pixels": 0,
+              "fp_other_annotated_object_fraction": 0,
+              "fp_background_pixels": 201204,
+              "fp_background_fraction": 0.9932370393041555,
+              "fp_ignore_pixels": 0,
+              "fp_semantic_label_histogram": {
+                "0": 201204,
+                "1": 1370
+              }
+            }
+          }
+        },
+        "mixed_agree": {
+          "patch_shape": [
+            64,
+            64
+          ],
+          "predicted_pixels": 212880,
+          "semantics": {
+            "rebuilt": {
+              "annotation_path": "/root/demo4_cache/data/COCO2014/annotations/val2014/COCO_val2014_000000514550.png",
+              "annotation_sha256": "5e87a655310c561a0db6c75092153cb9ad1c04b6162049de55d630806525fd70",
+              "native_shape": [
+                640,
+                424
+              ],
+              "native_label_ids": [
+                0,
+                1,
+                37
+              ],
+              "true_positive_pixels": 9937,
+              "false_positive_pixels": 202943,
+              "false_negative_pixels": 603,
+              "precision": 0.04667888012025554,
+              "recall": 0.9427893738140417,
+              "iou": 0.046547031847969156,
+              "fp_person_pixels": 1128,
+              "fp_person_fraction": 0.005558210926220663,
+              "fp_other_annotated_object_pixels": 0,
+              "fp_other_annotated_object_fraction": 0,
+              "fp_background_pixels": 201815,
+              "fp_background_fraction": 0.9944417890737793,
+              "fp_ignore_pixels": 0,
+              "fp_semantic_label_histogram": {
+                "0": 201815,
+                "1": 1128
+              },
+              "saved_legacy_intersection_union_exactly_reproduced": true
+            },
+            "official": {
+              "annotation_path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000514550.png",
+              "annotation_sha256": "eb05bb5f9936c543b5f8b84a52ab0675dfb7fc190f9fcb91d3b01597cef87206",
+              "native_shape": [
+                640,
+                424
+              ],
+              "native_label_ids": [
+                0,
+                1,
+                37
+              ],
+              "true_positive_pixels": 10306,
+              "false_positive_pixels": 202574,
+              "false_negative_pixels": 612,
+              "precision": 0.048412251033446076,
+              "recall": 0.9439457776149478,
+              "iou": 0.04827347160549342,
+              "fp_person_pixels": 1370,
+              "fp_person_fraction": 0.006762960695844481,
+              "fp_other_annotated_object_pixels": 0,
+              "fp_other_annotated_object_fraction": 0,
+              "fp_background_pixels": 201204,
+              "fp_background_fraction": 0.9932370393041555,
+              "fp_ignore_pixels": 0,
+              "fp_semantic_label_histogram": {
+                "0": 201204,
+                "1": 1370
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "pooled_summary": {
+    "clean_agree": {
+      "rebuilt": {
+        "true_positive_pixels": 71825,
+        "predicted_pixels": 387602,
+        "precision": 0.18530606137223235,
+        "false_positive_pixels": 315777,
+        "fp_person_pixels": 5251,
+        "fp_person_fraction": 0.016628823505195123,
+        "fp_other_annotated_object_fraction": 0,
+        "fp_background_fraction": 0.9833711764948049
+      },
+      "official": {
+        "true_positive_pixels": 74343,
+        "predicted_pixels": 387602,
+        "precision": 0.19180241588020702,
+        "false_positive_pixels": 313259,
+        "fp_person_pixels": 5575,
+        "fp_person_fraction": 0.017796775192412666,
+        "fp_other_annotated_object_fraction": 0,
+        "fp_background_fraction": 0.9822032248075874
+      }
+    },
+    "mixed_agree": {
+      "rebuilt": {
+        "true_positive_pixels": 73816,
+        "predicted_pixels": 392742,
+        "precision": 0.18795035926893483,
+        "false_positive_pixels": 318926,
+        "fp_person_pixels": 5258,
+        "fp_person_fraction": 0.016486583094510954,
+        "fp_other_annotated_object_fraction": 0,
+        "fp_background_fraction": 0.9835134169054891
+      },
+      "official": {
+        "true_positive_pixels": 76539,
+        "predicted_pixels": 392742,
+        "precision": 0.19488366408481905,
+        "false_positive_pixels": 316203,
+        "fp_person_pixels": 5582,
+        "fp_person_fraction": 0.017653216446396777,
+        "fp_other_annotated_object_fraction": 0,
+        "fp_background_fraction": 0.9823467835536033
+      }
+    }
+  },
+  "limitations": [
+    "Three preselected legacy-development episodes only; not a class-wide or strict-native estimate.",
+    "Semantic PNG label0 has no finer stuff class and may include unannotated objects; it cannot identify road or rule out unannotated person.",
+    "Official masks are used only to diagnose the frozen legacy predictions, not to claim official-protocol inference.",
+    "FP attribution is mutually exclusive according to each semantic PNG; instance overlap and crowd conventions can affect attribution."
+  ]
+}

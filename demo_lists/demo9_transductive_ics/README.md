@@ -118,6 +118,15 @@ PPNet(ECCV2020)已用无标注图丰富部件原型，PANet(ICCV2019)已有反�
 
 ## 文件
 
+### E4a 单种子假设的首次因果核查（2026-10-02）
+
+假设来自用户：部件已被参考支持，但最终仍要求与单seed相似。源码核实为真；不等于已测出大的任务损失。
+固定reference/mask/candidate/seed及seed-area boost、原.2阈值，仅删除intra相似度，official paired COCO fold0前30/seed0：1shot62.035→49.694，pooled P1参考57.595→54.905。新增像素TP比例分别21.6%/34.3%；仅加新增GT前景的宽松界分别66.913/59.869（+4.878/+2.273）；后者episode-paired CI[+.150,+3.746]。这是逐像素GT诊断，不是合法方法或可实现的整区域oracle。
+
+强FoRIS完整pipeline前10个相同标准episode：56.768→56.989（+.221，episode CI[−.8,+1.2]），只补新增GT前景的界57.769（+1.001，CI[+.1,+1.7]）。native replay10/10 exact；只改变prior中的intra因子，其后归一化/boost/disagreement/reweighting全部保留；FP32 native feature forward当例RAM复用，无新磁盘cache/下载。未达到大瓶颈预测，不扩单因子消融。小样本不否定所有部件取证方案；该局部界不能解释全部漏分。
+
+源码/数据/结果：`scripts/seed_bottleneck.py`、`scripts/foris_seed_bottleneck.py`；`results/seed_bottleneck_pilot_f0{,_summary}.json`、`results/foris_seed_bottleneck_pilot_f0.json`。FoRIS镜像文件SHA及重要实现差异记录在PLAN E4a；不是论文排行榜复现。其他执行者200例seed/ridge诊断只读核对，未重跑或修改。下一步须检验局部证据的独立可靠性，原native最近邻FG/BG票及FoRIS多原型/困难BG对比不能被改名当新机制。
+
 交接说明在 `HANDOFF.md`，下一步实验在 `PLAN.md`。
 
 - `tics/`：方法本体（缓存特征上的 INSID3、可靠性估计、迭代）。

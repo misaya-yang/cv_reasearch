@@ -1,0 +1,20 @@
+{
+  "state": "COMPLETED",
+  "evidence": "Already completed CPU diagnostic stdout; full per-pair JSON remains on host, no new remote access",
+  "scope": "Four frozen training CF pairs/eight tasks; not unseen gain",
+  "v2": {
+    "natural_choice_flip_pairs": 2,
+    "both_GT_best_pairs": 2,
+    "gold_only_argmax_changed_tasks": 1,
+    "gold_only_scores_changed_tasks": 8,
+    "mean_train_CF_native_regret": 0.16916220635175705
+  },
+  "v3_CF": {
+    "natural_choice_flip_pairs": 4,
+    "both_GT_best_pairs": 1,
+    "gold_only_argmax_changed_tasks": 0,
+    "gold_only_scores_changed_tasks": 8,
+    "mean_train_CF_native_regret": 0.05327456444501877
+  },
+  "interpretation": "Direct gold-mask channel changes scores but rarely hard choices with derived scalar scores fixed; natural paired gold+score changes can still flip choices. No causal link to encoder positional anchoring measured."
+}

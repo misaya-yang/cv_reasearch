@@ -9,7 +9,24 @@ Idea: besides the one labelled reference, use the other unlabeled test images of
 references, keep the reliable ones, and re-predict. Training-free, on top of INSID3 (CVPR 2026 oral).
 Entry: `demo_lists/demo9_transductive_ics/HANDOFF.md`, `PLAN.md`, `README.md`.
 
-**Measured** (COCO-20i, masks rebuilt from the official annotations, one pool seed):
+**Measured on the exact protocol** (fold 0 only, 400 episodes, official masks, cache identical to the released
+code; `results/probe_decoder_f0_400.json`, `probe_seed_f0_200.json`): INSID3 55.0; naive self-training 57.0;
+current method 59.1 (+4.1); pool with true masks 67.7. A closed-form classifier on the pool does not beat the
+nearest-neighbour vote (67.4 with true masks, 56.4 with pseudo masks). Removing the seed-similarity factor
+costs 2 to 7 points. Round-trip recall on the labelled reference tracks the true recall of the pseudo masks
+(rank correlation 0.72); precision does not (0.33). The first 200 episodes alone gave +1.1, so 200 episodes of
+one fold decide nothing. Reading: the decoder and the selection rule are not the bottleneck; the quality of
+the pseudo references is (8.6 points). Where the unrealised gain sits (`scripts/analyze_gap.py`): in over-segmentation, not misses. Ten classes
+hold half of the gap (skateboard 16 / 15 / 75 for one-shot / current / true masks); true masks help because they
+label the co-occurring object as background in place, and pseudo masks all share the same mistake. M1 (collection-level modes) was
+refuted the same night (oracle ceiling 54.2). Attribution on fold 0: one well-chosen reference (75.1 with a true
+mask, 70.7 oracle choice among 16 pseudo hypotheses) beats pooling 15 true masks (67.7); the gap comes from the
+38% of pool images whose one-shot masks are wrong (IoU 0.20), and no label-free score separates right from wrong
+well enough (AUC 0.81 to 0.84). All label-free variants stop at 57 to 59. Next step, CPU only: train a selector on
+the saved candidate tables. See the first section of `PLAN.md`.
+The probe cache `/root/demo9_cache/probe` was deleted after use; rebuilding takes 8 minutes.
+
+**Measured earlier** (COCO-20i, masks rebuilt from the official annotations, one pool seed, baseline not exact):
 
 - Standard episodes, 4 folds x 400, up to 15 unlabeled images per episode: INSID3 55.5 to 61.7. Paired
   difference +6.1, 95% interval [+4.2, +8.2], all four folds positive, 47 of 80 classes up and 12 down.
@@ -65,8 +82,8 @@ method, reliability selection, is worth about 1 point on current evidence.
 
 ## Server jobs
 
-- Codex diagnostics completed; no own GPU job pending. Open-pool 400 queries: clean AG60.525/pooled59.829, mixed59.704/58.725 (difference CI crosses zero), separate protocol, caches removed. E1b exact interface10/10; centroid pilot30:49.686 vs1shot60.872, stop weak readout; full TPA adaptation unverified. See direction README/PLAN.
-- E0/E1 paired-cache rebuild live in `/root/autodl-tmp/demo9`, another owner; do not duplicate or delete its caches.
+- Codex: conditional ranking pilot40 complete, held12 offered only0.132pp candidate room, so no efficacy claim; retired1.704GB features with ledger/receipt. New `conditional_ranker_development_v2` queue: fixedall20classes6each, train12/dev4/test4, all-role photo purge; 6GB temporary cap, first20 gate passed on TRAIN+DEV16 examples/classes (57.45 direct/73.24 oracle, not a method gain); full120 candidates complete. Parallel10 strong-control overlays passed native/cached exact checks and are reused. All stages complete: held24 direct73.714/cachedAG4 73.766/HGB73.254/RQ=RQdonor72.184, only4photo-components. Fixed10 counterfactual availability passed4pairs; frozen8train-only tasks are being added equally to allcontrols, samearchitecture/50epoch budget. No method gain yet. Fold0 remains development; no independent final result. CPU stat400 HGB57.49 vs direct54.96, lawful nomineeoracle65.10, below62. Old nativef2/M1 remain retired.
+- Other owner E0/decoder/seed probe results now present in `/root/autodl-tmp/demo9/results`; last check found no active script PID. Do not rerun its matrices or delete its caches; read completed results for the next decision.
 - 2026-10-02: data prepared with `scripts/get_data.sh` into `/root/autodl-tmp/datasets/ics/` (INSID3's
   layout); check with `scripts/check_data.py`. Ready: COCO-20i official masks, Pascal-Part, SUIM, chest
   X-ray, PACO-Part and LVIS-92i annotations (their train2017 images are being extracted). Postponed at the
