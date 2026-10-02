@@ -1,0 +1,75 @@
+{
+  "status": "COMPLETED",
+  "stages": [
+    {
+      "name": "prepare_CPU",
+      "status": "DONE",
+      "command": [
+        "/root/miniconda3/bin/python",
+        "research/quality_mechanisms/prepare_coco_subset.py",
+        "--annotations-zip",
+        "/root/autodl-pub/COCO2017/annotations_trainval2017.zip",
+        "--images-zip",
+        "/root/autodl-pub/COCO2017/val2017.zip",
+        "--output-dir",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/coco_prompt_holdout_seed2029_v1",
+        "--seed",
+        "2029",
+        "--num-images",
+        "256",
+        "--exclude-manifest",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/quality_followup_v1/holdout_256/excluded_manifest.json"
+      ],
+      "pid": 12026,
+      "returncode": 0,
+      "wall_seconds": 15.459840534254909
+    },
+    {
+      "name": "official_cached_outputs",
+      "status": "DONE",
+      "command": [
+        "/root/miniconda3/bin/python",
+        "tools/takeover_official_export.py",
+        "--subset-dir",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/coco_prompt_holdout_seed2029_v1",
+        "--checkpoint",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/checkpoints/sam_vit_b_01ec64.pth",
+        "--output-dir",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/quality_followup_v1/holdout_256/original",
+        "--device",
+        "cuda:0",
+        "--limit-images",
+        "256",
+        "--microbatch",
+        "4",
+        "--defer-quality",
+        "--npz-compression",
+        "none",
+        "--save-encoded-inputs"
+      ],
+      "pid": 12104,
+      "returncode": 0,
+      "wall_seconds": 102.01342682912946
+    },
+    {
+      "name": "fixed_prompt_rules",
+      "status": "DONE",
+      "command": [
+        "/root/miniconda3/bin/python",
+        "tools/takeover_prompt_stability.py",
+        "--source-run",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/quality_followup_v1/holdout_256/original",
+        "--output",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/quality_followup_v1/holdout_256/prompt_stability_256.json",
+        "--checkpoint",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/checkpoints/sam_vit_b_01ec64.pth",
+        "--cohort",
+        "256 newly sampled COCO images excluding all prior152; fixed rules before outputs; image-cluster intervals"
+      ],
+      "pid": 12273,
+      "returncode": 0,
+      "wall_seconds": 143.1863978765905
+    }
+  ],
+  "instances": 711
+}

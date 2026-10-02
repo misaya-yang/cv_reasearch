@@ -1,0 +1,403 @@
+{
+ "segmenter": "m2f-swin-tiny-ade",
+ "dataset": "ade20k",
+ "images": 2000,
+ "tta": false,
+ "recognisers": [
+  "dino=dinov2l:rec/dinov2l_gt.pt",
+  "sig=siglip2:rec/siglip2_gt.pt",
+  "both=dinov2l+siglip2:rec/dinov2l+siglip2_gt.pt"
+ ],
+ "pixel_heads": [],
+ "second_segmenters": [],
+ "views": "",
+ "protocol": {
+  "gamma": 2.0,
+  "hyperparameters_selected_on": "none"
+ },
+ "diagnostics": {
+  "error_pixels_predicting_absent_class": 0.4862,
+  "predicted_classes_per_image": 11.217,
+  "gt_classes_per_image": 8.454,
+  "spurious_classes_per_image": 3.897
+ },
+ "argmax": {
+  "mIoU": 47.993,
+  "mAcc": 61.704,
+  "aAcc": 82.826
+ },
+ "oracle/presence": {
+  "mIoU": 64.216,
+  "mAcc": 73.071,
+  "aAcc": 88.969
+ },
+ "oracle/region_majority": {
+  "mIoU": 74.513,
+  "mAcc": 82.526,
+  "aAcc": 92.061
+ },
+ "oracle/query_majority": {
+  "mIoU": 76.255,
+  "mAcc": 83.883,
+  "aAcc": 92.589
+ },
+ "mc/sum_pow^2": {
+  "mIoU": 48.124,
+  "mAcc": 61.711,
+  "aAcc": 82.893
+ },
+ "mc/sum_pow^4": {
+  "mIoU": 48.117,
+  "mAcc": 61.81,
+  "aAcc": 82.854
+ },
+ "mc/self_sharpen^2": {
+  "mIoU": 48.055,
+  "mAcc": 62.209,
+  "aAcc": 82.722
+ },
+ "mc/drop_conf<0.3": {
+  "mIoU": 47.608,
+  "mAcc": 60.24,
+  "aAcc": 82.625
+ },
+ "mc/drop_conf<0.5": {
+  "mIoU": 46.321,
+  "mAcc": 57.968,
+  "aAcc": 82.275
+ },
+ "oracle/gt_regions+seg_what": {
+  "mIoU": 58.504,
+  "mAcc": 67.745,
+  "aAcc": 88.949
+ },
+ "dino/fuse^1": {
+  "mIoU": 53.189,
+  "mAcc": 65.734,
+  "aAcc": 84.739
+ },
+ "dino/fuse^2": {
+  "mIoU": 54.0,
+  "mAcc": 66.204,
+  "aAcc": 84.884
+ },
+ "dino/fuse^4": {
+  "mIoU": 54.285,
+  "mAcc": 66.468,
+  "aAcc": 84.943
+ },
+ "dino/fuse^2_prior": {
+  "mIoU": 53.967,
+  "mAcc": 71.845,
+  "aAcc": 84.43
+ },
+ "dino/relabel^2": {
+  "mIoU": 54.119,
+  "mAcc": 66.222,
+  "aAcc": 84.864
+ },
+ "dino/rec_only": {
+  "mIoU": 54.024,
+  "mAcc": 66.888,
+  "aAcc": 84.528
+ },
+ "dino/gt_regions": {
+  "mIoU": 75.205,
+  "mAcc": 81.9,
+  "aAcc": 93.313
+ },
+ "dino/query^2": {
+  "mIoU": 53.497,
+  "mAcc": 66.354,
+  "aAcc": 84.677
+ },
+ "dino/query^2+fuse^2": {
+  "mIoU": 55.122,
+  "mAcc": 67.598,
+  "aAcc": 85.113
+ },
+ "sig/fuse^1": {
+  "mIoU": 54.225,
+  "mAcc": 66.549,
+  "aAcc": 84.939
+ },
+ "sig/fuse^2": {
+  "mIoU": 54.846,
+  "mAcc": 67.037,
+  "aAcc": 85.057
+ },
+ "sig/fuse^4": {
+  "mIoU": 55.008,
+  "mAcc": 67.207,
+  "aAcc": 84.971
+ },
+ "sig/fuse^2_prior": {
+  "mIoU": 53.706,
+  "mAcc": 71.447,
+  "aAcc": 84.378
+ },
+ "sig/relabel^2": {
+  "mIoU": 54.788,
+  "mAcc": 66.968,
+  "aAcc": 85.001
+ },
+ "sig/rec_only": {
+  "mIoU": 54.582,
+  "mAcc": 67.024,
+  "aAcc": 84.825
+ },
+ "sig/gt_regions": {
+  "mIoU": 73.835,
+  "mAcc": 80.547,
+  "aAcc": 93.472
+ },
+ "sig/query^2": {
+  "mIoU": 54.026,
+  "mAcc": 66.638,
+  "aAcc": 84.742
+ },
+ "sig/query^2+fuse^2": {
+  "mIoU": 55.884,
+  "mAcc": 68.263,
+  "aAcc": 85.095
+ },
+ "both/fuse^1": {
+  "mIoU": 54.138,
+  "mAcc": 66.631,
+  "aAcc": 85.049
+ },
+ "both/fuse^2": {
+  "mIoU": 54.565,
+  "mAcc": 66.884,
+  "aAcc": 85.152
+ },
+ "both/fuse^4": {
+  "mIoU": 55.33,
+  "mAcc": 67.739,
+  "aAcc": 85.237
+ },
+ "both/fuse^2_prior": {
+  "mIoU": 54.156,
+  "mAcc": 71.773,
+  "aAcc": 84.61
+ },
+ "both/relabel^2": {
+  "mIoU": 54.513,
+  "mAcc": 66.801,
+  "aAcc": 85.158
+ },
+ "both/rec_only": {
+  "mIoU": 55.437,
+  "mAcc": 68.377,
+  "aAcc": 85.076
+ },
+ "both/gt_regions": {
+  "mIoU": 76.603,
+  "mAcc": 83.043,
+  "aAcc": 93.794
+ },
+ "both/query^2": {
+  "mIoU": 54.578,
+  "mAcc": 67.401,
+  "aAcc": 84.849
+ },
+ "both/query^2+fuse^2": {
+  "mIoU": 56.127,
+  "mAcc": 68.588,
+  "aAcc": 85.354
+ },
+ "dino/regions": {
+  "n": 21862,
+  "seg_acc": 0.5984,
+  "rec_acc": 0.6562,
+  "fused_acc": 0.6627,
+  "seg_acc_area": 0.8702,
+  "rec_acc_area": 0.8897,
+  "fused_acc_area": 0.8943,
+  "rec_fixes_seg_wrong": 0.2113,
+  "rec_breaks_seg_right": 0.0452,
+  "fused_fixes_seg_wrong": 0.2025,
+  "fused_breaks_seg_right": 0.0285,
+  "verifier_auc": 0.8455
+ },
+ "sig/regions": {
+  "n": 21862,
+  "seg_acc": 0.5984,
+  "rec_acc": 0.6562,
+  "fused_acc": 0.6622,
+  "seg_acc_area": 0.8702,
+  "rec_acc_area": 0.895,
+  "fused_acc_area": 0.895,
+  "rec_fixes_seg_wrong": 0.2133,
+  "rec_breaks_seg_right": 0.0466,
+  "fused_fixes_seg_wrong": 0.2036,
+  "fused_breaks_seg_right": 0.03,
+  "verifier_auc": 0.85
+ },
+ "both/regions": {
+  "n": 21862,
+  "seg_acc": 0.5984,
+  "rec_acc": 0.6649,
+  "fused_acc": 0.6669,
+  "seg_acc_area": 0.8702,
+  "rec_acc_area": 0.8977,
+  "fused_acc_area": 0.8978,
+  "rec_fixes_seg_wrong": 0.2215,
+  "rec_breaks_seg_right": 0.0375,
+  "fused_fixes_seg_wrong": 0.2077,
+  "fused_breaks_seg_right": 0.025,
+  "verifier_auc": 0.8506
+ },
+ "class_iou_argmax": [
+  0.7767,
+  0.8303,
+  0.9459,
+  0.8295,
+  0.7516,
+  0.8474,
+  0.8357,
+  0.8869,
+  0.6201,
+  0.6589,
+  0.5717,
+  0.6617,
+  0.83,
+  0.3579,
+  0.4569,
+  0.6039,
+  0.6585,
+  0.5331,
+  0.7657,
+  0.5868,
+  0.8387,
+  0.5358,
+  0.7129,
+  0.6439,
+  0.4056,
+  0.4297,
+  0.5394,
+  0.6475,
+  0.6993,
+  0.2555,
+  0.4199,
+  0.6062,
+  0.4717,
+  0.4941,
+  0.5025,
+  0.452,
+  0.656,
+  0.7351,
+  0.3211,
+  0.5759,
+  0.2561,
+  0.2325,
+  0.4567,
+  0.376,
+  0.3208,
+  0.3721,
+  0.3838,
+  0.6736,
+  0.4865,
+  0.7165,
+  0.8113,
+  0.445,
+  0.1558,
+  0.3159,
+  0.7571,
+  0.4366,
+  0.9201,
+  0.6051,
+  0.3932,
+  0.3259,
+  0.1304,
+  0.694,
+  0.3562,
+  0.4023,
+  0.5833,
+  0.8647,
+  0.382,
+  0.5117,
+  0.1648,
+  0.4316,
+  0.557,
+  0.7745,
+  0.4813,
+  0.3681,
+  0.6264,
+  0.4167,
+  0.6075,
+  0.4844,
+  0.2947,
+  0.1302,
+  0.8161,
+  0.7217,
+  0.5943,
+  0.2766,
+  0.3893,
+  0.6623,
+  0.3081,
+  0.3617,
+  0.6117,
+  0.6766,
+  0.5635,
+  0.0563,
+  0.3925,
+  0.3714,
+  0.062,
+  0.1657,
+  0.2704,
+  0.562,
+  0.208,
+  0.3948,
+  0.1852,
+  0.0934,
+  0.572,
+  0.9109,
+  0.2805,
+  0.6194,
+  0.2007,
+  0.6616,
+  0.2452,
+  0.4385,
+  0.4458,
+  0.3015,
+  0.3703,
+  0.3742,
+  0.963,
+  0.1397,
+  0.5754,
+  0.7219,
+  0.2421,
+  0.5523,
+  0.365,
+  0.1153,
+  0.4078,
+  0.2996,
+  0.4027,
+  0.4627,
+  0.59,
+  0.4737,
+  0.0653,
+  0.672,
+  0.6439,
+  0.3131,
+  0.5046,
+  0.8008,
+  0.4566,
+  0.3594,
+  0.3925,
+  0.1295,
+  0.4365,
+  0.6194,
+  0.1329,
+  0.0011,
+  0.3837,
+  0.0181,
+  0.4517,
+  0.0279,
+  0.4609,
+  0.1849,
+  0.3212,
+  0.4834
+ ]
+}

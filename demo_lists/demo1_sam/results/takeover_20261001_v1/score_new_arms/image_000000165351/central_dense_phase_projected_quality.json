@@ -1,0 +1,169 @@
+{
+  "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+  "prompt_rows": 4,
+  "resolution": [
+    612,
+    612
+  ],
+  "boundary_ratio": 0.02,
+  "boundary_radius": 17,
+  "policies": {
+    "single_token0": {
+      "mean_iou": 0.6293984656071957,
+      "mean_boundary_iou": 0.5736689989717778
+    },
+    "multimask_iou_head_1to3": {
+      "mean_iou": 0.6287614269581412,
+      "mean_boundary_iou": 0.5708446380049172
+    },
+    "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+      "mean_iou": 0.6293984656071957,
+      "mean_boundary_iou": 0.5736689989717778
+    }
+  },
+  "oracle_diagnostic_extra_ground_truth_not_deployable": {
+    "multimask_1to3_mean_iou": 0.6685210516516883,
+    "all4_mean_iou": 0.6693873951296829,
+    "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.6264111633744998,
+    "all4_boundary_oracle_mean_boundary_iou": 0.6290378975973615,
+    "mean_multimask_iou_gap": 0.039759624693547074,
+    "prompt_bootstrap_gap95": [
+      0.0,
+      0.10995494491432718
+    ],
+    "fraction_gap_gt_0.02": 0.25
+  },
+  "rows": [
+    {
+      "row": 0,
+      "iou_per_mask": [
+        0.6819266652202213,
+        0.5195035460992907,
+        0.6693134822167081,
+        0.6836490311343348
+      ],
+      "boundary_iou_per_mask": [
+        0.6819266652202213,
+        0.5208888888888888,
+        0.6693134822167081,
+        0.6836490311343348
+      ],
+      "selection_per_policy": {
+        "single_token0": 0,
+        "multimask_iou_head_1to3": 3,
+        "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+      },
+      "multimask_iou_oracle_index": 3,
+      "all4_iou_oracle_index": 3,
+      "multimask_oracle_gap": 0.0,
+      "image_id": 165351,
+      "annotation_id": 2130280,
+      "regime": "central",
+      "prompt_xy": [
+        17.0,
+        17.0
+      ],
+      "prompt_box_xyxy": null
+    },
+    {
+      "row": 1,
+      "iou_per_mask": [
+        0.49434400077346996,
+        0.4236887184925361,
+        0.642741858919586,
+        0.4961352657004831
+      ],
+      "boundary_iou_per_mask": [
+        0.41833333333333333,
+        0.35333043099695255,
+        0.5773712183156173,
+        0.42019170660554284
+      ],
+      "selection_per_policy": {
+        "single_token0": 0,
+        "multimask_iou_head_1to3": 3,
+        "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+      },
+      "multimask_iou_oracle_index": 2,
+      "all4_iou_oracle_index": 2,
+      "multimask_oracle_gap": 0.1466065932191029,
+      "image_id": 165351,
+      "annotation_id": 1544669,
+      "regime": "central",
+      "prompt_xy": [
+        342.0,
+        97.0
+      ],
+      "prompt_box_xyxy": null
+    },
+    {
+      "row": 2,
+      "iou_per_mask": [
+        0.41019112096339344,
+        0.4130829510703364,
+        0.4200266149931128,
+        0.4075947094380274
+      ],
+      "boundary_iou_per_mask": [
+        0.3349731861897797,
+        0.37328487977177016,
+        0.3956885297957168,
+        0.33060194002746157
+      ],
+      "selection_per_policy": {
+        "single_token0": 0,
+        "multimask_iou_head_1to3": 3,
+        "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+      },
+      "multimask_iou_oracle_index": 2,
+      "all4_iou_oracle_index": 2,
+      "multimask_oracle_gap": 0.012431905555085387,
+      "image_id": 165351,
+      "annotation_id": 1042872,
+      "regime": "central",
+      "prompt_xy": [
+        201.0,
+        287.0
+      ],
+      "prompt_box_xyxy": null
+    },
+    {
+      "row": 3,
+      "iou_per_mask": [
+        0.9311320754716981,
+        0.30756319446775654,
+        0.6515379651537965,
+        0.9276667015597194
+      ],
+      "boundary_iou_per_mask": [
+        0.8594428111437771,
+        0.2214613562333432,
+        0.5461477780699447,
+        0.84893587425233
+      ],
+      "selection_per_policy": {
+        "single_token0": 0,
+        "multimask_iou_head_1to3": 3,
+        "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+      },
+      "multimask_iou_oracle_index": 3,
+      "all4_iou_oracle_index": 0,
+      "multimask_oracle_gap": 0.0,
+      "image_id": 165351,
+      "annotation_id": 1542953,
+      "regime": "central",
+      "prompt_xy": [
+        303.0,
+        217.0
+      ],
+      "prompt_box_xyxy": null
+    }
+  ],
+  "limitations": [
+    "Prompt-row bootstrap is not image-cluster uncertainty",
+    "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+    "Protocol assumes full-resolution official resize/crop/resize logits",
+    "No image encoder or latency data included",
+    "Do not pool different prompt regimes without separate strata"
+  ]
+}

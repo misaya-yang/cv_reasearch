@@ -1,0 +1,163 @@
+{
+  "status": "COMPLETED",
+  "stages": [
+    {
+      "name": "prepare_new384",
+      "status": "DONE",
+      "command": [
+        "/root/miniconda3/bin/python",
+        "research/quality_mechanisms/prepare_coco_subset.py",
+        "--annotations-zip",
+        "/root/autodl-pub/COCO2017/annotations_trainval2017.zip",
+        "--images-zip",
+        "/root/autodl-pub/COCO2017/val2017.zip",
+        "--output-dir",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/coco_sam2_distill_test_seed2031_v1",
+        "--seed",
+        "2031",
+        "--num-images",
+        "384",
+        "--exclude-manifest",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/distill_v1/sam2_distill/excluded_manifest.json"
+      ],
+      "pid": 28037,
+      "returncode": 0,
+      "wall_seconds": 26.09658650495112
+    },
+    {
+      "name": "train256",
+      "status": "DONE",
+      "command": [
+        "/root/miniconda3/bin/python",
+        "tools/takeover_sam2_quality.py",
+        "--subset",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/coco_prompt_holdout_seed2029_v1",
+        "--checkpoint",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/checkpoints/sam2.1_hiera_large.pt",
+        "--config",
+        "configs/sam2.1/sam2.1_hiera_l.yaml",
+        "--output",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/distill_v1/sam2_distill/train256_teacher.json",
+        "--feature-output",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/distill_v1/sam2_distill/train256.npz"
+      ],
+      "pid": 28125,
+      "returncode": 0,
+      "wall_seconds": 102.92531355656683
+    },
+    {
+      "name": "validation128",
+      "status": "DONE",
+      "command": [
+        "/root/miniconda3/bin/python",
+        "tools/takeover_sam2_quality.py",
+        "--subset",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/coco_flip_validation_seed2028_v1",
+        "--checkpoint",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/checkpoints/sam2.1_hiera_large.pt",
+        "--config",
+        "configs/sam2.1/sam2.1_hiera_l.yaml",
+        "--output",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/distill_v1/sam2_distill/validation128_teacher.json",
+        "--feature-output",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/distill_v1/sam2_distill/validation128.npz"
+      ],
+      "pid": 28312,
+      "returncode": 0,
+      "wall_seconds": 54.957816479727626
+    },
+    {
+      "name": "train_students",
+      "status": "DONE",
+      "command": [
+        "/root/miniconda3/bin/python",
+        "tools/takeover_train_rank.py",
+        "--train",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/distill_v1/sam2_distill/train256.npz",
+        "--validation",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/distill_v1/sam2_distill/validation128.npz",
+        "--output",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/distill_v1/sam2_distill/models"
+      ],
+      "pid": 28439,
+      "returncode": 0,
+      "wall_seconds": 62.97624648734927
+    },
+    {
+      "name": "test384",
+      "status": "DONE",
+      "command": [
+        "/root/miniconda3/bin/python",
+        "tools/takeover_sam2_quality.py",
+        "--subset",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/coco_sam2_distill_test_seed2031_v1",
+        "--checkpoint",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/checkpoints/sam2.1_hiera_large.pt",
+        "--config",
+        "configs/sam2.1/sam2.1_hiera_l.yaml",
+        "--output",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/distill_v1/sam2_distill/test384_teacher.json",
+        "--feature-output",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/distill_v1/sam2_distill/test384.npz"
+      ],
+      "pid": 28575,
+      "returncode": 0,
+      "wall_seconds": 111.03844805806875
+    },
+    {
+      "name": "davis30",
+      "status": "DONE",
+      "command": [
+        "/root/miniconda3/bin/python",
+        "tools/takeover_sam2_quality.py",
+        "--subset",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/davis_val_firstframe_v1",
+        "--checkpoint",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/checkpoints/sam2.1_hiera_large.pt",
+        "--config",
+        "configs/sam2.1/sam2.1_hiera_l.yaml",
+        "--output",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/distill_v1/sam2_distill/davis30_teacher.json",
+        "--feature-output",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/distill_v1/sam2_distill/davis30.npz"
+      ],
+      "pid": 28784,
+      "returncode": 0,
+      "wall_seconds": 15.230280987918377
+    },
+    {
+      "name": "evaluate_test384",
+      "status": "DONE",
+      "command": [
+        "/root/miniconda3/bin/python",
+        "tools/takeover_evaluate_rank.py",
+        "--features",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/distill_v1/sam2_distill/test384.npz",
+        "--models",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/distill_v1/sam2_distill/models",
+        "--output",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/distill_v1/sam2_distill/student_test384.json"
+      ],
+      "pid": 28871,
+      "returncode": 0,
+      "wall_seconds": 9.173385744914412
+    },
+    {
+      "name": "evaluate_davis30",
+      "status": "DONE",
+      "command": [
+        "/root/miniconda3/bin/python",
+        "tools/takeover_evaluate_rank.py",
+        "--features",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/distill_v1/sam2_distill/davis30.npz",
+        "--models",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/distill_v1/sam2_distill/models",
+        "--output",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/distill_v1/sam2_distill/student_davis30.json"
+      ],
+      "pid": 28946,
+      "returncode": 0,
+      "wall_seconds": 2.2554453928023577
+    }
+  ]
+}

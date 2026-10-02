@@ -1,0 +1,2759 @@
+{
+  "created_at_utc": "2026-10-01T11:48:10.618412+00:00",
+  "torch": "2.12.1+cu130",
+  "python": "3.12.3",
+  "platform": "Linux-5.4.0-153-generic-x86_64-with-glibc2.35",
+  "device": "cuda:0",
+  "hardware": "NVIDIA GeForce RTX 4080",
+  "options": {
+    "device": "cuda:0",
+    "dtype": "float32",
+    "prompt_batch": 128,
+    "microbatch": 128,
+    "grid": 64,
+    "tokens": 7,
+    "method": "dense_assoc",
+    "attention": "explicit",
+    "order": "associated",
+    "write_output": "sparse",
+    "mode": "compile",
+    "compiler_backend": "inductor",
+    "compile_mode": "default",
+    "warmup": 3,
+    "repetitions": 3,
+    "threads": 2,
+    "seed": 0,
+    "tolerance": 5e-05,
+    "tf32": false,
+    "diagnostic_on_failure": false,
+    "profile_dir": "/root/autodl-tmp/demo1_sam/results/gpu_profiles/large_base",
+    "output": "/root/autodl-tmp/demo1_sam/results/gpu_profiles/large_base.json"
+  },
+  "fixture": {
+    "model_fp32_state_sha256": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+    "provenance": [
+      {
+        "file": "official_cpu_validation/official_sam/common.py",
+        "sha256": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+        "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/common.py",
+        "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+      },
+      {
+        "file": "official_cpu_validation/official_sam/transformer.py",
+        "sha256": "566a8f6db8b608398de939548bd0f485b21752fda2bdda36900e6444ef938d11",
+        "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/transformer.py",
+        "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+      },
+      {
+        "file": "official_cpu_validation/official_sam/mask_decoder.py",
+        "sha256": "6a2455e990515c67a061187c92c236b879b189f21ef6ebfce1627cae9a6b2f93",
+        "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/mask_decoder.py",
+        "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+      }
+    ],
+    "seed": 0,
+    "T": 7,
+    "N": 4096
+  },
+  "outputs": "All four low-resolution masks plus all four IoU; no output-token pruning",
+  "timed_scope": "Complete mask decoder; no encoder, prompt encoder or full-resolution predictor postprocessing. Prompt batches share one image and identical dense embedding. Output copying/concatenation across microbatches excluded equally; final microbatch outputs returned.",
+  "cpu_warning": null,
+  "compile_warning": "eager/aot_eager compiler backends are diagnostic; only an optimizing backend such as inductor is a performance-compilation trial. Fullgraph mode raises on unsupported graph breaks. Actual CUDA SDPA backend dispatch is not inferred from the API name.",
+  "precision_warning": "Random-weight same-dtype numerical gate does not establish pretrained, binary decision, TF32 or lower-precision fidelity.",
+  "methods": [
+    {
+      "method": "dense_assoc",
+      "effective_attention": "explicit",
+      "verification": {
+        "passed": true,
+        "microbatch_checks": [
+          {
+            "offset": 0,
+            "size": 128,
+            "masks": {
+              "max_abs": 3.650784492492676e-07,
+              "mean_abs": 3.758540856324544e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 1.7881393432617188e-07,
+              "mean_abs": 3.897730493918061e-08,
+              "finite": true
+            },
+            "passed": true
+          }
+        ]
+      },
+      "verification_ms_excluded": 284.5648732036352,
+      "first_complete_prompt_batch_ms_excluded": 3135.322544723749,
+      "first_complete_prompt_batch_memory": {
+        "start_allocated_bytes": 48087040,
+        "peak_allocated_bytes": 3270623744,
+        "peak_increment_bytes": 3222536704,
+        "peak_reserved_bytes": 4764729344
+      },
+      "numeric_status": "passed_random_fixture_only",
+      "compile_status": "optimizing_inductor_fullgraph",
+      "attention_coverage": "SDPA applies only to eligible routes; associated sparse writes stay explicit",
+      "warm_complete_prompt_batch": {
+        "milliseconds": [
+          66.51368550956249,
+          66.1202184855938,
+          66.3974080234766
+        ],
+        "median_ms": 66.3974080234766,
+        "min_ms": 66.1202184855938,
+        "max_ms": 66.51368550956249,
+        "memory": {
+          "start_allocated_bytes": 48087040,
+          "peak_allocated_bytes": 3270623744,
+          "peak_increment_bytes": 3222536704,
+          "peak_reserved_bytes": 6377439232
+        }
+      },
+      "warm_prompts_per_second": 1927.7860960286603,
+      "warm_ms_per_prompt": 0.5187297501834109,
+      "execution_plan": [
+        {
+          "role": "read",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "cached",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "sparse"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "associated",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "sparse"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "associated",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        }
+      ],
+      "fixed_PE_build": {
+        "milliseconds": [
+          0.09566359221935272,
+          0.02826005220413208,
+          0.02234242856502533
+        ],
+        "median_ms": 0.02826005220413208,
+        "min_ms": 0.02234242856502533,
+        "max_ms": 0.09566359221935272,
+        "memory": {
+          "start_allocated_bytes": 48087040,
+          "peak_allocated_bytes": 48087040,
+          "peak_increment_bytes": 0,
+          "peak_reserved_bytes": 6377439232
+        }
+      },
+      "image_cache_build_fixed_PE_warm": {
+        "milliseconds": [
+          0.40697865188121796,
+          0.18110685050487518,
+          0.1701880246400833
+        ],
+        "median_ms": 0.18110685050487518,
+        "min_ms": 0.1701880246400833,
+        "max_ms": 0.40697865188121796,
+        "memory": {
+          "start_allocated_bytes": 48087040,
+          "peak_allocated_bytes": 62767104,
+          "peak_increment_bytes": 14680064,
+          "peak_reserved_bytes": 6377439232
+        }
+      },
+      "cold_cache_build_including_fixed_PE": {
+        "milliseconds": [
+          0.4473496228456497,
+          0.21271966397762299,
+          0.19769743084907532
+        ],
+        "median_ms": 0.21271966397762299,
+        "min_ms": 0.19769743084907532,
+        "max_ms": 0.4473496228456497,
+        "memory": {
+          "start_allocated_bytes": 48087040,
+          "peak_allocated_bytes": 62767104,
+          "peak_increment_bytes": 14680064,
+          "peak_reserved_bytes": 6377439232
+        }
+      },
+      "logical_persistent_cache_bytes": 14680064,
+      "profile": {
+        "trace": "/root/autodl-tmp/demo1_sam/results/gpu_profiles/large_base/dense_assoc.json",
+        "operators": [
+          {
+            "name": "TorchDynamo Cache Lookup",
+            "count": 1,
+            "self_cpu_us": 235.681,
+            "self_device_us": 0,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "Torch-Compiled Region: 0/0",
+            "count": 1,
+            "self_cpu_us": 105.20499999999993,
+            "self_device_us": 0.0,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "Pregraph bytecode",
+            "count": 1,
+            "self_cpu_us": 27.261999999999944,
+            "self_device_us": 0,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "AOTDispatcher Runtime Wrapper Prologue",
+            "count": 1,
+            "self_cpu_us": 17.15000000000009,
+            "self_device_us": 0,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "## Call CompiledFxGraph fmueioldjclzx7pwcssk6fvu32vlwmp3pwhyrussk5hzm5a27yl5 ##",
+            "count": 1,
+            "self_cpu_us": 2980.92,
+            "self_device_us": 0.0,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": -1476392960,
+            "input_shapes": []
+          },
+          {
+            "name": "Activity Buffer Request",
+            "count": 1,
+            "self_cpu_us": 1112.02,
+            "self_device_us": 0,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_poi_fused_cat_expand_unsqueeze_0",
+            "count": 1,
+            "self_cpu_us": 30.42100000000005,
+            "self_device_us": 1.7920000000001437,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                1,
+                256
+              ],
+              [
+                4,
+                256
+              ],
+              [
+                128,
+                2,
+                256
+              ],
+              [
+                128,
+                7,
+                256
+              ],
+              []
+            ]
+          },
+          {
+            "name": "cuLaunchKernel",
+            "count": 69,
+            "self_cpu_us": 504.4970000000026,
+            "self_device_us": 0,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "## Call CompiledFxGraph fmueioldjclzx7pwcssk6fvu32vlwmp3pwhyrussk5hzm5a27yl5 ##",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 66170.502,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_poi_fused_cat_expand_unsqueeze_0",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 1.7920000000001437,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "aten::mm",
+            "count": 7,
+            "self_cpu_us": 143.89999999999964,
+            "self_device_us": 80.86400000000049,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                896,
+                256
+              ],
+              [
+                256,
+                256
+              ],
+              [
+                896,
+                256
+              ]
+            ]
+          },
+          {
+            "name": "cudaMemsetAsync",
+            "count": 8,
+            "self_cpu_us": 51.58999999999946,
+            "self_device_us": 0,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "cudaOccupancyMaxActiveBlocksPerMultiprocessor",
+            "count": 22,
+            "self_cpu_us": 33.63099999999872,
+            "self_device_us": 0,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "Memset (Device)",
+            "count": 8,
+            "self_cpu_us": 0,
+            "self_device_us": 3.934999999999718,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "cudaLaunchKernel",
+            "count": 73,
+            "self_cpu_us": 459.9239999999975,
+            "self_device_us": 0,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "ampere_sgemm_32x128_tn",
+            "count": 11,
+            "self_cpu_us": 0,
+            "self_device_us": 108.38499999999908,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_poi_fused_addmm_clone_transpose_view_1",
+            "count": 4,
+            "self_cpu_us": 60.62199999999939,
+            "self_device_us": 5.919999999999163,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                256
+              ],
+              [
+                896,
+                256
+              ],
+              [
+                128,
+                8,
+                7,
+                32
+              ],
+              []
+            ]
+          },
+          {
+            "name": "triton_poi_fused_addmm_clone_transpose_view_1",
+            "count": 4,
+            "self_cpu_us": 0,
+            "self_device_us": 5.919999999999163,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_poi_fused_addmm_clone_permute_transpose_view_2",
+            "count": 2,
+            "self_cpu_us": 24.76200000000017,
+            "self_device_us": 3.4229999999997744,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                256
+              ],
+              [
+                896,
+                256
+              ],
+              [
+                128,
+                8,
+                32,
+                7
+              ],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "triton_poi_fused_addmm_clone_permute_transpose_view_2",
+            "count": 2,
+            "self_cpu_us": 0,
+            "self_device_us": 3.4229999999997744,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "aten::bmm",
+            "count": 2,
+            "self_cpu_us": 42.572999999999865,
+            "self_device_us": 10.911999999999352,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                1024,
+                7,
+                32
+              ],
+              [
+                1024,
+                32,
+                7
+              ],
+              [
+                1024,
+                7,
+                7
+              ]
+            ]
+          },
+          {
+            "name": "void gemmSN_NN_kernel<float, 128, 2, 4, 8, 4, 4, false, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float> >(cublasGemmSmallNParams<cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float>)",
+            "count": 13,
+            "self_cpu_us": 0,
+            "self_device_us": 1470.4110000000019,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_poi_fused__softmax_amax_mul_sub_view_3",
+            "count": 2,
+            "self_cpu_us": 27.03099999999995,
+            "self_device_us": 2.0479999999997744,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                1024,
+                7,
+                7
+              ],
+              [
+                128,
+                8,
+                7,
+                1
+              ],
+              [
+                128,
+                8,
+                7,
+                1
+              ],
+              []
+            ]
+          },
+          {
+            "name": "triton_poi_fused__softmax_amax_mul_sub_view_3",
+            "count": 2,
+            "self_cpu_us": 0,
+            "self_device_us": 2.0479999999997744,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_poi_fused__softmax_amax_mul_sub_view_4",
+            "count": 2,
+            "self_cpu_us": 25.290999999999258,
+            "self_device_us": 2.143999999999778,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                8,
+                7,
+                7
+              ],
+              [
+                128,
+                8,
+                7,
+                1
+              ],
+              [
+                128,
+                8,
+                7,
+                1
+              ],
+              []
+            ]
+          },
+          {
+            "name": "triton_poi_fused__softmax_amax_mul_sub_view_4",
+            "count": 2,
+            "self_cpu_us": 0,
+            "self_device_us": 2.143999999999778,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "aten::bmm",
+            "count": 2,
+            "self_cpu_us": 39.891999999999825,
+            "self_device_us": 10.624000000000706,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                1024,
+                7,
+                7
+              ],
+              [
+                1024,
+                7,
+                32
+              ],
+              [
+                1024,
+                7,
+                32
+              ]
+            ]
+          },
+          {
+            "name": "triton_poi_fused_clone_transpose_view_5",
+            "count": 2,
+            "self_cpu_us": 21.991999999999734,
+            "self_device_us": 2.5280000000016116,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                1024,
+                7,
+                32
+              ],
+              [
+                128,
+                7,
+                8,
+                32
+              ],
+              []
+            ]
+          },
+          {
+            "name": "triton_poi_fused_clone_transpose_view_5",
+            "count": 2,
+            "self_cpu_us": 0,
+            "self_device_us": 2.5280000000016116,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "aten::addmm",
+            "count": 1,
+            "self_cpu_us": 29.882999999999356,
+            "self_device_us": 11.935999999999694,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                256
+              ],
+              [
+                896,
+                256
+              ],
+              [
+                256,
+                256
+              ],
+              [],
+              [],
+              [
+                896,
+                256
+              ]
+            ]
+          },
+          {
+            "name": "triton_per_fused_add_native_layer_norm_view_6",
+            "count": 1,
+            "self_cpu_us": 18.121000000000095,
+            "self_device_us": 2.400000000000091,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                7,
+                256
+              ],
+              [
+                256
+              ],
+              [
+                256
+              ],
+              [
+                128,
+                7,
+                256
+              ],
+              [
+                128,
+                7,
+                256
+              ],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "triton_per_fused_add_native_layer_norm_view_6",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 2.400000000000091,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "aten::mm",
+            "count": 7,
+            "self_cpu_us": 128.13400000000047,
+            "self_device_us": 55.969000000001415,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                896,
+                256
+              ],
+              [
+                256,
+                128
+              ],
+              [
+                896,
+                128
+              ]
+            ]
+          },
+          {
+            "name": "ampere_sgemm_64x32_sliced1x4_tn",
+            "count": 17,
+            "self_cpu_us": 0,
+            "self_device_us": 94.21000000000322,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_poi_fused_addmm_clone_transpose_view_7",
+            "count": 3,
+            "self_cpu_us": 39.4920000000011,
+            "self_device_us": 4.257000000000517,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128
+              ],
+              [
+                896,
+                128
+              ],
+              [
+                128,
+                8,
+                7,
+                16
+              ],
+              []
+            ]
+          },
+          {
+            "name": "triton_poi_fused_addmm_clone_transpose_view_7",
+            "count": 3,
+            "self_cpu_us": 0,
+            "self_device_us": 4.257000000000517,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_poi_fused_clone_expand_transpose_view_8",
+            "count": 1,
+            "self_cpu_us": 10.7800000000002,
+            "self_device_us": 889.2550000000001,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                1,
+                4096,
+                128
+              ],
+              [
+                128,
+                8,
+                16,
+                4096
+              ],
+              []
+            ]
+          },
+          {
+            "name": "triton_poi_fused_clone_expand_transpose_view_8",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 889.2550000000001,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "aten::bmm",
+            "count": 1,
+            "self_cpu_us": 18.631000000000313,
+            "self_device_us": 662.2130000000006,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                1024,
+                7,
+                16
+              ],
+              [
+                1024,
+                16,
+                4096
+              ],
+              [
+                1024,
+                7,
+                4096
+              ]
+            ]
+          },
+          {
+            "name": "triton_red_fused__softmax_amax_mul_sub_view_9",
+            "count": 1,
+            "self_cpu_us": 11.559999999999945,
+            "self_device_us": 322.72299999999996,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                8,
+                7,
+                4096
+              ],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "triton_poi_fused_clone_expand_transpose_view_10",
+            "count": 2,
+            "self_cpu_us": 21.421000000000276,
+            "self_device_us": 763.7820000000002,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                1,
+                4096,
+                128
+              ],
+              [
+                128,
+                8,
+                4096,
+                16
+              ],
+              []
+            ]
+          },
+          {
+            "name": "aten::bmm",
+            "count": 1,
+            "self_cpu_us": 19.421000000000276,
+            "self_device_us": 648.1330000000007,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                1024,
+                7,
+                4096
+              ],
+              [
+                1024,
+                4096,
+                16
+              ],
+              [
+                1024,
+                7,
+                16
+              ]
+            ]
+          },
+          {
+            "name": "triton_poi_fused_clone_transpose_view_11",
+            "count": 1,
+            "self_cpu_us": 12.110000000000127,
+            "self_device_us": 2.11200000000008,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                1024,
+                7,
+                16
+              ],
+              [
+                128,
+                7,
+                8,
+                16
+              ],
+              []
+            ]
+          },
+          {
+            "name": "aten::mm",
+            "count": 3,
+            "self_cpu_us": 54.56299999999874,
+            "self_device_us": 19.519999999998618,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                896,
+                128
+              ],
+              [
+                128,
+                256
+              ],
+              [
+                896,
+                256
+              ]
+            ]
+          },
+          {
+            "name": "triton_per_fused_add_addmm_native_layer_norm_view_12",
+            "count": 3,
+            "self_cpu_us": 45.7120000000009,
+            "self_device_us": 8.3199999999988,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                7,
+                256
+              ],
+              [
+                256
+              ],
+              [
+                896,
+                256
+              ],
+              [
+                256
+              ],
+              [
+                256
+              ],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "aten::mm",
+            "count": 2,
+            "self_cpu_us": 35.06100000000151,
+            "self_device_us": 68.64100000000053,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                896,
+                256
+              ],
+              [
+                256,
+                2048
+              ],
+              [
+                896,
+                2048
+              ]
+            ]
+          },
+          {
+            "name": "triton_poi_fused_addmm_relu_view_13",
+            "count": 2,
+            "self_cpu_us": 23.230999999999767,
+            "self_device_us": 9.536000000000058,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                7,
+                2048
+              ],
+              [
+                2048
+              ],
+              []
+            ]
+          },
+          {
+            "name": "aten::mm",
+            "count": 2,
+            "self_cpu_us": 38.672000000000025,
+            "self_device_us": 90.33800000000065,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                896,
+                2048
+              ],
+              [
+                2048,
+                256
+              ],
+              [
+                896,
+                256
+              ]
+            ]
+          },
+          {
+            "name": "cudaLaunchKernelExC",
+            "count": 17,
+            "self_cpu_us": 73.17599999999993,
+            "self_device_us": 0,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_per_fused_add_addmm_native_layer_norm_view_14",
+            "count": 1,
+            "self_cpu_us": 20.980999999999767,
+            "self_device_us": 4.288000000000466,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                7,
+                256
+              ],
+              [
+                256
+              ],
+              [
+                896,
+                256
+              ],
+              [
+                256
+              ],
+              [
+                256
+              ],
+              [
+                128,
+                7,
+                256
+              ],
+              [
+                128,
+                7,
+                256
+              ],
+              [
+                128,
+                7,
+                256
+              ],
+              [
+                128,
+                7,
+                256
+              ],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "triton_poi_fused_addmm_clone_transpose_view_15",
+            "count": 1,
+            "self_cpu_us": 11.851000000000113,
+            "self_device_us": 4.800000000000182,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128
+              ],
+              [
+                896,
+                128
+              ],
+              [
+                128,
+                8,
+                16,
+                7
+              ],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "aten::bmm",
+            "count": 1,
+            "self_cpu_us": 20.471000000000004,
+            "self_device_us": 1077.3199999999997,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                1024,
+                4096,
+                16
+              ],
+              [
+                1024,
+                16,
+                7
+              ],
+              [
+                1024,
+                4096,
+                7
+              ]
+            ]
+          },
+          {
+            "name": "triton_poi_fused__softmax_amax_mul_sub_view_16",
+            "count": 1,
+            "self_cpu_us": 13.869000000000142,
+            "self_device_us": 236.64099999999962,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                1024,
+                4096,
+                7
+              ],
+              [
+                128,
+                8,
+                4096,
+                1
+              ],
+              [
+                128,
+                8,
+                4096,
+                1
+              ],
+              []
+            ]
+          },
+          {
+            "name": "triton_poi_fused_clone_expand_permute_view_17",
+            "count": 2,
+            "self_cpu_us": 19.30999999999858,
+            "self_device_us": 47.16899999999896,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                256,
+                128
+              ],
+              [
+                128,
+                8,
+                16,
+                256
+              ],
+              []
+            ]
+          },
+          {
+            "name": "aten::bmm",
+            "count": 5,
+            "self_cpu_us": 90.07599999999911,
+            "self_device_us": 99.2649999999976,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                1024,
+                7,
+                16
+              ],
+              [
+                1024,
+                16,
+                256
+              ],
+              [
+                1024,
+                7,
+                256
+              ]
+            ]
+          },
+          {
+            "name": "triton_poi_fused__softmax_amax_clone_mul_permute_slice_sub_view_18",
+            "count": 1,
+            "self_cpu_us": 14.259999999999764,
+            "self_device_us": 378.08300000000054,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                1024,
+                4096,
+                7
+              ],
+              [
+                128,
+                8,
+                4096,
+                1
+              ],
+              [
+                128,
+                8,
+                4096,
+                1
+              ],
+              [
+                128,
+                4096,
+                8,
+                6
+              ],
+              []
+            ]
+          },
+          {
+            "name": "triton_poi_fused_slice_sub_view_19",
+            "count": 2,
+            "self_cpu_us": 18.378999999999905,
+            "self_device_us": 39.80799999999908,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                1024,
+                7,
+                256
+              ],
+              [
+                128,
+                8,
+                6,
+                256
+              ],
+              []
+            ]
+          },
+          {
+            "name": "aten::bmm",
+            "count": 2,
+            "self_cpu_us": 36.091000000000804,
+            "self_device_us": 2075.5689999999995,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                4096,
+                48
+              ],
+              [
+                128,
+                48,
+                256
+              ],
+              [
+                128,
+                4096,
+                256
+              ]
+            ]
+          },
+          {
+            "name": "triton_per_fused_select_sum_view_20",
+            "count": 2,
+            "self_cpu_us": 23.87100000000055,
+            "self_device_us": 7.393000000000029,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                1024,
+                7,
+                256
+              ],
+              [
+                128,
+                256
+              ],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "triton_red_fused_add_expand_native_layer_norm_unsqueeze_21",
+            "count": 1,
+            "self_cpu_us": 19.11999999999989,
+            "self_device_us": 3409.947,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                4096,
+                256
+              ],
+              [
+                1,
+                4096,
+                256
+              ],
+              [
+                128,
+                256
+              ],
+              [
+                256
+              ],
+              [
+                256
+              ],
+              [
+                256
+              ],
+              [
+                1,
+                4096,
+                256
+              ],
+              [
+                128,
+                4096,
+                256
+              ],
+              [
+                128,
+                4096,
+                256
+              ],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "triton_red_fused__softmax_amax_mul_sub_view_9",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 322.72299999999996,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_per_fused_add_addmm_native_layer_norm_view_22",
+            "count": 1,
+            "self_cpu_us": 16.96100000000024,
+            "self_device_us": 3.7119999999995343,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                7,
+                256
+              ],
+              [
+                256
+              ],
+              [
+                896,
+                256
+              ],
+              [
+                256
+              ],
+              [
+                256
+              ],
+              [
+                128,
+                7,
+                256
+              ],
+              [
+                128,
+                7,
+                256
+              ],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "triton_per_fused_addmm_clone_mul_sum_transpose_view_23",
+            "count": 2,
+            "self_cpu_us": 29.441000000000713,
+            "self_device_us": 4.6710000000002765,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128
+              ],
+              [
+                896,
+                128
+              ],
+              [
+                128
+              ],
+              [
+                128,
+                8,
+                7,
+                16
+              ],
+              [
+                128,
+                8,
+                7,
+                1
+              ],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "triton_poi_fused_clone_expand_transpose_view_10",
+            "count": 2,
+            "self_cpu_us": 0,
+            "self_device_us": 763.7820000000002,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_poi_fused_clone_expand_view_24",
+            "count": 3,
+            "self_cpu_us": 27.462000000001353,
+            "self_device_us": 33.184000000002925,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                256
+              ],
+              [
+                128,
+                8,
+                16,
+                256
+              ],
+              []
+            ]
+          },
+          {
+            "name": "aten::bmm",
+            "count": 2,
+            "self_cpu_us": 24.35200000000077,
+            "self_device_us": 2266.1929999999993,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                56,
+                256
+              ],
+              [
+                128,
+                256,
+                4096
+              ],
+              [
+                128,
+                56,
+                4096
+              ]
+            ]
+          },
+          {
+            "name": "triton_red_fused__softmax_add_amax_mul_sub_view_25",
+            "count": 2,
+            "self_cpu_us": 23.582000000000335,
+            "self_device_us": 630.1499999999996,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                8,
+                7,
+                4096
+              ],
+              [
+                128,
+                8,
+                7,
+                1
+              ],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "aten::bmm",
+            "count": 2,
+            "self_cpu_us": 34.202000000000226,
+            "self_device_us": 2518.9950000000026,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                56,
+                4096
+              ],
+              [
+                128,
+                4096,
+                256
+              ],
+              [
+                128,
+                56,
+                256
+              ]
+            ]
+          },
+          {
+            "name": "triton_poi_fused_clone_expand_transpose_view_26",
+            "count": 2,
+            "self_cpu_us": 24.02100000000064,
+            "self_device_us": 21.056000000000495,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                256
+              ],
+              [
+                128,
+                8,
+                256,
+                16
+              ],
+              []
+            ]
+          },
+          {
+            "name": "aten::bmm",
+            "count": 2,
+            "self_cpu_us": 35.04199999999946,
+            "self_device_us": 39.26400000000285,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                1024,
+                7,
+                256
+              ],
+              [
+                1024,
+                256,
+                16
+              ],
+              [
+                1024,
+                7,
+                16
+              ]
+            ]
+          },
+          {
+            "name": "triton_poi_fused_add_clone_transpose_view_27",
+            "count": 2,
+            "self_cpu_us": 24.659999999999854,
+            "self_device_us": 2.400000000001455,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                1024,
+                7,
+                16
+              ],
+              [
+                128
+              ],
+              [
+                128,
+                7,
+                8,
+                16
+              ],
+              []
+            ]
+          },
+          {
+            "name": "triton_per_fused_add_addmm_native_layer_norm_view_28",
+            "count": 1,
+            "self_cpu_us": 18.47100000000046,
+            "self_device_us": 3.9679999999989377,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                7,
+                256
+              ],
+              [
+                256
+              ],
+              [
+                896,
+                256
+              ],
+              [
+                256
+              ],
+              [
+                256
+              ],
+              [
+                128,
+                7,
+                256
+              ],
+              [
+                128,
+                7,
+                256
+              ],
+              [
+                128,
+                7,
+                256
+              ],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "triton_per_fused_addmm_clone_mul_sum_transpose_view_29",
+            "count": 1,
+            "self_cpu_us": 14.46100000000024,
+            "self_device_us": 1.5360000000000582,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128
+              ],
+              [
+                896,
+                128
+              ],
+              [
+                128
+              ],
+              [
+                128,
+                8,
+                7,
+                16
+              ],
+              [
+                128,
+                8,
+                7
+              ],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "aten::bmm",
+            "count": 1,
+            "self_cpu_us": 11.609000000000378,
+            "self_device_us": 1142.313,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                4096,
+                256
+              ],
+              [
+                128,
+                256,
+                56
+              ],
+              [
+                128,
+                4096,
+                56
+              ]
+            ]
+          },
+          {
+            "name": "triton_poi_fused__softmax_add_div_permute_prepare_softmax_online_unsqueeze_view_30",
+            "count": 1,
+            "self_cpu_us": 14.721000000000458,
+            "self_device_us": 231.52200000000084,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                4096,
+                56
+              ],
+              [
+                128,
+                8,
+                7
+              ],
+              [
+                128,
+                8,
+                4096,
+                1
+              ],
+              [
+                128,
+                8,
+                4096,
+                1
+              ],
+              []
+            ]
+          },
+          {
+            "name": "triton_poi_fused__softmax_add_clone_div_permute_slice_unsqueeze_view_31",
+            "count": 1,
+            "self_cpu_us": 15.600999999999658,
+            "self_device_us": 387.2669999999998,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                4096,
+                56
+              ],
+              [
+                128,
+                8,
+                7
+              ],
+              [
+                128,
+                8,
+                4096,
+                1
+              ],
+              [
+                128,
+                8,
+                4096,
+                1
+              ],
+              [
+                128,
+                4096,
+                8,
+                6
+              ],
+              []
+            ]
+          },
+          {
+            "name": "triton_poi_fused_clone_transpose_view_11",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 2.11200000000008,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_per_fused_add_addmm_native_layer_norm_view_12",
+            "count": 3,
+            "self_cpu_us": 0,
+            "self_device_us": 8.3199999999988,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "ampere_sgemm_128x64_tn",
+            "count": 2,
+            "self_cpu_us": 0,
+            "self_device_us": 68.64100000000053,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_poi_fused_addmm_relu_view_13",
+            "count": 2,
+            "self_cpu_us": 0,
+            "self_device_us": 9.536000000000058,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "ampere_sgemm_64x64_tn",
+            "count": 2,
+            "self_cpu_us": 0,
+            "self_device_us": 82.01799999999912,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "void cublasLt::splitKreduce_kernel<32, 16, int, float, float, float, float, false, float, float, float, true, false, false, false>(cublasLt::cublasSplitKParams<float>, float const*, float const*, float*, float*, float const*, float const*, float const*, float const*, float*, void*, long, float*, int*, float*, float*, float const*, float const*, float const*, float const*, float const*)",
+            "count": 16,
+            "self_cpu_us": 0,
+            "self_device_us": 29.40700000000834,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_per_fused_add_addmm_native_layer_norm_view_14",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 4.288000000000466,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_red_fused_add_native_layer_norm_unsqueeze_32",
+            "count": 1,
+            "self_cpu_us": 15.940999999998894,
+            "self_device_us": 3407.7700000000004,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                4096,
+                256
+              ],
+              [
+                128,
+                4096,
+                256
+              ],
+              [
+                128,
+                256
+              ],
+              [
+                256
+              ],
+              [
+                256
+              ],
+              [
+                256
+              ],
+              [
+                1,
+                4096,
+                256
+              ],
+              [
+                128,
+                4096,
+                256
+              ],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "triton_poi_fused_addmm_clone_transpose_view_15",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 4.800000000000182,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "ampere_sgemm_128x128_nn",
+            "count": 5,
+            "self_cpu_us": 0,
+            "self_device_us": 5671.884000000002,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "aten::mm",
+            "count": 10,
+            "self_cpu_us": 167.79399999999987,
+            "self_device_us": 50.65600000000995,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                256
+              ],
+              [
+                256,
+                256
+              ],
+              [
+                128,
+                256
+              ]
+            ]
+          },
+          {
+            "name": "triton_poi_fused_addmm_relu_33",
+            "count": 10,
+            "self_cpu_us": 121.15499999999611,
+            "self_device_us": 11.811000000001513,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                256
+              ],
+              [
+                256
+              ],
+              []
+            ]
+          },
+          {
+            "name": "aten::addmm",
+            "count": 4,
+            "self_cpu_us": 159.5480000000025,
+            "self_device_us": 25.695999999992637,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                32
+              ],
+              [
+                128,
+                256
+              ],
+              [
+                256,
+                32
+              ],
+              [],
+              [],
+              [
+                128,
+                32
+              ]
+            ]
+          },
+          {
+            "name": "aten::expand",
+            "count": 4,
+            "self_cpu_us": 17.910000000000764,
+            "self_device_us": 0,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                32
+              ],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "aten::as_strided",
+            "count": 4,
+            "self_cpu_us": 5.509999999999309,
+            "self_device_us": 0,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                32
+              ],
+              [],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "triton_poi_fused__softmax_amax_mul_sub_view_16",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 236.64099999999962,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_poi_fused_convolution_transpose_view_34",
+            "count": 1,
+            "self_cpu_us": 14.140999999999622,
+            "self_device_us": 1.4399999999986903,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                256,
+                64,
+                2,
+                2
+              ],
+              [
+                256,
+                64,
+                2,
+                2
+              ],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "aten::convolution",
+            "count": 1,
+            "self_cpu_us": 5.5,
+            "self_device_us": 0.0,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                256,
+                64,
+                64
+              ],
+              [
+                256,
+                64,
+                2,
+                2
+              ],
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "aten::_convolution",
+            "count": 1,
+            "self_cpu_us": 10.84100000000035,
+            "self_device_us": 0.0,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                256,
+                64,
+                64
+              ],
+              [
+                256,
+                64,
+                2,
+                2
+              ],
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "aten::cudnn_convolution_transpose",
+            "count": 1,
+            "self_cpu_us": 76.69300000000021,
+            "self_device_us": 8257.119999999999,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 536870912,
+            "input_shapes": [
+              [
+                128,
+                256,
+                64,
+                64
+              ],
+              [
+                256,
+                64,
+                2,
+                2
+              ],
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "cudaGetErrorString",
+            "count": 10,
+            "self_cpu_us": 1.1100000000014916,
+            "self_device_us": 0,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_poi_fused_clone_expand_permute_view_17",
+            "count": 2,
+            "self_cpu_us": 0,
+            "self_device_us": 47.16899999999896,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_per_fused_add_convolution_div_gelu_mean_mul_pow_sqrt_sub_transpose_unsqueeze_view_35",
+            "count": 1,
+            "self_cpu_us": 17.269999999999527,
+            "self_device_us": 1774.828999999998,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                64,
+                128,
+                128
+              ],
+              [
+                64
+              ],
+              [
+                64
+              ],
+              [
+                64
+              ],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "triton_poi_fused__softmax_amax_clone_mul_permute_slice_sub_view_18",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 378.08300000000054,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_poi_fused_convolution_gelu_36",
+            "count": 1,
+            "self_cpu_us": 11.391000000000531,
+            "self_device_us": 2.1120000000009895,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                64,
+                32,
+                2,
+                2
+              ],
+              [
+                64,
+                32,
+                2,
+                2
+              ],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "aten::convolution",
+            "count": 1,
+            "self_cpu_us": 3.381000000000313,
+            "self_device_us": 0.0,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                64,
+                128,
+                128
+              ],
+              [
+                64,
+                32,
+                2,
+                2
+              ],
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "aten::_convolution",
+            "count": 1,
+            "self_cpu_us": 5.859999999999673,
+            "self_device_us": 0.0,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                64,
+                128,
+                128
+              ],
+              [
+                64,
+                32,
+                2,
+                2
+              ],
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "aten::cudnn_convolution_transpose",
+            "count": 1,
+            "self_cpu_us": 45.42199999999957,
+            "self_device_us": 27561.36699999999,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 1073741824,
+            "input_shapes": [
+              [
+                128,
+                64,
+                128,
+                128
+              ],
+              [
+                64,
+                32,
+                2,
+                2
+              ],
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              [],
+              []
+            ]
+          },
+          {
+            "name": "triton_poi_fused_convolution_gelu_37",
+            "count": 1,
+            "self_cpu_us": 14.300999999999476,
+            "self_device_us": 3458.298999999992,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                32,
+                256,
+                256
+              ],
+              [
+                32
+              ],
+              []
+            ]
+          },
+          {
+            "name": "aten::bmm",
+            "count": 1,
+            "self_cpu_us": 22.340000000000146,
+            "self_device_us": 2359.4429999999993,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                128,
+                4,
+                32
+              ],
+              [
+                128,
+                32,
+                65536
+              ],
+              [
+                128,
+                4,
+                65536
+              ]
+            ]
+          },
+          {
+            "name": "triton_poi_fused_slice_sub_view_19",
+            "count": 2,
+            "self_cpu_us": 0,
+            "self_device_us": 39.80799999999908,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "aten::addmm",
+            "count": 1,
+            "self_cpu_us": 20.9399999999996,
+            "self_device_us": 4.927999999999884,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": [
+              [
+                4
+              ],
+              [
+                128,
+                256
+              ],
+              [
+                256,
+                4
+              ],
+              [],
+              [],
+              [
+                128,
+                4
+              ]
+            ]
+          },
+          {
+            "name": "cudaDeviceSynchronize",
+            "count": 2,
+            "self_cpu_us": 59930.79,
+            "self_device_us": 0,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_per_fused_select_sum_view_20",
+            "count": 2,
+            "self_cpu_us": 0,
+            "self_device_us": 7.393000000000029,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_red_fused_add_expand_native_layer_norm_unsqueeze_21",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 3409.947,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_per_fused_add_addmm_native_layer_norm_view_22",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 3.7119999999995343,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_per_fused_addmm_clone_mul_sum_transpose_view_23",
+            "count": 2,
+            "self_cpu_us": 0,
+            "self_device_us": 4.6710000000002765,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_poi_fused_clone_expand_view_24",
+            "count": 3,
+            "self_cpu_us": 0,
+            "self_device_us": 33.184000000002925,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "ampere_sgemm_128x128_tn",
+            "count": 3,
+            "self_cpu_us": 0,
+            "self_device_us": 3408.5059999999994,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_red_fused__softmax_add_amax_mul_sub_view_25",
+            "count": 2,
+            "self_cpu_us": 0,
+            "self_device_us": 630.1499999999996,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_poi_fused_clone_expand_transpose_view_26",
+            "count": 2,
+            "self_cpu_us": 0,
+            "self_device_us": 21.056000000000495,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_poi_fused_add_clone_transpose_view_27",
+            "count": 2,
+            "self_cpu_us": 0,
+            "self_device_us": 2.400000000001455,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_per_fused_add_addmm_native_layer_norm_view_28",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 3.9679999999989377,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_per_fused_addmm_clone_mul_sum_transpose_view_29",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 1.5360000000000582,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_poi_fused__softmax_add_div_permute_prepare_softmax_online_unsqueeze_view_30",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 231.52200000000084,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_poi_fused__softmax_add_clone_div_permute_slice_unsqueeze_view_31",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 387.2669999999998,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_red_fused_add_native_layer_norm_unsqueeze_32",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 3407.7700000000004,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_poi_fused_addmm_relu_33",
+            "count": 10,
+            "self_cpu_us": 0,
+            "self_device_us": 11.811000000001513,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1} const&)::{lambda(int)#1})",
+            "count": 4,
+            "self_cpu_us": 0,
+            "self_device_us": 5.182999999997264,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "ampere_sgemm_32x32_sliced1x4_tn",
+            "count": 5,
+            "self_cpu_us": 0,
+            "self_device_us": 14.784999999999854,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_poi_fused_convolution_transpose_view_34",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 1.4399999999986903,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "void cudnn::engines_precompiled::nhwcToNchwKernel<float, float, float, true, false, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nhwc2nchw_params_t<float>, float const*, float*)",
+            "count": 4,
+            "self_cpu_us": 0,
+            "self_device_us": 3476.3789999999935,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "void cudnn::engines_precompiled::scalePackedTensor_kernel<float, float>(long, float*, float)",
+            "count": 2,
+            "self_cpu_us": 0,
+            "self_device_us": 2490.514999999996,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "void cudnn::detail::dgrad_engine<float, 128, 6, 8, 3, 3, 5, false>(int, int, int, float const*, int, float const*, int, float*, kernel_grad_params, unsigned long long, int, unsigned long long, int, float, int, int, int)",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 4018.751,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "void cudnn::engines_precompiled::nchwToNhwcKernel<float, float, float, false, true, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<float>, float const*, float*)",
+            "count": 2,
+            "self_cpu_us": 0,
+            "self_device_us": 5223.016,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_per_fused_add_convolution_div_gelu_mean_mul_pow_sqrt_sub_transpose_unsqueeze_view_35",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 1774.828999999998,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_poi_fused_convolution_gelu_36",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 2.1120000000009895,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "void cudnn::detail::dgrad2d_alg1_1<float, 0, 6, 7, 5, 4, 5, false, true>(int, int, int, float const*, int, float const*, int, float*, kernel_grad_params, unsigned long long, int, unsigned long long, int, float, int, int)",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 20609.826,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "triton_poi_fused_convolution_gelu_37",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 3458.298999999992,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "void gemmSN_TN_kernel<float, 128, 16, 2, 4, 4, 4, true, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float> >(cublasGemmSmallNParams<cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float>)",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 2359.4429999999993,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "void cublasLt::splitKreduce_kernel<32, 16, int, float, float, float, float, false, float, float, float, true, true, false, false>(cublasLt::cublasSplitKParams<float>, float const*, float const*, float*, float*, float const*, float const*, float const*, float const*, float*, void*, long, float*, int*, float*, float*, float const*, float const*, float const*, float const*, float const*)",
+            "count": 1,
+            "self_cpu_us": 0,
+            "self_device_us": 1.9839999999967404,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": 0,
+            "input_shapes": []
+          },
+          {
+            "name": "[memory]",
+            "count": 2,
+            "self_cpu_us": 0.0,
+            "self_device_us": 0,
+            "self_cpu_memory_bytes": 0,
+            "self_device_memory_bytes": -134219776,
+            "input_shapes": []
+          }
+        ],
+        "observed_cuda_events": [
+          "## Call CompiledFxGraph fmueioldjclzx7pwcssk6fvu32vlwmp3pwhyrussk5hzm5a27yl5 ##",
+          "Memset (Device)",
+          "ampere_sgemm_128x128_nn",
+          "ampere_sgemm_128x128_tn",
+          "ampere_sgemm_128x64_tn",
+          "ampere_sgemm_32x128_tn",
+          "ampere_sgemm_32x32_sliced1x4_tn",
+          "ampere_sgemm_64x32_sliced1x4_tn",
+          "ampere_sgemm_64x64_tn",
+          "triton_per_fused_add_addmm_native_layer_norm_view_12",
+          "triton_per_fused_add_addmm_native_layer_norm_view_14",
+          "triton_per_fused_add_addmm_native_layer_norm_view_22",
+          "triton_per_fused_add_addmm_native_layer_norm_view_28",
+          "triton_per_fused_add_convolution_div_gelu_mean_mul_pow_sqrt_sub_transpose_unsqueeze_view_35",
+          "triton_per_fused_add_native_layer_norm_view_6",
+          "triton_per_fused_addmm_clone_mul_sum_transpose_view_23",
+          "triton_per_fused_addmm_clone_mul_sum_transpose_view_29",
+          "triton_per_fused_select_sum_view_20",
+          "triton_poi_fused__softmax_add_clone_div_permute_slice_unsqueeze_view_31",
+          "triton_poi_fused__softmax_add_div_permute_prepare_softmax_online_unsqueeze_view_30",
+          "triton_poi_fused__softmax_amax_clone_mul_permute_slice_sub_view_18",
+          "triton_poi_fused__softmax_amax_mul_sub_view_16",
+          "triton_poi_fused__softmax_amax_mul_sub_view_3",
+          "triton_poi_fused__softmax_amax_mul_sub_view_4",
+          "triton_poi_fused_add_clone_transpose_view_27",
+          "triton_poi_fused_addmm_clone_permute_transpose_view_2",
+          "triton_poi_fused_addmm_clone_transpose_view_1",
+          "triton_poi_fused_addmm_clone_transpose_view_15",
+          "triton_poi_fused_addmm_clone_transpose_view_7",
+          "triton_poi_fused_addmm_relu_33",
+          "triton_poi_fused_addmm_relu_view_13",
+          "triton_poi_fused_cat_expand_unsqueeze_0",
+          "triton_poi_fused_clone_expand_permute_view_17",
+          "triton_poi_fused_clone_expand_transpose_view_10",
+          "triton_poi_fused_clone_expand_transpose_view_26",
+          "triton_poi_fused_clone_expand_transpose_view_8",
+          "triton_poi_fused_clone_expand_view_24",
+          "triton_poi_fused_clone_transpose_view_11",
+          "triton_poi_fused_clone_transpose_view_5",
+          "triton_poi_fused_convolution_gelu_36",
+          "triton_poi_fused_convolution_gelu_37",
+          "triton_poi_fused_convolution_transpose_view_34",
+          "triton_poi_fused_slice_sub_view_19",
+          "triton_red_fused__softmax_add_amax_mul_sub_view_25",
+          "triton_red_fused__softmax_amax_mul_sub_view_9",
+          "triton_red_fused_add_expand_native_layer_norm_unsqueeze_21",
+          "triton_red_fused_add_native_layer_norm_unsqueeze_32",
+          "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1} const&)::{lambda(int)#1})",
+          "void cublasLt::splitKreduce_kernel<32, 16, int, float, float, float, float, false, float, float, float, true, false, false, false>(cublasLt::cublasSplitKParams<float>, float const*, float const*, float*, float*, float const*, float const*, float const*, float const*, float*, void*, long, float*, int*, float*, float*, float const*, float const*, float const*, float const*, float const*)",
+          "void cublasLt::splitKreduce_kernel<32, 16, int, float, float, float, float, false, float, float, float, true, true, false, false>(cublasLt::cublasSplitKParams<float>, float const*, float const*, float*, float*, float const*, float const*, float const*, float const*, float*, void*, long, float*, int*, float*, float*, float const*, float const*, float const*, float const*, float const*)",
+          "void cudnn::detail::dgrad2d_alg1_1<float, 0, 6, 7, 5, 4, 5, false, true>(int, int, int, float const*, int, float const*, int, float*, kernel_grad_params, unsigned long long, int, unsigned long long, int, float, int, int)",
+          "void cudnn::detail::dgrad_engine<float, 128, 6, 8, 3, 3, 5, false>(int, int, int, float const*, int, float const*, int, float*, kernel_grad_params, unsigned long long, int, unsigned long long, int, float, int, int, int)",
+          "void cudnn::engines_precompiled::nchwToNhwcKernel<float, float, float, false, true, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<float>, float const*, float*)",
+          "void cudnn::engines_precompiled::nhwcToNchwKernel<float, float, float, true, false, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nhwc2nchw_params_t<float>, float const*, float*)",
+          "void cudnn::engines_precompiled::scalePackedTensor_kernel<float, float>(long, float*, float)",
+          "void gemmSN_NN_kernel<float, 128, 2, 4, 8, 4, 4, false, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float> >(cublasGemmSmallNParams<cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float>)",
+          "void gemmSN_TN_kernel<float, 128, 16, 2, 4, 4, 4, true, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float> >(cublasGemmSmallNParams<cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float>)"
+        ],
+        "sdpa_note": "Dispatch must be read from these events; API usage alone is not FlashAttention evidence."
+      },
+      "fresh_cache_first_forward_ms_excluded": 66.92083366215229,
+      "cold_image_including_cache_and_prompt_batch": {
+        "milliseconds": [
+          66.70649163424969,
+          66.25808402895927,
+          66.16286933422089
+        ],
+        "median_ms": 66.25808402895927,
+        "min_ms": 66.16286933422089,
+        "max_ms": 66.70649163424969,
+        "memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 3270623744,
+          "peak_increment_bytes": 3233022464,
+          "peak_reserved_bytes": 6377439232
+        }
+      }
+    }
+  ],
+  "source_sha256": {
+    "baselines.py": "3ed23810ab06c10c485001f9d82929d87f5837c69c3706a0d62de6dd82890ca5",
+    "factor_candidate.py": "e831ed3b462c4e6def3a2f44c9c06333cc297544577d3bbe8149948db33b1c5c",
+    "official_sdpa.py": "50277e4a1a8e2763e8cd1171c01b274be18d5f0457ae5747d8b68731612867b7",
+    "benchmark.py": "3567913ca438b2f672f01a56d4f4b417faadca128524335c5bfb52cbaa87a8e9"
+  },
+  "completed": true,
+  "all_numerical_checks_passed": true
+}

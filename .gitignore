@@ -1,8 +1,7 @@
 # Local datasets, models, downloaded source trees and Python runtimes.
 **/assets/
-**/foris_source/
-**/crf_source/
-research/gic_validation/sources/
+**/third_party/
+**/*_source/
 **/datasets/
 **/checkpoints/
 **/cache/
@@ -11,15 +10,14 @@ research/gic_validation/sources/
 **/venv/
 **/node_modules/
 
-# Raw experiments remain local; publish compact snapshots with tools/export_evidence.py.
-**/results/
+# Results: small text files are versioned in place (keep each under 1 MB); anything else under results/ stays local.
+**/results/**
+!**/results/**/
+!**/results/**/*.json
+!**/results/**/*.log
+!**/results/**/*.csv
+!**/results/**/*.txt
 **/logs/
-**/cleanup/*.tgz
-**/*_report.json
-**/*_results.json
-**/official_cpu_validation/results.json
-!**/high_resolution_report.json
-!**/low_resolution_report.json
 
 # Model/feature tensors, archives, generated media and native build products.
 *.pt
@@ -66,5 +64,39 @@ __pycache__/
 credentials*.json
 secrets*.json
 
-# Curated exports are versioned even though they mirror raw results paths.
-!/evidence/**
+# Third-party checkouts and oversized historical text results stay local.
+**/sources/
+/demo_lists/demo1_sam/results/cpu_prepared_smoke.json
+/demo_lists/demo1_sam/results/cpu_profile/cached.json
+/demo_lists/demo1_sam/results/cpu_profile/dense_assoc.json
+/demo_lists/demo1_sam/results/cpu_profile/factor_projected.json
+/demo_lists/demo1_sam/results/cpu_profile/official.json
+/demo_lists/demo1_sam/results/gpu_profiles/eager_loss_base/dense_assoc.json
+/demo_lists/demo1_sam/results/gpu_profiles/eager_loss_factor/factor_projected.json
+/demo_lists/demo1_sam/results/gpu_profiles/wide_sdpa/dense_assoc.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/distill_v1/sam2_distill/student_test384.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/distill_v1/sam2_distill/test384_teacher.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/distill_v1/sam2_distill/train256_teacher.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/distill_v1/sam2_distill/validation128_teacher.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/distill_v1/sam2_large_test512.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/distill_v1/student_test512.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/distill_v1/tangent_test384.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/flip_validation_128/flip_rank_score.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/local_student_head_v1/compiled_phase_disjoint128.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/local_student_head_v1/disjoint128.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/local_student_head_v1/phase_disjoint128.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/quality_followup_v1/cached_128/report.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/quality_followup_v1/flip_fusion_128.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/quality_followup_v1/holdout_256/original/report.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/quality_followup_v1/holdout_256/prompt_stability_256.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/quality_followup_v1/prompt_stability_128.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/quality_followup_v1/self_refine_128.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/quality_followup_v1/virtual_flip_score_128.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/real_new_arms/report.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/real_original/report.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/sam2_local_student_v1/fresh384.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/sam2_local_student_v1/fresh384_compiled_decoderfp16.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/score_new_arms/score_report.json
+/demo_lists/demo1_sam/results/takeover_20261001_v1/score_original/score_report.json
+/demo_lists/research_decision_20261001/results/oracle_observation_study.json
+/demo_lists/research_decision_20261001/results/selection_probe.json

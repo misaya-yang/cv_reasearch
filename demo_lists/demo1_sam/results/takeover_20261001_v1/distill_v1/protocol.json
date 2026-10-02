@@ -1,0 +1,26 @@
+{
+  "status": "FIXED_BEFORE_NEW_STUDENT_TEST_RESULTS",
+  "train": "previous256 cohort, relabeled as training for this new learned method",
+  "validation": "previous128 cohort, development only",
+  "test": "new512 seed2030, exclude all prior408 images",
+  "external_test": "official DAVIS2017 val split, one first annotated frame per sequence; no DAVIS training labels",
+  "target": "distill prompt-response consistency into a single original-decoder selection head",
+  "controls": [
+    "largest original mask",
+    "original IoU head",
+    "fixed mask-token choices",
+    "equal-architecture GT-supervised head",
+    "geometry-only head"
+  ],
+  "inference_GT": false,
+  "student_epoch_selection": "teacher cross-entropy for distilled models; validation meanIoU for supervised controls",
+  "primary_endpoint": "new COCO central IoU and paired delta against largest mask",
+  "secondary": [
+    "near-boundary IoU",
+    "box control",
+    "BoundaryIoU",
+    "DAVIS first-frame generalization",
+    "complete inference cost"
+  ],
+  "test_output_metrics_not_for_tuning": true
+}

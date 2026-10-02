@@ -1,0 +1,326 @@
+{
+ "segmenter": "m2f-swin-large-coco",
+ "dataset": "coco",
+ "images": 5000,
+ "tta": false,
+ "recognisers": [
+  "ext=dinov2l:rec/coco_dinov2l_gt.pt"
+ ],
+ "pixel_heads": [],
+ "second_segmenters": [],
+ "views": "flip",
+ "protocol": {
+  "gamma": 2.0,
+  "hyperparameters_selected_on": "none"
+ },
+ "diagnostics": {
+  "error_pixels_predicting_absent_class": 0.5269,
+  "predicted_classes_per_image": 9.411,
+  "gt_classes_per_image": 6.946,
+  "spurious_classes_per_image": 3.075
+ },
+ "argmax": {
+  "mIoU": 67.409,
+  "mAcc": 78.933,
+  "aAcc": 83.2
+ },
+ "oracle/presence": {
+  "mIoU": 77.414,
+  "mAcc": 85.727,
+  "aAcc": 90.148
+ },
+ "oracle/region_majority": {
+  "mIoU": 83.492,
+  "mAcc": 89.855,
+  "aAcc": 93.305
+ },
+ "oracle/query_majority": {
+  "mIoU": 85.694,
+  "mAcc": 90.941,
+  "aAcc": 94.163
+ },
+ "mc/sum_pow^2": {
+  "mIoU": 67.492,
+  "mAcc": 78.991,
+  "aAcc": 83.377
+ },
+ "mc/sum_pow^4": {
+  "mIoU": 67.433,
+  "mAcc": 78.943,
+  "aAcc": 83.349
+ },
+ "mc/self_sharpen^2": {
+  "mIoU": 67.099,
+  "mAcc": 78.767,
+  "aAcc": 82.99
+ },
+ "mc/drop_conf<0.3": {
+  "mIoU": 67.313,
+  "mAcc": 78.621,
+  "aAcc": 83.24
+ },
+ "mc/drop_conf<0.5": {
+  "mIoU": 67.343,
+  "mAcc": 78.508,
+  "aAcc": 83.232
+ },
+ "oracle/gt_regions+seg_what": {
+  "mIoU": 77.217,
+  "mAcc": 84.441,
+  "aAcc": 88.642
+ },
+ "v:flip/alone": {
+  "mIoU": 67.223,
+  "mAcc": 78.75,
+  "aAcc": 83.242
+ },
+ "v:flip/mean": {
+  "mIoU": 67.597,
+  "mAcc": 78.997,
+  "aAcc": 83.358
+ },
+ "v:flip/ens^0.25": {
+  "mIoU": 67.543,
+  "mAcc": 78.986,
+  "aAcc": 83.314
+ },
+ "v:flip/ens^0.5": {
+  "mIoU": 67.566,
+  "mAcc": 78.979,
+  "aAcc": 83.313
+ },
+ "v:flip/ens^1": {
+  "mIoU": 67.604,
+  "mAcc": 78.987,
+  "aAcc": 83.351
+ },
+ "v:flip/ens^2": {
+  "mIoU": 67.558,
+  "mAcc": 78.944,
+  "aAcc": 83.348
+ },
+ "v:flip/ens^4": {
+  "mIoU": 67.44,
+  "mAcc": 78.858,
+  "aAcc": 83.322
+ },
+ "v:flip/region_vote/fuse^0.5": {
+  "mIoU": 67.485,
+  "mAcc": 78.934,
+  "aAcc": 83.269
+ },
+ "v:flip/region_vote/fuse^1": {
+  "mIoU": 67.545,
+  "mAcc": 78.941,
+  "aAcc": 83.29
+ },
+ "v:flip/region_vote/fuse^2": {
+  "mIoU": 67.541,
+  "mAcc": 78.902,
+  "aAcc": 83.308
+ },
+ "v:flip/region_vote/relabel": {
+  "mIoU": 67.524,
+  "mAcc": 78.936,
+  "aAcc": 83.28
+ },
+ "ext/fuse^1": {
+  "mIoU": 67.869,
+  "mAcc": 78.96,
+  "aAcc": 83.514
+ },
+ "ext/fuse^2": {
+  "mIoU": 67.771,
+  "mAcc": 78.789,
+  "aAcc": 83.377
+ },
+ "ext/fuse^4": {
+  "mIoU": 67.353,
+  "mAcc": 78.359,
+  "aAcc": 83.12
+ },
+ "ext/fuse^2_prior": {
+  "mIoU": 67.066,
+  "mAcc": 79.921,
+  "aAcc": 83.03
+ },
+ "ext/fuse^2*v:flip/region_vote^1": {
+  "mIoU": 67.847,
+  "mAcc": 78.902,
+  "aAcc": 83.494
+ },
+ "ext/relabel^2": {
+  "mIoU": 67.601,
+  "mAcc": 78.602,
+  "aAcc": 83.292
+ },
+ "ext/rec_only": {
+  "mIoU": 66.205,
+  "mAcc": 77.31,
+  "aAcc": 82.392
+ },
+ "ext/gt_regions": {
+  "mIoU": 78.539,
+  "mAcc": 85.906,
+  "aAcc": 89.443
+ },
+ "ext/query^2": {
+  "mIoU": 68.224,
+  "mAcc": 79.316,
+  "aAcc": 83.768
+ },
+ "ext/query^2+fuse^2": {
+  "mIoU": 67.621,
+  "mAcc": 78.634,
+  "aAcc": 83.267
+ },
+ "ext/regions": {
+  "n": 45789,
+  "seg_acc": 0.6227,
+  "rec_acc": 0.6271,
+  "fused_acc": 0.6388,
+  "seg_acc_area": 0.8703,
+  "rec_acc_area": 0.8614,
+  "fused_acc_area": 0.8717,
+  "rec_fixes_seg_wrong": 0.1213,
+  "rec_breaks_seg_right": 0.0665,
+  "fused_fixes_seg_wrong": 0.1176,
+  "fused_breaks_seg_right": 0.0454,
+  "verifier_auc": 0.7754
+ },
+ "class_iou_argmax": [
+  0.9,
+  0.7804,
+  0.7387,
+  0.8942,
+  0.8914,
+  0.8638,
+  0.8938,
+  0.6599,
+  0.7788,
+  0.8042,
+  0.933,
+  0.9589,
+  0.8566,
+  0.6183,
+  0.7945,
+  0.9221,
+  0.8843,
+  0.8952,
+  0.916,
+  0.881,
+  0.9252,
+  0.9408,
+  0.9332,
+  0.8971,
+  0.5213,
+  0.9042,
+  0.5474,
+  0.781,
+  0.874,
+  0.6813,
+  0.6188,
+  0.7213,
+  0.8061,
+  0.7671,
+  0.6752,
+  0.7453,
+  0.8329,
+  0.8592,
+  0.9129,
+  0.7311,
+  0.8252,
+  0.7161,
+  0.702,
+  0.6552,
+  0.5841,
+  0.6423,
+  0.8507,
+  0.6399,
+  0.7524,
+  0.7981,
+  0.7186,
+  0.675,
+  0.7132,
+  0.8943,
+  0.7552,
+  0.7739,
+  0.6285,
+  0.7194,
+  0.4258,
+  0.75,
+  0.553,
+  0.8752,
+  0.8024,
+  0.8191,
+  0.8712,
+  0.7306,
+  0.747,
+  0.8502,
+  0.8142,
+  0.7083,
+  0.8663,
+  0.7519,
+  0.8552,
+  0.6183,
+  0.8275,
+  0.7241,
+  0.9055,
+  0.9056,
+  0.4563,
+  0.771,
+  0.356,
+  0.1559,
+  0.4054,
+  0.5413,
+  0.3357,
+  0.7506,
+  0.461,
+  0.6614,
+  0.3885,
+  0.4728,
+  0.3453,
+  0.2636,
+  0.4327,
+  0.6822,
+  0.4841,
+  0.2029,
+  0.3747,
+  0.7147,
+  0.6117,
+  0.5251,
+  0.6948,
+  0.1591,
+  0.6456,
+  0.8582,
+  0.4204,
+  0.9056,
+  0.2722,
+  0.1062,
+  0.5003,
+  0.5409,
+  0.3029,
+  0.6876,
+  0.4579,
+  0.2881,
+  0.5041,
+  0.483,
+  0.8261,
+  0.5758,
+  0.6819,
+  0.94,
+  0.6119,
+  0.4048,
+  0.5506,
+  0.5944,
+  0.5794,
+  0.7332,
+  0.478,
+  0.395,
+  0.4335,
+  0.6143,
+  0.6471,
+  0.6992,
+  0.6833
+ ]
+}

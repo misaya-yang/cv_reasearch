@@ -1,0 +1,341 @@
+{
+  "created_at_utc": "2026-10-01T12:02:57.309748+00:00",
+  "torch": "2.12.1+cu130",
+  "python": "3.12.3",
+  "platform": "Linux-5.4.0-153-generic-x86_64-with-glibc2.35",
+  "device": "cuda:0",
+  "hardware": "NVIDIA GeForce RTX 4080",
+  "options": {
+    "device": "cuda:0",
+    "dtype": "float32",
+    "prompt_batch": 128,
+    "microbatch": 128,
+    "grid": 64,
+    "tokens": 7,
+    "method": "dense_assoc",
+    "attention": "explicit",
+    "order": "associated",
+    "write_output": "sparse",
+    "mode": "eager",
+    "compiler_backend": "inductor",
+    "compile_mode": "default",
+    "warmup": 10,
+    "repetitions": 20,
+    "threads": 2,
+    "seed": 0,
+    "tolerance": 5e-05,
+    "tf32": false,
+    "diagnostic_on_failure": false,
+    "profile_dir": null,
+    "output": "/root/autodl-tmp/demo1_sam/results/gpu_projection_merge/eager_p128_mb128_dense_assoc_explicit.json"
+  },
+  "fixture": {
+    "model_fp32_state_sha256": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+    "provenance": [
+      {
+        "file": "official_cpu_validation/official_sam/common.py",
+        "sha256": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+        "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/common.py",
+        "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+      },
+      {
+        "file": "official_cpu_validation/official_sam/transformer.py",
+        "sha256": "566a8f6db8b608398de939548bd0f485b21752fda2bdda36900e6444ef938d11",
+        "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/transformer.py",
+        "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+      },
+      {
+        "file": "official_cpu_validation/official_sam/mask_decoder.py",
+        "sha256": "6a2455e990515c67a061187c92c236b879b189f21ef6ebfce1627cae9a6b2f93",
+        "source_url": "https://raw.githubusercontent.com/facebookresearch/segment-anything/dca509fe793f601edb92606367a655c15ac00fdf/segment_anything/modeling/mask_decoder.py",
+        "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+      }
+    ],
+    "seed": 0,
+    "T": 7,
+    "N": 4096
+  },
+  "outputs": "All four low-resolution masks plus all four IoU; no output-token pruning",
+  "timed_scope": "Complete mask decoder; no encoder, prompt encoder or full-resolution predictor postprocessing. Prompt batches share one image and identical dense embedding. Output copying/concatenation across microbatches excluded equally; final microbatch outputs returned.",
+  "cpu_warning": null,
+  "compile_warning": "eager/aot_eager compiler backends are diagnostic; only an optimizing backend such as inductor is a performance-compilation trial. Fullgraph mode raises on unsupported graph breaks. Actual CUDA SDPA backend dispatch is not inferred from the API name.",
+  "precision_warning": "Random-weight same-dtype numerical gate does not establish pretrained, binary decision, TF32 or lower-precision fidelity.",
+  "methods": [
+    {
+      "method": "dense_assoc",
+      "effective_attention": "explicit",
+      "verification": {
+        "passed": true,
+        "microbatch_checks": [
+          {
+            "offset": 0,
+            "size": 128,
+            "masks": {
+              "max_abs": 3.3527612686157227e-07,
+              "mean_abs": 3.428123562798646e-08,
+              "finite": true
+            },
+            "iou": {
+              "max_abs": 1.6391277313232422e-07,
+              "mean_abs": 3.4999175113625824e-08,
+              "finite": true
+            },
+            "passed": true
+          }
+        ]
+      },
+      "verification_ms_excluded": 262.70779594779015,
+      "first_complete_prompt_batch_ms_excluded": 253.79539653658867,
+      "first_complete_prompt_batch_memory": {
+        "start_allocated_bytes": 48087040,
+        "peak_allocated_bytes": 3808089600,
+        "peak_increment_bytes": 3760002560,
+        "peak_reserved_bytes": 5303697408
+      },
+      "numeric_status": "passed_random_fixture_only",
+      "compile_status": "eager",
+      "attention_coverage": "SDPA applies only to eligible routes; associated sparse writes stay explicit",
+      "warm_complete_prompt_batch": {
+        "milliseconds": [
+          99.84568506479263,
+          99.34907034039497,
+          99.29504990577698,
+          99.33597967028618,
+          99.33037869632244,
+          99.42782670259476,
+          99.4434766471386,
+          99.44185614585876,
+          99.4606763124466,
+          99.66445714235306,
+          99.34693202376366,
+          99.4960069656372,
+          99.4125958532095,
+          99.32461939752102,
+          99.39897432923317,
+          99.37789477407932,
+          99.68938678503036,
+          99.53045099973679,
+          99.40898232161999,
+          99.45744834840298
+        ],
+        "median_ms": 99.42021127790213,
+        "min_ms": 99.29504990577698,
+        "max_ms": 99.84568506479263,
+        "memory": {
+          "start_allocated_bytes": 48087040,
+          "peak_allocated_bytes": 3808089600,
+          "peak_increment_bytes": 3760002560,
+          "peak_reserved_bytes": 6916407296
+        }
+      },
+      "warm_prompts_per_second": 1287.4645744033962,
+      "warm_ms_per_prompt": 0.7767204006086104,
+      "execution_plan": [
+        {
+          "role": "read",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "cached",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "sparse"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "associated",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "sparse"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "associated",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        }
+      ],
+      "fixed_PE_build": {
+        "milliseconds": [
+          0.06934255361557007,
+          0.027701258659362793,
+          0.022308900952339172,
+          0.021420419216156006,
+          0.020172446966171265,
+          0.019472092390060425,
+          0.019380822777748108,
+          0.018309801816940308,
+          0.017838552594184875,
+          0.01811981201171875,
+          0.018788501620292664,
+          0.01807883381843567,
+          0.01771003007888794,
+          0.01738220453262329,
+          0.017410144209861755,
+          0.017192214727401733,
+          0.017121434211730957,
+          0.017371028661727905,
+          0.017590820789337158,
+          0.017311424016952515
+        ],
+        "median_ms": 0.01809932291507721,
+        "min_ms": 0.017121434211730957,
+        "max_ms": 0.06934255361557007,
+        "memory": {
+          "start_allocated_bytes": 48087040,
+          "peak_allocated_bytes": 48087040,
+          "peak_increment_bytes": 0,
+          "peak_reserved_bytes": 6916407296
+        }
+      },
+      "image_cache_build_fixed_PE_warm": {
+        "milliseconds": [
+          0.3832560032606125,
+          0.1820772886276245,
+          0.16889721155166626,
+          0.17012841999530792,
+          0.16754120588302612,
+          0.16725808382034302,
+          0.16427598893642426,
+          0.16354955732822418,
+          0.16266852617263794,
+          0.163225457072258,
+          0.1653376966714859,
+          0.1745671033859253,
+          0.16091763973236084,
+          0.1901574432849884,
+          0.18286146223545074,
+          0.1631472259759903,
+          0.16194768249988556,
+          0.16232766211032867,
+          0.1592785120010376,
+          0.16125664114952087
+        ],
+        "median_ms": 0.16480684280395508,
+        "min_ms": 0.1592785120010376,
+        "max_ms": 0.3832560032606125,
+        "memory": {
+          "start_allocated_bytes": 48087040,
+          "peak_allocated_bytes": 62767104,
+          "peak_increment_bytes": 14680064,
+          "peak_reserved_bytes": 6916407296
+        }
+      },
+      "cold_cache_build_including_fixed_PE": {
+        "milliseconds": [
+          0.3487560898065567,
+          0.20235031843185425,
+          0.1948084682226181,
+          0.18934905529022217,
+          0.1905597746372223,
+          0.1933574676513672,
+          0.18819794058799744,
+          0.18602795898914337,
+          0.18523819744586945,
+          0.1843273639678955,
+          0.18464773893356323,
+          0.18758699297904968,
+          0.18638744950294495,
+          0.18434785306453705,
+          0.1847483217716217,
+          0.1843683421611786,
+          0.18555857241153717,
+          0.18269941210746765,
+          0.20180083811283112,
+          0.20272843539714813
+        ],
+        "median_ms": 0.18698722124099731,
+        "min_ms": 0.18269941210746765,
+        "max_ms": 0.3487560898065567,
+        "memory": {
+          "start_allocated_bytes": 48087040,
+          "peak_allocated_bytes": 62767104,
+          "peak_increment_bytes": 14680064,
+          "peak_reserved_bytes": 6916407296
+        }
+      },
+      "logical_persistent_cache_bytes": 14680064,
+      "fresh_cache_first_forward_ms_excluded": 99.90147687494755,
+      "cold_image_including_cache_and_prompt_batch": {
+        "milliseconds": [
+          99.78868067264557,
+          99.75477866828442,
+          99.50373880565166,
+          99.53609108924866,
+          99.56649132072926,
+          99.79129210114479,
+          99.79398176074028,
+          99.8102817684412,
+          99.85188208520412,
+          99.77222979068756,
+          99.63182359933853,
+          99.71487708389759,
+          99.81285221874714,
+          99.68451783061028,
+          99.65999610722065,
+          99.6327344328165,
+          99.65028427541256,
+          99.69190880656242,
+          99.81729090213776,
+          99.69672746956348
+        ],
+        "median_ms": 99.70580227673054,
+        "min_ms": 99.50373880565166,
+        "max_ms": 99.85188208520412,
+        "memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 3808089600,
+          "peak_increment_bytes": 3770488320,
+          "peak_reserved_bytes": 6916407296
+        }
+      }
+    }
+  ],
+  "source_sha256": {
+    "baselines.py": "3ed23810ab06c10c485001f9d82929d87f5837c69c3706a0d62de6dd82890ca5",
+    "factor_candidate.py": "e831ed3b462c4e6def3a2f44c9c06333cc297544577d3bbe8149948db33b1c5c",
+    "official_sdpa.py": "50277e4a1a8e2763e8cd1171c01b274be18d5f0457ae5747d8b68731612867b7",
+    "benchmark.py": "11ba44d67f43dae98dbb48f9d4d87667a76f7420d8cc08603383c850f6050dcb"
+  },
+  "completed": true,
+  "all_numerical_checks_passed": true
+}

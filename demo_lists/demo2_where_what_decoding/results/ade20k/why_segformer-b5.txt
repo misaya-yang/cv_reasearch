@@ -1,0 +1,71 @@
+results/ade20k/ens_segformer-b5.perimage.pt: 2000 images, 150 classes, segmenter mIoU 50.93
+
+1. Is the gain explained by where the second opinion is better on its own?  (per class; gain of the combination vs advantage of the second opinion alone)
+   ext/fuse^2                 gain +2.23 | lin/alone      alone  -1.80 | Pearson r = +0.21, Spearman = +0.31
+   ext/relabel^2              gain +2.37 | lin/alone      alone  -1.80 | Pearson r = +0.24, Spearman = +0.28
+   lin/ens^1                  gain +2.72 | lin/alone      alone  -1.80 | Pearson r = +0.46, Spearman = +0.57
+   lin/ens^0.5                gain +2.33 | lin/alone      alone  -1.80 | Pearson r = +0.28, Spearman = +0.42
+   lin/region_vote/fuse^1     gain +1.68 | lin/alone      alone  -1.80 | Pearson r = +0.25, Spearman = +0.29
+   upernet/ens^1              gain +3.41 | upernet/alone  alone  +2.23 | Pearson r = +0.78, Spearman = +0.78
+   v:flip/mean                gain +0.30 | v:flip/alone   alone  -0.04 | Pearson r = +0.88, Spearman = +0.93
+
+2. Do different attachments gain on the same classes?  (per-class gain vs per-class gain)
+   ext/fuse^2                 vs ext/relabel^2              Pearson r = +0.95   both up 100  only first   9  only second   5
+   ext/fuse^2                 vs lin/ens^1                  Pearson r = +0.53   both up  96  only first  13  only second  20
+   ext/fuse^2                 vs lin/ens^0.5                Pearson r = +0.48   both up 101  only first   8  only second  24
+   ext/fuse^2                 vs lin/region_vote/fuse^1     Pearson r = +0.59   both up  96  only first  13  only second  12
+   ext/fuse^2                 vs upernet/ens^1              Pearson r = +0.35   both up  97  only first  12  only second  27
+   ext/fuse^2                 vs v:flip/mean                Pearson r = +0.01   both up  46  only first  63  only second  13
+   ext/fuse^2                 vs v:all/mean                 Pearson r = +0.13   both up  55  only first  54  only second  13
+   ext/relabel^2              vs lin/ens^1                  Pearson r = +0.45   both up  93  only first  12  only second  23
+   ext/relabel^2              vs lin/ens^0.5                Pearson r = +0.36   both up  99  only first   6  only second  26
+   ext/relabel^2              vs lin/region_vote/fuse^1     Pearson r = +0.50   both up  93  only first  12  only second  15
+   ext/relabel^2              vs upernet/ens^1              Pearson r = +0.28   both up  92  only first  13  only second  32
+   ext/relabel^2              vs v:flip/mean                Pearson r = -0.02   both up  46  only first  59  only second  13
+   ext/relabel^2              vs v:all/mean                 Pearson r = +0.05   both up  51  only first  54  only second  17
+   lin/ens^1                  vs lin/ens^0.5                Pearson r = +0.95   both up 115  only first   1  only second  10
+   lin/ens^1                  vs lin/region_vote/fuse^1     Pearson r = +0.82   both up 100  only first  16  only second   8
+   lin/ens^1                  vs upernet/ens^1              Pearson r = +0.48   both up 102  only first  14  only second  22
+   lin/ens^1                  vs v:flip/mean                Pearson r = +0.19   both up  50  only first  66  only second   9
+   lin/ens^1                  vs v:all/mean                 Pearson r = +0.34   both up  60  only first  56  only second   8
+   lin/ens^0.5                vs lin/region_vote/fuse^1     Pearson r = +0.85   both up 106  only first  19  only second   2
+   lin/ens^0.5                vs upernet/ens^1              Pearson r = +0.51   both up 107  only first  18  only second  17
+   lin/ens^0.5                vs v:flip/mean                Pearson r = +0.12   both up  51  only first  74  only second   8
+   lin/ens^0.5                vs v:all/mean                 Pearson r = +0.36   both up  60  only first  65  only second   8
+   lin/region_vote/fuse^1     vs upernet/ens^1              Pearson r = +0.48   both up  93  only first  15  only second  31
+   lin/region_vote/fuse^1     vs v:flip/mean                Pearson r = +0.09   both up  49  only first  59  only second  10
+   lin/region_vote/fuse^1     vs v:all/mean                 Pearson r = +0.25   both up  57  only first  51  only second  11
+   upernet/ens^1              vs v:flip/mean                Pearson r = +0.15   both up  52  only first  72  only second   7
+   upernet/ens^1              vs v:all/mean                 Pearson r = +0.29   both up  61  only first  63  only second   7
+   v:flip/mean                vs v:all/mean                 Pearson r = +0.66   both up  49  only first  10  only second  19
+
+3. Where the gain sits (mean IoU change in points; classes split into thirds)
+   by pixel frequency (rare -> frequent):  segmenter IoU per third = 44.0 / 49.0 / 59.8
+      ext/fuse^2                  +1.85 /  +3.47 /  +1.38   share of total gain:   28% /   52% /   21%
+      ext/relabel^2               +2.00 /  +3.77 /  +1.35   share of total gain:   28% /   53% /   19%
+      lin/ens^1                   +2.56 /  +3.63 /  +1.97   share of total gain:   31% /   44% /   24%
+      lin/ens^0.5                 +2.54 /  +2.77 /  +1.67   share of total gain:   36% /   40% /   24%
+      lin/region_vote/fuse^1      +1.73 /  +2.12 /  +1.19   share of total gain:   34% /   42% /   24%
+      upernet/ens^1               +4.42 /  +3.51 /  +2.31   share of total gain:   43% /   34% /   23%
+      v:flip/mean                 +0.49 /  +0.13 /  +0.30   share of total gain:   53% /   14% /   33%
+      v:all/mean                  +0.81 /  +0.27 /  +0.42   share of total gain:   54% /   18% /   28%
+   by the segmenter's own IoU (bad -> good):  segmenter IoU per third = 26.4 / 51.6 / 74.8
+      ext/fuse^2                  +2.37 /  +2.70 /  +1.63   share of total gain:   35% /   40% /   24%
+      ext/relabel^2               +2.48 /  +2.83 /  +1.80   share of total gain:   35% /   40% /   25%
+      lin/ens^1                   +2.55 /  +4.09 /  +1.51   share of total gain:   31% /   50% /   19%
+      lin/ens^0.5                 +2.00 /  +3.28 /  +1.70   share of total gain:   29% /   47% /   24%
+      lin/region_vote/fuse^1      +1.47 /  +2.37 /  +1.20   share of total gain:   29% /   47% /   24%
+      upernet/ens^1               +4.17 /  +3.91 /  +2.16   share of total gain:   41% /   38% /   21%
+      v:flip/mean                 +0.25 /  +0.53 /  +0.13   share of total gain:   28% /   59% /   14%
+      v:all/mean                  +0.30 /  +0.77 /  +0.44   share of total gain:   20% /   51% /   29%
+
+4. Concentration and noise
+   ext/fuse^2                 top 10 classes carry   35% of the gain;  13 classes get worse by more than 0.5 point; per-class sd of change 3.81
+   ext/relabel^2              top 10 classes carry   39% of the gain;  11 classes get worse by more than 0.5 point; per-class sd of change 4.84
+   lin/ens^1                  top 10 classes carry   29% of the gain;  19 classes get worse by more than 0.5 point; per-class sd of change 3.80
+   lin/ens^0.5                top 10 classes carry   24% of the gain;  12 classes get worse by more than 0.5 point; per-class sd of change 2.61
+   lin/region_vote/fuse^1     top 10 classes carry   34% of the gain;  16 classes get worse by more than 0.5 point; per-class sd of change 2.82
+   upernet/ens^1              top 10 classes carry   26% of the gain;  17 classes get worse by more than 0.5 point; per-class sd of change 4.02
+   v:flip/mean                top 10 classes carry   52% of the gain;  23 classes get worse by more than 0.5 point; per-class sd of change 1.01
+   v:all/mean                 top 10 classes carry   38% of the gain;  18 classes get worse by more than 0.5 point; per-class sd of change 1.07
+   mirror image alone (no information added): mIoU change -0.04, per-class sd of change 2.01, |change| > 2 points in 33 classes

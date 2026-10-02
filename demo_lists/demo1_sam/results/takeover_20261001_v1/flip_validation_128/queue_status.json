@@ -1,0 +1,67 @@
+{
+  "status": "VALIDATION_COMPLETE",
+  "started_at_utc": "2026-10-01T14:37:42.498836+00:00",
+  "stages": [
+    {
+      "name": "original_official",
+      "status": "DONE",
+      "command": [
+        "/root/miniconda3/bin/python",
+        "tools/takeover_official_export.py",
+        "--subset-dir",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/coco_flip_validation_seed2028_v1",
+        "--checkpoint",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/checkpoints/sam_vit_b_01ec64.pth",
+        "--output-dir",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/flip_validation_128/original",
+        "--device",
+        "cuda:0",
+        "--limit-images",
+        "128",
+        "--microbatch",
+        "4",
+        "--defer-quality",
+        "--npz-compression",
+        "none"
+      ],
+      "pid": 6154,
+      "returncode": 0,
+      "wall_seconds": 35.25417847186327
+    },
+    {
+      "name": "flipped_official",
+      "status": "DONE",
+      "command": [
+        "/root/miniconda3/bin/python",
+        "tools/takeover_flip.py",
+        "--subset-dir",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/assets/coco_flip_validation_seed2028_v1",
+        "--output-dir",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/flip_validation_128/flip",
+        "--device",
+        "cuda:0"
+      ],
+      "pid": 6240,
+      "returncode": 0,
+      "wall_seconds": 39.16847121715546
+    },
+    {
+      "name": "fixed_rule_score_CPU",
+      "status": "DONE",
+      "command": [
+        "/root/miniconda3/bin/python",
+        "tools/takeover_flip_score.py",
+        "--original-run",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/flip_validation_128/original",
+        "--flipped-run",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/flip_validation_128/flip/official_view",
+        "--output",
+        "/root/autodl-tmp/demo1_sam/runs/takeover_20261001_v1/results/takeover_20261001_v1/flip_validation_128/flip_rank_score.json"
+      ],
+      "pid": 6344,
+      "returncode": 0,
+      "wall_seconds": 28.705286724492908
+    }
+  ],
+  "finished_at_utc": "2026-10-01T14:39:25.629140+00:00"
+}

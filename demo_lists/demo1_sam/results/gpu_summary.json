@@ -1,0 +1,1671 @@
+{
+  "scope": "Complete synthetic encoded-input CUDA decoder; ratios are measured medians, not FLOPs. >1 favors candidate. No real-image or statistical-significance claim.",
+  "groups": [
+    {
+      "directory": "results/gpu_eager",
+      "phase": "eager",
+      "prompts": 1,
+      "requested_microbatch": 1,
+      "microbatch": 1,
+      "grid": 64,
+      "tokens": 7,
+      "dtype": "float32",
+      "tf32": false,
+      "torch": "2.12.1+cu130",
+      "hardware": "NVIDIA GeForce RTX 4080",
+      "model_hash": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+      "seed": 0,
+      "all_random_numeric_checks_passed": true,
+      "status": "random_fixture_performance_only",
+      "fastest_measured_baseline": {
+        "raw_result": "results/gpu_eager/p1_requested1_mb1_cached_sdpa_auto_auto.json",
+        "method": "cached",
+        "attention": "sdpa",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 2.518639899790287,
+        "cold_median_ms": 2.8057554736733437,
+        "hot_memory": {
+          "start_allocated_bytes": 54118400,
+          "peak_allocated_bytes": 75240448,
+          "peak_increment_bytes": 21122048,
+          "peak_reserved_bytes": 98566144
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37341184,
+          "peak_allocated_bytes": 75240448,
+          "peak_increment_bytes": 37899264,
+          "peak_reserved_bytes": 98566144
+        },
+        "logical_cache_bytes": 20971520
+      },
+      "fastest_measured_candidate": {
+        "raw_result": "results/gpu_eager/p1_requested1_mb1_factor_projected_sdpa_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "sdpa",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 3.6243340000510216,
+        "cold_median_ms": 4.212385974824429,
+        "hot_memory": {
+          "start_allocated_bytes": 69061632,
+          "peak_allocated_bytes": 97921024,
+          "peak_increment_bytes": 28859392,
+          "peak_reserved_bytes": 119537664
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37341184,
+          "peak_allocated_bytes": 97921024,
+          "peak_increment_bytes": 60579840,
+          "peak_reserved_bytes": 119537664
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "hot_baseline_over_candidate": 0.6949248882014822,
+      "fastest_cold_baseline": {
+        "raw_result": "results/gpu_eager/p1_requested1_mb1_official_sdpa_sdpa_auto_auto.json",
+        "method": "official_sdpa",
+        "attention": "sdpa",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 2.8529055416584015,
+        "cold_median_ms": 2.8033629059791565,
+        "hot_memory": {
+          "start_allocated_bytes": 37341184,
+          "peak_allocated_bytes": 62657536,
+          "peak_increment_bytes": 25316352,
+          "peak_reserved_bytes": 98566144
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37341184,
+          "peak_allocated_bytes": 62657536,
+          "peak_increment_bytes": 25316352,
+          "peak_reserved_bytes": 98566144
+        },
+        "logical_cache_bytes": 0
+      },
+      "fastest_cold_candidate": {
+        "raw_result": "results/gpu_eager/p1_requested1_mb1_factor_projected_sdpa_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "sdpa",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 3.6243340000510216,
+        "cold_median_ms": 4.212385974824429,
+        "hot_memory": {
+          "start_allocated_bytes": 69061632,
+          "peak_allocated_bytes": 97921024,
+          "peak_increment_bytes": 28859392,
+          "peak_reserved_bytes": 119537664
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37341184,
+          "peak_allocated_bytes": 97921024,
+          "peak_increment_bytes": 60579840,
+          "peak_reserved_bytes": 119537664
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "cold_baseline_over_candidate": 0.6655047573355384
+    },
+    {
+      "directory": "results/gpu_eager",
+      "phase": "eager",
+      "prompts": 8,
+      "requested_microbatch": 8,
+      "microbatch": 8,
+      "grid": 64,
+      "tokens": 7,
+      "dtype": "float32",
+      "tf32": false,
+      "torch": "2.12.1+cu130",
+      "hardware": "NVIDIA GeForce RTX 4080",
+      "model_hash": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+      "seed": 0,
+      "all_random_numeric_checks_passed": true,
+      "status": "random_fixture_performance_only",
+      "fastest_measured_baseline": {
+        "raw_result": "results/gpu_eager/p8_requested8_mb8_cached_explicit_auto_auto.json",
+        "method": "cached",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 5.6416941806674,
+        "cold_median_ms": 5.90325053781271,
+        "hot_memory": {
+          "start_allocated_bytes": 54132736,
+          "peak_allocated_bytes": 289199616,
+          "peak_increment_bytes": 235066880,
+          "peak_reserved_bytes": 482344960
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37355520,
+          "peak_allocated_bytes": 289199616,
+          "peak_increment_bytes": 251844096,
+          "peak_reserved_bytes": 482344960
+        },
+        "logical_cache_bytes": 20971520
+      },
+      "fastest_measured_candidate": {
+        "raw_result": "results/gpu_eager/p8_requested8_mb8_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 5.865298211574554,
+        "cold_median_ms": 6.478319875895977,
+        "hot_memory": {
+          "start_allocated_bytes": 69075968,
+          "peak_allocated_bytes": 292182016,
+          "peak_increment_bytes": 223106048,
+          "peak_reserved_bytes": 637534208
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37355520,
+          "peak_allocated_bytes": 293230592,
+          "peak_increment_bytes": 255875072,
+          "peak_reserved_bytes": 637534208
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "hot_baseline_over_candidate": 0.9618767839517699,
+      "fastest_cold_baseline": {
+        "raw_result": "results/gpu_eager/p8_requested8_mb8_dense_assoc_explicit_projected_dense.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "projected",
+        "write_output": "dense",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 5.821405909955502,
+        "cold_median_ms": 5.891440436244011,
+        "hot_memory": {
+          "start_allocated_bytes": 54132736,
+          "peak_allocated_bytes": 289199616,
+          "peak_increment_bytes": 235066880,
+          "peak_reserved_bytes": 482344960
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37355520,
+          "peak_allocated_bytes": 289199616,
+          "peak_increment_bytes": 251844096,
+          "peak_reserved_bytes": 482344960
+        },
+        "logical_cache_bytes": 20971520
+      },
+      "fastest_cold_candidate": {
+        "raw_result": "results/gpu_eager/p8_requested8_mb8_factor_projected_sdpa_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "sdpa",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 5.913440138101578,
+        "cold_median_ms": 6.423906423151493,
+        "hot_memory": {
+          "start_allocated_bytes": 69075968,
+          "peak_allocated_bytes": 292182016,
+          "peak_increment_bytes": 223106048,
+          "peak_reserved_bytes": 637534208
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37355520,
+          "peak_allocated_bytes": 293230592,
+          "peak_increment_bytes": 255875072,
+          "peak_reserved_bytes": 637534208
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "cold_baseline_over_candidate": 0.9171118083245271
+    },
+    {
+      "directory": "results/gpu_eager",
+      "phase": "eager",
+      "prompts": 32,
+      "requested_microbatch": 8,
+      "microbatch": 8,
+      "grid": 64,
+      "tokens": 7,
+      "dtype": "float32",
+      "tf32": false,
+      "torch": "2.12.1+cu130",
+      "hardware": "NVIDIA GeForce RTX 4080",
+      "model_hash": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+      "seed": 0,
+      "all_random_numeric_checks_passed": true,
+      "status": "random_fixture_performance_only",
+      "fastest_measured_baseline": {
+        "raw_result": "results/gpu_eager/p32_requested8_mb8_cached_explicit_auto_auto.json",
+        "method": "cached",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 20.596018992364407,
+        "cold_median_ms": 20.83105780184269,
+        "hot_memory": {
+          "start_allocated_bytes": 54181888,
+          "peak_allocated_bytes": 289248768,
+          "peak_increment_bytes": 235066880,
+          "peak_reserved_bytes": 482344960
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37404672,
+          "peak_allocated_bytes": 289248768,
+          "peak_increment_bytes": 251844096,
+          "peak_reserved_bytes": 482344960
+        },
+        "logical_cache_bytes": 20971520
+      },
+      "fastest_measured_candidate": {
+        "raw_result": "results/gpu_eager/p32_requested8_mb8_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 19.644470885396004,
+        "cold_median_ms": 20.7349406555295,
+        "hot_memory": {
+          "start_allocated_bytes": 69125120,
+          "peak_allocated_bytes": 292231168,
+          "peak_increment_bytes": 223106048,
+          "peak_reserved_bytes": 637534208
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37404672,
+          "peak_allocated_bytes": 293279744,
+          "peak_increment_bytes": 255875072,
+          "peak_reserved_bytes": 637534208
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "hot_baseline_over_candidate": 1.0484384696599691,
+      "fastest_cold_baseline": {
+        "raw_result": "results/gpu_eager/p32_requested8_mb8_cached_explicit_auto_auto.json",
+        "method": "cached",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 20.596018992364407,
+        "cold_median_ms": 20.83105780184269,
+        "hot_memory": {
+          "start_allocated_bytes": 54181888,
+          "peak_allocated_bytes": 289248768,
+          "peak_increment_bytes": 235066880,
+          "peak_reserved_bytes": 482344960
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37404672,
+          "peak_allocated_bytes": 289248768,
+          "peak_increment_bytes": 251844096,
+          "peak_reserved_bytes": 482344960
+        },
+        "logical_cache_bytes": 20971520
+      },
+      "fastest_cold_candidate": {
+        "raw_result": "results/gpu_eager/p32_requested8_mb8_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 19.644470885396004,
+        "cold_median_ms": 20.7349406555295,
+        "hot_memory": {
+          "start_allocated_bytes": 69125120,
+          "peak_allocated_bytes": 292231168,
+          "peak_increment_bytes": 223106048,
+          "peak_reserved_bytes": 637534208
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37404672,
+          "peak_allocated_bytes": 293279744,
+          "peak_increment_bytes": 255875072,
+          "peak_reserved_bytes": 637534208
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "cold_baseline_over_candidate": 1.0046355158623306
+    },
+    {
+      "directory": "results/gpu_eager",
+      "phase": "eager",
+      "prompts": 32,
+      "requested_microbatch": 32,
+      "microbatch": 32,
+      "grid": 64,
+      "tokens": 7,
+      "dtype": "float32",
+      "tf32": false,
+      "torch": "2.12.1+cu130",
+      "hardware": "NVIDIA GeForce RTX 4080",
+      "model_hash": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+      "seed": 0,
+      "all_random_numeric_checks_passed": true,
+      "status": "random_fixture_performance_only",
+      "fastest_measured_baseline": {
+        "raw_result": "results/gpu_eager/p32_requested32_mb32_dense_assoc_explicit_associated_sparse.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "associated",
+        "write_output": "sparse",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 21.446851082146168,
+        "cold_median_ms": 21.9317814335227,
+        "hot_memory": {
+          "start_allocated_bytes": 47890432,
+          "peak_allocated_bytes": 987944448,
+          "peak_increment_bytes": 940054016,
+          "peak_reserved_bytes": 1654652928
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37404672,
+          "peak_allocated_bytes": 987944448,
+          "peak_increment_bytes": 950539776,
+          "peak_reserved_bytes": 1654652928
+        },
+        "logical_cache_bytes": 14680064
+      },
+      "fastest_measured_candidate": {
+        "raw_result": "results/gpu_eager/p32_requested32_mb32_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 24.285750463604927,
+        "cold_median_ms": 24.961896240711212,
+        "hot_memory": {
+          "start_allocated_bytes": 69125120,
+          "peak_allocated_bytes": 962353152,
+          "peak_increment_bytes": 893228032,
+          "peak_reserved_bytes": 2344615936
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37404672,
+          "peak_allocated_bytes": 962353152,
+          "peak_increment_bytes": 924948480,
+          "peak_reserved_bytes": 2344615936
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "hot_baseline_over_candidate": 0.8831043172533134,
+      "fastest_cold_baseline": {
+        "raw_result": "results/gpu_eager/p32_requested32_mb32_dense_assoc_explicit_auto_auto.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 21.502390503883362,
+        "cold_median_ms": 21.69087901711464,
+        "hot_memory": {
+          "start_allocated_bytes": 47890432,
+          "peak_allocated_bytes": 987944448,
+          "peak_increment_bytes": 940054016,
+          "peak_reserved_bytes": 1654652928
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37404672,
+          "peak_allocated_bytes": 987944448,
+          "peak_increment_bytes": 950539776,
+          "peak_reserved_bytes": 1654652928
+        },
+        "logical_cache_bytes": 14680064
+      },
+      "fastest_cold_candidate": {
+        "raw_result": "results/gpu_eager/p32_requested32_mb32_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 24.285750463604927,
+        "cold_median_ms": 24.961896240711212,
+        "hot_memory": {
+          "start_allocated_bytes": 69125120,
+          "peak_allocated_bytes": 962353152,
+          "peak_increment_bytes": 893228032,
+          "peak_reserved_bytes": 2344615936
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37404672,
+          "peak_allocated_bytes": 962353152,
+          "peak_increment_bytes": 924948480,
+          "peak_reserved_bytes": 2344615936
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "cold_baseline_over_candidate": 0.868959585760085
+    },
+    {
+      "directory": "results/gpu_eager",
+      "phase": "eager",
+      "prompts": 64,
+      "requested_microbatch": 8,
+      "microbatch": 8,
+      "grid": 64,
+      "tokens": 7,
+      "dtype": "float32",
+      "tf32": false,
+      "torch": "2.12.1+cu130",
+      "hardware": "NVIDIA GeForce RTX 4080",
+      "model_hash": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+      "seed": 0,
+      "all_random_numeric_checks_passed": true,
+      "status": "random_fixture_performance_only",
+      "fastest_measured_baseline": {
+        "raw_result": "results/gpu_eager/p64_requested8_mb8_dense_assoc_explicit_projected_dense.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "projected",
+        "write_output": "dense",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 40.56478198617697,
+        "cold_median_ms": 40.77141359448433,
+        "hot_memory": {
+          "start_allocated_bytes": 54247424,
+          "peak_allocated_bytes": 289314304,
+          "peak_increment_bytes": 235066880,
+          "peak_reserved_bytes": 482344960
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37470208,
+          "peak_allocated_bytes": 289314304,
+          "peak_increment_bytes": 251844096,
+          "peak_reserved_bytes": 482344960
+        },
+        "logical_cache_bytes": 20971520
+      },
+      "fastest_measured_candidate": {
+        "raw_result": "results/gpu_eager/p64_requested8_mb8_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 36.94352228194475,
+        "cold_median_ms": 38.87062706053257,
+        "hot_memory": {
+          "start_allocated_bytes": 69190656,
+          "peak_allocated_bytes": 292296704,
+          "peak_increment_bytes": 223106048,
+          "peak_reserved_bytes": 637534208
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37470208,
+          "peak_allocated_bytes": 293345280,
+          "peak_increment_bytes": 255875072,
+          "peak_reserved_bytes": 637534208
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "hot_baseline_over_candidate": 1.0980215063576118,
+      "fastest_cold_baseline": {
+        "raw_result": "results/gpu_eager/p64_requested8_mb8_dense_assoc_explicit_projected_dense.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "projected",
+        "write_output": "dense",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 40.56478198617697,
+        "cold_median_ms": 40.77141359448433,
+        "hot_memory": {
+          "start_allocated_bytes": 54247424,
+          "peak_allocated_bytes": 289314304,
+          "peak_increment_bytes": 235066880,
+          "peak_reserved_bytes": 482344960
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37470208,
+          "peak_allocated_bytes": 289314304,
+          "peak_increment_bytes": 251844096,
+          "peak_reserved_bytes": 482344960
+        },
+        "logical_cache_bytes": 20971520
+      },
+      "fastest_cold_candidate": {
+        "raw_result": "results/gpu_eager/p64_requested8_mb8_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 36.94352228194475,
+        "cold_median_ms": 38.87062706053257,
+        "hot_memory": {
+          "start_allocated_bytes": 69190656,
+          "peak_allocated_bytes": 292296704,
+          "peak_increment_bytes": 223106048,
+          "peak_reserved_bytes": 637534208
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37470208,
+          "peak_allocated_bytes": 293345280,
+          "peak_increment_bytes": 255875072,
+          "peak_reserved_bytes": 637534208
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "cold_baseline_over_candidate": 1.048900331116133
+    },
+    {
+      "directory": "results/gpu_eager",
+      "phase": "eager",
+      "prompts": 64,
+      "requested_microbatch": 32,
+      "microbatch": 32,
+      "grid": 64,
+      "tokens": 7,
+      "dtype": "float32",
+      "tf32": false,
+      "torch": "2.12.1+cu130",
+      "hardware": "NVIDIA GeForce RTX 4080",
+      "model_hash": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+      "seed": 0,
+      "all_random_numeric_checks_passed": true,
+      "status": "random_fixture_performance_only",
+      "fastest_measured_baseline": {
+        "raw_result": "results/gpu_eager/p64_requested32_mb32_dense_assoc_explicit_auto_auto.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 42.3292089253664,
+        "cold_median_ms": 42.77952294796705,
+        "hot_memory": {
+          "start_allocated_bytes": 47955968,
+          "peak_allocated_bytes": 988009984,
+          "peak_increment_bytes": 940054016,
+          "peak_reserved_bytes": 1654652928
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37470208,
+          "peak_allocated_bytes": 988009984,
+          "peak_increment_bytes": 950539776,
+          "peak_reserved_bytes": 1654652928
+        },
+        "logical_cache_bytes": 14680064
+      },
+      "fastest_measured_candidate": {
+        "raw_result": "results/gpu_eager/p64_requested32_mb32_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 47.52842150628567,
+        "cold_median_ms": 48.113662749528885,
+        "hot_memory": {
+          "start_allocated_bytes": 69190656,
+          "peak_allocated_bytes": 962418688,
+          "peak_increment_bytes": 893228032,
+          "peak_reserved_bytes": 2344615936
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37470208,
+          "peak_allocated_bytes": 962418688,
+          "peak_increment_bytes": 924948480,
+          "peak_reserved_bytes": 2344615936
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "hot_baseline_over_candidate": 0.8906083472553015,
+      "fastest_cold_baseline": {
+        "raw_result": "results/gpu_eager/p64_requested32_mb32_dense_assoc_explicit_associated_sparse.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "associated",
+        "write_output": "sparse",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 42.66719147562981,
+        "cold_median_ms": 42.61660389602184,
+        "hot_memory": {
+          "start_allocated_bytes": 47955968,
+          "peak_allocated_bytes": 988009984,
+          "peak_increment_bytes": 940054016,
+          "peak_reserved_bytes": 1654652928
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37470208,
+          "peak_allocated_bytes": 988009984,
+          "peak_increment_bytes": 950539776,
+          "peak_reserved_bytes": 1654652928
+        },
+        "logical_cache_bytes": 14680064
+      },
+      "fastest_cold_candidate": {
+        "raw_result": "results/gpu_eager/p64_requested32_mb32_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 47.52842150628567,
+        "cold_median_ms": 48.113662749528885,
+        "hot_memory": {
+          "start_allocated_bytes": 69190656,
+          "peak_allocated_bytes": 962418688,
+          "peak_increment_bytes": 893228032,
+          "peak_reserved_bytes": 2344615936
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37470208,
+          "peak_allocated_bytes": 962418688,
+          "peak_increment_bytes": 924948480,
+          "peak_reserved_bytes": 2344615936
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "cold_baseline_over_candidate": 0.8857484851626503
+    },
+    {
+      "directory": "results/gpu_eager",
+      "phase": "eager",
+      "prompts": 128,
+      "requested_microbatch": 8,
+      "microbatch": 8,
+      "grid": 64,
+      "tokens": 7,
+      "dtype": "float32",
+      "tf32": false,
+      "torch": "2.12.1+cu130",
+      "hardware": "NVIDIA GeForce RTX 4080",
+      "model_hash": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+      "seed": 0,
+      "all_random_numeric_checks_passed": true,
+      "status": "random_fixture_performance_only",
+      "fastest_measured_baseline": {
+        "raw_result": "results/gpu_eager/p128_requested8_mb8_dense_assoc_explicit_projected_dense.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "projected",
+        "write_output": "dense",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 80.74782323092222,
+        "cold_median_ms": 80.78170567750931,
+        "hot_memory": {
+          "start_allocated_bytes": 54378496,
+          "peak_allocated_bytes": 289445376,
+          "peak_increment_bytes": 235066880,
+          "peak_reserved_bytes": 482344960
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 289445376,
+          "peak_increment_bytes": 251844096,
+          "peak_reserved_bytes": 482344960
+        },
+        "logical_cache_bytes": 20971520
+      },
+      "fastest_measured_candidate": {
+        "raw_result": "results/gpu_eager/p128_requested8_mb8_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 72.78956100344658,
+        "cold_median_ms": 74.54717252403498,
+        "hot_memory": {
+          "start_allocated_bytes": 69321728,
+          "peak_allocated_bytes": 292427776,
+          "peak_increment_bytes": 223106048,
+          "peak_reserved_bytes": 637534208
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 293476352,
+          "peak_increment_bytes": 255875072,
+          "peak_reserved_bytes": 637534208
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "hot_baseline_over_candidate": 1.1093324663285002,
+      "fastest_cold_baseline": {
+        "raw_result": "results/gpu_eager/p128_requested8_mb8_dense_assoc_explicit_projected_dense.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "projected",
+        "write_output": "dense",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 80.74782323092222,
+        "cold_median_ms": 80.78170567750931,
+        "hot_memory": {
+          "start_allocated_bytes": 54378496,
+          "peak_allocated_bytes": 289445376,
+          "peak_increment_bytes": 235066880,
+          "peak_reserved_bytes": 482344960
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 289445376,
+          "peak_increment_bytes": 251844096,
+          "peak_reserved_bytes": 482344960
+        },
+        "logical_cache_bytes": 20971520
+      },
+      "fastest_cold_candidate": {
+        "raw_result": "results/gpu_eager/p128_requested8_mb8_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 72.78956100344658,
+        "cold_median_ms": 74.54717252403498,
+        "hot_memory": {
+          "start_allocated_bytes": 69321728,
+          "peak_allocated_bytes": 292427776,
+          "peak_increment_bytes": 223106048,
+          "peak_reserved_bytes": 637534208
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 293476352,
+          "peak_increment_bytes": 255875072,
+          "peak_reserved_bytes": 637534208
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "cold_baseline_over_candidate": 1.083632053938253
+    },
+    {
+      "directory": "results/gpu_eager",
+      "phase": "eager",
+      "prompts": 128,
+      "requested_microbatch": 32,
+      "microbatch": 32,
+      "grid": 64,
+      "tokens": 7,
+      "dtype": "float32",
+      "tf32": false,
+      "torch": "2.12.1+cu130",
+      "hardware": "NVIDIA GeForce RTX 4080",
+      "model_hash": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+      "seed": 0,
+      "all_random_numeric_checks_passed": true,
+      "status": "random_fixture_performance_only",
+      "fastest_measured_baseline": {
+        "raw_result": "results/gpu_eager/p128_requested32_mb32_dense_assoc_explicit_auto_auto.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 84.37578473240137,
+        "cold_median_ms": 84.5873886719346,
+        "hot_memory": {
+          "start_allocated_bytes": 48087040,
+          "peak_allocated_bytes": 988141056,
+          "peak_increment_bytes": 940054016,
+          "peak_reserved_bytes": 1654652928
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 988141056,
+          "peak_increment_bytes": 950539776,
+          "peak_reserved_bytes": 1654652928
+        },
+        "logical_cache_bytes": 14680064
+      },
+      "fastest_measured_candidate": {
+        "raw_result": "results/gpu_eager/p128_requested32_mb32_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 94.63400766253471,
+        "cold_median_ms": 95.18102090805769,
+        "hot_memory": {
+          "start_allocated_bytes": 69321728,
+          "peak_allocated_bytes": 962549760,
+          "peak_increment_bytes": 893228032,
+          "peak_reserved_bytes": 2344615936
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 962549760,
+          "peak_increment_bytes": 924948480,
+          "peak_reserved_bytes": 2344615936
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "hot_baseline_over_candidate": 0.8916010936922991,
+      "fastest_cold_baseline": {
+        "raw_result": "results/gpu_eager/p128_requested32_mb32_dense_assoc_explicit_auto_auto.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 84.37578473240137,
+        "cold_median_ms": 84.5873886719346,
+        "hot_memory": {
+          "start_allocated_bytes": 48087040,
+          "peak_allocated_bytes": 988141056,
+          "peak_increment_bytes": 940054016,
+          "peak_reserved_bytes": 1654652928
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 988141056,
+          "peak_increment_bytes": 950539776,
+          "peak_reserved_bytes": 1654652928
+        },
+        "logical_cache_bytes": 14680064
+      },
+      "fastest_cold_candidate": {
+        "raw_result": "results/gpu_eager/p128_requested32_mb32_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 94.63400766253471,
+        "cold_median_ms": 95.18102090805769,
+        "hot_memory": {
+          "start_allocated_bytes": 69321728,
+          "peak_allocated_bytes": 962549760,
+          "peak_increment_bytes": 893228032,
+          "peak_reserved_bytes": 2344615936
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 962549760,
+          "peak_increment_bytes": 924948480,
+          "peak_reserved_bytes": 2344615936
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "cold_baseline_over_candidate": 0.888700161701814
+    },
+    {
+      "directory": "results/gpu_eager_largebatch",
+      "phase": "eager",
+      "prompts": 64,
+      "requested_microbatch": 64,
+      "microbatch": 64,
+      "grid": 64,
+      "tokens": 7,
+      "dtype": "float32",
+      "tf32": false,
+      "torch": "2.12.1+cu130",
+      "hardware": "NVIDIA GeForce RTX 4080",
+      "model_hash": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+      "seed": 0,
+      "all_random_numeric_checks_passed": true,
+      "status": "random_fixture_performance_only",
+      "fastest_measured_baseline": {
+        "raw_result": "results/gpu_eager_largebatch/p64_requested64_mb64_dense_assoc_explicit_auto_auto.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 43.483564630150795,
+        "cold_median_ms": 43.747239746153355,
+        "hot_memory": {
+          "start_allocated_bytes": 47955968,
+          "peak_allocated_bytes": 1927992832,
+          "peak_increment_bytes": 1880036864,
+          "peak_reserved_bytes": 3229614080
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37470208,
+          "peak_allocated_bytes": 1927992832,
+          "peak_increment_bytes": 1890522624,
+          "peak_reserved_bytes": 3229614080
+        },
+        "logical_cache_bytes": 14680064
+      },
+      "fastest_measured_candidate": {
+        "raw_result": "results/gpu_eager_largebatch/p64_requested64_mb64_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 48.958566039800644,
+        "cold_median_ms": 49.63494371622801,
+        "hot_memory": {
+          "start_allocated_bytes": 69190656,
+          "peak_allocated_bytes": 1854003200,
+          "peak_increment_bytes": 1784812544,
+          "peak_reserved_bytes": 4590665728
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37470208,
+          "peak_allocated_bytes": 1854003200,
+          "peak_increment_bytes": 1816532992,
+          "peak_reserved_bytes": 4590665728
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "hot_baseline_over_candidate": 0.8881707155148504,
+      "fastest_cold_baseline": {
+        "raw_result": "results/gpu_eager_largebatch/p64_requested64_mb64_dense_assoc_explicit_auto_auto.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 43.483564630150795,
+        "cold_median_ms": 43.747239746153355,
+        "hot_memory": {
+          "start_allocated_bytes": 47955968,
+          "peak_allocated_bytes": 1927992832,
+          "peak_increment_bytes": 1880036864,
+          "peak_reserved_bytes": 3229614080
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37470208,
+          "peak_allocated_bytes": 1927992832,
+          "peak_increment_bytes": 1890522624,
+          "peak_reserved_bytes": 3229614080
+        },
+        "logical_cache_bytes": 14680064
+      },
+      "fastest_cold_candidate": {
+        "raw_result": "results/gpu_eager_largebatch/p64_requested64_mb64_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 48.958566039800644,
+        "cold_median_ms": 49.63494371622801,
+        "hot_memory": {
+          "start_allocated_bytes": 69190656,
+          "peak_allocated_bytes": 1854003200,
+          "peak_increment_bytes": 1784812544,
+          "peak_reserved_bytes": 4590665728
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37470208,
+          "peak_allocated_bytes": 1854003200,
+          "peak_increment_bytes": 1816532992,
+          "peak_reserved_bytes": 4590665728
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "cold_baseline_over_candidate": 0.8813798600490871
+    },
+    {
+      "directory": "results/gpu_eager_largebatch",
+      "phase": "eager",
+      "prompts": 128,
+      "requested_microbatch": 64,
+      "microbatch": 64,
+      "grid": 64,
+      "tokens": 7,
+      "dtype": "float32",
+      "tf32": false,
+      "torch": "2.12.1+cu130",
+      "hardware": "NVIDIA GeForce RTX 4080",
+      "model_hash": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+      "seed": 0,
+      "all_random_numeric_checks_passed": true,
+      "status": "random_fixture_performance_only",
+      "fastest_measured_baseline": {
+        "raw_result": "results/gpu_eager_largebatch/p128_requested64_mb64_dense_assoc_explicit_associated_sparse.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "associated",
+        "write_output": "sparse",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 86.59379463642836,
+        "cold_median_ms": 86.74964308738708,
+        "hot_memory": {
+          "start_allocated_bytes": 48087040,
+          "peak_allocated_bytes": 1928123904,
+          "peak_increment_bytes": 1880036864,
+          "peak_reserved_bytes": 3229614080
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 1928123904,
+          "peak_increment_bytes": 1890522624,
+          "peak_reserved_bytes": 3229614080
+        },
+        "logical_cache_bytes": 14680064
+      },
+      "fastest_measured_candidate": {
+        "raw_result": "results/gpu_eager_largebatch/p128_requested64_mb64_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 97.62524534016848,
+        "cold_median_ms": 98.02273660898209,
+        "hot_memory": {
+          "start_allocated_bytes": 69321728,
+          "peak_allocated_bytes": 1854134272,
+          "peak_increment_bytes": 1784812544,
+          "peak_reserved_bytes": 4590665728
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 1854134272,
+          "peak_increment_bytes": 1816532992,
+          "peak_reserved_bytes": 4590665728
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "hot_baseline_over_candidate": 0.8870020693387065,
+      "fastest_cold_baseline": {
+        "raw_result": "results/gpu_eager_largebatch/p128_requested64_mb64_dense_assoc_explicit_associated_sparse.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "associated",
+        "write_output": "sparse",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 86.59379463642836,
+        "cold_median_ms": 86.74964308738708,
+        "hot_memory": {
+          "start_allocated_bytes": 48087040,
+          "peak_allocated_bytes": 1928123904,
+          "peak_increment_bytes": 1880036864,
+          "peak_reserved_bytes": 3229614080
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 1928123904,
+          "peak_increment_bytes": 1890522624,
+          "peak_reserved_bytes": 3229614080
+        },
+        "logical_cache_bytes": 14680064
+      },
+      "fastest_cold_candidate": {
+        "raw_result": "results/gpu_eager_largebatch/p128_requested64_mb64_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 97.62524534016848,
+        "cold_median_ms": 98.02273660898209,
+        "hot_memory": {
+          "start_allocated_bytes": 69321728,
+          "peak_allocated_bytes": 1854134272,
+          "peak_increment_bytes": 1784812544,
+          "peak_reserved_bytes": 4590665728
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 1854134272,
+          "peak_increment_bytes": 1816532992,
+          "peak_reserved_bytes": 4590665728
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "cold_baseline_over_candidate": 0.8849951153010146
+    },
+    {
+      "directory": "results/gpu_eager_largebatch",
+      "phase": "eager",
+      "prompts": 128,
+      "requested_microbatch": 128,
+      "microbatch": 128,
+      "grid": 64,
+      "tokens": 7,
+      "dtype": "float32",
+      "tf32": false,
+      "torch": "2.12.1+cu130",
+      "hardware": "NVIDIA GeForce RTX 4080",
+      "model_hash": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+      "seed": 0,
+      "all_random_numeric_checks_passed": true,
+      "status": "random_fixture_performance_only",
+      "fastest_measured_baseline": {
+        "raw_result": "results/gpu_eager_largebatch/p128_requested128_mb128_dense_assoc_explicit_auto_auto.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 99.4784738868475,
+        "cold_median_ms": 99.83874298632145,
+        "hot_memory": {
+          "start_allocated_bytes": 48087040,
+          "peak_allocated_bytes": 3808089600,
+          "peak_increment_bytes": 3760002560,
+          "peak_reserved_bytes": 6916407296
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 3808089600,
+          "peak_increment_bytes": 3770488320,
+          "peak_reserved_bytes": 6916407296
+        },
+        "logical_cache_bytes": 14680064
+      },
+      "fastest_measured_candidate": {
+        "raw_result": "results/gpu_eager_largebatch/p128_requested128_mb128_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 97.16567769646645,
+        "cold_median_ms": 98.07880781590939,
+        "hot_memory": {
+          "start_allocated_bytes": 69321728,
+          "peak_allocated_bytes": 3638941696,
+          "peak_increment_bytes": 3569619968,
+          "peak_reserved_bytes": 9082765312
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 3638941696,
+          "peak_increment_bytes": 3601340416,
+          "peak_reserved_bytes": 9082765312
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "hot_baseline_over_candidate": 1.0238026044299917,
+      "fastest_cold_baseline": {
+        "raw_result": "results/gpu_eager_largebatch/p128_requested128_mb128_dense_assoc_explicit_associated_sparse.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "associated",
+        "write_output": "sparse",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 99.76736642420292,
+        "cold_median_ms": 99.78660847991705,
+        "hot_memory": {
+          "start_allocated_bytes": 48087040,
+          "peak_allocated_bytes": 3808089600,
+          "peak_increment_bytes": 3760002560,
+          "peak_reserved_bytes": 6916407296
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 3808089600,
+          "peak_increment_bytes": 3770488320,
+          "peak_reserved_bytes": 6916407296
+        },
+        "logical_cache_bytes": 14680064
+      },
+      "fastest_cold_candidate": {
+        "raw_result": "results/gpu_eager_largebatch/p128_requested128_mb128_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 97.16567769646645,
+        "cold_median_ms": 98.07880781590939,
+        "hot_memory": {
+          "start_allocated_bytes": 69321728,
+          "peak_allocated_bytes": 3638941696,
+          "peak_increment_bytes": 3569619968,
+          "peak_reserved_bytes": 9082765312
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 3638941696,
+          "peak_increment_bytes": 3601340416,
+          "peak_reserved_bytes": 9082765312
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "cold_baseline_over_candidate": 1.0174125348996201
+    },
+    {
+      "directory": "results/gpu_compile",
+      "phase": "compile",
+      "prompts": 1,
+      "requested_microbatch": 1,
+      "microbatch": 1,
+      "grid": 64,
+      "tokens": 7,
+      "dtype": "float32",
+      "tf32": false,
+      "torch": "2.12.1+cu130",
+      "hardware": "NVIDIA GeForce RTX 4080",
+      "model_hash": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+      "seed": 0,
+      "all_random_numeric_checks_passed": true,
+      "status": "random_fixture_performance_only",
+      "fastest_measured_baseline": {
+        "raw_result": "results/gpu_compile/p1_requested1_mb1_cached_sdpa_auto_auto.json",
+        "method": "cached",
+        "attention": "sdpa",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 2.1240701898932457,
+        "cold_median_ms": 2.439281903207302,
+        "hot_memory": {
+          "start_allocated_bytes": 54118400,
+          "peak_allocated_bytes": 79351296,
+          "peak_increment_bytes": 25232896,
+          "peak_reserved_bytes": 165675008
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37341184,
+          "peak_allocated_bytes": 79351296,
+          "peak_increment_bytes": 42010112,
+          "peak_reserved_bytes": 165675008
+        },
+        "logical_cache_bytes": 20971520
+      },
+      "fastest_measured_candidate": {
+        "raw_result": "results/gpu_compile/p1_requested1_mb1_factor_projected_sdpa_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "sdpa",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 2.6521431282162666,
+        "cold_median_ms": 3.2615941017866135,
+        "hot_memory": {
+          "start_allocated_bytes": 69061632,
+          "peak_allocated_bytes": 81654272,
+          "peak_increment_bytes": 12592640,
+          "peak_reserved_bytes": 165675008
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37341184,
+          "peak_allocated_bytes": 81654272,
+          "peak_increment_bytes": 44313088,
+          "peak_reserved_bytes": 165675008
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "hot_baseline_over_candidate": 0.800888220283125,
+      "fastest_cold_baseline": {
+        "raw_result": "results/gpu_compile/p1_requested1_mb1_official_sdpa_sdpa_auto_auto.json",
+        "method": "official_sdpa",
+        "attention": "sdpa",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 2.2297045215964317,
+        "cold_median_ms": 2.3018019273877144,
+        "hot_memory": {
+          "start_allocated_bytes": 37341184,
+          "peak_allocated_bytes": 62582784,
+          "peak_increment_bytes": 25241600,
+          "peak_reserved_bytes": 190840832
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37341184,
+          "peak_allocated_bytes": 62582784,
+          "peak_increment_bytes": 25241600,
+          "peak_reserved_bytes": 190840832
+        },
+        "logical_cache_bytes": 0
+      },
+      "fastest_cold_candidate": {
+        "raw_result": "results/gpu_compile/p1_requested1_mb1_factor_projected_sdpa_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "sdpa",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 2.6521431282162666,
+        "cold_median_ms": 3.2615941017866135,
+        "hot_memory": {
+          "start_allocated_bytes": 69061632,
+          "peak_allocated_bytes": 81654272,
+          "peak_increment_bytes": 12592640,
+          "peak_reserved_bytes": 165675008
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37341184,
+          "peak_allocated_bytes": 81654272,
+          "peak_increment_bytes": 44313088,
+          "peak_reserved_bytes": 165675008
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "cold_baseline_over_candidate": 0.7057291175891106
+    },
+    {
+      "directory": "results/gpu_compile",
+      "phase": "compile",
+      "prompts": 8,
+      "requested_microbatch": 8,
+      "microbatch": 8,
+      "grid": 64,
+      "tokens": 7,
+      "dtype": "float32",
+      "tf32": false,
+      "torch": "2.12.1+cu130",
+      "hardware": "NVIDIA GeForce RTX 4080",
+      "model_hash": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+      "seed": 0,
+      "all_random_numeric_checks_passed": true,
+      "status": "random_fixture_performance_only",
+      "fastest_measured_baseline": {
+        "raw_result": "results/gpu_compile/p8_requested8_mb8_dense_assoc_explicit_auto_auto.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 4.418233409523964,
+        "cold_median_ms": 4.6304380521178246,
+        "hot_memory": {
+          "start_allocated_bytes": 47841280,
+          "peak_allocated_bytes": 249311744,
+          "peak_increment_bytes": 201470464,
+          "peak_reserved_bytes": 448790528
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37355520,
+          "peak_allocated_bytes": 249311744,
+          "peak_increment_bytes": 211956224,
+          "peak_reserved_bytes": 448790528
+        },
+        "logical_cache_bytes": 14680064
+      },
+      "fastest_measured_candidate": {
+        "raw_result": "results/gpu_compile/p8_requested8_mb8_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 3.795371390879154,
+        "cold_median_ms": 4.471072927117348,
+        "hot_memory": {
+          "start_allocated_bytes": 69075968,
+          "peak_allocated_bytes": 210670592,
+          "peak_increment_bytes": 141594624,
+          "peak_reserved_bytes": 568328192
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37355520,
+          "peak_allocated_bytes": 211457024,
+          "peak_increment_bytes": 174101504,
+          "peak_reserved_bytes": 568328192
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "hot_baseline_over_candidate": 1.1641109537110492,
+      "fastest_cold_baseline": {
+        "raw_result": "results/gpu_compile/p8_requested8_mb8_dense_assoc_explicit_auto_auto.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 4.418233409523964,
+        "cold_median_ms": 4.6304380521178246,
+        "hot_memory": {
+          "start_allocated_bytes": 47841280,
+          "peak_allocated_bytes": 249311744,
+          "peak_increment_bytes": 201470464,
+          "peak_reserved_bytes": 448790528
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37355520,
+          "peak_allocated_bytes": 249311744,
+          "peak_increment_bytes": 211956224,
+          "peak_reserved_bytes": 448790528
+        },
+        "logical_cache_bytes": 14680064
+      },
+      "fastest_cold_candidate": {
+        "raw_result": "results/gpu_compile/p8_requested8_mb8_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 3.795371390879154,
+        "cold_median_ms": 4.471072927117348,
+        "hot_memory": {
+          "start_allocated_bytes": 69075968,
+          "peak_allocated_bytes": 210670592,
+          "peak_increment_bytes": 141594624,
+          "peak_reserved_bytes": 568328192
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37355520,
+          "peak_allocated_bytes": 211457024,
+          "peak_increment_bytes": 174101504,
+          "peak_reserved_bytes": 568328192
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "cold_baseline_over_candidate": 1.0356435977668619
+    },
+    {
+      "directory": "results/gpu_compile",
+      "phase": "compile",
+      "prompts": 128,
+      "requested_microbatch": 8,
+      "microbatch": 8,
+      "grid": 64,
+      "tokens": 7,
+      "dtype": "float32",
+      "tf32": false,
+      "torch": "2.12.1+cu130",
+      "hardware": "NVIDIA GeForce RTX 4080",
+      "model_hash": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+      "seed": 0,
+      "all_random_numeric_checks_passed": true,
+      "status": "random_fixture_performance_only",
+      "fastest_measured_baseline": {
+        "raw_result": "results/gpu_compile/p128_requested8_mb8_dense_assoc_explicit_associated_sparse.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "associated",
+        "write_output": "sparse",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 58.61825868487358,
+        "cold_median_ms": 58.90330206602812,
+        "hot_memory": {
+          "start_allocated_bytes": 48087040,
+          "peak_allocated_bytes": 249557504,
+          "peak_increment_bytes": 201470464,
+          "peak_reserved_bytes": 469762048
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 249557504,
+          "peak_increment_bytes": 211956224,
+          "peak_reserved_bytes": 469762048
+        },
+        "logical_cache_bytes": 14680064
+      },
+      "fastest_measured_candidate": {
+        "raw_result": "results/gpu_compile/p128_requested8_mb8_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 49.3865804746747,
+        "cold_median_ms": 48.98131266236305,
+        "hot_memory": {
+          "start_allocated_bytes": 69321728,
+          "peak_allocated_bytes": 210916352,
+          "peak_increment_bytes": 141594624,
+          "peak_reserved_bytes": 606076928
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 211702784,
+          "peak_increment_bytes": 174101504,
+          "peak_reserved_bytes": 606076928
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "hot_baseline_over_candidate": 1.1869268558679185,
+      "fastest_cold_baseline": {
+        "raw_result": "results/gpu_compile/p128_requested8_mb8_dense_assoc_explicit_associated_sparse.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "associated",
+        "write_output": "sparse",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 58.61825868487358,
+        "cold_median_ms": 58.90330206602812,
+        "hot_memory": {
+          "start_allocated_bytes": 48087040,
+          "peak_allocated_bytes": 249557504,
+          "peak_increment_bytes": 201470464,
+          "peak_reserved_bytes": 469762048
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 249557504,
+          "peak_increment_bytes": 211956224,
+          "peak_reserved_bytes": 469762048
+        },
+        "logical_cache_bytes": 14680064
+      },
+      "fastest_cold_candidate": {
+        "raw_result": "results/gpu_compile/p128_requested8_mb8_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 49.3865804746747,
+        "cold_median_ms": 48.98131266236305,
+        "hot_memory": {
+          "start_allocated_bytes": 69321728,
+          "peak_allocated_bytes": 210916352,
+          "peak_increment_bytes": 141594624,
+          "peak_reserved_bytes": 606076928
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 211702784,
+          "peak_increment_bytes": 174101504,
+          "peak_reserved_bytes": 606076928
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "cold_baseline_over_candidate": 1.202566833438277
+    },
+    {
+      "directory": "results/gpu_compile",
+      "phase": "compile",
+      "prompts": 128,
+      "requested_microbatch": 128,
+      "microbatch": 128,
+      "grid": 64,
+      "tokens": 7,
+      "dtype": "float32",
+      "tf32": false,
+      "torch": "2.12.1+cu130",
+      "hardware": "NVIDIA GeForce RTX 4080",
+      "model_hash": "79bd63565ac887f5bf4cc23e8990155f7cd674c79d360e7e7a3090f32b9689d5",
+      "seed": 0,
+      "all_random_numeric_checks_passed": true,
+      "status": "random_fixture_performance_only",
+      "fastest_measured_baseline": {
+        "raw_result": "results/gpu_compile/p128_requested128_mb128_dense_assoc_explicit_associated_sparse.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "associated",
+        "write_output": "sparse",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 66.29330944269896,
+        "cold_median_ms": 66.61825347691774,
+        "hot_memory": {
+          "start_allocated_bytes": 48087040,
+          "peak_allocated_bytes": 3270623744,
+          "peak_increment_bytes": 3222536704,
+          "peak_reserved_bytes": 6377439232
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 3270623744,
+          "peak_increment_bytes": 3233022464,
+          "peak_reserved_bytes": 6377439232
+        },
+        "logical_cache_bytes": 14680064
+      },
+      "fastest_measured_candidate": {
+        "raw_result": "results/gpu_compile/p128_requested128_mb128_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 45.07450107485056,
+        "cold_median_ms": 45.94236146658659,
+        "hot_memory": {
+          "start_allocated_bytes": 69321728,
+          "peak_allocated_bytes": 2334835712,
+          "peak_increment_bytes": 2265513984,
+          "peak_reserved_bytes": 8053063680
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 2335491072,
+          "peak_increment_bytes": 2297889792,
+          "peak_reserved_bytes": 8053063680
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "hot_baseline_over_candidate": 1.470749711297137,
+      "fastest_cold_baseline": {
+        "raw_result": "results/gpu_compile/p128_requested128_mb128_dense_assoc_explicit_associated_sparse.json",
+        "method": "dense_assoc",
+        "attention": "explicit",
+        "order": "associated",
+        "write_output": "sparse",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 66.29330944269896,
+        "cold_median_ms": 66.61825347691774,
+        "hot_memory": {
+          "start_allocated_bytes": 48087040,
+          "peak_allocated_bytes": 3270623744,
+          "peak_increment_bytes": 3222536704,
+          "peak_reserved_bytes": 6377439232
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 3270623744,
+          "peak_increment_bytes": 3233022464,
+          "peak_reserved_bytes": 6377439232
+        },
+        "logical_cache_bytes": 14680064
+      },
+      "fastest_cold_candidate": {
+        "raw_result": "results/gpu_compile/p128_requested128_mb128_factor_projected_explicit_auto_auto.json",
+        "method": "factor_projected",
+        "attention": "explicit",
+        "order": "auto",
+        "write_output": "auto",
+        "numeric_status": "passed_random_fixture_only",
+        "hot_median_ms": 45.07450107485056,
+        "cold_median_ms": 45.94236146658659,
+        "hot_memory": {
+          "start_allocated_bytes": 69321728,
+          "peak_allocated_bytes": 2334835712,
+          "peak_increment_bytes": 2265513984,
+          "peak_reserved_bytes": 8053063680
+        },
+        "cold_memory": {
+          "start_allocated_bytes": 37601280,
+          "peak_allocated_bytes": 2335491072,
+          "peak_increment_bytes": 2297889792,
+          "peak_reserved_bytes": 8053063680
+        },
+        "logical_cache_bytes": 35914752
+      },
+      "cold_baseline_over_candidate": 1.450039818379134
+    }
+  ],
+  "rejected_or_incomplete": []
+}

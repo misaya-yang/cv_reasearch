@@ -1,0 +1,6087 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-10-01T12:17:23.025015+00:00",
+  "status": "FAILED_DIAGNOSTIC_OUTPUTS_ONLY",
+  "precision": "float32",
+  "tf32_matmul": false,
+  "tf32_cudnn": false,
+  "matmul_precision": "highest",
+  "numerical_tolerance": 5e-05,
+  "model": "official_pretrained_sam_vit_b",
+  "torch": "2.12.1+cu130",
+  "python": "3.12.3",
+  "device": "cuda:0",
+  "gpu_name": "NVIDIA GeForce RTX 4080",
+  "options": {
+    "subset_dir": "assets/coco_quality_seed2027_v1",
+    "checkpoint": "assets/checkpoints/sam_vit_b_01ec64.pth",
+    "source_dir": "/root/autodl-tmp/demo1_sam/assets/source/segment-anything",
+    "output_dir": "results/real_quality_smoke_v1",
+    "device": "cuda:0",
+    "limit_images": 2,
+    "microbatch": 4,
+    "attention": "explicit",
+    "assoc_order": "auto",
+    "assoc_write_output": "auto",
+    "diagnostic_on_failure": true,
+    "threads": 2
+  },
+  "official_decoder_provenance": [
+    {
+      "file": "segment_anything/modeling/common.py",
+      "sha256": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+      "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+    },
+    {
+      "file": "segment_anything/modeling/transformer.py",
+      "sha256": "566a8f6db8b608398de939548bd0f485b21752fda2bdda36900e6444ef938d11",
+      "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+    },
+    {
+      "file": "segment_anything/modeling/mask_decoder.py",
+      "sha256": "6a2455e990515c67a061187c92c236b879b189f21ef6ebfce1627cae9a6b2f93",
+      "revision": "dca509fe793f601edb92606367a655c15ac00fdf"
+    }
+  ],
+  "checkpoint": {
+    "path": "assets/checkpoints/sam_vit_b_01ec64.pth",
+    "bytes": 375042383
+  },
+  "subset_manifest_sha256": "d43ad470f0c5e22e22bd0a8d3928e2b8a631649c10f014e17a856f4c25a7c178",
+  "prompt_protocol": "one independent positive point or one tight GT box per row; no mask inputs; no extra clicks or fusion",
+  "timing_contract": "DIAGNOSTIC_ONLY: one-pass synchronized eager segment times, no warmup/repeated performance inference; full per-image wall includes comparisons, CPU copies, quality metrics and NPZ I/O",
+  "quality_limits": "small fixed development diagnosis, not SOTA; GT oracles use extra ground truth and are not deployable",
+  "images": [
+    {
+      "image_id": 517687,
+      "image_encoder_executions": 1,
+      "original_size": [
+        360,
+        640
+      ],
+      "input_size": [
+        576,
+        1024
+      ],
+      "resize_ms": 12.437565252184868,
+      "input_transfer_ms": 8.220404386520386,
+      "preprocess_ms": 3.5022255033254623,
+      "encoder_ms": 261.8041504174471,
+      "regimes": [
+        {
+          "regime": "central",
+          "prompt_encoder_ms": 108.78672078251839,
+          "cache_build_including_PE_ms": {
+            "cached": 0.5343444645404816,
+            "dense_assoc": 0.21535903215408325,
+            "factor_projected": 1.0213237255811691
+          },
+          "prompt_count": 3,
+          "total_tokens": 7,
+          "image_cache_reused_from_prior_regime": false
+        },
+        {
+          "regime": "near_boundary",
+          "prompt_encoder_ms": 1.3838503509759903,
+          "cache_build_including_PE_ms": {
+            "cached": 0.0,
+            "dense_assoc": 0.0,
+            "factor_projected": 0.0
+          },
+          "prompt_count": 3,
+          "total_tokens": 7,
+          "image_cache_reused_from_prior_regime": true
+        },
+        {
+          "regime": "box",
+          "prompt_encoder_ms": 0.7292907685041428,
+          "cache_build_including_PE_ms": {
+            "cached": 0.0,
+            "dense_assoc": 0.0,
+            "factor_projected": 0.0
+          },
+          "prompt_count": 3,
+          "total_tokens": 7,
+          "image_cache_reused_from_prior_regime": true
+        }
+      ],
+      "complete_diagnostic_wall_ms": 4392.755169421434
+    },
+    {
+      "image_id": 373382,
+      "image_encoder_executions": 1,
+      "original_size": [
+        640,
+        480
+      ],
+      "input_size": [
+        1024,
+        768
+      ],
+      "resize_ms": 9.591316804289818,
+      "input_transfer_ms": 0.3682281821966171,
+      "preprocess_ms": 0.1400671899318695,
+      "encoder_ms": 87.83184178173542,
+      "regimes": [
+        {
+          "regime": "central",
+          "prompt_encoder_ms": 1.1601094156503677,
+          "cache_build_including_PE_ms": {
+            "cached": 0.3248043358325958,
+            "dense_assoc": 0.206727534532547,
+            "factor_projected": 0.646740198135376
+          },
+          "prompt_count": 4,
+          "total_tokens": 7,
+          "image_cache_reused_from_prior_regime": false
+        },
+        {
+          "regime": "near_boundary",
+          "prompt_encoder_ms": 1.3726316392421722,
+          "cache_build_including_PE_ms": {
+            "cached": 0.0,
+            "dense_assoc": 0.0,
+            "factor_projected": 0.0
+          },
+          "prompt_count": 4,
+          "total_tokens": 7,
+          "image_cache_reused_from_prior_regime": true
+        },
+        {
+          "regime": "box",
+          "prompt_encoder_ms": 0.746922567486763,
+          "cache_build_including_PE_ms": {
+            "cached": 0.0,
+            "dense_assoc": 0.0,
+            "factor_projected": 0.0
+          },
+          "prompt_count": 4,
+          "total_tokens": 7,
+          "image_cache_reused_from_prior_regime": true
+        }
+      ],
+      "complete_diagnostic_wall_ms": 5731.634568423033
+    }
+  ],
+  "records": [
+    {
+      "image_id": 517687,
+      "regime": "central",
+      "method": "official",
+      "numeric_status": "REFERENCE",
+      "attention": "official_explicit",
+      "factor_write_attention": null,
+      "shape_plan": null,
+      "npz": "image_000000517687/central_official.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 3,
+          "status": "REFERENCE",
+          "finite": true
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        51.758673042058945
+      ],
+      "diagnostic_postprocess_ms": [
+        2.553831785917282
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 3,
+        "resolution": [
+          360,
+          640
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 15,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.4349704158288192,
+            "mean_boundary_iou": 0.2634973106034016
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.4472328870577966,
+            "mean_boundary_iou": 0.3083548282899668
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.4349704158288192,
+            "mean_boundary_iou": 0.2634973106034016
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.8970449295889197,
+          "all4_mean_iou": 0.8970449295889197,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.6020404566018287,
+          "all4_boundary_oracle_mean_boundary_iou": 0.6024805725333662,
+          "mean_multimask_iou_gap": 0.449812042531123,
+          "prompt_bootstrap_gap95": [
+            0.17455296371409945,
+            0.8295242615864465
+          ],
+          "fraction_gap_gt_0.02": 0.6666666666666666
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.8653707760950569,
+              0.8795401862356506,
+              0.8757931611002747,
+              0.22766182232611534
+            ],
+            "boundary_iou_per_mask": [
+              0.5652158701280526,
+              0.5921988870320279,
+              0.5935192348266404,
+              0.09257867038986145
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.0037470251353758366,
+            "image_id": 517687,
+            "annotation_id": 1966251,
+            "regime": "central",
+            "prompt_xy": [
+              80.0,
+              116.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.4296591872927751,
+              0.9723997951325,
+              0.4562349542609533,
+              0.31425760907302397
+            ],
+            "boundary_iou_per_mask": [
+              0.22527606168215206,
+              0.8413433700057904,
+              0.3315452500432601,
+              0.050686899524108826
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.5161648408715467,
+            "image_id": 517687,
+            "annotation_id": 330273,
+            "regime": "central",
+            "prompt_xy": [
+              411.0,
+              154.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.009881284098625518,
+              0.8391948073986085,
+              0.010045191654763856,
+              0.009670545812161941
+            ],
+            "boundary_iou_per_mask": [
+              0.0,
+              0.3725791127676679,
+              0.0,
+              0.0
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.8295242615864465,
+            "image_id": 517687,
+            "annotation_id": 323985,
+            "regime": "central",
+            "prompt_xy": [
+              229.0,
+              156.0
+            ],
+            "prompt_box_xyxy": null
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 517687,
+      "regime": "central",
+      "method": "cached",
+      "numeric_status": "FAILED",
+      "attention": "explicit",
+      "factor_write_attention": null,
+      "shape_plan": [
+        {
+          "role": "read",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "cached",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "dense"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "projected",
+          "value": "projected",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": false,
+          "qk": "projected",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "dense"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "projected",
+          "value": "projected",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        }
+      ],
+      "npz": "image_000000517687/central_cached.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 3,
+          "mask_logit_max_abs": 0.00424957275390625,
+          "iou_prediction_max_abs": 6.9141387939453125e-06,
+          "finite": true,
+          "tolerance": 5e-05,
+          "status": "FAILED",
+          "full_resolution_binary_flips_per_prompt_per_mask": [
+            [
+              0,
+              1,
+              0,
+              1
+            ],
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "multimask_iou_argmax_changed_per_prompt": [
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        4.023987799882889
+      ],
+      "diagnostic_postprocess_ms": [
+        0.12685731053352356
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 3,
+        "resolution": [
+          360,
+          640
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 15,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.4349639902498745,
+            "mean_boundary_iou": 0.2634810955266232
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.4472328870577966,
+            "mean_boundary_iou": 0.3083548282899668
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.4349639902498745,
+            "mean_boundary_iou": 0.2634810955266232
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.897047249088137,
+          "all4_mean_iou": 0.897047249088137,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.6020438575809303,
+          "all4_boundary_oracle_mean_boundary_iou": 0.6024805725333662,
+          "mean_multimask_iou_gap": 0.4498143620303405,
+          "prompt_bootstrap_gap95": [
+            0.17455760271253426,
+            0.8295242615864465
+          ],
+          "fraction_gap_gt_0.02": 0.6666666666666666
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.8653707760950569,
+              0.8795471447333028,
+              0.8757931611002747,
+              0.2276701411707942
+            ],
+            "boundary_iou_per_mask": [
+              0.5652158701280526,
+              0.5922090899693325,
+              0.5935192348266404,
+              0.09259657036480148
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.003753983633028035,
+            "image_id": 517687,
+            "annotation_id": 1966251,
+            "regime": "central",
+            "prompt_xy": [
+              80.0,
+              116.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.4296399105559411,
+              0.9723997951325,
+              0.4562349542609533,
+              0.31425760907302397
+            ],
+            "boundary_iou_per_mask": [
+              0.2252274164518169,
+              0.8413433700057904,
+              0.3315452500432601,
+              0.050686899524108826
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.5161648408715467,
+            "image_id": 517687,
+            "annotation_id": 330273,
+            "regime": "central",
+            "prompt_xy": [
+              411.0,
+              154.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.009881284098625518,
+              0.8391948073986085,
+              0.010045191654763856,
+              0.009670545812161941
+            ],
+            "boundary_iou_per_mask": [
+              0.0,
+              0.3725791127676679,
+              0.0,
+              0.0
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.8295242615864465,
+            "image_id": 517687,
+            "annotation_id": 323985,
+            "regime": "central",
+            "prompt_xy": [
+              229.0,
+              156.0
+            ],
+            "prompt_box_xyxy": null
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 517687,
+      "regime": "central",
+      "method": "dense_assoc",
+      "numeric_status": "FAILED",
+      "attention": "explicit",
+      "factor_write_attention": null,
+      "shape_plan": [
+        {
+          "role": "read",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "cached",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "sparse"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "associated",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "sparse"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "associated",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        }
+      ],
+      "npz": "image_000000517687/central_dense_assoc.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 3,
+          "mask_logit_max_abs": 0.00115203857421875,
+          "iou_prediction_max_abs": 1.5795230865478516e-05,
+          "finite": true,
+          "tolerance": 5e-05,
+          "status": "FAILED",
+          "full_resolution_binary_flips_per_prompt_per_mask": [
+            [
+              0,
+              3,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "multimask_iou_argmax_changed_per_prompt": [
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        4.753978922963142
+      ],
+      "diagnostic_postprocess_ms": [
+        0.1262761652469635
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 3,
+        "resolution": [
+          360,
+          640
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 15,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.4349704158288192,
+            "mean_boundary_iou": 0.2634973106034016
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.4472328870577966,
+            "mean_boundary_iou": 0.3083548282899668
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.4349704158288192,
+            "mean_boundary_iou": 0.2634973106034016
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.8970469314306629,
+          "all4_mean_iou": 0.8970469314306629,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.6020506598907163,
+          "all4_boundary_oracle_mean_boundary_iou": 0.6024805725333662,
+          "mean_multimask_iou_gap": 0.4498140443728664,
+          "prompt_bootstrap_gap95": [
+            0.17455696739758605,
+            0.8295242615864465
+          ],
+          "fraction_gap_gt_0.02": 0.6666666666666666
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.8653707760950569,
+              0.8795461917608804,
+              0.8757931611002747,
+              0.22766182232611534
+            ],
+            "boundary_iou_per_mask": [
+              0.5652158701280526,
+              0.5922294968986905,
+              0.5935192348266404,
+              0.09257867038986145
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.0037530306606057273,
+            "image_id": 517687,
+            "annotation_id": 1966251,
+            "regime": "central",
+            "prompt_xy": [
+              80.0,
+              116.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.4296591872927751,
+              0.9723997951325,
+              0.4562349542609533,
+              0.31425760907302397
+            ],
+            "boundary_iou_per_mask": [
+              0.22527606168215206,
+              0.8413433700057904,
+              0.3315452500432601,
+              0.050686899524108826
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.5161648408715467,
+            "image_id": 517687,
+            "annotation_id": 330273,
+            "regime": "central",
+            "prompt_xy": [
+              411.0,
+              154.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.009881284098625518,
+              0.8391948073986085,
+              0.010045191654763856,
+              0.009670545812161941
+            ],
+            "boundary_iou_per_mask": [
+              0.0,
+              0.3725791127676679,
+              0.0,
+              0.0
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.8295242615864465,
+            "image_id": 517687,
+            "annotation_id": 323985,
+            "regime": "central",
+            "prompt_xy": [
+              229.0,
+              156.0
+            ],
+            "prompt_box_xyxy": null
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 517687,
+      "regime": "central",
+      "method": "factor_projected",
+      "numeric_status": "FAILED",
+      "attention": "explicit",
+      "factor_write_attention": "explicit",
+      "shape_plan": null,
+      "npz": "image_000000517687/central_factor_projected.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 3,
+          "mask_logit_max_abs": 0.00103759765625,
+          "iou_prediction_max_abs": 1.2874603271484375e-05,
+          "finite": true,
+          "tolerance": 5e-05,
+          "status": "FAILED",
+          "full_resolution_binary_flips_per_prompt_per_mask": [
+            [
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "multimask_iou_argmax_changed_per_prompt": [
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        5.778975784778595
+      ],
+      "diagnostic_postprocess_ms": [
+        0.12339465320110321
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 3,
+        "resolution": [
+          360,
+          640
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 15,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.4349704158288192,
+            "mean_boundary_iou": 0.2634973106034016
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.4472328870577966,
+            "mean_boundary_iou": 0.3083548282899668
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.4349704158288192,
+            "mean_boundary_iou": 0.2634973106034016
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.8970449295889197,
+          "all4_mean_iou": 0.8970449295889197,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.6020404566018287,
+          "all4_boundary_oracle_mean_boundary_iou": 0.6024805725333662,
+          "mean_multimask_iou_gap": 0.449812042531123,
+          "prompt_bootstrap_gap95": [
+            0.17455296371409945,
+            0.8295242615864465
+          ],
+          "fraction_gap_gt_0.02": 0.6666666666666666
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.8653707760950569,
+              0.8795401862356506,
+              0.8757931611002747,
+              0.2276701411707942
+            ],
+            "boundary_iou_per_mask": [
+              0.5652158701280526,
+              0.5921988870320279,
+              0.5935192348266404,
+              0.09259657036480148
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.0037470251353758366,
+            "image_id": 517687,
+            "annotation_id": 1966251,
+            "regime": "central",
+            "prompt_xy": [
+              80.0,
+              116.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.4296591872927751,
+              0.9723997951325,
+              0.4562349542609533,
+              0.31425760907302397
+            ],
+            "boundary_iou_per_mask": [
+              0.22527606168215206,
+              0.8413433700057904,
+              0.3315452500432601,
+              0.050686899524108826
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.5161648408715467,
+            "image_id": 517687,
+            "annotation_id": 330273,
+            "regime": "central",
+            "prompt_xy": [
+              411.0,
+              154.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.009881284098625518,
+              0.8391948073986085,
+              0.010045191654763856,
+              0.009670545812161941
+            ],
+            "boundary_iou_per_mask": [
+              0.0,
+              0.3725791127676679,
+              0.0,
+              0.0
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.8295242615864465,
+            "image_id": 517687,
+            "annotation_id": 323985,
+            "regime": "central",
+            "prompt_xy": [
+              229.0,
+              156.0
+            ],
+            "prompt_box_xyxy": null
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 517687,
+      "regime": "near_boundary",
+      "method": "official",
+      "numeric_status": "REFERENCE",
+      "attention": "official_explicit",
+      "factor_write_attention": null,
+      "shape_plan": null,
+      "npz": "image_000000517687/near_boundary_official.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 3,
+          "status": "REFERENCE",
+          "finite": true
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        4.269829019904137
+      ],
+      "diagnostic_postprocess_ms": [
+        0.13359636068344116
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 3,
+        "resolution": [
+          360,
+          640
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 15,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.6108048853897782,
+            "mean_boundary_iou": 0.2983642286966891
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.9097689483179995,
+            "mean_boundary_iou": 0.6159850570701938
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.6166402508907408,
+            "mean_boundary_iou": 0.4173362374178282
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.9100841705666868,
+          "all4_mean_iou": 0.9100841705666868,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.5186009370796548,
+          "all4_boundary_oracle_mean_boundary_iou": 0.6159850570701938,
+          "mean_multimask_iou_gap": 0.00031522224868711185,
+          "prompt_bootstrap_gap95": [
+            0.0,
+            0.0009456667460613355
+          ],
+          "fraction_gap_gt_0.02": 0.0
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.004191107921028966,
+              0.8823886527954081,
+              0.8491084228668997,
+              0.0029456660753331408
+            ],
+            "boundary_iou_per_mask": [
+              0.010891938250428817,
+              0.5981516285325102,
+              0.46621237932992615,
+              0.007656672242954575
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 517687,
+            "annotation_id": 1966251,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              1.0,
+              286.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.940354218244144,
+              0.9578603147470318,
+              0.9588059814930932,
+              0.00025022134965546443
+            ],
+            "boundary_iou_per_mask": [
+              0.4248232106271892,
+              0.7817392367906066,
+              0.4895868768189893,
+              0.0009091544863277152
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 1
+            },
+            "multimask_iou_oracle_index": 2,
+            "all4_iou_oracle_index": 2,
+            "multimask_oracle_gap": 0.0009456667460613355,
+            "image_id": 517687,
+            "annotation_id": 330273,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              335.0,
+              267.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.8878693300041615,
+              0.4260360935877984,
+              0.8890578774115588,
+              0.8737487187315988
+            ],
+            "boundary_iou_per_mask": [
+              0.4593775372124493,
+              0.23666816210557798,
+              0.46806430588746467,
+              0.32890878221947834
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 2,
+            "all4_iou_oracle_index": 2,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 517687,
+            "annotation_id": 323985,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              163.0,
+              172.0
+            ],
+            "prompt_box_xyxy": null
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 517687,
+      "regime": "near_boundary",
+      "method": "cached",
+      "numeric_status": "FAILED",
+      "attention": "explicit",
+      "factor_write_attention": null,
+      "shape_plan": [
+        {
+          "role": "read",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "cached",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "dense"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "projected",
+          "value": "projected",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": false,
+          "qk": "projected",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "dense"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "projected",
+          "value": "projected",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        }
+      ],
+      "npz": "image_000000517687/near_boundary_cached.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 3,
+          "mask_logit_max_abs": 0.001800537109375,
+          "iou_prediction_max_abs": 1.150369644165039e-05,
+          "finite": true,
+          "tolerance": 5e-05,
+          "status": "FAILED",
+          "full_resolution_binary_flips_per_prompt_per_mask": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "multimask_iou_argmax_changed_per_prompt": [
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        3.6812014877796173
+      ],
+      "diagnostic_postprocess_ms": [
+        0.11993572115898132
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 3,
+        "resolution": [
+          360,
+          640
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 15,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.6108048853897782,
+            "mean_boundary_iou": 0.2983642286966891
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.9097689483179995,
+            "mean_boundary_iou": 0.6159850570701938
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.6166402508907408,
+            "mean_boundary_iou": 0.4173362374178282
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.9100841705666868,
+          "all4_mean_iou": 0.9100841705666868,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.5186009370796548,
+          "all4_boundary_oracle_mean_boundary_iou": 0.6159850570701938,
+          "mean_multimask_iou_gap": 0.00031522224868711185,
+          "prompt_bootstrap_gap95": [
+            0.0,
+            0.0009456667460613355
+          ],
+          "fraction_gap_gt_0.02": 0.0
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.004191107921028966,
+              0.8823886527954081,
+              0.8491084228668997,
+              0.0029456660753331408
+            ],
+            "boundary_iou_per_mask": [
+              0.010891938250428817,
+              0.5981516285325102,
+              0.46621237932992615,
+              0.007656672242954575
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 517687,
+            "annotation_id": 1966251,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              1.0,
+              286.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.940354218244144,
+              0.9578603147470318,
+              0.9588059814930932,
+              0.00025022134965546443
+            ],
+            "boundary_iou_per_mask": [
+              0.4248232106271892,
+              0.7817392367906066,
+              0.4895868768189893,
+              0.0009091544863277152
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 1
+            },
+            "multimask_iou_oracle_index": 2,
+            "all4_iou_oracle_index": 2,
+            "multimask_oracle_gap": 0.0009456667460613355,
+            "image_id": 517687,
+            "annotation_id": 330273,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              335.0,
+              267.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.8878693300041615,
+              0.4260360935877984,
+              0.8890578774115588,
+              0.8737487187315988
+            ],
+            "boundary_iou_per_mask": [
+              0.4593775372124493,
+              0.23666816210557798,
+              0.46806430588746467,
+              0.32890878221947834
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 2,
+            "all4_iou_oracle_index": 2,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 517687,
+            "annotation_id": 323985,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              163.0,
+              172.0
+            ],
+            "prompt_box_xyxy": null
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 517687,
+      "regime": "near_boundary",
+      "method": "dense_assoc",
+      "numeric_status": "FAILED",
+      "attention": "explicit",
+      "factor_write_attention": null,
+      "shape_plan": [
+        {
+          "role": "read",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "cached",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "sparse"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "associated",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "sparse"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "associated",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        }
+      ],
+      "npz": "image_000000517687/near_boundary_dense_assoc.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 3,
+          "mask_logit_max_abs": 0.0011444091796875,
+          "iou_prediction_max_abs": 1.2874603271484375e-05,
+          "finite": true,
+          "tolerance": 5e-05,
+          "status": "FAILED",
+          "full_resolution_binary_flips_per_prompt_per_mask": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "multimask_iou_argmax_changed_per_prompt": [
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        4.058998078107834
+      ],
+      "diagnostic_postprocess_ms": [
+        0.11705420911312103
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 3,
+        "resolution": [
+          360,
+          640
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 15,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.6108048853897782,
+            "mean_boundary_iou": 0.2983642286966891
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.9097689483179995,
+            "mean_boundary_iou": 0.6159850570701938
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.6166402508907408,
+            "mean_boundary_iou": 0.4173362374178282
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.9100841705666868,
+          "all4_mean_iou": 0.9100841705666868,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.5186009370796548,
+          "all4_boundary_oracle_mean_boundary_iou": 0.6159850570701938,
+          "mean_multimask_iou_gap": 0.00031522224868711185,
+          "prompt_bootstrap_gap95": [
+            0.0,
+            0.0009456667460613355
+          ],
+          "fraction_gap_gt_0.02": 0.0
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.004191107921028966,
+              0.8823886527954081,
+              0.8491084228668997,
+              0.0029456660753331408
+            ],
+            "boundary_iou_per_mask": [
+              0.010891938250428817,
+              0.5981516285325102,
+              0.46621237932992615,
+              0.007656672242954575
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 517687,
+            "annotation_id": 1966251,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              1.0,
+              286.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.940354218244144,
+              0.9578603147470318,
+              0.9588059814930932,
+              0.00025022134965546443
+            ],
+            "boundary_iou_per_mask": [
+              0.4248232106271892,
+              0.7817392367906066,
+              0.4895868768189893,
+              0.0009091544863277152
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 1
+            },
+            "multimask_iou_oracle_index": 2,
+            "all4_iou_oracle_index": 2,
+            "multimask_oracle_gap": 0.0009456667460613355,
+            "image_id": 517687,
+            "annotation_id": 330273,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              335.0,
+              267.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.8878693300041615,
+              0.4260360935877984,
+              0.8890578774115588,
+              0.8737487187315988
+            ],
+            "boundary_iou_per_mask": [
+              0.4593775372124493,
+              0.23666816210557798,
+              0.46806430588746467,
+              0.32890878221947834
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 2,
+            "all4_iou_oracle_index": 2,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 517687,
+            "annotation_id": 323985,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              163.0,
+              172.0
+            ],
+            "prompt_box_xyxy": null
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 517687,
+      "regime": "near_boundary",
+      "method": "factor_projected",
+      "numeric_status": "FAILED",
+      "attention": "explicit",
+      "factor_write_attention": "explicit",
+      "shape_plan": null,
+      "npz": "image_000000517687/near_boundary_factor_projected.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 3,
+          "mask_logit_max_abs": 0.000843048095703125,
+          "iou_prediction_max_abs": 7.510185241699219e-06,
+          "finite": true,
+          "tolerance": 5e-05,
+          "status": "FAILED",
+          "full_resolution_binary_flips_per_prompt_per_mask": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "multimask_iou_argmax_changed_per_prompt": [
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        4.624404013156891
+      ],
+      "diagnostic_postprocess_ms": [
+        0.12152642011642456
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 3,
+        "resolution": [
+          360,
+          640
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 15,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.6108048853897782,
+            "mean_boundary_iou": 0.2983642286966891
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.9097689483179995,
+            "mean_boundary_iou": 0.6159850570701938
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.6166402508907408,
+            "mean_boundary_iou": 0.4173362374178282
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.9100841705666868,
+          "all4_mean_iou": 0.9100841705666868,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.5186009370796548,
+          "all4_boundary_oracle_mean_boundary_iou": 0.6159850570701938,
+          "mean_multimask_iou_gap": 0.00031522224868711185,
+          "prompt_bootstrap_gap95": [
+            0.0,
+            0.0009456667460613355
+          ],
+          "fraction_gap_gt_0.02": 0.0
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.004191107921028966,
+              0.8823886527954081,
+              0.8491084228668997,
+              0.0029456660753331408
+            ],
+            "boundary_iou_per_mask": [
+              0.010891938250428817,
+              0.5981516285325102,
+              0.46621237932992615,
+              0.007656672242954575
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 517687,
+            "annotation_id": 1966251,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              1.0,
+              286.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.940354218244144,
+              0.9578603147470318,
+              0.9588059814930932,
+              0.00025022134965546443
+            ],
+            "boundary_iou_per_mask": [
+              0.4248232106271892,
+              0.7817392367906066,
+              0.4895868768189893,
+              0.0009091544863277152
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 1
+            },
+            "multimask_iou_oracle_index": 2,
+            "all4_iou_oracle_index": 2,
+            "multimask_oracle_gap": 0.0009456667460613355,
+            "image_id": 517687,
+            "annotation_id": 330273,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              335.0,
+              267.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.8878693300041615,
+              0.4260360935877984,
+              0.8890578774115588,
+              0.8737487187315988
+            ],
+            "boundary_iou_per_mask": [
+              0.4593775372124493,
+              0.23666816210557798,
+              0.46806430588746467,
+              0.32890878221947834
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 2,
+            "all4_iou_oracle_index": 2,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 517687,
+            "annotation_id": 323985,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              163.0,
+              172.0
+            ],
+            "prompt_box_xyxy": null
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 517687,
+      "regime": "box",
+      "method": "official",
+      "numeric_status": "REFERENCE",
+      "attention": "official_explicit",
+      "factor_write_attention": null,
+      "shape_plan": null,
+      "npz": "image_000000517687/box_official.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 3,
+          "status": "REFERENCE",
+          "finite": true
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        4.282990470528603
+      ],
+      "diagnostic_postprocess_ms": [
+        0.12636929750442505
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 3,
+        "resolution": [
+          360,
+          640
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 15,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.9160721528704556,
+            "mean_boundary_iou": 0.6435917066874445
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.9133394711843844,
+            "mean_boundary_iou": 0.6294719140749342
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.9160721528704556,
+            "mean_boundary_iou": 0.6435917066874445
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.9194263283015133,
+          "all4_mean_iou": 0.9194263283015133,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.6551600385745567,
+          "all4_boundary_oracle_mean_boundary_iou": 0.6551600385745567,
+          "mean_multimask_iou_gap": 0.0060868571171289005,
+          "prompt_bootstrap_gap95": [
+            0.0,
+            0.0182605713513867
+          ],
+          "fraction_gap_gt_0.02": 0.0
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.8739096523621546,
+              0.5298287934518905,
+              0.8775453565085004,
+              0.8698854271996943
+            ],
+            "boundary_iou_per_mask": [
+              0.5846341676114066,
+              0.37218551150269213,
+              0.5852431815824951,
+              0.5779384035197989
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 2,
+            "all4_iou_oracle_index": 2,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 517687,
+            "annotation_id": 1966251,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              0,
+              1,
+              640,
+              356
+            ]
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.9788690646931711,
+              0.9789119804400978,
+              0.9786010124252186,
+              0.8643092736058909
+            ],
+            "boundary_iou_per_mask": [
+              0.866517475153031,
+              0.8690429042904291,
+              0.8509618498607423,
+              0.32384060372740486
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 517687,
+            "annotation_id": 330273,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              324,
+              19,
+              502,
+              349
+            ]
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.8954377415560411,
+              0.8835610766045549,
+              0.9018216479559416,
+              0.8256996594727466
+            ],
+            "boundary_iou_per_mask": [
+              0.4796234772978959,
+              0.43412965635187856,
+              0.5111940298507462,
+              0.2890191005250742
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 2,
+            "all4_iou_oracle_index": 2,
+            "multimask_oracle_gap": 0.0182605713513867,
+            "image_id": 517687,
+            "annotation_id": 323985,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              159,
+              24,
+              306,
+              347
+            ]
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 517687,
+      "regime": "box",
+      "method": "cached",
+      "numeric_status": "FAILED",
+      "attention": "explicit",
+      "factor_write_attention": null,
+      "shape_plan": [
+        {
+          "role": "read",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "cached",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "dense"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "projected",
+          "value": "projected",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": false,
+          "qk": "projected",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "dense"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "projected",
+          "value": "projected",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        }
+      ],
+      "npz": "image_000000517687/box_cached.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 3,
+          "mask_logit_max_abs": 0.0009136199951171875,
+          "iou_prediction_max_abs": 7.68899917602539e-06,
+          "finite": true,
+          "tolerance": 5e-05,
+          "status": "FAILED",
+          "full_resolution_binary_flips_per_prompt_per_mask": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0
+            ]
+          ],
+          "multimask_iou_argmax_changed_per_prompt": [
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        3.642931580543518
+      ],
+      "diagnostic_postprocess_ms": [
+        0.11619739234447479
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 3,
+        "resolution": [
+          360,
+          640
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 15,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.9160721528704556,
+            "mean_boundary_iou": 0.6435917066874445
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.9133394711843844,
+            "mean_boundary_iou": 0.6294719140749342
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.9160721528704556,
+            "mean_boundary_iou": 0.6435917066874445
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.9194192676505212,
+          "all4_mean_iou": 0.9194192676505212,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.6551315614790011,
+          "all4_boundary_oracle_mean_boundary_iou": 0.6551315614790011,
+          "mean_multimask_iou_gap": 0.0060797964661368775,
+          "prompt_bootstrap_gap95": [
+            0.0,
+            0.018239389398410633
+          ],
+          "fraction_gap_gt_0.02": 0.0
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.8739096523621546,
+              0.5298287934518905,
+              0.8775453565085004,
+              0.8698854271996943
+            ],
+            "boundary_iou_per_mask": [
+              0.5846341676114066,
+              0.37218551150269213,
+              0.5852431815824951,
+              0.5779384035197989
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 2,
+            "all4_iou_oracle_index": 2,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 517687,
+            "annotation_id": 1966251,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              0,
+              1,
+              640,
+              356
+            ]
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.9788690646931711,
+              0.9789119804400978,
+              0.9786010124252186,
+              0.8643092736058909
+            ],
+            "boundary_iou_per_mask": [
+              0.866517475153031,
+              0.8690429042904291,
+              0.8509618498607423,
+              0.32384060372740486
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 517687,
+            "annotation_id": 330273,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              324,
+              19,
+              502,
+              349
+            ]
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.8954377415560411,
+              0.8835610766045549,
+              0.9018004660029655,
+              0.8256996594727466
+            ],
+            "boundary_iou_per_mask": [
+              0.4796234772978959,
+              0.43412965635187856,
+              0.5111085985640794,
+              0.2890191005250742
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 2,
+            "all4_iou_oracle_index": 2,
+            "multimask_oracle_gap": 0.018239389398410633,
+            "image_id": 517687,
+            "annotation_id": 323985,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              159,
+              24,
+              306,
+              347
+            ]
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 517687,
+      "regime": "box",
+      "method": "dense_assoc",
+      "numeric_status": "FAILED",
+      "attention": "explicit",
+      "factor_write_attention": null,
+      "shape_plan": [
+        {
+          "role": "read",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "cached",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "sparse"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "associated",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "sparse"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "associated",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        }
+      ],
+      "npz": "image_000000517687/box_dense_assoc.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 3,
+          "mask_logit_max_abs": 0.0005741119384765625,
+          "iou_prediction_max_abs": 2.9802322387695312e-06,
+          "finite": true,
+          "tolerance": 5e-05,
+          "status": "FAILED",
+          "full_resolution_binary_flips_per_prompt_per_mask": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "multimask_iou_argmax_changed_per_prompt": [
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        4.029257223010063
+      ],
+      "diagnostic_postprocess_ms": [
+        0.1138634979724884
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 3,
+        "resolution": [
+          360,
+          640
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 15,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.9160721528704556,
+            "mean_boundary_iou": 0.6435917066874445
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.9133394711843844,
+            "mean_boundary_iou": 0.6294719140749342
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.9160721528704556,
+            "mean_boundary_iou": 0.6435917066874445
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.9194263283015133,
+          "all4_mean_iou": 0.9194263283015133,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.6551600385745567,
+          "all4_boundary_oracle_mean_boundary_iou": 0.6551600385745567,
+          "mean_multimask_iou_gap": 0.0060868571171289005,
+          "prompt_bootstrap_gap95": [
+            0.0,
+            0.0182605713513867
+          ],
+          "fraction_gap_gt_0.02": 0.0
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.8739096523621546,
+              0.5298287934518905,
+              0.8775453565085004,
+              0.8698854271996943
+            ],
+            "boundary_iou_per_mask": [
+              0.5846341676114066,
+              0.37218551150269213,
+              0.5852431815824951,
+              0.5779384035197989
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 2,
+            "all4_iou_oracle_index": 2,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 517687,
+            "annotation_id": 1966251,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              0,
+              1,
+              640,
+              356
+            ]
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.9788690646931711,
+              0.9789119804400978,
+              0.9786010124252186,
+              0.8643092736058909
+            ],
+            "boundary_iou_per_mask": [
+              0.866517475153031,
+              0.8690429042904291,
+              0.8509618498607423,
+              0.32384060372740486
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 517687,
+            "annotation_id": 330273,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              324,
+              19,
+              502,
+              349
+            ]
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.8954377415560411,
+              0.8835610766045549,
+              0.9018216479559416,
+              0.8256996594727466
+            ],
+            "boundary_iou_per_mask": [
+              0.4796234772978959,
+              0.43412965635187856,
+              0.5111940298507462,
+              0.2890191005250742
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 2,
+            "all4_iou_oracle_index": 2,
+            "multimask_oracle_gap": 0.0182605713513867,
+            "image_id": 517687,
+            "annotation_id": 323985,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              159,
+              24,
+              306,
+              347
+            ]
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 517687,
+      "regime": "box",
+      "method": "factor_projected",
+      "numeric_status": "FAILED",
+      "attention": "explicit",
+      "factor_write_attention": "explicit",
+      "shape_plan": null,
+      "npz": "image_000000517687/box_factor_projected.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 3,
+          "mask_logit_max_abs": 0.00037288665771484375,
+          "iou_prediction_max_abs": 6.973743438720703e-06,
+          "finite": true,
+          "tolerance": 5e-05,
+          "status": "FAILED",
+          "full_resolution_binary_flips_per_prompt_per_mask": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0
+            ]
+          ],
+          "multimask_iou_argmax_changed_per_prompt": [
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        4.435036331415176
+      ],
+      "diagnostic_postprocess_ms": [
+        0.12176856398582458
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 3,
+        "resolution": [
+          360,
+          640
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 15,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.9160721528704556,
+            "mean_boundary_iou": 0.6435917066874445
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.9133394711843844,
+            "mean_boundary_iou": 0.6294719140749342
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.9160721528704556,
+            "mean_boundary_iou": 0.6435917066874445
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.9194192676505212,
+          "all4_mean_iou": 0.9194192676505212,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.6551315614790011,
+          "all4_boundary_oracle_mean_boundary_iou": 0.6551315614790011,
+          "mean_multimask_iou_gap": 0.0060797964661368775,
+          "prompt_bootstrap_gap95": [
+            0.0,
+            0.018239389398410633
+          ],
+          "fraction_gap_gt_0.02": 0.0
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.8739096523621546,
+              0.5298287934518905,
+              0.8775453565085004,
+              0.8698854271996943
+            ],
+            "boundary_iou_per_mask": [
+              0.5846341676114066,
+              0.37218551150269213,
+              0.5852431815824951,
+              0.5779384035197989
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 2,
+            "all4_iou_oracle_index": 2,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 517687,
+            "annotation_id": 1966251,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              0,
+              1,
+              640,
+              356
+            ]
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.9788690646931711,
+              0.9789119804400978,
+              0.9786010124252186,
+              0.8643092736058909
+            ],
+            "boundary_iou_per_mask": [
+              0.866517475153031,
+              0.8690429042904291,
+              0.8509618498607423,
+              0.32384060372740486
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 517687,
+            "annotation_id": 330273,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              324,
+              19,
+              502,
+              349
+            ]
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.8954377415560411,
+              0.8835610766045549,
+              0.9018004660029655,
+              0.8256996594727466
+            ],
+            "boundary_iou_per_mask": [
+              0.4796234772978959,
+              0.43412965635187856,
+              0.5111085985640794,
+              0.2890191005250742
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 2,
+            "all4_iou_oracle_index": 2,
+            "multimask_oracle_gap": 0.018239389398410633,
+            "image_id": 517687,
+            "annotation_id": 323985,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              159,
+              24,
+              306,
+              347
+            ]
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 373382,
+      "regime": "central",
+      "method": "official",
+      "numeric_status": "REFERENCE",
+      "attention": "official_explicit",
+      "factor_write_attention": null,
+      "shape_plan": null,
+      "npz": "image_000000373382/central_official.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 4,
+          "status": "REFERENCE",
+          "finite": true
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        5.976354703307152
+      ],
+      "diagnostic_postprocess_ms": [
+        0.2192370593547821
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 4,
+        "resolution": [
+          640,
+          480
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 16,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.5629427387712184,
+            "mean_boundary_iou": 0.5569496518458683
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.5671828045368648,
+            "mean_boundary_iou": 0.5618262063200428
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.5629427387712184,
+            "mean_boundary_iou": 0.5569496518458683
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.7624767320154204,
+          "all4_mean_iou": 0.7624767320154204,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.756383279285924,
+          "all4_boundary_oracle_mean_boundary_iou": 0.756383279285924,
+          "mean_multimask_iou_gap": 0.19529392747855578,
+          "prompt_bootstrap_gap95": [
+            0.0654781765478698,
+            0.26376389254949817
+          ],
+          "fraction_gap_gt_0.02": 0.75
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.4327365728900256,
+              0.6863844977052524,
+              0.612589559877175,
+              0.4327365728900256
+            ],
+            "boundary_iou_per_mask": [
+              0.4327365728900256,
+              0.6863844977052524,
+              0.612589559877175,
+              0.4327365728900256
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.25364792481522686,
+            "image_id": 373382,
+            "annotation_id": 2012409,
+            "regime": "central",
+            "prompt_xy": [
+              467.0,
+              211.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.639205745669624,
+              0.9011532125205931,
+              0.8752093802345059,
+              0.6392405063291139
+            ],
+            "boundary_iou_per_mask": [
+              0.6383607942543303,
+              0.8973619126133553,
+              0.8713866778382907,
+              0.6383966244725738
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.2619127061914792,
+            "image_id": 373382,
+            "annotation_id": 1275097,
+            "regime": "central",
+            "prompt_xy": [
+              376.0,
+              253.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.8699059561128527,
+              0.5117508813160987,
+              0.8808965337503257,
+              0.6721828211189913
+            ],
+            "boundary_iou_per_mask": [
+              0.8467785598267461,
+              0.4924969987995198,
+              0.8603140227395777,
+              0.6320299946438136
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 2,
+            "all4_iou_oracle_index": 2,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 373382,
+            "annotation_id": 656650,
+            "regime": "central",
+            "prompt_xy": [
+              171.0,
+              122.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 3,
+            "iou_per_mask": [
+              0.30992268041237114,
+              0.5814726840855107,
+              0.334788029925187,
+              0.31585760517799355
+            ],
+            "boundary_iou_per_mask": [
+              0.30992268041237114,
+              0.5814726840855107,
+              0.334788029925187,
+              0.31585760517799355
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.2656150789075171,
+            "image_id": 373382,
+            "annotation_id": 502335,
+            "regime": "central",
+            "prompt_xy": [
+              369.0,
+              193.0
+            ],
+            "prompt_box_xyxy": null
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 373382,
+      "regime": "central",
+      "method": "cached",
+      "numeric_status": "FAILED",
+      "attention": "explicit",
+      "factor_write_attention": null,
+      "shape_plan": [
+        {
+          "role": "read",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "cached",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "dense"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "projected",
+          "value": "projected",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": false,
+          "qk": "projected",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "dense"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "projected",
+          "value": "projected",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        }
+      ],
+      "npz": "image_000000373382/central_cached.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 4,
+          "mask_logit_max_abs": 0.00061798095703125,
+          "iou_prediction_max_abs": 8.64267349243164e-06,
+          "finite": true,
+          "tolerance": 5e-05,
+          "status": "FAILED",
+          "full_resolution_binary_flips_per_prompt_per_mask": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "multimask_iou_argmax_changed_per_prompt": [
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        3.681022673845291
+      ],
+      "diagnostic_postprocess_ms": [
+        0.20780041813850403
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 4,
+        "resolution": [
+          640,
+          480
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 16,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.5629427387712184,
+            "mean_boundary_iou": 0.5569496518458683
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.567247959605929,
+            "mean_boundary_iou": 0.5618938836346068
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.5629427387712184,
+            "mean_boundary_iou": 0.5569496518458683
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.7625418870844849,
+          "all4_mean_iou": 0.7625418870844849,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.7564509566004882,
+          "all4_boundary_oracle_mean_boundary_iou": 0.7564509566004882,
+          "mean_multimask_iou_gap": 0.19529392747855578,
+          "prompt_bootstrap_gap95": [
+            0.0654781765478698,
+            0.26376389254949817
+          ],
+          "fraction_gap_gt_0.02": 0.75
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.4327365728900256,
+              0.6863844977052524,
+              0.612589559877175,
+              0.4327365728900256
+            ],
+            "boundary_iou_per_mask": [
+              0.4327365728900256,
+              0.6863844977052524,
+              0.612589559877175,
+              0.4327365728900256
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.25364792481522686,
+            "image_id": 373382,
+            "annotation_id": 2012409,
+            "regime": "central",
+            "prompt_xy": [
+              467.0,
+              211.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.639205745669624,
+              0.9011532125205931,
+              0.8752093802345059,
+              0.6392405063291139
+            ],
+            "boundary_iou_per_mask": [
+              0.6383607942543303,
+              0.8973619126133553,
+              0.8713866778382907,
+              0.6383966244725738
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.2619127061914792,
+            "image_id": 373382,
+            "annotation_id": 1275097,
+            "regime": "central",
+            "prompt_xy": [
+              376.0,
+              253.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.8699059561128527,
+              0.5117508813160987,
+              0.8811571540265832,
+              0.6721828211189913
+            ],
+            "boundary_iou_per_mask": [
+              0.8467785598267461,
+              0.4924969987995198,
+              0.8605847319978344,
+              0.6320299946438136
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 2,
+            "all4_iou_oracle_index": 2,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 373382,
+            "annotation_id": 656650,
+            "regime": "central",
+            "prompt_xy": [
+              171.0,
+              122.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 3,
+            "iou_per_mask": [
+              0.30992268041237114,
+              0.5814726840855107,
+              0.334788029925187,
+              0.31585760517799355
+            ],
+            "boundary_iou_per_mask": [
+              0.30992268041237114,
+              0.5814726840855107,
+              0.334788029925187,
+              0.31585760517799355
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.2656150789075171,
+            "image_id": 373382,
+            "annotation_id": 502335,
+            "regime": "central",
+            "prompt_xy": [
+              369.0,
+              193.0
+            ],
+            "prompt_box_xyxy": null
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 373382,
+      "regime": "central",
+      "method": "dense_assoc",
+      "numeric_status": "FAILED",
+      "attention": "explicit",
+      "factor_write_attention": null,
+      "shape_plan": [
+        {
+          "role": "read",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "cached",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "sparse"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "associated",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "sparse"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "associated",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        }
+      ],
+      "npz": "image_000000373382/central_dense_assoc.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 4,
+          "mask_logit_max_abs": 0.000690460205078125,
+          "iou_prediction_max_abs": 8.58306884765625e-06,
+          "finite": true,
+          "tolerance": 5e-05,
+          "status": "FAILED",
+          "full_resolution_binary_flips_per_prompt_per_mask": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "multimask_iou_argmax_changed_per_prompt": [
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        4.352442920207977
+      ],
+      "diagnostic_postprocess_ms": [
+        0.20493008196353912
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 4,
+        "resolution": [
+          640,
+          480
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 16,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.5629427387712184,
+            "mean_boundary_iou": 0.5569496518458683
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.567247959605929,
+            "mean_boundary_iou": 0.5618938836346068
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.5629427387712184,
+            "mean_boundary_iou": 0.5569496518458683
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.7625418870844849,
+          "all4_mean_iou": 0.7625418870844849,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.7564509566004882,
+          "all4_boundary_oracle_mean_boundary_iou": 0.7564509566004882,
+          "mean_multimask_iou_gap": 0.19529392747855578,
+          "prompt_bootstrap_gap95": [
+            0.0654781765478698,
+            0.26376389254949817
+          ],
+          "fraction_gap_gt_0.02": 0.75
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.4327365728900256,
+              0.6863844977052524,
+              0.612589559877175,
+              0.4327365728900256
+            ],
+            "boundary_iou_per_mask": [
+              0.4327365728900256,
+              0.6863844977052524,
+              0.612589559877175,
+              0.4327365728900256
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.25364792481522686,
+            "image_id": 373382,
+            "annotation_id": 2012409,
+            "regime": "central",
+            "prompt_xy": [
+              467.0,
+              211.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.639205745669624,
+              0.9011532125205931,
+              0.8752093802345059,
+              0.6392405063291139
+            ],
+            "boundary_iou_per_mask": [
+              0.6383607942543303,
+              0.8973619126133553,
+              0.8713866778382907,
+              0.6383966244725738
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.2619127061914792,
+            "image_id": 373382,
+            "annotation_id": 1275097,
+            "regime": "central",
+            "prompt_xy": [
+              376.0,
+              253.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.8699059561128527,
+              0.5117508813160987,
+              0.8811571540265832,
+              0.6721828211189913
+            ],
+            "boundary_iou_per_mask": [
+              0.8467785598267461,
+              0.4924969987995198,
+              0.8605847319978344,
+              0.6320299946438136
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 2,
+            "all4_iou_oracle_index": 2,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 373382,
+            "annotation_id": 656650,
+            "regime": "central",
+            "prompt_xy": [
+              171.0,
+              122.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 3,
+            "iou_per_mask": [
+              0.30992268041237114,
+              0.5814726840855107,
+              0.334788029925187,
+              0.31585760517799355
+            ],
+            "boundary_iou_per_mask": [
+              0.30992268041237114,
+              0.5814726840855107,
+              0.334788029925187,
+              0.31585760517799355
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.2656150789075171,
+            "image_id": 373382,
+            "annotation_id": 502335,
+            "regime": "central",
+            "prompt_xy": [
+              369.0,
+              193.0
+            ],
+            "prompt_box_xyxy": null
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 373382,
+      "regime": "central",
+      "method": "factor_projected",
+      "numeric_status": "FAILED",
+      "attention": "explicit",
+      "factor_write_attention": "explicit",
+      "shape_plan": null,
+      "npz": "image_000000373382/central_factor_projected.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 4,
+          "mask_logit_max_abs": 0.0008697509765625,
+          "iou_prediction_max_abs": 9.179115295410156e-06,
+          "finite": true,
+          "tolerance": 5e-05,
+          "status": "FAILED",
+          "full_resolution_binary_flips_per_prompt_per_mask": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "multimask_iou_argmax_changed_per_prompt": [
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        5.634739995002747
+      ],
+      "diagnostic_postprocess_ms": [
+        0.21600909531116486
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 4,
+        "resolution": [
+          640,
+          480
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 16,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.5629427387712184,
+            "mean_boundary_iou": 0.5569496518458683
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.567247959605929,
+            "mean_boundary_iou": 0.5618938836346068
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.5629427387712184,
+            "mean_boundary_iou": 0.5569496518458683
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.7625418870844849,
+          "all4_mean_iou": 0.7625418870844849,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.7564509566004882,
+          "all4_boundary_oracle_mean_boundary_iou": 0.7564509566004882,
+          "mean_multimask_iou_gap": 0.19529392747855578,
+          "prompt_bootstrap_gap95": [
+            0.0654781765478698,
+            0.26376389254949817
+          ],
+          "fraction_gap_gt_0.02": 0.75
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.4327365728900256,
+              0.6863844977052524,
+              0.612589559877175,
+              0.4327365728900256
+            ],
+            "boundary_iou_per_mask": [
+              0.4327365728900256,
+              0.6863844977052524,
+              0.612589559877175,
+              0.4327365728900256
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.25364792481522686,
+            "image_id": 373382,
+            "annotation_id": 2012409,
+            "regime": "central",
+            "prompt_xy": [
+              467.0,
+              211.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.639205745669624,
+              0.9011532125205931,
+              0.8752093802345059,
+              0.6392405063291139
+            ],
+            "boundary_iou_per_mask": [
+              0.6383607942543303,
+              0.8973619126133553,
+              0.8713866778382907,
+              0.6383966244725738
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.2619127061914792,
+            "image_id": 373382,
+            "annotation_id": 1275097,
+            "regime": "central",
+            "prompt_xy": [
+              376.0,
+              253.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.8699059561128527,
+              0.5117508813160987,
+              0.8811571540265832,
+              0.6721828211189913
+            ],
+            "boundary_iou_per_mask": [
+              0.8467785598267461,
+              0.4924969987995198,
+              0.8605847319978344,
+              0.6320299946438136
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 2,
+            "all4_iou_oracle_index": 2,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 373382,
+            "annotation_id": 656650,
+            "regime": "central",
+            "prompt_xy": [
+              171.0,
+              122.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 3,
+            "iou_per_mask": [
+              0.30992268041237114,
+              0.5814726840855107,
+              0.334788029925187,
+              0.31585760517799355
+            ],
+            "boundary_iou_per_mask": [
+              0.30992268041237114,
+              0.5814726840855107,
+              0.334788029925187,
+              0.31585760517799355
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.2656150789075171,
+            "image_id": 373382,
+            "annotation_id": 502335,
+            "regime": "central",
+            "prompt_xy": [
+              369.0,
+              193.0
+            ],
+            "prompt_box_xyxy": null
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 373382,
+      "regime": "near_boundary",
+      "method": "official",
+      "numeric_status": "REFERENCE",
+      "attention": "official_explicit",
+      "factor_write_attention": null,
+      "shape_plan": null,
+      "npz": "image_000000373382/near_boundary_official.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 4,
+          "status": "REFERENCE",
+          "finite": true
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        4.2945705354213715
+      ],
+      "diagnostic_postprocess_ms": [
+        0.21521002054214478
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 4,
+        "resolution": [
+          640,
+          480
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 16,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.29203582881333234,
+            "mean_boundary_iou": 0.2925970966998068
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.28609866541582535,
+            "mean_boundary_iou": 0.28665632304519295
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.2919702636415516,
+            "mean_boundary_iou": 0.2925279212709192
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.6569538960020155,
+          "all4_mean_iou": 0.6569538960020155,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.6500986692468474,
+          "all4_boundary_oracle_mean_boundary_iou": 0.6500986692468474,
+          "mean_multimask_iou_gap": 0.37085523058619013,
+          "prompt_bootstrap_gap95": [
+            0.16725202564966699,
+            0.6868826551892047
+          ],
+          "fraction_gap_gt_0.02": 1.0
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.4293756397134084,
+              0.6818181818181818,
+              0.661042944785276,
+              0.43069053708439897
+            ],
+            "boundary_iou_per_mask": [
+              0.4293756397134084,
+              0.6818181818181818,
+              0.661042944785276,
+              0.43069053708439897
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.2511276447337828,
+            "image_id": 373382,
+            "annotation_id": 2012409,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              479.0,
+              199.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.6420118343195266,
+              0.90351966873706,
+              0.847926267281106,
+              0.6377852916314455
+            ],
+            "boundary_iou_per_mask": [
+              0.6411665257819104,
+              0.899751449875725,
+              0.8437369082530373,
+              0.6369399830938293
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.26573437710561454,
+            "image_id": 373382,
+            "annotation_id": 1275097,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              376.0,
+              275.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.056123787044322054,
+              0.887995851698211,
+              0.30622384937238495,
+              0.05586152635719906
+            ],
+            "boundary_iou_per_mask": [
+              0.05921416712783619,
+              0.864343163538874,
+              0.3230344827586207,
+              0.058937465412285554
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 3
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.832134325341012,
+            "image_id": 373382,
+            "annotation_id": 656650,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              160.0,
+              190.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 3,
+            "iou_per_mask": [
+              0.040632054176072234,
+              0.02005730659025788,
+              0.01744186046511628,
+              0.15448188175460903
+            ],
+            "boundary_iou_per_mask": [
+              0.040632054176072234,
+              0.02005730659025788,
+              0.01744186046511628,
+              0.15448188175460903
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 3,
+            "all4_iou_oracle_index": 3,
+            "multimask_oracle_gap": 0.13442457516435113,
+            "image_id": 373382,
+            "annotation_id": 502335,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              392.0,
+              196.0
+            ],
+            "prompt_box_xyxy": null
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 373382,
+      "regime": "near_boundary",
+      "method": "cached",
+      "numeric_status": "FAILED",
+      "attention": "explicit",
+      "factor_write_attention": null,
+      "shape_plan": [
+        {
+          "role": "read",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "cached",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "dense"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "projected",
+          "value": "projected",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": false,
+          "qk": "projected",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "dense"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "projected",
+          "value": "projected",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        }
+      ],
+      "npz": "image_000000373382/near_boundary_cached.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 4,
+          "mask_logit_max_abs": 0.0015773773193359375,
+          "iou_prediction_max_abs": 9.804964065551758e-06,
+          "finite": true,
+          "tolerance": 5e-05,
+          "status": "FAILED",
+          "full_resolution_binary_flips_per_prompt_per_mask": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "multimask_iou_argmax_changed_per_prompt": [
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        3.696424886584282
+      ],
+      "diagnostic_postprocess_ms": [
+        0.20260736346244812
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 4,
+        "resolution": [
+          640,
+          480
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 16,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.29203582881333234,
+            "mean_boundary_iou": 0.2925970966998068
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.28609866541582535,
+            "mean_boundary_iou": 0.28665632304519295
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.2919702636415516,
+            "mean_boundary_iou": 0.2925279212709192
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.6569538960020155,
+          "all4_mean_iou": 0.6569538960020155,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.6500986692468474,
+          "all4_boundary_oracle_mean_boundary_iou": 0.6500986692468474,
+          "mean_multimask_iou_gap": 0.37085523058619013,
+          "prompt_bootstrap_gap95": [
+            0.16725202564966699,
+            0.6868826551892047
+          ],
+          "fraction_gap_gt_0.02": 1.0
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.4293756397134084,
+              0.6818181818181818,
+              0.661042944785276,
+              0.43069053708439897
+            ],
+            "boundary_iou_per_mask": [
+              0.4293756397134084,
+              0.6818181818181818,
+              0.661042944785276,
+              0.43069053708439897
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.2511276447337828,
+            "image_id": 373382,
+            "annotation_id": 2012409,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              479.0,
+              199.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.6420118343195266,
+              0.90351966873706,
+              0.847926267281106,
+              0.6377852916314455
+            ],
+            "boundary_iou_per_mask": [
+              0.6411665257819104,
+              0.899751449875725,
+              0.8437369082530373,
+              0.6369399830938293
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.26573437710561454,
+            "image_id": 373382,
+            "annotation_id": 1275097,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              376.0,
+              275.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.056123787044322054,
+              0.887995851698211,
+              0.30622384937238495,
+              0.05586152635719906
+            ],
+            "boundary_iou_per_mask": [
+              0.05921416712783619,
+              0.864343163538874,
+              0.3230344827586207,
+              0.058937465412285554
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 3
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.832134325341012,
+            "image_id": 373382,
+            "annotation_id": 656650,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              160.0,
+              190.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 3,
+            "iou_per_mask": [
+              0.040632054176072234,
+              0.02005730659025788,
+              0.01744186046511628,
+              0.15448188175460903
+            ],
+            "boundary_iou_per_mask": [
+              0.040632054176072234,
+              0.02005730659025788,
+              0.01744186046511628,
+              0.15448188175460903
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 3,
+            "all4_iou_oracle_index": 3,
+            "multimask_oracle_gap": 0.13442457516435113,
+            "image_id": 373382,
+            "annotation_id": 502335,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              392.0,
+              196.0
+            ],
+            "prompt_box_xyxy": null
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 373382,
+      "regime": "near_boundary",
+      "method": "dense_assoc",
+      "numeric_status": "FAILED",
+      "attention": "explicit",
+      "factor_write_attention": null,
+      "shape_plan": [
+        {
+          "role": "read",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "cached",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "sparse"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "associated",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "sparse"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "associated",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        }
+      ],
+      "npz": "image_000000373382/near_boundary_dense_assoc.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 4,
+          "mask_logit_max_abs": 0.002079010009765625,
+          "iou_prediction_max_abs": 1.2010335922241211e-05,
+          "finite": true,
+          "tolerance": 5e-05,
+          "status": "FAILED",
+          "full_resolution_binary_flips_per_prompt_per_mask": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "multimask_iou_argmax_changed_per_prompt": [
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        4.059748724102974
+      ],
+      "diagnostic_postprocess_ms": [
+        0.20522810518741608
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 4,
+        "resolution": [
+          640,
+          480
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 16,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.29203582881333234,
+            "mean_boundary_iou": 0.2925970966998068
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.28609866541582535,
+            "mean_boundary_iou": 0.28665632304519295
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.2919702636415516,
+            "mean_boundary_iou": 0.2925279212709192
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.6569538960020155,
+          "all4_mean_iou": 0.6569538960020155,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.6500986692468474,
+          "all4_boundary_oracle_mean_boundary_iou": 0.6500986692468474,
+          "mean_multimask_iou_gap": 0.37085523058619013,
+          "prompt_bootstrap_gap95": [
+            0.16725202564966699,
+            0.6868826551892047
+          ],
+          "fraction_gap_gt_0.02": 1.0
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.4293756397134084,
+              0.6818181818181818,
+              0.661042944785276,
+              0.43069053708439897
+            ],
+            "boundary_iou_per_mask": [
+              0.4293756397134084,
+              0.6818181818181818,
+              0.661042944785276,
+              0.43069053708439897
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.2511276447337828,
+            "image_id": 373382,
+            "annotation_id": 2012409,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              479.0,
+              199.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.6420118343195266,
+              0.90351966873706,
+              0.847926267281106,
+              0.6377852916314455
+            ],
+            "boundary_iou_per_mask": [
+              0.6411665257819104,
+              0.899751449875725,
+              0.8437369082530373,
+              0.6369399830938293
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.26573437710561454,
+            "image_id": 373382,
+            "annotation_id": 1275097,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              376.0,
+              275.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.056123787044322054,
+              0.887995851698211,
+              0.30622384937238495,
+              0.05586152635719906
+            ],
+            "boundary_iou_per_mask": [
+              0.05921416712783619,
+              0.864343163538874,
+              0.3230344827586207,
+              0.058937465412285554
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 3
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.832134325341012,
+            "image_id": 373382,
+            "annotation_id": 656650,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              160.0,
+              190.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 3,
+            "iou_per_mask": [
+              0.040632054176072234,
+              0.02005730659025788,
+              0.01744186046511628,
+              0.15448188175460903
+            ],
+            "boundary_iou_per_mask": [
+              0.040632054176072234,
+              0.02005730659025788,
+              0.01744186046511628,
+              0.15448188175460903
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 3,
+            "all4_iou_oracle_index": 3,
+            "multimask_oracle_gap": 0.13442457516435113,
+            "image_id": 373382,
+            "annotation_id": 502335,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              392.0,
+              196.0
+            ],
+            "prompt_box_xyxy": null
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 373382,
+      "regime": "near_boundary",
+      "method": "factor_projected",
+      "numeric_status": "FAILED",
+      "attention": "explicit",
+      "factor_write_attention": "explicit",
+      "shape_plan": null,
+      "npz": "image_000000373382/near_boundary_factor_projected.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 4,
+          "mask_logit_max_abs": 0.0012950897216796875,
+          "iou_prediction_max_abs": 1.1473894119262695e-05,
+          "finite": true,
+          "tolerance": 5e-05,
+          "status": "FAILED",
+          "full_resolution_binary_flips_per_prompt_per_mask": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "multimask_iou_argmax_changed_per_prompt": [
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        4.506498575210571
+      ],
+      "diagnostic_postprocess_ms": [
+        0.2039000391960144
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 4,
+        "resolution": [
+          640,
+          480
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 16,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.29203582881333234,
+            "mean_boundary_iou": 0.2925970966998068
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.28609866541582535,
+            "mean_boundary_iou": 0.28665632304519295
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.2919702636415516,
+            "mean_boundary_iou": 0.2925279212709192
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.6569538960020155,
+          "all4_mean_iou": 0.6569538960020155,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.6500986692468474,
+          "all4_boundary_oracle_mean_boundary_iou": 0.6500986692468474,
+          "mean_multimask_iou_gap": 0.37085523058619013,
+          "prompt_bootstrap_gap95": [
+            0.16725202564966699,
+            0.6868826551892047
+          ],
+          "fraction_gap_gt_0.02": 1.0
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.4293756397134084,
+              0.6818181818181818,
+              0.661042944785276,
+              0.43069053708439897
+            ],
+            "boundary_iou_per_mask": [
+              0.4293756397134084,
+              0.6818181818181818,
+              0.661042944785276,
+              0.43069053708439897
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.2511276447337828,
+            "image_id": 373382,
+            "annotation_id": 2012409,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              479.0,
+              199.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.6420118343195266,
+              0.90351966873706,
+              0.847926267281106,
+              0.6377852916314455
+            ],
+            "boundary_iou_per_mask": [
+              0.6411665257819104,
+              0.899751449875725,
+              0.8437369082530373,
+              0.6369399830938293
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.26573437710561454,
+            "image_id": 373382,
+            "annotation_id": 1275097,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              376.0,
+              275.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.056123787044322054,
+              0.887995851698211,
+              0.30622384937238495,
+              0.05586152635719906
+            ],
+            "boundary_iou_per_mask": [
+              0.05921416712783619,
+              0.864343163538874,
+              0.3230344827586207,
+              0.058937465412285554
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 3,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 3
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.832134325341012,
+            "image_id": 373382,
+            "annotation_id": 656650,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              160.0,
+              190.0
+            ],
+            "prompt_box_xyxy": null
+          },
+          {
+            "row": 3,
+            "iou_per_mask": [
+              0.040632054176072234,
+              0.02005730659025788,
+              0.01744186046511628,
+              0.15448188175460903
+            ],
+            "boundary_iou_per_mask": [
+              0.040632054176072234,
+              0.02005730659025788,
+              0.01744186046511628,
+              0.15448188175460903
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 3,
+            "all4_iou_oracle_index": 3,
+            "multimask_oracle_gap": 0.13442457516435113,
+            "image_id": 373382,
+            "annotation_id": 502335,
+            "regime": "near_boundary",
+            "prompt_xy": [
+              392.0,
+              196.0
+            ],
+            "prompt_box_xyxy": null
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 373382,
+      "regime": "box",
+      "method": "official",
+      "numeric_status": "REFERENCE",
+      "attention": "official_explicit",
+      "factor_write_attention": null,
+      "shape_plan": null,
+      "npz": "image_000000373382/box_official.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 4,
+          "status": "REFERENCE",
+          "finite": true
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        4.277000203728676
+      ],
+      "diagnostic_postprocess_ms": [
+        0.22120028734207153
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 4,
+        "resolution": [
+          640,
+          480
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 16,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.7615325478525229,
+            "mean_boundary_iou": 0.7555176863875556
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.8015299232597032,
+            "mean_boundary_iou": 0.7950734293318461
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.7615325478525229,
+            "mean_boundary_iou": 0.7555176863875556
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.8118568072400787,
+          "all4_mean_iou": 0.8118568072400787,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.806056794690835,
+          "all4_boundary_oracle_mean_boundary_iou": 0.806056794690835,
+          "mean_multimask_iou_gap": 0.010326883980375401,
+          "prompt_bootstrap_gap95": [
+            0.0,
+            0.027648107257023352
+          ],
+          "fraction_gap_gt_0.02": 0.25
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.6834349593495935,
+              0.828384499245093,
+              0.7472024415055951,
+              0.6822810590631364
+            ],
+            "boundary_iou_per_mask": [
+              0.6834349593495935,
+              0.828384499245093,
+              0.7472024415055951,
+              0.6822810590631364
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 373382,
+            "annotation_id": 2012409,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              450,
+              153,
+              480,
+              252
+            ]
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.8985324947589098,
+              0.8997099046829673,
+              0.8639427127211458,
+              0.22509702457956016
+            ],
+            "boundary_iou_per_mask": [
+              0.8951342281879194,
+              0.8959369817578773,
+              0.8605728727885426,
+              0.22529132498921017
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 373382,
+            "annotation_id": 1275097,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              352,
+              204,
+              402,
+              280
+            ]
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.8924148606811145,
+              0.892553465601649,
+              0.8881100726895119,
+              0.8813559322033898
+            ],
+            "boundary_iou_per_mask": [
+              0.8717536813922356,
+              0.8731263383297645,
+              0.8660570199031737,
+              0.8587250135062129
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.004443392912137134,
+            "image_id": 373382,
+            "annotation_id": 656650,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              142,
+              84,
+              203,
+              231
+            ]
+          },
+          {
+            "row": 3,
+            "iou_per_mask": [
+              0.5717478766204739,
+              0.626779359430605,
+              0.5899152164212406,
+              0.5557046979865772
+            ],
+            "boundary_iou_per_mask": [
+              0.5717478766204739,
+              0.626779359430605,
+              0.5899152164212406,
+              0.5557046979865772
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.03686414300936447,
+            "image_id": 373382,
+            "annotation_id": 502335,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              343,
+              163,
+              394,
+              261
+            ]
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 373382,
+      "regime": "box",
+      "method": "cached",
+      "numeric_status": "FAILED",
+      "attention": "explicit",
+      "factor_write_attention": null,
+      "shape_plan": [
+        {
+          "role": "read",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "cached",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "dense"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "projected",
+          "value": "projected",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": false,
+          "qk": "projected",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "dense"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "projected",
+          "value": "projected",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        }
+      ],
+      "npz": "image_000000373382/box_cached.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 4,
+          "mask_logit_max_abs": 0.001041412353515625,
+          "iou_prediction_max_abs": 1.1920928955078125e-05,
+          "finite": true,
+          "tolerance": 5e-05,
+          "status": "FAILED",
+          "full_resolution_binary_flips_per_prompt_per_mask": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "multimask_iou_argmax_changed_per_prompt": [
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        3.643099218606949
+      ],
+      "diagnostic_postprocess_ms": [
+        0.20372867584228516
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 4,
+        "resolution": [
+          640,
+          480
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 16,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.7615325478525229,
+            "mean_boundary_iou": 0.7555176863875556
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.8015299232597032,
+            "mean_boundary_iou": 0.7950734293318461
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.7615325478525229,
+            "mean_boundary_iou": 0.7555176863875556
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.8118568072400787,
+          "all4_mean_iou": 0.8118568072400787,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.806056794690835,
+          "all4_boundary_oracle_mean_boundary_iou": 0.806056794690835,
+          "mean_multimask_iou_gap": 0.010326883980375401,
+          "prompt_bootstrap_gap95": [
+            0.0,
+            0.027648107257023352
+          ],
+          "fraction_gap_gt_0.02": 0.25
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.6834349593495935,
+              0.828384499245093,
+              0.7472024415055951,
+              0.6822810590631364
+            ],
+            "boundary_iou_per_mask": [
+              0.6834349593495935,
+              0.828384499245093,
+              0.7472024415055951,
+              0.6822810590631364
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 373382,
+            "annotation_id": 2012409,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              450,
+              153,
+              480,
+              252
+            ]
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.8985324947589098,
+              0.8997099046829673,
+              0.8639427127211458,
+              0.22509702457956016
+            ],
+            "boundary_iou_per_mask": [
+              0.8951342281879194,
+              0.8959369817578773,
+              0.8605728727885426,
+              0.22529132498921017
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 373382,
+            "annotation_id": 1275097,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              352,
+              204,
+              402,
+              280
+            ]
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.8924148606811145,
+              0.892553465601649,
+              0.8881100726895119,
+              0.8813559322033898
+            ],
+            "boundary_iou_per_mask": [
+              0.8717536813922356,
+              0.8731263383297645,
+              0.8660570199031737,
+              0.8587250135062129
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.004443392912137134,
+            "image_id": 373382,
+            "annotation_id": 656650,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              142,
+              84,
+              203,
+              231
+            ]
+          },
+          {
+            "row": 3,
+            "iou_per_mask": [
+              0.5717478766204739,
+              0.626779359430605,
+              0.5899152164212406,
+              0.5557046979865772
+            ],
+            "boundary_iou_per_mask": [
+              0.5717478766204739,
+              0.626779359430605,
+              0.5899152164212406,
+              0.5557046979865772
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.03686414300936447,
+            "image_id": 373382,
+            "annotation_id": 502335,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              343,
+              163,
+              394,
+              261
+            ]
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 373382,
+      "regime": "box",
+      "method": "dense_assoc",
+      "numeric_status": "FAILED",
+      "attention": "explicit",
+      "factor_write_attention": null,
+      "shape_plan": [
+        {
+          "role": "read",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "cached",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": true,
+          "qk": "cached",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "sparse"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "associated",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        },
+        {
+          "role": "write",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "sparse",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "write_dense": 275775488,
+            "write_sparse": 101122048
+          },
+          "output": "sparse"
+        },
+        {
+          "role": "read",
+          "first_image_cache": false,
+          "qk": "associated",
+          "value": "associated",
+          "comparison_flops": {
+            "qk_projected": 275775488,
+            "qk_associated": 117899264,
+            "value_projected": 275775488,
+            "value_associated": 117899264
+          }
+        }
+      ],
+      "npz": "image_000000373382/box_dense_assoc.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 4,
+          "mask_logit_max_abs": 0.000988006591796875,
+          "iou_prediction_max_abs": 9.179115295410156e-06,
+          "finite": true,
+          "tolerance": 5e-05,
+          "status": "FAILED",
+          "full_resolution_binary_flips_per_prompt_per_mask": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "multimask_iou_argmax_changed_per_prompt": [
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        4.063958302140236
+      ],
+      "diagnostic_postprocess_ms": [
+        0.20403601229190826
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 4,
+        "resolution": [
+          640,
+          480
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 16,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.7615325478525229,
+            "mean_boundary_iou": 0.7555176863875556
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.8015299232597032,
+            "mean_boundary_iou": 0.7950734293318461
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.7615325478525229,
+            "mean_boundary_iou": 0.7555176863875556
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.8118568072400787,
+          "all4_mean_iou": 0.8118568072400787,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.806056794690835,
+          "all4_boundary_oracle_mean_boundary_iou": 0.806056794690835,
+          "mean_multimask_iou_gap": 0.010326883980375401,
+          "prompt_bootstrap_gap95": [
+            0.0,
+            0.027648107257023352
+          ],
+          "fraction_gap_gt_0.02": 0.25
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.6834349593495935,
+              0.828384499245093,
+              0.7472024415055951,
+              0.6822810590631364
+            ],
+            "boundary_iou_per_mask": [
+              0.6834349593495935,
+              0.828384499245093,
+              0.7472024415055951,
+              0.6822810590631364
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 373382,
+            "annotation_id": 2012409,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              450,
+              153,
+              480,
+              252
+            ]
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.8985324947589098,
+              0.8997099046829673,
+              0.8639427127211458,
+              0.22509702457956016
+            ],
+            "boundary_iou_per_mask": [
+              0.8951342281879194,
+              0.8959369817578773,
+              0.8605728727885426,
+              0.22529132498921017
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 373382,
+            "annotation_id": 1275097,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              352,
+              204,
+              402,
+              280
+            ]
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.8924148606811145,
+              0.892553465601649,
+              0.8881100726895119,
+              0.8813559322033898
+            ],
+            "boundary_iou_per_mask": [
+              0.8717536813922356,
+              0.8731263383297645,
+              0.8660570199031737,
+              0.8587250135062129
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.004443392912137134,
+            "image_id": 373382,
+            "annotation_id": 656650,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              142,
+              84,
+              203,
+              231
+            ]
+          },
+          {
+            "row": 3,
+            "iou_per_mask": [
+              0.5717478766204739,
+              0.626779359430605,
+              0.5899152164212406,
+              0.5557046979865772
+            ],
+            "boundary_iou_per_mask": [
+              0.5717478766204739,
+              0.626779359430605,
+              0.5899152164212406,
+              0.5557046979865772
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.03686414300936447,
+            "image_id": 373382,
+            "annotation_id": 502335,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              343,
+              163,
+              394,
+              261
+            ]
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    },
+    {
+      "image_id": 373382,
+      "regime": "box",
+      "method": "factor_projected",
+      "numeric_status": "FAILED",
+      "attention": "explicit",
+      "factor_write_attention": "explicit",
+      "shape_plan": null,
+      "npz": "image_000000373382/box_factor_projected.npz",
+      "numeric_chunks": [
+        {
+          "row_start": 0,
+          "row_count": 4,
+          "mask_logit_max_abs": 0.0007495880126953125,
+          "iou_prediction_max_abs": 9.5367431640625e-06,
+          "finite": true,
+          "tolerance": 5e-05,
+          "status": "FAILED",
+          "full_resolution_binary_flips_per_prompt_per_mask": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "multimask_iou_argmax_changed_per_prompt": [
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "diagnostic_decoder_ms": [
+        4.523079842329025
+      ],
+      "diagnostic_postprocess_ms": [
+        0.20498968660831451
+      ],
+      "quality": {
+        "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+        "prompt_rows": 4,
+        "resolution": [
+          640,
+          480
+        ],
+        "boundary_ratio": 0.02,
+        "boundary_radius": 16,
+        "policies": {
+          "single_token0": {
+            "mean_iou": 0.7615325478525229,
+            "mean_boundary_iou": 0.7555176863875556
+          },
+          "multimask_iou_head_1to3": {
+            "mean_iou": 0.8015299232597032,
+            "mean_boundary_iou": 0.7950734293318461
+          },
+          "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+            "mean_iou": 0.7615325478525229,
+            "mean_boundary_iou": 0.7555176863875556
+          }
+        },
+        "oracle_diagnostic_extra_ground_truth_not_deployable": {
+          "multimask_1to3_mean_iou": 0.8118568072400787,
+          "all4_mean_iou": 0.8118568072400787,
+          "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.806056794690835,
+          "all4_boundary_oracle_mean_boundary_iou": 0.806056794690835,
+          "mean_multimask_iou_gap": 0.010326883980375401,
+          "prompt_bootstrap_gap95": [
+            0.0,
+            0.027648107257023352
+          ],
+          "fraction_gap_gt_0.02": 0.25
+        },
+        "rows": [
+          {
+            "row": 0,
+            "iou_per_mask": [
+              0.6834349593495935,
+              0.828384499245093,
+              0.7472024415055951,
+              0.6822810590631364
+            ],
+            "boundary_iou_per_mask": [
+              0.6834349593495935,
+              0.828384499245093,
+              0.7472024415055951,
+              0.6822810590631364
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 373382,
+            "annotation_id": 2012409,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              450,
+              153,
+              480,
+              252
+            ]
+          },
+          {
+            "row": 1,
+            "iou_per_mask": [
+              0.8985324947589098,
+              0.8997099046829673,
+              0.8639427127211458,
+              0.22509702457956016
+            ],
+            "boundary_iou_per_mask": [
+              0.8951342281879194,
+              0.8959369817578773,
+              0.8605728727885426,
+              0.22529132498921017
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 1,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.0,
+            "image_id": 373382,
+            "annotation_id": 1275097,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              352,
+              204,
+              402,
+              280
+            ]
+          },
+          {
+            "row": 2,
+            "iou_per_mask": [
+              0.8924148606811145,
+              0.892553465601649,
+              0.8881100726895119,
+              0.8813559322033898
+            ],
+            "boundary_iou_per_mask": [
+              0.8717536813922356,
+              0.8731263383297645,
+              0.8660570199031737,
+              0.8587250135062129
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.004443392912137134,
+            "image_id": 373382,
+            "annotation_id": 656650,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              142,
+              84,
+              203,
+              231
+            ]
+          },
+          {
+            "row": 3,
+            "iou_per_mask": [
+              0.5717478766204739,
+              0.626779359430605,
+              0.5899152164212406,
+              0.5557046979865772
+            ],
+            "boundary_iou_per_mask": [
+              0.5717478766204739,
+              0.626779359430605,
+              0.5899152164212406,
+              0.5557046979865772
+            ],
+            "selection_per_policy": {
+              "single_token0": 0,
+              "multimask_iou_head_1to3": 2,
+              "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+            },
+            "multimask_iou_oracle_index": 1,
+            "all4_iou_oracle_index": 1,
+            "multimask_oracle_gap": 0.03686414300936447,
+            "image_id": 373382,
+            "annotation_id": 502335,
+            "regime": "box",
+            "prompt_xy": null,
+            "prompt_box_xyxy": [
+              343,
+              163,
+              394,
+              261
+            ]
+          }
+        ],
+        "limitations": [
+          "Prompt-row bootstrap is not image-cluster uncertainty",
+          "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+          "Protocol assumes full-resolution official resize/crop/resize logits",
+          "No image encoder or latency data included",
+          "Do not pool different prompt regimes without separate strata"
+        ]
+      }
+    }
+  ],
+  "model_load_ms": 1052.9534630477428,
+  "quality_summary": {
+    "central/official": {
+      "prompt_rows": 7,
+      "policies": {
+        "single_token0": {
+          "mean_iou": 0.5080974575101901,
+          "mean_boundary_iou": 0.43118436274195393
+        },
+        "multimask_iou_head_1to3": {
+          "mean_iou": 0.5157756970458356,
+          "mean_boundary_iou": 0.45319561573572437
+        },
+        "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+          "mean_iou": 0.5080974575101901,
+          "mean_boundary_iou": 0.43118436274195393
+        }
+      },
+      "mean_multimask_selected_iou": 0.5157756970458356,
+      "mean_multimask_selected_boundary_iou": 0.45319561573572437,
+      "mean_oracle_iou_1to3": 0.8201488166897773,
+      "mean_oracle_iou_all4": 0.8201488166897773,
+      "mean_oracle_gap_1to3": 0.30437311964394176,
+      "fraction_oracle_gap_gt_0.02": 0.7142857142857143
+    },
+    "central/cached": {
+      "prompt_rows": 7,
+      "policies": {
+        "single_token0": {
+          "mean_iou": 0.5080947036906424,
+          "mean_boundary_iou": 0.43117741342333465
+        },
+        "multimask_iou_head_1to3": {
+          "mean_iou": 0.5158129285138723,
+          "mean_boundary_iou": 0.45323428848690395
+        },
+        "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+          "mean_iou": 0.5080947036906424,
+          "mean_boundary_iou": 0.43117741342333465
+        }
+      },
+      "mean_multimask_selected_iou": 0.5158129285138723,
+      "mean_multimask_selected_boundary_iou": 0.45323428848690395,
+      "mean_oracle_iou_1to3": 0.8201870422289073,
+      "mean_oracle_iou_all4": 0.8201870422289073,
+      "mean_oracle_gap_1to3": 0.3043741137150349,
+      "fraction_oracle_gap_gt_0.02": 0.7142857142857143
+    },
+    "central/dense_assoc": {
+      "prompt_rows": 7,
+      "policies": {
+        "single_token0": {
+          "mean_iou": 0.5080974575101901,
+          "mean_boundary_iou": 0.43118436274195393
+        },
+        "multimask_iou_head_1to3": {
+          "mean_iou": 0.5158129285138723,
+          "mean_boundary_iou": 0.45323428848690395
+        },
+        "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+          "mean_iou": 0.5080974575101901,
+          "mean_boundary_iou": 0.43118436274195393
+        }
+      },
+      "mean_multimask_selected_iou": 0.5158129285138723,
+      "mean_multimask_selected_boundary_iou": 0.45323428848690395,
+      "mean_oracle_iou_1to3": 0.8201869060899899,
+      "mean_oracle_iou_all4": 0.8201869060899899,
+      "mean_oracle_gap_1to3": 0.30437397757611745,
+      "fraction_oracle_gap_gt_0.02": 0.7142857142857143
+    },
+    "central/factor_projected": {
+      "prompt_rows": 7,
+      "policies": {
+        "single_token0": {
+          "mean_iou": 0.5080974575101901,
+          "mean_boundary_iou": 0.43118436274195393
+        },
+        "multimask_iou_head_1to3": {
+          "mean_iou": 0.5158129285138723,
+          "mean_boundary_iou": 0.45323428848690395
+        },
+        "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+          "mean_iou": 0.5080974575101901,
+          "mean_boundary_iou": 0.43118436274195393
+        }
+      },
+      "mean_multimask_selected_iou": 0.5158129285138723,
+      "mean_multimask_selected_boundary_iou": 0.45323428848690395,
+      "mean_oracle_iou_1to3": 0.8201860481578142,
+      "mean_oracle_iou_all4": 0.8201860481578142,
+      "mean_oracle_gap_1to3": 0.30437311964394176,
+      "fraction_oracle_gap_gt_0.02": 0.7142857142857143
+    },
+    "near_boundary/official": {
+      "prompt_rows": 7,
+      "policies": {
+        "single_token0": {
+          "mean_iou": 0.4286511387746662,
+          "mean_boundary_iou": 0.2950687246984706
+        },
+        "multimask_iou_head_1to3": {
+          "mean_iou": 0.5533859295167571,
+          "mean_boundary_iou": 0.4277972090559076
+        },
+        "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+          "mean_iou": 0.431114543891204,
+          "mean_boundary_iou": 0.3460171996195944
+        }
+      },
+      "mean_multimask_selected_iou": 0.5533859295167571,
+      "mean_multimask_selected_boundary_iou": 0.4277972090559076,
+      "mean_oracle_iou_1to3": 0.7654382993868746,
+      "mean_oracle_iou_all4": 0.7654382993868746,
+      "mean_oracle_gap_1to3": 0.21205236987011739,
+      "fraction_oracle_gap_gt_0.02": 0.5714285714285714
+    },
+    "near_boundary/cached": {
+      "prompt_rows": 7,
+      "policies": {
+        "single_token0": {
+          "mean_iou": 0.4286511387746662,
+          "mean_boundary_iou": 0.2950687246984706
+        },
+        "multimask_iou_head_1to3": {
+          "mean_iou": 0.5533859295167571,
+          "mean_boundary_iou": 0.4277972090559076
+        },
+        "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+          "mean_iou": 0.431114543891204,
+          "mean_boundary_iou": 0.3460171996195944
+        }
+      },
+      "mean_multimask_selected_iou": 0.5533859295167571,
+      "mean_multimask_selected_boundary_iou": 0.4277972090559076,
+      "mean_oracle_iou_1to3": 0.7654382993868746,
+      "mean_oracle_iou_all4": 0.7654382993868746,
+      "mean_oracle_gap_1to3": 0.21205236987011739,
+      "fraction_oracle_gap_gt_0.02": 0.5714285714285714
+    },
+    "near_boundary/dense_assoc": {
+      "prompt_rows": 7,
+      "policies": {
+        "single_token0": {
+          "mean_iou": 0.4286511387746662,
+          "mean_boundary_iou": 0.2950687246984706
+        },
+        "multimask_iou_head_1to3": {
+          "mean_iou": 0.5533859295167571,
+          "mean_boundary_iou": 0.4277972090559076
+        },
+        "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+          "mean_iou": 0.431114543891204,
+          "mean_boundary_iou": 0.3460171996195944
+        }
+      },
+      "mean_multimask_selected_iou": 0.5533859295167571,
+      "mean_multimask_selected_boundary_iou": 0.4277972090559076,
+      "mean_oracle_iou_1to3": 0.7654382993868746,
+      "mean_oracle_iou_all4": 0.7654382993868746,
+      "mean_oracle_gap_1to3": 0.21205236987011739,
+      "fraction_oracle_gap_gt_0.02": 0.5714285714285714
+    },
+    "near_boundary/factor_projected": {
+      "prompt_rows": 7,
+      "policies": {
+        "single_token0": {
+          "mean_iou": 0.4286511387746662,
+          "mean_boundary_iou": 0.2950687246984706
+        },
+        "multimask_iou_head_1to3": {
+          "mean_iou": 0.5533859295167571,
+          "mean_boundary_iou": 0.4277972090559076
+        },
+        "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+          "mean_iou": 0.431114543891204,
+          "mean_boundary_iou": 0.3460171996195944
+        }
+      },
+      "mean_multimask_selected_iou": 0.5533859295167571,
+      "mean_multimask_selected_boundary_iou": 0.4277972090559076,
+      "mean_oracle_iou_1to3": 0.7654382993868746,
+      "mean_oracle_iou_all4": 0.7654382993868746,
+      "mean_oracle_gap_1to3": 0.21205236987011739,
+      "fraction_oracle_gap_gt_0.02": 0.5714285714285714
+    },
+    "box/official": {
+      "prompt_rows": 7,
+      "policies": {
+        "single_token0": {
+          "mean_iou": 0.8277638071459227,
+          "mean_boundary_iou": 0.7075494093732224
+        },
+        "multimask_iou_head_1to3": {
+          "mean_iou": 0.8494483009417094,
+          "mean_boundary_iou": 0.7241013513645982
+        },
+        "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+          "mean_iou": 0.8277638071459227,
+          "mean_boundary_iou": 0.7075494093732224
+        }
+      },
+      "mean_multimask_selected_iou": 0.8494483009417094,
+      "mean_multimask_selected_boundary_iou": 0.7241013513645982,
+      "mean_oracle_iou_1to3": 0.857958030552122,
+      "mean_oracle_iou_all4": 0.857958030552122,
+      "mean_oracle_gap_1to3": 0.008509729610412615,
+      "fraction_oracle_gap_gt_0.02": 0.14285714285714285
+    },
+    "box/cached": {
+      "prompt_rows": 7,
+      "policies": {
+        "single_token0": {
+          "mean_iou": 0.8277638071459227,
+          "mean_boundary_iou": 0.7075494093732224
+        },
+        "multimask_iou_head_1to3": {
+          "mean_iou": 0.8494483009417094,
+          "mean_boundary_iou": 0.7241013513645982
+        },
+        "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+          "mean_iou": 0.8277638071459227,
+          "mean_boundary_iou": 0.7075494093732224
+        }
+      },
+      "mean_multimask_selected_iou": 0.8494483009417094,
+      "mean_multimask_selected_boundary_iou": 0.7241013513645982,
+      "mean_oracle_iou_1to3": 0.8579550045588398,
+      "mean_oracle_iou_all4": 0.8579550045588398,
+      "mean_oracle_gap_1to3": 0.00850670361713032,
+      "fraction_oracle_gap_gt_0.02": 0.14285714285714285
+    },
+    "box/dense_assoc": {
+      "prompt_rows": 7,
+      "policies": {
+        "single_token0": {
+          "mean_iou": 0.8277638071459227,
+          "mean_boundary_iou": 0.7075494093732224
+        },
+        "multimask_iou_head_1to3": {
+          "mean_iou": 0.8494483009417094,
+          "mean_boundary_iou": 0.7241013513645982
+        },
+        "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+          "mean_iou": 0.8277638071459227,
+          "mean_boundary_iou": 0.7075494093732224
+        }
+      },
+      "mean_multimask_selected_iou": 0.8494483009417094,
+      "mean_multimask_selected_boundary_iou": 0.7241013513645982,
+      "mean_oracle_iou_1to3": 0.857958030552122,
+      "mean_oracle_iou_all4": 0.857958030552122,
+      "mean_oracle_gap_1to3": 0.008509729610412615,
+      "fraction_oracle_gap_gt_0.02": 0.14285714285714285
+    },
+    "box/factor_projected": {
+      "prompt_rows": 7,
+      "policies": {
+        "single_token0": {
+          "mean_iou": 0.8277638071459227,
+          "mean_boundary_iou": 0.7075494093732224
+        },
+        "multimask_iou_head_1to3": {
+          "mean_iou": 0.8494483009417094,
+          "mean_boundary_iou": 0.7241013513645982
+        },
+        "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+          "mean_iou": 0.8277638071459227,
+          "mean_boundary_iou": 0.7075494093732224
+        }
+      },
+      "mean_multimask_selected_iou": 0.8494483009417094,
+      "mean_multimask_selected_boundary_iou": 0.7241013513645982,
+      "mean_oracle_iou_1to3": 0.8579550045588398,
+      "mean_oracle_iou_all4": 0.8579550045588398,
+      "mean_oracle_gap_1to3": 0.00850670361713032,
+      "fraction_oracle_gap_gt_0.02": 0.14285714285714285
+    }
+  },
+  "finished_at_utc": "2026-10-01T12:17:34.329011+00:00"
+}

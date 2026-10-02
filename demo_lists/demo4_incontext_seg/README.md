@@ -1,7 +1,7 @@
 # demo4：免训练上下文分割里的“选哪块区域”
 
 状态：2026-10-02 立项。问题已量出，十四类免训练规则都没有明显超过基线，还没有可以称为“方法”的结果。
-工作方式遵循 `../RESEARCH_PROTOCOL.md`。
+工作方式遵循 `../../.claude/skills/measure-first-research/SKILL.md`。
 
 ## 赛道
 

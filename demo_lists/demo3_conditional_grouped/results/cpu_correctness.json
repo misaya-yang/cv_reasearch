@@ -1,0 +1,102 @@
+{
+  "status": "PASS_CPU_RANDOM_MODULE_ONLY",
+  "torch": "2.14.1",
+  "checkpoint_loaded": false,
+  "rows": [
+    {
+      "check": "orthogonal",
+      "P": 4,
+      "inverse_max": 4.440892098500626e-16,
+      "norm_error": 3.552713678800501e-15
+    },
+    {
+      "check": "orthogonal",
+      "P": 16,
+      "inverse_max": 8.881784197001252e-16,
+      "norm_error": 1.4210854715202004e-14
+    },
+    {
+      "check": "orthogonal",
+      "P": 64,
+      "inverse_max": 2.220446049250313e-15,
+      "norm_error": 2.842170943040401e-14
+    },
+    {
+      "check": "orthogonal",
+      "P": 1024,
+      "inverse_max": 3.1086244689504383e-15,
+      "norm_error": 9.094947017729282e-13
+    },
+    {
+      "check": "forward_inverse_angle_gradcheck",
+      "pass": true
+    },
+    {
+      "check": "official_tiny_heavy_interface",
+      "mode": "original",
+      "identity_max": 8.344650268554688e-07,
+      "new_path_gradient_max": null
+    },
+    {
+      "check": "official_tiny_heavy_interface",
+      "mode": "fixed",
+      "identity_max": 8.344650268554688e-07,
+      "new_path_gradient_max": 0.000421464501414448
+    },
+    {
+      "check": "official_tiny_heavy_interface",
+      "mode": "conditional",
+      "identity_max": 8.344650268554688e-07,
+      "new_path_gradient_max": 0.0042387149296700954
+    },
+    {
+      "check": "official_tiny_heavy_interface",
+      "mode": "group32",
+      "identity_max": 8.344650268554688e-07,
+      "new_path_gradient_max": null
+    },
+    {
+      "check": "official_tiny_heavy_interface",
+      "mode": "neighborhood",
+      "identity_max": 8.344650268554688e-07,
+      "new_path_gradient_max": null
+    },
+    {
+      "check": "official_tiny_heavy_interface",
+      "mode": "neighborhood_gated",
+      "identity_max": 8.344650268554688e-07,
+      "new_path_gradient_max": null
+    },
+    {
+      "check": "official_tiny_heavy_interface",
+      "mode": "neighborhood_static_gate",
+      "identity_max": 8.344650268554688e-07,
+      "new_path_gradient_max": null
+    },
+    {
+      "check": "official_tiny_heavy_interface",
+      "mode": "neighborhood_time_gate",
+      "identity_max": 8.344650268554688e-07,
+      "new_path_gradient_max": null
+    },
+    {
+      "check": "official_tiny_heavy_interface",
+      "mode": "neighborhood_full_stem",
+      "identity_max": 0.0,
+      "new_path_gradient_max": 0.20016464591026306
+    },
+    {
+      "check": "official_tiny_heavy_interface",
+      "mode": "dynamic",
+      "identity_max": 8.344650268554688e-07,
+      "new_path_gradient_max": null
+    },
+    {
+      "check": "official_tiny_heavy_interface",
+      "mode": "full_stem",
+      "identity_max": 0.0,
+      "new_path_gradient_max": 0.20016464591026306
+    }
+  ],
+  "limits": "No pretrained, GPU, quality, throughput or SOTA claim."
+}

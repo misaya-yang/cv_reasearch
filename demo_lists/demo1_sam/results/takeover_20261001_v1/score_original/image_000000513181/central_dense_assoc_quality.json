@@ -1,0 +1,76 @@
+{
+  "status": "OFFLINE_REAL_QUALITY_ONLY_IF_INPUT_IS_PRETRAINED_ANNOTATED_REAL_DATA",
+  "prompt_rows": 1,
+  "resolution": [
+    423,
+    640
+  ],
+  "boundary_ratio": 0.02,
+  "boundary_radius": 15,
+  "policies": {
+    "single_token0": {
+      "mean_iou": 0.8219905036774975,
+      "mean_boundary_iou": 0.5810923493850323
+    },
+    "multimask_iou_head_1to3": {
+      "mean_iou": 0.8079839225358546,
+      "mean_boundary_iou": 0.6065387671699398
+    },
+    "sam2_snapshot_dynamic_rule_on_supplied_outputs": {
+      "mean_iou": 0.8219905036774975,
+      "mean_boundary_iou": 0.5810923493850323
+    }
+  },
+  "oracle_diagnostic_extra_ground_truth_not_deployable": {
+    "multimask_1to3_mean_iou": 0.8160315374507228,
+    "all4_mean_iou": 0.8219905036774975,
+    "multimask_1to3_mean_boundary_iou_at_iou_oracle": 0.5677236455270894,
+    "all4_boundary_oracle_mean_boundary_iou": 0.6065387671699398,
+    "mean_multimask_iou_gap": 0.008047614914868162,
+    "prompt_bootstrap_gap95": [
+      0.008047614914868162,
+      0.008047614914868162
+    ],
+    "fraction_gap_gt_0.02": 0.0
+  },
+  "rows": [
+    {
+      "row": 0,
+      "iou_per_mask": [
+        0.8219905036774975,
+        0.8079839225358546,
+        0.8160315374507228,
+        0.10715785054575987
+      ],
+      "boundary_iou_per_mask": [
+        0.5810923493850323,
+        0.6065387671699398,
+        0.5677236455270894,
+        0.022636484687083888
+      ],
+      "selection_per_policy": {
+        "single_token0": 0,
+        "multimask_iou_head_1to3": 1,
+        "sam2_snapshot_dynamic_rule_on_supplied_outputs": 0
+      },
+      "multimask_iou_oracle_index": 2,
+      "all4_iou_oracle_index": 0,
+      "multimask_oracle_gap": 0.008047614914868162,
+      "image_id": 513181,
+      "annotation_id": 176031,
+      "regime": "central",
+      "prompt_xy": [
+        190.0,
+        268.0
+      ],
+      "prompt_box_xyxy": null
+    }
+  ],
+  "limitations": [
+    "Prompt-row bootstrap is not image-cluster uncertainty",
+    "A dynamic selection rule applied to SAM outputs is not a SAM2 model result",
+    "Protocol assumes full-resolution official resize/crop/resize logits",
+    "No image encoder or latency data included",
+    "Do not pool different prompt regimes without separate strata"
+  ]
+}

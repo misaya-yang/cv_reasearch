@@ -1,0 +1,215 @@
+{
+  "status": "GPU_DIAGNOSTIC_COMPLETE",
+  "started_at_utc": "2026-10-01T14:18:07.958643+00:00",
+  "pid": 3616,
+  "protocol": "128 independent single-positive-point prompts on the first fixed COCO image, cyclic original instances; uniform GT-foreground sampling without output-based choice; no repeated coordinates, no extra clicks per prompt; new performance prompt protocol, separate from central/near-boundary/box quality protocol",
+  "scientific_status": "Fixed 5e-5 numeric failures retained; all timings are diagnostic when failed; no end-to-end or SOTA claim",
+  "prompt_manifest": "/root/autodl-tmp/demo1_sam/results/takeover_20261001_v1/real_p128_inputs/prompt_manifest.json",
+  "runs": [
+    {
+      "name": "mb8_round1",
+      "status": "DONE",
+      "command": [
+        "/root/miniconda3/bin/python",
+        "research/compute_structure/pretrained_decoder_round.py",
+        "--encoded-inputs",
+        "/root/autodl-tmp/demo1_sam/results/takeover_20261001_v1/real_p128_inputs/encoded_inputs.npz",
+        "--decoder-state",
+        "/root/autodl-tmp/demo1_sam/results/takeover_20261001_v1/real_original/mask_decoder_state.pt",
+        "--output-dir",
+        "/root/autodl-tmp/demo1_sam/results/takeover_20261001_v1/real_p128_perf/mb8_round1",
+        "--device",
+        "cuda:0",
+        "--regimes",
+        "perf",
+        "--microbatch",
+        "8",
+        "--variants",
+        "dense_phase:explicit,cached_merged_phase:explicit,factor_implicit_phase:explicit",
+        "--mode",
+        "compile",
+        "--timings",
+        "--diagnostic-on-failure",
+        "--warmup",
+        "10",
+        "--repetitions",
+        "30"
+      ],
+      "pid": 3621,
+      "returncode": 2,
+      "numeric_status": "FAILED_DIAGNOSTIC_TIMING_ONLY",
+      "wall_seconds": 26.818930082023144,
+      "timings": [
+        {
+          "method": "dense_phase",
+          "numeric_status": "FAILED",
+          "warm_ms": 46.520059928298
+        },
+        {
+          "method": "cached_merged_phase",
+          "numeric_status": "FAILED",
+          "warm_ms": 49.64625462889671
+        },
+        {
+          "method": "factor_implicit_phase",
+          "numeric_status": "FAILED",
+          "warm_ms": 62.0442945510149
+        }
+      ]
+    },
+    {
+      "name": "mb8_round2",
+      "status": "DONE",
+      "command": [
+        "/root/miniconda3/bin/python",
+        "research/compute_structure/pretrained_decoder_round.py",
+        "--encoded-inputs",
+        "/root/autodl-tmp/demo1_sam/results/takeover_20261001_v1/real_p128_inputs/encoded_inputs.npz",
+        "--decoder-state",
+        "/root/autodl-tmp/demo1_sam/results/takeover_20261001_v1/real_original/mask_decoder_state.pt",
+        "--output-dir",
+        "/root/autodl-tmp/demo1_sam/results/takeover_20261001_v1/real_p128_perf/mb8_round2",
+        "--device",
+        "cuda:0",
+        "--regimes",
+        "perf",
+        "--microbatch",
+        "8",
+        "--variants",
+        "factor_implicit_phase:explicit,cached_merged_phase:explicit,dense_phase:explicit",
+        "--mode",
+        "compile",
+        "--timings",
+        "--diagnostic-on-failure",
+        "--warmup",
+        "10",
+        "--repetitions",
+        "30"
+      ],
+      "pid": 3789,
+      "returncode": 2,
+      "numeric_status": "FAILED_DIAGNOSTIC_TIMING_ONLY",
+      "wall_seconds": 25.195332227274776,
+      "timings": [
+        {
+          "method": "factor_implicit_phase",
+          "numeric_status": "FAILED",
+          "warm_ms": 63.51064890623093
+        },
+        {
+          "method": "cached_merged_phase",
+          "numeric_status": "FAILED",
+          "warm_ms": 47.113558277487755
+        },
+        {
+          "method": "dense_phase",
+          "numeric_status": "FAILED",
+          "warm_ms": 53.949158638715744
+        }
+      ]
+    },
+    {
+      "name": "mb128_round1",
+      "status": "DONE",
+      "command": [
+        "/root/miniconda3/bin/python",
+        "research/compute_structure/pretrained_decoder_round.py",
+        "--encoded-inputs",
+        "/root/autodl-tmp/demo1_sam/results/takeover_20261001_v1/real_p128_inputs/encoded_inputs.npz",
+        "--decoder-state",
+        "/root/autodl-tmp/demo1_sam/results/takeover_20261001_v1/real_original/mask_decoder_state.pt",
+        "--output-dir",
+        "/root/autodl-tmp/demo1_sam/results/takeover_20261001_v1/real_p128_perf/mb128_round1",
+        "--device",
+        "cuda:0",
+        "--regimes",
+        "perf",
+        "--microbatch",
+        "128",
+        "--variants",
+        "dense_phase:explicit,cached_merged_phase:explicit,factor_implicit_phase:explicit",
+        "--mode",
+        "compile",
+        "--timings",
+        "--diagnostic-on-failure",
+        "--warmup",
+        "10",
+        "--repetitions",
+        "30"
+      ],
+      "pid": 3954,
+      "returncode": 2,
+      "numeric_status": "FAILED_DIAGNOSTIC_TIMING_ONLY",
+      "wall_seconds": 23.690567418932915,
+      "timings": [
+        {
+          "method": "dense_phase",
+          "numeric_status": "FAILED",
+          "warm_ms": 35.834018141031265
+        },
+        {
+          "method": "cached_merged_phase",
+          "numeric_status": "FAILED",
+          "warm_ms": 45.59060372412205
+        },
+        {
+          "method": "factor_implicit_phase",
+          "numeric_status": "FAILED",
+          "warm_ms": 33.5624860599637
+        }
+      ]
+    },
+    {
+      "name": "mb128_round2",
+      "status": "DONE",
+      "command": [
+        "/root/miniconda3/bin/python",
+        "research/compute_structure/pretrained_decoder_round.py",
+        "--encoded-inputs",
+        "/root/autodl-tmp/demo1_sam/results/takeover_20261001_v1/real_p128_inputs/encoded_inputs.npz",
+        "--decoder-state",
+        "/root/autodl-tmp/demo1_sam/results/takeover_20261001_v1/real_original/mask_decoder_state.pt",
+        "--output-dir",
+        "/root/autodl-tmp/demo1_sam/results/takeover_20261001_v1/real_p128_perf/mb128_round2",
+        "--device",
+        "cuda:0",
+        "--regimes",
+        "perf",
+        "--microbatch",
+        "128",
+        "--variants",
+        "factor_implicit_phase:explicit,cached_merged_phase:explicit,dense_phase:explicit",
+        "--mode",
+        "compile",
+        "--timings",
+        "--diagnostic-on-failure",
+        "--warmup",
+        "10",
+        "--repetitions",
+        "30"
+      ],
+      "pid": 4124,
+      "returncode": 2,
+      "numeric_status": "FAILED_DIAGNOSTIC_TIMING_ONLY",
+      "wall_seconds": 21.790933215990663,
+      "timings": [
+        {
+          "method": "factor_implicit_phase",
+          "numeric_status": "FAILED",
+          "warm_ms": 33.65535568445921
+        },
+        {
+          "method": "cached_merged_phase",
+          "numeric_status": "FAILED",
+          "warm_ms": 45.583062805235386
+        },
+        {
+          "method": "dense_phase",
+          "numeric_status": "FAILED",
+          "warm_ms": 35.917943343520164
+        }
+      ]
+    }
+  ],
+  "finished_at_utc": "2026-10-01T14:19:45.457526+00:00"
+}
