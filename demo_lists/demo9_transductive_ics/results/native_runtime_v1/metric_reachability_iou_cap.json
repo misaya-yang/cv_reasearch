@@ -1,0 +1,78 @@
+{
+  "state": "CONDITIONAL_IDEAL_ARITHMETIC_UPPER_BOUND",
+  "records": [
+    {
+      "c": 0,
+      "potential_pixel_budget": 0,
+      "ideal_optimistic_max_iou": 0.8218193950177936,
+      "baseline_iou": 0.8218193950177936,
+      "ideal_max_delta_pp": 0.0
+    },
+    {
+      "c": 4,
+      "potential_pixel_budget": 164,
+      "ideal_optimistic_max_iou": 0.8587893988906425,
+      "baseline_iou": 0.8577154046142461,
+      "ideal_max_delta_pp": 0.10739942763964283
+    },
+    {
+      "c": 8,
+      "potential_pixel_budget": 128,
+      "ideal_optimistic_max_iou": 0.6721299598303052,
+      "baseline_iou": 0.6710995548328409,
+      "ideal_max_delta_pp": 0.10304049974643181
+    },
+    {
+      "c": 12,
+      "potential_pixel_budget": 104,
+      "ideal_optimistic_max_iou": 0.9019130819418335,
+      "baseline_iou": 0.8996129603007852,
+      "ideal_max_delta_pp": 0.23001216410483138
+    },
+    {
+      "c": 16,
+      "potential_pixel_budget": 224,
+      "ideal_optimistic_max_iou": 0.8732816137694042,
+      "baseline_iou": 0.8729483870487865,
+      "ideal_max_delta_pp": 0.03332267206176409
+    },
+    {
+      "c": 20,
+      "potential_pixel_budget": 244,
+      "ideal_optimistic_max_iou": 0.7921563562787894,
+      "baseline_iou": 0.7886549858653694,
+      "ideal_max_delta_pp": 0.3501370413420024
+    },
+    {
+      "c": 24,
+      "potential_pixel_budget": 72,
+      "ideal_optimistic_max_iou": 0.9262171658022419,
+      "baseline_iou": 0.9238079303998662,
+      "ideal_max_delta_pp": 0.2409235402375698
+    },
+    {
+      "c": 28,
+      "potential_pixel_budget": 0,
+      "ideal_optimistic_max_iou": 0.9157826295256998,
+      "baseline_iou": 0.9157826295256998,
+      "ideal_max_delta_pp": 0.0
+    },
+    {
+      "c": 32,
+      "potential_pixel_budget": 0,
+      "ideal_optimistic_max_iou": 0.8944694319506913,
+      "baseline_iou": 0.8944694319506913,
+      "ideal_max_delta_pp": 0.0
+    },
+    {
+      "c": 36,
+      "potential_pixel_budget": 864,
+      "ideal_optimistic_max_iou": 0.14712119033927545,
+      "baseline_iou": 0.13935810810810811,
+      "ideal_max_delta_pp": 0.776308223116734
+    }
+  ],
+  "macro_max_delta_pp": 0.18411435682489763,
+  "scope": "Permits every eligible flip to repair an error in any location, more favourable than the actual spatial error mask; not a deployable oracle or full-FP32 certificate",
+  "optimization": "max (TP+a)/(U-b), a<=FN,b<=FP,a+b<=K; FN additions first, then FP removals. Swapping one removal for one FN addition cannot lower the ratio while errors remain."
+}

@@ -1,0 +1,52 @@
+{
+  "state": "PASSED",
+  "scope": "Synthetic one-epoch CPU trainer smoke; no real-data efficacy",
+  "arms": {
+    "protected": {
+      "epochs": 1,
+      "optimizer_updates": 2,
+      "dictionary_change": 0.04001922905445099,
+      "gain_change": 0.036440372467041016,
+      "checkpoint_rng": true,
+      "trained_weights_legal": true,
+      "adaptation_state": "ADAPTED",
+      "deployment_exact_correction_parity": true,
+      "deployment_variant_preserved": true,
+      "deployment_frozen": true
+    },
+    "fixed_global": {
+      "epochs": 1,
+      "optimizer_updates": 2,
+      "dictionary_change": 0.014882680028676987,
+      "gain_change": 0.014882326126098633,
+      "checkpoint_rng": true,
+      "trained_weights_legal": true,
+      "adaptation_state": "FIXED_GLOBAL",
+      "deployment_exact_correction_parity": true,
+      "deployment_variant_preserved": true,
+      "deployment_frozen": true
+    },
+    "unprotected": {
+      "epochs": 1,
+      "optimizer_updates": 2,
+      "dictionary_change": 0.04001922905445099,
+      "gain_change": 0.036440372467041016,
+      "checkpoint_rng": true,
+      "trained_weights_legal": true,
+      "adaptation_state": "UNPROTECTED_SPECTRAL",
+      "deployment_exact_correction_parity": true,
+      "deployment_variant_preserved": true,
+      "deployment_frozen": true
+    }
+  },
+  "split_leakage_rejections": {
+    "class_overlap": true,
+    "photo_overlap": true,
+    "test_split": true,
+    "payload_projection_mismatch": true
+  },
+  "cpu_only": true,
+  "cuda_initialization": false,
+  "real_training_executed": false,
+  "temporary_tensors_removed": true
+}

@@ -1,0 +1,247 @@
+{
+  "state": "COMPLETED_PILOT_PARTIAL_QUEUE",
+  "dataset": "COCO-20i",
+  "split": "official masks,fold0,first10standardfirst-per-class draws,seed0",
+  "metric": "Native1024 class sumI/sumU",
+  "n": 10,
+  "bootstrap": 200,
+  "method_gain_claim": false,
+  "arms": {
+    "E1": {
+      "source": "results/native_runtime_v1/experiments_resume1/E1/report.json",
+      "scores": {
+        "native_raw": 42.68399838788069,
+        "local_pg": 42.78166964686639,
+        "kernel_pad": 42.68502244400526,
+        "insid3_native": 52.476866718913826
+      },
+      "comparisons": {
+        "insid3_native vs native_raw": {
+          "per_dataset": {
+            "unspecified": {
+              "method_class_miou": 52.47686671891385,
+              "baseline_class_miou": 42.68399838788069,
+              "delta_pp": 9.792868331033155
+            }
+          },
+          "CI": {
+            "unspecified": [
+              -7.505076370249441,
+              23.443557012049215
+            ]
+          },
+          "effective_components": 10
+        },
+        "kernel_pad vs native_raw": {
+          "per_dataset": {
+            "unspecified": {
+              "method_class_miou": 42.68502244400527,
+              "baseline_class_miou": 42.68399838788069,
+              "delta_pp": 0.00102405612457801
+            }
+          },
+          "CI": {
+            "unspecified": [
+              -0.0006217894949228864,
+              0.002334977706057373
+            ]
+          },
+          "effective_components": 10
+        },
+        "local_pg vs native_raw": {
+          "per_dataset": {
+            "unspecified": {
+              "method_class_miou": 42.78166964686639,
+              "baseline_class_miou": 42.68399838788069,
+              "delta_pp": 0.09767125898569873
+            }
+          },
+          "CI": {
+            "unspecified": [
+              -0.3667941372514459,
+              0.5764503659327229
+            ]
+          },
+          "effective_components": 10
+        }
+      }
+    },
+    "E2": {
+      "source": "results/native_runtime_v1/experiments_resume1/E2/report.json",
+      "scores": {
+        "native_raw": 42.68399838788069,
+        "full_rewrite": 29.49291945018603,
+        "full_kernel_pad": 42.69217774619878,
+        "insid3_native": 52.476866718913826
+      },
+      "comparisons": {
+        "full_kernel_pad vs native_raw": {
+          "per_dataset": {
+            "unspecified": {
+              "method_class_miou": 42.69217774619878,
+              "baseline_class_miou": 42.68399838788069,
+              "delta_pp": 0.008179358318088248
+            }
+          },
+          "CI": {
+            "unspecified": [
+              -0.03766333569773525,
+              0.06332020895825395
+            ]
+          },
+          "effective_components": 10
+        },
+        "full_rewrite vs native_raw": {
+          "per_dataset": {
+            "unspecified": {
+              "method_class_miou": 29.492919450186026,
+              "baseline_class_miou": 42.68399838788069,
+              "delta_pp": -13.191078937694666
+            }
+          },
+          "CI": {
+            "unspecified": [
+              -22.93547619377412,
+              -0.6806113605991106
+            ]
+          },
+          "effective_components": 10
+        },
+        "insid3_native vs native_raw": {
+          "per_dataset": {
+            "unspecified": {
+              "method_class_miou": 52.47686671891385,
+              "baseline_class_miou": 42.68399838788069,
+              "delta_pp": 9.792868331033155
+            }
+          },
+          "CI": {
+            "unspecified": [
+              -7.505076370249441,
+              23.443557012049215
+            ]
+          },
+          "effective_components": 10
+        }
+      }
+    },
+    "E4": {
+      "source": "results/native_runtime_v1/experiments_resume1/E4/report.json",
+      "scores": {
+        "insid3_native": 52.476866718913826,
+        "native_dense": 50.95748986100676,
+        "uniform_views": 49.15476793186023,
+        "fitted_views": 47.53553798862182
+      },
+      "comparisons": {
+        "fitted_views vs native_dense": {
+          "per_dataset": {
+            "unspecified": {
+              "method_class_miou": 47.535537988621826,
+              "baseline_class_miou": 50.95748986100678,
+              "delta_pp": -3.421951872384952
+            }
+          },
+          "CI": {
+            "unspecified": [
+              -6.910984208239316,
+              0.45611127823202513
+            ]
+          },
+          "effective_components": 10
+        },
+        "insid3_native vs native_dense": {
+          "per_dataset": {
+            "unspecified": {
+              "method_class_miou": 52.47686671891385,
+              "baseline_class_miou": 50.95748986100678,
+              "delta_pp": 1.5193768579070692
+            }
+          },
+          "CI": {
+            "unspecified": [
+              -10.478388575432467,
+              15.22999729647573
+            ]
+          },
+          "effective_components": 10
+        },
+        "uniform_views vs native_dense": {
+          "per_dataset": {
+            "unspecified": {
+              "method_class_miou": 49.154767931860235,
+              "baseline_class_miou": 50.95748986100678,
+              "delta_pp": -1.8027219291465428
+            }
+          },
+          "CI": {
+            "unspecified": [
+              -8.325995361485292,
+              5.494707628465084
+            ]
+          },
+          "effective_components": 10
+        }
+      }
+    },
+    "E7": {
+      "source": "results/native_runtime_v1/experiments_resume1/E7/report.json",
+      "scores": {
+        "insid3_native": 52.476866718913826,
+        "native_dense": 50.95748986100676,
+        "uniform_views": 51.2326145942091,
+        "fitted_views": 50.77129889604224
+      },
+      "comparisons": {
+        "fitted_views vs native_dense": {
+          "per_dataset": {
+            "unspecified": {
+              "method_class_miou": 50.771298896042225,
+              "baseline_class_miou": 50.95748986100678,
+              "delta_pp": -0.18619096496455256
+            }
+          },
+          "CI": {
+            "unspecified": [
+              -1.127750021417171,
+              0.7665756535050401
+            ]
+          },
+          "effective_components": 10
+        },
+        "insid3_native vs native_dense": {
+          "per_dataset": {
+            "unspecified": {
+              "method_class_miou": 52.47686671891385,
+              "baseline_class_miou": 50.95748986100678,
+              "delta_pp": 1.5193768579070692
+            }
+          },
+          "CI": {
+            "unspecified": [
+              -10.478388575432467,
+              15.22999729647573
+            ]
+          },
+          "effective_components": 10
+        },
+        "uniform_views vs native_dense": {
+          "per_dataset": {
+            "unspecified": {
+              "method_class_miou": 51.232614594209096,
+              "baseline_class_miou": 50.95748986100678,
+              "delta_pp": 0.27512473320231834
+            }
+          },
+          "CI": {
+            "unspecified": [
+              -0.8480314682744634,
+              1.3930902657914785
+            ]
+          },
+          "effective_components": 10
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,125 @@
-# demo9 交接：方法、思路和研究方式
+# demo9：单参考条件化分割的候选算法与实验交接
 
-2026-10-02。接手的人先读这一份，再读 `PLAN.md`（下一步实验）和 `README.md`（全部数字）。
+2026-10-02 最新直接用户纠正：最多10种方法、至少10轮独立实验，**不是一个算法的递进流水线**。本轮有限GPU pilot已完成并自动关机；无卡分析后仅执行已CPU准备的固定强控制。本文给出7个具体算法，PLAN中10卡独立（另3卡是强对照、机制与压力测试）。最终目标仍是同一DINOv3比INSID3/FoRIS更准；已有小样本真实结果，但未建立这些候选的有效增益，不预称可发表。
+
+## Completed pilots: failure attribution and current resource state
+
+Latest user requires full shutdown and deep analysis. The provider stopped866 and a refreshed browser confirmed STOPPED; use local evidence only, no automatic boot or new queue. Seven bounded pilots and reduced native fixtures ran; original E9 all-method concept controls and E10 cross-domain/cost questions remain unanswered. Ten-example development results are neither full-fold scores nor seven independent generalisation proofs.
+
+Three design problems are now concrete:
+- Weak component backends: raw fusion baseline42.684 versus same-task INSID3 52.477 / fullFoRIS64.998; final/density baselines49–51 and ungated transportKDE40.261 are different declared pipelines. Their internal comparisons are legitimate, but they do not isolate a one-component replacement inside the strong FoRIS system. FullGL−13.191pp is the clearest negative for its fixed composite algorithm; kernel-pad controls approximately match.
+- The deployed adaptive metric scarcely reaches the decision: unit features and orthogonalU give |d_M²−d_I²|<=4epsilon. Each log-density moves<=2epsilon/tau, so H=H0+beta*tau*(L_M−L_I) has |deltaH|<=4beta*epsilon. Selected epoch1 adaptive weights imply maximum .0231216, whereas the interpolated binary host has interior margins ±.5. From saved1024 masks, recovering parent64 masks and reconstructing bilinear H0 reproduced all10 host masks exactly. Only1800/10485760 pixels(.0172%) satisfy |H0|<=the per-task ideal bound. Even allowing every such flip to repair any FN/FP yields at most+.1841pp classmIoU on this cohort; actual change0. This is a conditional ideal-arithmetic reach bound, not a certified fullFP32 bound or proof about direction/generalisable evidence. Norm/QR/logsumexp numerical errors and actual delta fields were not saved. Do not regenerate deleted features to manufacture a stronger attribution.
+- Support proxies are not query correction: fitted views lose to same-view uniform by1.6192pp(BG, exploratoryCI[-5.996,2.757]) and.4613pp(lattice,[-.848,.068]); E5 only7/10 tasks have legal region splits, three fall back, fitted prefix norms.00268–.00974. Ten training epochs and first-epoch-selected models are not a sufficiently trained evidence oracle. It is wrong to conclude that training or original DINO information is generally useless.
+
+Evidence:results/native_runtime_v1/metric_reachability_audit.json, metric_reachability_iou_cap.json, completed_failure_attribution.json, completed_runtime_evidence.tgz. Computation:scripts/analyze_metric_reachability.py; no GPU/encoder/new images/training. Specific fixed constructs remain unexpanded. Before any next implementation, the missing premise is a removable error in the full strong pipeline that a legal observable intervention can actually change; candidate GT oracle coverage is insufficient. This is an evidence requirement, not a demand to know the new method's final score in advance.
+
+## 共同输入、输出与公平接口
+
+输入只有参考RGB S、参考掩码 m、查询RGB Q。任务/类别ID只用于采样与评分，不进入模型。DINOv3 ViT-L/16、1024输入、原权重保持不变；使用同一原生精度及声明的batch context。C3另有基类监督学习的字典与全局gain，所有学习型控制给同样标注和训练机会；C5仅用当前合法参考标注拟合32个输入系数。
+
+f_s,f_q为单位化原生去偏特征，位置投影/压缩坐标需全训练/推理统一；不能在不同SVD补空间坐标中复用已训练字典。raw-attention融合空间另行定义，不能移植last-layer U500/APD。所有额外观察计入编码/校准/解码成本。
+
+每个算法使用完整FG/BG参考证据，至少有相同信息的简单控制。FROST式密度为借用组件：L(q)=log mean_FG exp(k(q,s))−log mean_BG exp(k(q,s))，带宽只读参考；各方法同空间处理与原始分辨率评分。一个参考本身并不唯一消除类别/实例/部件歧义，评测任务需明确。
+
+C1/C2独立比较使用原生support-only RSRM SAFR权重w_l与每图原生尺度s_il。SAFR源实现的相关统计是final高空间方差通道在raw层中的方差比例，不是直接坐标相关。借来的层融合、密度与空间处理不是新贡献。
+
+C3的宿主接口H0仅在声明的bilinear/no-original-resize协议定义：FoRIS是实际minmax连续分数上采样后减.5；INSID3是最终patch mask浮点上采样后减.5。`tics/host_signed_field.py`只旁路观察，要求(H0>0)逐像素等于该原生阶段输出，原forward返回原对象。完整FoRIS+CRF仍作为强方法另列；不能声称bilinear小控制代表它。
+
+## C1：原生轨迹上的局部全局内容读出
+
+原生block继续X_(l+1)=Block_l(X_l)。同一原生Q/K/V下，仅patch-query/global-key列取L*_pg=q_p·k_g/sqrt(d)，patch-patch仍为(qr_p·kr_j)/sqrt(d)。U*=softmax_all_keys(L*)V，不能分别softmax再拼接。global query原输出保留。
+
+旁路R*_l=FinalLN(LayerScale(OutputProjection(U*_l)))；不加residual，不回写下一block。φ*_i=normalize(sum_l w_l R*_(il)/s_(il))，同一supportFG/BG density、原生geometry/RGB产生输出。该变换不是纯语义化：Q/K/V包含此前位置交互，全模型不具有由此证明的原点不变性。
+
+精确更新在拥有原row log-normalizer z时可写a_g=exp(L_pg−z)、b_g=exp(L*_pg−z)、r=1−sum a+sum b，u*=(u−sum a_g v_g+sum b_g v_g)/r。没有rowLSE或遇抵消/overflow时不能宣传5token廉价成本。保守实现用d→2d lift或chunk256完整归一化：patch Q=[qr,qraw]；global K=[0,kraw]；patch K=[kr,0]；V=[v,0]；scale仍d^−.5。
+
+为何可能有用：减少当前读取中直接位置相位造成的跨图不稳定，同时保留预训练轨迹；仅当新FG/BG对比净改善才支持。失败意义：差分太小是当前通路弱；query混淆加剧是它承载必要语义/假设不成立，不能调阈值救故事。实现`native_attention_readout.py`；独立命令`native_readout_probe.py --arms native_raw,local_pg,kernel_pad`。CPU数学/原生轨迹验证已过；GPU/真实增益未验。
+
+## C2：整条隐藏轨迹的全局内容交互改写
+
+同一骨干第二个前向，在每层PG与GP混合项均取pre-RoPE内容点积，PP保留相对RoPE，GG保留原内容；全key统一归一化，原V/projection/residual/MLP继续加工修改后的状态。与C1相比，这一算法把改变传播到后续层，两个算法分别测试，不以一个失败证明另一个。
+
+3d lift：patch Q=[qr,qraw,0]，global Q=[0,0,qraw]；patch K=[kr,0,kraw]，global K=[0,kraw,kraw]；V=[v,0,0]，scale=d^−.5。最终表示走同raw融合/density合同；权重和尺度仍来自另一个原生参考run。`--arms native_raw,full_rewrite,full_kernel_pad`保留同3d核的原生logit控制。
+
+为何可能有用：若全局内容需要后续MLP/attention重新加工，局部旁路不足。失败意义：即使消除显式位置项，训练分布偏移可能压倒收益；不无限改层/强度。实现`global_content_attention.py`，回滚hooks/原权重，CPU已验，实际任务未验。
+
+## C3：参考反例驱动的低秩任务距离（需要基类训练）
+
+学习D×32参数A，QR得到U，U^T U=I。每参考只适配32尺度w：
+
+M_S=I+U diag(w−1)U^T，d_S(q,s)=||q−s||²+sum_k(w_k−1)[u_k^T(q−s)]²。
+
+U外特征方向不删除。谱在[.25,4]，禁止变换后再次L2单位化（否则不是这张M）。参考覆盖率<=.1或>=.9的纯patch构造balanced FG/BG三元组(a,p,n)：同label原距离最近2个见证排除空间半径2，异label最近4个反例；各类最多256anchors，总<=4096；邻居冻结。极小/退化参考无合法见证则原宿主回退。
+
+δ+=f_a−f_p，δ−=f_a−f_n，m0=||δ−||²−||δ+||²，设计B_tk=(u_k^Tδ−)²−(u_k^Tδ+)²。B>0表明增强该方向有助正负区分，B<0表明允许同标签在该方向变化可能有利。只在参考拟合不保证跨图。
+
+内层唯一偏好v*=argmin sum_t π_t softplus((κ−m0_t−B_t(v−1))/T)+λ||v−1||²/2。
+
+G=λ(v−1)−B^T(π sigmoid(z))/T，H=λI+B^T diag(π sigmoid(z)(1−sigmoid(z))/T²)B，H>=λI>0。Newton有line search且必须达到stationarity；未收敛不伪装精确implicit backward。给incoming g，解H^T z=g，β_t=π_t σ_t(1−σ_t)/T²：
+
+∂loss/∂B=outer(πσ/T,z)−outer(β*(Bz),v−1)；∂loss/∂m0=−β*(Bz)；∂loss/∂π=σ*(Bz)/T。其它直接outer路径继续普通autograd。
+
+Δ=v−1，w=1+αΔ，α取1、所有谱界与可靠参考G={m0>=κ}的界的最小值。若B_tΔ<0，α<=(1−η)m0_t/(−B_tΔ)，η=.5。由此M谱合法且可靠参考间隔>=ηm0；它仅是该方向上的最大合法步长，不是全受限问题最优。dw=αdv+Δdα，α不能detach；min并列按声明的子梯度，数值gradcheck避开ties。凸性还给J(w)<=J(1)，仍只是参考代理目标保证。
+
+完整anchor的Gaussian密度比L_w，修正e=τ(L_w−L_1)。最终H=H0+β_global*Upsample(e)，β_global=4sigmoid(b)与U一起在基类跨图loss训练。β并非自然同单位或后验校准；固定metric/SCML式控制同样拟合gain。训练loss=balanced BCEWithLogits(H/.1)+softIoU(sigmoid(H/.1))，开发类IoU选checkpoint。标签/所有角色照片及投影坐标严格隔离；测试仅support适配。
+
+距离影响查询证据的局部条件：∂L_w(q)/∂w_k=[E_BG|q (u_k^T(q−b))²−E_FG|q(u_k^T(q−f))²]/(2τ)。同一任务权重因此可使不同位置的分数朝不同方向变化；参考关系在查询中不迁移时就会失败。
+
+关键边界：φ目标与背景相同则任何M都不能区分；参考无对应反例/变化则w无可靠依据；保护α近0表明冲突；support改善但query损失表明本字典/适配迁移失败。不能用增加epoch或去掉保护掩盖这些。完整二元label反转可保持M相同而仅反转anchor标签，不能要求任何mask变化都改变w。
+
+代码`reference_metric.py`、`train_reference_metric.py`、`reference_feature_probe.py`；exact implicit/active-alpha梯度、SPD、chunkdensity、零修正identity及部署回载CPU验证已过。SCML已经有共享rank-one基/三元组凸权重，LMNN/MetaOptNet也相关；新意与实效不能由这个参数化本身承担。
+
+## C4：保留前景、改变参考背景的输入观测
+
+制作原图、背景设为原图全局RGB均值、仅背景RGB确定性循环置换三view；所有合法FG像素逐元素保持。冻结同DINO读取完整表示，query仍原RGB。对每view用同FG/BG dense probability配方得到p_v(q)，输出sum_v a_v p_v(q)，原图geometry不变。
+
+a_v=softmax(−mean_held_regions balancedBrier_v/.1)，只用support固定空间留出。**校准渲染不得使用held标签**：held区域所有RGB保持原图，只改其它train区域BG；最多12校准+3production support编码，均计成本。相同视图uniform融合是必要控制。没有合法留出则显式uniform回退。
+
+为何可能有用：同一真实FG在不同context下得到不同读出，可检验错误是不是被参考背景引入，而非重排原始预测。失败意义：标签指定的对象可能需要上下文，人工背景造成OOD；support内稳定也不保证query更好。不能把保持像素误称保持原特征。`reference_views.py`；CPU检查FG像素、BG直方图、held渲染防漏，实际DINO增益未验。
+
+## C5：参考监督仅改变既有全局token输入
+
+保留CLS/register数量及全部DINO权重，在第一个block前给5个prefix加δ。固定seed4101 QR得到32个正交方向b_k，θ为每任务32个系数：δ=.1||prefix_native||/sqrt(32) *sum tanh(θ_k)b_k；预cast范数不超过原prefix的.1。并未离线学这个字典。
+
+当前support按固定空间region划train/validation，train区域留出FG/BG原型对比BCE+prox .01，20步Adam/lr.05，validation不用作trainanchor/target，含θ=0 checkpoint。其它标签不读取。将选定θ冻结应用到query编码，再走同density/nativegeometry配方。选择零/缺合法regions就native回退。
+
+为何可能有用：让真实参考的判别损失反向改变编码器内的信息汇总，而非固定最后特征的距离；骨干权重仍冻结。梯度必须经过DINO到输入系数，不能用no_grad缓存extractor或只靠prox假优化。20步需1+40support feature calls，不能叫免优化。matched fixedprompt/native controls披露相同拟合诊断调用，但原native实际最低部署成本另列，不能制造GPU负载维持忙。
+
+失败意义：参考专属颜色/位置捷径、32方向/10%幅度无力、真实query分布不迁移。最多当前一次固定预算，不追加prompt层/半径/seed无限搜索。VPT/TPT已建立prompt/tune原则，本法当前只是明确的候选。`reference_prompt.py`；CPU只改prompt、骨干/flags/hooks不变及backprop通过；真实DINO未验。
+
+## C6：跨图完整分布的不平衡运输
+
+C_ij=1−f_qi·f_sj；a_i=1/Nq；参考FG/BG各b总质量.5、类内uniform。求P>=0的凸目标：<P,C>+eps KL(P|a⊗b)+rho_q KL(P1|a)+rho_s KL(P^T1|b)。eps=rho_q=rho_s=.1，max200/tol1e−5；chunk logsumexp不存全coupling。
+
+score_i=sum_FG P_ij/sum_all P_ij，阈值.5。有限rho松弛两侧边际，不强制query前景mass=.5；但参考.5依旧是软先验，不能说完全无面积偏好。rho=0退化同full-anchor KDE，是实现与机制控制；balancedOT硬边际是另一控制。
+
+为何可能有用：区别局部独立最相似与整张query/support分布的竞争，可减少同一参考hub不合理解释所有query，且允许query大小与reference不同。失败意义：softprior仍造成配额/错误hub匹配，或KDE已经解释所有收益；不可加rho/eps sweep。`unbalanced_transport.py`，CPU对偶驻点/分块/极端面积测试过，真实任务未验。
+
+## C7：改变patch格点观察、由参考选择融合
+
+固定pixel offsets(0,0),(8,0),(0,8),(8,8)，reflect pad/crop保持输入尺寸，不改RoPE公式。S与Q读取4fullmaps，按已知originalpixel→shiftedpixel坐标回采原格点，剔除插值读到reflected输入的边界。空间配准是精确坐标关系，不是逆转encoder；globalattention仍可能传播reflect内容。
+
+每view同dense probability配方，support空间留出Brier得到a_v，query probability按valid重归一sum_v a_v p_v。uniform4views是必要控制。mask在view坐标的原像可见区域合法，反射RGB没有凭空复制annotation；不同view/特征平均和概率平均不混在一个算法。
+
+为何可能有用：让原来混在同一16×16patch的FG/BG被不同格点分别观察，检查边界证据是否本来受采样限制。失败意义：只有uniformTTA有效则参考加权无独立价值；若内部语义错误不随格点变，这种新观察不解决它。FeatUp已有多视图特征重建原则，不宣称patch位移新颖。`reference_views.py`，CPU坐标/边界标注/加权归一验证过，无实际DINO结果。
+
+## 七算法共同的失败账本
+
+每类原交并为I/U=J，新追回FN=a、丢TP=b、新FP=c、删FP=d，则J'−J=[a−b+J(d−c)]/[U+c−d]。不能只报召回或代理loss。报告a/b/c/d、supportfit→querytransfer、原来好的episode退化、目标缺席误报与额外编码/训练成本。
+
+有限保存输出bank的GT选择仅作诊断。`finite_bank_oracle.py`按每类ratio用Dinkelbach精确选有限bank中的最大sumI/sumU；不把逐episode最佳IoU误当严格classmIoU上界，更不当可观察信息或任意新算法上界。所有GT评价在prediction冻结后。
+
+图扩散旧ARCHIVE已量56.26 vs56.06，所以仅保留`reference_diffusion.py`作廉价强控制，不把其10个CPU SPD检查重包装成新方法。旧selector/SAM/GIC/info也不恢复。任何候选若只胜弱控制、不迁移或没有新增合法证据收益，保留小失败证据、清重资产；不再无限变体。
+
+## 当前可执行范围和下一状态
+
+这些实现当前完成的是CPU数学/梯度/geometry/hook/接口验收，非7个已证明有效的方法。训练器和feature-probe有独立输入/GT后置/部署合同；RGBview与prompt有frozen-encoder callbacks，真实encoder/host整合仍需现有资产的独立runtime验收。C1/C2可选独立arms，不默认一条十项GPU队列。
+
+未来选任意卡都先CPU完成数据与源preflight，单任务finite guard，失败/无ready next/确认60秒空闲只停own再平台关机，保护foreign jobs。现在用户明确无卡，不申请GPU，不下载资产，不假造利用率。PLAN和`results/prepared_independent_experiments.json`是10独立卡权威入口，旧first10单队列receipt不覆盖改过的源代码，必须重验。
+
+主要主文献：[INSID3](https://arxiv.org/html/2603.28480v1)、[FoRIS](https://arxiv.org/html/2609.03384v1)、[RSRM](https://arxiv.org/html/2606.24297v1)、[FROST](https://arxiv.org/html/2606.31136)、[SCML](https://arxiv.org/html/1404.4105)、[VPT](https://arxiv.org/abs/2203.12119)、[TPT](https://arxiv.org/abs/2209.07511)、[Unbalanced OT](https://arxiv.org/abs/1607.05816)、[FeatUp](https://arxiv.org/abs/2403.10516)。标准原则与当前具体组合分别核对，未宣布新颖性完全确认。
+
+## 历史转导路线证据（仅记录，不恢复队列）
 
 ## 一句话
 

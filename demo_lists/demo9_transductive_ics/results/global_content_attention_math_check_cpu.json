@@ -1,0 +1,81 @@
+{
+  "mechanism": "Local patch-query -> global-key readout on native Q/K/V; no state feedback",
+  "scope": "Synthetic NumPy float64 CPU algebra; no model score, GPU or runtime claim",
+  "seed": 1729,
+  "cases": [
+    {
+      "name": "direct_equals_query_chunks",
+      "passed": true,
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "name": "lift2d_joint_softmax_original_scale",
+      "passed": true,
+      "max_error": 4.440892098500626e-16,
+      "wrong_scale_difference": 0.4456552949712571,
+      "separate_softmax_difference": 1.578475084371624
+    },
+    {
+      "name": "ordinary_delta_both_identities",
+      "passed": true,
+      "max_error": 5.551115123125783e-16,
+      "exact_no_change": false,
+      "fallback_rows": 0,
+      "exp_shift_max": 0.0
+    },
+    {
+      "name": "no_change_returns_exact_native_u",
+      "passed": true,
+      "exact_no_change": true,
+      "fallback_rows": 0
+    },
+    {
+      "name": "huge_b_exp_shift_avoids_overflow",
+      "passed": true,
+      "max_error": 0.0,
+      "naive_has_nonfinite": true,
+      "exact_no_change": false,
+      "fallback_rows": 0,
+      "exp_shift_max": 998.2087409960928
+    },
+    {
+      "name": "near_all_global_mass_detects_lost_patch_numerator",
+      "passed": true,
+      "max_error": 0.0,
+      "naive_numerator_error": 3.0,
+      "naive_residual_error": 2.9999999999999982,
+      "exact_no_change": false,
+      "fallback_rows": 1,
+      "exp_shift_max": 0.0
+    },
+    {
+      "name": "fixed_native_qk_conditional_origin_test",
+      "passed": true,
+      "local_logits_error": 1.7763568394002505e-15,
+      "native_patch_to_global_logits_change": 3.824062006455174,
+      "claim": "Frozen Q/K only; not a whole native-trajectory invariance claim"
+    },
+    {
+      "name": "native_trajectory_two_layer_positive_counterexample",
+      "passed": true,
+      "local_layer2_output_change": 0.009515806332327233,
+      "interpretation": "Upstream native position dependence survives local readout"
+    },
+    {
+      "name": "global_values_equal_u_imply_no_effect",
+      "passed": true,
+      "max_error": 4.440892098500626e-16
+    },
+    {
+      "name": "shared_mask_and_prefix_zero",
+      "passed": true,
+      "max_error": 6.661338147750939e-16
+    }
+  ],
+  "passed": 10,
+  "total": 10,
+  "all_passed": true,
+  "normalizer_requirement": "Native row LSE required; public SDPA does not supply it",
+  "numerical_limit": "LSE stabilizes denominator but cannot reconstruct a rounded-away patch numerator; guarded fallback recomputes",
+  "whole_model_origin_invariance_claim": false
+}

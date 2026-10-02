@@ -1,0 +1,128 @@
+{
+  "state": "PREPARED_CARDS_VALIDATED",
+  "cards": 10,
+  "algorithms": 7,
+  "diagnostics": 3,
+  "serial_dependencies": 0,
+  "source_sha256": {
+    "scripts/native_readout_probe.py": "df77baaae0d8b31b73b812e740918a3d1e721662a34bd82a4c3bdaedd88a3053",
+    "scripts/native_attention_readout.py": "fce497818a6041fb229fa1b61aeca4562e4638391e07e9eaac8588f2dbf6ed6c",
+    "scripts/native_attention_readout_cpu.py": "590756e90a0373ccdbed8e2204b4703ea80ba0d9a7d4b57831f779b5c2909efc",
+    "scripts/global_content_attention.py": "2ac3fe0f82069a3394127edff42f78d2c1f9cb77c6c61f34680daefdc2e51c0c",
+    "scripts/global_content_attention_cpu.py": "6d5ac2edc096663c9ebcfd2a2e6419a57c25ae5d5e8a73ad01855ad7a75dc3f3",
+    "tics/reference_metric.py": "e7799650be1da6911581d5283577e6b333147a48ed9b36bef28e051e26d57432",
+    "scripts/reference_metric_cpu.py": "14e2a69e38286e9ede6f348622e33609af3f94fd7e3bf38f3c8ed1ec20690d8c",
+    "scripts/train_reference_metric.py": "fb6cd54056680dfc7f05ddf1f8bf9233d1847981b9c6f30d9cf8f8c4c4d81989",
+    "scripts/reference_feature_probe.py": "3191c8b31d14aaf0bb799505cc6fd37b19eed236fc2a846547651915f8b007de",
+    "tics/host_signed_field.py": "9ac54f982f522cfd8c71e2757c6f2453fb985076814bd783a094f48d19d2f11c",
+    "tics/reference_views.py": "e9c70b6fc0dacb80788ded67087bdc1bd7b4f1e920de8e70fe46ed0af067e60d",
+    "scripts/reference_views_cpu.py": "16e6d791e3ddffb0ff72f1620be3bc81cb09f463d48159ee65e1d9cb38aa8356",
+    "tics/reference_prompt.py": "11a5accb991613b6b0dc18652d33b881db8ccb1fdaf7267d0c7c299136bbe864",
+    "scripts/reference_prompt_cpu.py": "d1e5b0403e9afe43b03b68b0e80e4eb797273b6d4cb9fc69ac3ee135138e81b0",
+    "tics/unbalanced_transport.py": "f2b4a6722589c77debc8482a87a8afffb7bdf738ad41e1b3786bb6fe430a248c",
+    "scripts/unbalanced_transport_cpu.py": "fffd8395155facbad07ba6778ef1ba9a8d62a89b4aaff171f955383da3749bf3",
+    "scripts/host_signed_field_cpu.py": "5f143717b9f3f6621710fc32bab745cc96e39b52e5490d7f3256961f795699f8",
+    "tics/reference_diffusion.py": "a8c0c3c30d50bbdee507cd9f7e5643a5ef41ace50bebaf64df7ea359a96ef460",
+    "scripts/reference_diffusion_cpu.py": "f5dceee69e96f73c85114b121246194e1ac227d9e200c2d76fc849d62c55100a",
+    "scripts/finite_bank_oracle.py": "97d7de75e89dafa4e6724c49bcbc69a5a193e4fc54f3cc1dcd3c6db0e041ac3c",
+    "scripts/experiment_resource_guard.py": "f8c49a8eb4a58df625daff2ee9d4976b6226c1862d5f4ab2288c2e86ae75f86d"
+  },
+  "full_pretrained_runtime_verified": false,
+  "segmentation_gain_verified": false,
+  "cpu_checks": [
+    {
+      "script": "global_content_attention.py",
+      "passed": true,
+      "returncode": 0,
+      "output": "{\"cpu_fp64_cases\": 10, \"max_lift_output_error\": 4.440892098500626e-16, \"max_fallback_output_error\": 0.0, \"prefix0_and_allglobal\": true, \"additive_boolean_and_causal_masks\": true, \"scale\": \"original d\", \"gamma\": 1}\n",
+      "error": ""
+    },
+    {
+      "script": "native_attention_readout_cpu.py",
+      "passed": true,
+      "returncode": 0,
+      "output": "{\"cpu_backbone_fixtures\": 10, \"blocks_per_fixture\": 4, \"byte_exact_native_trajectory_cases\": 10, \"inplace_layer_scale_and_final_norm\": true, \"native_output_same_object\": true, \"native_only_raw_identity\": true, \"native_replica_byte_exact_records\": 80, \"side_error_trajectory_byte_exact\": true, \"missing_or_invalid_readouts_rejected\": true, \"layer_std_correction1\": true, \"two_native_passes_B2_then_B1\": true, \"observe_modified_not_renativized\": true, \"original_parameter_values_unchanged\": true, \"original_forward_pointers_restored\": true, \"fixture_scope\": \"Locally constructed small CPU blocks using known live source operations; no installed whole-DINO/GPU validation\", \"cuda_calls\": 0}\n",
+      "error": ""
+    },
+    {
+      "script": "native_readout_probe.py",
+      "passed": true,
+      "returncode": 0,
+      "output": "CPU main composition passed: fixed scales, independent readers, dense gate/KDE/smoothing/finalization; no CUDA or dataset access.\n",
+      "error": ""
+    },
+    {
+      "script": "reference_metric_cpu.py",
+      "passed": true,
+      "returncode": 0,
+      "output": "{\"state\": \"PASSED\", \"scope\": \"Synthetic CPU math/implementation, no DINO/data/GPU/task efficacy\", \"implicit_gradcheck\": true, \"protected_active_alpha_gradcheck\": true, \"metric_matrix_maxerror\": 3.552713678800501e-15, \"chunked_density_parity\": true, \"label_complement_antisymmetry\": true, \"full_dictionary_gradient\": true, \"exact_zero_correction_host_identity\": true, \"degenerate_reference_fallback\": true, \"audit\": {\"state\": \"ADAPTED\", \"alpha\": 0.3986039371888168, \"triples\": 512, \"min_weight\": 0.7185702505097045, \"max_weight\": 0.8605104956720542, \"gain\": 0.4768116880884702}}\n",
+      "error": ""
+    },
+    {
+      "script": "train_reference_metric.py",
+      "passed": true,
+      "returncode": 0,
+      "output": "{\"variant\": \"protected\", \"epoch\": 1, \"train_segmentation_loss\": 1.0952186584472656, \"optimizer_updates\": 2, \"no_gradient_fallbacks\": 0, \"development\": {\"class_miou\": 0.5723076923076923, \"per_class_iou\": {\"20\": 0.5723076923076923}, \"class_intersection_union\": {\"20\": [186, 325]}, \"segmentation_loss\": 1.0743486881256104, \"episodes\": 2}}\n{\"variant\": \"fixed_global\", \"epoch\": 1, \"train_segmentation_loss\": 1.090901792049408, \"optimizer_updates\": 2, \"no_gradient_fallbacks\": 0, \"development\": {\"class_miou\": 0.5771604938271605, \"per_class_iou\": {\"20\": 0.5771604938271605}, \"class_intersection_union\": {\"20\": [187, 324]}, \"segmentation_loss\": 1.0733645558357239, \"episodes\": 2}}\n{\"variant\": \"unprotected\", \"epoch\": 1, \"train_segmentation_loss\": 1.0952186584472656, \"optimizer_updates\": 2, \"no_gradient_fallbacks\": 0, \"development\": {\"class_miou\": 0.5723076923076923, \"per_class_iou\": {\"20\": 0.5723076923076923}, \"class_intersection_union\": {\"20\": [186, 325]}, \"segmentation_loss\": 1.0743486881256104, \"episodes\": 2}}\n{\"state\": \"PASSED\", \"scope\": \"Synthetic one-epoch CPU trainer smoke; no real-data efficacy\", \"arms\": {\"protected\": {\"epochs\": 1, \"optimizer_updates\": 2, \"dictionary_change\": 0.04001922905445099, \"gain_change\": 0.036440372467041016, \"checkpoint_rng\": true, \"trained_weights_legal\": true, \"adaptation_state\": \"ADAPTED\", \"deployment_exact_correction_parity\": true, \"deployment_variant_preserved\": true, \"deployment_frozen\": true}, \"fixed_global\": {\"epochs\": 1, \"optimizer_updates\": 2, \"dictionary_change\": 0.014882680028676987, \"gain_change\": 0.014882326126098633, \"checkpoint_rng\": true, \"trained_weights_legal\": true, \"adaptation_state\": \"FIXED_GLOBAL\", \"deployment_exact_correction_parity\": true, \"deployment_variant_preserved\": true, \"deployment_frozen\": true}, \"unprotected\": {\"epochs\": 1, \"optimizer_updates\": 2, \"dictionary_change\": 0.04001922905445099, \"gain_change\": 0.036440372467041016, \"checkpoint_rng\": true, \"trained_weights_legal\": true, \"adaptation_state\": \"UNPROTECTED_SPECTRAL\", \"deployment_exact_correction_parity\": true, \"deployment_variant_preserved\": true, \"deployment_frozen\": true}}, \"split_leakage_rejections\": {\"class_overlap\": true, \"photo_overlap\": true, \"test_split\": true, \"payload_projection_mismatch\": true}, \"cpu_only\": true, \"cuda_initialization\": false, \"real_training_executed\": false, \"temporary_tensors_removed\": true}\n",
+      "error": ""
+    },
+    {
+      "script": "reference_views_cpu.py",
+      "passed": true,
+      "returncode": 0,
+      "output": "{\"state\": \"PASSED\", \"scope\": \"CPU fake encoder + interface/geometry only; no DINO/task gain\", \"cases\": [{\"seed\": 0, \"foreground_rgb_exact\": true, \"background_histogram_exact\": true, \"original_rgb_untouched\": true, \"coordinate_roundtrip_exact\": true, \"reflected_label_exclusion\": true, \"local_patch_border_exclusion\": true, \"same_budget_uniform_control\": true, \"support_holdouts_label_disjoint\": true, \"heldout_rgb_not_label_rendered\": true, \"background_encoder_calls\": 3, \"background_calibration_encoder_calls\": 12, \"lattice_encoder_calls\": 4}, {\"seed\": 1, \"foreground_rgb_exact\": true, \"background_histogram_exact\": true, \"original_rgb_untouched\": true, \"coordinate_roundtrip_exact\": true, \"reflected_label_exclusion\": true, \"local_patch_border_exclusion\": true, \"same_budget_uniform_control\": true, \"support_holdouts_label_disjoint\": true, \"heldout_rgb_not_label_rendered\": true, \"background_encoder_calls\": 3, \"background_calibration_encoder_calls\": 12, \"lattice_encoder_calls\": 4}, {\"seed\": 2, \"foreground_rgb_exact\": true, \"background_histogram_exact\": true, \"original_rgb_untouched\": true, \"coordinate_roundtrip_exact\": true, \"reflected_label_exclusion\": true, \"local_patch_border_exclusion\": true, \"same_budget_uniform_control\": true, \"support_holdouts_label_disjoint\": true, \"heldout_rgb_not_label_rendered\": true, \"background_encoder_calls\": 3, \"background_calibration_encoder_calls\": 12, \"lattice_encoder_calls\": 4}, {\"seed\": 3, \"foreground_rgb_exact\": true, \"background_histogram_exact\": true, \"original_rgb_untouched\": true, \"coordinate_roundtrip_exact\": true, \"reflected_label_exclusion\": true, \"local_patch_border_exclusion\": true, \"same_budget_uniform_control\": true, \"support_holdouts_label_disjoint\": true, \"heldout_rgb_not_label_rendered\": true, \"background_encoder_calls\": 3, \"background_calibration_encoder_calls\": 12, \"lattice_encoder_calls\": 4}, {\"seed\": 4, \"foreground_rgb_exact\": true, \"background_histogram_exact\": true, \"original_rgb_untouched\": true, \"coordinate_roundtrip_exact\": true, \"reflected_label_exclusion\": true, \"local_patch_border_exclusion\": true, \"same_budget_uniform_control\": true, \"support_holdouts_label_disjoint\": true, \"heldout_rgb_not_label_rendered\": true, \"background_encoder_calls\": 3, \"background_calibration_encoder_calls\": 12, \"lattice_encoder_calls\": 4}, {\"seed\": 5, \"foreground_rgb_exact\": true, \"background_histogram_exact\": true, \"original_rgb_untouched\": true, \"coordinate_roundtrip_exact\": true, \"reflected_label_exclusion\": true, \"local_patch_border_exclusion\": true, \"same_budget_uniform_control\": true, \"support_holdouts_label_disjoint\": true, \"heldout_rgb_not_label_rendered\": true, \"background_encoder_calls\": 3, \"background_calibration_encoder_calls\": 12, \"lattice_encoder_calls\": 4}, {\"seed\": 6, \"foreground_rgb_exact\": true, \"background_histogram_exact\": true, \"original_rgb_untouched\": true, \"coordinate_roundtrip_exact\": true, \"reflected_label_exclusion\": true, \"local_patch_border_exclusion\": true, \"same_budget_uniform_control\": true, \"support_holdouts_label_disjoint\": true, \"heldout_rgb_not_label_rendered\": true, \"background_encoder_calls\": 3, \"background_calibration_encoder_calls\": 12, \"lattice_encoder_calls\": 4}, {\"seed\": 7, \"foreground_rgb_exact\": true, \"background_histogram_exact\": true, \"original_rgb_untouched\": true, \"coordinate_roundtrip_exact\": true, \"reflected_label_exclusion\": true, \"local_patch_border_exclusion\": true, \"same_budget_uniform_control\": true, \"support_holdouts_label_disjoint\": true, \"heldout_rgb_not_label_rendered\": true, \"background_encoder_calls\": 3, \"background_calibration_encoder_calls\": 12, \"lattice_encoder_calls\": 4}, {\"seed\": 8, \"foreground_rgb_exact\": true, \"background_histogram_exact\": true, \"original_rgb_untouched\": true, \"coordinate_roundtrip_exact\": true, \"reflected_label_exclusion\": true, \"local_patch_border_exclusion\": true, \"same_budget_uniform_control\": true, \"support_holdouts_label_disjoint\": true, \"heldout_rgb_not_label_rendered\": true, \"background_encoder_calls\": 3, \"background_calibration_encoder_calls\": 12, \"lattice_encoder_calls\": 4}, {\"seed\": 9, \"foreground_rgb_exact\": true, \"background_histogram_exact\": true, \"original_rgb_untouched\": true, \"coordinate_roundtrip_exact\": true, \"reflected_label_exclusion\": true, \"local_patch_border_exclusion\": true, \"same_budget_uniform_control\": true, \"support_holdouts_label_disjoint\": true, \"heldout_rgb_not_label_rendered\": true, \"background_encoder_calls\": 3, \"background_calibration_encoder_calls\": 12, \"lattice_encoder_calls\": 4}], \"cases_count\": 10, \"max_affine_feature_alignment_error\": 0.0, \"cuda_initialized\": false, \"no_weights_loaded\": true, \"no_downloads\": true, \"methods\": 2}\n",
+      "error": ""
+    },
+    {
+      "script": "reference_prompt_cpu.py",
+      "passed": true,
+      "returncode": 0,
+      "output": "{\"state\": \"CPU_FIXTURES_PASSED\", \"fixtures\": 4, \"arms_per_fixture\": 3, \"support_calls_per_arm\": 17, \"prefix_bound\": 0.1, \"backbone_parameters_unchanged\": true, \"gradient_only_prompt\": true, \"legal_support_validation_only\": true, \"query_labels_used\": false, \"hook_cleanup_on_success_and_exception\": true, \"detached_feature_adapter_rejected\": true, \"scope\": \"Tiny CPU fake Eva-shaped blocks; no DINO/GPU/real-data quality claim\"}\n",
+      "error": ""
+    },
+    {
+      "script": "unbalanced_transport_cpu.py",
+      "passed": true,
+      "returncode": 0,
+      "output": "{\n  \"state\": \"CPU_NUMERICS_PASSED\",\n  \"chunk_parity_max_abs\": 5.551115123125783e-16,\n  \"stationarity\": 4.650779761306012e-12,\n  \"rho0_KDE_identity\": true,\n  \"support_query_permutation_identity\": true,\n  \"clear_feature_identity_labels\": true,\n  \"explicit_convergence_failure\": true,\n  \"explicit_RAM_failure\": true,\n  \"induced_foreground_quota_failure_counts\": {\n    \"unbalanced_soft_quota\": 0,\n    \"balanced_soft_quota\": 4\n  },\n  \"toy_mass\": [\n    {\n      \"toy_query_FG\": 0.0,\n      \"KDE_mean_FG\": 2.0611536181901975e-09,\n      \"UOT_mean_FG\": 4.5397868702434517e-05,\n      \"balanced_mean_FG\": 0.5000000000000011,\n      \"UOT_transported_FG\": 4.5397868702434456e-05,\n      \"UOT_total_mass\": 0.629979591570421\n    },\n    {\n      \"toy_query_FG\": 0.1,\n      \"KDE_mean_FG\": 0.1000000016489229,\n      \"UOT_mean_FG\": 0.10000000797864665,\n      \"balanced_mean_FG\": 0.4999999999999119,\n      \"UOT_transported_FG\": 0.18773178112849265,\n      \"UOT_total_mass\": 0.7229510287725847\n    },\n    {\n      \"toy_query_FG\": 0.5,\n      \"KDE_mean_FG\": 0.5000000000000001,\n      \"UOT_mean_FG\": 0.5000000000000001,\n      \"balanced_mean_FG\": 0.5000000000000001,\n      \"UOT_transported_FG\": 0.5000000000000001,\n      \"UOT_total_mass\": 0.7937005265400867\n    },\n    {\n      \"toy_query_FG\": 0.9,\n      \"KDE_mean_FG\": 0.8999999983510772,\n      \"UOT_mean_FG\": 0.8999999920213535,\n      \"balanced_mean_FG\": 0.5000000000000868,\n      \"UOT_transported_FG\": 0.8122682188715072,\n      \"UOT_total_mass\": 0.7229510287725847\n    },\n    {\n      \"toy_query_FG\": 1.0,\n      \"KDE_mean_FG\": 0.9999999979388466,\n      \"UOT_mean_FG\": 0.999954602131298,\n      \"balanced_mean_FG\": 0.499999999999999,\n      \"UOT_transported_FG\": 0.9999546021312978,\n      \"UOT_total_mass\": 0.6299795915704215\n    }\n  ],\n  \"limitation\": \"Clean toy verifies solver/protocol only; zero real episodes, no task mIoU or empirical gain\"\n}\n",
+      "error": ""
+    },
+    {
+      "script": "reference_diffusion_cpu.py",
+      "passed": true,
+      "returncode": 0,
+      "output": "{\n  \"method\": \"reference_clamped_manifold_diffusion\",\n  \"cpu_cases\": [\n    {\n      \"name\": \"symmetric_spd_scatter_operator\",\n      \"passed\": true,\n      \"minimum_eigenvalue\": 1.3989187105552228,\n      \"fidelity_lower_bound\": 1.0,\n      \"scatter_dense_error\": 2.220446049250313e-16\n    },\n    {\n      \"name\": \"preconditioned_cg_equals_dense_solve\",\n      \"passed\": true,\n      \"max_error\": 2.7755575615628914e-17,\n      \"iterations\": 6,\n      \"relative_residual\": 1.150663686096138e-16,\n      \"converged\": true\n    },\n    {\n      \"name\": \"dirichlet_energy_gradient\",\n      \"passed\": true,\n      \"directional_error\": 1.0475231793094508e-11\n    },\n    {\n      \"name\": \"foreground_background_swap_equivariance\",\n      \"passed\": true,\n      \"signed_score_error\": 8.326672684688674e-17\n    },\n    {\n      \"name\": \"clamped_positive_and_negative_evidence\",\n      \"passed\": true,\n      \"scores\": [\n        0.9811200739097627,\n        0.9739848685145102,\n        -0.9739848685145102,\n        -0.9811200739097627\n      ],\n      \"cross_edges\": 12\n    },\n    {\n      \"name\": \"boundary_and_native_kde_controls\",\n      \"passed\": true,\n      \"boundary_cross_edges\": 0\n    },\n    {\n      \"name\": \"plain_label_propagation_same_graph_control\",\n      \"passed\": true,\n      \"fidelity_increment_difference\": 0.1887997978573313\n    },\n    {\n      \"name\": \"missing_support_class_exact_native_fallback\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"zero_or_nonfinite_feature_exact_fallback\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"nonconvergence_fallback_and_no_evidence_no_quota\",\n      \"passed\": true,\n      \"failed_relative_residual\": 0.03719752684624948,\n      \"zero_evidence_max\": 0.0\n    }\n  ],\n  \"passed\": 10,\n  \"total\": 10,\n  \"all_passed\": true,\n  \"seed\": 317,\n  \"scope\": \"Synthetic float64 CPU correctness only; no segmentation gain or novelty established\",\n  \"cuda_calls\": 0,\n  \"query_gt_argument\": false\n}\n",
+      "error": ""
+    },
+    {
+      "script": "host_signed_field_cpu.py",
+      "passed": true,
+      "returncode": 0,
+      "output": "{\"state\": \"PASSED\", \"cases\": 6, \"native_mask_exact\": true, \"restored\": true, \"scope\": \"CPU source-operation fixtures; real pretrained host parity remains required\"}\n",
+      "error": ""
+    },
+    {
+      "script": "reference_feature_probe.py",
+      "passed": true,
+      "returncode": 0,
+      "output": "{\"state\": \"CPU_FAKE_FEATURE_SELF_CHECK_PASSED\", \"methods_frozen_before_evaluator\": true, \"metric_random_dictionary_forbidden\": true, \"fresh_trained_checkpoint_variant_preserved\": true, \"unknown_metric_variant_ERROR\": true, \"long_short_aliases_checked\": true, \"saved_tensor_input_roundtrip\": true, \"degenerate_support_host_exact\": true, \"numerical_errors_explicit\": true, \"ledger_and_bits\": true, \"CUDA_without_guard_refused\": true, \"real_DINO_or_task_gain_claim\": false}\n",
+      "error": ""
+    },
+    {
+      "script": "finite_bank_oracle.py",
+      "passed": true,
+      "returncode": 0,
+      "output": "{\"state\": \"PASSED\", \"finite_bank_exact\": true, \"bruteforce_equal\": true, \"best_class_iou\": 0.5555555555555556, \"scope\": \"Synthetic CPU evaluator test, not task gain\"}\n",
+      "error": ""
+    },
+    {
+      "script": "experiment_resource_guard.py",
+      "passed": true,
+      "returncode": 0,
+      "output": "{\"state\": \"SHUTDOWN_REQUESTED\", \"elapsed_seconds\": 7.791000000000048e-06, \"terminal_reason\": \"SHUTDOWN_ELIGIBLE_NO_RUNNABLE_STAGE\", \"helper\": \"/usr/bin/shutdown\", \"billing_stop_confirmed\": false, \"provider_documented_action\": true}\n{\"state\": \"DEFER_FOREIGN_GPU\", \"elapsed_seconds\": 0.0002101249999999985, \"gpu_pids\": [999]}\n{\"state\": \"PREFLIGHT_COMPLETED\", \"elapsed_seconds\": 0.0, \"verified_files\": 0}\n{\"state\": \"GPU_RUNNING\", \"elapsed_seconds\": 0.0, \"stage\": \"gpu_stall_CPU_stub\", \"own_child_pid\": 72805}\n{\"state\": \"OWNED_GPU_SUSTAINED_IDLE_STOP\", \"elapsed_seconds\": 60.0, \"stage\": \"gpu_stall_CPU_stub\", \"stopped_owned_pids\": [72805]}\n{\"state\": \"SHUTDOWN_REQUESTED\", \"elapsed_seconds\": 60.0, \"terminal_reason\": \"SHUTDOWN_ELIGIBLE_STAGE_FAILURE\", \"helper\": \"/usr/bin/shutdown\", \"billing_stop_confirmed\": false, \"provider_documented_action\": true}\n{\"state\": \"PREFLIGHT_COMPLETED\", \"elapsed_seconds\": 0.0, \"verified_files\": 0}\n{\"state\": \"CPU_HANDOFF_GAP\", \"elapsed_seconds\": 0.0, \"stage\": \"cpu_stall_CPU_stub\", \"own_child_pid\": 72820}\n{\"state\": \"OWNED_GPU_SUSTAINED_IDLE_STOP\", \"elapsed_seconds\": 60.0, \"stage\": \"cpu_stall_CPU_stub\", \"stopped_owned_pids\": [72820]}\n{\"state\": \"SHUTDOWN_REQUESTED\", \"elapsed_seconds\": 60.0, \"terminal_reason\": \"SHUTDOWN_ELIGIBLE_STAGE_FAILURE\", \"helper\": \"/usr/bin/shutdown\", \"billing_stop_confirmed\": false, \"provider_documented_action\": true}\n{\"state\": \"PREFLIGHT_COMPLETED\", \"elapsed_seconds\": 0.00018649999999997835, \"verified_files\": 0}\n{\"state\": \"CUDA_READINESS_FAILED_NO_STAGE_EXECUTED\", \"elapsed_seconds\": 0.00038654199999998973}\n{\"state\": \"SHUTDOWN_REQUESTED\", \"elapsed_seconds\": 0.0005499170000000109, \"terminal_reason\": \"SHUTDOWN_ELIGIBLE_STAGE_FAILURE\", \"helper\": \"/usr/bin/shutdown\", \"billing_stop_confirmed\": false, \"provider_documented_action\": true}\n{\"state\": \"PREFLIGHT_COMPLETED\", \"elapsed_seconds\": 0.00012958299999998868, \"verified_files\": 0}\n{\"state\": \"NO_CONFIRMED_GPU_NO_CUDA_OR_STAGE_EXECUTED\", \"elapsed_seconds\": 0.00030558299999999816}\n{\"state\": \"NO_CONFIRMED_GPU_NO_SHUTDOWN\", \"elapsed_seconds\": 0.0004661670000000173}\n{\"state\": \"PREFLIGHT_COMPLETED\", \"elapsed_seconds\": 0.0044696670000000105, \"verified_files\": 1}\n{\"cpu_state_machine\": \"PASSED\", \"cases\": [\"ownedCUDAcontext_0util_60s\", \"CPUchild_stalled\", \"dutycycle_zero_under60s\", \"util_unknown_not_idle\", \"healthyqueued\", \"immediate_terminal\", \"foreignGPU_even0util\", \"LinuxAutoDLlayout_required\", \"GPUvisible_CUDAunavailable_shutdown\", \"NOCARD_no_shutdown\", \"streamed_weight_SHA\", \"preflight_no_CUDA_or_GPU_calls\"], \"real_GPU_calls\": 0, \"real_shutdown_calls\": 0, \"billing_stop_never_falsely_confirmed\": true}\n",
+      "error": ""
+    }
+  ],
+  "cpu_checks_passed": true,
+  "scope": "Synthetic/source-operation CPU acceptance; no images/pretrained weights/GPU experiment",
+  "automatic_GPU_queue": false
+}

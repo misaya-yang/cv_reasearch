@@ -1,29 +1,234 @@
-# demo9 下一步实验计划
+## Latest user direction: powered off, local analysis only
 
-## Latest user-authorized experiment: conditional candidate ranking (2026-10-02)
+All bounded pilots lack a useful strong-control improvement. The user requested full instance shutdown and deeper analysis; provider shutdown and refreshed UI STOPPED confirmed. No new GPU queue, no-card boot or automatic boot. E9/E10 executed reduced native fixtures, not the original all-method/cross-domain scientific cards. Do not call all ten research questions answered.
 
-The user explicitly accepts frozen-encoder small-head training. Retired M1, old info/SAM/GIC queues and native f2 remain retired. Acquire first 10 native paired reference/query full-token samples, then append frozen candidates and donor evidence within a 2GB pilot budget; no new downloads. The acquisition is preparation, not a gain result.
+Local reach audit, before execution:
+1. Assumption: E3 adds a weak metric density increment after a hard native decision; its frozen scales may make most pixels unreachable.
+2. Prediction: saved epsilon<=.012 and beta=.4818 imply ideal |deltaH|<=4 beta epsilon<=.0232, much smaller than interior margin .5; saved binary masks should reconstruct the declared64-to1024 hard field exactly.
+3. If matched: establish the actual intervention's limited spatial reach; retain source/coordinate/FP32 qualifications. It does not establish useful correction direction or query generalisation.
+4. If reconstruction mismatches or bound assumptions fail: mark this attribution unverified, preserve evidence, do not regenerate deleted features or rerun training to repair the narrative.
 
-Pilot40 completed; its two held classes offered only 0.132pp candidate-choice room (direct90.6467 vs GT-choice90.7784, 12 queries). It is a fit/interface check, not a useful efficacy test. Retain compact evidence and retire its 1.704GB token files.
+## 最新冻结判断与唯一接续控制（2026-10-02）
 
-Next fixed development acquisition: all20 fold0 classes,6 episodes/class requested; 12 training classes,4 development classes,4 test classes with all-role photo purge before extraction. A 6GB temporary limit is justified by broader supervision, not an unlimited cache; shared disk37GB free, reserve5GB. This remains development, not a new blind cohort. Prepare pair features, then first20 candidate sets; expand only if TRAIN+DEV candidate-choice diagnostic room is >=2pp (test labels excluded from this decision). Include matched original8scores, native naive and documented cached AG4 before further ranking evaluation. No static weak-control win is a contribution. Current historical M15 tables remain a different budget/protocol.
+E1–E7有界pilot均完成，当前没有净方法收益；E8–E10控制完成，resume2自动关机且UI确认。已删52个临时tensor共1.8009GB，不恢复采集/三臂训练/完成矩阵。权威小证据results/native_runtime_v1/completed_runtime_evidence.tgz，E3 selected_epoch保护/无保护1、固定10。开发I/U不变不证明mask相同；查询保存bitmask可直接检验。整体solid研究目标未完成。
 
-Strong controls, preregistered before v2 test results: a fixed Ridge and HistGradientBoosting scalar readout uses the same train labels and native K7 bank (original8score raw/rank/zscore/direct flag), with no hyperparameter sweep. Compare with scalar MLP/RQ/RQdonor, native naive, documented cached AG4, direct and GT-choice diagnostic. Bootstrap whole test-photo connected components; episode and class resampling are sensitivity reports, not independent-photo evidence. Counterfactual first fixed training pair is only a data-interface check; failing one pair does not refute the eligible-pair family.
+**Local analysis completed:** ideal metric reach<=.0231216; all10 hard fields reconstructed with exact output-mask parity;1800/10485760 pixels may change under this ideal per-task bound, actual0. An optimistic FN-first/FP-second correction budget gives only+.1841pp macro gain. FullFP32 bound and delta direction remain unmeasured. See metric_reachability_audit.json / metric_reachability_iou_cap.json. Fixed input intervention is too weak for its intended multi-point repair; this does not refute learning or all low-rank metrics. Do not tune gain or rerun this model.
 
-Counterfactual data-only intervention is now authorized: fixed10 training-role pairs (preselected before candidate predictions) completed; 4/10 meet unchanged both-target oracle>=.5, disjoint best sets, cross-regret>=.1 across4 concept pairs. Only these frozen8 training tasks go to ALL supervised controls. First-pair failure remains recorded; no replacements or rounded threshold changes. Same shared RGB/tokens/candidate union/P1 union/provenance/direct0 across each paired task; only legal reference annotation, derived support scores and evaluator labels differ.
+Correction to scope: seven bounded method pilots executed; original E9/E10 all-method/area/position/cross-domain questions were not completed. No existing pilot supports an all-fold or publishable method score. The current decision is local deep analysis, not filling completion counts with more GPU runs.
 
-1. Assumption: concept-switch supervision helps the existing reader use the reference rather than a dataset-wide candidate preference.
-2. Prediction: unproven; measure paired-task correct-switch rate, training fit and unchanged held24 native scores, not surrogate loss. The earlier RQ/RQdonor score72.184 vs direct73.714 on this development pilot is the no-CF control.
-3. Match: retain only a net task-beneficial arm, then design a larger unseen-photo/class evaluation; 4test photo-components do not establish solid evidence.
-4. Mismatch: stop this data-only intervention; no layer/epoch sweep. Diagnose condition-use and candidate-source errors from retained small records, retire large features when no further necessary comparison uses them.
+### E10b：固定亮度压力在强宿主上是否成立（非第八种算法）
 
-1. Assumption: candidate-conditioned reference/query evidence, and possibly donor evidence, can improve held-class whole-mask selection beyond matched supervised scalar scores. Old info already read full query tokens; this is not a first-full-token claim.
-2. Prediction: no justified point estimate. Test a preregistered useful-effect target of +2pp versus the matched scalar selector; donor increment must separately exceed paired uncertainty. Baseline, naive pooling and candidate GT-choice diagnostic accompany the same samples. This pilot cannot establish publication-level gain.
-3. Match: retain the simpler successful arm, freeze its protocol, then acquire an independently isolated cohort. Counterfactual support-mask-only tasks must preserve RGB/pool/candidates and share supervision across controls.
-4. Mismatch: inspect train fit, held-class selection regret and degradations; do not extend epochs/layers or rebuild the retired 19GB bank without evidence identifying a distinct failure. Missing donor tokens makes RQpool not evaluable.
+**实际完成：** 同10强FoRIS64.9976→64.6877，−.3099pp探索CI[-.8494,.2720]，固定亮度构造停止扩大。原生弱宿主的五例变化没有兑现强对照。GPU阶段25秒，guard31.5秒即自动关机、UISTOPPED确认；CPU分析收据名称期待错，actual CPU_FROZEN_OUTPUT_ANALYSIS/0errors，保留原failure并CPUreconciliation，不重跑预测。来源results/native_runtime_v1/brightness_strong_summary.json、完整brightness_strong_analysis.json。当前无卡分析，不恢复旧queue。
 
-Epoch selection uses development photos/classes only; never the test set. Every support/query/donor photo role is purged across splits. Full final 4096x1024 tokens are stored per native pair context, not deduplicated across different batches. Candidate labels retain native I/U and original-resolution I/U separately. First ten samples are smoke/data-interface evidence, not method results.
+1. 假设：五例INSID3的+.75亮度信号可能只反映弱宿主敏感性；完整FoRIS CRF可能已经消除它。
+2. 预测：若是弱宿主问题，同标准first10 FoRIS64.9976的亮度.75变化应在约±2pp内或退化，不预报复制五例的+14.38pp。这是可否定预测，不是保证。
+3. 若固定干预仍有>=2pp正向且paired区间正，才保留强宿主真实敏感性作为下一研究机制的证据；不能称亮度缩放本身为论文贡献，不调系数。
+4. 若未胜强宿主/不确定，结束这张固定压力构造，回原生错误账本，不扫亮度、阈值、层或大规模TTA。其它已完成卡不重跑。
 
+控制：同冻结10任务、同模型/官方掩码/CRF；baseline直接复用E8_foris_crf全部同角色I/U；无训练、无queryGT选变换。单新臂10预测后CPUexact-task join/paired分析；<=300s GPU、总cap420s，完成或故障立即foreign-safe provider关机。已冻结结果bank oracle只作诊断，非待选变换策略。本卡是压力对照，不把oracle或无新方法包装成提升。
+
+代码：scripts/native_baseline_experiment.py --query-brightness .75；scripts/join_brightness_control.py；scripts/prepare_brightness_control.py。无卡CPU验收后results/native_runtime_v1/brightness_strong_v1/queue_plan.json供guard一次运行，不重复completed identity臂。GPU时不写代码/下载/规划。
+
+### 本轮真实接口故障与接续
+
+首轮原生INSID3十例完成；FoRIS复用基底触发自写的严格正交检查。CPU对原文件测得`||UᵀU−I||₂=0.000610535942`；官方FP32 SVD在本机就是近似位置抑制算子，不能称精确投影。源矩阵不重标度、不QR、文件SHA9b9b20755a796cbda11bb7220d246ee540106e40cb024e249a5f63f884b6a116保持，修正的是接口期待而非测试质量/精确等价门槛。另实机AutoDL helper是无shebang的可执行ASCII，guard补仅ENOEXEC的bash调用；CPU无真实关机fixture通过。故障后平台STOPPED确认，回无卡做CPU修复；原失败证据保护。`queue_resume1_plan.json`31阶段通过CPU preflight，不重跑已完成的原生10例，失败FoRIS用fresh输出；整体方法收益仍未测。
+
+## 本轮直接授权与实际接续
+
+用户已允许全部执行代码和CPU验收准备后，把现有866机从无卡切至有卡，立即运行有限队列。七种候选独立比较；前一方法负结果不决定另一方法是否运行，只有共享原生基底/冻结模型等文件需要先生成。首10是接口与development信号，E3的24训练/8开发/10推理及10epoch为有界拟合pilot，不称充分训练；类别和全部角色照片隔离，基础照片来自既有验证图集合，非官方训练split。E9仅原生条件切换、E10仅原生亮度压力，不冒称七种方法都通过诊断或跨域。现有GPU CRF源码和已编译二进制可直接导入，不付费编译、不下载。定时任务已改5分钟，服务器guard连续接续、故障/空闲60秒/队列结束关机，foreign作业保护。权威执行目录`results/native_runtime_v1`，旧first10 plan不得启动。
+
+# demo9：十轮独立实验计划
+
+## 最新用户范围：7个候选方法＋10项独立实验（无卡准备）
+
+用户已明确纠正：可以找最多10个方法，10轮不是一个算法的递进。当前7个算法核心对应E1–E7；E8–E10是独立的强对照、因果/语义诊断和质量—成本/跨域压力，不冒充新方法。任意卡可单独执行并自带对照，无其它卡的通过/失败前提；本轮允许准备并一次运行有限独立卡队列；不是同一方法的递进。
+数学、计算步骤、输入信息与失败边界在[HANDOFF.md](HANDOFF.md)当前首节；机器可读四行卡在`results/prepared_independent_experiments.json`。原始准备时收益未测；以本页最新实测判断和README为准。
+
+| 实验 | 独立机制或问题 | 即使失败，能改变的决定 |
+|---|---|---|
+| E1 | 原生轨迹的局部 patch→global 注意力读出 | 轨迹/replica不exact先修实现；若合法读出在充分评估下无净收益，只停止这条PG-only机制。不能推出全GL或原始特征无信息。 |
+| E2 | 完整全局内容交互改写编码器 | 后端不兼容/数值核漂移先停修实现；合法全改写负收益则停止该强度/接口，不追加gamma/layer sweep，也不以更漂亮不变性替代任务收益。 |
+| E3 | 跨图训练方向字典＋参考反例低秩度量 | 求解或outer gradient错先修；保护alpha近0/fit失败只否定当前字典/训练，不能称信息不存在；support拟合好但query不增停止本适配，禁止更长support优化或解禁保护。 |
+| E4 | 参考背景反事实视图的前景证据加权 | 若均值/相位BG干预主导伪影、稳定权重删除关键目标部件或uniform控制追平，停止本固定算法；不增加背景素材/视图搜索。 |
+| E5 | 仅适配既有 CLS/register 输入提示 | prefix no-op不exact或优化触及权重先修；若support拟合而query退化则停止该20步接口，不追加prompt数量/步数/层位置搜索。 |
+| E6 | 不平衡 OT 的前景—背景软对应 | 数值不收敛先修log-domain/stop残差；若FG质量塌缩或balanced/soft NN追平，停止本固定OT算法，不沿测试标签搜索质量先验。 |
+| E7 | patch 网格相位多观测的参考选择融合 | 像素warp/无效边界错先修；若只有更多观测本身有效、权重无增量，则降为多视图控制，不增加偏移密度/GT择例。 |
+| E8 | 共同强基线与实现合同／同预算控制 | 任一full adaptation/no-op/scoring不合法，停止该行并修合同；仍可完成其余独立有效行，不发起付费补代码/下载。 |
+| E9 | 相同 RGB 的参考概念切换与无标签错误归因 | 不能正确switch则撤回该冻结方法的条件化主张；semantic PNG的label0只能称未标注背景，不能猜对象身份。缺fixture/接口标NA，不按GT替换有利案例。 |
+| E10 | 每种冻结方法的质量—成本和跨域压力 | 某域净退化就撤回该域主张；超预算则记资源不可评估/停止该实现，不调测试域阈值/图像大小/步数挽救。其它独立方法仍可单独审阅。 |
+
+## 统一合同与资源边界
+
+- 同一冻结DINOv3-L/16/1024、官方掩码、声明编码/读出精度及batch context，保留原宿主与最强相同信息/监督/成本控制。INSID3、FoRIS完整强pipeline与组件adaptation分别标注。
+- 元数据预固定四折标准seed0每类前2个draw（40任务/折）的development清单，首10只做接口；用过的development不能改名独立测试。真实最终证据需冻结算法后新cohort，并在4fold计算class sumI/sumU配对区间。
+- 唯一推理标注是参考掩码；类别ID不进scorer。训练仅C3和同监督控制使用base labels，训练/开发/test类别和所有role照片隔离；queryGT只在prediction冻结后供评分/诊断。
+- 同一RGB概念切换要控制面积/位置捷径；完整label互换可使对称度量保持不变，不能凭这一点判模型不看参考。
+- 数值/空mask/不收敛属于实现或证据边界，保留回执；不能在运行中改阈值/层/强度，不能以loss/不变性/CPU绿灯代替任务收益。
+- 5pp或明显质量—成本优势是项目扩展目标，不是预测或会议接收保证；2pp仅为机制筛查目标，小样本CI无法排除有效效应时为inconclusive，不因前10没涨宣判整个家族。
+- 最新直接用户已授权全部准备后切同一实例有卡。此前无卡限制为历史；仍禁止下载模型/权重/数据和重建旧失败bank。开卡前完成CPU数学/CLI/合同/部署；当前旧first10 preflight不覆盖已改代码，未来每张选定卡要重做source/asset preflight。
+- 单卡finite timeout/显存allocator cap<=.3×32GiB，至少5GiB磁盘；当own任务结束/出错/无ready next或确认0利用率60秒时按resource guard停止own并provider关机，保护other jobs。仅标SHUTDOWN_REQUESTED，不冒称计费已停。
+
+## 每卡四行预测与固定控制
+
+### E1 原生轨迹的局部 patch→global 注意力读出
+
+原生每层Q/K/V与后续hidden完全照常；只在旁路以pre-RoPE q_p·k_g替换PG列、PP logits保持原式，所有key共用softmax。CF输出经相同attention输出norm/projection、LayerScale和RSRM outputnorm；24层SAFR权重仅由原生support+support flip决定，三臂共用每图原生尺度。主输出是CF raw融合接无last-layer APD的FROST式连续解码；原生轨迹和query几何冻结，不用硬簇统一标签。
+
+1. 检验假设：直接PG位置相位影响当层读取的有用内容；不改后续轨迹也能改善当前目标/背景证据。
+2. 预期与目标：局部CF对native raw的净查询收益应超过kernel-only漂移，并同时改善FG/BG竞争。后续有用效应目标遵common >=2pp；没有已测增益预报。
+3. 若支持：保留局部读出；冻结实现，再做独立类别/照片及完整强方法对照，独立评估其增量。
+4. 若不支持：轨迹/replica不exact先修实现；若合法读出在充分评估下无净收益，只停止这条PG-only机制。不能推出全GL或原始特征无信息。
+
+**对照：** 原生RSRM raw＋同dense decoder（同层权重/尺度/视图）；同局部lift后端但不替换PG logits的kernel-pad控制；原生同预算多视图/完整FROST作为强参照，实际资产可用才运行。
+**上限与停止：** 未来单卡固定40 episode开发卡，wall cap1500s；raw只驻一组SQ+FlipS <=1.125GiB FP32，encoder/临时张量另记。不保存QKV全库；没有SDPA row-LSE复用就如实计重算成本。
+**代码：** `scripts/native_readout_probe.py`, `scripts/native_attention_readout.py`, `scripts/native_attention_readout_cpu.py`
+**当前状态：** CPU算法/接口准备，真实DINO/host/data集成与任务收益未验证；不是完成的实验结果。
+
+### E2 完整全局内容交互改写编码器
+
+第二个共享权重前向在所有层把PG/GP混合项改为pre-RoPE q·k，PP保持原始RoPE式；统一all-key softmax、V/MLP/残差/权重不改。其自身raw来自修改后的轨迹。为独立比较，使用原生support所算同一SAFR权重、原生每图每层尺度、同dense decoder和原生几何；算法就是全GL改写，不捆绑筛选/池子。
+
+1. 检验假设：逐层重新汇总全局内容的价值，能超过预训练轨迹被扰动带来的代价。
+2. 预期与目标：全GL对native raw可能改善semantic margins与真实分割，必须超过kernel与额外前向控制；有用效应目标>=2pp，不预测涨分数。
+3. 若支持：保留完整改写，报告其与原生对照的独立收益/成本；不能把局部M1失败当作本卡通过理由。
+4. 若不支持：后端不兼容/数值核漂移先停修实现；合法全改写负收益则停止该强度/接口，不追加gamma/layer sweep，也不以更漂亮不变性替代任务收益。
+
+**对照：** 原生raw＋同dense decoder；同三维lift后端的padded-native kernel控制；相同第二次前向预算的native+flip读出。
+**上限与停止：** 未来固定40 episode，wall cap1500s，fraction<=.3；native与GL顺序前向、仅一臂raw对驻CUDA；Flash lift不可用只能预先登记chunk256 fallback并记成本，禁止整NxN静默math。
+**代码：** `scripts/native_readout_probe.py`, `scripts/global_content_attention.py`, `scripts/global_content_attention_cpu.py`
+**当前状态：** CPU算法/接口准备，真实DINO/host/data集成与任务收益未验证；不是完成的实验结果。
+
+### E3 跨图训练方向字典＋参考反例低秩度量
+
+冻结原生去偏feature坐标，保存/固定同一补空间basis；rank32正交U通过独立图像的训练episode学习。每任务仅support Gold构造balanced局部同标签/困难反例triplets，冻结邻居，最多4096组；strictly-convex Newton得到v，解析步长给w∈[1/4,4]并保护原可靠support margin。M=I+U diag(w-1)Uᵀ，显式平方距离不再L2normalize。query读出采用H0+beta*tau*(logdensity_M-logdensity_I)，同宿主H0保留，w=1严格no-op；外层balanced BCE+softIoU训练U与全局有界beta=4sigmoid(b)，训练query GT合法、测试query GT禁止。 λ/κ/T/tau与宿主score尺度必须以训练/开发协议预先冻结并记录；不能把未定义常数交给测试集或让FROST再白化抵消已学M。 beta是训练/开发数据拟合的宿主特定融合尺度，同监督控制有相同拟合机会，不能称为校准后验或自然同单位相加。Newton必须达到stationarity，custom隐式VJP和活动保护步长都在outer梯度链中。
+
+1. 检验假设：跨图训练得到的差异方向可迁移；support正例/背景反例决定任务尺度比固定度量更有用。
+2. 预期与目标：support margin改善只有在查询净收益超过固定度量与SCML式同监督控制时才有意义；目标>=2pp，无实测预测。保护约束预计代数成立，不保证query精确率。
+3. 若支持：只保留真正超越同监督强控制的组成；记录训练/类别照片隔离和额外监督成本，再独立泛化验证。
+4. 若不支持：求解或outer gradient错先修；保护alpha近0/fit失败只否定当前字典/训练，不能称信息不存在；support拟合好但query不增停止本适配，禁止更长support优化或解禁保护。
+
+**对照：** 同标签/训练预算的SCML式rank-one字典＋任务尺度（取消独立新机制主张）；同预算固定学习度量U,w_global；同宿主、同scale的FROST参考协方差density增量。
+**上限与停止：** 未来训练预先冻结240跨图train tasks、<=50 epochs/3600s；推理固定40任务<=1500s；rank32参数约D×32，block patch distances，fraction<=.3。相同预算训练全部监督控制；达到cap未拟合记inconclusive。不得随机U冒充完成模型。
+**代码：** `tics/reference_metric.py`, `scripts/reference_metric_cpu.py`, `scripts/train_reference_metric.py`, `scripts/reference_feature_probe.py`, `tics/host_signed_field.py`
+**当前状态：** CPU算法/接口准备，真实DINO/host/data集成与任务收益未验证；不是完成的实验结果。
+
+### E4 参考背景反事实视图的前景证据加权
+
+原图、原图全局RGB均值替换参考背景、仅背景RGB按栅格顺序循环置换三种视图；前景像素逐元素不变。使用合法support区域留出的同一完整FG/BG density读出，以balanced Brier损失生成固定temperature=.1的view softmax权重；query保留原始RGB，融合各view完整概率。背景校准必须重渲染且保留所有held区域原RGB，不允许held标签通过渲染泄漏；BG与FG anchor均保留，不把人工背景当query真反例。
+
+1. 检验假设：support中依赖共现背景的FG表示跨背景干预不稳定；仅保留稳定的正例证据能减少查询上下文误报。
+2. 预期与目标：应降低新增FP而保留TP，且超越uniform三视图，而不是只提高support自洽；有用效应目标>=2pp，无点预测。
+3. 若支持：保留这一support观测算法，验证不同合法背景改动和未见图片；不把辅助一致性当收益。
+4. 若不支持：若均值/相位BG干预主导伪影、稳定权重删除关键目标部件或uniform控制追平，停止本固定算法；不增加背景素材/视图搜索。
+
+**对照：** 同三production视图、同12校准调用、uniform probability融合；baseline原图，不用queryGT择view；相同三编码预算的原生identity/flip观测；原图连续FG/BG density强控制。
+**上限与停止：** 固定40 development tasks，3production+最多12合法held-region重编码=最多15support编码与1query编码/任务，所有方法和uniform同视图控制预算披露；wall1800s，GPUfraction<=.3；identity仅原生预算另列。若额外调用耗尽预算或view不能合法校准，停止/明确uniform回退，不扩大view数量。
+**代码：** `tics/reference_views.py`, `scripts/reference_views_cpu.py`
+**当前状态：** CPU算法/接口准备，真实DINO/host/data集成与任务收益未验证；不是完成的实验结果。
+
+### E5 仅适配既有 CLS/register 输入提示
+
+仅优化原生5个global prefix embedding的delta（不添加token、不更新DINO权重），delta在support和query推理共享。通过support空间块留出balanced density损失拟合delta；anchors与LOO划分仅用Goldsupport，正则||delta||²，固定20步/固定优化器，不读取query标签或根据query自置信选步。delta=0完全native no-op；最终query走同dense读出。前向/反向不声称免优化。 实际固定QR基seed4101、rank32，delta=.1*native_prefix_norm/sqrt(32)*sum tanh(theta_k)*basis_k，不学习骨干或新增token。训练region和验证region不互作anchor；包含zero初始checkpoint，默认20Adam步/lr.05/prox.01。实际支持图调用1+2*steps，必须计入成本。
+
+1. 检验假设：既有全局token可以作为当前参考概念的有限条件接口；support拟合的输入提示可转移到query。
+2. 预期与目标：在spatial-holdout support拟合改善且未见query净收益超过同预算校准时才支持；有用效应>=2pp，不预测必然泛化。
+3. 若支持：保留受限prefix接口，冻结步数/正则，独立概念与照片验证；明确测试时优化成本。
+4. 若不支持：prefix no-op不exact或优化触及权重先修；若support拟合而query退化则停止该20步接口，不追加prompt数量/步数/层位置搜索。
+
+**对照：** 同20步/标签的support-only diagonal feature calibration；同额外编码预算native多视图；delta0原生dense＋完整强参照。
+**上限与停止：** 未来40tasks wall1800s、support-only20steps/任务，activation checkpoint或B1 fit以<=.3；实时记录峰值，OOM停止而非静默降精度/缩图；无跨图额外监督。
+**代码：** `tics/reference_prompt.py`, `scripts/reference_prompt_cpu.py`
+**当前状态：** CPU算法/接口准备，真实DINO/host/data集成与任务收益未验证；不是完成的实验结果。
+
+### E6 不平衡 OT 的前景—背景软对应
+
+以原生unit特征C=1-q·s作cost；query先验a均匀、support前景背景各质量.5类内均匀。求min<P,C>+eps*KL(P|a⊗b)+rho_q KL(P1|a)+rho_r KL(Pᵀ1|b)，固定eps=rho_q=rho_r=.1；log-domain chunked Sinkhorn max200/tol1e-5。score为每row前景transport/row总mass，阈值.5；不要求query总前景mass=.5，.5 support仍是softprior。保留全部anchor，不构造全coupling。
+
+1. 检验假设：允许未匹配质量可避免固定最近邻/强制质量平衡把相似背景认领成目标。
+2. 预期与目标：unbalanced允许的弃配应减少FP，且收益超过balanced OT/soft NN；有用效应>=2pp，没有预测最优质量参数。
+3. 若支持：保留有用的弃配机制，报告matched/unmatched mass及实际任务收益；冻eps/rho再独立验证。
+4. 若不支持：数值不收敛先修log-domain/stop残差；若FG质量塌缩或balanced/soft NN追平，停止本固定OT算法，不沿测试标签搜索质量先验。
+
+**对照：** 同eps/iterations/预算的balanced OT；row-normalized soft NN对应；原生连续FG/BG density、已有unbalanced-OT参照。
+**上限与停止：** 固定40tasks；nativeSQ一次/任务，chunk256/workspace256MiB，max200迭代，wall1500s/GPUfraction<=.3。数值不收敛/预算超限明确ERROR，不临时调eps/rho/precision重跑。
+**代码：** `tics/unbalanced_transport.py`, `scripts/unbalanced_transport_cpu.py`, `scripts/reference_feature_probe.py`
+**当前状态：** CPU算法/接口准备，真实DINO/host/data集成与任务收益未验证；不是完成的实验结果。
+
+### E7 patch 网格相位多观测的参考选择融合
+
+固定像素offsets(0,0),(8,0),(0,8),(8,8)，reflect-pad/crop后同encoder读取fullmaps；支持图/查询图分别声明编码context。按解析坐标把feature回采原patch网格（双线性只作配准，不声称逆转encoder），剔除插值涉及reflect的边界。合法support空间留出balanced Brier拟合固定softmax view权重，按valid重归一融合同dense recipe的probabilities；uniform同views/调用预算是强对照，geometry统一原图native。
+
+1. 检验假设：patch lattice相位影响密集对应；support选择的稳定观测可跨图改善query边界而不靠标签择优。
+2. 预期与目标：weighted shifts需超过uniform same-grid及flip控制，边界恢复必须扣除新FP；目标>=2pp，无预报网格偏移收益。
+3. 若支持：保留固定四相位和支持权重，报告配准/边缘损失，再独立照片验证。
+4. 若不支持：像素warp/无效边界错先修；若只有更多观测本身有效、权重无增量，则降为多视图控制，不增加偏移密度/GT择例。
+
+**对照：** 相同四网格/编码预算的uniform view融合；相同预算原生flip集成；identity native dense＋view-conditioned inexpensive control。
+**上限与停止：** 未来固定40tasks、4 native SQ前向/任务（附加support flip若decoder使用则所有同预算臂共同提供），wall1800s；一次视图驻CUDA，fraction<=.3，无raw多视图大缓存。
+**代码：** `tics/reference_views.py`, `scripts/reference_views_cpu.py`
+**当前状态：** CPU算法/接口准备，真实DINO/host/data集成与任务收益未验证；不是完成的实验结果。
+
+### E8 共同强基线与实现合同／同预算控制
+
+独立固定标准SQ cohort上核对真实INSID3、FoRIS、RSRM-L24、FROST的实际适配/源码/权重/预处理；没有完整可执行实现的行明确not_available，而不是用component decoder冒充。比较完整方法与已明确命名的RSRM raw+FROST-style组合；核对native/no-op/kernel controls以及每张方法卡的同预算控制。可单独运行这些参考，不依赖八个候选通过。
+
+1. 检验假设：有价值的比较必须建立在正确、够强且协议相同的参考上；组合改善可能全部来自借用dense读出。
+2. 预期与目标：实现合同预期通过exact/规定的数值identity；实际方法排名未知。任何候选的后续>=2pp目标只能对可用且优化合理的强参照定义。
+3. 若支持：保留经核验的参考和协议，提供可复用compact outputs；本卡通过不宣称任何候选有效，也不自动触发其他卡。
+4. 若不支持：任一full adaptation/no-op/scoring不合法，停止该行并修合同；仍可完成其余独立有效行，不发起付费补代码/下载。
+
+**对照：** 原生released路径逐mask身份；明确适配的component combination与实际full method分列；matched encoder-pass/training/view预算控制，费用及allocated/reserved并列；已关闭demo8的plain reference-clamped图扩散仅作廉价控制，历史56.26 vs56.06不能当本协议分数。
+**上限与停止：** 未来固定40task有限控制round，wall1800s，逐method实例处理/权重共享，fraction<=.3；缺asset事先CPU标NA，不能租卡等待准备。
+**代码：** `tics/host_signed_field.py`, `scripts/host_signed_field_cpu.py`, `tics/reference_diffusion.py`, `scripts/reference_diffusion_cpu.py`
+**当前状态：** CPU算法/接口准备，真实DINO/host/data集成与任务收益未验证；不是完成的实验结果。
+
+### E9 相同 RGB 的参考概念切换与无标签错误归因
+
+固定8组same-support/query RGB的两概念support-mask任务对，加8组support-BG反事实任务对；每对两task、共16 paired units/32 tasks。双方共享RGB、view来源、骨干、预算；仅合法supportmask及其派生证据不同。若读出本来有finite候选bank，两task固定共享同一bank；连续方法不人为加bank。所有方法/控制参数在进fixture前冻结；可直接调用任何已准备冻结接口或加载合法同fixture输出，无需E1-E8先运行。查询semantic PNG仅在输出冻结后用于TP/FP/FN语义归因、unannotated背景比例、概念目标IoU及正确switch评价。
+
+1. 检验假设：真实参考条件化应能在相同RGB中按指定概念正确切换；查询错误的语义/空间来源需要数据核验，不能把相似度或响应变化当正确理解。
+2. 预期与目标：预计合法mask变化至少改变相应判断，但是否正确未知。score变化/argmax变化不代替两个目标的实际IoU；统计错误来源不预设person/ramp/water标签。无增益数字预测。
+3. 若支持：保留具体方法使用参考并带来净收益的有界证据，指出错误类别/标注背景来源；不把诊断成功称新方法或自动启动后续round。
+4. 若不支持：不能正确switch则撤回该冻结方法的条件化主张；semantic PNG的label0只能称未标注背景，不能猜对象身份。缺fixture/接口标NA，不按GT替换有利案例。
+
+**对照：** 同RGB、冻结supportmask的无概念响应对照；完整native强方法在相同fixture上；每个冻结候选自带的同预算/同监督控制。
+**上限与停止：** 未来固定16paired units，最多32预测/每method（共享native调用可复用但写实际预算），wall1800s/冻结method、fraction<=.3。所有mask/背景变换先CPU准备；当前NO_CARD不调用GPU。
+**代码：** `scripts/finite_bank_oracle.py`, `scripts/reference_metric_cpu.py`, `scripts/reference_feature_probe.py`
+**当前状态：** CPU算法/接口准备，真实DINO/host/data集成与任务收益未验证；不是完成的实验结果。
+
+### E10 每种冻结方法的质量—成本和跨域压力
+
+独立manifest冻结24任务：COCO-20i8任务（每任务identity和固定全图色彩/模糊扰动，改变不使用queryGT）；现有SUIM8任务；现有Pascal-Part8任务。每个输入的support/query/view使用该方法已冻结的合法处理，同预算控制获得相同扰动/视图。仅审阅准备好的固定接口或同fixture冻结输出，未准备方法标NA；不等待其他卡先通过。分别报告各数据集实际任务语义、classmIoU/两种分辨率、错误像素、encoder calls、训练/优化成本、concurrent wall time与allocated/reserved峰值；不把不同数据集宏均值拼成单一COCO score。
+
+1. 检验假设：有用改进不仅适配一个开发类/候选bank，还应在显式成本和有限域外/观测扰动下保持净任务价值。
+2. 预期与目标：泛化/成本排序未知。期待可解释的quality-cost增量而非额外计算带来的表面胜利；后续有用效果目标仍>=2pp over matched strong control，但本24-task压力卡不能证明跨域总体效果。
+3. 若支持：保留每method各自有净价值、成本明确的结论并限定数据集/扰动；据此决定独立确认实验，不自动排队。
+4. 若不支持：某域净退化就撤回该域主张；超预算则记资源不可评估/停止该实现，不调测试域阈值/图像大小/步数挽救。其它独立方法仍可单独审阅。
+
+**对照：** 完整强参照在相同输入语义/扰动/预算下；每个方法自己的同信息/训练/view预算廉价替代；identity同fixture输出（扰动前后配对）。
+**上限与停止：** 未来24fixture units，COCO8各两观测+SUIM8+Part8=32预测/每冻结method，wall1800s/实例、fraction<=.3；同一时刻仅一自有GPUjob，无新dataset/model下载。冻结成本预算、结果逐unit流式；达到cap未完成记inconclusive，不外推方法失败。
+**代码：** `scripts/experiment_resource_guard.py`, `scripts/reference_feature_probe.py`
+**当前状态：** CPU算法/接口准备，真实DINO/host/data集成与任务收益未验证；不是完成的实验结果。
+
+## CPU验收与独立命令入口
+
+```bash
+python3 scripts/prepared_method_experiments.py --validate
+python3 scripts/prepared_method_experiments.py --list
+python3 scripts/prepared_method_experiments.py --card E3 --show
+python3 scripts/prepared_method_experiments.py --cpu-checks
+```
+
+上述均不调用CUDA、不加载DINO权重、不下载、不运行真实实验。GPU编译/显存/真实pair-noop仍是future runtime义务。E1/E2可分别用`native_readout_probe.py --arms native_raw,local_pg,kernel_pad`或`--arms native_raw,full_rewrite,full_kernel_pad`，必须由guard在实际有卡且获当前执行许可时启动。
+
+## 不恢复的构造与有限集合规则
+
+- 旧selector v2/v3低于direct；286tensor/checkpoint共5,680,705,392bytes已清，保留压缩证据和回执。不恢复19GB info/SAM/GIC/oldMSE/regionselector。
+- ARCHIVE中graph propagation56.26 vs56.06：仅作为E8强廉价控制，不能把CPU SPD通过重包装新方法。
+- 本轮候选最多7个，后续不因每个失败随意添加第8/9/10个方法。一个固定预算失败后先从已保存错误账本解释；只有新的可观察信息/明确错误假设才另行提出改变。多方法比较若无独立增量，保留负证据而不是挑最好的一张图。
+- 保存compact原始I/U、预测bits、源码、必要小checkpoint；rawfeatures当例RAM释放，source code/CPUreceipt不是论文成功证据。
+
+## 历史记录（仅保留证据；当前首节优先，不恢复旧队列）
 2026-10-02 写。代码都已写好并在服务器上用 30–100 个 episode 跑通过（冒烟测试，不是结论）。
 每个实验先写四行（检验什么 / 预测 / 符合则 / 不符合则），再给命令、耗时和停止规则。按顺序做，一次只跑一个。
 

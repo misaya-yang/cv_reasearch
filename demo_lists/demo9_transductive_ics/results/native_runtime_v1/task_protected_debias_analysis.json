@@ -1,0 +1,118 @@
+{
+  "state": "COMPLETED_LOCAL_CONDITIONAL_MECHANISM_ANALYSIS",
+  "source": {
+    "path": "/tmp/demo9_native_foris.py",
+    "sha256": "982cf4aa91ac90370151c353efb37240d7d4d5c35a0dfe9cc9509cd554c85fa9"
+  },
+  "scalar_normalization_max_error_F64": 1.1102230246251565e-16,
+  "conditional_rescue": {
+    "restore_error": 1.232595164407831e-32,
+    "nuisance_deletion_error": 2.465190328815662e-32,
+    "observed_contrasts": [
+      [
+        0.6030226891555273,
+        1.8090680674665818,
+        0.0
+      ],
+      [
+        0.6030226891555273,
+        -1.8090680674665818,
+        0.0
+      ]
+    ],
+    "stable_residual": [
+      0.6030226891555273,
+      7.04819178477641e-17,
+      0.0
+    ],
+    "rank": 1
+  },
+  "same_observations_semantic_vs_fixed_nuisance": true,
+  "artificial_three_coordinate_matching": {
+    "native_APD": {
+      "margin": [
+        0.0,
+        0.0
+      ],
+      "correct": 1,
+      "units": 2
+    },
+    "APD_off_single_view": {
+      "margin": [
+        -14.545454545454545,
+        14.545454545454545
+      ],
+      "correct": 0,
+      "units": 2
+    },
+    "conditional_rescue": {
+      "margin": [
+        10.0,
+        -10.0
+      ],
+      "correct": 2,
+      "units": 2
+    },
+    "naive_same_information_view_bank": {
+      "margin": [
+        1.8181818181818183,
+        -1.8181818181818183
+      ],
+      "correct": 2,
+      "units": 2
+    }
+  },
+  "gaussian_risk_counterexamples": [
+    {
+      "name": "useful_removed_signal",
+      "A": 0.0,
+      "B": 1.0,
+      "C": 1.0,
+      "D": 0.0,
+      "E": 0.05,
+      "risk_native": 0.5,
+      "risk_full_rescue": 0.31279261576216266,
+      "initial_SNR_derivative_numerator": 1.0
+    },
+    {
+      "name": "opposite_query_layout",
+      "A": 1.0,
+      "B": -1.0,
+      "C": 1.0,
+      "D": 0.0,
+      "E": 0.01,
+      "risk_native": 0.30853753872598694,
+      "risk_full_rescue": 0.5,
+      "initial_SNR_derivative_numerator": -1.0
+    },
+    {
+      "name": "positive_signal_but_high_variance",
+      "A": 1.0,
+      "B": 0.2,
+      "C": 1.0,
+      "D": 0.0,
+      "E": 100.0,
+      "risk_native": 0.30853753872598694,
+      "risk_full_rescue": 0.476196397248574,
+      "initial_SNR_derivative_numerator": 0.2
+    },
+    {
+      "name": "aligned_low_variance_signal",
+      "A": 1.0,
+      "B": 0.5,
+      "C": 1.0,
+      "D": 0.0,
+      "E": 0.1,
+      "risk_native": 0.30853753872598694,
+      "risk_full_rescue": 0.2372745717247006,
+      "initial_SNR_derivative_numerator": 0.5
+    }
+  ],
+  "decision": "Do not register or queue this proposal on the strength of preserved support contrast. Its positive toy is matched by the naive same-information bank and fixed layout bias remains unidentifiable.",
+  "actual_DINO_features_or_masks_used": false,
+  "GPU_used": false,
+  "query_GT_in_real_model": false,
+  "real_task_gain_measured": false,
+  "full_FoRIS_operator_executed": false,
+  "derivative": "For t=eta^2, R(t)=(A+tB)/sqrt(C+2tD+t^2E); sign R-prime = sign[BC-AD+t(BD-AE)]. Positive contrast B alone is insufficient."
+}

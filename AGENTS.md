@@ -29,8 +29,11 @@ Everything else is indexed in `docs/harness/INDEX.md`.
 
 1. Prepare first. Before taking the GPU: code smoke-tested on about 10 samples, caches built, four lines
    written, the next job ready.
-2. The GPU must not idle, and must not be busy with uninformative jobs. While a job runs, prepare the next one
-   or do CPU analysis, literature and writing. Do not wait on the user with the GPU empty.
+2. Latest user resource policy (2026-10-02): prepare code, CPU checks and the finite queue before GPU rental.
+   Continue an immediately executable valuable next stage, or power off the AutoDL instance when the queue
+   ends/fails. Do not keep a paid GPU on for coding, literature or planning, and do not manufacture load.
+   The prepared resource guard interrupts only its own stalled jobs after 60 seconds of confirmed zero GPU
+   activity; foreign GPU jobs must be protected. AutoDL's instance command is `/usr/bin/shutdown` (no `-h now`).
 3. Get a signal in minutes: small sample, results streamed per unit. If the first few units show nothing, stop
    and say so. Complete multi-hour runs are for final tables only.
 4. The server is shared. Check `nvidia-smi` and `STATUS.md` first, cap your GPU memory, run one job per agent,

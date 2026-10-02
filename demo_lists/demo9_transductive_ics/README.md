@@ -1,4 +1,25 @@
+## 最新用户决定与深入分析
+
+当前全部实例已关机（含无卡环境），平台刷新确认；停止自动开机和新GPU实验，本地继续分析。七候选的有界pilot已执行，不代表原十张研究卡的全部科学问题已回答。
+
+低秩度量现在有具体的能力限制证据：理想单位特征＋正交字典下，已选模型分数修正最多.0231，硬掩码内部余量.5；十例约1049万像素只有1800个在理想可改变范围，任意理想纠错上界也仅+.1841pp，实际变化0。不是FP32完整证书，也不能推出特征无信息。完整推导、实际读出合同和代理不迁移问题已写HANDOFF；小证据见metric_reachability_audit.json及metric_reachability_iou_cap.json。最重要的纠正是先确认干预能触达要修复的错误，保留完整强宿主，再谈优化与扩训练。
+
+## 最新实测与资源状态（2026-10-02）
+
+七候选的有界GPU pilot已完成，没有建立可用方法增益。resume2全部20阶段896.5秒完成后自动关机，浏览器独立确认；现无卡分析，5分钟监控已启用。临时tensor52文件释放1,800,941,454bytes，小结果/源码/checkpoint保留在results/native_runtime_v1与completed_runtime_evidence.tgz；不重建失败缓存。
+
+官方COCO-20i fold0/seed0标准first10开发接口：INSID3 52.4769/FoRIS CRF64.9976。局部PG42.7817对matchedraw42.6840 +.0977pp，探索区间[-.3668,.5765]；fullGL29.4929 −13.1911pp，[-22.9355,-.6806]。背景/网格/prefix/OT都没有实用增量，停止扩大固定构造。E3另外隔离cohort24train/8dev/10infer、10epoch：INSID3/protected/unprotected77.8527，fixed77.8751，FoRIS CRF79.1930；不能与标准first10绝对分比较。protected/unprotected严格开发IoU选epoch1，fixed选10；不是last参数变化代表部署有效。
+
+E10五例原生亮度压力40.0384→54.4173只属意外诊断。已补固定.75完整FoRIS CRF同10任务强控制，baseline64.9976→64.6877，−.3099pp探索区间[-.8494,.2720]，停止扩展。新预测约25秒，guard31.5秒后自动关机且UI确认；分析状态名称合同错在CPU收据，0分析错误已核实，不重跑GPU。现无卡分析；没有新算法或突破主张。所有区间/样本/完整字段见各card分析，当前不是全四折方法分数。
+
+以下是历史转导研究结果，协议及所有权不变，不是本轮重启队列。
+
 # demo9：转导式上下文分割——把没有标注的同类图当作参考
+
+### Current preparation (latest user scope, no-card)
+
+Seven candidate algorithms and ten **independent** experiments are specified in [HANDOFF.md](HANDOFF.md) and [PLAN.md](PLAN.md), with code and machine-readable cards in `results/prepared_independent_experiments.json`. Thirteen small CPU/source-operation suites passed; see `results/prepared_methods_cpu_receipt.json`. They validate equations, gradients, hooks, leakage guards and interfaces, not real DINO segmentation benefit. No GPU experiments, new downloads or default ten-job queue. Protected metric has a bounded learned fusion gain and full implicit/active-step gradients; views and prefix prompts have distinct lawful support conditioning; OT relaxes marginal mass. Archived graph propagation remains a cheap control. Historical numbers below retain their original protocol and do not score these candidates.
+
 
 状态：2026-10-02 立项。信号为正：COCO-20i 标准 episode 上四折都涨，平均 +6.1 mIoU（55.5 → 61.7），叠加在 FoRIS 上平均 +4.2。
 方法还很粗，只测了 COCO-20i；离“其余图给真掩码”的上限还差 6 点。

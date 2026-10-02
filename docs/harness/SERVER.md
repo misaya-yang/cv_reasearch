@@ -39,6 +39,12 @@ Folders as of 2026-10-02:
 
 ## Running jobs
 
+- Latest user policy: the instance is currently in **no-GPU mode**. Finish local/CPU preparation before any
+  new CUDA run. A finite prepared queue must immediately continue or invoke AutoDL `/usr/bin/shutdown`
+  on completion/failure when no foreign GPU job is active. Never hold paid GPU capacity while writing code.
+  See `demo_lists/demo9_transductive_ics/scripts/experiment_resource_guard.py`; default is dry-run.
+  Provider command: [AutoDL shutdown documentation](https://www.autodl.com/docs/save_money/).
+
 - Look first: `nvidia-smi`, then `ps -eo pid,etimes,args | grep scripts/`. Read `STATUS.md` for who owns what.
 - Cap your memory (`torch.cuda.set_per_process_memory_fraction`; the live code reads `DEMO4_GPU_FRAC`, 0.3 to
   0.45). One GPU job per agent.
