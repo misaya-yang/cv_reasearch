@@ -1,0 +1,97 @@
+{
+  "schema": "reference_response_training_cpu_v1",
+  "state": "CPU_TRAINING_PREPARATION_PASSED",
+  "passed": 11,
+  "checks": [
+    {
+      "name": "external_protocol_then_train_dev_only_projection_rejects_extra_split_held_class_photo_leakage",
+      "passed": true
+    },
+    {
+      "name": "identical_initial_theta_independent_storage_and_fixed_AdamW",
+      "passed": true,
+      "parameters_per_arm": 997497,
+      "lr": 0.0003,
+      "weight_decay": 0.01
+    },
+    {
+      "name": "final_dynamic_streams_absent_from_static_immediate_and_prefix_present_prediction_rejects_labels",
+      "passed": true,
+      "static_mask_shape": [
+        1,
+        1,
+        2,
+        3
+      ],
+      "dense_query_patches": 6
+    },
+    {
+      "name": "selection_uses_equal_class_sum_I_over_sum_U_not_episode_average",
+      "passed": true,
+      "epoch1_class_miou": 29.09090909090909,
+      "epoch2_class_miou": 48.18181818181818,
+      "episode_mean_iou_ranking_is_opposite": true
+    },
+    {
+      "name": "matched_episode_order_train_loss_only_labels_and_dev_after_both_predictions_frozen",
+      "passed": true,
+      "epochs": 3,
+      "train_episodes": 3,
+      "dev_episodes": 3,
+      "label_calls": 9,
+      "scorer_calls": 18,
+      "best_epoch_per_arm": {
+        "static": 2,
+        "response": 2
+      }
+    },
+    {
+      "name": "ERROR_resume_matches_uninterrupted_weights_optimizers_RNG_shuffle_and_epoch_ledger_exact",
+      "passed": true,
+      "failure_completed_epochs": 1,
+      "resumed_completed_epochs": 3,
+      "raw_feature_tensors_checkpointed": false
+    },
+    {
+      "name": "only_ERROR_resume_allowed_and_fresh_directory_is_exclusive",
+      "passed": true
+    },
+    {
+      "name": "finite_epoch_budget_does_not_claim_convergence",
+      "passed": true,
+      "completed_epochs": 1,
+      "state": "PARTIAL_BUDGET"
+    },
+    {
+      "name": "time_cap_is_explicit_partial_budget_no_provider_access_no_resume",
+      "passed": true,
+      "completed_epochs": 0
+    },
+    {
+      "name": "patience_requires_both_arms_and_declared_minimum_epochs",
+      "passed": true,
+      "completed_epochs": 3,
+      "min_epochs": 3
+    },
+    {
+      "name": "checkpoint_fixtures_autoclean_and_CUDA_uninitialized",
+      "passed": true
+    }
+  ],
+  "torch_version": "2.8.0",
+  "CPU_only": true,
+  "CUDA_initialized": false,
+  "DINO_executed": false,
+  "real_task_gain_measured": false,
+  "elapsed_seconds": 2.252277625,
+  "source_hashes": {
+    "scripts/reference_response_training_cpu.py": "61f54728b46781cf0f4c120cda0e989005ae531b67466c423dbc86e381167d2c",
+    "tics/reference_response_training.py": "368a108f8f7cab2e28b14c05ac26c5c5e9c0393d9928febc8a43aed5908b2909"
+  },
+  "limitations": [
+    "Synthetic tiny feature grids with the actual decoder only.",
+    "No image, pretrained encoder, original refiner, real-quality or GPU-readiness evidence.",
+    "Metadata receipt cannot verify image/mask files or completeness of exposure registry.",
+    "ERROR-only resume requires deterministic providers or saved Python/torch RNG; external state is caller-owned."
+  ]
+}

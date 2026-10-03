@@ -1,0 +1,132 @@
+{
+  "schema": "reference_response_decoder_cpu_v1",
+  "state": "PASS",
+  "seed": 31027,
+  "checks": [
+    {
+      "name": "support_mask_area_downsample_preserves_fractional_coverage",
+      "passed": true
+    },
+    {
+      "name": "query_chunk_attention_matches_independent_full_support_dense",
+      "passed": true,
+      "chunks": [
+        1,
+        4,
+        32
+      ],
+      "maximum_absolute_error": 1.582067810090848e-15
+    },
+    {
+      "name": "checkpoint_chunk_backward_matches_dense_all_support_gradients",
+      "passed": true,
+      "maximum_absolute_error": 8.782037597132586e-18,
+      "support_tokens_with_gradient": 22
+    },
+    {
+      "name": "coverage_complement_exchanges_contexts_and_missing_roles_are_finite_zero",
+      "passed": true
+    },
+    {
+      "name": "full_query_grid_and_actual_gradients_reach_all_six_streams",
+      "passed": true,
+      "output_grid": [
+        2,
+        1,
+        4,
+        5
+      ],
+      "query_patches_with_gradient": 40,
+      "projection_gradient_norms": {
+        "native_final": 0.09016062319278717,
+        "native_middle": 0.16707760095596313,
+        "immediate_plus": 0.08089859783649445,
+        "immediate_minus": 0.0735631212592125,
+        "response_plus": 0.07365528494119644,
+        "response_minus": 0.07016825675964355
+      },
+      "inputs_unchanged": true
+    },
+    {
+      "name": "static_control_same_architecture_duplicate_immediate_active_trainable_response_slots",
+      "passed": true,
+      "parameters_per_arm": 973585,
+      "response_projection_gradient_norms": {
+        "response_plus": 0.055486880242824554,
+        "response_minus": 0.060260191559791565
+      }
+    },
+    {
+      "name": "support_role_change_affects_decoder_and_empty_fg_bg_remain_finite",
+      "passed": true,
+      "role_change_maximum_logit_difference": 0.6089604496955872,
+      "no_logit_antisymmetry_required": true
+    },
+    {
+      "name": "logits_bilinear_before_zero_threshold_and_both_losses_use_label_grid",
+      "passed": true,
+      "inference_grid": [
+        1024,
+        1024
+      ],
+      "source_minmax": false,
+      "CRF_executed": false
+    },
+    {
+      "name": "empty_foreground_and_all_foreground_loss_and_gradients_are_finite",
+      "passed": true
+    },
+    {
+      "name": "prediction_api_rejects_query_labels_class_id_and_target_area",
+      "passed": true
+    },
+    {
+      "name": "finite_shape_dtype_coverage_missing_stream_and_empty_image_validation",
+      "passed": true,
+      "rejected_cases": 14
+    },
+    {
+      "name": "controlled_same_image_supervised_fixture_fit_implementation_only",
+      "passed": true,
+      "optimizer": "Adam",
+      "learning_rate": 0.002,
+      "fixed_steps": 48,
+      "initial_BCE_plus_softIoU": 1.4321105480194092,
+      "final_BCE_plus_softIoU": 0.0013187566073611379,
+      "correct_patches": 48,
+      "total_patches": 48,
+      "cross_image_validation": false,
+      "real_segmentation_benefit": false
+    }
+  ],
+  "passed": 12,
+  "torch_version": "2.8.0",
+  "architecture": {
+    "final_channels": 1024,
+    "middle_channels": 4096,
+    "stream_channels": 64,
+    "fusion_channels": 128,
+    "spatial_residual_blocks": 3,
+    "convolutions_per_block": 2,
+    "group_norm_groups": 8,
+    "query_chunk_size": 256,
+    "parameters": 1577089,
+    "parameter_formula": "330*final_channels+66*middle_channels+968833"
+  },
+  "CPU_only": true,
+  "CUDA_initialized": false,
+  "DINO_executed": false,
+  "encoder_calls": 0,
+  "CRF_executed": false,
+  "model_binary_saved": false,
+  "elapsed_seconds": 0.8158413750000001,
+  "source_sha256": "7f32c6ee853d9fbc17649fe4bfba1249a34081c0db26ec8ec9385facb8753931",
+  "script_sha256": "40ac0ad348ad7c08a65474492921fe80960895a4bcda8afc110074d885f2c381",
+  "limitations": [
+    "Synthetic CPU implementation evidence only; no real image, frozen encoder or cross-image benefit.",
+    "Runtime adapter, exact original refiner and photo/class-disjoint task training are not tested here.",
+    "Middle patch channels may include native QKV; native prefix metadata is not consumed by this head.",
+    "Immediate output differences are not asserted equivalent to full QKV or the full native hidden state.",
+    "Chunk checkpointing bounds attention-score allocations but adds backward recomputation."
+  ]
+}

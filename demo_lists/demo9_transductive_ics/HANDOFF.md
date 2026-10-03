@@ -1,8 +1,26 @@
-# demo9：单参考条件化分割的候选算法与实验交接
+# demo9：完整参考条件推理的机制与证据交接
+
+最新用户纠正：未经机制论证的响应训练路线已撤回、未执行。当前唯一候选改为参考分数排序＋查询关系定界；读Claude的extent_cut账本，补齐完整公共FoRIS同上采样/CRF及scalar/RGB便宜控制。旧训练入口已移除，小证据压缩归档；不是训练普遍无用或响应科学失败。以下准备快照均为历史，PLAN首节与STATUS优先。
+
+最新真实数据准备已完成（无卡112.49秒、未导入torch）：每折60TRAIN/60DEV/原10评估，held类别及跨所有角色照片隔离；训练2014逻辑ID显式映射已有2017JPEG，尺寸及合法标签通过。TEST query只读PNG尺寸头，不看标签像素。小证据response_data_preparation.json本机/服务器保护；每类1episode只属小试验、40评估仍复用开发，不是充分训练或独立测试。有卡执行入口未完整准备，不租GPU。
+
+当前推进到CPU准备阶段：同一个866实例已通过浏览器开成无卡模式（0GPU、0.5CPU、2GiB）；未开有卡。实际已装timm1.0.30/torch2.12.1的10个小模块案例通过，非预训练DINO/真实质量证据。head补齐全部选定层patch＋prefix QKV与即时响应，2,007,297参数；19项CPU检查、10例端到端小fixture和11项双臂训练恢复检查已过。训练器只按DEV原尺寸class I/U选epoch，TEST不进入训练接口。原始COCO2014训练图目录缺失，但已有train2017照片中10,377张匹配原train2014官方掩码；待显式映射与尺寸检查后复用，不下载或复制大资产。当前仍无新真实涨点、有卡队列未就绪。PLAN首节为当前状态。
+
+截图所指出的FoRIS入口缺失已核实并在causal_v3补齐：旧64.2836只是direct-predict+CRF；同40开发任务的完整公共入口为65.1614，source观察/重放40exact。轴修正相对公共入口仅+.1581ppCI跨0。FUNGI已有gradient特征；参考响应的信息增量与估计器跨图迁移是两个独立前提，参考自拟合稳定/裁剪重编码不能代替整图收益。PLAN首节记录此次纠偏；此次只做源码与已有证据核验，未开机、未启动新训练。
+
+当前直接授权只在关机状态多代理深推完整第五机制，先理解A及四完整改进，再行动。五代理加用户要求的两失败复盘代理已执行；不是七条GPU算法。instance866确认STOPPED，所有v2/v3旧科学队列不可重复。sam automation当前不存在，未重建。整体目标仍active，未完成。
+
+最新实际causal_v3完成40官方COCOseed0复用DEV/四折各10：完整PUBLIC65.1614，Part2only60.8629，SVM56.4638，full publicFROST+timm56.9184（非官方hub复现），sourceaxisfix65.3195仅+.1581CI跨0。完整pipeline与弱逐点后端不能混淆。源码轴问题已证实但非重要任务效应，停止扩展。原生/public/axis2三种重放均40exact；科学报告与所有小trace已增量传回且reportbytesSHA复原exact。199.0877秒实验/2.438秒CPU分析后UI已关机。summary/分析在causal_v3。最早v2合同故障0评分、16.93秒关机证据保留，不称科学失败。
+
+新必须解释的反例：未知真部件可NN更像BG，附着BG也可NN更像FG；完整结构既帮助又伤害，不能简单删。hard64cosineBG-veto固定离线审计65.384→60.313（−5.071CI负），不要复活硬否决。graphcut+matching缺extent与mass定义且已有近邻；perturb-response分组不能把计算依赖称物理同对象，原birth/coverage reward被套利反例否定，256额外编码不进入默认计划。尚未选定可竞争第五算法；按PLAN首节完成推导，禁止CPU绿灯即开机。
+
+最新直接纠偏：主线是比较完整方法如何保留参考证据、排除错误对象解释、决定目标范围，撤回“更好的逐点距离/SVM就是答案”的预设。PLAN首节现有Claude计划逐项验收与Matcher/INSID3/HSNet/DCAMA/FoRIS/FROST完整机制对照。已有七候选只是有限试验，不是十张科学卡全部完成；官方四折paired主表、完整TPA强适配、独立泛化仍未验收。旧失败构造不恢复。
+
+native_membership_v1现已CPU/source/solver/analyzer与199文件preflight通过，但GPU未启动，队列HELD。它仅有完整FoRIS/FROST源码控制及组件/重放/标准分类器，不能冒称六完整方法比较。实例866最新浏览器实见已关机。下一步围绕合法参考背景反证在完整推理哪一步被丢弃或覆盖建立可否定因果测量；若原始对应已混淆，不能据阈值算术反例猜一个分类器就能解决。GPU不开着等研究，下载/旧缓存/提交均不恢复。
 
 最新目标仍是单参考、同DINOv3超越INSID3/FoRIS的具体方法；整体未完成。最新集中批次native-angular40/40完成：原尺寸class-mIoU native64.2836/paired63.9368，差−.3467pp CI[-1.7659,1.2468]；FROST95组件64.6256差+.3420 CI跨0。原生重放及保存mask40/40exact，无错误/回退，无特征缓存。配对算子令全部参考拟合视图变化减小，中位比.1238，但query辨识没有建立改善；这个固定角度协方差构造停止，不扫参数或恢复已结束队列。GPU批次总guard147.46秒后自动关机；结果只在无卡取回，本机results/native_angular_v1/summary.json、mask_diagnosis.json及788KiB archive保护，最终UI已关机。最新用户要求按已有证据组织完整批次再开机，下一步在关机状态区分参考迁移、少数难背景、评分校准和结构解码，不能因全背景AUC高就断言decoder是瓶颈，也不能靠新公式直接再开GPU。PLAN首节为准。
 
-离线新证据：保存40个native1024mask的连通块oracle仅+3.77pp，largest朴素规则−6.72，64%FP连在含真目标的块内，不构建孤岛selector。源码midrange决策存在“新增强负背景使旧背景变前景”的精确CPU反例，但未证明真实任务主因。下一批准备原生逐阶段路径＋完整FROST源码强控制＋reference-only RBF-SVM完整分类标准控制，均非已验证新方法；SVM本机solver依赖缺失4项明确skip，实际runtime/联合入口尚未就绪，不开GPU。
+离线新证据：保存40个native1024mask的连通块oracle仅+3.77pp，largest朴素规则−6.72，64%FP连在含真目标的块内，不构建孤岛selector。源码midrange决策存在“新增强负背景使旧背景变前景”的精确CPU反例，但未证明真实任务主因。下一批准备原生逐阶段路径＋完整FROST源码强控制＋reference-only RBF-SVM完整分类标准控制，均非已验证新方法；这是此前准备状态；现有实际服务器source/solver/analysis与199文件preflight已通过，但最新用户纠偏后执行仍HELD，不开GPU。
 
 ## Completed pilots: failure attribution and current resource state
 

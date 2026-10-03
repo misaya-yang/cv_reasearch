@@ -53,6 +53,23 @@ def construct_complete_frost(source_root, frozen_encoder, *, image_size=1024, de
         pretrained_weights_downloaded=False)
 
 
+def verify_frost_public_tensors(model,support,mask,query):
+    """The production assertion, also executed by actual-source CPU preflight.
+
+    Public FROST preserves query NCHW, unlike public FoRIS's CHW target.
+    No squeezing or silent re-preprocessing; exact matched input values.
+    """
+    import torch
+    expected={'_ref_images':support,'_ref_masks':mask,'_tgt_image':query}
+    for field,value in expected.items():
+        actual=getattr(model,field,None)
+        if not isinstance(actual,torch.Tensor) or actual.shape!=value.shape or actual.dtype!=value.dtype or actual.device!=value.device or not torch.equal(actual,value):
+            raise RuntimeError('Complete FROST public tensor mismatch: '+field)
+    if support.ndim!=4 or query.ndim!=4 or query.shape[0]!=1 or mask.ndim!=3:
+        raise RuntimeError('Complete FROST public NCHW/mask interface not satisfied')
+    return True
+
+
 @contextmanager
 def capture_frost_finalization(model):
     """Copy continuous posterior/candidate before source clears its stash."""

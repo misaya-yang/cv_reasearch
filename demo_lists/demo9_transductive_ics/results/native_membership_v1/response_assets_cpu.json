@@ -1,0 +1,65 @@
+{
+  "schema": "reference_response_assets_cpu_v1",
+  "state": "CPU_DATA_PREPARATION_FIXTURE_PASSED",
+  "checks": [
+    {
+      "name": "same_UID_2014_logical_name_to_existing_2017_JPEG_and_2014_official_mask",
+      "passed": true,
+      "ten_temporary_pairs": true
+    },
+    {
+      "name": "JPEG_PNG_shape_mismatch_rejected",
+      "passed": true
+    },
+    {
+      "name": "missing_c_plus_one_label_rejected",
+      "passed": true
+    },
+    {
+      "name": "held_nonempty_pool_rejected_but_official_80_keys_with_20_empty_held_pools_accepted",
+      "passed": true
+    },
+    {
+      "name": "all_role_TRAIN_DEV_and_DEV_TEST_UID_leakage_rejected",
+      "passed": true
+    },
+    {
+      "name": "frozen_TEST_held_class_or_episode_count_change_rejected",
+      "passed": true
+    },
+    {
+      "name": "TEST_query_pixels_forbidden_guard_and_truncated_payload_header_only_proof",
+      "passed": true,
+      "TEST_query_checks": 40,
+      "PNG_bytes_per_check": 24,
+      "fresh_confirmation": false
+    },
+    {
+      "name": "full_preparation_60_base_classes_each_fold_exact_1_TRAIN_1_DEV_and_frozen_10_TEST",
+      "passed": true,
+      "train_episodes": 240,
+      "dev_episodes": 240,
+      "frozen_test_episodes": 40,
+      "full_training_or_gain_claim": false
+    },
+    {
+      "name": "INSID3_binary_semantic_equal_c_plus_one_including_255_as_background",
+      "passed": true
+    },
+    {
+      "name": "insufficient_assets_explicit_with_all_60_class_counts_no_drop_or_replicate",
+      "passed": true
+    }
+  ],
+  "passed": 10,
+  "temporary_image_mask_pairs": 10,
+  "fixtures_removed": true,
+  "torch_imported": false,
+  "training_executed": false,
+  "real_task_gain_measured": false,
+  "elapsed_seconds": 0.246423667,
+  "source_sha256": {
+    "/Users/yang/projects/CVPR2027/demo_lists/demo9_transductive_ics/scripts/prepare_reference_response_data.py": "8cf9debec6a95a7f37910ff1ef9d4d984fd0b8f11c0e87abb95e8a3af0477240",
+    "/Users/yang/projects/CVPR2027/demo_lists/demo9_transductive_ics/tics/reference_response_assets.py": "d5f94e6c5437370c87de38aec760af23293dc57f99e0d5f06f16a96b4f2b8b4e"
+  }
+}

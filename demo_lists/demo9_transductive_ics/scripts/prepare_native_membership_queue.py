@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare one complete six-arm membership batch; never initialize CUDA.
+"""Prepare one complete-source decision-path batch; never initialize CUDA.
 
 Reject partial sklearn checks and source/API-only contracts. Only a completed
 actual installed-source CPU smoke, solver smoke and analysis check can arm it.
@@ -37,7 +37,7 @@ def checked_receipt(path,state):
 def build(a):
     root=a.project_root.resolve();m=json.loads(a.manifest.read_text())
     if m.get('schema')!='native_membership_assets_v1' or m.get('state')!='PREPARED_ASSETS' or tuple(m.get('arms',[]))!=ARMS:
-        raise ValueError('Fresh CPU-prepared six-arm membership manifest required')
+        raise ValueError('Fresh CPU-prepared complete-source membership manifest required')
     rows=m.get('frozen_episodes',[]);keys={(r['fold'],r['e'],r['c']) for r in rows}
     if m.get('seed')!=0 or len(rows)!=40 or len(keys)!=40 or any(sum(k[0]==f for k in keys)!=10 for f in range(4)):
         raise ValueError('Forty official frozen seed0 tasks, ten per fold required')
@@ -50,7 +50,9 @@ def build(a):
     required=['scripts/native_membership_experiment.py','scripts/analyze_native_membership.py',
               'scripts/prepare_native_membership_queue.py','scripts/native_membership_source_cpu.py',
               'scripts/reference_kernel_svm_cpu.py','scripts/experiment_resource_guard.py',
-              'tics/native_decision_trace.py','tics/reference_kernel_svm.py','tics/frost_existing_adapter.py']
+              'tics/native_decision_trace.py','tics/reference_kernel_svm.py','tics/frost_existing_adapter.py',
+              'tics/native_candidate_axis.py','tics/reference_witness_audit.py',
+              'scripts/native_candidate_axis_cpu.py','scripts/reference_witness_audit_cpu.py']
     if any(str((root/p).resolve()) not in sources for p in required):raise ValueError('Missing production source freeze')
     checks=[]
     for p,h in sources.items():
@@ -69,11 +71,28 @@ def build(a):
         raise ValueError('Ten actual source CPU fixtures required, not AST/mock readiness')
     if native.get('public_FoRIS_RGB_position_cases')!=10 or native.get('public_density_cases',0)<1:
         raise ValueError('Public source/RGB path and nonfallback FROST density must be exercised')
+    if native.get('production_public_preprocess_cases')!=40 or native.get('query_GT_read_for_preprocessing') is not False:
+        raise ValueError('Exact production public input helper on all40 real RGB/support masks required')
+    checked_keys={(r['fold'],r['e'],r['c'],r['support'],r['query']) for r in native.get('production_public_preprocess_records',[])}
+    if checked_keys!={(r['fold'],r['e'],r['c'],r['support'],r['query']) for r in rows}:
+        raise ValueError('Production source helper checked a different real cohort')
+    if not all(row.get('source_candidate_witness_exact') and row.get('candidate_axis2_whole_public_replica_exact') and row.get('channel_candidate_full_public_executed') for row in native.get('records',[])):
+        raise ValueError('Every actual source case must exercise candidate witness and full-public axis controls')
     solver,solver_input=checked_receipt(a.solver_receipt,'CPU_REFERENCE_KERNEL_SVM_PASSED')
     if solver.get('passed')!=10 or solver.get('skipped')!=0 or solver.get('sklearn_available') is not True:
         raise ValueError('Full actual solver checks required; skipped tests cannot arm a GPU')
     analysis,analysis_input=checked_receipt(a.analysis_receipt,'CPU_NATIVE_MEMBERSHIP_ANALYSIS_PASSED')
-    if len(analysis.get('checks',[]))!=10:raise ValueError('Complete analysis selfcheck required')
+    if len(analysis.get('checks',[]))<17:raise ValueError('Complete source-witness analysis selfcheck required')
+    witness,witness_input=checked_receipt(a.witness_receipt,'CPU_REFERENCE_WITNESS_AUDIT_PASSED')
+    if len(witness.get('checks',[]))!=10 or witness.get('cuda_initialized') is not False:
+        raise ValueError('Ten CPU dual-geometry witness checks required')
+    if witness.get('source_sha256')!=sources[str((root/'tics/reference_witness_audit.py').resolve())] or witness.get('cpu_script_sha256')!=sources[str((root/'scripts/reference_witness_audit_cpu.py').resolve())]:
+        raise ValueError('Witness receipt is for another code version')
+    axis,axis_input=checked_receipt(a.axis_receipt,'CPU_NATIVE_CANDIDATE_AXIS_PASSED')
+    if len(axis.get('cases',[]))!=10 or axis.get('CUDA_initialized') is not False:
+        raise ValueError('Ten extracted-source axis checks required')
+    for p,h in axis.get('source_hashes',{}).items():
+        if p not in sources or sources[p]!=h:raise ValueError('Axis receipt source mismatch: '+p)
     # CPU source checks must cover the exact installed files, not a different
     # fixture source or a path merely named FoRIS/FROST.
     for p,h in native.get('source_hashes',{}).items():
@@ -90,7 +109,7 @@ def build(a):
               '--prepared-manifest',str(a.manifest.resolve()),'--projection-basis',str(a.projection_basis.resolve()),
               '--prepared-root',str(a.prepared_root),'--foris-root',str(a.foris_root),
               '--resource-guard-state',str(state),'--allow-gpu','--out',str(out)],
-        requires=[manifest_input,native_input,solver_input,analysis_input],cpu_artifacts=checks,
+        requires=[manifest_input,native_input,solver_input,analysis_input,witness_input,axis_input],cpu_artifacts=checks,
         code_files=[p for p in sources if p.endswith('.py')],env=env,
         produces=[artifact(report,'COMPLETED')],success_checks=[artifact(report,'COMPLETED')])
     cpu=dict(name='native_membership40_analysis',kind='cpu',role='handoff',cwd=str(root),timeout_seconds=60,
@@ -100,7 +119,7 @@ def build(a):
         success_checks=[artifact(result,'CPU_NATIVE_MEMBERSHIP_ANALYSIS')],env={**env,'CUDA_VISIBLE_DEVICES':''})
     prepared=dict(platform='autodl',cuda_python=str(a.python),stages=[gpu,cpu],fixed_memory_fraction=.4,
         idle_grace_seconds=60,provider_shutdown_foreign_safe=True,cpu_preparation_complete_required=True,
-        protocol='One six-arm complete-reader/native decision-path batch, no retries/sweeps/queue expansion',
+        protocol='One seven-arm full-source decision-path/normalization-axis diagnostic, not seven new methods; no retries/sweeps/queue expansion',
         actual_CUDA_readiness_not_claimed=True,sum_stage_timeout_seconds=1260)
     validate_plan(prepared);return prepared
 
@@ -128,10 +147,10 @@ def main():
     p.add_argument('--foris-root',type=Path,default=Path('/root/autodl-tmp/demo8_local_verification/foris_source'))
     p.add_argument('--python',type=Path,default=Path('/root/miniconda3/bin/python'))
     p.add_argument('--pythonpath',default='/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions')
-    for key in ['manifest','output-dir','plan-out','state-file','projection-basis','source-receipt','solver-receipt','analysis-receipt']:p.add_argument('--'+key,type=Path)
+    for key in ['manifest','output-dir','plan-out','state-file','projection-basis','source-receipt','solver-receipt','analysis-receipt','witness-receipt','axis-receipt']:p.add_argument('--'+key,type=Path)
     a=p.parse_args()
     if a.self_check:self_check();return
-    if any(getattr(a,k.replace('-','_')) is None for k in ['manifest','output-dir','plan-out','state-file','projection-basis','source-receipt','solver-receipt','analysis-receipt']):p.error('Explicit fresh paths and complete CPU receipts required')
+    if any(getattr(a,k.replace('-','_')) is None for k in ['manifest','output-dir','plan-out','state-file','projection-basis','source-receipt','solver-receipt','analysis-receipt','witness-receipt','axis-receipt']):p.error('Explicit fresh paths and complete CPU receipts required')
     plan=build(a);a.plan_out.parent.mkdir(parents=True,exist_ok=True);a.plan_out.write_text(json.dumps(plan,indent=2,allow_nan=False)+'\n')
     if a.preflight:
         def forbidden():raise AssertionError('CPU preflight touched GPU/provider')

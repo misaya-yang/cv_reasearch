@@ -20,14 +20,19 @@ from analyze_native_angular import unpack_mask
 from native_angular_experiment import query_score_audit
 
 ARMS = ('foris_crf', 'native_identity', 'part2_native_direct', 'kernel_svm',
-        'complete_frost', 'foris_stateful')
+        'complete_frost', 'foris_stateful', 'foris_channel_nn')
 LEDGER = ('recovered_fn', 'lost_tp', 'added_fp', 'removed_fp')
 REQUIRED_TRACE = ('part2_score', 'part3_score', 'part4_score', 'pre_refinement',
                   'post_refinement', 'coverage', 'truth_model')
 EXTRA_GRID_EVIDENCE = ('part2_sf', 'part2_sbn', 'candidate_hard', 'candidate_vote',
                       'seed_prior', 'part3_candidate_vote', 'part3_seed_prior',
                       'part4_penalty', 'part4_cluster_delta')
-ALLOWED_TRACE = set(REQUIRED_TRACE) | {'svm_grid_margin', 'frost_grid_posterior', 'frost_candidate'} | set(EXTRA_GRID_EVIDENCE)
+WITNESS_FIELDS = ('fg_max', 'bg_max', 'margin', 'nearest_label', 'per_ref_margin')
+WITNESS_TRACE = {'witness_'+key for key in WITNESS_FIELDS} | {'witness_source_candidate'}
+COSINE_TRACE = {'cosine_'+key for key in WITNESS_FIELDS} | {'cosine_candidate'}
+CLUSTER_TRACE = {'seed_cluster_labels', 'semantic_cluster_labels'}
+ALLOWED_TRACE = (set(REQUIRED_TRACE) | {'svm_grid_margin', 'frost_grid_posterior', 'frost_candidate'}
+                 | set(EXTRA_GRID_EVIDENCE) | WITNESS_TRACE | COSINE_TRACE | CLUSTER_TRACE)
 
 
 def classification(prediction, truth, valid=None):
@@ -142,6 +147,166 @@ def load_trace(path):
         return {key: archive[key] for key in archive.files}
 
 
+def _witness_candidate(value, name):
+    """Reproduce votes>=ceil(R/2), including the source's even-R ties.
+
+    A2D value is already an aggregated source candidate. A3D Boolean value
+    contains actual per-reference argmax-label decisions, not margin signs.
+    Cosine ties cannot be resolved from margin alone.
+    """
+    candidate = np.asarray(value)
+    if candidate.dtype != np.bool_ or candidate.shape[-2:] != (64,64) or candidate.ndim not in (2,3):
+        raise ValueError('Boolean64x64 or R64x64 candidate required: '+name)
+    if candidate.ndim == 2:
+        return candidate, dict(references=None, aggregation='already aggregated source candidate')
+    if not 1 <= candidate.shape[0] <= 256:
+        raise ValueError('Candidate reference count outside small-trace budget')
+    references = candidate.shape[0]
+    return candidate.sum(axis=0) >= (references+1)//2, dict(references=references,
+        aggregation='actual per-reference argmax labels, votes>=ceil(R/2); even-R ties retained')
+
+
+def _selected_counts(selection, truth):
+    return dict(selected=int(selection.sum()), TP=int((selection & truth).sum()),
+                FP=int((selection & ~truth).sum()))
+
+
+def _restricted_transition(before, after, truth, condition):
+    """Count the stage's observed changes inside one fixed same-grid set."""
+    if any(value.shape != truth.shape for value in (before,after,condition)):
+        raise ValueError('Witness transition must use one resolution only')
+    return dict(recovered_fn=int((condition & ~before & after & truth).sum()),
+                lost_tp=int((condition & before & ~after & truth).sum()),
+                added_fp=int((condition & ~before & after & ~truth).sum()),
+                removed_fp=int((condition & before & ~after & ~truth).sum()))
+
+
+def reference_witness_analysis(data, row, grid_masks, coverage):
+    """Describe legal reference-NN counterevidence without changing prediction.
+
+    margin<0 means the strongest recorded FG match is weaker than its BG
+    competitor. It is neither a background posterior nor proof that suppressing
+    the position helps: a true query foreground can have a negative margin.
+    All counts here concern hard64 patch labels only, never1024 refinement.
+    """
+    truth = coverage > .5
+    clusters = {}
+    for key in sorted(CLUSTER_TRACE & set(data)):
+        labels = np.asarray(data[key])
+        if labels.shape != truth.shape or not np.issubdtype(labels.dtype,np.integer):
+            raise ValueError('Integer64x64 cluster labels required: '+key)
+        clusters[key] = labels
+    output = dict(state='NO_REFERENCE_WITNESS_FIELDS',
+        units='64x64 hard patch labels coverage>0.5; no model1024/original-pixel transitions',
+        scope='Descriptive reference-match counterevidence only; no reliable posterior, selector or causal attribution',
+        clusters_verified=sorted(clusters), families={})
+    for prefix, candidate_key, score_units in (
+            ('witness','witness_source_candidate','actual source NN scores; preserve asymmetric reference/query normalization'),
+            ('cosine','cosine_candidate','both feature sides channel-normalized cosine scores; diagnostic, not source candidate rule')):
+        fields = {key:np.asarray(data[prefix+'_'+key]) for key in WITNESS_FIELDS if prefix+'_'+key in data}
+        if not fields and candidate_key not in data:
+            continue
+        output['state'] = 'REFERENCE_WITNESS_GRID_DIAGNOSTIC'
+        result = dict(state='NO_STRICT_MARGIN_AVAILABLE', score_units=score_units,
+                      fields_verified=sorted(prefix+'_'+key for key in fields))
+        for key,value in fields.items():
+            if key in ('nearest_label','per_ref_margin'):
+                valid_shape = value.shape == truth.shape or (
+                    value.ndim == 3 and value.shape[1:] == truth.shape and 1 <= value.shape[0] <= 256)
+            else:
+                valid_shape = value.shape == truth.shape
+            if not valid_shape or not np.isfinite(value).all():
+                raise ValueError('Finite small64 witness field required: '+prefix+'_'+key)
+            if key == 'nearest_label' and (not (value.dtype == np.bool_ or np.issubdtype(value.dtype,np.integer))
+                                          or not np.isin(value,(-1,0,1)).all()):
+                raise ValueError('Nearest labels must be Boolean or integers[-1,0,1]; -1 unavailable')
+        if {'fg_max','bg_max','margin'}.issubset(fields):
+            expected = fields['fg_max'].astype(np.float64)-fields['bg_max'].astype(np.float64)
+            dtype = np.result_type(*(fields[k].dtype for k in ('fg_max','bg_max','margin')))
+            epsilon = np.finfo(dtype).eps if np.issubdtype(dtype,np.floating) else 0.
+            tolerance = 8*epsilon*max(1.,float(np.abs(expected).max()))
+            if not np.allclose(fields['margin'],expected,rtol=0.,atol=tolerance):
+                raise ValueError('Recorded witness margin differs from FGmax-BGmax: '+prefix)
+            result['margin_maxima_identity_verified'] = True
+        candidate = None
+        if candidate_key in data:
+            candidate, audit = _witness_candidate(data[candidate_key],candidate_key)
+            result['candidate'] = dict(**audit, metrics=classification(candidate,truth),
+                                      derived_from_margin_sign=False)
+            result['fields_verified'].append(candidate_key)
+            if prefix == 'witness' and 'candidate_hard' in data:
+                if not np.array_equal(candidate,data['candidate_hard']):
+                    raise ValueError('Source witness candidate differs from recorded native candidate_hard')
+                result['native_candidate_exact'] = True
+        if 'per_ref_margin' in fields:
+            per_ref = fields['per_ref_margin']
+            if per_ref.ndim == 2:
+                per_ref = per_ref[None]
+            negative = per_ref < 0
+            result['per_reference_negative_margin'] = dict(references=len(per_ref),
+                all_references=_selected_counts(negative.all(axis=0),truth),
+                any_reference=_selected_counts(negative.any(axis=0),truth),
+                each_reference=[_selected_counts(value,truth) for value in negative],
+                not_used_to_reconstruct_source_votes=True)
+        if 'margin' not in fields:
+            # Missing reference classes can legitimately yield only an actual
+            # candidate/argmax-label trace. Never invent a finite margin/ROC.
+            result['source_audit'] = row.get('witness_audit',row.get('reference_witness_audit',{}))
+            output['families'][prefix] = result
+            continue
+        margin = fields['margin']
+        negative, tied = margin < 0, margin == 0
+        result.update(state='STRICT_NEGATIVE_MARGIN_GRID_SCORED',
+            strict_negative_margin=_selected_counts(negative,truth),
+            exact_ties=_selected_counts(tied,truth),
+            negative_witness_can_be_true_foreground=bool((negative & truth).any()),
+            stage_foreground_despite_negative={key:_selected_counts(mask & negative,truth)
+                                             for key,mask in grid_masks.items()},
+            stage_changes_at_negative_witness={
+                'part2_to_part3':_restricted_transition(grid_masks['part2'],grid_masks['part3'],truth,negative),
+                'part3_to_part4':_restricted_transition(grid_masks['part3'],grid_masks['part4'],truth,negative)})
+        if candidate is not None:
+            result['candidate_foreground_despite_negative'] = _selected_counts(candidate & negative,truth)
+            result['candidate_foreground_at_exact_ties'] = _selected_counts(candidate & tied,truth)
+        result['cluster_descriptions'] = {}
+        for key,labels in clusters.items():
+            descriptions = []
+            for label in np.unique(labels):
+                inside = labels == label
+                true_fg, true_bg = int((inside & truth).sum()), int((inside & ~truth).sum())
+                descriptions.append(dict(cluster_id=int(label),patches=int(inside.sum()),
+                    true_foreground_patches=true_fg,true_background_patches=true_bg,
+                    contains_both_GT_labels=bool(true_fg and true_bg),
+                    strict_negative_margin=_selected_counts(inside & negative,truth),
+                    stage_foreground_despite_negative={stage:_selected_counts(inside & negative & mask,truth)
+                                                       for stage,mask in grid_masks.items()}))
+            result['cluster_descriptions'][key] = descriptions
+        output['families'][prefix] = result
+    return output
+
+
+def aggregate_reference_witness(trajectories):
+    """Sum patch descriptions, separately for each score definition."""
+    result = dict(rows_with_witness=sum(bool(row['reference_witness']['families']) for row in trajectories),
+        units='summed64x64 hard patch counts; not whole-pipeline causal error counts', families={})
+    for family in ('witness','cosine'):
+        rows = [row['reference_witness']['families'][family] for row in trajectories
+                if family in row['reference_witness']['families']]
+        scored = [row for row in rows if row['state'] == 'STRICT_NEGATIVE_MARGIN_GRID_SCORED']
+        totals = dict(rows_with_fields=len(rows),rows_with_strict_margin=len(scored),
+                      rows_with_true_FG_negative_witness=sum(row['negative_witness_can_be_true_foreground'] for row in scored))
+        for field in ('strict_negative_margin','exact_ties'):
+            totals[field] = {key:sum(row[field][key] for row in scored) for key in ('selected','TP','FP')}
+        totals['stage_foreground_despite_negative'] = {
+            stage:{key:sum(row['stage_foreground_despite_negative'][stage][key] for row in scored)
+                   for key in ('selected','TP','FP')} for stage in ('part2','part3','part4')}
+        totals['stage_changes_at_negative_witness'] = {
+            step:{key:sum(row['stage_changes_at_negative_witness'][step][key] for row in scored)
+                  for key in LEDGER} for step in ('part2_to_part3','part3_to_part4')}
+        result['families'][family] = totals
+    return result
+
+
 def trace_analysis(data, row, native_stateful_mask, evaluator_mask):
     if not set(REQUIRED_TRACE).issubset(data) or not set(data).issubset(ALLOWED_TRACE):
         raise ValueError('Trace schema mismatch')
@@ -231,13 +396,14 @@ def trace_analysis(data, row, native_stateful_mask, evaluator_mask):
                 model1024_transition=transition(masks['pre_refinement'],masks['post_refinement'],truth),
                 model1024_transition_units='1024x1024 pixels; source refinement pre-to-post only',
                 grid_to_model_transition_computed=False,
+                reference_witness=reference_witness_analysis(data,row,grid_masks,coverage),
                 source_small_grid_evidence_fields_verified=extra_evidence,
                 source_threshold_roundoff_scope='Recorded1024 masks authoritative; grid scalar comparison subject to original floating arithmetic')
 
 
 def analyze(report, directory, manifest=None, report_sha=None, manifest_sha=None, trace_reader=None):
     if report.get('state') != 'COMPLETED' or tuple(report.get('arms', [])) != ARMS:
-        raise ValueError('Completed frozen six-arm membership report required')
+        raise ValueError('Completed frozen seven-arm membership report required')
     if report.get('query_GT_used_in_prediction',False) is not False:
         raise ValueError('Query GT must not enter prediction')
     rows = report.get('records', [])
@@ -248,7 +414,7 @@ def analyze(report, directory, manifest=None, report_sha=None, manifest_sha=None
     expected = None
     if manifest is not None:
         if manifest.get('state') != 'PREPARED_ASSETS' or tuple(manifest.get('arms',[])) != ARMS:
-            raise ValueError('Frozen six-arm prepared manifest required')
+            raise ValueError('Frozen seven-arm prepared manifest required')
         expected = {task(row):row for row in manifest['frozen_episodes']}
         if len(expected) != 40 or set(expected) != {task(row) for row in rows}:
             raise ValueError('Frozen task identities differ')
@@ -326,6 +492,7 @@ def analyze(report, directory, manifest=None, report_sha=None, manifest_sha=None
                     qualification='Stateful replay assertion is runtime evidence; no separate packed replay arm stored'),
                 primary_trace_context='foris_stateful; not equated with historical direct-predict context',
                 descriptive_source_trajectories=trajectories,
+                reference_witness_grid_totals=aggregate_reference_witness(trajectories),
                 model_and_original_resolution_separate=True,grid_and_model_transitions_separate=True,
                 GT_diagnostic_thresholds_never_deployed=True,
                 repeated_all_role_photos=repeated,independent_class_bootstrap_photo_warning=bool(repeated),
@@ -441,6 +608,75 @@ def self_check():
         except ValueError:pass
         else:raise AssertionError('invalid evidence/rawfeature payload accepted')
     checks.append('shape_and_boolean_mask_contract')
+    assert result['reference_witness_grid_totals']['rows_with_witness']==0
+    assert all(row['reference_witness']['state']=='NO_REFERENCE_WITNESS_FIELDS'
+               for row in result['descriptive_source_trajectories'])
+    checks.append('older_trace_without_optional_witness_remains_legal')
+    margin=np.where(grid,.5,-.5)
+    negative_fg=(0,0);negative_bg=(0,32)
+    margin[negative_fg]=-.5
+    witness={**trace,'witness_fg_max':margin.copy(),'witness_bg_max':np.zeros_like(margin),
+             'witness_margin':margin.copy(),'witness_nearest_label':grid.astype(np.int8),
+             'witness_source_candidate':grid.copy(),'witness_per_ref_margin':margin[None],
+             'seed_cluster_labels':np.zeros_like(grid,dtype=np.int32),
+             'semantic_cluster_labels':np.indices(grid.shape)[1].astype(np.int32)//16}
+    witness['part3_score']=trace['part3_score'].copy();witness['part3_score'][negative_bg]=1.
+    witness['part4_score']=witness['part3_score'].copy();witness['part4_score'][negative_fg]=0.
+    observed=trace_analysis(witness,rows[0],truth,truth)['reference_witness']
+    family=observed['families']['witness']
+    assert family['strict_negative_margin']['TP']==1
+    assert family['negative_witness_can_be_true_foreground'] is True
+    assert family['stage_foreground_despite_negative']['part2']==dict(selected=1,TP=1,FP=0)
+    assert family['stage_changes_at_negative_witness']['part2_to_part3']['added_fp']==1
+    assert family['stage_changes_at_negative_witness']['part3_to_part4']['lost_tp']==1
+    assert family['cluster_descriptions']['seed_cluster_labels'][0]['contains_both_GT_labels'] is True
+    assert family['native_candidate_exact'] is True
+    assert 'model1024' not in family and '1024' in observed['units']
+    assert not trace_analysis(witness,rows[0],truth,truth)['grid_to_model_transition_computed']
+    checks.append('negative_BG_witness_can_be_true_FG_and_grid_changes_do_not_cross_resolution')
+    # The source's row-major argmax tie may select either class. A zero margin
+    # is not a vote, and does not force the source candidate to all background.
+    tied_trace={**witness,'witness_fg_max':np.zeros_like(margin),'witness_bg_max':np.zeros_like(margin),
+                'witness_margin':np.zeros_like(margin),'witness_per_ref_margin':np.zeros((1,64,64))}
+    tied_family=trace_analysis(tied_trace,rows[0],truth,truth)['reference_witness']['families']['witness']
+    assert tied_family['strict_negative_margin']['selected']==0
+    assert tied_family['candidate_foreground_at_exact_ties']['selected']==int(grid.sum())
+    assert tied_family['native_candidate_exact'] is True
+    checks.append('tied_match_scores_do_not_force_margin_sign_candidate')
+    # Even-R votes use >=ceil(R/2), not strict majority. One vote in two wins.
+    multi={**tied_trace,'witness_source_candidate':np.stack([grid,np.zeros_like(grid)]),
+           'witness_per_ref_margin':np.zeros((2,64,64))}
+    multi_family=trace_analysis(multi,rows[0],truth,truth)['reference_witness']['families']['witness']
+    assert multi_family['candidate']['references']==2 and multi_family['native_candidate_exact'] is True
+    checks.append('source_multi_reference_ceil_vote_including_even_reference_ties')
+    missing={**trace,'candidate_hard':np.zeros_like(grid),'witness_source_candidate':np.zeros_like(grid),
+             'witness_nearest_label':np.full(grid.shape,-1,dtype=np.int8)}
+    missing_row={**rows[0],'witness_audit':{'state':'NO_REFERENCE_FOREGROUND'}}
+    missing_family=trace_analysis(missing,missing_row,truth,truth)['reference_witness']['families']['witness']
+    assert missing_family['state']=='NO_STRICT_MARGIN_AVAILABLE'
+    assert 'strict_negative_margin' not in missing_family
+    assert missing_family['source_audit']['state']=='NO_REFERENCE_FOREGROUND'
+    checks.append('missing_reference_FG_has_no_fabricated_margin_or_posterior')
+    cosine={**witness,'cosine_fg_max':-margin,'cosine_bg_max':np.zeros_like(margin),
+            'cosine_margin':-margin,'cosine_nearest_label':(~grid).astype(np.int8),
+            'cosine_candidate':~grid,'cosine_per_ref_margin':(-margin)[None]}
+    separated=trace_analysis(cosine,rows[0],truth,truth)['reference_witness']
+    assert separated['families']['witness']['native_candidate_exact'] is True
+    assert 'native_candidate_exact' not in separated['families']['cosine']
+    aggregate_witness=aggregate_reference_witness([{'reference_witness':separated}])
+    assert aggregate_witness['families']['witness']['strict_negative_margin']['TP']==1
+    assert aggregate_witness['families']['cosine']['strict_negative_margin']['FP']==0
+    checks.append('asymmetric_source_matches_and_channel_cosine_are_separate_diagnostics')
+    for malformed in ({**witness,'witness_source_candidate':~grid},
+                      {**witness,'witness_margin':margin+1},
+                      {**witness,'witness_nearest_label':np.full(grid.shape,2,dtype=np.int8)},
+                      {**witness,'witness_fg_max':np.full(grid.shape,np.nan)},
+                      {**witness,'semantic_cluster_labels':grid.astype(float)},
+                      {**witness,'witness_per_ref_margin':np.zeros((2,63,64))}):
+        try:trace_analysis(malformed,rows[0],truth,truth)
+        except ValueError:pass
+        else:raise AssertionError('illegal candidate/margin/label witness accepted')
+    checks.append('candidate_replay_margin_identity_and_small_witness_shapes_enforced')
     return dict(state='CPU_NATIVE_MEMBERSHIP_ANALYSIS_PASSED',checks=checks,elapsed_seconds=time.monotonic()-begin,
                 no_GPU_or_real_task=True,oracle_grid_only=True,source_contexts_not_equated=True)
 

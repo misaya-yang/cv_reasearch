@@ -1,0 +1,836 @@
+{
+  "platform": "autodl",
+  "cuda_python": "/root/miniconda3/bin/python",
+  "stages": [
+    {
+      "name": "native_membership40",
+      "kind": "gpu",
+      "cwd": "/root/autodl-tmp/demo9_transductive_ics",
+      "timeout_seconds": 1200,
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/native_membership_experiment.py",
+        "--prepared-manifest",
+        "/root/autodl-tmp/demo9_transductive_ics/results/native_membership_v1/causal_v2/manifest40_fullwidth.json",
+        "--projection-basis",
+        "/root/autodl-tmp/demo9_transductive_ics/results/native_runtime_v1/positional_basis.pt",
+        "--prepared-root",
+        "/root/autodl-tmp/demo9",
+        "--foris-root",
+        "/root/autodl-tmp/demo8_local_verification/foris_source",
+        "--resource-guard-state",
+        "/root/autodl-tmp/demo9_transductive_ics/results/native_membership_v1/causal_v2/guard_fullwidth.json",
+        "--allow-gpu",
+        "--out",
+        "/root/autodl-tmp/demo9_transductive_ics/results/native_membership_v1/causal_v2/experiment"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/native_membership_v1/causal_v2/manifest40_fullwidth.json",
+          "json_equals": {
+            "state": "PREPARED_ASSETS"
+          },
+          "sha256": "9785592b331747321b191067dd11ba6f67345626eb0200eebae53d7383f3103e"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/native_membership_v1/causal_v2/source_cpu_fullwidth.json",
+          "json_equals": {
+            "state": "CPU_INSTALLED_MEMBERSHIP_SOURCE_PASSED"
+          },
+          "sha256": "1220443f541e2a7c396de662e297ffc81c2d901f5f7524e5a867cc1f0c38d407"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/native_membership_v1/solver_cpu.json",
+          "json_equals": {
+            "state": "CPU_REFERENCE_KERNEL_SVM_PASSED"
+          },
+          "sha256": "33d67e4c4ad077a91faebf9d547b8187063e9e9984f26c119bc9c2187708926e"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/native_membership_v1/causal_v2/analysis_cpu.json",
+          "json_equals": {
+            "state": "CPU_NATIVE_MEMBERSHIP_ANALYSIS_PASSED"
+          },
+          "sha256": "3487fb750da0902ab46b40eba4384b410bb9945260d761ca7f70babe0cf6738e"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/native_membership_v1/causal_v2/witness_cpu.json",
+          "json_equals": {
+            "state": "CPU_REFERENCE_WITNESS_AUDIT_PASSED"
+          },
+          "sha256": "8ef02336d4675996ae36e39b42d908e2c92057e4a7239e33b2d3c4f815c6dc04"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/native_membership_v1/causal_v2/axis_cpu.json",
+          "json_equals": {
+            "state": "CPU_NATIVE_CANDIDATE_AXIS_PASSED"
+          },
+          "sha256": "de3b49d54c071d02cff2ba9138c924068c859bce77f4ec10025312409fc94412"
+        }
+      ],
+      "cpu_artifacts": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/native_membership_experiment.py",
+          "sha256": "b20e15aeedbca97e8d6b235d1b9806860c6c1fbc33ea2b4d69105d4f0d250598"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/analyze_native_membership.py",
+          "sha256": "1efbce5155e99761edb1fcf4872b46ce866b2dac6a4ab9a68c69ac7d990d6562"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/prepare_native_membership_queue.py",
+          "sha256": "3250b0855eb3085ad16fd4b703f8e41be2cb7e9d6d32b0132672021edffb345b"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/native_membership_source_cpu.py",
+          "sha256": "77b69cb7705a46de5466d86fa9f780d4f9aeabb0a1149237e549379ad0ceaefd"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/reference_kernel_svm_cpu.py",
+          "sha256": "c36ec6204070427244212c96263403c2fdc874183641175c0376414476d18801"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/native_candidate_axis_cpu.py",
+          "sha256": "dd2c582348acf747499c5eddb89fba2ceedefecdfb177a41bd9977923c69dd92"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/reference_witness_audit_cpu.py",
+          "sha256": "3ee0b9e37a3598edf301a56dda6ae78d1609d20bae7490001f82bb59d01a5f7e"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/native_rice_core_experiment.py",
+          "sha256": "f777552faabe090be4397dd55d12c7112966e29d91497b37627393e42184a2b2"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/native_angular_experiment.py",
+          "sha256": "893e7ab9ab1721923f14b7f71a555bafd44332c4436ed4d9df61f70ad677ea33"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/analyze_native_angular.py",
+          "sha256": "ae8e1732088e4392663cb83ca8124883d536bbcef80969cb75c5ed31461bef2b"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/analyze_rice_core.py",
+          "sha256": "3f2d2f9c517b346f753344e158dc94ec5517ce513f3ee28eaf00aa86a06a574d"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/experiment_resource_guard.py",
+          "sha256": "cd5a6f1d4a5894167c5f513936c45df127651549c355aceebb94484daee2d6d5"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/stream_owned_results.py",
+          "sha256": "f76b9a6683291e9629412be1e2cdf14066cb31da3e12d6b08e011b72621a6a2e"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/native_decision_trace.py",
+          "sha256": "16a06a46c17ccf47afb79a5e9c476983dafa6839c58fd76b3a7d93dafb834933"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/reference_kernel_svm.py",
+          "sha256": "5892b8b80be4b8ed2a3b079d4aa1dbc65032fd02e4a25d45d01a07e5b37c1a71"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/native_candidate_axis.py",
+          "sha256": "fe7e5a1ad7b12d91eb2182095f088494da152b3e302f530f83ed5bfe14b77677"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/reference_witness_audit.py",
+          "sha256": "3f05bc4d4d2a079d12fd065982f746824b03916ca847415019ffd293291af4d4"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/frost_existing_adapter.py",
+          "sha256": "8c5b78c28af5321ab4726366a5a94493eb7f7a679bcf56bc2034c2732bd1e390"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/native_assets.py",
+          "sha256": "8ac26ef78d601f3d10318043c6cd73a05fe9dc2ac8d8ea4eabefc6a8289cb80c"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/__init__.py",
+          "sha256": "d41a588fab4ca6137b9adc3bfcb8818062d95a1aeadde5797a81cb36b4e8d4ff"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/imageset.py",
+          "sha256": "1f0a5a3eebb8fd532d514266cbcde231eef5177fae6e95caeecd430f30b57ee5"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/propagate.py",
+          "sha256": "a74af0463c97b304b8bb5365e79ed8cd7b00ac607f8351b1727ebb51af94dcca"
+        },
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/models/foris.py",
+          "sha256": "982cf4aa91ac90370151c353efb37240d7d4d5c35a0dfe9cc9509cd554c85fa9"
+        },
+        {
+          "path": "/root/autodl-tmp/demo4/icx/common.py",
+          "sha256": "a22c313adf516e680b50ef6ebbe08791eb907245871cf1acf78c7d639e779315"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9/scripts/_paths.py",
+          "sha256": "a512370a719784bbd4d05525d0459d691593ac94abfd7593fc66605c4b1e03c5"
+        },
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/metrics.py",
+          "sha256": "ed783235cf02537b1923d396ad5da89576233a8a616bef9adfcfac24c22d7347"
+        },
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/clustering.py",
+          "sha256": "9a005f19542c719ecf734e942adc65829b71fc6c4dcf8f07b2c9922cb137dd74"
+        },
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/__init__.py",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/refinement.py",
+          "sha256": "038c68fe04ea5cdc127da50b926e3dd2ef16ffd400873eea356fbffc66fc188c"
+        },
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/visualization.py",
+          "sha256": "47669e66498a1ea5d1fff8b634112832735ec8c4f2291ca41cdd0c0f407c09a9"
+        },
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/data.py",
+          "sha256": "37211b2f55391694023cad806cdc9ec210944d32346ac1de0f9502df39731b53"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/runtime/frost_source/frost/model.py",
+          "sha256": "47eedf328e8df8fcf1c7bed646610cb285d293969db09bbb78cb62e983dcdc0c"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/runtime/frost_source/frost/density.py",
+          "sha256": "a0c02c72bcd343d1ede8325e746387d39bc12ceb5573f961a757ff25b157f80e"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/runtime/frost_source/frost/data.py",
+          "sha256": "2723000742106a6dbb105d99c1853da10ab38cf44f9e936db4b5b450be14b221"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/runtime/frost_source/frost/encoder.py",
+          "sha256": "4f48a72df76382373c633925034e9c64713a1e7e82acccd4df2ea9b8f3f728e8"
+        },
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/models/__init__.py",
+          "sha256": "ac6e16907f9f8848c681ddd19f3cbce77045de9e530f39a44cc10fb232db8084"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000013420.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000032456.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000041212.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000051167.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000052376.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000052966.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000057286.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000061605.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000068050.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000070334.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000073731.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000074951.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000082021.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000089174.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000089459.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000094944.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000101491.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000107751.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000114303.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000122302.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000128669.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000130586.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000150558.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000151235.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000153205.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000166948.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000170739.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000188651.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000197350.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000204051.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000206391.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000207019.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000209995.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000210388.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000213465.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000215897.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000216083.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000217593.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000218208.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000235093.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000235522.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000240764.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000256145.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000258860.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000267225.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000267521.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000267812.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000268755.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000268944.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000276706.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000300066.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000309802.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000332987.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000338044.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000339468.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000357478.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000359135.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000364586.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000378968.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000387355.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000415183.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000421146.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000428241.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000443299.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000453981.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000457848.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000461821.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000465272.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000465566.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000469687.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000471869.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000488539.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000497504.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000499397.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000499768.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000521133.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000549338.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000571931.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000573455.png"
+        },
+        {
+          "path": "/root/autodl-tmp/datasets/ics/COCO2014/annotations/val2014/COCO_val2014_000000574208.png"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/native_runtime_v1/positional_basis.pt"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000013420.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000032456.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000041212.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000051167.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000052376.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000052966.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000057286.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000061605.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000068050.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000070334.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000073731.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000074951.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000082021.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000089174.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000089459.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000094944.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000101491.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000107751.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000114303.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000122302.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000128669.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000130586.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000150558.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000151235.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000153205.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000166948.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000170739.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000188651.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000197350.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000204051.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000206391.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000207019.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000209995.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000210388.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000213465.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000215897.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000216083.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000217593.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000218208.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000235093.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000235522.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000240764.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000256145.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000258860.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000267225.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000267521.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000267812.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000268755.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000268944.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000276706.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000300066.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000309802.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000332987.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000338044.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000339468.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000357478.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000359135.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000364586.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000378968.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000387355.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000415183.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000421146.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000428241.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000443299.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000453981.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000457848.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000461821.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000465272.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000465566.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000469687.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000471869.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000488539.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000497504.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000499397.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000499768.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000521133.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000549338.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000571931.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000573455.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/data/COCO2014/val2014/COCO_val2014_000000574208.jpg"
+        },
+        {
+          "path": "/root/demo4_cache/models/dinov3-vitl16-timm/config.json"
+        },
+        {
+          "path": "/root/demo4_cache/models/dinov3-vitl16-timm/model.safetensors"
+        }
+      ],
+      "code_files": [
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/native_membership_experiment.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/analyze_native_membership.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/prepare_native_membership_queue.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/native_membership_source_cpu.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/reference_kernel_svm_cpu.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/native_candidate_axis_cpu.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/reference_witness_audit_cpu.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/native_rice_core_experiment.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/native_angular_experiment.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/analyze_native_angular.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/analyze_rice_core.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/experiment_resource_guard.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/stream_owned_results.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/native_decision_trace.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/reference_kernel_svm.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/native_candidate_axis.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/reference_witness_audit.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/frost_existing_adapter.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/native_assets.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/__init__.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/imageset.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/propagate.py",
+        "/root/autodl-tmp/demo8_local_verification/foris_source/models/foris.py",
+        "/root/autodl-tmp/demo4/icx/common.py",
+        "/root/autodl-tmp/demo9/scripts/_paths.py",
+        "/root/autodl-tmp/demo8_local_verification/foris_source/utils/metrics.py",
+        "/root/autodl-tmp/demo8_local_verification/foris_source/utils/clustering.py",
+        "/root/autodl-tmp/demo8_local_verification/foris_source/utils/__init__.py",
+        "/root/autodl-tmp/demo8_local_verification/foris_source/utils/refinement.py",
+        "/root/autodl-tmp/demo8_local_verification/foris_source/utils/visualization.py",
+        "/root/autodl-tmp/demo8_local_verification/foris_source/utils/data.py",
+        "/root/autodl-tmp/demo9_transductive_ics/runtime/frost_source/frost/model.py",
+        "/root/autodl-tmp/demo9_transductive_ics/runtime/frost_source/frost/density.py",
+        "/root/autodl-tmp/demo9_transductive_ics/runtime/frost_source/frost/data.py",
+        "/root/autodl-tmp/demo9_transductive_ics/runtime/frost_source/frost/encoder.py",
+        "/root/autodl-tmp/demo8_local_verification/foris_source/models/__init__.py"
+      ],
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions",
+        "DEMO9_CUDA_GUARD": "1",
+        "DEMO4_GPU_FRAC": ".4",
+        "HF_HUB_OFFLINE": "1",
+        "TRANSFORMERS_OFFLINE": "1",
+        "OMP_NUM_THREADS": "2",
+        "MKL_NUM_THREADS": "2"
+      },
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/native_membership_v1/causal_v2/experiment/report.json",
+          "json_equals": {
+            "state": "COMPLETED"
+          }
+        }
+      ],
+      "success_checks": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/native_membership_v1/causal_v2/experiment/report.json",
+          "json_equals": {
+            "state": "COMPLETED"
+          }
+        }
+      ]
+    },
+    {
+      "name": "native_membership40_analysis",
+      "kind": "cpu",
+      "role": "handoff",
+      "cwd": "/root/autodl-tmp/demo9_transductive_ics",
+      "timeout_seconds": 60,
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/analyze_native_membership.py",
+        "--report",
+        "/root/autodl-tmp/demo9_transductive_ics/results/native_membership_v1/causal_v2/experiment/report.json",
+        "--manifest",
+        "/root/autodl-tmp/demo9_transductive_ics/results/native_membership_v1/causal_v2/manifest40_fullwidth.json",
+        "--out",
+        "/root/autodl-tmp/demo9_transductive_ics/results/native_membership_v1/causal_v2/experiment/analysis.json"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/native_membership_v1/causal_v2/experiment/report.json",
+          "json_equals": {
+            "state": "COMPLETED"
+          }
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/native_membership_v1/causal_v2/manifest40_fullwidth.json",
+          "json_equals": {
+            "state": "PREPARED_ASSETS"
+          },
+          "sha256": "9785592b331747321b191067dd11ba6f67345626eb0200eebae53d7383f3103e"
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/native_membership_v1/causal_v2/experiment/analysis.json",
+          "json_equals": {
+            "state": "CPU_NATIVE_MEMBERSHIP_ANALYSIS"
+          }
+        }
+      ],
+      "success_checks": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/native_membership_v1/causal_v2/experiment/analysis.json",
+          "json_equals": {
+            "state": "CPU_NATIVE_MEMBERSHIP_ANALYSIS"
+          }
+        }
+      ],
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions",
+        "DEMO9_CUDA_GUARD": "1",
+        "DEMO4_GPU_FRAC": ".4",
+        "HF_HUB_OFFLINE": "1",
+        "TRANSFORMERS_OFFLINE": "1",
+        "OMP_NUM_THREADS": "2",
+        "MKL_NUM_THREADS": "2",
+        "CUDA_VISIBLE_DEVICES": ""
+      }
+    }
+  ],
+  "fixed_memory_fraction": 0.4,
+  "idle_grace_seconds": 60,
+  "provider_shutdown_foreign_safe": true,
+  "cpu_preparation_complete_required": true,
+  "protocol": "One seven-arm full-source decision-path/normalization-axis diagnostic, not seven new methods; no retries/sweeps/queue expansion",
+  "actual_CUDA_readiness_not_claimed": true,
+  "sum_stage_timeout_seconds": 1260
+}

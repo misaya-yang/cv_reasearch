@@ -16,7 +16,7 @@ import zlib
 from native_rice_core_experiment import digest, write_json
 
 HERE=Path(__file__).resolve().parent
-ARMS=('foris_crf','native_identity','part2_native_direct','kernel_svm','complete_frost','foris_stateful')
+ARMS=('foris_crf','native_identity','part2_native_direct','kernel_svm','complete_frost','foris_stateful','foris_channel_nn')
 
 
 @contextmanager
@@ -47,10 +47,12 @@ def prepare(a):
     base=HERE.parent
     source=[Path(__file__),HERE/'analyze_native_membership.py',HERE/'prepare_native_membership_queue.py',
         HERE/'native_membership_source_cpu.py',HERE/'reference_kernel_svm_cpu.py',
+        HERE/'native_candidate_axis_cpu.py',HERE/'reference_witness_audit_cpu.py',
         HERE/'native_rice_core_experiment.py',HERE/'native_angular_experiment.py',
         HERE/'analyze_native_angular.py',HERE/'analyze_rice_core.py',HERE/'experiment_resource_guard.py',
         HERE/'stream_owned_results.py',
         base/'tics/native_decision_trace.py',base/'tics/reference_kernel_svm.py',
+        base/'tics/native_candidate_axis.py',base/'tics/reference_witness_audit.py',
         base/'tics/frost_existing_adapter.py',base/'tics/native_assets.py',
         base/'tics/__init__.py',base/'tics/imageset.py',base/'tics/propagate.py']
     inherited=[Path(p) for p in parent['source_hashes'] if '/foris_source/' in p or p.endswith('/icx/common.py') or p.endswith('/scripts/_paths.py')]
@@ -68,6 +70,7 @@ def prepare(a):
             historical_foris_context='direct tensor predict; source _tgt_image None',
             strong_foris_context='source set_reference/set_target/segment with RGB context',
             native_trace='public stateful context, unchanged source stages and one CRF',
+            candidate_axis_control='complete public FoRIS, ONLY ref_m normalization dim2(H) to dim1(D); source dim2 replica exact required; not a novel method',
             full_frost='complete unchanged source head/injected timm adaptation, native B3/SVD250/all anchors/bilateral/continuous0, no CRF',
             kernel_svm='native Part1 full coordinates, pureFG>=.9/BG<=.1 deterministic caps128/256, C1, balanced weights, reference-pair median bandwidth',
             kernel_output='continuous signed margin upsample/zero threshold/native single CRF; no minmax/area/gate',
@@ -119,8 +122,9 @@ def run(a):
         sys.path.insert(0,str(HERE.parent))
         from tics.native_assets import reuse_native_basis
         from tics.native_decision_trace import trace_native_decisions
+        from tics.native_candidate_axis import candidate_normalization_axis
         from tics.reference_kernel_svm import fit_reference_kernel_svm
-        from tics.frost_existing_adapter import construct_complete_frost,capture_frost_finalization
+        from tics.frost_existing_adapter import construct_complete_frost,capture_frost_finalization,verify_frost_public_tensors
         with torch.inference_mode():
             encoder=TimmDINOv3().cuda().eval().requires_grad_(False)
             with reuse_native_basis(foris_module.FoRIS,a.projection_basis):
@@ -149,6 +153,13 @@ def run(a):
                     set_public()
                     with same_input_raw_cache(host,expected,raw),trace_native_decisions(host) as trace:stateful_replay=host.segment().reshape(1024,1024).bool().clone()
                     if not torch.equal(stateful,stateful_replay):raise RuntimeError('Public-context observer changes source mask')
+                    set_public()
+                    with same_input_raw_cache(host,expected,raw),candidate_normalization_axis(host,2):
+                        axis_replica=host.segment().reshape(1024,1024).bool().clone()
+                    if not torch.equal(stateful,axis_replica):raise RuntimeError('Whole-source candidate-axis2 replica changes public mask')
+                    set_public()
+                    with same_input_raw_cache(host,expected,raw),candidate_normalization_axis(host,1):
+                        channel_prediction=host.segment().reshape(1024,1024).bool().clone()
                     # Naive direct original-score reader, source scalar/refiner.
                     direct_mask=host._binarize_response(part2[0],target_hw=(1024,1024))
                     direct=host._finalize_mask(direct_mask,q[0]).reshape(1024,1024).bool().clone()
@@ -169,11 +180,11 @@ def run(a):
                         binary=F.interpolate(margin[None,None],(1024,1024),mode='bilinear',align_corners=False)[0,0]>0
                         svm_prediction=host._finalize_mask(binary,q[0]).reshape(1024,1024).bool().clone()
                     frost.set_reference(sp,gold_cpu);frost.set_target(qp)
-                    if not torch.equal(frost._ref_images,s) or not torch.equal(frost._ref_masks,mask) or not torch.equal(frost._tgt_image,q[0]):raise RuntimeError('Complete FROST source preprocessing differs from matched tensors')
+                    verify_frost_public_tensors(frost,s,mask,q)
                     with capture_frost_finalization(frost) as frost_trace:
                         frost_prediction=frost.segment().reshape(1024,1024).bool().clone()
                     predictions=dict(foris_crf=native,native_identity=identity,foris_stateful=stateful,
-                        part2_native_direct=direct,kernel_svm=svm_prediction,complete_frost=frost_prediction)
+                        part2_native_direct=direct,kernel_svm=svm_prediction,complete_frost=frost_prediction,foris_channel_nn=channel_prediction)
                     torch.cuda.synchronize();frozen={k:v.cpu().numpy().astype(bool) for k,v in predictions.items()}
                     inference_s=time.monotonic()-begin
                     # FIRST access to query labels occurs after every method.
@@ -193,9 +204,10 @@ def run(a):
                     np.savez_compressed(out/trace_name,**maps)
                     report['records'].append(dict(**row,iu={k:iu(v,truth_model) for k,v in frozen.items()},original_iu={k:iu(v,truth_original) for k,v in original.items()},ledger=ledger,
                         prediction_bits={k:packed(v) for k,v in frozen.items()},evaluator_bits=packed(truth_model),
-                        replay_identity_exact=True,stateful_replay_exact=True,trace_source_arm='foris_stateful',
+                        replay_identity_exact=True,stateful_replay_exact=True,candidate_axis2_replica_exact=True,trace_source_arm='foris_stateful',
                         query_GT_opened_after_all_predictions=True,trace_archive=trace_name,trace_sha256=digest(out/trace_name),
                         native_binarization=trace['binarization'],svm_audit=svm_audit,
+                        witness_audit=trace.get('witness_audit'),
                         frost_audit=dict(state='SOURCE_CONTINUOUS_DENSITY' if frost_trace.get('continuous_density_available') else 'SOURCE_FALLBACK_NO_CONTINUOUS_DENSITY',continuous_density_available=frost_trace.get('continuous_density_available',False),threshold=frost_trace.get('density_tau'),source_pipeline=True,timm_adaptation=True),
                         cost=dict(inference_s=inference_s,clustering_cache=cache.copy(),stateful_raw_cache_input_exact=True,stateful_baseline_raw_cache_calls=len(raw_calls),native_batch='S,Q',frost_batch='S,flip(S),Q')))
                     save();print(json.dumps(dict(completed=len(report['records']),fold=row['fold'],c=c,inference_s=inference_s,native_IU=report['records'][-1]['original_iu']['foris_crf'],public_IU=report['records'][-1]['original_iu']['foris_stateful'])),flush=True)

@@ -1,4 +1,16 @@
-## 最新用户决定与深入分析
+## 当前：参考排序，查询定界；未执行训练
+
+用户已明确纠正先选响应再训练头的偏离，当前训练入口撤回并归档。采用所给“在哪里停”候选：同完整FoRIS分数场，用查询原生特征边界选择水平集；需先胜过完整公共FoRIS、同处理scalarcontrast和RGB边界。现存40复用DEV的patch常值scalar67.05对中点63.14是方向信号，非完整流程优势；10个条件性CPU核心案例通过，内部纹理边界误切反例已保留。无新真实质量结果、无有卡GPU运行。下方此前准备状态已被本节和PLAN首节覆盖。
+
+## 最新用户纠偏：完整方法主线，计划只部分完成
+
+当前（2026-10-03）仍无新真实质量收益。唯一响应条件算法正在无卡CPU准备；实际安装timm的小模块10例已通过，完整训练/预训练DINO实验尚未执行。现有照片与官方掩码真实准备已通过：每折60TRAIN/60DEV、原10评估任务；held类别及所有角色照片隔离，评估仍为复用开发40例，不能称独立确认或充分训练。未租有卡、未下载资产。后续旧条目保留各自历史时点；PLAN首节和STATUS为当前状态。
+
+完整机制对照和Claude计划验收已写入[PLAN.md](PLAN.md)首节。七种候选做过有限开发试验；官方协议四折主表、完整TPA式强对照与独立泛化未完成。最新causal_v3已完成40个复用开发任务、四折各10：公共完整FoRIS65.1614，旧direct-predict+CRF64.2836；轴修正65.3195，相对完整入口仅+.1581pp，区间[-.4139,.7117]。实际199.0877秒实验后浏览器确认866已关机；旧队列不重跑。当前没有新方法的独立强基线优势。
+
+本轮多代理数学审查撤回单参考响应pair-ratio editor：degree归一化仍会重复计算共用证据；单参考拟合好也可在query反转。六个CPU反例检查已通过，记录在results/native_membership_v1/response_relation_contract_cpu.json。唯一正在构造的观测接口是参考FG/BG判别轴上的两种有符号value抑制；9个CPU代数检查通过，未接真实encoder、未训练、未开GPU、无质量结果。它与即时attention差分必须区分；不能把线性改写或CPU通过称方法创新。整体目标未完成。
+
+## 较早用户决定与深入分析
 
 当前全部实例已关机（含无卡环境），平台刷新确认；停止自动开机和新GPU实验，本地继续分析。七候选的有界pilot已执行，不代表原十张研究卡的全部科学问题已回答。
 
@@ -16,7 +28,7 @@ E10五例原生亮度压力40.0384→54.4173只属意外诊断。已补固定.75
 
 # demo9：转导式上下文分割——把没有标注的同类图当作参考
 
-### Current preparation (latest user scope, no-card)
+### Earlier preparation snapshot (superseded by latest audit)
 
 Seven candidate algorithms and ten **independent** experiments are specified in [HANDOFF.md](HANDOFF.md) and [PLAN.md](PLAN.md), with code and machine-readable cards in `results/prepared_independent_experiments.json`. Thirteen small CPU/source-operation suites passed; see `results/prepared_methods_cpu_receipt.json`. They validate equations, gradients, hooks, leakage guards and interfaces, not real DINO segmentation benefit. No GPU experiments, new downloads or default ten-job queue. Protected metric has a bounded learned fusion gain and full implicit/active-step gradients; views and prefix prompts have distinct lawful support conditioning; OT relaxes marginal mass. Archived graph propagation remains a cheap control. Historical numbers below retain their original protocol and do not score these candidates.
 

@@ -96,6 +96,7 @@ def main():
     parser.add_argument('--foris-root', type=Path, required=True)
     parser.add_argument('--frost-root', type=Path, required=True)
     parser.add_argument('--out', type=Path, required=True)
+    parser.add_argument('--prepared-manifest', type=Path)
     args = parser.parse_args()
     if args.out.exists(): parser.error('Fresh receipt required; preserve prior evidence')
     foris, frost = args.foris_root.resolve(), args.frost_root.resolve()
@@ -103,7 +104,8 @@ def main():
     required = [foris/'models/foris.py', foris/'utils/clustering.py',
                 foris/'utils/data.py', foris/'utils/refinement.py']
     required += [frost/'frost'/name for name in ('model.py', 'density.py', 'data.py', 'encoder.py')]
-    own = [Path(__file__), base/'tics/native_decision_trace.py', base/'tics/frost_existing_adapter.py']
+    own = [Path(__file__), base/'tics/native_decision_trace.py', base/'tics/frost_existing_adapter.py',
+           base/'tics/native_candidate_axis.py',base/'tics/reference_witness_audit.py']
     files = source_files(foris, frost) + own
     report = dict(state='PREPARING_CPU_SOURCE', records=[], cases_requested=10,
         source_hashes={str(path):sha(path) for path in files if path.is_file()},
@@ -142,6 +144,7 @@ def main():
             stage = 'import_own_trace_and_adapter'
             trace = load_module(base/'tics/native_decision_trace.py', '_demo9_membership_cpu_trace')
             adapter = load_module(base/'tics/frost_existing_adapter.py', '_demo9_membership_cpu_frost_adapter')
+            axis = load_module(base/'tics/native_candidate_axis.py', '_demo9_membership_cpu_axis')
             stage = 'import_actual_FROST_source'
             frost_source, frost_encoder, frost_hashes = adapter.existing_frost_modules(frost)
             report['FROST_namespace'] = frost_source.__name__
@@ -256,16 +259,25 @@ def main():
                         assert torch.equal(original_public_f,traced_public_f)
                         assert original_public_f.shape==(64,64) and original_public_f.dtype==torch.bool
                         assert torch.equal(public_packet_f['maps']['post_refinement_mask'],traced_public_f)
+                        assert public_packet_f['witness_audit']['source_candidate_exact']
+                        assert torch.equal(public_packet_f['maps']['witness_source_candidate'],public_packet_f['maps']['candidate_hard'])
+                        assert public_packet_f['maps']['seed_cluster_labels'].shape==(4,4)
+                        assert public_packet_f['maps']['semantic_cluster_labels'].shape==(4,4)
                         assert public_packet_f['maps']['pre_refinement_mask'].shape==(64,64)
                         assert any(call['descriptor_dimension']==13 for call in public_cluster_calls)
                         assert methods_restored(foris_host,foris_snapshot)
+                        prepare_foris_public()
+                        with axis.candidate_normalization_axis(foris_host,2):axis_replica=foris_host.segment()
+                        assert torch.equal(axis_replica,traced_public_f)
+                        prepare_foris_public()
+                        with axis.candidate_normalization_axis(foris_host,1):channel_control=foris_host.segment()
+                        assert channel_control.shape==(64,64) and channel_control.dtype==torch.bool
+                        assert '_locate_candidates' not in foris_host.__dict__
                         stage = 'actual_FROST_PUBLIC_stateful_case_' + str(index)
                         def prepare_frost_public():
                             frost_host.set_reference(support_pil,mask)
                             frost_host.set_target(query_pil)
-                            assert torch.equal(frost_host._ref_images,support)
-                            assert torch.equal(frost_host._ref_masks,mask)
-                            assert torch.equal(frost_host._tgt_image,query)
+                            adapter.verify_frost_public_tensors(frost_host,support,mask,query)
                         prepare_frost_public()
                         original_public_r = frost_host.segment().clone()
                         assert frost_host._tgt_image is None
@@ -290,7 +302,7 @@ def main():
                     assert all(torch.equal(value,state_f[key]) for key,value in foris_host.state_dict().items())
                     assert all(torch.equal(value,state_r[key]) for key,value in frost_host.state_dict().items())
                     assert all(parameter.grad is None for parameter in list(foris_host.parameters())+list(frost_host.parameters()))
-                    assert [call['batch'] for call in foris_raw.calls] == [2,2,2,2]
+                    assert [call['batch'] for call in foris_raw.calls] == [2,2,2,2,2,2]
                     assert [call['batch'] for call in frost_raw.calls] == [3,3,3,3]
                     assert foris_raw.calls[0]['input_sha256'] == foris_raw.calls[1]['input_sha256']
                     assert frost_raw.calls[0]['input_sha256'] == frost_raw.calls[1]['input_sha256']
@@ -305,6 +317,8 @@ def main():
                         FoRIS_PUBLIC_prior_clustering_calls=public_cluster_calls,
                         FoRIS_PUBLIC_RGB_position_branch_executed=True,
                         PUBLIC_not_required_equal_direct=True,
+                        source_candidate_witness_exact=True,candidate_axis2_whole_public_replica_exact=True,
+                        channel_candidate_full_public_executed=True,
                         PUBLIC_changed_from_direct_pixels=int((traced_public_f!=traced_f).sum()),
                         FROST_PUBLIC_density_available=public_packet_r['continuous_density_available'],
                         FoRIS_stage_shapes={name:list(value.shape) for name,value in packet_f['maps'].items()},
@@ -316,6 +330,38 @@ def main():
                     report['records'].append(row);report['cases_completed']=len(report['records']);save()
                     print(json.dumps(dict(case=index,FoRIS_source=True,FROST_source=True,
                         FROST_density=packet_r['continuous_density_available'],FoRIS_B=2,FROST_B=3)),flush=True)
+                if args.prepared_manifest is not None:
+                    # Check the EXACT production public-input assertion using
+                    # all existing real RGB/support masks, without an encoder
+                    # or query annotation. Constructor state is not emulated;
+                    # public loading methods and transforms are actual source.
+                    import numpy as np
+                    manifest=json.loads(args.prepared_manifest.read_text())
+                    real=frost_source.FROST.__new__(frost_source.FROST)
+                    torch.nn.Module.__init__(real)
+                    real.device='cpu';real.image_size=1024
+                    data_module=importlib.import_module(frost_source.__package__+'.data')
+                    real._transform=data_module.build_transform(1024)
+                    comparison=foris_source.build_transform(1024)
+                    real.reset_state();real_rows=[]
+                    for row in manifest['frozen_episodes']:
+                        sp=Image.open(Path(manifest['data_root'])/row['support']).convert('RGB')
+                        qp=Image.open(Path(manifest['data_root'])/row['query']).convert('RGB')
+                        annotation=np.asarray(Image.open(Path(manifest['annotation_root'])/Path(row['support']).with_suffix('.png')))==row['c']+1
+                        gold=torch.from_numpy(annotation.copy())
+                        reference=comparison(sp)[None];target=comparison(qp)[None]
+                        resized_mask=F.interpolate(gold[None,None].float(),(1024,1024),mode='nearest')[0].bool()
+                        real.set_reference(sp,gold);real.set_target(qp)
+                        adapter.verify_frost_public_tensors(real,reference,resized_mask,target)
+                        try:adapter.verify_frost_public_tensors(real,reference,resized_mask,target[0])
+                        except RuntimeError:pass
+                        else:raise AssertionError('Production helper accepts invalid unbatched FROST query')
+                        real_rows.append({k:row[k] for k in ('fold','e','c','support','query')})
+                        real.reset_state()
+                    report.update(production_public_preprocess_cases=len(real_rows),
+                        production_public_preprocess_records=real_rows,
+                        real_RGB_and_support_masks_only=True,query_GT_read_for_preprocessing=False,
+                        production_preprocess_manifest_sha256=sha(args.prepared_manifest))
             # Source hashes are immutable across all actual imports/predictions.
             for name, expected in report['source_hashes'].items():
                 if sha(name) != expected: raise RuntimeError('CPU test source drift: '+name)

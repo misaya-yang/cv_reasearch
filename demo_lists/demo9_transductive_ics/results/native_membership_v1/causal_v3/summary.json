@@ -1,0 +1,281 @@
+{
+  "state": "COMPLETED_MATCHED_DEVELOPMENT_DIAGNOSTIC",
+  "dataset": "official COCO-20i",
+  "seed": 0,
+  "tasks": 40,
+  "per_fold": 10,
+  "reused_for_development": true,
+  "independent_confirmation": false,
+  "scores": {
+    "foris_crf": {
+      "original_class_miou": 64.28356762297975,
+      "per_fold": {
+        "0": 64.99469148045496,
+        "1": 63.991944727634895,
+        "2": 65.89344713351439,
+        "3": 62.25418715031475
+      }
+    },
+    "native_identity": {
+      "original_class_miou": 64.28356762297975,
+      "per_fold": {
+        "0": 64.99469148045496,
+        "1": 63.991944727634895,
+        "2": 65.89344713351439,
+        "3": 62.25418715031475
+      }
+    },
+    "part2_native_direct": {
+      "original_class_miou": 60.86294730492607,
+      "per_fold": {
+        "0": 63.260222228382624,
+        "1": 56.93086652780623,
+        "2": 61.289509924704156,
+        "3": 61.97119053881124
+      }
+    },
+    "kernel_svm": {
+      "original_class_miou": 56.463840778003025,
+      "per_fold": {
+        "0": 52.419918541039046,
+        "1": 55.199775874949886,
+        "2": 62.17324172140387,
+        "3": 56.06242697461928
+      }
+    },
+    "complete_frost": {
+      "original_class_miou": 56.918446394576065,
+      "per_fold": {
+        "0": 51.68401554051832,
+        "1": 57.22318086466258,
+        "2": 61.26286215939716,
+        "3": 57.50372701372619
+      }
+    },
+    "foris_stateful": {
+      "original_class_miou": 65.16136735220249,
+      "per_fold": {
+        "0": 66.43291714306903,
+        "1": 63.57544979520408,
+        "2": 66.26696566488033,
+        "3": 64.37013680565647
+      }
+    },
+    "foris_channel_nn": {
+      "original_class_miou": 65.31947128630509,
+      "per_fold": {
+        "0": 66.80154264736021,
+        "1": 63.27521357379679,
+        "2": 67.08410486665376,
+        "3": 64.11702405740962
+      }
+    }
+  },
+  "comparisons": {
+    "native_identity vs foris_crf": {
+      "delta_pp": 0.0,
+      "exploratory_delta95_pp": [
+        0.0,
+        0.0
+      ]
+    },
+    "part2_native_direct vs foris_crf": {
+      "delta_pp": -3.420620318053679,
+      "exploratory_delta95_pp": [
+        -7.512890063012379,
+        -0.08838662809402828
+      ]
+    },
+    "kernel_svm vs foris_crf": {
+      "delta_pp": -7.819726844976721,
+      "exploratory_delta95_pp": [
+        -13.692232700871667,
+        -2.8801759220414658
+      ]
+    },
+    "complete_frost vs foris_crf": {
+      "delta_pp": -7.36512122840368,
+      "exploratory_delta95_pp": [
+        -11.615955648362746,
+        -3.483268557389409
+      ]
+    },
+    "foris_stateful vs foris_crf": {
+      "delta_pp": 0.877799729222744,
+      "exploratory_delta95_pp": [
+        -0.09451106022182437,
+        2.1323737704021886
+      ]
+    },
+    "foris_channel_nn vs foris_crf": {
+      "delta_pp": 1.0359036633253424,
+      "exploratory_delta95_pp": [
+        -0.11379706932691759,
+        2.404489313820184
+      ]
+    },
+    "foris_crf vs foris_stateful": {
+      "delta_pp": -0.877799729222744,
+      "exploratory_delta95_pp": [
+        -2.1323737704021895,
+        0.09451106022182429
+      ]
+    },
+    "native_identity vs foris_stateful": {
+      "delta_pp": -0.877799729222744,
+      "exploratory_delta95_pp": [
+        -2.1323737704021895,
+        0.09451106022182429
+      ]
+    },
+    "part2_native_direct vs foris_stateful": {
+      "delta_pp": -4.298420047276423,
+      "exploratory_delta95_pp": [
+        -8.563920866450651,
+        -0.824530629994785
+      ]
+    },
+    "kernel_svm vs foris_stateful": {
+      "delta_pp": -8.697526574199465,
+      "exploratory_delta95_pp": [
+        -14.791980804975047,
+        -3.633191528145563
+      ]
+    },
+    "complete_frost vs foris_stateful": {
+      "delta_pp": -8.242920957626424,
+      "exploratory_delta95_pp": [
+        -12.788588957620092,
+        -4.084188016278379
+      ]
+    },
+    "foris_channel_nn vs foris_stateful": {
+      "delta_pp": 0.1581039341025985,
+      "exploratory_delta95_pp": [
+        -0.4139141978316343,
+        0.7117008737469801
+      ]
+    }
+  },
+  "native_identity": {
+    "packed_mask_exact_checks": 40,
+    "runtime_replay_assertions": 40
+  },
+  "stateful_identity": {
+    "runtime_replay_assertions": 40,
+    "trace_post_matches_frozen_stateful_masks": 40,
+    "qualification": "Stateful replay assertion is runtime evidence; no separate packed replay arm stored"
+  },
+  "candidate_axis2_whole_mask_exact_checks": 40,
+  "query_GT_after_all_predictions": true,
+  "report_sha256": "7b856c019e9e01d640fbf1f69081794e9a1c25be6a26bb05d6a57220900443aa",
+  "byte_identical_stream_report_reconstruction_verified": true,
+  "elapsed_experiment_seconds": 199.0877152942121,
+  "analysis_seconds": 2.4382186997681856,
+  "reference_witness_grid_totals": {
+    "rows_with_witness": 40,
+    "units": "summed64x64 hard patch counts; not whole-pipeline causal error counts",
+    "families": {
+      "witness": {
+        "rows_with_fields": 40,
+        "rows_with_strict_margin": 40,
+        "rows_with_true_FG_negative_witness": 39,
+        "strict_negative_margin": {
+          "selected": 133213,
+          "TP": 4975,
+          "FP": 128238
+        },
+        "exact_ties": {
+          "selected": 0,
+          "TP": 0,
+          "FP": 0
+        },
+        "stage_foreground_despite_negative": {
+          "part2": {
+            "selected": 6421,
+            "TP": 2886,
+            "FP": 3535
+          },
+          "part3": {
+            "selected": 3307,
+            "TP": 2304,
+            "FP": 1003
+          },
+          "part4": {
+            "selected": 3105,
+            "TP": 2179,
+            "FP": 926
+          }
+        },
+        "stage_changes_at_negative_witness": {
+          "part2_to_part3": {
+            "recovered_fn": 84,
+            "lost_tp": 666,
+            "added_fp": 105,
+            "removed_fp": 2637
+          },
+          "part3_to_part4": {
+            "recovered_fn": 19,
+            "lost_tp": 144,
+            "added_fp": 180,
+            "removed_fp": 257
+          }
+        }
+      },
+      "cosine": {
+        "rows_with_fields": 40,
+        "rows_with_strict_margin": 40,
+        "rows_with_true_FG_negative_witness": 37,
+        "strict_negative_margin": {
+          "selected": 134002,
+          "TP": 4507,
+          "FP": 129495
+        },
+        "exact_ties": {
+          "selected": 0,
+          "TP": 0,
+          "FP": 0
+        },
+        "stage_foreground_despite_negative": {
+          "part2": {
+            "selected": 6077,
+            "TP": 2378,
+            "FP": 3699
+          },
+          "part3": {
+            "selected": 3399,
+            "TP": 1958,
+            "FP": 1441
+          },
+          "part4": {
+            "selected": 3083,
+            "TP": 1835,
+            "FP": 1248
+          }
+        },
+        "stage_changes_at_negative_witness": {
+          "part2_to_part3": {
+            "recovered_fn": 120,
+            "lost_tp": 540,
+            "added_fp": 187,
+            "removed_fp": 2445
+          },
+          "part3_to_part4": {
+            "recovered_fn": 19,
+            "lost_tp": 142,
+            "added_fp": 167,
+            "removed_fp": 360
+          }
+        }
+      }
+    }
+  },
+  "instance_UI_status": "STOPPED",
+  "instance": "866",
+  "controller_PID": 1064,
+  "worker_PID": 1146,
+  "guard_final_transferred": false,
+  "guard_not_retrieved_by_booting": true,
+  "new_GPU_batches_on_hold_by_user": true,
+  "automation_sam_update_result": "not found; not recreated"
+}

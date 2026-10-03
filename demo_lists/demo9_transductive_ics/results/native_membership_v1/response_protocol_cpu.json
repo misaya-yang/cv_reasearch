@@ -1,0 +1,128 @@
+{
+  "state": "CPU_RESPONSE_PROTOCOL_METADATA_PASSED",
+  "checks": [
+    {
+      "name": "official_interleaved_fold_and_all_role_test_dependencies",
+      "passed": true
+    },
+    {
+      "name": "photo_ID_stable_across_years_directory_names_and_roles",
+      "passed": true
+    },
+    {
+      "name": "reused_dev_is_allowed_only_with_explicit_nonfresh_scope",
+      "passed": true
+    }
+  ],
+  "rejected": [
+    {
+      "name": "held_class_in_training",
+      "reason": "Held category entered base training/development or wrong test fold"
+    },
+    {
+      "name": "nonheld_class_in_test",
+      "reason": "Held category entered base training/development or wrong test fold"
+    },
+    {
+      "name": "query_is_reference_same_photo",
+      "reason": "Query must be a new photo, not the labelled reference itself"
+    },
+    {
+      "name": "train_photo_reappears_as_test_query_under_different_split_path",
+      "reason": "Photo leakage across ALL support/query roles: train/test"
+    },
+    {
+      "name": "dev_reference_reappears_as_test_query",
+      "reason": "Photo leakage across ALL support/query roles: dev/test"
+    },
+    {
+      "name": "old_dev_reference_called_fresh_test",
+      "reason": "Previously exposed photo cannot be called fresh confirmation"
+    },
+    {
+      "name": "old_dev_query_called_fresh_test",
+      "reason": "Previously exposed photo cannot be called fresh confirmation"
+    },
+    {
+      "name": "missing_exposure_registry",
+      "reason": "Prior development exposure registry is required, even when empty"
+    },
+    {
+      "name": "path_traversal",
+      "reason": "COCO image paths must be split/file, without traversal"
+    },
+    {
+      "name": "filename_split_disagrees",
+      "reason": "COCO filename and directory split disagree"
+    },
+    {
+      "name": "empty_training",
+      "reason": "Nonempty explicitly frozen train/dev/test episodes required"
+    },
+    {
+      "name": "extra_label_or_area_input_metadata",
+      "reason": "Episode schema is id/class/support/query only"
+    },
+    {
+      "name": "nonofficial_mask_protocol",
+      "reason": "Official-mask protocol must be explicit"
+    },
+    {
+      "name": "duplicate_episode_ID",
+      "reason": "Episode IDs must be globally unique nonempty strings"
+    }
+  ],
+  "synthetic_episode_contract": {
+    "state": "EPISODE_METADATA_CONTRACT_PASSED",
+    "held_fold": 0,
+    "held_class_rule": "official dense category index modulo4",
+    "train_classes": [
+      1
+    ],
+    "dev_classes": [
+      2
+    ],
+    "test_classes": [
+      0,
+      4
+    ],
+    "episodes_per_class": {
+      "train": {
+        "1": 1
+      },
+      "dev": {
+        "2": 1
+      },
+      "test": {
+        "0": 1,
+        "4": 1
+      }
+    },
+    "unique_photos": {
+      "train": 2,
+      "dev": 2,
+      "test": 3
+    },
+    "all_role_photo_splits_disjoint": true,
+    "test_exposure_scope": "frozen_confirmation",
+    "test_prior_development_overlap": 0,
+    "test_photo_connected_groups": [
+      [
+        "test0",
+        "test1"
+      ]
+    ],
+    "independent_episode_bootstrap_allowed": false,
+    "image_files_verified": false,
+    "official_mask_files_verified": false,
+    "exposure_registry_completeness_verified": false,
+    "task_gain_measured": false
+  },
+  "source_hashes": {
+    "/Users/yang/projects/CVPR2027/demo_lists/demo9_transductive_ics/scripts/reference_response_protocol_cpu.py": "a90e51f0cc6249f570e87bdb413332c8b8f0184639af44e38466927bc6e41049",
+    "/Users/yang/projects/CVPR2027/demo_lists/demo9_transductive_ics/tics/reference_response_protocol.py": "e87f970e7f1ffa86ccde9776a43a2f87fb355f49e2d3ae066592f54fb46d849c"
+  },
+  "model_loaded": false,
+  "image_or_annotation_opened": false,
+  "real_task_gain_measured": false
+}
