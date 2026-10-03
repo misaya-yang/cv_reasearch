@@ -1,0 +1,39 @@
+{
+ "state": "CPU_FLOW_PASSED",
+ "rows": [
+  {
+   "stage": 0,
+   "returncode": 0,
+   "stdout": "{\"state\": \"CPU_PREPARATION_COMPLETE\", \"out\": \"/root/autodl-tmp/demo9_transductive_ics/results/formula_pipeline_cpu/prepared.json\", \"episodes\": 4, \"same_formula_all_folds\": true, \"query_GT_pixels_opened\": false}\n",
+   "stderr": ""
+  },
+  {
+   "stage": 1,
+   "returncode": 0,
+   "stdout": "{\"state\": \"SMOKE_PREDICTIONS_FROZEN\", \"contract_sha256\": \"ed8d0b460137b60dff4ad2e1576f4c9c50c316e61711788d1424ae795a7000da\", \"cohort_episodes\": 4, \"target_this_stage\": 1, \"workers\": 1, \"query_GT_pixels_opened\": false, \"elapsed_s\": 15.624253302812576, \"frozen_episodes\": 1, \"all_prediction_sha256\": \"74d18a29c38cb8d4633832dabad107be91971fbd2a654721cf2cec1b21f905e3\", \"reused_before_run\": 0, \"new_episodes\": 1, \"model_load_s\": 7.625153262168169, \"median_episode_seconds\": 0.2731133420020342, \"peak_allocated_bytes\": 0, \"peak_reserved_bytes\": 0, \"renderer\": {\"dtype\": \"FP32\", \"TF32\": false, \"formula\": \"legacy_sigmoid_then_probability_clamp_logit_bilinear_zero_cut\", \"legacy_probability_clipping_reused\": true, \"direct_affine_same_logits_control\": true, \"refiner\": \"bilinear_fixture\", \"original_resize\": \"bilinear align_cornersFalse then >.5, same as decision_infer\", \"maps\": \"original FP16 cache rounding preserved\"}}\n",
+   "stderr": ""
+  },
+  {
+   "stage": 2,
+   "returncode": 1,
+   "stdout": "",
+   "stderr": "Traceback (most recent call last):\n  File \"/root/autodl-tmp/demo9_transductive_ics/scripts/formula_pipeline.py\", line 583, in <module>\n    if __name__==\"__main__\":main()\n                            ^^^^^^\n  File \"/root/autodl-tmp/demo9_transductive_ics/scripts/formula_pipeline.py\", line 580, in main\n    {\"prepare\":prepare,\"formula-freeze\":freeze,\"score-frozen\":score,\"_worker\":freeze_worker}[a.command](a)\n  File \"/root/autodl-tmp/demo9_transductive_ics/scripts/formula_pipeline.py\", line 505, in score\n    raise ValueError(\"ENTIRE cohort must be frozen before any query-label scoring\")\nValueError: ENTIRE cohort must be frozen before any query-label scoring\n"
+  },
+  {
+   "stage": 3,
+   "returncode": 0,
+   "stdout": "{\"state\": \"PREDICTIONS_FROZEN\", \"contract_sha256\": \"ed8d0b460137b60dff4ad2e1576f4c9c50c316e61711788d1424ae795a7000da\", \"cohort_episodes\": 4, \"target_this_stage\": 4, \"workers\": 1, \"query_GT_pixels_opened\": false, \"elapsed_s\": 15.805203290656209, \"frozen_episodes\": 4, \"all_prediction_sha256\": \"940c64df3bece7f8c892a537874757ad5372c91c5cd93b30f11b562dd29139ec\", \"reused_before_run\": 1, \"new_episodes\": 3, \"model_load_s\": 7.5185907278209925, \"median_episode_seconds\": 0.266073951497674, \"peak_allocated_bytes\": 0, \"peak_reserved_bytes\": 0, \"renderer\": {\"dtype\": \"FP32\", \"TF32\": false, \"formula\": \"legacy_sigmoid_then_probability_clamp_logit_bilinear_zero_cut\", \"legacy_probability_clipping_reused\": true, \"direct_affine_same_logits_control\": true, \"refiner\": \"bilinear_fixture\", \"original_resize\": \"bilinear align_cornersFalse then >.5, same as decision_infer\", \"maps\": \"original FP16 cache rounding preserved\"}}\n",
+   "stderr": ""
+  },
+  {
+   "stage": 4,
+   "returncode": 0,
+   "stdout": "{\"state\": \"COMPLETED\", \"episodes\": 4, \"rows\": {\"readout\": {\"miou\": 78.6426116838488, \"gain\": -0.28736978420373305, \"ci95\": [-2.85140991594998, 0.9264625149832489], \"per_fold\": [-4.339067474581498, 1.0029832753299814, 0.6482578096784266, 0.9064738494829783], \"up\": 1, \"down\": 1, \"lose_more_than_10\": 0, \"paired_unit\": \"connected component of all-role support/query COCO photo IDs\", \"independent_photo_groups\": 4, \"ci_available\": true, \"draws\": 50, \"bootstrap_seed\": 0}, \"removal\": {\"miou\": 78.81998277347114, \"gain\": -0.10999869458139244, \"ci95\": [-2.287175183237437, 0.9264625149832489], \"per_fold\": [-3.56955980066445, 1.0029832753299814, 0.6482578096784266, 0.9064738494829783], \"up\": 1, \"down\": 1, \"lose_more_than_10\": 0, \"paired_unit\": \"connected component of all-role support/query COCO photo IDs\", \"independent_photo_groups\": 4, \"ci_available\": true, \"draws\": 50, \"bootstrap_seed\": 0}, \"direct_affine\": {\"miou\": 78.6426116838488, \"gain\": -0.28736978420373305, \"ci95\": [-2.85140991594998, 0.9264625149832489], \"per_fold\": [-4.339067474581498, 1.0029832753299814, 0.6482578096784266, 0.9064738494829783], \"up\": 1, \"down\": 1, \"lose_more_than_10\": 0, \"paired_unit\": \"connected component of all-role support/query COCO photo IDs\", \"independent_photo_groups\": 4, \"ci_available\": true, \"draws\": 50, \"bootstrap_seed\": 0}}}\n",
+   "stderr": ""
+  }
+ ],
+ "elapsed_s": 51.498616157099605,
+ "CUDA_VISIBLE_DEVICES": "",
+ "synthetic_encoder": true,
+ "actual_CRF": false
+}

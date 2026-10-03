@@ -178,3 +178,6 @@ PPNet(ECCV2020)已用无标注图丰富部件原型，PANet(ICCV2019)已有反�
 - 本页的数字出自探索阶段的脚本，在 `../demo4_incontext_seg/`（`icx/fast.py`、`scripts/episodes_eval.py`、`foris_stream.py`、`stream_*.py`、`pseudo_shots*.py`）。
   那批缓存是逐张编码的，单样本一行与官方实现不完全一致（见 `HANDOFF.md` 的“踩过的坑”）；各行之间的差是配对的。新脚本已改为成对编码，绝对值以 `PLAN.md` 的 E1 重跑为准。
 - 服务器：代码 `/root/autodl-tmp/demo9`；特征缓存 `/root/demo9_cache`，用完即删，目前为空。
+当前准备已完成（2026-10-03，Codex）：PLAN最新交接的SAM3配对基线A与固定17常数完整FoRIS读出B，代码和有限流水线已部署至weste:13322本会话目录。统一入口`scripts/run_sam3_handover.sh`默认无卡CPU准备；A9/9、根8/8、241/600完整配对、18文件守卫预检及B四例冻结/提前评分拒绝/续接/评分链全部通过。GPU关闭，真实模型/CRF将在首10例检验，尚无新涨点；以下旧队列状态不自动恢复。SAM3使用合法语义框适配，固定公式属于跨类监督校准；两个数据集队列已被观察，不称新独立测试。命令与小凭据见[PLAN.md](PLAN.md)首节。
+
+以下为已完成实验和历史安排。
