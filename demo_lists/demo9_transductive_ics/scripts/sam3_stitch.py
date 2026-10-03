@@ -40,6 +40,7 @@ import random
 import sys
 import time
 from pathlib import Path
+from types import MethodType
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
@@ -103,6 +104,44 @@ def on_canvas(mask, rect):
     import numpy as np
     from PIL import Image
     return np.asarray(Image.fromarray(mask.astype(np.uint8)).resize(rect[2:], Image.NEAREST)) > 0
+
+
+def _fp32_mlp_forward(module, x):
+    """Same MLP order, explicit FP32; the vendor fused fc1 hardcasts BF16.
+
+    Instance-only inference backend. No vendor file/class/global is changed and
+    no dtype is recovered by rounding BF16 outputs back to FP32.
+    """
+    import torch
+    if torch.is_grad_enabled():
+        raise ValueError("Expected inference gradients disabled, as in vendor fused MLP")
+    if x.dtype != torch.float32:
+        raise RuntimeError("FP32 MLP received a non-FP32 activation")
+    x = module.fc1(x)
+    x = module.act(x)
+    x = module.drop1(x)
+    x = module.norm(x)
+    x = module.fc2(x)
+    return module.drop2(x)
+
+
+def configure_fp32_mlp_backend(model):
+    """Disable only this model instance's unconditional BF16 fused MLP path."""
+    import torch
+    from sam3.model.vitdet import Mlp
+    count = 0
+    for module in model.modules():
+        if not isinstance(module, Mlp):
+            continue
+        if any(p.is_floating_point() and p.dtype != torch.float32 for p in module.parameters()):
+            raise RuntimeError("FP32 MLP backend requires already-FP32 weights")
+        module.forward = MethodType(_fp32_mlp_forward, module)
+        count += 1
+    if count == 0:
+        raise RuntimeError("No actual vendor vitdet.Mlp found; precision repair was not installed")
+    return dict(vitdet_mlp_instances=count, backend="plain FP32 fc1/activation/drop/norm/fc2/drop",
+                vendor_fused_BF16_disabled_for_this_model=True,
+                vendor_files_classes_globals_changed=False, precision_downgrade=False)
 
 
 class Runner:
@@ -236,6 +275,7 @@ def protocol():
                 visual_prompt="no set_text_prompt; public processor inserts dummy visual",
                 text_role="privileged true category diagnostic", score_threshold=.5,
                 layout="1008 square; reference lower60%, query upper40%", precision="FP32/TF32off; no fallback",
+                precision_backend="instance-only plainFP32 vitdet.Mlp; official fused.addmm_act unconditionally casts BF16",
                 confirm_exposure="600 paired images already scored by earlier Claude readouts/formula; not fresh confirmation")
 
 
@@ -359,6 +399,7 @@ def work(a):
                                        eval_mode=True, enable_inst_interactivity=False, compile=False).float().eval()
         if any(p.is_floating_point() and p.dtype != torch.float32 for p in model.parameters()):
             raise RuntimeError("FP32 model contract failed")
+        report["fp32_mlp_backend"] = configure_fp32_mlp_backend(model)
         run = Runner(Sam3Processor(model, device="cuda", confidence_threshold=.5))
         report["model_load_s"] = time.monotonic()-model_start
         data, ann = Path(man["data_root"]), Path(man["annotation_root"])
