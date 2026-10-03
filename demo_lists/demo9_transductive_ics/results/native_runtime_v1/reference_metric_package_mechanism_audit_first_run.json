@@ -1,0 +1,51 @@
+{
+  "state": "COMPLETED_LOCAL_REFERENCE_MECHANISM_AUDIT",
+  "package_source_sha256": "eb9d5742212035eae23356b6ec4aaa101a1fe432f3ab36a89a729a35ea825498",
+  "fixture_structure": {
+    "mean_centered_energy": 1.5407439555097887e-33,
+    "mean_task_centered_energy": 0.49999999999999994,
+    "canonical_task_diagonal_energy": 6.933347799794049e-33,
+    "rotated_task_diagonal_energy": 0.4999999999999998,
+    "commutator_norm": 3.204430331713008e-17
+  },
+  "random_basis_geometry": {
+    "scope": "Independent random-QR mathematical fixture, not trained-U evidence",
+    "D": 64,
+    "rank": 8,
+    "samples": 2048,
+    "seed": 2049,
+    "theoretical_capture_ratio": 0.003787878787878788,
+    "measured_capture_ratio": 0.003854884648755987,
+    "standard_error": 8.08279647383399e-05,
+    "predicted_D1024_rank32_ratio": 6.0916179337231965e-05
+  },
+  "package_synthetic_control_losses": {
+    "identity": 1.6707207872744099,
+    "canonical_adaptive": 1.7518389917034596,
+    "corrected_adaptive": 1.2993631141550397,
+    "corrected_wrong_task_w": 2.030568539182099,
+    "fitted_global_same_corrected_basis": 1.448033833391309,
+    "fitted_global_free_basis": 0.9535958183186294
+  },
+  "mechanism": "Reference labels create episode force C_e; the adaptive scales see only diag(U^T C_e U), then inner curvature/regularization and the guard determine coefficient size.",
+  "coefficient_bound": "||r_star|| <= ||g0||/lambda, g0=-diag(U^T C_e U)/T. Small r does not imply small g0 because curvature may shrink the response.",
+  "real_initialization": "The actual repo pilot used seed2048 Gaussian-QR, not the package optional mean-force spectral initializer.",
+  "incorrect_inferences": [
+    "Mean centered force cancels => every episode lacks information",
+    "The commuting two-task fixture refutes common-basis expressivity",
+    "Toy adaptation beats a frozen-basis global ablation => beats independently learned global U and w",
+    "Random-basis expectation certifies the already trained selected dictionary"
+  ],
+  "missing_real_diagnostics": [
+    "g0 by task",
+    "projected full force and diagonal capture",
+    "mean versus taskwise centered-force energy",
+    "inner Hessian curvature",
+    "preferred r before alpha",
+    "applied alpha/r",
+    "actual density increment versus host margin"
+  ],
+  "real_DINO_gain_measured": false,
+  "GPU_used": false,
+  "received_package_modified": false
+}

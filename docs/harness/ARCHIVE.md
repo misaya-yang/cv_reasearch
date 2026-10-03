@@ -74,3 +74,10 @@ entry without new measured evidence and the user's agreement.
   interval [-3.80, -1.98]. MegaDepth 1500 pairs: 69.96 against 67.89. A single update already hurts (-2.12).
 - All numerical checks of the algebra had passed. Do not tune the solver; reopening needs evidence that real
   match residuals have the assumed tangential-normal coupling.
+
+### 2026-10-02 — fixed native-angular covariance construct (demo9 direction remains live)
+- Same40 official COCO-20i seed0 dev tasks: native64.2836, paired63.9368; -.3467pp95CI[-1.7659,1.2468].
+- Paired loses pointwise to shuffled/FROST95 controls; intervals cross0;40 packed native identities exact, no errors/fallbacks.
+- Fitted-reference scatter drops median87.62%, yet query AUC and task gain do not establish transfer; no generic information-loss claim.
+- Close this fixed covariance intervention; no ridge/threshold sweep/restart; keep compact native_angular_v1 evidence, no feature bank exists.
+- Overall method goal remains open; saved diagnostics cannot yet separate rare-confuser, calibration and structural-decode causes; next work offline.

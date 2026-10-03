@@ -1,0 +1,585 @@
+{
+  "state": "STDLIB_FROST_SOURCE_CONTRACT_PASSED",
+  "checks": {
+    "constructor_explicit_encoder_and_raw_encoder": true,
+    "five_dimensional_callable_not_forward": true,
+    "extractor_no_grad": true,
+    "feature_extractor_parameters_dtype_cast": true,
+    "last_layer_patch_maps": true,
+    "extractor_returns_float32": true,
+    "basis_raw_encoder_last_layer": true,
+    "basis_source_black_not_random": true,
+    "basis_rank250_shrink95": true,
+    "basis_not_compressed_coordinates": true,
+    "support_flip_before_triplet_concatenation": true,
+    "apd_always_called_without_native_choice": true,
+    "complete_density_and_continuous_finalization": true,
+    "zero_posterior_boundary_and_ten_smoothing_steps": true,
+    "density_class_count_normalization": true,
+    "no_autocast_checkpoint_or_automatic_dtype_conversion": true,
+    "only_explicit_factory_reads_hub_weights": true,
+    "all_local_relative_source_dependencies_present": true,
+    "no_third_party_runtime_imported": true
+  },
+  "checks_count": 19,
+  "source_root": "/tmp/demo9_frost_source",
+  "source_sha256": {
+    "/tmp/demo9_frost_source/frost/model.py": "47eedf328e8df8fcf1c7bed646610cb285d293969db09bbb78cb62e983dcdc0c",
+    "/tmp/demo9_frost_source/frost/density.py": "a0c02c72bcd343d1ede8325e746387d39bc12ceb5573f961a757ff25b157f80e",
+    "/tmp/demo9_frost_source/frost/data.py": "2723000742106a6dbb105d99c1853da10ab38cf44f9e936db4b5b450be14b221",
+    "/tmp/demo9_frost_source/frost/encoder.py": "4f48a72df76382373c633925034e9c64713a1e7e82acccd4df2ea9b8f3f728e8"
+  },
+  "signatures": {
+    "model.py": {
+      "FROST.__init__": {
+        "parameters": [
+          "self",
+          "encoder",
+          "raw_encoder",
+          "image_size",
+          "device",
+          "resize_to_orig_size"
+        ],
+        "defaults": [
+          "None",
+          "1024",
+          "'cuda'",
+          "True"
+        ],
+        "keyword_only": [],
+        "decorators": [],
+        "line": 83
+      },
+      "FROST.reset_state": {
+        "parameters": [
+          "self"
+        ],
+        "defaults": [],
+        "keyword_only": [],
+        "decorators": [],
+        "line": 105
+      },
+      "FROST.set_reference": {
+        "parameters": [
+          "self",
+          "image",
+          "mask"
+        ],
+        "defaults": [],
+        "keyword_only": [],
+        "decorators": [],
+        "line": 112
+      },
+      "FROST.set_target": {
+        "parameters": [
+          "self",
+          "image"
+        ],
+        "defaults": [],
+        "keyword_only": [],
+        "decorators": [],
+        "line": 123
+      },
+      "FROST.segment": {
+        "parameters": [
+          "self"
+        ],
+        "defaults": [],
+        "keyword_only": [],
+        "decorators": [
+          "torch.no_grad()"
+        ],
+        "line": 129
+      },
+      "FROST.segment_one": {
+        "parameters": [
+          "self",
+          "ref_pil",
+          "ref_mask",
+          "query_pil"
+        ],
+        "defaults": [],
+        "keyword_only": [],
+        "decorators": [
+          "torch.no_grad()"
+        ],
+        "line": 138
+      },
+      "FROST._flip_augment": {
+        "parameters": [
+          "self",
+          "ref_images",
+          "ref_masks"
+        ],
+        "defaults": [],
+        "keyword_only": [],
+        "decorators": [],
+        "line": 146
+      },
+      "FROST._build_positional_basis": {
+        "parameters": [
+          "self",
+          "device"
+        ],
+        "defaults": [],
+        "keyword_only": [],
+        "decorators": [
+          "torch.no_grad()"
+        ],
+        "line": 154
+      },
+      "FROST._debias_features": {
+        "parameters": [
+          "self",
+          "fmaps_norm"
+        ],
+        "defaults": [],
+        "keyword_only": [],
+        "decorators": [],
+        "line": 171
+      },
+      "FROST._locate_candidates": {
+        "parameters": [
+          "self",
+          "sim_maps",
+          "ref_masks",
+          "feat_tgt_deb",
+          "ref_prototype",
+          "h",
+          "w"
+        ],
+        "defaults": [],
+        "keyword_only": [],
+        "decorators": [],
+        "line": 181
+      },
+      "FROST.predict_mask": {
+        "parameters": [
+          "self",
+          "ref_images",
+          "ref_masks",
+          "tgt_image"
+        ],
+        "defaults": [],
+        "keyword_only": [],
+        "decorators": [
+          "torch.no_grad()"
+        ],
+        "line": 209
+      },
+      "FROST._shrinkage_whiten": {
+        "parameters": [
+          "self",
+          "feat_refs_deb",
+          "feat_tgt_deb",
+          "ref_masks",
+          "S",
+          "h",
+          "w"
+        ],
+        "defaults": [],
+        "keyword_only": [],
+        "decorators": [
+          "torch.no_grad()"
+        ],
+        "line": 321
+      },
+      "FROST._finalize_mask": {
+        "parameters": [
+          "self",
+          "mask",
+          "tgt_image"
+        ],
+        "defaults": [],
+        "keyword_only": [],
+        "decorators": [
+          "torch.no_grad()"
+        ],
+        "line": 361
+      }
+    },
+    "density.py": {
+      "_chunked_lse_sim": {
+        "parameters": [
+          "A",
+          "B",
+          "sigma",
+          "log_count",
+          "self_diag"
+        ],
+        "defaults": [
+          "False"
+        ],
+        "keyword_only": [],
+        "decorators": [
+          "torch.no_grad()"
+        ],
+        "line": 33
+      },
+      "kde_log_posterior": {
+        "parameters": [
+          "feat_tgt",
+          "feat_fg",
+          "feat_bg",
+          "sigma"
+        ],
+        "defaults": [],
+        "keyword_only": [],
+        "decorators": [
+          "torch.no_grad()"
+        ],
+        "line": 63
+      },
+      "loo_margin_score": {
+        "parameters": [
+          "feat_fg",
+          "feat_bg",
+          "sigma"
+        ],
+        "defaults": [],
+        "keyword_only": [],
+        "decorators": [
+          "torch.no_grad()"
+        ],
+        "line": 76
+      },
+      "estimate_bandwidth": {
+        "parameters": [
+          "feat_fg",
+          "feat_bg",
+          "sigma_grid"
+        ],
+        "defaults": [
+          "(0.05, 0.1, 0.2, 0.5, 1.0)"
+        ],
+        "keyword_only": [],
+        "decorators": [
+          "torch.no_grad()"
+        ],
+        "line": 94
+      },
+      "bg_heterogeneity": {
+        "parameters": [
+          "feat_bg"
+        ],
+        "defaults": [],
+        "keyword_only": [],
+        "decorators": [
+          "torch.no_grad()"
+        ],
+        "line": 110
+      },
+      "bilateral_propagate": {
+        "parameters": [
+          "m_kde",
+          "feat_tgt",
+          "img_rgb",
+          "coords",
+          "fg_proto",
+          "bg_proto",
+          "tau_f",
+          "tau_I",
+          "d_max",
+          "tau_m",
+          "kappa",
+          "n_iters",
+          "alpha"
+        ],
+        "defaults": [
+          "0.2",
+          "0.05",
+          "16.0",
+          "1.0",
+          "0.0",
+          "10",
+          "0.7"
+        ],
+        "keyword_only": [],
+        "decorators": [
+          "torch.no_grad()"
+        ],
+        "line": 129
+      },
+      "density_ratio_predict": {
+        "parameters": [
+          "feat_tgt_deb_flat",
+          "feat_ref_fg",
+          "feat_ref_bg",
+          "h",
+          "w",
+          "feat_tgt_bil_flat",
+          "bil_img_rgb",
+          "sigma_grid",
+          "bil_tau_f",
+          "bil_tau_I",
+          "bil_d_max",
+          "bil_tau_m",
+          "bil_kappa",
+          "bil_n_iters",
+          "bil_alpha",
+          "threshold"
+        ],
+        "defaults": [
+          "(0.05, 0.1, 0.2, 0.5, 1.0)",
+          "0.2",
+          "0.05",
+          "16.0",
+          "1.0",
+          "0.0",
+          "10",
+          "0.7",
+          "0.0"
+        ],
+        "keyword_only": [],
+        "decorators": [
+          "torch.no_grad()"
+        ],
+        "line": 192
+      }
+    },
+    "data.py": {
+      "build_transform": {
+        "parameters": [
+          "image_size"
+        ],
+        "defaults": [],
+        "keyword_only": [],
+        "decorators": [],
+        "line": 23
+      },
+      "load_image": {
+        "parameters": [
+          "image",
+          "transform",
+          "device"
+        ],
+        "defaults": [],
+        "keyword_only": [],
+        "decorators": [],
+        "line": 32
+      },
+      "load_mask": {
+        "parameters": [
+          "mask",
+          "image_size",
+          "device"
+        ],
+        "defaults": [],
+        "keyword_only": [],
+        "decorators": [],
+        "line": 61
+      },
+      "denormalize": {
+        "parameters": [
+          "tens"
+        ],
+        "defaults": [],
+        "keyword_only": [],
+        "decorators": [],
+        "line": 85
+      },
+      "downsample_mask": {
+        "parameters": [
+          "mask",
+          "h",
+          "w"
+        ],
+        "defaults": [],
+        "keyword_only": [],
+        "decorators": [],
+        "line": 92
+      },
+      "upsample_mask": {
+        "parameters": [
+          "mask",
+          "H",
+          "W"
+        ],
+        "defaults": [],
+        "keyword_only": [],
+        "decorators": [],
+        "line": 109
+      }
+    },
+    "encoder.py": {
+      "DINOv3FeatureExtractor.__init__": {
+        "parameters": [
+          "self",
+          "encoder",
+          "image_size",
+          "patch_size"
+        ],
+        "defaults": [
+          "1024",
+          "16"
+        ],
+        "keyword_only": [],
+        "decorators": [],
+        "line": 31
+      },
+      "DINOv3FeatureExtractor.__call__": {
+        "parameters": [
+          "self",
+          "imgs"
+        ],
+        "defaults": [],
+        "keyword_only": [],
+        "decorators": [
+          "torch.no_grad()"
+        ],
+        "line": 38
+      },
+      "build_encoder": {
+        "parameters": [
+          "weights_path",
+          "device"
+        ],
+        "defaults": [
+          "'cuda'"
+        ],
+        "keyword_only": [],
+        "decorators": [],
+        "line": 54
+      }
+    }
+  },
+  "constants": {
+    "_SVD_COMPONENTS": 250,
+    "_SHRINK_LAMBDA": 0.95,
+    "_BACKWARD_TOP_K": 3,
+    "_CAND_ADAPT_RMAX": 4,
+    "_THRESHOLD": 0.0,
+    "_BILATERAL_TAU_F": 0.2,
+    "_BILATERAL_TAU_I": 0.05,
+    "_BILATERAL_D_MAX": 16.0,
+    "_BILATERAL_TAU_M": 1.0,
+    "_BILATERAL_KAPPA": 0.0,
+    "_BILATERAL_N_ITERS": 10,
+    "_BILATERAL_ALPHA": 0.7
+  },
+  "local_relative_dependencies": {
+    "model.py": [
+      {
+        "module": "data",
+        "path": "/tmp/demo9_frost_source/frost/data.py",
+        "present": true
+      },
+      {
+        "module": "density",
+        "path": "/tmp/demo9_frost_source/frost/density.py",
+        "present": true
+      }
+    ],
+    "density.py": [],
+    "data.py": [],
+    "encoder.py": []
+  },
+  "package_presence_only": {
+    "PIL": {
+      "spec_present": true,
+      "distribution_version": "11.3.0",
+      "imported": false
+    },
+    "einops": {
+      "spec_present": true,
+      "distribution_version": "0.8.2",
+      "imported": false
+    },
+    "math": {
+      "spec_present": true,
+      "distribution_version": null,
+      "imported": true
+    },
+    "numpy": {
+      "spec_present": true,
+      "distribution_version": "2.0.2",
+      "imported": false
+    },
+    "safetensors": {
+      "spec_present": true,
+      "distribution_version": "0.7.0",
+      "imported": false
+    },
+    "timm": {
+      "spec_present": false,
+      "distribution_version": null,
+      "imported": false
+    },
+    "torch": {
+      "spec_present": true,
+      "distribution_version": "2.8.0",
+      "imported": false
+    },
+    "torchvision": {
+      "spec_present": true,
+      "distribution_version": "0.23.0",
+      "imported": false
+    },
+    "typing": {
+      "spec_present": true,
+      "distribution_version": null,
+      "imported": true
+    }
+  },
+  "missing_package_init": true,
+  "missing_factory": "build_frost/__init__.py not present; direct namespace frost.model.FROST uses present local files",
+  "native_source_sha256": {
+    "/tmp/demo9_native_foris.py": "982cf4aa91ac90370151c353efb37240d7d4d5c35a0dfe9cc9509cd554c85fa9",
+    "/Users/yang/projects/CVPR2027/demo_lists/demo4_incontext_seg/icx/common.py": "a22c313adf516e680b50ef6ebbe08791eb907245871cf1acf78c7d639e779315"
+  },
+  "native_signatures": {
+    "FoRIS._extract_features": {
+      "parameters": [
+        "self",
+        "imgs"
+      ],
+      "defaults": [],
+      "keyword_only": [],
+      "decorators": [],
+      "line": 233
+    },
+    "FoRIS._build_positional_basis": {
+      "parameters": [
+        "self",
+        "device"
+      ],
+      "defaults": [],
+      "keyword_only": [],
+      "decorators": [
+        "torch.no_grad()"
+      ],
+      "line": 275
+    },
+    "FoRIS._part1_positional_debias": {
+      "parameters": [
+        "self",
+        "fmaps_norm",
+        "ref_masks",
+        "n_refs"
+      ],
+      "defaults": [],
+      "keyword_only": [],
+      "decorators": [],
+      "line": 350
+    },
+    "FoRIS._binarize_response": {
+      "parameters": [
+        "self",
+        "score_hw"
+      ],
+      "defaults": [],
+      "keyword_only": [
+        "target_hw"
+      ],
+      "decorators": [],
+      "line": 239
+    }
+  },
+  "cache_contract": {
+    "full_FROST": "one flattened ordered [S, flip(S), Q] batch3 for one-shot",
+    "native_FoRIS": "ordered [S,Q] batch2; query-dependent optional rank500 APD",
+    "exact_reuse": "Only identical full raw encoder input/batch/order/dtype/autocast/backend/weights and descriptor output context",
+    "not_exact": "Cannot compose batch3 from batch2 plus B1 flip without whole-feature equality proof"
+  },
+  "scope": "Source/signature/AST/dependency-presence check only; no imports, CUDA, weights, data or numerical/runtime claim"
+}

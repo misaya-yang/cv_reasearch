@@ -1,10 +1,12 @@
 # demo9：单参考条件化分割的候选算法与实验交接
 
-2026-10-02 最新直接用户纠正：最多10种方法、至少10轮独立实验，**不是一个算法的递进流水线**。本轮有限GPU pilot已完成并自动关机；无卡分析后仅执行已CPU准备的固定强控制。本文给出7个具体算法，PLAN中10卡独立（另3卡是强对照、机制与压力测试）。最终目标仍是同一DINOv3比INSID3/FoRIS更准；已有小样本真实结果，但未建立这些候选的有效增益，不预称可发表。
+最新目标仍是单参考、同DINOv3超越INSID3/FoRIS的具体方法；整体未完成。最新集中批次native-angular40/40完成：原尺寸class-mIoU native64.2836/paired63.9368，差−.3467pp CI[-1.7659,1.2468]；FROST95组件64.6256差+.3420 CI跨0。原生重放及保存mask40/40exact，无错误/回退，无特征缓存。配对算子令全部参考拟合视图变化减小，中位比.1238，但query辨识没有建立改善；这个固定角度协方差构造停止，不扫参数或恢复已结束队列。GPU批次总guard147.46秒后自动关机；结果只在无卡取回，本机results/native_angular_v1/summary.json、mask_diagnosis.json及788KiB archive保护，最终UI已关机。最新用户要求按已有证据组织完整批次再开机，下一步在关机状态区分参考迁移、少数难背景、评分校准和结构解码，不能因全背景AUC高就断言decoder是瓶颈，也不能靠新公式直接再开GPU。PLAN首节为准。
+
+离线新证据：保存40个native1024mask的连通块oracle仅+3.77pp，largest朴素规则−6.72，64%FP连在含真目标的块内，不构建孤岛selector。源码midrange决策存在“新增强负背景使旧背景变前景”的精确CPU反例，但未证明真实任务主因。下一批准备原生逐阶段路径＋完整FROST源码强控制＋reference-only RBF-SVM完整分类标准控制，均非已验证新方法；SVM本机solver依赖缺失4项明确skip，实际runtime/联合入口尚未就绪，不开GPU。
 
 ## Completed pilots: failure attribution and current resource state
 
-Latest user requires full shutdown and deep analysis. The provider stopped866 and a refreshed browser confirmed STOPPED; use local evidence only, no automatic boot or new queue. Seven bounded pilots and reduced native fixtures ran; original E9 all-method concept controls and E10 cross-domain/cost questions remain unanswered. Ten-example development results are neither full-fold scores nor seven independent generalisation proofs.
+Historical shutdown was verified in the platform. The revised user goal permits a new prepared finite experiment cycle; instance866 remains STOPPED while code/data/CPU preflight are incomplete. Old queues stay retired. Seven bounded pilots and reduced native fixtures ran; original E9 all-method concept controls and E10 cross-domain/cost questions remain unanswered. Ten-example development results are neither full-fold scores nor seven independent generalisation proofs.
 
 Three design problems are now concrete:
 - Weak component backends: raw fusion baseline42.684 versus same-task INSID3 52.477 / fullFoRIS64.998; final/density baselines49–51 and ungated transportKDE40.261 are different declared pipelines. Their internal comparisons are legitimate, but they do not isolate a one-component replacement inside the strong FoRIS system. FullGL−13.191pp is the clearest negative for its fixed composite algorithm; kernel-pad controls approximately match.

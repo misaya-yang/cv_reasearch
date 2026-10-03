@@ -1,0 +1,78 @@
+{
+  "state": "COMPLETED_CPU_RICE_EQUATION_AUDIT",
+  "proposal_sha256": "ee99c442a4e22188fecba265fe74582f53d57f8fdfbd399367b909d5f1997ac0",
+  "generalized_eigenconstruction": {
+    "d": 12,
+    "discriminant_columns": 4,
+    "nuisance_columns": 7,
+    "normalization_max_error": 1.4432899320127035e-15,
+    "eigen_equation_max_error": 1.2878587085651816e-14,
+    "woodbury_max_error": 5.329070518200751e-15,
+    "validated": true,
+    "cost_caveat": "Dual dimension equals number of nuisance columns, not discriminant rank; choose primal/dual or declared exact rank compression."
+  },
+  "span_counterexample": {
+    "nuisance_full_rank": 2,
+    "discriminant_rank": 1,
+    "discriminant_span_contained": true,
+    "generalized_top_eigenvalue": 100.0,
+    "conclusion": "Span inclusion does not imply small eigenvalues; epsilonI makes nuisance span full regardless."
+  },
+  "ring_constant_evidence": [
+    {
+      "pixels": 1,
+      "original_ring_contrast": 0.0,
+      "temperature_scaled_logmeanexp_contrast": 0.0
+    },
+    {
+      "pixels": 4,
+      "original_ring_contrast": -1.3862943611198908,
+      "temperature_scaled_logmeanexp_contrast": 2.220446049250313e-16
+    },
+    {
+      "pixels": 16,
+      "original_ring_contrast": -2.7725887222397816,
+      "temperature_scaled_logmeanexp_contrast": 2.220446049250313e-16
+    },
+    {
+      "pixels": 64,
+      "original_ring_contrast": -4.1588830833596715,
+      "temperature_scaled_logmeanexp_contrast": 0.0
+    }
+  ],
+  "fractional_assignment_counterexample": {
+    "parts": 2,
+    "tokens": 1,
+    "a": [
+      0.5,
+      0.5
+    ],
+    "b": [
+      1.0
+    ],
+    "feasible_assignment": [
+      [
+        0.5
+      ],
+      [
+        0.5
+      ]
+    ],
+    "all_mass_matched": true,
+    "conclusion": "Column capacity limits total mass but allows one token to represent several parts fractionally."
+  },
+  "missing_penalty_counterexample": {
+    "evidence": -0.2,
+    "kappa": 0.5,
+    "score_if_unmatched": -0.5,
+    "score_if_matched": -0.2,
+    "conclusion": "The penalty rewards matching whenever evidence exceeds -kappa; it is not a positive-evidence constraint."
+  },
+  "calibration_scope": "Held reference views share identity, pose and pixels; AUC cannot certify cross-image edit precision. Fit W/parts/negatives without the held view.",
+  "prior_reachability_scope": "The existing .0231216 and +.1841pp limits are conditional ideal-arithmetic bounds for a frozen E3 intervention, not a FP32 certificate or a bound on all metrics.",
+  "next_mechanism": "Compare matched raw geometry, same-view simple covariance/ordinary discriminant, and counterfactual-nuisance generalized discriminant, using the same full FG/BG evidence and continuous query decision. Defer ring, OT and override gate.",
+  "segmentation_gain_measured": false,
+  "GPU_used": false,
+  "downloaded_assets": false,
+  "proposal_modified": false
+}
