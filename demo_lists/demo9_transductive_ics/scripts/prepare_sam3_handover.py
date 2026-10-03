@@ -70,7 +70,7 @@ def main():
         subprocess.run(args, cwd=root, env=env, check=True, timeout=120)
     source_files = [root / x for x in (
         "scripts/prepare_sam3_handover.py", "scripts/sam3_handover_pipeline.py", "scripts/sam3_stitch.py",
-        "scripts/formula_pipeline.py", "scripts/decision_infer.py", "scripts/decision_cache.py",
+        "scripts/formula_pipeline.py", "scripts/experiment_resource_guard.py", "scripts/decision_infer.py", "scripts/decision_cache.py",
         "scripts/extent_experiment.py", "scripts/analyze_extent.py", "tics/decision_heads.py",
         "tics/relations.py", "tics/extent_cut.py", "tics/native_assets.py")]
     source_files += [assets / "code/sam3/model_builder.py", assets / "code/sam3/model/sam3_image_processor.py"]
@@ -89,17 +89,22 @@ def main():
                "--memory-fraction", ".3", "--resume"]
         if reuse:
             gpu += ["--reuse-predictions-from", str(out / reuse)]
-        score = [a.python, str(root / "scripts/sam3_stitch.py"), "--score", *shared]
+        score = [a.python, str(root / "scripts/sam3_stitch.py"), "--score", *shared, "--resume"]
         if name == "A_smoke":
             score += ["--keep-candidates"]
         merge = [a.python, str(root / "scripts/sam3_stitch.py"), "--merge", *shared, "--foris", str(baselines[split])]
-        stages[name] = {"commands": [command(gpu, env_a, target / "report_shard0.json", ["PREDICTIONS_FROZEN", "COMPLETED"]),
+        stages[name] = {"commands": [command(gpu, env_a, target / "prediction_freeze_shard0.json", ["PREDICTIONS_FROZEN"]),
                         command(score, env_a, target / "report_shard0.json", ["COMPLETED"], 60),
                         command(merge, env_a, target / "report.json", ["COMPLETED"], 60)],
                         "completion": str(target / "report.json"), "timing_report": str(target / "report_shard0.json"),
                         "identity": {"source_hashes": hashes, "manifest_sha256": paired[split]["manifest_sha256"],
                                      "baseline_sha256": paired[split]["baseline_sha256"], "limit": limit,
                                      "weight_sha256": weight["actual_sha256"], "kind": name}}
+        if name == "A_dev":
+            smoke = out / "A_smoke"
+            stages[name]["commands"].append(command(
+                [a.python, str(root / "scripts/sam3_stitch.py"), "--cleanup-candidates", "--out", str(smoke)],
+                env_a, smoke / "candidate_cleanup_after_reuse_shard0.json", ["SCORING_TEMPORARIES_REMOVED"], 60))
     for name, split, limit, reuse in (("B_smoke", "confirm", 10, None), ("B_confirm", "confirm", None, "B_smoke"), ("B_dev", "dev", None, None)):
         target = out / name
         gpu = [a.python, str(root / "scripts/formula_pipeline.py"), "formula-freeze", "--prepared", str(prepared_b[split]),

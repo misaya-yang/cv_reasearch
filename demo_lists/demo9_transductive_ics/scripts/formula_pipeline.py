@@ -26,7 +26,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(HERE))
-ARMS = ("native", "readout", "removal")
+ARMS = ("native", "readout", "removal", "direct_affine")
 CARD = dict(
     assumption="The SAME label-fitted 17-constant rule retains its patch-level benefit after original-resolution enlargement and original FoRIS refinement.",
     prediction="PLAN handover predicts CONFIRM600 +1.6..+2.4pp over its paired native row, all folds positive, fewer than25 episodes losing>10pp; this is a prediction, not an observed workers1 runtime or gain.",
@@ -185,10 +185,11 @@ def prepare(a):
         baseline_records=str(baseline) if baseline else None,
         baseline_records_sha256=sha(baseline) if baseline else None,
         foris_root=str(source_root.resolve()), demo4_root=a.demo4_root, fixture=bool(a.fixture),
-        renderer=dict(dtype="FP32", TF32=False, formula="direct_affine_logit_then_bilinear_zero_cut",
-            legacy_probability_clipping_reused=False, refiner="bilinear_fixture" if a.fixture else "original_public_FoRIS_CRF",
+        renderer=dict(dtype="FP32", TF32=False, formula="legacy_sigmoid_then_probability_clamp_logit_bilinear_zero_cut",
+            legacy_probability_clipping_reused=True, direct_affine_same_logits_control=True,
+            refiner="bilinear_fixture" if a.fixture else "original_public_FoRIS_CRF",
             original_resize="bilinear align_cornersFalse then >.5, same as decision_infer", maps="original FP16 cache rounding preserved"),
-        expected_workers=a.workers, memory_fraction=min(.35,.8/a.workers), reserve_mib=512,
+        expected_workers=a.workers, memory_fraction=.3/a.workers, aggregate_GPU_fraction_cap=.3, reserve_mib=512,
         query_GT_pixels_opened=False, card=CARD)
     payload["contract_sha256"] = canonical({k:v for k,v in payload.items() if k not in ("state","expected_workers","memory_fraction")})
     if out.exists() and json.loads(out.read_text()) != payload:
@@ -280,7 +281,7 @@ def resource_precheck(workers):
                          capture_output=True,text=True,timeout=15)
     values=[line.strip().split(",") for line in query.stdout.splitlines() if line.strip()]
     if query.returncode or len(values)!=1:raise RuntimeError("One real visible GPU inventory required")
-    total,free=map(float,values[0]);fraction=min(.35,.8/workers)
+    total,free=map(float,values[0]);fraction=.3/workers
     required=total*fraction*workers+512
     if free<required:raise RuntimeError("Insufficient free VRAM for declared worker reservations; no scientific precision fallback")
     return dict(total_mib=total,free_mib=free,workers=workers,per_worker_fraction=fraction,
@@ -305,7 +306,7 @@ def freeze_worker(a):
     start=time.monotonic();write_json(report_path,report)
     try:
         if dev=="cuda":
-            torch.cuda.set_per_process_memory_fraction(min(.35,.8/a.workers))
+            torch.cuda.set_per_process_memory_fraction(.3/a.workers)
         args=argparse.Namespace(fixture=p["fixture"],foris_root=p["foris_root"],demo4_root=p["demo4_root"])
         loaded=time.monotonic();host=build_host(args,manifest,dev)
         report["model_load_s"]=time.monotonic()-loaded
@@ -328,12 +329,17 @@ def freeze_worker(a):
                     if near is None or near.shape[0]!=h*ww:near=near_mask(h*ww,dev)
                     ev=evidence(got,mid,ref_mask,near)
                     x=symmetric(ev["maps"])
-                    # The actual 17-constant AFFINE LOGIT, not inverse clipped sigmoid.
+                    # Preserve PLAN's legacy renderer as the primary readout.
+                    # Direct affine is an explicit same-logits/zero-encoder control.
                     logit=F.conv2d(x[None].float(),w,b)[0,0]
-                    cut=F.interpolate(logit[None,None],hw,mode="bilinear",align_corners=False)[0,0]>0
+                    probability=logit.sigmoid()
+                    legacy_logit=torch.logit(probability.float().clamp(1e-6,1-1e-6))
+                    cut=F.interpolate(legacy_logit[None,None],hw,mode="bilinear",align_corners=False)[0,0]>0
+                    direct=F.interpolate(logit[None,None],hw,mode="bilinear",align_corners=False)[0,0]>0
                     pre=got["pre"].reshape(hw).bool()
-                    masks=dict(native=native,readout=finalise(host,cut,tgt),removal=finalise(host,cut&pre,tgt))
-                    before=dict(native=pre,readout=cut,removal=cut&pre)
+                    masks=dict(native=native,readout=finalise(host,cut,tgt),removal=finalise(host,cut&pre,tgt),
+                               direct_affine=finalise(host,direct,tgt))
+                    before=dict(native=pre,readout=cut,removal=cut&pre,direct_affine=direct)
                     native_check=None;cache_check=None
                     key="%d_%d_%d"%(row["fold"],row["e"],c)
                     if p["packets"] and i<8:
@@ -361,7 +367,11 @@ def freeze_worker(a):
                         model_hw=list(hw),original_masks=original_masks,model_masks={k:packed(v) for k,v in masks.items()},
                         before_masks={k:packed(v) for k,v in before.items()},seconds=time.monotonic()-begin,
                         query_GT_pixels_opened=False,native_packet_exact=native_check,cache_check=cache_check,
-                        actual_public_FoRIS=True,actual_CRF=not p["fixture"],same_formula_all_folds=True)
+                        actual_public_FoRIS=True,actual_CRF=not p["fixture"],same_formula_all_folds=True,
+                        numerical_policy=dict(primary="legacy_clipped",auxiliary="direct_affine",
+                            probability_clipped_grid=int(((probability<1e-6)|(probability>1-1e-6)).sum()),
+                            legacy_direct_pre_changed_pixels=int((cut!=direct).sum()),
+                            legacy_direct_post_changed_pixels=int((masks["readout"]!=masks["direct_affine"]).sum())))
                 path.parent.mkdir(parents=True,exist_ok=True)
                 tmp=path.with_suffix(path.suffix+".tmp")
                 with gzip.open(tmp,"wt") as stream:json.dump(rec,stream,allow_nan=False)
@@ -370,8 +380,8 @@ def freeze_worker(a):
                 write_json(report_path,report)
                 print(json.dumps(dict(event="CASE_FROZEN",index=i,case_uid=rec["case_uid"],seconds=rec["seconds"],query_GT_pixels_opened=False)),flush=True)
         report.update(state="WORKER_COMPLETED",elapsed_s=time.monotonic()-start,
-            peak_allocated_bytes=torch.cuda.max_memory_allocated() if dev=="cuda" else0,
-            peak_reserved_bytes=torch.cuda.max_memory_reserved() if dev=="cuda" else0)
+            peak_allocated_bytes=torch.cuda.max_memory_allocated() if dev=="cuda" else 0,
+            peak_reserved_bytes=torch.cuda.max_memory_reserved() if dev=="cuda" else 0)
         write_json(report_path,report)
     except BaseException as error:
         report.update(state="ERROR",error=repr(error),elapsed_s=time.monotonic()-start,
@@ -464,7 +474,7 @@ def compare(recs,arm,key="original_iu",draws=2000):
     array=lambda k,j:np.array([r[key][k][j] for r in recs],float)
     ia,ua,ib,ub=array(arm,0),array(arm,1),array("native",0),array("native",1)
     gain=float(miou(ia,ua,cls)[0]-miou(ib,ub,cls)[0]);labels=np.array(groups(recs))
-    count=int(labels.max())+1 if len(labels) else0
+    count=int(labels.max())+1 if len(labels) else 0
     ci=None
     if count>=2:
         multiplicity=np.random.default_rng(0).multinomial(count,np.ones(count)/count,size=draws)
@@ -541,6 +551,9 @@ def score(a):
             native_packet_checks=sum(r.get("native_packet_exact") is not None for r in [read_case(case_path(out,i,case_uid(row)),p,row,i) for i,row in enumerate(manifest["episodes"])]),
             query_GT_pixels_opened_only_after_entire_cohort_frozen=True,
             ledger={k:{field:sum(r["ledger"][k][field] for r in recs) for field in ("added_fp","removed_fp","lost_tp","recovered_fn")} for k in ARMS[1:]},
+            numerical_policy=dict(primary="readout legacy_clipped",auxiliary="direct_affine samecomputedlogits",
+                probability_clipped_grid=sum(read_case(case_path(out,i,case_uid(row)),p,row,i)["numerical_policy"]["probability_clipped_grid"] for i,row in enumerate(manifest["episodes"])),
+                legacy_direct_pre_changed_pixels=sum(read_case(case_path(out,i,case_uid(row)),p,row,i)["numerical_policy"]["legacy_direct_pre_changed_pixels"] for i,row in enumerate(manifest["episodes"]))),
             elapsed_s=time.monotonic()-start,fixture=p["fixture"])
         write_json(report_path,report);print(json.dumps(dict(state="COMPLETED",episodes=len(recs),rows=report["rows"])),flush=True)
     except BaseException as error:
