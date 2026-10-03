@@ -1,3 +1,5 @@
+最新（2026-10-03）：Claude extent_v1全241任务完成（官方COCO-20i seed0，40开发＋201后续，完整FoRIS原尺寸class-mIoU/同CRF，逐例基线40exact）。后续基线58.1446；contrast+2.0251，95%区间[-1.6105,3.0226]；boundary−0.2234、round_trip−14.7582、signature−3.6666、zoom_pair+0.6023，均未达预定存活门槛。zoom_query朴素对照+0.9643；两zoom臂轮数不同，不能将差归因参考裁剪。GT cut诊断+11.4799是CRF前模型尺寸选阈值后评分，不是最终输出的严格上界。聚合统计HGB留折测量器仅收回preCRF gap1.06%，不代表空间场无信息。证据results/extent_v1/run/analysis.json、完整241packets与decision_audit.json。此前未执行exact-level/RGB对照40例完成：native65.1614、scalar68.0091、DINO58.9328（−6.2286CI[-11.5218,-.2073]）、RGB36.5676，停止此均值亲和度构造；证据results/native_membership_v1/query_boundary_v1/experiment40/analysis.json。最新用户要求服务器保持开机，等Claude新代码就绪接续；不自动关机、不重跑这两矩阵。研究目标未完成。
+
 ## 当前：参考排序，查询定界；未执行训练
 
 用户已明确纠正先选响应再训练头的偏离，当前训练入口撤回并归档。采用所给“在哪里停”候选：同完整FoRIS分数场，用查询原生特征边界选择水平集；需先胜过完整公共FoRIS、同处理scalarcontrast和RGB边界。现存40复用DEV的patch常值scalar67.05对中点63.14是方向信号，非完整流程优势；10个条件性CPU核心案例通过，内部纹理边界误切反例已保留。无新真实质量结果、无有卡GPU运行。下方此前准备状态已被本节和PLAN首节覆盖。

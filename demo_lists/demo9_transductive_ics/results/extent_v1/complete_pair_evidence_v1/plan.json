@@ -1,0 +1,110 @@
+{
+  "platform": "autodl",
+  "cuda_python": "/root/miniconda3/bin/python",
+  "shutdown_allowed": false,
+  "stages": [
+    {
+      "name": "complete_pair_evidence12",
+      "kind": "gpu",
+      "cwd": "/root/autodl-tmp/demo9_transductive_ics",
+      "timeout_seconds": 600,
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/complete_pair_evidence_extract.py",
+        "--manifest",
+        "/root/autodl-tmp/demo9_transductive_ics/results/extent_v1/complete_pair_evidence_v1/manifest12.json",
+        "--out",
+        "/root/autodl-tmp/demo9_transductive_ics/results/extent_v1/complete_pair_evidence_v1/run",
+        "--storage",
+        "native"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_v1/complete_pair_evidence_v1/installed_cpu.json",
+          "json_equals": {
+            "state": "PASSED"
+          }
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_v1/complete_pair_evidence_v1/manifest12.json",
+          "json_equals": {
+            "state": "PREPARED"
+          }
+        }
+      ],
+      "code_files": [
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/complete_pair_evidence_extract.py",
+        "/root/autodl-tmp/demo9_extent/scripts/extent_experiment.py"
+      ],
+      "cpu_artifacts": [
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/models/foris.py"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/native_runtime_v1/positional_basis.pt"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_extent/results/extent_v1/run/packets/0_11_0.npz"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_extent/results/extent_v1/run/packets/0_47_4.npz"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_extent/results/extent_v1/run/packets/0_9_8.npz"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_extent/results/extent_v1/run/packets/1_5_1.npz"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_extent/results/extent_v1/run/packets/1_7_5.npz"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_extent/results/extent_v1/run/packets/1_17_9.npz"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_extent/results/extent_v1/run/packets/2_3_2.npz"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_extent/results/extent_v1/run/packets/2_5_6.npz"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_extent/results/extent_v1/run/packets/2_34_10.npz"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_extent/results/extent_v1/run/packets/3_1_3.npz"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_extent/results/extent_v1/run/packets/3_8_7.npz"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_extent/results/extent_v1/run/packets/3_37_11.npz"
+        }
+      ],
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions",
+        "DEMO9_CUDA_GUARD": "1",
+        "DEMO4_GPU_FRAC": ".4",
+        "HF_HUB_OFFLINE": "1",
+        "TRANSFORMERS_OFFLINE": "1",
+        "OMP_NUM_THREADS": "2",
+        "MKL_NUM_THREADS": "2"
+      },
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_v1/complete_pair_evidence_v1/run/report.json",
+          "json_equals": {
+            "state": "COMPLETED"
+          }
+        }
+      ],
+      "success_checks": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_v1/complete_pair_evidence_v1/run/report.json",
+          "json_equals": {
+            "state": "COMPLETED"
+          }
+        }
+      ]
+    }
+  ]
+}

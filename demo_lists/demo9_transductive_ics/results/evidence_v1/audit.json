@@ -1,0 +1,460 @@
+{
+ "state": "ANALYSED",
+ "episodes": 241,
+ "scope": "patch level, no refinement; contested area = native mask united with the target; read-outs fitted on three folds and scored on the fourth; exploratory, not a method score",
+ "native_patch_miou": 56.987926579776584,
+ "score_only_readout": {
+  "patch_miou": 57.01013169362774,
+  "gain": 0.02220511385115742,
+  "ci95": [
+   -1.5482440935569992,
+   1.6266574330623622
+  ],
+  "folds_up": 2
+ },
+ "evidence": {
+  "foris_score": {
+   "source": "reference",
+   "form": "baseline",
+   "contested_auc": 0.6641320473976245
+  },
+  "reference_margin": {
+   "source": "reference",
+   "form": "baseline",
+   "episodes": 241,
+   "contested_auc": 0.6266892478911855,
+   "with_score_over_score_only": {
+    "gain": -0.2398334189389857,
+    "ci95": [
+     -0.9427387303077225,
+     0.11683669623668047
+    ],
+    "folds_up": 2
+   },
+   "with_score_over_native": {
+    "gain": -0.21762830508782827,
+    "ci95": [
+     -2.0048509767651224,
+     1.3774542043778288
+    ],
+    "folds_up": 2
+   },
+   "patch_miou": 56.770298274688756
+  },
+  "competitors_all": {
+   "source": "competitors",
+   "form": "naive",
+   "episodes": 241,
+   "contested_auc": 0.529336347146852,
+   "with_score_over_score_only": {
+    "gain": 0.32736813269262655,
+    "ci95": [
+     -0.7073115231065155,
+     0.8591828239505875
+    ],
+    "folds_up": 3
+   },
+   "with_score_over_native": {
+    "gain": 0.34957324654378397,
+    "ci95": [
+     -1.625047133714832,
+     2.0707784372517386
+    ],
+    "folds_up": 2
+   },
+   "patch_miou": 57.33749982632037
+  },
+  "competitors_unclaimed": {
+   "source": "competitors",
+   "form": "label_free",
+   "episodes": 241,
+   "contested_auc": 0.6188538679266113,
+   "with_score_over_score_only": {
+    "gain": 0.10966757113862968,
+    "ci95": [
+     -1.1156367060419154,
+     0.7727566145064494
+    ],
+    "folds_up": 2
+   },
+   "with_score_over_native": {
+    "gain": 0.1318726849897871,
+    "ci95": [
+     -1.8975900783877804,
+     1.8028526105469636
+    ],
+    "folds_up": 1
+   },
+   "patch_miou": 57.11979926476637
+  },
+  "commonness": {
+   "source": "competitors",
+   "form": "label_free",
+   "episodes": 241,
+   "contested_auc": 0.5955814790185833,
+   "with_score_over_score_only": {
+    "gain": 0.5263484903082798,
+    "ci95": [
+     -0.07136699822869375,
+     1.1719863115227989
+    ],
+    "folds_up": 3
+   },
+   "with_score_over_native": {
+    "gain": 0.5485536041594372,
+    "ci95": [
+     -0.9256680159269338,
+     2.097114797530645
+    ],
+    "folds_up": 2
+   },
+   "patch_miou": 57.53648018393602
+  },
+  "base_class_claim": {
+   "source": "competitors",
+   "form": "base_labels",
+   "episodes": 241,
+   "contested_auc": 0.4181374784347703,
+   "with_score_over_score_only": {
+    "gain": -0.5148440542759758,
+    "ci95": [
+     -0.9956423707758387,
+     -0.012703053571270315
+    ],
+    "folds_up": 1
+   },
+   "with_score_over_native": {
+    "gain": -0.4926389404248184,
+    "ci95": [
+     -2.073750891017324,
+     1.2112940131684387
+    ],
+    "folds_up": 1
+   },
+   "patch_miou": 56.495287639351766
+  },
+  "competitors_oracle": {
+   "source": "competitors",
+   "form": "oracle",
+   "episodes": 241,
+   "contested_auc": 0.6447956197662279,
+   "with_score_over_score_only": {
+    "gain": 1.8808763928248027,
+    "ci95": [
+     0.5340865497720486,
+     2.6122316144100743
+    ],
+    "folds_up": 4
+   },
+   "with_score_over_native": {
+    "gain": 1.90308150667596,
+    "ci95": [
+     -0.21079588191204815,
+     3.479843239793293
+    ],
+    "folds_up": 4
+   },
+   "patch_miou": 58.891008086452544
+  },
+  "commonness_oracle": {
+   "source": "competitors",
+   "form": "oracle",
+   "episodes": 241,
+   "contested_auc": 0.6073543567400222,
+   "with_score_over_score_only": {
+    "gain": 0.5903786523153585,
+    "ci95": [
+     -0.018852694895743122,
+     1.326133842207411
+    ],
+    "folds_up": 3
+   },
+   "with_score_over_native": {
+    "gain": 0.6125837661665159,
+    "ci95": [
+     -0.8641303640523027,
+     2.2165980047097733
+    ],
+    "folds_up": 2
+   },
+   "patch_miou": 57.6005103459431
+  },
+  "positives_claimed": {
+   "source": "positives",
+   "form": "label_free",
+   "episodes": 241,
+   "contested_auc": 0.6436438946476003,
+   "with_score_over_score_only": {
+    "gain": 0.05371983258408619,
+    "ci95": [
+     -0.9001968695844367,
+     0.4735279814722976
+    ],
+    "folds_up": 2
+   },
+   "with_score_over_native": {
+    "gain": 0.07592494643524361,
+    "ci95": [
+     -1.791365905358171,
+     1.621011032778707
+    ],
+    "folds_up": 2
+   },
+   "patch_miou": 57.06385152621183
+  },
+  "positives_oracle": {
+   "source": "positives",
+   "form": "oracle",
+   "episodes": 241,
+   "contested_auc": 0.7337883431934008,
+   "with_score_over_score_only": {
+    "gain": 7.036474206325977,
+    "ci95": [
+     4.627061347686015,
+     8.362948862459623
+    ],
+    "folds_up": 4
+   },
+   "with_score_over_native": {
+    "gain": 7.058679320177134,
+    "ci95": [
+     4.5493836481691545,
+     8.418943571317824
+    ],
+    "folds_up": 4
+   },
+   "patch_miou": 64.04660589995372
+  },
+  "metric_lda_base": {
+   "source": "metric",
+   "form": "base_labels",
+   "episodes": 241,
+   "contested_auc": 0.6467344601626509,
+   "with_score_over_score_only": {
+    "gain": 0.22329868785032403,
+    "ci95": [
+     -0.7406083438288487,
+     0.5494753548693649
+    ],
+    "folds_up": 3
+   },
+   "with_score_over_native": {
+    "gain": 0.24550380170148145,
+    "ci95": [
+     -1.715819578238976,
+     1.8019092215839816
+    ],
+    "folds_up": 2
+   },
+   "patch_miou": 57.233430381478065
+  },
+  "metric_probe_base": {
+   "source": "metric",
+   "form": "base_labels",
+   "episodes": 241,
+   "contested_auc": 0.6458916603020165,
+   "with_score_over_score_only": {
+    "gain": -0.4436684435102265,
+    "ci95": [
+     -1.265274839114133,
+     0.26028592499637754
+    ],
+    "folds_up": 2
+   },
+   "with_score_over_native": {
+    "gain": -0.4214633296590691,
+    "ci95": [
+     -2.1579908305461633,
+     1.211979307210496
+    ],
+    "folds_up": 1
+   },
+   "patch_miou": 56.566463250117515
+  },
+  "metric_lda_all": {
+   "source": "metric",
+   "form": "oracle",
+   "episodes": 241,
+   "contested_auc": 0.6503938285773571,
+   "with_score_over_score_only": {
+    "gain": 0.24738650997670675,
+    "ci95": [
+     -0.7029721204030885,
+     0.6499266848484896
+    ],
+    "folds_up": 3
+   },
+   "with_score_over_native": {
+    "gain": 0.26959162382786417,
+    "ci95": [
+     -1.6086232494643427,
+     1.7865527207450496
+    ],
+    "folds_up": 2
+   },
+   "patch_miou": 57.25751820360445
+  },
+  "metric_probe_all": {
+   "source": "metric",
+   "form": "oracle",
+   "episodes": 241,
+   "contested_auc": 0.6544663476749879,
+   "with_score_over_score_only": {
+    "gain": 0.6229329304102009,
+    "ci95": [
+     -0.5174391846505477,
+     1.2613718113685866
+    ],
+    "folds_up": 3
+   },
+   "with_score_over_native": {
+    "gain": 0.6451380442613583,
+    "ci95": [
+     -1.41168796856476,
+     2.2560433621299607
+    ],
+    "folds_up": 3
+   },
+   "patch_miou": 57.63306462403794
+  },
+  "grouping_core": {
+   "source": "grouping",
+   "form": "label_free",
+   "episodes": 241,
+   "contested_auc": 0.723943724896795,
+   "with_score_over_score_only": {
+    "gain": 1.0747818455796079,
+    "ci95": [
+     -0.16282136646944884,
+     2.3910064370376976
+    ],
+    "folds_up": 3
+   },
+   "with_score_over_native": {
+    "gain": 1.0969869594307653,
+    "ci95": [
+     -0.361630923456236,
+     2.601473939817446
+    ],
+    "folds_up": 4
+   },
+   "patch_miou": 58.08491353920735
+  },
+  "grouping_true": {
+   "source": "grouping",
+   "form": "oracle",
+   "episodes": 239,
+   "contested_auc": 0.8068423195378519,
+   "with_score_over_score_only": {
+    "gain": 9.609124357117437,
+    "ci95": [
+     6.396214325004723,
+     11.12163360677184
+    ],
+    "folds_up": 4
+   },
+   "with_score_over_native": {
+    "gain": 9.631329470968595,
+    "ci95": [
+     6.679104634212048,
+     10.93717433972413
+    ],
+    "folds_up": 4
+   },
+   "patch_miou": 66.61925605074518
+  },
+  "class_probe": {
+   "source": "ceiling",
+   "form": "oracle",
+   "episodes": 241,
+   "contested_auc": 0.7705810331121212,
+   "with_score_over_score_only": {
+    "gain": 7.198598562170304,
+    "ci95": [
+     4.3133010033114205,
+     8.666963809887415
+    ],
+    "folds_up": 4
+   },
+   "with_score_over_native": {
+    "gain": 7.220803676021461,
+    "ci95": [
+     4.331299209136017,
+     8.700566085938604
+    ],
+    "folds_up": 4
+   },
+   "patch_miou": 64.20873025579805
+  }
+ },
+ "gate": {
+  "label_free_auc": 0.75,
+  "label_free_gain": 3.0,
+  "oracle_auc": 0.8,
+  "oracle_gain": 5.0
+ },
+ "verdict": {
+  "ceiling": {
+   "best_label_free_auc": null,
+   "best_oracle_auc": 0.7705810331121212,
+   "label_free_passes": false,
+   "oracle_alive": true
+  },
+  "competitors": {
+   "best_label_free_auc": 0.6188538679266113,
+   "best_oracle_auc": 0.6447956197662279,
+   "label_free_passes": false,
+   "oracle_alive": false
+  },
+  "positives": {
+   "best_label_free_auc": 0.6436438946476003,
+   "best_oracle_auc": 0.7337883431934008,
+   "label_free_passes": false,
+   "oracle_alive": true
+  },
+  "metric": {
+   "best_label_free_auc": 0.6467344601626509,
+   "best_oracle_auc": 0.6544663476749879,
+   "label_free_passes": false,
+   "oracle_alive": false
+  },
+  "grouping": {
+   "best_label_free_auc": 0.723943724896795,
+   "best_oracle_auc": 0.8068423195378519,
+   "label_free_passes": false,
+   "oracle_alive": true
+  }
+ },
+ "cards": {
+  "ceiling": {
+   "assumption": "the frozen last-layer patch features can tell target from non-target inside the contested area",
+   "prediction": "class_probe contested AUC 0.85 to 0.92",
+   "match": "the answer is in the features; what is missing is knowledge of the class, not resolution",
+   "mismatch": "below 0.75: last-layer patches cannot resolve the contested area; stop all work on last-layer evidence and measure other layers or a higher resolution instead"
+  },
+  "competitors": {
+   "assumption": "false positives are regions with no competitor in the reference; other images can supply one",
+   "prediction": "oracle 0.70 to 0.76, label-free forms 0.64 to 0.70, unfiltered below the reference margin; competitors do not recover the misses, so the oracle stays below positives_oracle",
+   "match": "competitors alone are not enough; they are a component only if the oracle logistic gain is >= +3",
+   "mismatch": "oracle below 0.68: supplying competitors does not reorder the contested area, close the source; a label-free form >= 0.75: build FoRIS with an extended background set next"
+  },
+  "positives": {
+   "assumption": "misses are parts the single reference does not show; more views of the class supply them",
+   "prediction": "oracle 0.82 to 0.90; pool patches claimed by the reference 0.64 to 0.70",
+   "match": "the gain needs correct labels on the pool; the reference's own claim is too noisy, as measured before on INSID3 (pool with true masks +12.7, pseudo masks +2 to +4)",
+   "mismatch": "claimed form >= 0.75: the pool can be labelled well enough at patch level, build it; oracle below 0.75: even a labelled pool does not help, close the transductive line for good"
+  },
+  "metric": {
+   "assumption": "cosine similarity mixes class with nuisance; base classes can teach which directions matter",
+   "prediction": "base-class forms 0.63 to 0.69; all-class forms above them by 0.05 to 0.12",
+   "match": "a metric learned on base classes does not transfer enough: training a small head is not the route",
+   "mismatch": "a base-class form >= 0.75 with logistic gain >= +3: training on base classes is the mechanism; the next run fits it on train2014 and plugs it into FoRIS unchanged"
+  },
+  "grouping": {
+   "assumption": "the missed part belongs to the same object as the found part and looks like it in the query",
+   "prediction": "true found part 0.74 to 0.82; FoRIS's own confident core 0.64 to 0.70",
+   "match": "grouping helps only when the seed is right; FoRIS already uses its own seed this way",
+   "mismatch": "core form >= 0.75: propagate from the core inside the query, build it; true-part form below 0.70: the object is not coherent in these features, close the source"
+  }
+ }
+}

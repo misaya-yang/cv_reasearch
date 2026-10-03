@@ -1,0 +1,210 @@
+{
+ "state": "CPU_RESIZE_CONTRACT_AUDIT",
+ "episodes": 10,
+ "source_run": "/root/autodl-tmp/demo9_extent/results/extent_v1/run",
+ "definition": "query class_map PIL nearest vs numpy exact torch-nearest floor indices, verified by actual CPU torch.interpolate; official class c+1; GT diagnostic only",
+ "script": "bounded remote inline CPU Python; OMP/MKL/OpenBLAS and torch threads=1; timeout30s; no encoder/model/weight/GPU work",
+ "elapsed_s": 0.38788672536611557,
+ "cuda_initialized": false,
+ "all_floor_maps_match_actual_torch": true,
+ "all_floor_target_match_packet": true,
+ "pil_target_exact_count": 0,
+ "pil_packet_mean_iou": 0.9833413308752104,
+ "floor_packet_mean_iou": 1.0,
+ "fp_totals": {
+  "fp": 510567,
+  "pil_partition": 508263,
+  "floor_partition": 510567,
+  "other_in_reference": 4708,
+  "other_not_in_reference": 12414,
+  "not_annotated": 493445
+ },
+ "corrected_FP_partition_shares_small10": {
+  "other_in_reference": 0.009221120832329547,
+  "other_not_in_reference": 0.024314144862476423,
+  "not_annotated": 0.9664647343051941
+ },
+ "qualification": "only10 case resize/interface audit, not complete241 corrected ledger nor scientific gain",
+ "records": [
+  {
+   "fold": 0,
+   "e": 11,
+   "c": 0,
+   "query": "val2014/COCO_val2014_000000166948.jpg",
+   "original_hw": [
+    480,
+    640
+   ],
+   "floor_equals_actual_torch_nearest": true,
+   "floor_target_equals_packet_truth": true,
+   "pil_target_equals_packet_truth": false,
+   "pil_packet_iou": 0.9953692759105005,
+   "floor_packet_iou": 1.0,
+   "fp": 30633,
+   "pil_unpartitioned_fp": 449,
+   "floor_unpartitioned_fp": 0
+  },
+  {
+   "fold": 0,
+   "e": 47,
+   "c": 4,
+   "query": "val2014/COCO_val2014_000000300066.jpg",
+   "original_hw": [
+    480,
+    640
+   ],
+   "floor_equals_actual_torch_nearest": true,
+   "floor_target_equals_packet_truth": true,
+   "pil_target_equals_packet_truth": false,
+   "pil_packet_iou": 0.9825735051205814,
+   "floor_packet_iou": 1.0,
+   "fp": 2860,
+   "pil_unpartitioned_fp": 249,
+   "floor_unpartitioned_fp": 0
+  },
+  {
+   "fold": 0,
+   "e": 9,
+   "c": 8,
+   "query": "val2014/COCO_val2014_000000128669.jpg",
+   "original_hw": [
+    478,
+    640
+   ],
+   "floor_equals_actual_torch_nearest": true,
+   "floor_target_equals_packet_truth": true,
+   "pil_target_equals_packet_truth": false,
+   "pil_packet_iou": 0.9893933334492532,
+   "floor_packet_iou": 1.0,
+   "fp": 10070,
+   "pil_unpartitioned_fp": 256,
+   "floor_unpartitioned_fp": 0
+  },
+  {
+   "fold": 0,
+   "e": 33,
+   "c": 12,
+   "query": "val2014/COCO_val2014_000000073731.jpg",
+   "original_hw": [
+    640,
+    480
+   ],
+   "floor_equals_actual_torch_nearest": true,
+   "floor_target_equals_packet_truth": true,
+   "pil_target_equals_packet_truth": false,
+   "pil_packet_iou": 0.9906933847572734,
+   "floor_packet_iou": 1.0,
+   "fp": 275230,
+   "pil_unpartitioned_fp": 58,
+   "floor_unpartitioned_fp": 0
+  },
+  {
+   "fold": 0,
+   "e": 58,
+   "c": 16,
+   "query": "val2014/COCO_val2014_000000150558.jpg",
+   "original_hw": [
+    378,
+    640
+   ],
+   "floor_equals_actual_torch_nearest": true,
+   "floor_target_equals_packet_truth": true,
+   "pil_target_equals_packet_truth": false,
+   "pil_packet_iou": 0.9724962919971626,
+   "floor_packet_iou": 1.0,
+   "fp": 7340,
+   "pil_unpartitioned_fp": 228,
+   "floor_unpartitioned_fp": 0
+  },
+  {
+   "fold": 0,
+   "e": 8,
+   "c": 20,
+   "query": "val2014/COCO_val2014_000000359135.jpg",
+   "original_hw": [
+    427,
+    640
+   ],
+   "floor_equals_actual_torch_nearest": true,
+   "floor_target_equals_packet_truth": true,
+   "pil_target_equals_packet_truth": false,
+   "pil_packet_iou": 0.9965728232295296,
+   "floor_packet_iou": 1.0,
+   "fp": 78871,
+   "pil_unpartitioned_fp": 513,
+   "floor_unpartitioned_fp": 0
+  },
+  {
+   "fold": 0,
+   "e": 81,
+   "c": 24,
+   "query": "val2014/COCO_val2014_000000153205.jpg",
+   "original_hw": [
+    640,
+    426
+   ],
+   "floor_equals_actual_torch_nearest": true,
+   "floor_target_equals_packet_truth": true,
+   "pil_target_equals_packet_truth": false,
+   "pil_packet_iou": 0.9772812617348855,
+   "floor_packet_iou": 1.0,
+   "fp": 8525,
+   "pil_unpartitioned_fp": 171,
+   "floor_unpartitioned_fp": 0
+  },
+  {
+   "fold": 0,
+   "e": 45,
+   "c": 28,
+   "query": "val2014/COCO_val2014_000000101491.jpg",
+   "original_hw": [
+    640,
+    480
+   ],
+   "floor_equals_actual_torch_nearest": true,
+   "floor_target_equals_packet_truth": true,
+   "pil_target_equals_packet_truth": false,
+   "pil_packet_iou": 0.9898377512185351,
+   "floor_packet_iou": 1.0,
+   "fp": 1845,
+   "pil_unpartitioned_fp": 129,
+   "floor_unpartitioned_fp": 0
+  },
+  {
+   "fold": 0,
+   "e": 2,
+   "c": 32,
+   "query": "val2014/COCO_val2014_000000074951.jpg",
+   "original_hw": [
+    427,
+    640
+   ],
+   "floor_equals_actual_torch_nearest": true,
+   "floor_target_equals_packet_truth": true,
+   "pil_target_equals_packet_truth": false,
+   "pil_packet_iou": 0.9816252587991718,
+   "floor_packet_iou": 1.0,
+   "fp": 30,
+   "pil_unpartitioned_fp": 12,
+   "floor_unpartitioned_fp": 0
+  },
+  {
+   "fold": 0,
+   "e": 3,
+   "c": 36,
+   "query": "val2014/COCO_val2014_000000057286.jpg",
+   "original_hw": [
+    457,
+    640
+   ],
+   "floor_equals_actual_torch_nearest": true,
+   "floor_target_equals_packet_truth": true,
+   "pil_target_equals_packet_truth": false,
+   "pil_packet_iou": 0.9575704225352113,
+   "floor_packet_iou": 1.0,
+   "fp": 95163,
+   "pil_unpartitioned_fp": 239,
+   "floor_unpartitioned_fp": 0
+  }
+ ]
+}

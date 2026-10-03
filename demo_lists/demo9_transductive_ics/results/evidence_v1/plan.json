@@ -1,0 +1,215 @@
+{
+ "platform": "autodl",
+ "cuda_python": "/root/miniconda3/bin/python",
+ "stages": [
+  {
+   "name": "evidence_cache",
+   "kind": "gpu",
+   "cwd": "/root/autodl-tmp/demo9_extent",
+   "timeout_seconds": 1800,
+   "argv": [
+    "/root/miniconda3/bin/python",
+    "/root/autodl-tmp/demo9_extent/scripts/evidence_cache.py",
+    "--manifest",
+    "/root/autodl-tmp/demo9_extent/results/extent_v1/episodes.json",
+    "--packets",
+    "/root/autodl-tmp/demo9_extent/results/extent_v1/run/packets",
+    "--out",
+    "/root/autodl-tmp/demo9_extent/cache/evidence_v1"
+   ],
+   "requires": [
+    {
+     "path": "/root/autodl-tmp/demo9_extent/results/extent_v1/episodes.json",
+     "json_equals": {
+      "state": "PREPARED"
+     },
+     "sha256": "75a0e8118b5ebcc8d23a41495dde9d950af77eecd3d7bae61824dc6c66821134"
+    },
+    {
+     "path": "/root/autodl-tmp/demo9_extent/results/evidence_v1/selfcheck.json",
+     "json_equals": {
+      "state": "PASSED"
+     }
+    },
+    {
+     "path": "/root/autodl-tmp/demo9_extent/results/evidence_v1/fixture/audit/maps_report.json",
+     "json_equals": {
+      "state": "COMPLETED"
+     }
+    },
+    {
+     "path": "/root/autodl-tmp/demo9_extent/results/extent_v1/run/report.json",
+     "json_equals": {
+      "state": "COMPLETED"
+     }
+    }
+   ],
+   "cpu_artifacts": [
+    {
+     "path": "/root/autodl-tmp/demo8_local_verification/foris_source/models/foris.py",
+     "sha256": "982cf4aa91ac90370151c353efb37240d7d4d5c35a0dfe9cc9509cd554c85fa9"
+    },
+    {
+     "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/clustering.py",
+     "sha256": "9a005f19542c719ecf734e942adc65829b71fc6c4dcf8f07b2c9922cb137dd74"
+    },
+    {
+     "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/refinement.py",
+     "sha256": "038c68fe04ea5cdc127da50b926e3dd2ef16ffd400873eea356fbffc66fc188c"
+    },
+    {
+     "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/data.py",
+     "sha256": "37211b2f55391694023cad806cdc9ec210944d32346ac1de0f9502df39731b53"
+    },
+    {
+     "path": "/root/autodl-tmp/demo9_transductive_ics/results/native_runtime_v1/positional_basis.pt",
+     "sha256": "9b9b20755a796cbda11bb7220d246ee540106e40cb024e249a5f63f884b6a116"
+    }
+   ],
+   "code_files": [
+    "/root/autodl-tmp/demo9_extent/scripts/evidence_cache.py",
+    "/root/autodl-tmp/demo9_extent/scripts/evidence_audit.py",
+    "/root/autodl-tmp/demo9_extent/scripts/extent_experiment.py",
+    "/root/autodl-tmp/demo9_extent/scripts/analyze_extent.py",
+    "/root/autodl-tmp/demo9_extent/tics/extent_cut.py",
+    "/root/autodl-tmp/demo9_extent/tics/native_assets.py",
+    "/root/autodl-tmp/demo9_extent/tics/__init__.py"
+   ],
+   "env": {
+    "PYTHONPATH": "/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions",
+    "DEMO9_CUDA_GUARD": "1",
+    "DEMO4_GPU_FRAC": ".4",
+    "HF_HUB_OFFLINE": "1",
+    "TRANSFORMERS_OFFLINE": "1",
+    "OMP_NUM_THREADS": "2",
+    "MKL_NUM_THREADS": "2"
+   },
+   "produces": [
+    {
+     "path": "/root/autodl-tmp/demo9_extent/cache/evidence_v1/report.json",
+     "json_equals": {
+      "state": "COMPLETED"
+     }
+    }
+   ],
+   "success_checks": [
+    {
+     "path": "/root/autodl-tmp/demo9_extent/cache/evidence_v1/report.json",
+     "json_equals": {
+      "state": "COMPLETED"
+     }
+    }
+   ]
+  },
+  {
+   "name": "evidence_maps",
+   "kind": "gpu",
+   "cwd": "/root/autodl-tmp/demo9_extent",
+   "timeout_seconds": 1800,
+   "argv": [
+    "/root/miniconda3/bin/python",
+    "/root/autodl-tmp/demo9_extent/scripts/evidence_audit.py",
+    "--cache",
+    "/root/autodl-tmp/demo9_extent/cache/evidence_v1",
+    "--run",
+    "/root/autodl-tmp/demo9_extent/results/extent_v1/run",
+    "--out",
+    "/root/autodl-tmp/demo9_extent/results/evidence_v1"
+   ],
+   "requires": [
+    {
+     "path": "/root/autodl-tmp/demo9_extent/cache/evidence_v1/report.json",
+     "json_equals": {
+      "state": "COMPLETED"
+     }
+    }
+   ],
+   "code_files": [
+    "/root/autodl-tmp/demo9_extent/scripts/evidence_cache.py",
+    "/root/autodl-tmp/demo9_extent/scripts/evidence_audit.py",
+    "/root/autodl-tmp/demo9_extent/scripts/extent_experiment.py",
+    "/root/autodl-tmp/demo9_extent/scripts/analyze_extent.py",
+    "/root/autodl-tmp/demo9_extent/tics/extent_cut.py",
+    "/root/autodl-tmp/demo9_extent/tics/native_assets.py",
+    "/root/autodl-tmp/demo9_extent/tics/__init__.py"
+   ],
+   "env": {
+    "PYTHONPATH": "/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions",
+    "DEMO9_CUDA_GUARD": "1",
+    "DEMO4_GPU_FRAC": ".4",
+    "HF_HUB_OFFLINE": "1",
+    "TRANSFORMERS_OFFLINE": "1",
+    "OMP_NUM_THREADS": "2",
+    "MKL_NUM_THREADS": "2"
+   },
+   "produces": [
+    {
+     "path": "/root/autodl-tmp/demo9_extent/results/evidence_v1/maps_report.json",
+     "json_equals": {
+      "state": "COMPLETED"
+     }
+    }
+   ],
+   "success_checks": [
+    {
+     "path": "/root/autodl-tmp/demo9_extent/results/evidence_v1/maps_report.json",
+     "json_equals": {
+      "state": "COMPLETED"
+     }
+    }
+   ]
+  },
+  {
+   "name": "evidence_analysis",
+   "kind": "cpu",
+   "role": "handoff",
+   "cwd": "/root/autodl-tmp/demo9_extent",
+   "timeout_seconds": 60,
+   "argv": [
+    "/root/miniconda3/bin/python",
+    "/root/autodl-tmp/demo9_extent/scripts/evidence_audit.py",
+    "--analyse",
+    "--run",
+    "/root/autodl-tmp/demo9_extent/results/extent_v1/run",
+    "--out",
+    "/root/autodl-tmp/demo9_extent/results/evidence_v1"
+   ],
+   "requires": [
+    {
+     "path": "/root/autodl-tmp/demo9_extent/results/evidence_v1/maps_report.json",
+     "json_equals": {
+      "state": "COMPLETED"
+     }
+    }
+   ],
+   "env": {
+    "PYTHONPATH": "/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions",
+    "DEMO9_CUDA_GUARD": "1",
+    "DEMO4_GPU_FRAC": ".4",
+    "HF_HUB_OFFLINE": "1",
+    "TRANSFORMERS_OFFLINE": "1",
+    "OMP_NUM_THREADS": "2",
+    "MKL_NUM_THREADS": "2",
+    "CUDA_VISIBLE_DEVICES": ""
+   },
+   "produces": [
+    {
+     "path": "/root/autodl-tmp/demo9_extent/results/evidence_v1/audit.json",
+     "json_equals": {
+      "state": "ANALYSED"
+     }
+    }
+   ],
+   "success_checks": [
+    {
+     "path": "/root/autodl-tmp/demo9_extent/results/evidence_v1/audit.json",
+     "json_equals": {
+      "state": "ANALYSED"
+     }
+    }
+   ]
+  }
+ ],
+ "protocol": "one pass; no retries, no sweeps; the cache step stops at the first episode whose stored mask is not reproduced; gates and predictions are the CARDS and GATE of scripts/evidence_audit.py",
+ "episodes": 241
+}
