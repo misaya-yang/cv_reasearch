@@ -1,4 +1,6 @@
-## Current user priority: document F4 validation, then repaired SAM3
+## Current user priority: F4 completed; finite SAM3/formula continuation
+
+Current verified execution is v3 on E69 `xd1lnmgg7n-e1317191`, weste:46597; E44 and F83 are stopped. F4 completed241/241 and no arm passed: C−native−1.374pp[−2.700,−.297], D−matchedGlobal−.048pp with an interval across0; registered160 stays unopened. A_DEV241 and A_CONFIRM600 completed with legal visual SAM3 gains+3.433pp[−2.743,7.049] and+1.308pp[−2.449,3.569]. Text is privileged; neither cohort is fresh for this design. B_CONFIRM then B_DEV are running the prepared fixed supervised formula; no new fitting or automatic method expansion. The2700s guard ends this finite continuation and powers off; completion/report/platform STOPPED must still be verified. Full results and causal limitations: `results/f4_v1/EXPERIMENT_REPORT.md`. All following provisioning, smoke and queue descriptions are historical and must not be restarted.
 
 Runtime: same-price32GB F83 clone `nqn4gltvka-ef3b12eb` at `connect.westb.seetacloud.com:29743` is now running the frozen unified guard. E44 remains stopped. Both disk copies completed, RTX4080 SUPER/32760MiB and no foreign CUDA were checked. Clone guard rechecked32 files/0pending in.134s, CUDA ready2.78s/ownedchild1203 at2.91s. First2 real F4 native masks/original I-U are exact; no all-fold gain yet. Do not launch another copy of this queue.
 
