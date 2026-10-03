@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_train_cache.py", line 357, in <module>
+    main()
+  File "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_train_cache.py", line 353, in main
+    prepare_isolated(a) if a.isolated_suite else prepare(a) if a.prepare else replay(a) if a.replay else live(a)
+                                                                                                         ^^^^^^^
+  File "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_train_cache.py", line 263, in live
+    np.savez(out / "check" / ("%d_%d_%d.npz" % (row["fold"], row["e"], row["c"])), **one(row))
+                                                                                     ^^^^^^^^
+  File "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_train_cache.py", line 255, in one
+    if yes:comp[f]=(q-means[f])@Vs[f]
+           ~~~~^^^
+RuntimeError: The expanded size of the tensor (16) must match the existing size (11) at non-singleton dimension 1.  Target sizes: [256, 16].  Tensor sizes: [256, 11]

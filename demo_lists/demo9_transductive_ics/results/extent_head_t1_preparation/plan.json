@@ -1,0 +1,721 @@
+{
+  "state": "PREPARED_NOT_AUTHORIZED",
+  "platform": "autodl",
+  "cuda_python": "/root/miniconda3/bin/python",
+  "stages": [
+    {
+      "name": "T1_train_prefix_PCA_then_cache",
+      "kind": "gpu",
+      "cwd": "/root/autodl-tmp/demo9_transductive_ics",
+      "timeout_seconds": 5400,
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_train_cache.py",
+        "--manifest",
+        "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_isolated_v1/train_episodes.json",
+        "--confirm-manifest",
+        "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_isolated_v1/confirm_episodes.json",
+        "--test-manifest",
+        "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_isolated_v1/dev_episodes.json",
+        "--packets",
+        "/root/autodl-tmp/demo9_extent/results/extent_v1/run/packets",
+        "--components",
+        "16",
+        "--out",
+        "/root/autodl-tmp/demo9_transductive_ics/cache/extent_head_t1_isolated_v1"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_isolated_v1/train_episodes.json",
+          "json_equals": {
+            "state": "PREPARED"
+          },
+          "sha256": "64fd2f9d5e01bcf049f8d5731baa47672959d3748c00100545024d58182471f3"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_isolated_v1/dev_episodes.json",
+          "json_equals": {
+            "state": "PREPARED"
+          },
+          "sha256": "75a0e8118b5ebcc8d23a41495dde9d950af77eecd3d7bae61824dc6c66821134"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_isolated_v1/confirm_episodes.json",
+          "json_equals": {
+            "state": "PREPARED"
+          },
+          "sha256": "248d5c873c7f0e91e35f014cc517c1968dcf835728c8b88bdeea1dfc91ed82ff"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/head_contract.json",
+          "json_equals": {
+            "state": "PASSED"
+          }
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fixture_fit/confirmation/report.json",
+          "json_equals": {
+            "state": "COMPLETED"
+          }
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_extent/cache/evidence_v1/report.json",
+          "json_equals": {
+            "state": "COMPLETED"
+          }
+        }
+      ],
+      "cpu_artifacts": [
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/models/foris.py",
+          "sha256": "982cf4aa91ac90370151c353efb37240d7d4d5c35a0dfe9cc9509cd554c85fa9"
+        },
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/clustering.py",
+          "sha256": "9a005f19542c719ecf734e942adc65829b71fc6c4dcf8f07b2c9922cb137dd74"
+        },
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/refinement.py",
+          "sha256": "038c68fe04ea5cdc127da50b926e3dd2ef16ffd400873eea356fbffc66fc188c"
+        },
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/data.py",
+          "sha256": "37211b2f55391694023cad806cdc9ec210944d32346ac1de0f9502df39731b53"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/native_runtime_v1/positional_basis.pt",
+          "sha256": "9b9b20755a796cbda11bb7220d246ee540106e40cb024e249a5f63f884b6a116"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_train_cache.py",
+          "sha256": "fdbbc6c6241f61d6d697eea79ee27be8d2db42c34d1e688b560f2d80a34ad2f5"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_head.py",
+          "sha256": "f8d69c38d1916451c6e133b46a2894507edb2c908ff7dda3c4573e51697968f8"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_experiment.py",
+          "sha256": "14e99f553d93a3234d78551e67727fc3478ca7042b161d9b465dae5cc9769f2b"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/analyze_extent.py",
+          "sha256": "e8734fbc990a4a6305e020633ee4990bc855afedafdc449cd91f7840a4177c53"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/relations.py",
+          "sha256": "546e5e9b8dccb62d9dcb7ded82160dc1755336d1522e11093d5dbaa551295b94"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/extent_cut.py",
+          "sha256": "032abc3295cecbf3560fc80e9b38dcc1c71d3749458e351b623995353be96a69"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/native_assets.py",
+          "sha256": "8ac26ef78d601f3d10318043c6cd73a05fe9dc2ac8d8ea4eabefc6a8289cb80c"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/__init__.py",
+          "sha256": "d41a588fab4ca6137b9adc3bfcb8818062d95a1aeadde5797a81cb36b4e8d4ff"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_extent/results/extent_v1/episodes.json",
+          "sha256": "75a0e8118b5ebcc8d23a41495dde9d950af77eecd3d7bae61824dc6c66821134"
+        }
+      ],
+      "code_files": [
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_train_cache.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_head.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_experiment.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/analyze_extent.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/relations.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/extent_cut.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/native_assets.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/__init__.py"
+      ],
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions",
+        "DEMO9_CUDA_GUARD": "1",
+        "DEMO4_GPU_FRAC": ".4",
+        "HF_HUB_OFFLINE": "1",
+        "TRANSFORMERS_OFFLINE": "1",
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1"
+      },
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/cache/extent_head_t1_isolated_v1/report.json",
+          "json_equals": {
+            "state": "COMPLETED",
+            "pca_state": "PCA_READY",
+            "fourfold_train_prefix_verified": true,
+            "PCA_prior_pool_features_used": false,
+            "native_checks": 8,
+            "native_bit_identical": 8
+          }
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/cache/extent_head_t1_isolated_v1/pca.pt"
+        }
+      ],
+      "success_checks": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/cache/extent_head_t1_isolated_v1/report.json",
+          "json_equals": {
+            "state": "COMPLETED",
+            "pca_state": "PCA_READY",
+            "fourfold_train_prefix_verified": true,
+            "PCA_prior_pool_features_used": false,
+            "native_checks": 8,
+            "native_bit_identical": 8
+          }
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/cache/extent_head_t1_isolated_v1/pca.pt"
+        }
+      ]
+    },
+    {
+      "name": "T1_readonly_DEV_replay",
+      "kind": "gpu",
+      "cwd": "/root/autodl-tmp/demo9_transductive_ics",
+      "timeout_seconds": 900,
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_train_cache.py",
+        "--replay",
+        "--test-manifest",
+        "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_isolated_v1/dev_episodes.json",
+        "--features",
+        "/root/autodl-tmp/demo9_extent/cache/evidence_v1/feat",
+        "--packets",
+        "/root/autodl-tmp/demo9_extent/results/extent_v1/run/packets",
+        "--out",
+        "/root/autodl-tmp/demo9_transductive_ics/cache/extent_head_t1_isolated_v1"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/cache/extent_head_t1_isolated_v1/report.json",
+          "json_equals": {
+            "state": "COMPLETED",
+            "pca_state": "PCA_READY",
+            "fourfold_train_prefix_verified": true,
+            "PCA_prior_pool_features_used": false,
+            "native_checks": 8,
+            "native_bit_identical": 8
+          }
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/cache/extent_head_t1_isolated_v1/pca.pt"
+        }
+      ],
+      "cpu_artifacts": [
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/models/foris.py",
+          "sha256": "982cf4aa91ac90370151c353efb37240d7d4d5c35a0dfe9cc9509cd554c85fa9"
+        },
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/clustering.py",
+          "sha256": "9a005f19542c719ecf734e942adc65829b71fc6c4dcf8f07b2c9922cb137dd74"
+        },
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/refinement.py",
+          "sha256": "038c68fe04ea5cdc127da50b926e3dd2ef16ffd400873eea356fbffc66fc188c"
+        },
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/data.py",
+          "sha256": "37211b2f55391694023cad806cdc9ec210944d32346ac1de0f9502df39731b53"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/native_runtime_v1/positional_basis.pt",
+          "sha256": "9b9b20755a796cbda11bb7220d246ee540106e40cb024e249a5f63f884b6a116"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_train_cache.py",
+          "sha256": "fdbbc6c6241f61d6d697eea79ee27be8d2db42c34d1e688b560f2d80a34ad2f5"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_head.py",
+          "sha256": "f8d69c38d1916451c6e133b46a2894507edb2c908ff7dda3c4573e51697968f8"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_experiment.py",
+          "sha256": "14e99f553d93a3234d78551e67727fc3478ca7042b161d9b465dae5cc9769f2b"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/analyze_extent.py",
+          "sha256": "e8734fbc990a4a6305e020633ee4990bc855afedafdc449cd91f7840a4177c53"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/relations.py",
+          "sha256": "546e5e9b8dccb62d9dcb7ded82160dc1755336d1522e11093d5dbaa551295b94"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/extent_cut.py",
+          "sha256": "032abc3295cecbf3560fc80e9b38dcc1c71d3749458e351b623995353be96a69"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/native_assets.py",
+          "sha256": "8ac26ef78d601f3d10318043c6cd73a05fe9dc2ac8d8ea4eabefc6a8289cb80c"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/__init__.py",
+          "sha256": "d41a588fab4ca6137b9adc3bfcb8818062d95a1aeadde5797a81cb36b4e8d4ff"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_extent/results/extent_v1/episodes.json",
+          "sha256": "75a0e8118b5ebcc8d23a41495dde9d950af77eecd3d7bae61824dc6c66821134"
+        }
+      ],
+      "code_files": [
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_train_cache.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_head.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_experiment.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/analyze_extent.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/relations.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/extent_cut.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/native_assets.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/__init__.py"
+      ],
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions",
+        "DEMO9_CUDA_GUARD": "1",
+        "DEMO4_GPU_FRAC": ".4",
+        "HF_HUB_OFFLINE": "1",
+        "TRANSFORMERS_OFFLINE": "1",
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1"
+      },
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/cache/extent_head_t1_isolated_v1/replay_report.json",
+          "json_equals": {
+            "state": "COMPLETED"
+          }
+        }
+      ],
+      "success_checks": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/cache/extent_head_t1_isolated_v1/replay_report.json",
+          "json_equals": {
+            "state": "COMPLETED"
+          }
+        }
+      ]
+    },
+    {
+      "name": "T1_base_fit_DEV_selection",
+      "kind": "gpu",
+      "cwd": "/root/autodl-tmp/demo9_transductive_ics",
+      "timeout_seconds": 5400,
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_head.py",
+        "--cache",
+        "/root/autodl-tmp/demo9_transductive_ics/cache/extent_head_t1_isolated_v1",
+        "--run",
+        "/root/autodl-tmp/demo9_extent/results/extent_v1/run",
+        "--out",
+        "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fits/development/report.json",
+        "--phase",
+        "development",
+        "--train-manifest",
+        "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_isolated_v1/train_episodes.json",
+        "--epochs",
+        "40",
+        "--seeds",
+        "2",
+        "--batch",
+        "64",
+        "--curve",
+        "100,200,400"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/cache/extent_head_t1_isolated_v1/report.json",
+          "json_equals": {
+            "state": "COMPLETED",
+            "pca_state": "PCA_READY",
+            "fourfold_train_prefix_verified": true,
+            "PCA_prior_pool_features_used": false,
+            "native_checks": 8,
+            "native_bit_identical": 8
+          }
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/cache/extent_head_t1_isolated_v1/replay_report.json",
+          "json_equals": {
+            "state": "COMPLETED"
+          }
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/cache/extent_head_t1_isolated_v1/pca.pt"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_isolated_v1/train_episodes.json",
+          "json_equals": {
+            "state": "PREPARED"
+          },
+          "sha256": "64fd2f9d5e01bcf049f8d5731baa47672959d3748c00100545024d58182471f3"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_isolated_v1/dev_episodes.json",
+          "json_equals": {
+            "state": "PREPARED"
+          },
+          "sha256": "75a0e8118b5ebcc8d23a41495dde9d950af77eecd3d7bae61824dc6c66821134"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_isolated_v1/confirm_episodes.json",
+          "json_equals": {
+            "state": "PREPARED"
+          },
+          "sha256": "248d5c873c7f0e91e35f014cc517c1968dcf835728c8b88bdeea1dfc91ed82ff"
+        }
+      ],
+      "cpu_artifacts": [
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/models/foris.py",
+          "sha256": "982cf4aa91ac90370151c353efb37240d7d4d5c35a0dfe9cc9509cd554c85fa9"
+        },
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/clustering.py",
+          "sha256": "9a005f19542c719ecf734e942adc65829b71fc6c4dcf8f07b2c9922cb137dd74"
+        },
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/refinement.py",
+          "sha256": "038c68fe04ea5cdc127da50b926e3dd2ef16ffd400873eea356fbffc66fc188c"
+        },
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/data.py",
+          "sha256": "37211b2f55391694023cad806cdc9ec210944d32346ac1de0f9502df39731b53"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/native_runtime_v1/positional_basis.pt",
+          "sha256": "9b9b20755a796cbda11bb7220d246ee540106e40cb024e249a5f63f884b6a116"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_train_cache.py",
+          "sha256": "fdbbc6c6241f61d6d697eea79ee27be8d2db42c34d1e688b560f2d80a34ad2f5"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_head.py",
+          "sha256": "f8d69c38d1916451c6e133b46a2894507edb2c908ff7dda3c4573e51697968f8"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_experiment.py",
+          "sha256": "14e99f553d93a3234d78551e67727fc3478ca7042b161d9b465dae5cc9769f2b"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/analyze_extent.py",
+          "sha256": "e8734fbc990a4a6305e020633ee4990bc855afedafdc449cd91f7840a4177c53"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/relations.py",
+          "sha256": "546e5e9b8dccb62d9dcb7ded82160dc1755336d1522e11093d5dbaa551295b94"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/extent_cut.py",
+          "sha256": "032abc3295cecbf3560fc80e9b38dcc1c71d3749458e351b623995353be96a69"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/native_assets.py",
+          "sha256": "8ac26ef78d601f3d10318043c6cd73a05fe9dc2ac8d8ea4eabefc6a8289cb80c"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/__init__.py",
+          "sha256": "d41a588fab4ca6137b9adc3bfcb8818062d95a1aeadde5797a81cb36b4e8d4ff"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_extent/results/extent_v1/episodes.json",
+          "sha256": "75a0e8118b5ebcc8d23a41495dde9d950af77eecd3d7bae61824dc6c66821134"
+        }
+      ],
+      "code_files": [
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_train_cache.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_head.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_experiment.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/analyze_extent.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/relations.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/extent_cut.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/native_assets.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/__init__.py"
+      ],
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions",
+        "DEMO9_CUDA_GUARD": "1",
+        "DEMO4_GPU_FRAC": ".4",
+        "HF_HUB_OFFLINE": "1",
+        "TRANSFORMERS_OFFLINE": "1",
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1"
+      },
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fits/development/report.json",
+          "json_equals": {
+            "state": "DEVELOPMENT_SELECTED_CONFIRM_SEALED",
+            "training_epochs": 40,
+            "seeds": 2,
+            "score_control_capacity_matched": true,
+            "channel_count": 32
+          }
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fits/development/selection.json",
+          "json_equals": {
+            "state": "SELECTION_FROZEN"
+          }
+        }
+      ],
+      "success_checks": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fits/development/report.json",
+          "json_equals": {
+            "state": "DEVELOPMENT_SELECTED_CONFIRM_SEALED",
+            "training_epochs": 40,
+            "seeds": 2,
+            "score_control_capacity_matched": true,
+            "channel_count": 32
+          }
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fits/development/selection.json",
+          "json_equals": {
+            "state": "SELECTION_FROZEN"
+          }
+        }
+      ]
+    },
+    {
+      "name": "T1_one_selected_confirmation",
+      "kind": "gpu",
+      "cwd": "/root/autodl-tmp/demo9_transductive_ics",
+      "timeout_seconds": 900,
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_head.py",
+        "--cache",
+        "/root/autodl-tmp/demo9_transductive_ics/cache/extent_head_t1_isolated_v1",
+        "--out",
+        "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fits/confirmation/report.json",
+        "--phase",
+        "confirmation",
+        "--choice",
+        "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fits/development/selection.json",
+        "--confirm-manifest",
+        "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_isolated_v1/confirm_episodes.json"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fits/development/report.json",
+          "json_equals": {
+            "state": "DEVELOPMENT_SELECTED_CONFIRM_SEALED",
+            "training_epochs": 40,
+            "seeds": 2,
+            "score_control_capacity_matched": true,
+            "channel_count": 32
+          }
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fits/development/selection.json",
+          "json_equals": {
+            "state": "SELECTION_FROZEN"
+          }
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/cache/extent_head_t1_isolated_v1/pca.pt"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_isolated_v1/confirm_episodes.json",
+          "json_equals": {
+            "state": "PREPARED"
+          },
+          "sha256": "248d5c873c7f0e91e35f014cc517c1968dcf835728c8b88bdeea1dfc91ed82ff"
+        }
+      ],
+      "cpu_artifacts": [
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/models/foris.py",
+          "sha256": "982cf4aa91ac90370151c353efb37240d7d4d5c35a0dfe9cc9509cd554c85fa9"
+        },
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/clustering.py",
+          "sha256": "9a005f19542c719ecf734e942adc65829b71fc6c4dcf8f07b2c9922cb137dd74"
+        },
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/refinement.py",
+          "sha256": "038c68fe04ea5cdc127da50b926e3dd2ef16ffd400873eea356fbffc66fc188c"
+        },
+        {
+          "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/data.py",
+          "sha256": "37211b2f55391694023cad806cdc9ec210944d32346ac1de0f9502df39731b53"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/native_runtime_v1/positional_basis.pt",
+          "sha256": "9b9b20755a796cbda11bb7220d246ee540106e40cb024e249a5f63f884b6a116"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_train_cache.py",
+          "sha256": "fdbbc6c6241f61d6d697eea79ee27be8d2db42c34d1e688b560f2d80a34ad2f5"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_head.py",
+          "sha256": "f8d69c38d1916451c6e133b46a2894507edb2c908ff7dda3c4573e51697968f8"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_experiment.py",
+          "sha256": "14e99f553d93a3234d78551e67727fc3478ca7042b161d9b465dae5cc9769f2b"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/scripts/analyze_extent.py",
+          "sha256": "e8734fbc990a4a6305e020633ee4990bc855afedafdc449cd91f7840a4177c53"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/relations.py",
+          "sha256": "546e5e9b8dccb62d9dcb7ded82160dc1755336d1522e11093d5dbaa551295b94"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/extent_cut.py",
+          "sha256": "032abc3295cecbf3560fc80e9b38dcc1c71d3749458e351b623995353be96a69"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/native_assets.py",
+          "sha256": "8ac26ef78d601f3d10318043c6cd73a05fe9dc2ac8d8ea4eabefc6a8289cb80c"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/tics/__init__.py",
+          "sha256": "d41a588fab4ca6137b9adc3bfcb8818062d95a1aeadde5797a81cb36b4e8d4ff"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_extent/results/extent_v1/episodes.json",
+          "sha256": "75a0e8118b5ebcc8d23a41495dde9d950af77eecd3d7bae61824dc6c66821134"
+        }
+      ],
+      "code_files": [
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_train_cache.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_head.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/extent_experiment.py",
+        "/root/autodl-tmp/demo9_transductive_ics/scripts/analyze_extent.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/relations.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/extent_cut.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/native_assets.py",
+        "/root/autodl-tmp/demo9_transductive_ics/tics/__init__.py"
+      ],
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions",
+        "DEMO9_CUDA_GUARD": "1",
+        "DEMO4_GPU_FRAC": ".4",
+        "HF_HUB_OFFLINE": "1",
+        "TRANSFORMERS_OFFLINE": "1",
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1"
+      },
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fits/confirmation/report.json",
+          "json_equals": {
+            "state": "COMPLETED"
+          }
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fits/confirmation/confirmation_prediction_freeze.json"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fits/confirmation/confirmation_predictions.npz"
+        }
+      ],
+      "success_checks": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fits/confirmation/report.json",
+          "json_equals": {
+            "state": "COMPLETED"
+          }
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fits/confirmation/confirmation_prediction_freeze.json"
+        },
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fits/confirmation/confirmation_predictions.npz"
+        }
+      ]
+    }
+  ],
+  "protocol": "finite cache -> readonly DEV replay -> DEV-only selection -> one selected confirmation; no retries or sweeps",
+  "autostart": false,
+  "shutdown_armed": false,
+  "current_mode": "NO_CARD_CPU_PREPARATION",
+  "GPU_execution_requires": "new explicit user authorization; generating or preflighting this file does not grant it",
+  "finite_stage_caps_seconds": {
+    "T1_train_prefix_PCA_then_cache": 5400,
+    "T1_readonly_DEV_replay": 900,
+    "T1_base_fit_DEV_selection": 5400,
+    "T1_one_selected_confirmation": 900
+  },
+  "finite_total_cap_seconds": 12600,
+  "cap_is_measured_runtime": false,
+  "recipe": {
+    "relation_names": [
+      "sn",
+      "s2",
+      "s3",
+      "rank",
+      "fg",
+      "bg",
+      "nn_label",
+      "cycle",
+      "grp_core",
+      "grp_out",
+      "grp_core5",
+      "grp_out5",
+      "proto_core",
+      "proto_out",
+      "edge_r",
+      "edge_d"
+    ],
+    "relation_channel_count": 16,
+    "pca_channel_count": 16,
+    "common_input_channel_count": 32,
+    "epochs": 40,
+    "ensemble_seeds": 2,
+    "batch": 64,
+    "pca_components": 16,
+    "independent_curve_collection_sizes": [
+      100,
+      200,
+      400
+    ],
+    "curve_nominal_model_training_sizes": [
+      300,
+      600,
+      1200
+    ],
+    "independent_curve_model_fits": 48,
+    "full_model_fits": 56,
+    "total_model_fits": 104,
+    "confirmation_refits": 0,
+    "selected_variant_frozen_on_DEV": true,
+    "matched_score_control_same_head_and_capacity": true,
+    "scope": "T1 patch64/noCRF premise; no T2/T3 or benchmark claim"
+  },
+  "validation_receipt": {
+    "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/queue_validation.json",
+    "sha256": "0697b6aa28787090d2dd385b998b8767f256cdaedc929c27c4de211542a5f748"
+  },
+  "inputs": {
+    "train": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_isolated_v1/train_episodes.json",
+    "DEV": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_isolated_v1/dev_episodes.json",
+    "confirm": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_isolated_v1/confirm_episodes.json",
+    "readonly_DEV_manifest_source": "/root/autodl-tmp/demo9_extent/results/extent_v1/episodes.json",
+    "readonly_DEV_run": "/root/autodl-tmp/demo9_extent/results/extent_v1/run",
+    "readonly_evidence_cache": "/root/autodl-tmp/demo9_extent/cache/evidence_v1",
+    "development_report": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fits/development/report.json",
+    "selection": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fits/development/selection.json",
+    "confirmation_report": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fits/confirmation/report.json"
+  },
+  "no_old_pool_dependency": true
+}

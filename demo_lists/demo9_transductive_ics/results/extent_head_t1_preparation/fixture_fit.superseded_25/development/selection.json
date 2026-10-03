@@ -1,0 +1,121 @@
+{
+  "state": "SELECTION_FROZEN",
+  "input_arm": "relations",
+  "head": "dense_area_removal",
+  "model_head": "dense",
+  "variant": "removal",
+  "chosen_on": "DEV_only",
+  "checkpoint": {
+    "relations": {
+      "0": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fixture_fit/development/models/relations/fold0/dense/seed0.pt",
+          "sha256": "2aff9cbc0384c1374ceac2e4a266a7c016f6d41b7cfbbf428577e110574f47dc"
+        }
+      ],
+      "1": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fixture_fit/development/models/relations/fold1/dense/seed0.pt",
+          "sha256": "a7c072cc72a732e8f8c0abbd7259ad1749b1b05867a2dff3cfc32d294cce7e46"
+        }
+      ],
+      "2": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fixture_fit/development/models/relations/fold2/dense/seed0.pt",
+          "sha256": "270e6e83cbad064599f26e76a5be34993d6fdc208ba6afcedf309ff977a2c90a"
+        }
+      ],
+      "3": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fixture_fit/development/models/relations/fold3/dense/seed0.pt",
+          "sha256": "92b84e8cad145de481955a74d327e03dcd6e04efa1380a92b4362bfc63e0a9c2"
+        }
+      ]
+    },
+    "score_only": {
+      "0": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fixture_fit/development/models/score_only/fold0/dense/seed0.pt",
+          "sha256": "9b0ac620a942eb1833a7ff24466aae33eede51b5c6edec6429e6ae7aa24ef187"
+        }
+      ],
+      "1": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fixture_fit/development/models/score_only/fold1/dense/seed0.pt",
+          "sha256": "a523e96998eb2369edac17a57b7a4d9d722a51bc0f52a0baf45d93e34aa00053"
+        }
+      ],
+      "2": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fixture_fit/development/models/score_only/fold2/dense/seed0.pt",
+          "sha256": "a25227115d7e9b83aa41c135cb4c82ed7ac86e059abdbce0baeaf026d0526f7f"
+        }
+      ],
+      "3": [
+        {
+          "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fixture_fit/development/models/score_only/fold3/dense/seed0.pt",
+          "sha256": "9991426f2448743a0d2fbe79508b20b451ee114f49592a63fd4c1269da580723"
+        }
+      ]
+    }
+  },
+  "recipe": {
+    "epochs": 2,
+    "seeds": 1,
+    "batch": 64,
+    "channels": 25,
+    "lr": 0.002,
+    "wd": 0.01,
+    "scheduler": "OneCycleLR",
+    "curve": "1",
+    "epoch_selection": "fixed_recipe_no_DEV_epoch_selection",
+    "extra_heads": "score/relations size+quality; PCA dense/area only",
+    "precision": "FP32 tensor operations, TF32 disabled, root CUDA guard memory fraction .4"
+  },
+  "recipe_sha256": "8aa99d12570d42d4708c4bdd840e0cc8284f59f6c2c613da819eb485626f9973",
+  "script_sha256": "1d1b367f526ba7543f9d9a007f649db963938272b280834cba21c2521190f2cf",
+  "train_manifest": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fixture/episodes.json",
+  "train_manifest_sha256": "4948511d56faa48baa87253540fc8f01fd8babeb2d0dbe232e89fe8963ee2e92",
+  "training_model_provenance": {
+    "0": {
+      "rows": 3,
+      "UID_sha256": "7a2f070474745014ecdac47cc4cffc34753728c2835209d9625687d3d86a4945"
+    },
+    "1": {
+      "rows": 3,
+      "UID_sha256": "ddb408a14cf47fcf742c498554c4ff76bf822bf1e247f76d6693784c49f0cc5b"
+    },
+    "2": {
+      "rows": 3,
+      "UID_sha256": "334894acbf30fab391014d0d3fb486da2cf30866f35d674714ce54ce0a8daa8e"
+    },
+    "3": {
+      "rows": 3,
+      "UID_sha256": "462adbb453149f33610df1c6c6e11cf774c739215ab337553824f57d1a16c2fa"
+    }
+  },
+  "pca_identity": {
+    "path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fixture/head/pca.pt",
+    "sha256": "b26c26f097cb48170b49975ddc7aefbb8af8197ac0956ed343f8dfedcbf95148",
+    "contract": "per-held-model basis from legitimate training prefix only; no confirmation inputs"
+  },
+  "development_report": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fixture_fit/development/report.json",
+  "development_metric": {
+    "patch_miou": 72.3313954597202,
+    "gain": 0.0,
+    "ci95": [
+      0.0,
+      0.0
+    ],
+    "by_fold": {
+      "0": 0.0,
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0
+    },
+    "folds_up": 0
+  },
+  "confirmation_queryGT_opened": false,
+  "source_scope": "T1 patch-level, no CRF",
+  "removal_scope": "intersection with same T1 native patch mask sn>.5; not complete public CRF mask"
+}

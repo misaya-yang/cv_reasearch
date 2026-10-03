@@ -1,0 +1,486 @@
+{
+ "state": "DEVELOPMENT_SELECTED_CONFIRM_SEALED",
+ "card": {
+  "assumption": "a fixed extent readout can transfer to held classes using reference-conditioned evidence without explicit class IDs, and can be learned from base-class episodes",
+  "prediction": "with about 1800 training episodes per fold: relation inputs give the dense head +2 to +5 over native with the interval above 0 and at least +2 over the score-only control; log-area error of the size estimate 0.45 or less (FoRIS's own 0.67); the score-only control within 1 of native",
+  "match": "extent is learnable across classes (the chosen head also passes on the confirmation episodes): fit on train2014 under the standard protocol, add refinement, read 1000 episodes per fold",
+  "mismatch": "relation inputs not above the score-only control: this fixed readout did not recover the size, reconsider its inputs (other layers, raw features), not the task; principal components far above relations: the knowledge sits in raw features, build the head on them; training fit high and held-out low with a curve that still rises at 600 per fold: more base data; a flat curve under +1: stop this head"
+ },
+ "gate": {
+  "gain": 4.0,
+  "folds": 4
+ },
+ "train_episodes": 4,
+ "test_episodes": 4,
+ "train_per_fold": {
+  "0": 1,
+  "1": 1,
+  "2": 1,
+  "3": 1
+ },
+ "training_epochs": 2,
+ "seeds": 1,
+ "score_control_capacity_matched": true,
+ "channel_count": 25,
+ "scope": "T1 patch-level premise; no CRF/original-resolution method claim; DEV used for selection",
+ "recipe": {
+  "epochs": 2,
+  "seeds": 1,
+  "batch": 64,
+  "channels": 25,
+  "lr": 0.002,
+  "wd": 0.01,
+  "scheduler": "OneCycleLR",
+  "curve": "1",
+  "epoch_selection": "fixed_recipe_no_DEV_epoch_selection",
+  "extra_heads": "score/relations size+quality; PCA dense/area only",
+  "precision": "FP32 tensor operations, TF32 disabled, root CUDA guard memory fraction .4"
+ },
+ "learning_curve": {
+  "1": {
+   "score_only": {
+    "gain": -72.3313954597202,
+    "ci95": [
+     -73.74301675977654,
+     -70.91977415966386
+    ],
+    "training_fit": -72.3313954597202
+   },
+   "relations": {
+    "gain": -72.3313954597202,
+    "ci95": [
+     -73.74301675977654,
+     -70.91977415966386
+    ],
+    "training_fit": -72.3313954597202
+   },
+   "fit_counts": {
+    "0": 3,
+    "1": 3,
+    "2": 3,
+    "3": 3
+   },
+   "independently_initialized": true
+  }
+ },
+ "development": {
+  "episodes": 4,
+  "native_patch_miou": 72.3313954597202,
+  "true_area_level": {
+   "patch_miou": 73.09341513032119,
+   "gain": 0.7620196706009921,
+   "ci95": [
+    0.013583121751295835,
+    1.5104562194506883
+   ],
+   "by_fold": {
+    "0": 0.4291686706870337,
+    "1": 2.591743768214357,
+    "2": -0.4020024271844562,
+    "3": 0.4291686706870337
+   },
+   "folds_up": 3
+  },
+  "best_of_candidate_cuts": {
+   "patch_miou": 74.79374117993957,
+   "gain": 2.462345720219375,
+   "ci95": [
+    1.7286813534310141,
+    3.1960100870077355
+   ],
+   "by_fold": {
+    "0": 1.7286813534310141,
+    "1": 3.848184641268645,
+    "2": 2.54383553274684,
+    "3": 1.7286813534310141
+   },
+   "folds_up": 4
+  },
+  "foris_own_area": {
+   "log_error_std": 0.043743782530507806,
+   "log_error_bias": 0.29630812164000686,
+   "log_error_median_abs": 0.27455527739259944
+  },
+  "arms": {
+   "score_only": {
+    "dense": {
+     "patch_miou": 0.0,
+     "gain": -72.3313954597202,
+     "ci95": [
+      -73.74301675977654,
+      -70.91977415966386
+     ],
+     "by_fold": {
+      "0": -73.74301675977654,
+      "1": -72.82913165266106,
+      "2": -69.01041666666666,
+      "3": -73.74301675977654
+     },
+     "folds_up": 0
+    },
+    "dense_area": {
+     "patch_miou": 29.874153325123153,
+     "gain": -42.457242134597045,
+     "ci95": [
+      -43.950713984543924,
+      -40.96377028465017
+     ],
+     "by_fold": {
+      "0": -42.49301675977654,
+      "1": -43.25323879551821,
+      "2": -39.4345238095238,
+      "3": -44.64818917356964
+     },
+     "folds_up": 0,
+     "log_error_std": 0.022027485072612762,
+     "log_error_bias": 1.2072330713272095,
+     "log_error_median_abs": 1.2189711332321167
+    },
+    "training_fit_gain_mean_iou": -72.3313954597202,
+    "inputs": 25,
+    "size": {
+     "patch_miou": 6.181014830251629,
+     "gain": -66.15038062946857,
+     "ci95": [
+      -67.58425763568894,
+      -64.7165036232482
+     ],
+     "by_fold": {
+      "0": -67.58425763568894,
+      "1": -66.60262789326256,
+      "2": -62.83037935323382,
+      "3": -67.58425763568894
+     },
+     "folds_up": 0,
+     "log_error_std": 0.0057434337213635445,
+     "log_error_bias": 2.783702850341797,
+     "log_error_median_abs": 2.7856853008270264
+    },
+    "quality": {
+     "patch_miou": 59.39324505513941,
+     "gain": -12.938150404580789,
+     "ci95": [
+      -26.539640272284863,
+      0.663339463123279
+     ],
+     "by_fold": {
+      "0": -2.6319056486654233,
+      "1": -50.447374895904304,
+      "2": -0.4020024271844562,
+      "3": 1.7286813534310141
+     },
+     "folds_up": 1,
+     "rank_correlation_with_true_iou": 0.5315494383506129
+    },
+    "dense_removal": {
+     "patch_miou": 0.0,
+     "gain": -72.3313954597202,
+     "ci95": [
+      -73.74301675977654,
+      -70.91977415966386
+     ],
+     "by_fold": {
+      "0": -73.74301675977654,
+      "1": -72.82913165266106,
+      "2": -69.01041666666666,
+      "3": -73.74301675977654
+     },
+     "folds_up": 0
+    },
+    "dense_area_removal": {
+     "patch_miou": 72.3313954597202,
+     "gain": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "by_fold": {
+      "0": 0.0,
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0
+     },
+     "folds_up": 0
+    },
+    "size_removal": {
+     "patch_miou": 72.3313954597202,
+     "gain": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "by_fold": {
+      "0": 0.0,
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0
+     },
+     "folds_up": 0
+    },
+    "quality_removal": {
+     "patch_miou": 72.00508877911548,
+     "gain": -0.32630668060471635,
+     "ci95": [
+      -1.5169540379249469,
+      0.8643406767155
+     ],
+     "by_fold": {
+      "0": -2.6319056486654233,
+      "1": 0.0,
+      "2": -0.4020024271844562,
+      "3": 1.7286813534310141
+     },
+     "folds_up": 1
+    }
+   },
+   "relations": {
+    "dense": {
+     "patch_miou": 0.0,
+     "gain": -72.3313954597202,
+     "ci95": [
+      -73.74301675977654,
+      -70.91977415966386
+     ],
+     "by_fold": {
+      "0": -73.74301675977654,
+      "1": -72.82913165266106,
+      "2": -69.01041666666666,
+      "3": -73.74301675977654
+     },
+     "folds_up": 0
+    },
+    "dense_area": {
+     "patch_miou": 29.854910714285708,
+     "gain": -42.47648474543449,
+     "ci95": [
+      -43.60908818834797,
+      -41.343881302521005
+     ],
+     "by_fold": {
+      "0": -43.60908818834797,
+      "1": -43.25323879551821,
+      "2": -39.4345238095238,
+      "3": -43.60908818834797
+     },
+     "folds_up": 0,
+     "log_error_std": 0.008068861439824104,
+     "log_error_bias": 1.2085275650024414,
+     "log_error_median_abs": 1.2072559595108032
+    },
+    "training_fit_gain_mean_iou": -72.3313954597202,
+    "inputs": 25,
+    "size": {
+     "patch_miou": 6.240106931541694,
+     "gain": -66.09128852817851,
+     "ci95": [
+      -67.42199403250382,
+      -64.7605830238532
+     ],
+     "by_fold": {
+      "0": -67.49301675977654,
+      "1": -66.78442362346398,
+      "2": -62.736742424242415,
+      "3": -67.35097130523108
+     },
+     "folds_up": 0,
+     "log_error_std": 0.02224794030189514,
+     "log_error_bias": 2.7749643325805664,
+     "log_error_median_abs": 2.7723746299743652
+    },
+    "quality": {
+     "patch_miou": 45.90723536036036,
+     "gain": -26.42416009935984,
+     "ci95": [
+      -50.93896270572249,
+      -1.9093574929972021
+     ],
+     "by_fold": {
+      "0": -50.93896270572249,
+      "1": -3.8187149859944043,
+      "2": 0.0,
+      "3": -50.93896270572249
+     },
+     "folds_up": 0,
+     "rank_correlation_with_true_iou": -0.29260574033061837
+    },
+    "dense_removal": {
+     "patch_miou": 0.0,
+     "gain": -72.3313954597202,
+     "ci95": [
+      -73.74301675977654,
+      -70.91977415966386
+     ],
+     "by_fold": {
+      "0": -73.74301675977654,
+      "1": -72.82913165266106,
+      "2": -69.01041666666666,
+      "3": -73.74301675977654
+     },
+     "folds_up": 0
+    },
+    "dense_area_removal": {
+     "patch_miou": 72.3313954597202,
+     "gain": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "by_fold": {
+      "0": 0.0,
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0
+     },
+     "folds_up": 0
+    },
+    "size_removal": {
+     "patch_miou": 72.3313954597202,
+     "gain": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "by_fold": {
+      "0": 0.0,
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0
+     },
+     "folds_up": 0
+    },
+    "quality_removal": {
+     "patch_miou": 72.3313954597202,
+     "gain": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "by_fold": {
+      "0": 0.0,
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0
+     },
+     "folds_up": 0
+    },
+    "dense_over_score_only": {
+     "patch_miou": 0.0,
+     "gain": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "by_fold": {
+      "0": 0.0,
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0
+     },
+     "folds_up": 0
+    }
+   },
+   "relations_pca": {
+    "dense": {
+     "patch_miou": 0.0,
+     "gain": -72.3313954597202,
+     "ci95": [
+      -73.74301675977654,
+      -70.91977415966386
+     ],
+     "by_fold": {
+      "0": -73.74301675977654,
+      "1": -72.82913165266106,
+      "2": -69.01041666666666,
+      "3": -73.74301675977654
+     },
+     "folds_up": 0
+    },
+    "dense_area": {
+     "patch_miou": 30.13392857142857,
+     "gain": -42.19746688829163,
+     "ci95": [
+      -43.43116349193309,
+      -40.96377028465017
+     ],
+     "by_fold": {
+      "0": -42.49301675977654,
+      "1": -43.25323879551821,
+      "2": -39.4345238095238,
+      "3": -43.60908818834797
+     },
+     "folds_up": 0,
+     "log_error_std": 0.014331802725791931,
+     "log_error_bias": 1.1916322708129883,
+     "log_error_median_abs": 1.1970223188400269
+    },
+    "training_fit_gain_mean_iou": -72.3313954597202,
+    "inputs": 25,
+    "dense_removal": {
+     "patch_miou": 0.0,
+     "gain": -72.3313954597202,
+     "ci95": [
+      -73.74301675977654,
+      -70.91977415966386
+     ],
+     "by_fold": {
+      "0": -73.74301675977654,
+      "1": -72.82913165266106,
+      "2": -69.01041666666666,
+      "3": -73.74301675977654
+     },
+     "folds_up": 0
+    },
+    "dense_area_removal": {
+     "patch_miou": 72.3313954597202,
+     "gain": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "by_fold": {
+      "0": 0.0,
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0
+     },
+     "folds_up": 0
+    },
+    "dense_over_score_only": {
+     "patch_miou": 0.0,
+     "gain": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "by_fold": {
+      "0": 0.0,
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0
+     },
+     "folds_up": 0
+    }
+   }
+  },
+  "verdict": {
+   "best_relation_head": "quality",
+   "best_relation_head_gain": -26.42416009935984,
+   "ci95": [
+    -50.93896270572249,
+    -1.9093574929972021
+   ],
+   "folds_up": 0,
+   "passes": false
+  }
+ },
+ "selection_path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fixture_fit/development/selection.json",
+ "selection_sha256": "d3db779dd465ef6d8a869674e791f0a93e6db67f7155512570233108e824e7dc",
+ "selected_configuration": {
+  "input_arm": "relations",
+  "head": "dense_area_removal",
+  "variant": "removal"
+ },
+ "confirmation_queryGT_opened": false,
+ "elapsed_s": 22.506414344534278,
+ "true_area_scope": "GT area intervention, not an information or task-optimal upper bound"
+}

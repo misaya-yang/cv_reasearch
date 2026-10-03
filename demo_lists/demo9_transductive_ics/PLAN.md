@@ -1,15 +1,101 @@
+## Completed test: supplied zero-training shared correspondence
+
+The user supplied `Downloads/联合对应纠错_实验交接 (1).md` and authorized a real zero-training test on the already booted weste:13322 instance. `scripts/relational_v1/full_cached_replay.py` completed ten frozen old DEV episodes from the existing extent cache in156.04s, with exact complete public native masks10/10. Official COCO-20i, seed0, four folds3/3/2/2, ten observed classes; not fresh confirmation or the standard full benchmark. The supplied 5x5/maximin/top8 rule, equal-role banks, five original arms and matched patch-count low-score deletion were frozen. No encoder, fitting, downloads or FG rescue. Every prediction was frozen before query GT. The first prediction was reused unchanged on resume; remaining GPU candidate banks were checked against CPU selection.
+
+Measured original-grid class-sum mIoU (equal to episode mean in this ten-distinct-class batch): native62.9760, joint_flip62.1600, same-count63.0812; GT same-final-deletion-budget arithmetic diagnostic64.2385, not a star-family/CRF method upper bound. Joint−native−.8161pp, exploratory connected-photo-group CI[−1.5818,−.1067]; joint−naive−.9212[−1.7314,−.1212]. All four folds negative,1/10 episodes improve. Joint deleted3189FP and lost5758TP; naive6285FP/2562TP. Arithmetic, role-bank and strict-flip violations are zero in8793 witnesses. Among262 accepted flips, winning BG-center companions have reference foreground coverage in344/524 occurrences (65.6%). Their center label does not make the whole three-point evidence background. The influence of omitted top8 FG combinations is unmeasured.
+
+Decision: retire this fixed sampled-star deletion rule under its registered stop card; no threshold/bank/rescue sweep or241 expansion. The failure concerns the current semantic interpretation of shared appearance, not an implementation error or a proved limit on frozen features. `scripts/relational_v1/postfreeze_analyze.py` ran once without reopening query GT; full masks, I/U, source and losslessly compressed witness evidence are in `results/extent_v1/relational_v1_full10/`. Foreign CUDA work remains protected. T1 and R241 below are prepared backlogs, not started by this session.
+
+## Prepared backlog: T1 plus the registered 241-episode removal audit
+
+Latest user authorizes server-only, no-card preparation at `connect.weste.seetacloud.com:13322`. No GPU rental, CUDA execution, scientific fitting, downloads or local numerical tests are authorized by this preparation. Historical KEEP-ON instructions and old queues do not apply.
+
+T1 uses an explicitly labelled photo-isolated sampling variant. The original fixed ranges overlap in image UID: train–DEV 91, confirm–DEV 25, train–confirm 197; 32 original confirmation photos also occur in the previously examined pool. The new metadata-only manifests retain DEV241, fill TRAIN2400 and CONFIRM600 without duplicate pairs, and have zero cross-set UID intersections across both roles. Confirmation excludes the registered old 1200-photo pool. Actual draw indices are retained; do not call these the exact 60–659/660–809 ranges, or claim a complete historical exposure audit. A held-fold model trains on the other three collection folds: 1800 episodes / 60 target classes. Within-set repeated photos remain documented.
+
+PCA is fitted separately for each held-fold model from the other three TRAIN prefixes, never from the old pool feature tensor or DEV/confirmation. All input arms use 32 channels: the COMPLETE 16 relationship maps and 16 PCA slots, with unused slots zero-filled. The provisional 25-channel consumer truncated seven relationship maps and is superseded before any scientific run. The dense head has 203969 parameters; score-only controls use the same architecture. Full-fit checkpoints are reused for selected-only confirmation; learning-curve fits are independent. Confirmation caches have no target array. Freeze the selected configuration and its matching score-only control before reading confirmation query-mask pixels. The head-output intersection with the native mask is a registered removal variant, with no extra fitting. T1 is a patch-grid premise test; original-resolution/CRF T2 remains unimplemented. No explicit class ID in the inputs is not a guarantee of category-independent information.
+
+The separately requested 241-episode readout preparation keeps the complete public FoRIS control and the exact same reference-mean readout at block 12 and the pre-debias final layer. The fixed deletion rule is native mask intersected with positive mean margin. Save scalar maps rather than rebuilding the retired full-token cache. All 241 episodes are already development evidence; this is not an independent test. Retain both repair and correct-target deletion counts. Its gate is +3 over native, a positive paired interval, all four folds positive, and a positive paired advantage over the final-layer control.
+
+Preparation receipts are under `results/extent_head_t1_preparation/` and the corrected manifests under `results/extent_head_t1_isolated_v1/` on the own server directory. CPU-ready and GPU-validated states must remain separate. The 4,446,084,744-byte completed pair-token cache was retired after preserving compact evidence; do not rebuild it for this audit.
+
+Completed server-only checks: 14/14 head contracts, 11/11 per-model PCA contracts, 10/10 selected-confirmation contracts, four synthetic complete-native masks exact, live/replay input difference 0, and 9 R241 contracts. The original 25-epoch/200-sample synthetic convergence check was stopped as unsuitable for the 0.5-core preparation environment; its incomplete receipt is retained, not relabelled 7/7. A four-episode/two-epoch synthetic DEV→selected-CONFIRM chain passed instead. These are implementation checks, not task gains or real-DINO validation. First eight REAL T1 DEV masks must still reproduce the stored complete public FoRIS masks exactly.
+
+The T1 queue has 104 independent fits (48 learning-curve fits and 56 full fits), followed by selected-only reuse; it does not mean one optimizer run in total. Its hard cap is 12600 seconds, whereas the proposed 1.5-hour estimate is unmeasured. The optional combined queue orders R241 before T1 in one finite batch. Nothing autostarts, rents a GPU or arms shutdown during no-card preparation. The confirmation gate uses connected support/query-photo groups and reports the paired advantage over the matched score-only control.
+
 ## Claude plan, 2026-10-03 (reasoning and plans by Claude; Codex runs the server; nothing below has been run)
 
-Standing requirement recorded in the next section: same pair, same frozen DINO, one labelled reference, no base-class training, no image pool. S complies. L does not (it fits a head on base-class episodes); the user said "try it" to Claude on 2026-10-03 and then moved execution to Codex, so run L only if the user confirms that exception.
+Standing requirement recorded in the next section: same pair, same frozen DINO, one labelled reference, no base-class training, no image pool. B and S comply. T does not (it fits a head on base-class episodes); run T only if the user confirms that exception.
 
-**What the finished runs say** (241 episodes, 4 folds, seed 0; FoRIS 59.12; files under `results/extent_v1`, `results/evidence_v1`, `results/self_support_v0`):
-- Every rule that re-reads the same pair's last-layer similarity failed (cut levels, boundary, round trip, zoom from the first-pass box; Codex's exact boundary cut). Inside the contested area the FoRIS score ranks target over non-target with probability 0.664.
-- One number carries most of the cut gap: the level set whose area equals the true target area gives +8.67 [+5.94, +9.94] of +10.19 (`size_prior.json`). A size estimate must be within about 0.35 in log area; FoRIS's own is within 0.21 in the median episode and more than 1.5x too large in 32%.
-- **New, the cause this plan acts on** (`scripts/analyze_scale_mismatch.py`, `scale_mismatch.json`): with the query target's size held fixed, IoU falls 9.5 points per doubling of the scale mismatch between reference object and query object (interval -15.5 to -3.5). 82 episodes are mismatched by 2x or more and average 51.5 against 64.9. Query object under 0.35x of the reference object: 37.5 mIoU, 65% over-extended, a crop from the true box gave +18.8. Query object over 2.8x: 33% under-extended, and that side (enlarging the reference) was never tested. None of INSID3, FoRIS, HSNet/VAT, Matcher chooses the scale at which the two objects are compared.
-- Query self-support (re-decide the 0.5-0.65 band of the mask by similarity to the confident core): +1.68 [+0.72, +2.27] on a confirmation half, patch level (`replay.json`). A component, not a method.
-- With labels only: grouping from the truly found part +9.61, supervised class probe +7.20, labelled pool +7.04. Pool competitors and linear metrics do nothing even with labels.
+### Judgement, 2026-10-03 (made from files on disk, no GPU: `scripts/local_budget.py` -> `results/self_support_v0/local_budget.json`; patch level, 241 episodes)
 
-### S. Scale alignment (complies; run first; about 25 min GPU, no downloads)
+| Mask | mIoU | over FoRIS |
+|---|---|---|
+| nearest reference label, its own cut | 43.99 | -12.99 |
+| FoRIS, its own cut | 56.99 | 0 |
+| query's own core against its sure background, own cut (label-free) | 57.07 | +0.09 |
+| FoRIS, true share (labels) | 66.06 | +9.07 [+6.14, +10.33] |
+| supervised class classifier from 1200 other images, true share (labels) | 69.17 | +12.18 |
+| every correct patch labelled, FoRIS's errors re-decided inside the query (labels) | 73.41 | +16.43 |
+| truly found part against sure background, true share (labels) | 74.22 | +17.23 [+13.64, +18.65] |
+| grid ceiling | 89.73 | +32.75 |
+
+1. Last-layer patch similarity tops out near 74 whatever labels it is given; about 15 of the 33 points to the grid ceiling are out of its reach.
+2. The 17 points that are in reach need two things the single pair does not fix in this representation: the target's share of the query (+9.07 alone) and which predicted part is truly the target (+6.05 alone). Four share estimates miss by 0.62 to 0.67 in log area (needed: 0.35); every label-free seed is mostly wrong in 15% of episodes.
+3. Label-free, everything measured or derived is between 0 and +2: self-support trimming +1.68, score-only contrast cut +1.53 (interval across 0), a crop placed from the confident core +1.5 to +1.9 (derived from the truth-box zoom by substituting its result where the core box matches the truth box, 49 to 58 of 117 episodes; `scale_align` label-free arms are therefore predicted at or below +2).
+4. Claude's judgement: with same pair, frozen DINO last layer, no training and no pool all held at once, FoRIS can be passed by about 2 to 3 points on COCO-20i, not by 5. A gain of 5 or more needs the share and the extent from a prior that the pair does not contain: a class-free head fitted on base-class episodes (plan T; the information HSNet/VAT use) or a mask-trained model (the information Matcher uses). The one open case inside the constraints is another representation of the same frozen model (Codex's audit); Claude predicts under +3 there too, with less confidence because nothing of it has been measured here.
+
+B below is now answered for the last layer by the table above; run it only on other representations. S is kept as a test of the appearance gap, not as the main bet.
+
+### Review of the 12-pair readout audit (`results/extent_v1/complete_pair_evidence_v1/vector_readout_audit.json`), 2026-10-03
+
+Read from Codex's file and from `scripts/fixed_count_local.py` -> `results/self_support_v0/fixed_count.json` (241 episodes, patch level, no GPU).
+
+1. The signal is the readout, not the layer. Same mean-margin readout, block 12 against the final layer before debiasing, paired over pairs: missed target against true background 0.796 against 0.798, difference -0.002 [-0.107, +0.115], 11 pairs; found target against wrongly included background 0.682 against 0.650, difference +0.032 [-0.218, +0.343], 8 pairs. Without score conditioning block 12 ranks found target against wrongly included background at 0.579; the final layer gives 0.795 and the FoRIS score 0.786. At its zero cut block 12 rejects 2404 of 8086 found-target patches; the final layer rejects 252.
+2. The baseline of that audit (0.561, 0.498) is the FoRIS score inside its own 0.05-wide bins, so it is near 0.5 by construction. On 241 episodes the same two numbers are 0.574 and 0.561 for the FoRIS score and 0.773 and 0.712 for the query's own confident core (label-free, final layer, already measured): the level reported for block 12.
+3. Keeping FoRIS's count and choosing the positions again gives, over FoRIS 56.99: confident-core evidence +0.01 [-0.54, +0.74]; nearest-reference margin -8.98; supervised classifier of the class (labels, 0.808 and 0.756) -0.25 everywhere and +1.15 [+0.52, +2.04] in the widest band; truly found part (labels, 0.846 and 0.804) +1.90; perfect choice (labels) +8.71 [+7.74, +10.45]. Prediction for the block-12 fixed-count construction: -9 or worse when every position is chosen again, between -1 and +1 inside a band.
+4. The count is the cap. Without keeping it: every wrongly included patch removed +19.99 [+16.83, +22.08]; every missed patch added +9.73 [+7.49, +11.26]. Wrongly included 38,916 patches, missed 22,098; FoRIS's count is above 1.5 times the truth in 81 of 241 episodes and below 1/1.5 in 15. The largest term is removal, the direction in which the audit's readouts are weakest.
+5. If the readout line is continued, the one run that decides it: the audit's readouts on all 241 episodes with per-patch scores saved (one encoder pass, about 5 minutes), final-layer mean margin as the same-information control of any block-12 claim, judged by a removal rule fixed before the labels are opened. Gate: +3 over FoRIS with the interval above 0 on all four folds, and block 12 above the final-layer control with the interval above 0. Claude's odds: under 15%. Below the gate, close "reference readout from another layer" with the number.
+6. Codex's objection to plan T stands: a frozen encoder with a trained mask decoder has precedent (SegIC), so T is not by itself the fifth inference. T1 stays the cheapest test of whether the count is learnable without class information; one arm to add before it is run: the head's mask intersected with FoRIS's mask (removal only, bound +19.99).
+
+### The theory the plan is derived from
+
+The correct label of a query patch is the Bayes decision on the query: target if and only if share x p(x | target, in the query) > (1 - share) x p(x | background, in the query). It needs three quantities of the query: what the target looks like there, what the background looks like there, and the target's share of the image. A reference supplies all three for another image. Nearest-label transfer copies all three. Every published gain replaces a copied quantity by an estimate made on the query, or shrinks the gap between the two images:
+- INSID3 removes a nuisance that made the two images differ (position) and averages the evidence over the query's own clusters.
+- FoRIS makes the copied models richer (several target modes, hard negatives from the reference) and asks for agreement over query clusters.
+- HSNet/VAT learn the compensation for all three gaps from base tasks.
+- Matcher takes candidate regions from SAM (the query's own structure) and matches set to set.
+
+No training-free method estimates the share or the query's own background: all cut at a constant. Our failed rules (cut levels, boundary, round trip, competitors, metrics) re-read the copied evidence and estimated no quantity of the query; that is the common reason they failed.
+
+The same terms, measured on the 241 episodes (FoRIS 59.12; `results/extent_v1`, `results/evidence_v1`, `results/self_support_v0`):
+- Share: the level set with the true area gives +8.67 [+5.94, +9.94] of the +10.19 cut gap. Predicted size follows true size with log slope 0.72: small targets over-predicted, large ones under-predicted, the signature of a fixed prior.
+- Query-side models: with the truly found part and the truly rejected background as the two sets, nearest neighbours inside the query repair +13.9 (patch level, development half).
+- Appearance gap: with query size held fixed, IoU falls 9.5 points per doubling of the scale mismatch between the two objects (interval -15.5 to -3.5); missed parts resemble the reference less (0.44) than wrongly included regions do (0.53).
+- Four label-free share estimates (FoRIS's own area, a held-out regression, match geometry, a mixture proportion inside the query) all miss by 0.62 to 0.67 in log area and all lose. The share is identifiable only where the wrongly included region is separable from the target in the representation used; this says that in the over-extended third it is not, for last-layer similarity.
+
+What follows: the order of work is set by the size of each gap in one currency, and a correction is built only for a gap the budget shows, in a representation whose ceiling allows it. No correction is chosen by taste.
+
+### B. Error budget (run first; replay on `cache/evidence_v1`; under a minute of GPU; uses query labels; no method)
+
+One fixed rule (mean of the 5 highest similarities to a positive set minus the same for a negative set) is read with the reference's sets, then with the query's true background, the query's true target, and both; each with the natural cut and with the true share. `scripts/error_budget_replay.py` prints one table and the budget: ceiling of the representation, the part not separable even with the query's own labels, appearance gap, background gap, share gap, and FoRIS's position among them.
+
+1. Assumption: the gap between FoRIS and a perfect answer is the sum of the three copied quantities plus what the representation cannot separate.
+2. Prediction: ceiling of last-layer features 80 to 88 (grid ceiling 89.7); FoRIS 57.0 natural and 64 to 67 with the true share; nearest-label transfer 42 to 50 natural; appearance gap 8 to 15 and larger than the background gap (4 to 10) under the true share.
+3. Match: the gaps are real and ordered; build corrections in that order, each validated by repeating B on its output.
+4. Mismatch: ceiling under 80: the error is not separable in this representation even with the query's own labels, so no decision rule can help; repeat B on the other captured representations (block states, pre/post debias, scale-aligned features) and build on the highest ceiling. Gaps under 3 with a high ceiling: the loss is in the estimation from few samples, not in the copied quantities; the correction is then aggregation, not adaptation.
+
+How the result decides:
+- Appearance gap largest: align what makes the two images differ, starting with scale (S), and re-run B on the aligned features; keep an alignment only if the appearance gap falls.
+- Background gap largest: model the query's background from its own patches (a mixture fitted on the query, anchored by the reference for the target).
+- Share gap largest and ceiling high: estimate the share on the query; required accuracy is known (log error at most 0.35).
+- Any other representation is tested by pointing `--cache` at a folder with the same `feat/*.pt` layout.
+
+    cd /root/autodl-tmp/demo9_extent && PYTHONPATH=/root/demo4_cache/env /root/miniconda3/bin/python scripts/error_budget_replay.py --cache cache/evidence_v1 --run results/extent_v1/run --out results/error_budget_v0/budget.json
+    PYTHONPATH=/root/demo4_cache/env /root/miniconda3/bin/python scripts/error_budget_replay.py --report results/error_budget_v0/budget.json --analysis results/error_budget_v0/analysis.json
+
+Verified on this machine: fixture run and a constructed case (a world separable inside the query reads a ceiling of 99.8). File to place: `scripts/error_budget_replay.py`.
+
+### S. Scale alignment: the correction for the appearance gap (complies; after B; about 25 min GPU, no downloads)
 
 1. Assumption: the loss is caused by comparing two objects at different scales, so enlarging the smaller one until both are equally large in their frames restores it.
 2. Prediction: `align_oracle` (true ratio, crop placed without labels) at least +3.0 overall with the interval above 0, at least +8 on the 2x-mismatched third, within 1 on matched episodes; a label-free arm (`align_mask`, `align_core`) recovers at least half; `reference_centric` (always crop the reference to twice its object, no scale reasoning) within 1.5 of native.
@@ -25,23 +111,46 @@ Files to place in `/root/autodl-tmp/demo9_extent` (the folder that holds `result
 
 Read `results/scale_align_v0/run/analysis.json`: `verdict`, then `mismatch_2x_or_more`, `query_object_smaller`, `query_object_larger`, `ratio_estimates`.
 
-### L. Class-free extent head (needs the user's confirmation: base-class fitting; about 1 h GPU)
+### T. Training plan: a class-free head for the target's share and extent (needs the user's go-ahead: base-class fitting)
 
-1. Assumption: how large the target is and where it ends does not depend on the class and can be learned from base-class episodes.
-2. Prediction: with about 1800 training episodes per fold, relation inputs give the dense head +2 to +5 over native with the interval above 0 and at least +2 over the score-only control; log-area error of the size estimate at most 0.45 (FoRIS 0.67).
-3. Match: train on train2014 under the standard protocol, add refinement, 1000 episodes per fold.
-4. Mismatch: relation inputs not above the score-only control: these inputs do not hold the size, change inputs, not the task. Training fit high and held-out low: more base data.
+**What is fitted and what is not.** Frozen: DINOv3 and the published FoRIS, unchanged. Fitted: one small convolutional head (about 0.2 M weights) that takes FoRIS's score and relation maps of the pair (`tics/relations.py`: similarities, ranks, differences between neighbouring patches; nothing in them can name a class) and returns a mask on the 64 x 64 grid, which replaces FoRIS's score before FoRIS's own binarisation and refinement. It learns the two things the budget says the pair does not fix: how much of the query is target and which predicted part is truly the target. Upper bounds: +9.07 (share alone) and +17.23 (both), patch level.
 
-Reference points: about 180 training episodes per fold overfit (-3.4 with relation inputs, +0.15 score only; `decoder_probe.json`). Gate: +4, interval above 0, all four folds (`GATE` in `scripts/extent_head.py`). Needs the feature cache `cache/evidence_v1` on the server (kept, 6.2 GB). Files: `tics/relations.py`, `scripts/extent_train_cache.py`, `extent_head.py`, `prepare_extent_head_queue.py`, `cpu_checks_extent_head.sh`. Verified here: self-check 6/6, live and replay inputs identical on the fixture, fixture fit.
+**Protocol.** Standard COCO-20i: the head for fold f is fitted only on episodes of the 60 classes of the other three folds. This is the protocol of HSNet/VAT, so results are comparable with trained methods and must be shown in a separate row from the training-free FoRIS and INSID3.
+
+**Three sets that share no image** (`prepare_extent_head_queue.py` refuses the plan otherwise):
+- training: standard seed-0 episodes 60 to 659 of each fold (2400);
+- development: the 241 episodes already analysed; every head is compared here and the head type is chosen here;
+- confirmation: episodes 660 to 809 of each fold (600), never looked at; read once, for the chosen head only. If a second recipe is ever tried, this set is spent and new episodes (810 onward) must be drawn.
+
+**No search.** One recipe is fixed in `scripts/extent_head.py` (40 epochs, AdamW 2e-3, weight decay 1e-2, two seeds averaged, horizontal flip). Controls in the same run: a head that sees only the score (what fitting adds with no new information), a head that also sees 16 feature components (not class-free: what raw features add), the level set of the true area and the best of 8 cuts (upper bounds), the fit on training episodes (overfitting), and a learning curve at 100, 200, 400 and 600 training episodes per fold.
+
+**T1. Premise and learning curve (about 1.5 h GPU, about 2 GB disk, no downloads).**
+1. Assumption: the share and the extent do not depend on the class and can be learned from base-class episodes.
+2. Prediction: on development the relation head gains +2 to +5 over FoRIS and at least +2 over the score-only head; the size estimate's log error is at most 0.45 (FoRIS 0.67); the curve rises from 100 to 600 per fold. Claude's own odds that the gate below is met: about 35 to 40%; that the curve is still rising at 600: about 60%.
+3. Gate (`GATE`): on confirmation the head chosen on development gains at least +4 with the interval above 0 and is positive in all four folds. Then go to T2.
+4. If not: curve rising by at least +1 over its last doubling and training fit not far above held-out: more base data, go to T2's cache only (2.2 h) and repeat the fit. Training fit high, held-out flat: the inputs do not transfer, stop this head. Feature components far above relations: the knowledge sits in raw features and is then class-bound; do not build on it without a class-held-out check. Score-only head as good as the relation head: the gain is a re-fitted threshold, not extent; stop.
+
+Checks inside the run: the first pass must reproduce the stored FoRIS masks; inputs computed live and by replay must agree on 8 episodes (stops above 0.03). Earlier reference point: with about 180 training episodes per fold the relation head lost 3.4 and the score-only head gained 0.15 (`results/self_support_v0/decoder_probe.json`), which is why the curve is part of the run.
+
+Files to place in `/root/autodl-tmp/demo9_extent`: `tics/relations.py`, `scripts/extent_train_cache.py`, `extent_head.py`, `prepare_extent_head_queue.py`, `cpu_checks_extent_head.sh`. Needs `cache/evidence_v1` (kept on the server). Verified on this machine: head self-check 7/7, live and replay inputs identical on the fixture, the whole chain on the fixture. Not verified: the real encoder path.
 
     cd /root/autodl-tmp/demo9_extent && bash scripts/cpu_checks_extent_head.sh && cat results/extent_head_v0/cpu_checks.log
     nohup /root/miniconda3/bin/python scripts/experiment_resource_guard.py --plan results/extent_head_v0/plan.json --state-file results/extent_head_v0/guard.json --run > results/extent_head_v0/guard.log 2>&1 < /dev/null &
 
+Read `results/extent_head_v0/report.json`: `learning_curve`, `development.verdict`, then `confirmation.chosen` and `confirmation.passes`.
+
+**T2. The protocol-correct result (only after T1 passes; about 4.5 h GPU; code not written yet, on purpose).** Fit on train2014: 100 episodes for each of the 80 classes (8000 FoRIS passes; each fold uses its 60 base classes). Read on the standard 1000 val2014 episodes per fold at original resolution with FoRIS's own refinement, paired with FoRIS on the same episodes, bootstrap interval, three fitting seeds. Report two base sets: the standard one and the strict one (training images that contain an object of a novel class removed). The recipe and the head type are the ones frozen in T1; nothing is tuned on these episodes.
+
+**T3. What makes it a paper (after T2).** The same head, unchanged, on INSID3 as host and on the other benchmarks; a head fitted on COCO base classes and applied elsewhere without refitting is the direct test of "class-free".
+
+**Where this can fail and what it costs.** T1 is the only spend before evidence: 1.5 h. Its three failure readings above each end the line or name the one next step. Outside evidence that the premise is reasonable, not ours: mask heads fitted on a subset of COCO classes carry over to unseen classes when the features are strong (Deep-MAC, ICCV 2021).
+
 ### Rules that keep this from looping
 
-- A new idea names the evidence it adds over FoRIS and is first tried by replay on `cache/evidence_v1` (seconds, no encoder), chosen on the development half and read on the confirmation half (`scripts/self_support_replay.py` shows the pattern).
-- Upper bounds give the mechanism perfect inputs of its own source (true scale ratio, true area), never the best output picked with labels.
-- Not to be proposed again without new evidence: cut-level rules on the score, boundary cuts, zoom from the first-pass mask box, pool competitors, linear metrics, match-geometry or regression size estimates.
+- Every experiment is either a term of the budget or a correction of one named term; a correction is run only if B shows the term is at least 3 points and is validated by B on its output.
+- Upper bounds give the mechanism the true value of its own quantity (true share, true scale ratio, true sets), never the best output picked with labels.
+- Replay on `cache/evidence_v1` first (seconds, no encoder), chosen on the development half and read on the confirmation half.
+- Not to be proposed again without new evidence: cut-level rules on the score, boundary cuts, zoom from the first-pass mask box, pool competitors, linear metrics, and share estimates from last-layer similarity.
 
 ## Current identity-information audit (2026-10-03; overrides historical stopping plans)
 

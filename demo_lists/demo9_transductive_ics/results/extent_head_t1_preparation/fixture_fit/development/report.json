@@ -1,0 +1,526 @@
+{
+ "state": "DEVELOPMENT_SELECTED_CONFIRM_SEALED",
+ "card": {
+  "assumption": "a fixed extent readout can transfer to held classes using reference-conditioned evidence without explicit class IDs, and can be learned from base-class episodes",
+  "prediction": "with about 1800 training episodes per fold: relation inputs give the dense head +2 to +5 over native with the interval above 0 and at least +2 over the score-only control; log-area error of the size estimate 0.45 or less (FoRIS's own 0.67); the score-only control within 1 of native",
+  "match": "extent is learnable across classes (the chosen head also passes on the confirmation episodes): fit on train2014 under the standard protocol, add refinement, read 1000 episodes per fold",
+  "mismatch": "relation inputs not above the score-only control: this fixed readout did not recover the size, reconsider its inputs (other layers, raw features), not the task; principal components far above relations: the knowledge sits in raw features, build the head on them; training fit high and held-out low with a curve that still rises at 600 per fold: more base data; a flat curve under +1: stop this head"
+ },
+ "gate": {
+  "gain": 4.0,
+  "folds": 4
+ },
+ "train_episodes": 4,
+ "test_episodes": 4,
+ "train_per_fold": {
+  "0": 1,
+  "1": 1,
+  "2": 1,
+  "3": 1
+ },
+ "training_epochs": 2,
+ "seeds": 1,
+ "score_control_capacity_matched": true,
+ "channel_count": 32,
+ "relation_names": [
+  "sn",
+  "s2",
+  "s3",
+  "rank",
+  "fg",
+  "bg",
+  "nn_label",
+  "cycle",
+  "grp_core",
+  "grp_out",
+  "grp_core5",
+  "grp_out5",
+  "proto_core",
+  "proto_out",
+  "edge_r",
+  "edge_d"
+ ],
+ "relation_names_sha256": "60f6905be2343e25f5bf03af8f3580b8b06cd361fec8ff8be731a1245a97570c",
+ "relation_schema_version": 2,
+ "scope": "T1 patch-level premise; no CRF/original-resolution method claim; DEV used for selection",
+ "recipe": {
+  "epochs": 2,
+  "seeds": 1,
+  "batch": 64,
+  "channels": 32,
+  "relation_names": [
+   "sn",
+   "s2",
+   "s3",
+   "rank",
+   "fg",
+   "bg",
+   "nn_label",
+   "cycle",
+   "grp_core",
+   "grp_out",
+   "grp_core5",
+   "grp_out5",
+   "proto_core",
+   "proto_out",
+   "edge_r",
+   "edge_d"
+  ],
+  "relation_names_sha256": "60f6905be2343e25f5bf03af8f3580b8b06cd361fec8ff8be731a1245a97570c",
+  "relation_schema_version": 2,
+  "lr": 0.002,
+  "wd": 0.01,
+  "scheduler": "OneCycleLR",
+  "curve": "1",
+  "epoch_selection": "fixed_recipe_no_DEV_epoch_selection",
+  "extra_heads": "score/relations size+quality; PCA dense/area only",
+  "precision": "FP32 tensor operations, TF32 disabled, root CUDA guard memory fraction .4"
+ },
+ "learning_curve": {
+  "1": {
+   "score_only": {
+    "gain": -72.3313954597202,
+    "ci95": [
+     -73.74301675977654,
+     -70.91977415966386
+    ],
+    "training_fit": -72.3313954597202
+   },
+   "relations": {
+    "gain": -72.3313954597202,
+    "ci95": [
+     -73.74301675977654,
+     -70.91977415966386
+    ],
+    "training_fit": -72.3313954597202
+   },
+   "fit_counts": {
+    "0": 3,
+    "1": 3,
+    "2": 3,
+    "3": 3
+   },
+   "independently_initialized": true
+  }
+ },
+ "development": {
+  "episodes": 4,
+  "native_patch_miou": 72.3313954597202,
+  "true_area_level": {
+   "patch_miou": 73.09341513032119,
+   "gain": 0.7620196706009921,
+   "ci95": [
+    0.013583121751295835,
+    1.5104562194506883
+   ],
+   "by_fold": {
+    "0": 0.4291686706870337,
+    "1": 2.591743768214357,
+    "2": -0.4020024271844562,
+    "3": 0.4291686706870337
+   },
+   "folds_up": 3
+  },
+  "best_of_candidate_cuts": {
+   "patch_miou": 74.79374117993957,
+   "gain": 2.462345720219375,
+   "ci95": [
+    1.7286813534310141,
+    3.1960100870077355
+   ],
+   "by_fold": {
+    "0": 1.7286813534310141,
+    "1": 3.848184641268645,
+    "2": 2.54383553274684,
+    "3": 1.7286813534310141
+   },
+   "folds_up": 4
+  },
+  "foris_own_area": {
+   "log_error_std": 0.043743782530507806,
+   "log_error_bias": 0.29630812164000686,
+   "log_error_median_abs": 0.27455527739259944
+  },
+  "arms": {
+   "score_only": {
+    "dense": {
+     "patch_miou": 0.0,
+     "gain": -72.3313954597202,
+     "ci95": [
+      -73.74301675977654,
+      -70.91977415966386
+     ],
+     "by_fold": {
+      "0": -73.74301675977654,
+      "1": -72.82913165266106,
+      "2": -69.01041666666666,
+      "3": -73.74301675977654
+     },
+     "folds_up": 0
+    },
+    "dense_area": {
+     "patch_miou": 13.883546941577467,
+     "gain": -58.447848518142735,
+     "ci95": [
+      -59.66487437935385,
+      -57.23082265693162
+     ],
+     "by_fold": {
+      "0": -59.19560296667309,
+      "1": -59.027048319327726,
+      "2": -55.43459699453551,
+      "3": -60.1341457920346
+     },
+     "folds_up": 0,
+     "log_error_std": 0.023241015151143074,
+     "log_error_bias": 1.9737277030944824,
+     "log_error_median_abs": 1.9817173480987549
+    },
+    "training_fit_gain_mean_iou": -72.3313954597202,
+    "inputs": 32,
+    "size": {
+     "patch_miou": 4.74325400712793,
+     "gain": -67.58814145259227,
+     "ci95": [
+      -69.00224971432199,
+      -66.17403319086254
+     ],
+     "by_fold": {
+      "0": -69.05551675977654,
+      "1": -68.0697925722013,
+      "2": -64.2782738095238,
+      "3": -68.94898266886744
+     },
+     "folds_up": 0,
+     "log_error_std": 0.006763618439435959,
+     "log_error_bias": 3.0486397743225098,
+     "log_error_median_abs": 3.04746150970459
+    },
+    "quality": {
+     "patch_miou": 34.25007038288289,
+     "gain": -38.08132507683731,
+     "ci95": [
+      -50.93896270572249,
+      -25.223687447952152
+     ],
+     "by_fold": {
+      "0": -50.93896270572249,
+      "1": -50.447374895904304,
+      "2": 0.0,
+      "3": -50.93896270572249
+     },
+     "folds_up": 0,
+     "rank_correlation_with_true_iou": -0.4135365851746373
+    },
+    "dense_removal": {
+     "patch_miou": 0.0,
+     "gain": -72.3313954597202,
+     "ci95": [
+      -73.74301675977654,
+      -70.91977415966386
+     ],
+     "by_fold": {
+      "0": -73.74301675977654,
+      "1": -72.82913165266106,
+      "2": -69.01041666666666,
+      "3": -73.74301675977654
+     },
+     "folds_up": 0
+    },
+    "dense_area_removal": {
+     "patch_miou": 72.3313954597202,
+     "gain": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "by_fold": {
+      "0": 0.0,
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0
+     },
+     "folds_up": 0
+    },
+    "size_removal": {
+     "patch_miou": 72.3313954597202,
+     "gain": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "by_fold": {
+      "0": 0.0,
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0
+     },
+     "folds_up": 0
+    },
+    "quality_removal": {
+     "patch_miou": 72.3313954597202,
+     "gain": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "by_fold": {
+      "0": 0.0,
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0
+     },
+     "folds_up": 0
+    }
+   },
+   "relations": {
+    "dense": {
+     "patch_miou": 0.0,
+     "gain": -72.3313954597202,
+     "ci95": [
+      -73.74301675977654,
+      -70.91977415966386
+     ],
+     "by_fold": {
+      "0": -73.74301675977654,
+      "1": -72.82913165266106,
+      "2": -69.01041666666666,
+      "3": -73.74301675977654
+     },
+     "folds_up": 0
+    },
+    "dense_area": {
+     "patch_miou": 14.114870395232709,
+     "gain": -58.21652506448749,
+     "ci95": [
+      -59.55332625666743,
+      -56.87972387230754
+     ],
+     "by_fold": {
+      "0": -59.19560296667309,
+      "1": -58.55111441128175,
+      "2": -55.20833333333332,
+      "3": -59.911049546661786
+     },
+     "folds_up": 0,
+     "log_error_std": 0.02039148472249508,
+     "log_error_bias": 1.9573228359222412,
+     "log_error_median_abs": 1.9595271348953247
+    },
+    "training_fit_gain_mean_iou": -72.3313954597202,
+    "inputs": 32,
+    "size": {
+     "patch_miou": 4.818344264684152,
+     "gain": -67.51305119503604,
+     "ci95": [
+      -68.90741589929308,
+      -66.118686490779
+     ],
+     "by_fold": {
+      "0": -68.94898266886744,
+      "1": -68.0697925722013,
+      "2": -64.16758040935672,
+      "3": -68.86584912971874
+     },
+     "folds_up": 0,
+     "log_error_std": 0.009167906828224659,
+     "log_error_bias": 3.0338077545166016,
+     "log_error_median_abs": 3.0325727462768555
+    },
+    "quality": {
+     "patch_miou": 46.22633404035103,
+     "gain": -26.10506141936917,
+     "ci95": [
+      -50.693168800813396,
+      -1.5169540379249469
+     ],
+     "by_fold": {
+      "0": -2.6319056486654233,
+      "1": -50.447374895904304,
+      "2": -0.4020024271844562,
+      "3": -50.93896270572249
+     },
+     "folds_up": 0,
+     "rank_correlation_with_true_iou": -0.021501826407725688
+    },
+    "dense_removal": {
+     "patch_miou": 0.0,
+     "gain": -72.3313954597202,
+     "ci95": [
+      -73.74301675977654,
+      -70.91977415966386
+     ],
+     "by_fold": {
+      "0": -73.74301675977654,
+      "1": -72.82913165266106,
+      "2": -69.01041666666666,
+      "3": -73.74301675977654
+     },
+     "folds_up": 0
+    },
+    "dense_area_removal": {
+     "patch_miou": 72.3313954597202,
+     "gain": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "by_fold": {
+      "0": 0.0,
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0
+     },
+     "folds_up": 0
+    },
+    "size_removal": {
+     "patch_miou": 72.3313954597202,
+     "gain": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "by_fold": {
+      "0": 0.0,
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0
+     },
+     "folds_up": 0
+    },
+    "quality_removal": {
+     "patch_miou": 71.57291844075773,
+     "gain": -0.7584770189624663,
+     "ci95": [
+      -1.5169540379249469,
+      0.0
+     ],
+     "by_fold": {
+      "0": -2.6319056486654233,
+      "1": 0.0,
+      "2": -0.4020024271844562,
+      "3": 0.0
+     },
+     "folds_up": 0
+    },
+    "dense_over_score_only": {
+     "patch_miou": 0.0,
+     "gain": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "by_fold": {
+      "0": 0.0,
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0
+     },
+     "folds_up": 0
+    }
+   },
+   "relations_pca": {
+    "dense": {
+     "patch_miou": 0.0,
+     "gain": -72.3313954597202,
+     "ci95": [
+      -73.74301675977654,
+      -70.91977415966386
+     ],
+     "by_fold": {
+      "0": -73.74301675977654,
+      "1": -72.82913165266106,
+      "2": -69.01041666666666,
+      "3": -73.74301675977654
+     },
+     "folds_up": 0
+    },
+    "dense_area": {
+     "patch_miou": 14.302391215106733,
+     "gain": -58.02900424461347,
+     "ci95": [
+      -59.1782846169194,
+      -56.87972387230754
+     ],
+     "by_fold": {
+      "0": -58.67605247406225,
+      "1": -58.55111441128175,
+      "2": -55.20833333333332,
+      "3": -59.68051675977654
+     },
+     "folds_up": 0,
+     "log_error_std": 0.03316223621368408,
+     "log_error_bias": 1.9448294639587402,
+     "log_error_median_abs": 1.9499788284301758
+    },
+    "training_fit_gain_mean_iou": -72.3313954597202,
+    "inputs": 32,
+    "dense_removal": {
+     "patch_miou": 0.0,
+     "gain": -72.3313954597202,
+     "ci95": [
+      -73.74301675977654,
+      -70.91977415966386
+     ],
+     "by_fold": {
+      "0": -73.74301675977654,
+      "1": -72.82913165266106,
+      "2": -69.01041666666666,
+      "3": -73.74301675977654
+     },
+     "folds_up": 0
+    },
+    "dense_area_removal": {
+     "patch_miou": 72.3313954597202,
+     "gain": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "by_fold": {
+      "0": 0.0,
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0
+     },
+     "folds_up": 0
+    },
+    "dense_over_score_only": {
+     "patch_miou": 0.0,
+     "gain": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "by_fold": {
+      "0": 0.0,
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0
+     },
+     "folds_up": 0
+    }
+   }
+  },
+  "verdict": {
+   "best_relation_head": "quality",
+   "best_relation_head_gain": -26.10506141936917,
+   "ci95": [
+    -50.693168800813396,
+    -1.5169540379249469
+   ],
+   "folds_up": 0,
+   "passes": false
+  }
+ },
+ "selection_path": "/root/autodl-tmp/demo9_transductive_ics/results/extent_head_t1_preparation/fixture_fit/development/selection.json",
+ "selection_sha256": "22362e4ceb682580db05ed037e747619d9d2a56c41aeb1f6be45e583cfe71876",
+ "selected_configuration": {
+  "input_arm": "relations",
+  "head": "dense_area_removal",
+  "variant": "removal"
+ },
+ "confirmation_queryGT_opened": false,
+ "elapsed_s": 16.876011390239,
+ "true_area_scope": "GT area intervention, not an information or task-optimal upper bound"
+}
