@@ -1,0 +1,103 @@
+{
+ "state": "ANALYSED",
+ "episodes": 241,
+ "scope": "original resolution; uses query labels; exploratory",
+ "by_scale_ratio": {
+  "query_below_0p35x": {
+   "episodes": 20,
+   "class_miou": 37.53449078097235,
+   "share_area_above_1p5x": 0.65,
+   "share_area_below_0p67x": 0.0,
+   "gain_zoom_first_pass_box": 1.7675886745255553,
+   "gain_zoom_truth_box": 18.81186462084426,
+   "gain_oracle_cut": 6.104300029849476
+  },
+  "0p35_to_0p7x": {
+   "episodes": 60,
+   "class_miou": 57.14236335239643,
+   "share_area_above_1p5x": 0.4666666666666667,
+   "share_area_below_0p67x": 0.0,
+   "gain_zoom_first_pass_box": 0.3331410573820506,
+   "gain_zoom_truth_box": 7.060392639366782,
+   "gain_oracle_cut": 9.078359992741227
+  },
+  "0p7_to_1p4x": {
+   "episodes": 88,
+   "class_miou": 61.19350027952203,
+   "share_area_above_1p5x": 0.3181818181818182,
+   "share_area_below_0p67x": 0.045454545454545456,
+   "gain_zoom_first_pass_box": 0.7511294243212987,
+   "gain_zoom_truth_box": 5.4727117124592155,
+   "gain_oracle_cut": 10.442137031545286
+  },
+  "1p4_to_2p8x": {
+   "episodes": 52,
+   "class_miou": 66.91152392217465,
+   "share_area_above_1p5x": 0.1346153846153846,
+   "share_area_below_0p67x": 0.07692307692307693,
+   "gain_zoom_first_pass_box": 0.8791184985174141,
+   "gain_zoom_truth_box": 2.1156362004803384,
+   "gain_oracle_cut": 8.190196400882783
+  },
+  "query_above_2p8x": {
+   "episodes": 21,
+   "class_miou": 67.55910772266152,
+   "share_area_above_1p5x": 0.0,
+   "share_area_below_0p67x": 0.3333333333333333,
+   "gain_zoom_first_pass_box": 0.07573498982196725,
+   "gain_zoom_truth_box": 0.012505209287979824,
+   "gain_oracle_cut": 12.291281219091687
+  }
+ },
+ "cells": {
+  "query_below_3pct__reference_below_3pct": {
+   "episodes": 52,
+   "mean_iou": 51.59305339069621
+  },
+  "query_below_3pct__reference_3_to_10pct": {
+   "episodes": 28,
+   "mean_iou": 55.45263917459423
+  },
+  "query_below_3pct__reference_above_10pct": {
+   "episodes": 13,
+   "mean_iou": 39.76790471984262
+  },
+  "query_3_to_10pct__reference_below_3pct": {
+   "episodes": 20,
+   "mean_iou": 61.065909008374135
+  },
+  "query_3_to_10pct__reference_3_to_10pct": {
+   "episodes": 19,
+   "mean_iou": 62.717144224912545
+  },
+  "query_3_to_10pct__reference_above_10pct": {
+   "episodes": 29,
+   "mean_iou": 56.31223747246933
+  },
+  "query_above_10pct__reference_below_3pct": {
+   "episodes": 21,
+   "mean_iou": 59.57085893701397
+  },
+  "query_above_10pct__reference_3_to_10pct": {
+   "episodes": 18,
+   "mean_iou": 80.03771510434234
+  },
+  "query_above_10pct__reference_above_10pct": {
+   "episodes": 41,
+   "mean_iou": 74.52791631991343
+  }
+ },
+ "regression_iou_on_ln_query_area_and_abs_log2_scale_ratio": {
+  "per_e_fold_of_query_area": 7.765799907096005,
+  "per_doubling_of_scale_mismatch": -9.524629712118655,
+  "mismatch_ci95": [
+   -15.548336557192073,
+   -3.539716248302302
+  ]
+ },
+ "mismatch_at_least_2x": {
+  "episodes": 82,
+  "mean_iou": 51.489248800885235,
+  "others_mean_iou": 64.92885106103486
+ }
+}

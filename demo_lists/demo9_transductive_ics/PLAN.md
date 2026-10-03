@@ -1,3 +1,48 @@
+## Claude plan, 2026-10-03 (reasoning and plans by Claude; Codex runs the server; nothing below has been run)
+
+Standing requirement recorded in the next section: same pair, same frozen DINO, one labelled reference, no base-class training, no image pool. S complies. L does not (it fits a head on base-class episodes); the user said "try it" to Claude on 2026-10-03 and then moved execution to Codex, so run L only if the user confirms that exception.
+
+**What the finished runs say** (241 episodes, 4 folds, seed 0; FoRIS 59.12; files under `results/extent_v1`, `results/evidence_v1`, `results/self_support_v0`):
+- Every rule that re-reads the same pair's last-layer similarity failed (cut levels, boundary, round trip, zoom from the first-pass box; Codex's exact boundary cut). Inside the contested area the FoRIS score ranks target over non-target with probability 0.664.
+- One number carries most of the cut gap: the level set whose area equals the true target area gives +8.67 [+5.94, +9.94] of +10.19 (`size_prior.json`). A size estimate must be within about 0.35 in log area; FoRIS's own is within 0.21 in the median episode and more than 1.5x too large in 32%.
+- **New, the cause this plan acts on** (`scripts/analyze_scale_mismatch.py`, `scale_mismatch.json`): with the query target's size held fixed, IoU falls 9.5 points per doubling of the scale mismatch between reference object and query object (interval -15.5 to -3.5). 82 episodes are mismatched by 2x or more and average 51.5 against 64.9. Query object under 0.35x of the reference object: 37.5 mIoU, 65% over-extended, a crop from the true box gave +18.8. Query object over 2.8x: 33% under-extended, and that side (enlarging the reference) was never tested. None of INSID3, FoRIS, HSNet/VAT, Matcher chooses the scale at which the two objects are compared.
+- Query self-support (re-decide the 0.5-0.65 band of the mask by similarity to the confident core): +1.68 [+0.72, +2.27] on a confirmation half, patch level (`replay.json`). A component, not a method.
+- With labels only: grouping from the truly found part +9.61, supervised class probe +7.20, labelled pool +7.04. Pool competitors and linear metrics do nothing even with labels.
+
+### S. Scale alignment (complies; run first; about 25 min GPU, no downloads)
+
+1. Assumption: the loss is caused by comparing two objects at different scales, so enlarging the smaller one until both are equally large in their frames restores it.
+2. Prediction: `align_oracle` (true ratio, crop placed without labels) at least +3.0 overall with the interval above 0, at least +8 on the 2x-mismatched third, within 1 on matched episodes; a label-free arm (`align_mask`, `align_core`) recovers at least half; `reference_centric` (always crop the reference to twice its object, no scale reasoning) within 1.5 of native.
+3. Match: scale alignment is a component. Next: second round of ratio estimation from the aligned result, add the self-support trimming, 1000 episodes per fold, INSID3 as second host.
+4. Mismatch: `align_oracle` under +1.5: mismatched episodes are hard for another reason, drop it. Oracle high, label-free low: the first-pass size is the limiter, run one more round before anything else. `reference_centric` as good as the aligned arms: the gain is object-centric cropping, simplify to that.
+
+Stop rule in the runner: after 80 fresh episodes, stop if `align_oracle` gains under 0.5. Survivor: label-free arm at least +2 on fresh episodes, interval above 0, positive in 3 folds (`GATE` in `scripts/analyze_scale_align.py`). The first pass is compared with the stored masks of the extent run.
+
+Files to place in `/root/autodl-tmp/demo9_extent` (the folder that holds `results/extent_v1`): `scripts/scale_align_experiment.py`, `analyze_scale_align.py`, `prepare_scale_align_queue.py`, `cpu_checks_scale_align.sh`. Verified on this machine: synthetic end-to-end run and analysis. Not verified: the real encoder path.
+
+    cd /root/autodl-tmp/demo9_extent && bash scripts/cpu_checks_scale_align.sh && cat results/scale_align_v0/cpu_checks.log
+    nohup /root/miniconda3/bin/python scripts/experiment_resource_guard.py --plan results/scale_align_v0/plan.json --state-file results/scale_align_v0/guard.json --run > results/scale_align_v0/guard.log 2>&1 < /dev/null &
+
+Read `results/scale_align_v0/run/analysis.json`: `verdict`, then `mismatch_2x_or_more`, `query_object_smaller`, `query_object_larger`, `ratio_estimates`.
+
+### L. Class-free extent head (needs the user's confirmation: base-class fitting; about 1 h GPU)
+
+1. Assumption: how large the target is and where it ends does not depend on the class and can be learned from base-class episodes.
+2. Prediction: with about 1800 training episodes per fold, relation inputs give the dense head +2 to +5 over native with the interval above 0 and at least +2 over the score-only control; log-area error of the size estimate at most 0.45 (FoRIS 0.67).
+3. Match: train on train2014 under the standard protocol, add refinement, 1000 episodes per fold.
+4. Mismatch: relation inputs not above the score-only control: these inputs do not hold the size, change inputs, not the task. Training fit high and held-out low: more base data.
+
+Reference points: about 180 training episodes per fold overfit (-3.4 with relation inputs, +0.15 score only; `decoder_probe.json`). Gate: +4, interval above 0, all four folds (`GATE` in `scripts/extent_head.py`). Needs the feature cache `cache/evidence_v1` on the server (kept, 6.2 GB). Files: `tics/relations.py`, `scripts/extent_train_cache.py`, `extent_head.py`, `prepare_extent_head_queue.py`, `cpu_checks_extent_head.sh`. Verified here: self-check 6/6, live and replay inputs identical on the fixture, fixture fit.
+
+    cd /root/autodl-tmp/demo9_extent && bash scripts/cpu_checks_extent_head.sh && cat results/extent_head_v0/cpu_checks.log
+    nohup /root/miniconda3/bin/python scripts/experiment_resource_guard.py --plan results/extent_head_v0/plan.json --state-file results/extent_head_v0/guard.json --run > results/extent_head_v0/guard.log 2>&1 < /dev/null &
+
+### Rules that keep this from looping
+
+- A new idea names the evidence it adds over FoRIS and is first tried by replay on `cache/evidence_v1` (seconds, no encoder), chosen on the development half and read on the confirmation half (`scripts/self_support_replay.py` shows the pattern).
+- Upper bounds give the mechanism perfect inputs of its own source (true scale ratio, true area), never the best output picked with labels.
+- Not to be proposed again without new evidence: cut-level rules on the score, boundary cuts, zoom from the first-pass mask box, pool competitors, linear metrics, match-geometry or regression size estimates.
+
 ## Current identity-information audit (2026-10-03; overrides historical stopping plans)
 
 The user requires SAME pair, SAME frozen DINO, single labelled reference and zero new base-class training or image pool. Current-score weakness does not establish absence of useful frozen-feature information. Measure missed target (FN) and false foreground (FP) separately; also FN/TN and TP/FP within fixed original-score bins, so an intact foreground core cannot conceal failures. No single readout, linear probe or GT threshold is an information upper bound.
