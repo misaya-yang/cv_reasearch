@@ -1,0 +1,192 @@
+{
+  "state": "COMPLETED",
+  "split": "confirm",
+  "episodes": 600,
+  "class_sum_original_mIoU": {
+    "sam": 61.09084950950372,
+    "foris": 59.783015987111895,
+    "OR": 62.82910706740774,
+    "AND": 56.86774457216066,
+    "disagreement_oracle": 82.08458241741721
+  },
+  "comparisons": {
+    "OR__minus__sam": {
+      "delta_pp": 1.7382575579040207,
+      "CI95": [
+        -0.2965807078163495,
+        5.3805187390706495
+      ],
+      "folds": {
+        "0": 1.8231040650701757,
+        "1": 0.7488714352123864,
+        "2": -0.31404390392059867,
+        "3": 4.695098635254169
+      }
+    },
+    "OR__minus__foris": {
+      "delta_pp": 3.046091080295845,
+      "CI95": [
+        1.8155631014879847,
+        4.394484304359051
+      ],
+      "folds": {
+        "0": 1.6721566079722976,
+        "1": 5.155729365415681,
+        "2": 3.189627300490571,
+        "3": 2.1668510473048173
+      }
+    },
+    "AND__minus__sam": {
+      "delta_pp": -4.223104937343059,
+      "CI95": [
+        -5.590410296020267,
+        -2.526458158923341
+      ],
+      "folds": {
+        "0": -2.9521265517825768,
+        "1": -6.235979703325668,
+        "2": -4.396479623684584,
+        "3": -3.3078338705792945
+      }
+    },
+    "AND__minus__foris": {
+      "delta_pp": -2.915271414951235,
+      "CI95": [
+        -6.352290731352546,
+        -0.6434465826281944
+      ],
+      "folds": {
+        "0": -3.103074008880455,
+        "1": -1.829121773122374,
+        "2": -0.8928084192734147,
+        "3": -5.836081458528646
+      }
+    },
+    "disagreement_oracle__minus__sam": {
+      "delta_pp": 20.99373290791349,
+      "CI95": [
+        18.36521025926324,
+        23.907675234405417
+      ],
+      "folds": {
+        "0": 22.970797099898355,
+        "1": 15.623829612116076,
+        "2": 20.73329692673473,
+        "3": 24.647007992904868
+      }
+    },
+    "disagreement_oracle__minus__foris": {
+      "delta_pp": 22.301566430305314,
+      "CI95": [
+        19.505637398282527,
+        23.9171128268835
+      ],
+      "folds": {
+        "0": 22.819849642800477,
+        "1": 20.03068754231937,
+        "2": 24.2369681311459,
+        "3": 22.118760404955516
+      }
+    },
+    "disagreement_oracle__minus__OR": {
+      "delta_pp": 19.25547535000947,
+      "CI95": [
+        16.427542899227426,
+        21.012097521942263
+      ]
+    }
+  },
+  "bootstrap": {
+    "bootstrap_unit": "connected support/query photograph groups",
+    "groups": 561,
+    "largest_group": 4,
+    "draws": 2000,
+    "seed": 0
+  },
+  "original_host_baseline_exact_cases": {
+    "SAM": 600,
+    "FoRIS": 600
+  },
+  "original_masks_used": true,
+  "working_interpolation_used": false,
+  "edits": {
+    "sam": {
+      "sam": {
+        "removed_FP": 0,
+        "lost_TP": 0,
+        "recovered_FN": 0,
+        "added_FP": 0
+      },
+      "foris": {
+        "removed_FP": 1008448,
+        "lost_TP": 1802232,
+        "recovered_FN": 3261975,
+        "added_FP": 4928581
+      },
+      "OR": {
+        "removed_FP": 0,
+        "lost_TP": 0,
+        "recovered_FN": 3261975,
+        "added_FP": 4928581
+      },
+      "AND": {
+        "removed_FP": 1008448,
+        "lost_TP": 1802232,
+        "recovered_FN": 0,
+        "added_FP": 0
+      },
+      "disagreement_oracle": {
+        "removed_FP": 1008448,
+        "lost_TP": 0,
+        "recovered_FN": 3261975,
+        "added_FP": 0
+      }
+    },
+    "foris": {
+      "sam": {
+        "removed_FP": 4928581,
+        "lost_TP": 3261975,
+        "recovered_FN": 1802232,
+        "added_FP": 1008448
+      },
+      "foris": {
+        "removed_FP": 0,
+        "lost_TP": 0,
+        "recovered_FN": 0,
+        "added_FP": 0
+      },
+      "OR": {
+        "removed_FP": 0,
+        "lost_TP": 0,
+        "recovered_FN": 1802232,
+        "added_FP": 1008448
+      },
+      "AND": {
+        "removed_FP": 4928581,
+        "lost_TP": 3261975,
+        "recovered_FN": 0,
+        "added_FP": 0
+      },
+      "disagreement_oracle": {
+        "removed_FP": 4928581,
+        "lost_TP": 0,
+        "recovered_FN": 1802232,
+        "added_FP": 0
+      }
+    }
+  },
+  "scored_records": "results/fixed_host_union_v1/confirm_episodes.jsonl",
+  "scored_records_sha256": "8a2e5d455d2fbc8d8891551a3629d18856036bcf3191ab7acf133650ae8b21fe",
+  "card": [
+    "Assumption: complementary errors of two frozen native hosts can be recovered by fixed mask union/intersection without a learned decision rule.",
+    "Prediction derived from exposed DEV40 OR-native+4.926pp with crossing CI, not measured full-cohort evidence: oldCONF600 OR-SAM gain2..5pp, >=3 positive folds, paired lower bound>0. Every841 original native I/U must be exact for BOTH stored baselines.",
+    "Match: retain OR/AND as strong same-information naive controls only; independent data and complete equal-cost production remain necessary, with no method/novelty claim.",
+    "Mismatch: metadata/shape/SHA/native-IU mismatch stops and preserves errors; DEV-only gain or crossingCONF CI does not trigger expansion. No threshold/fitting/selector sweep. Pixel disagreement oracle is labelled GT arithmetic, not observable decision ability."
+  ],
+  "scope": "Previously examined DEV241 / oldCONF600; fixed same-information naive control, no new method or independent confirmation",
+  "oracle_definition": "(SAM AND FoRIS) OR [queryGT AND (SAM XOR FoRIS)]; restricted per-pixel choice between two fixed masks, no information-reachability proof",
+  "GPU_used": false,
+  "model_inference": false,
+  "readout_or_category_text_used": false,
+  "downloads": false
+}
