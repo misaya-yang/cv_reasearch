@@ -37,7 +37,6 @@ import hashlib
 import json
 import os
 import random
-import re
 import sys
 import time
 from pathlib import Path
@@ -685,14 +684,8 @@ def merge(a):
     out = Path(a.out)
     man = json.loads(Path(a.manifest).read_text())
     want = len(man["episodes"][:a.limit])
-    # Resume/error snapshots deliberately share the prefix; they are evidence,
-    # not live shard reports. Canonical names contain ONLY the integer shard ID.
-    record_paths = [f for f in sorted(out.glob("episodes_shard*.jsonl"))
-                    if re.fullmatch(r"episodes_shard[0-9]+\.jsonl", f.name)]
-    shard_paths = [f for f in sorted(out.glob("report_shard*.json"))
-                   if re.fullmatch(r"report_shard[0-9]+\.json", f.name)]
-    recs = [json.loads(l) for f in record_paths for l in open(f) if l.strip()]
-    shards = [json.loads(f.read_text()) for f in shard_paths]
+    recs = [json.loads(l) for f in sorted(out.glob("episodes_shard*.jsonl")) for l in open(f) if l.strip()]
+    shards = [json.loads(f.read_text()) for f in sorted(out.glob("report_shard*.json"))]
     recs.sort(key=lambda r: (r["fold"], r["e"]))
     expected_rows = man["episodes"][:a.limit]
     expected = {(r["fold"],r["e"],r["c"]):(r["support"],r["query"]) for r in expected_rows}
@@ -706,10 +699,6 @@ def merge(a):
         (out / "report.json").write_text(json.dumps(partial, indent=1))
         raise ValueError(partial["reason"])
     rep = dict(state="COMPLETED", episodes=len(recs), expected=want, protocol=protocol(),
-               aggregation_source_sha256=sha256(__file__),
-               prediction_source_sha256=sorted({s["source_sha256"] for s in shards}),
-               input_scored_jsonl_sha256={f.name:sha256(f) for f in record_paths},
-               ignored_historical_shard_reports=[f.name for f in sorted(out.glob("report_shard*.json")) if f not in shard_paths],
                scope="original-resolution class mIoU on frozen paired episodes; legal component-box SAM3 adaptation",
                confirmation_exposure="previously scored paired images, not independent fresh confirmation",
                class_miou={k: class_miou(recs, k) for k in ARMS}, per_fold={k: [class_miou([r for r in recs if r["fold"] == f], k) for f in range(4)] for k in ARMS})
@@ -758,10 +747,7 @@ def merge(a):
                                        threshold_0p5=paired(recs, base, base)["miou"],
                                        **{"threshold_%s" % t: paired(recs, lambda r, t=t: r["proposal_union_iu"][str(t)], base) for t in (.1, .3, .7)},
                                        proposals_mostly_on_target_LABELS=paired(recs, lambda r: r["proposal_majority_truth_union_iu"], base))
-    previous = out / "report.json"
-    if previous.exists():
-        previous.with_name("report.before_cpu_merge_"+str(time.time_ns())+".json").write_bytes(previous.read_bytes())
-    previous.write_text(json.dumps(rep, indent=1))
+    (out / "report.json").write_text(json.dumps(rep, indent=1))
     print(json.dumps(rep, indent=1))
     sys.exit(0 if ok else 1)
 
