@@ -1,6 +1,6 @@
 # demo9：完整参考条件推理的机制与证据交接
 
-接续状态：旧F4/A/B有限批次保持关闭。单独C2旧DEV40查询框机制探针正在准备，尚未服务器接口验收或GPU执行；三类查询框与native、同信息OR/AND公平比较，完整合法预测冻结后才读queryGT。不能把多exemplar已有操作当创新。实际既有SAM3 checkpoint的1,465个meta tensor中没有mask_encoder key，不能直接打开已训练的参考mask模块。E69当前已关机；不得据下方历史队列恢复GPU。
+接续状态：旧F4/A/B有限批次保持关闭。单独C2旧DEV40查询框探针已通过SERVER真实processor/TinyModel10检查、真实mask schema40、完整合成40/12比较评分2.607秒及guard94文件验收；这些不是预训练质量结果。E69有卡开机被平台拒绝（空闲GPU0），同价32GB/E62双盘克隆配置中，实际科学GPU阶段尚未启动。三类框与native、同信息OR/AND比较，整个合法预测冻结后才读queryGT；最多300秒，结束/故障关机。不能把多exemplar已有操作当创新。现有1,465个meta tensor无mask_encoder key，不能直接打开已训练参考mask模块；下方历史队列不恢复。
 
 最新实测：文档F4七臂已完成241/241，没有新臂过线；001相对完整native−1.374pp，002相对同曝光/槽数全局控制−.048pp且CI跨0，新160未开。SAM3 A_DEV241合法视觉62.555对FoRIS59.122，A_CONFIRM600为61.091对59.783；两个paired区间均跨0。特权类别文字72.561/73.376只能诊断，DEV文字收益主要补漏，BBox信息损失未被证明是差距原因。B固定监督17常数两批已完成：DEV+2.086[.796,3.305]且一折微负，oldCONF600+1.663[.846,2.510]且四折正、31例退步>10pp。C只保留监督组件/记录互补错误，不启动新方法。有限v3完成2341.595秒后自动关机，AutoDL已独立核实E69 weste:46597为STOPPED；结果/逐例I-U已拷回，小证据归档后清理F4释放217MiB。报告见results/f4_v1/EXPERIMENT_REPORT.md与final_resource_receipt.json。总体研究目标未完成；以下是历史快照，不能据其恢复队列。
 
