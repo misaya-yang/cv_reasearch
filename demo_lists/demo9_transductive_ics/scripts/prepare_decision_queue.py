@@ -21,7 +21,7 @@ def sha(path):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("what", choices=("cache", "fit", "infer"))
+    p.add_argument("what", choices=("cache", "fit", "infer", "zoom"))
     p.add_argument("--models", type=Path, help="infer: the saved read-outs of one arm")
     p.add_argument("--episodes", type=Path, help="infer: the manifest to score")
     p.add_argument("--packets", type=Path, help="infer: stored FoRIS packets for the bit-exactness check (development only)")
@@ -69,16 +69,17 @@ def main():
                        requires=needs + [done(a.fixture_report.resolve(), "COMPLETED"), done(run / "report.json", "COMPLETED")],
                        cpu_artifacts=[dict(path=str(f), sha256=sha(f)) for f in frozen], code_files=[str(f) for f in code],
                        env=dict(env, DEMO4_GPU_FRAC="%.2f" % min(0.4, 0.75 / a.workers)), produces=[made], success_checks=[made])]
-    elif a.what == "infer":
+    elif a.what in ("infer", "zoom"):
         out = a.out.resolve()
         if out.exists() and any(out.iterdir()):
             raise SystemExit("fresh output directory required")
-        code = [root / x for x in ("scripts/decision_infer.py", "scripts/decision_cache.py", "scripts/extent_experiment.py",
-                                   "scripts/analyze_extent.py", "tics/decision_heads.py", "tics/relations.py")]
+        script = "scripts/decision_%s.py" % a.what
+        code = [root / x for x in (script, "scripts/decision_infer.py", "scripts/decision_cache.py", "scripts/extent_experiment.py",
+                                   "scripts/scale_align_experiment.py", "scripts/analyze_extent.py", "tics/decision_heads.py", "tics/relations.py")]
         made = done(out / "report.json", "COMPLETED")
-        argv = [py, str(root / "scripts/decision_infer.py"), "--models", str(a.models.resolve()), "--cache", str(cache), "--manifest",
-                str(a.episodes.resolve()), "--out", str(out), "--parallel", str(a.workers)] + (["--packets", str(a.packets.resolve())] if a.packets else [])
-        stages = [dict(name="decision_infer_" + out.name, kind="gpu", cwd=str(root), timeout_seconds=a.timeout, argv=argv,
+        argv = [py, str(root / script), "--models", str(a.models.resolve()), "--cache", str(cache), "--manifest",
+                str(a.episodes.resolve()), "--out", str(out), "--parallel", str(a.workers)] + (["--packets", str(a.packets.resolve())] if a.packets and a.what == "infer" else [])
+        stages = [dict(name="decision_%s_%s" % (a.what, out.name), kind="gpu", cwd=str(root), timeout_seconds=a.timeout, argv=argv,
                        requires=[done(cache / "report.json", "COMPLETED"), dict(path=str(a.models.resolve())),
                                  dict(path=str(a.episodes.resolve()), json_equals=dict(state="PREPARED"))],
                        code_files=[str(f) for f in code], env=dict(env, DEMO4_GPU_FRAC="%.2f" % min(0.4, 0.75 / a.workers)),
@@ -87,10 +88,11 @@ def main():
         out = a.out.resolve()
         if (out / "report.json").exists():
             raise SystemExit("fresh output directory required")
-        code = [root / x for x in ("scripts/decision_fit.py", "tics/decision_heads.py", "scripts/analyze_extent.py")]
+        code = [root / x for x in ("scripts/decision_fit_parallel.py", "scripts/decision_fit.py", "tics/decision_heads.py", "scripts/analyze_extent.py")]
         made = done(out / "report.json", "COMPLETED")
         stages = [dict(name="decision_fit", kind="gpu", cwd=str(root), timeout_seconds=a.timeout,
-                       argv=[py, str(root / "scripts/decision_fit.py"), "--cache", str(cache), "--out", str(out)] + [x for x in rest if x != "--"],
+                       argv=[py, str(root / "scripts/decision_fit_parallel.py"), "--cache", str(cache), "--out", str(out), "--workers", str(a.workers)]
+                       + [x for x in rest if x != "--"],
                        requires=[done(cache / "report.json", "COMPLETED")], code_files=[str(f) for f in code],
                        env=dict(env, DEMO4_GPU_FRAC=".5"), produces=[made], success_checks=[made])]
     a.plan.parent.mkdir(parents=True, exist_ok=True)

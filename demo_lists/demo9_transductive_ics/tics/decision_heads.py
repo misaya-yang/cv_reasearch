@@ -58,6 +58,16 @@ def graph_maps(p, idx, sim, tau=0.05):
     return torch.stack([near_t, near_b, (w * pn).sum(2), pn.mean(2), near_t - near_b], 1)
 
 
+def agnostic(x, idx, sim):
+    """Evidence that does not depend on how the host scores: its mask, the relations to the reference, the layer
+    margins, and how each patch relates to the host's mask through the query's neighbour graph. x [B, 24, H, W] in
+    the layout of scripts/decision_fit.py (score first, edge maps at 14 and 15, layer margins from 16); returns
+    [B, 20, H, W]: the mask, fg, bg, nn_label, cycle, the two edge maps (at 5 and 6), 8 layer margins, GRAPH maps."""
+    m = (x[:, :1].float() > 0.5).float()
+    g = graph_maps(m.flatten(1), idx.long(), sim.float()).view(len(x), GRAPH, *x.shape[-2:])
+    return torch.cat([m, x[:, [4, 5, 6, 7, 14, 15]].float(), x[:, 16:24].float(), g], 1)
+
+
 def body(rung, d, width):
     if rung == "pixel":
         return nn.Conv2d(d, 1, 1)

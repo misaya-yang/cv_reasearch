@@ -1,0 +1,95 @@
+{
+  "state": "FROZEN_DEVELOPMENT_REMOVAL_ANALYZED",
+  "scores_original_class_miou": {
+    "native": 59.121839494721954,
+    "middle12_remove": 43.062573182320634,
+    "finalraw_remove": 57.11112130187654,
+    "querycore_remove": 59.57783750616677,
+    "oracle_delete": 81.77682708529423
+  },
+  "comparisons": {
+    "middle12_remove": {
+      "delta_pp": -16.05926631240132,
+      "interval95": [
+        -17.90437861542066,
+        -14.21415400938198
+      ],
+      "all_fold_deltas_pp": {
+        "0": -24.60513577976606,
+        "1": -13.783734759418671,
+        "2": -13.177603201757371,
+        "3": -12.492240203203302
+      },
+      "interval_method": "asymptotic photo-connected-cluster influence sandwich; NOT episode-independent bootstrap",
+      "photo_groups": 239,
+      "development_only": true
+    },
+    "finalraw_remove": {
+      "delta_pp": -2.0107181928454168,
+      "interval95": [
+        -2.8454733292718393,
+        -1.1759630564189942
+      ],
+      "all_fold_deltas_pp": {
+        "0": -2.85952523906802,
+        "1": -2.5147232555699475,
+        "2": 0.36437411931760977,
+        "3": -3.0868026172831833
+      },
+      "interval_method": "asymptotic photo-connected-cluster influence sandwich; NOT episode-independent bootstrap",
+      "photo_groups": 239,
+      "development_only": true
+    },
+    "querycore_remove": {
+      "delta_pp": 0.45599801144481944,
+      "interval95": [
+        0.28146013835587147,
+        0.6305358845337674
+      ],
+      "all_fold_deltas_pp": {
+        "0": 0.9673746737440609,
+        "1": 0.026870447500918715,
+        "2": 0.09002517898145612,
+        "3": 0.754654573663764
+      },
+      "interval_method": "asymptotic photo-connected-cluster influence sandwich; NOT episode-independent bootstrap",
+      "photo_groups": 239,
+      "development_only": true
+    },
+    "middle_vs_final": {
+      "delta_pp": -14.048548119555903,
+      "interval95": [
+        -15.686813222887448,
+        -12.410283016224358
+      ],
+      "all_fold_deltas_pp": {
+        "0": -21.74561054069804,
+        "1": -11.269011503848724,
+        "2": -13.541977321074981,
+        "3": -9.405437585920119
+      },
+      "interval_method": "asymptotic photo-connected-cluster influence sandwich; NOT episode-independent bootstrap",
+      "photo_groups": 239,
+      "development_only": true
+    }
+  },
+  "gate_passed": false,
+  "records": 241,
+  "rule": {
+    "threshold": 0.0,
+    "reference_readout": "unit tokens; unit FG mean minus unit BG mean; query dot difference",
+    "middle": "actual block12 output after residual/MLP, without applying final norm",
+    "final": "actual public _extract_features output BEFORE positional debias",
+    "anchors": "exact original FoRIS bilinear>.5, nearest and tiny-target fallback",
+    "primary": "full public native FINAL mask (one CRF) intersect bilinear scalar margin>0; NO second CRF",
+    "original_resize": "bilinear binary mask then >.5, exact earlier241 evaluator",
+    "patch_diagnostic": "area-downsample full native mask>.5; truth coverage>.5; no CRF at patch resolution",
+    "querycore_control": "finalraw query unit mean inside native patch foreground minus outside; same zero rule",
+    "degenerate": "missing either anchor class -> native no-op with explicit per-arm state",
+    "scope": "ALL241 already-observed DEVELOPMENT; no independent confirmation claim",
+    "forbidden": "no layer/threshold/keep-count sweep; no QKV/NxN export or regenerated fulltensor cache"
+  },
+  "decision": "stop fixed zero-margin removal",
+  "no_AUC_method_claim": true,
+  "patch_and_model_results_never_substitute_primary": true
+}

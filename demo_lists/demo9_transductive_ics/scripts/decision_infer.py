@@ -81,7 +81,7 @@ def work(a):
     import torch
     import torch.nn.functional as F
     from PIL import Image
-    from tics.decision_heads import restore
+    from tics.decision_heads import agnostic, restore
     from tics.relations import near_mask
     if not a.fixture and not a.unguarded and os.environ.get("DEMO9_CUDA_GUARD") != "1":
         raise SystemExit("run under scripts/experiment_resource_guard.py, or pass --unguarded")
@@ -131,7 +131,10 @@ def work(a):
                     if name == "features":
                         comp = (ev["q"] - basis["mean"][f]) @ basis["V"][f]
                         x = torch.cat([x, comp.T.reshape(-1, h, w).half().float()])
-                    x = x[dict(score=slice(0, 1), relations=slice(0, 16), layers=slice(0, 24), features=slice(0, 40))[name]]
+                    if name == "agnostic":
+                        x = agnostic(x[None, :24], ev["idx"][None], ev["sim"][None])[0]
+                    else:
+                        x = x[dict(score=slice(0, 1), relations=slice(0, 16), layers=slice(0, 24), features=slice(0, 40))[name]]
                     prob = models[f](x[None], (ev["idx"][None], ev["sim"][None]))[0]
                     logit = torch.logit(prob.float().clamp(1e-6, 1 - 1e-6))  # enlarged like FoRIS enlarges its response
                     cut = F.interpolate(logit[None, None], size=hw, mode="bilinear", align_corners=False)[0, 0] > 0

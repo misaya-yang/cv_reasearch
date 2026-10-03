@@ -1,0 +1,219 @@
+{
+ "state": "CPU_SOURCE_REFRESH_PASSED",
+ "actual_source_execution": true,
+ "CUDA_initialized": false,
+ "no_query_GT": true,
+ "source_hashes": {
+  "/root/autodl-tmp/demo9_transductive_ics/tics/ten_observation.py": "914dfdf0c028a6776943f2344de1bc84f25a36d9f2b67d80d5d0c0247d187543"
+ },
+ "records": [
+  {
+   "id": "m05",
+   "role": "naive",
+   "state": "PASSED",
+   "before": {
+    "extra": 0,
+    "actual": 1
+   },
+   "after": {
+    "extra": 1,
+    "actual": 2
+   },
+   "abstain": null,
+   "audit": {
+    "compute": "same two paired views as m05; cache/memo reused",
+    "control": "nativebox query ROI, same source crop",
+    "encoder_budget_ledger": {
+     "before": {
+      "max_extra_b2": 8,
+      "extra_b2_calls": 0,
+      "actual_b2_calls": 1,
+      "native_b2_calls": 1,
+      "cached_view_keys": []
+     },
+     "after": {
+      "max_extra_b2": 8,
+      "extra_b2_calls": 1,
+      "actual_b2_calls": 2,
+      "native_b2_calls": 1,
+      "cached_view_keys": [
+       "m05.S24,24,104,104.Q0,0,128,128"
+      ]
+     },
+     "extra_requested_delta": 1,
+     "actual_n1B2_reported_delta": 1,
+     "max_extra_B2_this_method_and_naive": 2,
+     "shared_global_cap8": true,
+     "actual_counter_semantics": "root-driver forward counter; a zero uninstrumented tiny-factory counter is not proof of zero encoder calls"
+    }
+   }
+  },
+  {
+   "id": "m05",
+   "role": "method",
+   "state": "PASSED",
+   "before": {
+    "extra": 1,
+    "actual": 2
+   },
+   "after": {
+    "extra": 1,
+    "actual": 2
+   },
+   "abstain": null,
+   "audit": {
+    "method": "correspondence ROI observation",
+    "correspondence_count": 6,
+    "inlier_count": 3,
+    "scale": 5.396758286230726,
+    "angle": -2.907849472720892,
+    "residual_median": 5.6568542494924205,
+    "source_box": [
+     24.0,
+     24.0,
+     104.0,
+     104.0
+    ],
+    "query_box": [
+     0,
+     0,
+     128,
+     128
+    ],
+    "actual_query_box": [
+     0.0,
+     0.0,
+     128.0,
+     128.0
+    ],
+    "no_native_area_for_main_scale": true,
+    "source_crop_same_for_naive": true,
+    "outside_ROI_preserved_exact": true,
+    "max_extra_B2": 2,
+    "known_failure": "mutual correspondences/rigid transform may be wrong under pose, reference multiinstance extent or ambiguous background; clipping reduces scale alignment",
+    "not_novel_by_itself": true,
+    "encoder_budget_ledger": {
+     "before": {
+      "max_extra_b2": 8,
+      "extra_b2_calls": 0,
+      "actual_b2_calls": 1,
+      "native_b2_calls": 1,
+      "cached_view_keys": []
+     },
+     "after": {
+      "max_extra_b2": 8,
+      "extra_b2_calls": 1,
+      "actual_b2_calls": 2,
+      "native_b2_calls": 1,
+      "cached_view_keys": [
+       "m05.S24,24,104,104.Q0,0,128,128"
+      ]
+     },
+     "extra_requested_delta": 1,
+     "actual_n1B2_reported_delta": 1,
+     "max_extra_B2_this_method_and_naive": 2,
+     "shared_global_cap8": true,
+     "actual_counter_semantics": "root-driver forward counter; a zero uninstrumented tiny-factory counter is not proof of zero encoder calls"
+    }
+   }
+  },
+  {
+   "id": "m10",
+   "role": "naive",
+   "state": "PASSED",
+   "before": {
+    "extra": 1,
+    "actual": 2
+   },
+   "after": {
+    "extra": 1,
+    "actual": 2
+   },
+   "abstain": null,
+   "audit": {
+    "control": "same four phase fields, same reference calibration and core anchors, adjoint-weighted average",
+    "same_encoder_budget": true,
+    "encoder_budget_ledger": {
+     "before": {
+      "max_extra_b2": 8,
+      "extra_b2_calls": 1,
+      "actual_b2_calls": 2,
+      "native_b2_calls": 1,
+      "cached_view_keys": [
+       "m05.S24,24,104,104.Q0,0,128,128"
+      ]
+     },
+     "after": {
+      "max_extra_b2": 8,
+      "extra_b2_calls": 1,
+      "actual_b2_calls": 2,
+      "native_b2_calls": 1,
+      "cached_view_keys": [
+       "m05.S24,24,104,104.Q0,0,128,128"
+      ]
+     },
+     "extra_requested_delta": 0,
+     "actual_n1B2_reported_delta": 0,
+     "max_extra_B2_this_method_and_naive": 3,
+     "shared_global_cap8": true,
+     "actual_counter_semantics": "root-driver forward counter; a zero uninstrumented tiny-factory counter is not proof of zero encoder calls"
+    }
+   }
+  },
+  {
+   "id": "m10",
+   "role": "method",
+   "state": "PASSED",
+   "before": {
+    "extra": 1,
+    "actual": 2
+   },
+   "after": {
+    "extra": 1,
+    "actual": 2
+   },
+   "abstain": "spatial-heldout reference coverage not identifiable",
+   "audit": {
+    "abstain": "spatial-heldout reference coverage not identifiable",
+    "extra_B2": 0,
+    "encoder_budget_ledger": {
+     "before": {
+      "max_extra_b2": 8,
+      "extra_b2_calls": 1,
+      "actual_b2_calls": 2,
+      "native_b2_calls": 1,
+      "cached_view_keys": [
+       "m05.S24,24,104,104.Q0,0,128,128"
+      ]
+     },
+     "after": {
+      "max_extra_b2": 8,
+      "extra_b2_calls": 1,
+      "actual_b2_calls": 2,
+      "native_b2_calls": 1,
+      "cached_view_keys": [
+       "m05.S24,24,104,104.Q0,0,128,128"
+      ]
+     },
+     "extra_requested_delta": 0,
+     "actual_n1B2_reported_delta": 0,
+     "max_extra_B2_this_method_and_naive": 3,
+     "shared_global_cap8": true,
+     "actual_counter_semantics": "root-driver forward counter; a zero uninstrumented tiny-factory counter is not proof of zero encoder calls"
+    }
+   }
+  }
+ ],
+ "factory_scope": "real public FoRIS source + fake/color CPU encoder; bilinear refiner; not production DINO/CRF",
+ "fixture_audit": {
+  "actual_public_source": true,
+  "fixture_D": 8,
+  "image_size": 128,
+  "CRF_exercised": false,
+  "CUDA_initialized": false
+ },
+ "extra_view_requests": 1,
+ "actual_B2_counter": 2,
+ "elapsed_seconds": 8.492027318105102,
+ "production_accuracy_unmeasured": true
+}

@@ -61,13 +61,16 @@ def load(folder, rows=None, targets=True):
     symmetric), 8 layer margins, then the 16 principal components of each of the 4 models (kept apart, a model sees
     only its own)."""
     files = sorted(folder.glob("*.npz")) if rows is None else [folder / ("%d_%d_%d.npz" % (r["fold"], r["e"], r["c"])) for r in rows]
-    z = [np.load(f, allow_pickle=False) for f in files]
+    keep, z = ("maps", "layers", "pca", "nbr_idx", "nbr_sim", "query_mask_path", "model_shape", "tf"), []
+    for f in files:  # read and close: thousands of open archives exceed the limit on open files
+        with np.load(f, allow_pickle=False) as x:
+            z.append({k: x[k] for k in x.files if k in keep})
     maps = np.stack([x["maps"] for x in z]).astype(np.float32)
     er, ed = maps[:, 14], maps[:, 15]  # 1 - similarity to the right and to the lower neighbour, zero at the border
     maps[:, 14] = (er + np.pad(er, ((0, 0), (0, 0), (1, 0)))[:, :, :-1]) / 2
     maps[:, 15] = (ed + np.pad(ed, ((0, 0), (1, 0), (0, 0)))[:, :-1]) / 2
     out = dict(x=np.concatenate([maps, np.stack([x["layers"] for x in z]).astype(np.float32)], 1).astype(np.float16),
-               pca=np.stack([x["pca"] if "pca" in x.files else np.zeros((4, 16) + maps.shape[-2:], np.float16) for x in z]),
+               pca=np.stack([x["pca"] if "pca" in x else np.zeros((4, 16) + maps.shape[-2:], np.float16) for x in z]),
                idx=np.stack([x["nbr_idx"] for x in z]), sim=np.stack([x["nbr_sim"] for x in z]),
                fold=np.array([int(f.stem.split("_")[0]) for f in files]), cls=np.array([int(f.stem.split("_")[2]) for f in files]),
                names=[f.stem for f in files], mask_path=[str(x["query_mask_path"]) for x in z], shape=[tuple(int(v) for v in x["model_shape"]) for x in z])
@@ -121,23 +124,27 @@ def main():
     p.add_argument("--limit", type=int, help="use only this many training episodes (checks)")
     p.add_argument("--train-manifest", help="fit only on the episodes of this manifest (default: every cached training episode)")
     p.add_argument("--unguarded", action="store_true")
-    p.add_argument("--no-confirm", action="store_true", help="checks: never open the confirmation labels")
+    p.add_argument("--no-confirm", action="store_true", help="checks, and the parts of a parallel run: never open the confirmation labels")
+    p.add_argument("--select-from", help="comma-separated output folders of finished parts (each run with --no-confirm): merge their "
+                                         "development rows, choose, then read the confirmation episodes once")
     a = p.parse_args()
     import torch
     torch.backends.cudnn.benchmark = True
-    from tics.decision_heads import fit
+    from tics.decision_heads import agnostic, fit, restore
     if a.device == "cuda" and not a.unguarded and os.environ.get("DEMO9_CUDA_GUARD") != "1":
         raise SystemExit("run under scripts/experiment_resource_guard.py, or pass --unguarded")
     a.out.mkdir(parents=True, exist_ok=True)
     if (a.out / "report.json").exists():
         raise SystemExit("fresh output directory required")
     start = time.monotonic()
-    tr = load(a.cache / "train", json.loads(Path(a.train_manifest).read_text())["episodes"] if a.train_manifest else None)
+    parts = [Path(x) for x in a.select_from.split(",")] if a.select_from else []
+    tr = load(a.cache / "train", json.loads(Path(a.train_manifest).read_text())["episodes"] if a.train_manifest else None) if not parts else dict(
+        x=np.zeros((0, 24, 1, 1), np.float16), tf=np.zeros((0, 1, 1), np.float32), idx=np.zeros((0, 1, 1), np.int16), sim=np.zeros((0, 1, 1), np.float16), fold=np.zeros(0, int))
     dv = load(a.cache / "test")
     if a.limit:
         keep = np.sort(np.random.default_rng(0).permutation(len(tr["fold"]))[:a.limit])
         tr = {k: ([v[i] for i in keep] if isinstance(v, list) else v[keep]) for k, v in tr.items()}
-    pair = (14, 15)
+    pair = (14, 15)  # the two edge maps: a transpose swaps them
     T = lambda v: torch.from_numpy(v)
     Xtr, Ytr, Gtr = T(tr["x"]), T(tr["tf"]), (T(tr["idx"]), T(tr["sim"]))
     report = dict(state="RUNNING", train=len(tr["fold"]), development=len(dv["fold"]), scope="patch level, no refinement",
@@ -150,8 +157,15 @@ def main():
         tmp.replace(a.out / "report.json")
 
     def inputs(d, f, name):
-        """Maps of the episodes for model f (held-out fold f): the common channels, then model f's own components."""
+        """Maps of the episodes for model f (held-out fold f): the common channels, then model f's own components.
+        `agnostic` keeps of the host only its mask (see tics/decision_heads.py)."""
         x = T(d["x"])
+        if name == "agnostic":
+            if "agnostic" not in d:
+                idx, sim = T(d["idx"]), T(d["sim"])
+                d["agnostic"] = torch.cat([agnostic(x[i:i + 128].to(a.device), idx[i:i + 128].to(a.device), sim[i:i + 128].to(a.device)).half().cpu()
+                                           for i in range(0, len(x), 128)])
+            return d["agnostic"]
         if name == "features":
             x = torch.cat([x, T(d["pca"][:, f])], 1)
         return x[:, SETS[name]]
@@ -167,13 +181,13 @@ def main():
             x = inputs(tr, f, name)[rows]
             graph = (Gtr[0][rows].to(a.device), Gtr[1][rows].to(a.device)) if rung == "unroll" else None
             model, note = fit(rung, x, Ytr[rows], T(tr["cls"][rows]), 0, epochs=a.epochs, batch=a.batch, seeds=a.seeds,
-                              pair=pair if x.shape[1] > 15 else None, dev=a.device, graph=graph)
+                              pair=(5, 6) if name == "agnostic" else pair if x.shape[1] > 15 else None, dev=a.device, graph=graph)
             models[f] = model
             exports[f] = note["export"]
             notes.append({k: note[k] for k in ("epochs", "weights")})
             te = dv["fold"] == f
             if te.any():
-                prob[te] = apply(model, dv, f, name, rung, te).numpy()
+                prob[te] = apply(model, dv, f, name, rung, te).cpu().numpy()
         if not limit:  # the models that score fold f, for inference at original resolution later
             (a.out / "models").mkdir(exist_ok=True)
             torch.save(dict(arm=arm, channels=name, models=exports), a.out / "models" / (arm.replace(":", "_") + ".pt"))
@@ -197,10 +211,24 @@ def main():
     for k, v in report["reference"].items():
         print("%-48s %6.2f  %+6.2f [%+.2f, %+.2f]" % (k, v["miou"], v["over_foris"], *v["ci95"]), flush=True)
     save()
-    kept = {}
-    for arm in a.arms.split(","):
+    for part in parts:  # finished parts of a parallel run: their rows, curves and saved read-outs
+        got = json.loads((part / "report.json").read_text())
+        if got["state"] != "COMPLETED":
+            raise SystemExit("part not completed: %s" % part)
+        report["arms"].update(got["arms"])
+        report["curve"].update(got["curve"])
+        report["train"] = got["train"]
+        (a.out / "models").mkdir(exist_ok=True)
+        for f in (part / "models").glob("*.pt"):
+            (a.out / "models" / f.name).write_bytes(f.read_bytes())
+    for arm, v in (report["arms"].items() if parts else []):
+        print("%-20s %+6.2f [%+.2f, %+.2f]  folds %s  removal only %+6.2f  addition only %+6.2f  epochs %s" % (
+            arm, v["over_foris"], *v["ci95"], " ".join("%+.1f" % x for x in v["per_fold"]), v["removal_only"]["over_foris"],
+            v["addition_only"]["over_foris"], [k["epochs"] for k in v["fits"]]), flush=True)
+    for k, v in (report["curve"].items() if parts else []):
+        print("curve %-26s %+6.2f" % (k, v["over_foris"]), flush=True)
+    for arm in ([] if parts else a.arms.split(",")):
         prob, models, notes = fitted(arm)
-        kept[arm] = models
         report["arms"][arm] = dict(row(prob > 0.5, host), removal_only=row((prob > 0.5) & host, host), addition_only=row((prob > 0.5) | host, host), fits=notes)
         v = report["arms"][arm]
         print("%-20s %+6.2f [%+.2f, %+.2f]  folds %s  removal only %+6.2f  addition only %+6.2f  epochs %s" % (
@@ -215,7 +243,7 @@ def main():
                                                           development=report["arms"].get(chosen)), indent=1))
     report["chosen"] = chosen
     save()
-    for limit in [int(v) for v in a.curve.split(",") if v]:
+    for limit in ([] if parts else [int(v) for v in a.curve.split(",") if v]):
         for arm in a.curve_arms.split(","):
             if arm in report["arms"]:
                 prob, _, _ = fitted(arm, limit)
@@ -228,13 +256,15 @@ def main():
         crow = table(cf["tf"], cf["cls"], cf["fold"])
         chost = cf["x"][:, 0].astype(np.float32) > 0.5
         report["confirmation"] = dict(episodes=len(cf["fold"]), FoRIS=crow(chost, chost))
-        for arm in [chosen] + ([control] if control else []):
+        saved = {arm: torch.load(a.out / "models" / (arm.replace(":", "_") + ".pt"), map_location="cpu", weights_only=False)
+                 for arm in [chosen] + ([control] if control else [])}
+        for arm in saved:
             rung, name = arm.split(":")
             prob = np.zeros(cf["tf"].shape, np.float32)
             for f in range(4):
                 te = cf["fold"] == f
                 if te.any():
-                    prob[te] = apply(kept[arm][f], cf, f, name, rung, te).numpy()
+                    prob[te] = apply(restore(saved[arm]["models"][f], a.device), cf, f, name, rung, te).cpu().numpy()
             report["confirmation"][arm] = dict(crow(prob > 0.5, chost), removal_only=crow((prob > 0.5) & chost, chost))
             v = report["confirmation"][arm]
             print("confirmation %-20s %+6.2f [%+.2f, %+.2f]  folds %s  removal only %+6.2f" % (

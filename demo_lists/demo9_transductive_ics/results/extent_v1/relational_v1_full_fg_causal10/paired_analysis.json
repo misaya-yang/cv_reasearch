@@ -1,0 +1,164 @@
+{
+ "state": "COMPLETED_PAIRED_ANALYSIS",
+ "n": 10,
+ "design_DEV": true,
+ "photo_connected_groups": [
+  [
+   0
+  ],
+  [
+   1
+  ],
+  [
+   2
+  ],
+  [
+   3
+  ],
+  [
+   4
+  ],
+  [
+   5
+  ],
+  [
+   6
+  ],
+  [
+   7
+  ],
+  [
+   8
+  ],
+  [
+   9
+  ]
+ ],
+ "bootstrap_seed": 0,
+ "bootstrap_reps": 5000,
+ "original_IoU_pp": {
+  "native": 62.97603899237065,
+  "v1": 62.15998597043624,
+  "fullFG": 62.872691853538655,
+  "random_thinning": 62.7561296705091,
+  "score_same_count": 62.94124728903488
+ },
+ "paired": {
+  "fullFG-vs-native": {
+   "mean_pp": -0.10334713883201374,
+   "photo_component_CI95_pp": [
+    -0.3264641365562514,
+    0.1431185181166578
+   ],
+   "fold_pp": {
+    "0": -0.35244308808551733,
+    "1": 0.033673465008651725,
+    "2": -0.031016459595683443,
+    "3": -0.007564799949086876
+   },
+   "wins": 1,
+   "ties": 1,
+   "losses": 8
+  },
+  "fullFG-vs-v1": {
+   "mean_pp": 0.7127058831024158,
+   "photo_component_CI95_pp": [
+    0.17310409057239545,
+    1.3146358460616163
+   ],
+   "fold_pp": {
+    "0": 0.9423352717276808,
+    "1": 0.21210035629127333,
+    "2": 1.723303373475158,
+    "3": 0.10857260000848967
+   },
+   "wins": 9,
+   "ties": 0,
+   "losses": 1
+  },
+  "fullFG-vs-random_thinning": {
+   "mean_pp": 0.11656218302955494,
+   "photo_component_CI95_pp": [
+    -0.1391645947382646,
+    0.5050966919498889
+   ],
+   "fold_pp": {
+    "0": -0.04925633672680855,
+    "1": -0.15062841388889345,
+    "2": 0.8748142798508844,
+    "3": 0.00782376122044326
+   },
+   "wins": 4,
+   "ties": 1,
+   "losses": 5
+  },
+  "fullFG-vs-score_same_count": {
+   "mean_pp": -0.06855543549624485,
+   "photo_component_CI95_pp": [
+    -0.3522408785449418,
+    0.202742916613826
+   ],
+   "fold_pp": {
+    "0": -0.14693457243223898,
+    "1": -0.16272808828015192,
+    "2": 0.08920723549079668,
+    "3": 0.032509578096565406
+   },
+   "wins": 5,
+   "ties": 1,
+   "losses": 4
+  }
+ },
+ "pixel_counts": {
+  "model_deletions": {
+   "v1": {
+    "deleted_FP": 10887,
+    "lost_TP": 21019
+   },
+   "fullFG": {
+    "deleted_FP": 1364,
+    "lost_TP": 4184
+   },
+   "random_thinning": {
+    "deleted_FP": 1065,
+    "lost_TP": 2348
+   },
+   "score_same_count": {
+    "deleted_FP": 3458,
+    "lost_TP": 2246
+   }
+  },
+  "original_deletions": {
+   "v1": {
+    "deleted_FP": 3189,
+    "lost_TP": 5758
+   },
+   "fullFG": {
+    "deleted_FP": 382,
+    "lost_TP": 1194
+   },
+   "random_thinning": {
+    "deleted_FP": 274,
+    "lost_TP": 710
+   },
+   "score_same_count": {
+    "deleted_FP": 851,
+    "lost_TP": 669
+   }
+  }
+ },
+ "nonmonotonic_CRFFinal_new_deletions_outside_v1": 0,
+ "recovered_final_pixels_vs_v1": 26358,
+ "prediction_SHA_verified": 10,
+ "native_exact": 10,
+ "GT_after_predictions_verified_by_driver_order_and_frozen_info": true,
+ "current_source_sha256": {
+  "/root/autodl-tmp/demo9_transductive_ics/scripts/relational_v1/full_fg_causal_replay.py": "f49d49eaf2c723d318976b8b1d11ac38cefe11a35302268057173c0bc73bc0de",
+  "/root/autodl-tmp/demo9_transductive_ics/scripts/relational_v1/conditional_full_fg_finalize.py": "02810d8a16cc88e5d655a496f71dde75855d3b4d60cc20bee8bf6850668d9d72",
+  "/root/autodl-tmp/demo9_transductive_ics/scripts/relational_v1/full_cached_replay.py": "45b78b97898f48fadc25f2cdcb487c501e2204dc318b8667455474effa025bbe",
+  "/root/autodl-tmp/demo9_transductive_ics/scripts/relational_v1/relational_exclusion_cpu.py": "56d4e5f740c0806de59b9b215dfc8bfb3a6b717bbd49668736e615b9b9540656"
+ },
+ "source_hash_record_time": "analysis; public source hashes checked at runtime against original metadata preflight, driver own source hashes recorded now",
+ "source_mtime_precedes_predictions": true,
+ "scope": "asymmetric FG-all fixed-stars vs oldBG8; no fair main-method or independenttest claim"
+}
