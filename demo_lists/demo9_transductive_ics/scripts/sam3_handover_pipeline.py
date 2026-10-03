@@ -99,6 +99,9 @@ def decision(a_report, b_report, success_iou=0.5):
     if gain >= 3.0 and lo > 0:
         a_state = "SAM3_STRONGER_ON_PAIRED_EXPOSED_COHORT"
         next_a = "Review causal perfect-input ledger; proposal selection is not a removable-error proof"
+    elif gain >= 3.0:
+        a_state = "SAM3_GAIN_UNCERTAIN_REVIEW"
+        next_a = "Paired interval crosses zero; no host or method claim is established"
     elif gain < -3.0:
         a_state = "SAM3_BELOW_FORIS_PROTOCOL_REVIEW"
         next_a = "Check the legal component-box adaptation against the public instance-box protocol"
@@ -119,6 +122,7 @@ def decision(a_report, b_report, success_iou=0.5):
             "B": "RETAIN_SUPERVISED_FIXED_COMPONENT" if keep else "DROP_THIS_FIXED_FORMULA",
             "B_gain_pp": b_gain, "B_per_fold_pp": b_folds,
             "B_ci95_pp": row["ci95"],
+            "B_lose_more_than_10": row.get("lose_more_than_10"),
             "B_provenance": "Constants averaged from four supervised fold models; pooled-class calibration, not training-free or class-held-out FSS",
             "automatic_new_stages": False, "publication_goal_complete": False}
 
@@ -235,7 +239,7 @@ def run_body(plan_path, out):
                     budget = estimate(a, b, plan["A_total_episodes"], plan["B_total_episodes"])
                     write_json(out / "measured_budget.json", budget)
                     emit("MEASURED_BUDGET", **budget)
-                    if budget["remaining_estimate_seconds"] + time.monotonic() - start > plan["approved_budget_seconds"]:
+                    if budget["remaining_estimate_seconds"] + time.monotonic() - start > plan["approved_budget_seconds"] * plan.get("budget_safety_fraction", .9):
                         raise Halt("HOLD_MEASURED_COST", "Smoke estimate exceeds the frozen30-minute budget")
                 if name == "A_dev":
                     miou = float(read_json(stage["completion"])["class_miou"]["visual"])
@@ -260,6 +264,9 @@ def cpu_checks():
         "outcome_counts": {"only_foris": 10, "only_sam3": 20, "both": 50, "neither": 20}}}
     b = {"rows": {"readout": {"gain": 2, "per_fold": [1, 2, 3, 2], "ci95": [1, 3]}}}
     assert decision(a, b)["A"] == "SAM3_STRONGER_ON_PAIRED_EXPOSED_COHORT"
+    a["against_foris"]["ci95"] = [-1, 5]
+    assert decision(a, b)["A"] == "SAM3_GAIN_UNCERTAIN_REVIEW"
+    a["against_foris"]["ci95"] = [1, 5]
     a["against_foris"]["gain"] = 0
     assert decision(a, b)["A"] == "COMPLEMENTARY_FAILURES_REVIEW"
     b["rows"]["readout"]["per_fold"][0] = -0.1
@@ -273,7 +280,7 @@ def cpu_checks():
     assert photo_uid("COCO_val2014_000000123456.jpg") == photo_uid("123456.jpg")
     budget = estimate({"episodes": 10, "elapsed_s": 20}, {"episodes": 10, "elapsed_s": 10}, 841, 841)
     assert budget["remaining_estimate_seconds"] == 2493
-    return {"state": "CPU_PIPELINE_CONTRACTS_PASSED", "checks": 6,
+    return {"state": "CPU_PIPELINE_CONTRACTS_PASSED", "checks": 7,
             "GPU_used": False, "shutdown_called": False, "not_a_task_quality_result": True}
 
 

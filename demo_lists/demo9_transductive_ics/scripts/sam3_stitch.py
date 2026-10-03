@@ -272,6 +272,35 @@ def reuse_predictions(a, man, rows):
     return reusable
 
 
+def partial_predictions(a, rows, stream_path, report_path):
+    """Verified same-code partial prefix. Never silently discard a corrupt tail."""
+    if not stream_path.exists():
+        return [], None
+    if not a.resume:
+        raise ValueError("Existing predictions preserved; use --resume for same-identity partial prefix")
+    previous = json.loads(report_path.read_text())
+    if (previous.get("state") not in ("RUNNING", "ERROR") or
+        previous.get("source_sha256") != sha256(__file__) or
+        previous.get("manifest_sha256") != sha256(a.manifest) or
+        previous.get("checkpoint_sha256") != CHECKPOINT_SHA256 or previous.get("protocol") != protocol()):
+        raise ValueError("Partial run identity/state changed; HOLD and preserve the old attempt")
+    recs = [json.loads(line) for line in stream_path.read_text().splitlines() if line]
+    expected = [(index,r["fold"],r["e"],r["c"],r["support"],r["query"]) for index,r in rows[:len(recs)]]
+    observed = [(r["global_manifest_index"],r["fold"],r["e"],r["c"],r["support"],r["query"]) for r in recs]
+    if len(recs)>len(rows) or observed != expected:
+        raise ValueError("Partial predictions are not the exact manifest prefix")
+    for rec in recs:
+        if sorted(x["path"] for x in rec["prediction_assets"]) != sorted((rec["prediction_file"],rec["candidate_file"])):
+            raise ValueError("Partial case lacks both frozen outputs")
+        for asset in rec["prediction_assets"]:
+            path = Path(a.out)/asset["path"]
+            if path.stat().st_size != asset["bytes"] or sha256(path) != asset["sha256"]:
+                raise ValueError("Partial case asset changed; no silent recomputation")
+    snapshot = report_path.with_name(report_path.stem+".before_resume_"+str(time.time_ns())+".json")
+    snapshot.write_text(json.dumps(previous,indent=1))
+    return recs, previous
+
+
 def work(a):
     import numpy as np
     import torch
@@ -283,9 +312,9 @@ def work(a):
     (out / "masks").mkdir(parents=True, exist_ok=True)
     (out / "candidates").mkdir(parents=True, exist_ok=True)
     stream_path = out / ("predictions_shard%d.jsonl" % a.shard[0])
-    if stream_path.exists():
-        raise SystemExit("fresh output required: " + str(stream_path))
     rows = selected_rows(a, man)
+    report_path = out / ("report_shard%d.json" % a.shard[0])
+    completed, previous = partial_predictions(a, rows, stream_path, report_path)
     reusable = reuse_predictions(a, man, rows)
     rect = rectangles()[1]
     candidate_worst = len(rows)*KEEP*((rect[2]*rect[3]+7)//8)
@@ -298,17 +327,18 @@ def work(a):
         status.get("actual_bytes") != CHECKPOINT_BYTES or a.checkpoint.stat().st_size != CHECKPOINT_BYTES or
         Path(status["path"]).resolve() != a.checkpoint.resolve()):
         raise ValueError("Checkpoint differs from the verified official asset receipt")
-    report = dict(state="RUNNING", episodes=0, expected=len(rows), checkpoint=str(a.checkpoint),
+    report = dict(state="RUNNING", episodes=len(completed), expected=len(rows), checkpoint=str(a.checkpoint),
                   checkpoint_sha256=CHECKPOINT_SHA256, manifest_sha256=sha256(a.manifest),
                   source_sha256=sha256(__file__), canvas=CANVAS, ratio=RATIO, precision="fp32",
                   memory_fraction=a.memory_fraction, query_annotation_opened=False, protocol=protocol(),
                   candidate_worst_case_packed_bytes=candidate_worst, candidate_budget_bytes=a.candidate_budget_bytes,
                   candidate_geometry="query crop only; legal reference intersections computed before GT",
                   reused_prefix_episodes=len(reusable), reused_from=str(a.reuse_predictions_from) if reusable else None)
+    report["resumed_complete_cases"] = len(completed)
     start = time.monotonic()
 
     def save():
-        report["elapsed_s"] = time.monotonic() - start
+        report["elapsed_s"] = time.monotonic()-start+(previous.get("elapsed_s",0.) if previous else 0.)
         (out / ("report_shard%d.json" % a.shard[0])).write_text(json.dumps(report, indent=1))
     save()
     try:
@@ -328,10 +358,10 @@ def work(a):
         run = Runner(Sam3Processor(model, device="cuda", confidence_threshold=.5))
         report["model_load_s"] = time.monotonic()-model_start
         data, ann = Path(man["data_root"]), Path(man["annotation_root"])
-        prediction_files = []
+        prediction_files = [asset for rec in completed for asset in rec["prediction_assets"]]
         inference_start = time.monotonic()
         with open(stream_path, "a") as stream, torch.inference_mode():
-            for i, row in rows:
+            for i, row in rows[len(completed):]:
                 c = row["c"]
                 begin = time.monotonic()
                 key = (row["fold"], row["e"], c)
@@ -356,8 +386,8 @@ def work(a):
                 np.savez_compressed(mask_path, visual=packed["visual"], text=packed["text"], shape=np.array(rec["query_shape"]))
                 np.savez_compressed(candidate_path, proposal_query=packed["proposal_query"])
                 rec["prediction_file"], rec["candidate_file"] = str(mask_path.relative_to(out)), str(candidate_path.relative_to(out))
-                for path in (mask_path, candidate_path):
-                    prediction_files.append(dict(path=str(path.relative_to(out)), bytes=path.stat().st_size, sha256=sha256(path)))
+                rec["prediction_assets"] = [dict(path=str(path.relative_to(out)),bytes=path.stat().st_size,sha256=sha256(path)) for path in (mask_path,candidate_path)]
+                prediction_files.extend(rec["prediction_assets"])
                 stream.write(json.dumps(rec) + "\n")
                 stream.flush()
                 report["episodes"] += 1
@@ -365,7 +395,9 @@ def work(a):
                 save()
                 print("%d/%d inference; %.2fs this episode" % (report["episodes"], len(rows), rec["seconds"]), flush=True)
         report["inference_s"] = time.monotonic()-inference_start
-        report["mean_episode_s"] = report["inference_s"]/max(len(rows)-len(reusable), 1)
+        new_count = sum((r["fold"],r["e"],r["c"]) not in reusable for _,r in rows[len(completed):])
+        report["mean_episode_s"] = report["inference_s"]/max(new_count,1)
+        report["new_inferred_cases"] = new_count
         receipt = dict(state="PREDICTIONS_FROZEN", shard=list(a.shard), episodes=len(rows),
                        manifest_sha256=report["manifest_sha256"], source_sha256=report["source_sha256"],
                        query_annotation_opened=False, arms=list(ARMS), prediction_files=prediction_files,
@@ -587,9 +619,10 @@ def merge(a):
                                                            correlation=float(np.corrcoef(fi, si)[0, 1]) if len(both) > 2 else 0.0)
     # the ledger of the visual arm: where the lost intersection-over-union goes
     iou = lambda r: r["original_iu"]["visual"][0] / max(r["original_iu"]["visual"][1], 1)
-    kinds = dict(nothing_kept=lambda r: r["kept"]["visual"] == 0, kept_but_no_overlap=lambda r: r["kept"]["visual"] > 0 and r["original_iu"]["visual"][0] == 0,
+    kinds = dict(nothing_kept=lambda r: r["pred_area"]["visual"] == 0, kept_but_no_overlap=lambda r: r["pred_area"]["visual"] > 0 and r["original_iu"]["visual"][0] == 0,
                  too_much=lambda r: iou(r) > 0 and r["pred_area"]["visual"] > 1.5 * r["truth_area"], too_little=lambda r: iou(r) > 0 and r["pred_area"]["visual"] < r["truth_area"] / 1.5)
     rep["ledger"] = {k: dict(episodes=int(sum(map(f, recs))), mean_iou=float(np.mean([iou(r) for r in recs if f(r)] or [0]) * 100)) for k, f in kinds.items()}
+    rep["ledger"]["canvas_kept_but_query_empty"] = int(sum(r["kept"]["visual"]>0 and r["pred_area"]["visual"]==0 for r in recs))
     rep["ledger"]["mean_episode_iou"] = float(np.mean([iou(r) for r in recs]) * 100) if recs else 0.0
     # Actual kept-mask UNION, not a sum of overlapping/truncated proposal areas.
     def reference_iou(r):
@@ -686,6 +719,7 @@ def main():
     p.add_argument("--score", action="store_true", help="CPU only, after whole-stage PREDICTIONS_FROZEN")
     p.add_argument("--preflight", action="store_true", help="CPU paired UID/header contract; no annotation pixels/model")
     p.add_argument("--reuse-predictions-from", type=Path, help="exact engineering smoke prefix, not scored records")
+    p.add_argument("--resume", action="store_true", help="same-code verified completed-case prefix; preserve old errors")
     p.add_argument("--keep-candidates", action="store_true", help="CPU score smoke: retain prefix candidates until DEV reuse")
     p.add_argument("--candidate-budget-bytes", type=int, default=2*1024**3)
     p.add_argument("--fixture", action="store_true")
