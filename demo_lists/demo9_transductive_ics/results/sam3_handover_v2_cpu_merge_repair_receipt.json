@@ -1,0 +1,72 @@
+{
+ "state": "CPU_MERGE_REPAIRED_COMPLETED",
+ "episodes": 10,
+ "root_cause": "report_shard*.json included preserved report_shard0.before_score_resume PREDICTIONS_FROZEN snapshot",
+ "patch": "anchored canonical filename match; historical snapshots excluded but preserved",
+ "GPU_or_model_rerun": false,
+ "query_GT_rescored": false,
+ "original_prediction_source_sha256": "276a53fd8c5fd1fa45ce64317b695c22feef247ee25f3bade14b7587cedbc07d",
+ "aggregation_source_sha256": "ac94e2df9425963b64c20c9ae2e2e406e5f46ab3c4b1a0d075472c414cfe8b07",
+ "frozen_GPU_and_score_script": "/root/autodl-tmp/demo9_transductive_ics/scripts/sam3_stitch_gpu_v2.py",
+ "frozen_script_sha256": "276a53fd8c5fd1fa45ce64317b695c22feef247ee25f3bade14b7587cedbc07d",
+ "aggregate_report_sha256": "e4252372c61437bb668783cba987f72696140156e2ca731c7b91d0d8719215af",
+ "ignored_historical_reports": [
+  "report_shard0.before_score_resume_1791050015014200740.json"
+ ],
+ "original_failed_log_preserved": true,
+ "visual_class_miou": 70.95916934343002,
+ "text_class_miou_privileged_diagnostic": 75.14209769876553,
+ "paired_foris": {
+  "episodes": 10,
+  "foris": 66.43291714306903,
+  "exact_full_episode_and_SQ_coverage": true,
+  "same_original_image_dimensions": true,
+  "visual": {
+   "miou": 70.95916934343002,
+   "gain": 4.526252200360986,
+   "ci95": [
+    -16.58536838989286,
+    25.63991282176019
+   ],
+   "bootstrap_unit": "connected support/query photograph groups",
+   "groups": 10,
+   "largest_group": 1,
+   "draws": 2000
+  },
+  "text": {
+   "miou": 75.14209769876551,
+   "gain": 8.709180555696477,
+   "ci95": [
+    1.7470600454030603,
+    14.921898680183894
+   ],
+   "bootstrap_unit": "connected support/query photograph groups",
+   "groups": 10,
+   "largest_group": 1,
+   "draws": 2000
+  },
+  "better_of_visual_and_foris_per_episode_LABELS": {
+   "miou": 82.53593362831457,
+   "gain": 16.103016485245533,
+   "ci95": [
+    2.081003753832773,
+    28.03967819075458
+   ],
+   "bootstrap_unit": "connected support/query photograph groups",
+   "groups": 10,
+   "largest_group": 1,
+   "draws": 2000
+  },
+  "episodes_by_outcome": {
+   "both_above_half": 6,
+   "only_foris": 2,
+   "only_sam3": 2,
+   "neither": 0,
+   "correlation": -0.04474233169571901
+  }
+ },
+ "smoke_scope": "first10 engineering/dev only, fold0; not a method score or fourfold evidence",
+ "inference_seconds": 8.297273023985326,
+ "mean_episode_seconds": 0.8297273023985327,
+ "model_load_seconds": 13.443292496027425
+}
