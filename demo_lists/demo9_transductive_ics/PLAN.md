@@ -1085,3 +1085,20 @@ COCO-20i 官方掩码、LVIS-92i、PASCAL-Part、PACO-Part、FSS-1000，以及�
 | G2 | E2、E6：FoRIS 上四折为正；标注成本等价关系 | 只在 INSID3 上成立：降级为 INSID3 的改进，重新评估是否够投稿 |
 | G3 | E7：至少 4 个数据集上为正 | 只有 COCO 成立：不投主会 |
 | G4 | E5 + 论文初稿 | — |
+## Current user priority: document F4 validation, then repaired SAM3
+
+The latest user supplied `Downloads/零训练FoRIS改进_精简决策稿.md` and `单参考零训练分割_方法审阅稿_20261003.md`. The compact final specification selects seven comparisons, not95 independent experiments: complete native, native-projected anchor only, full001, per-FG002, exposure/slot-matched global bank, independent004 and the exact previous query-core deletion. This source specification supersedes the earlier anchor-free prototype. Source implementation and bounded SERVER-only CPU validation are in progress; no F4 task score exists. The paid GPU is OFF; E44 is running in no-card mode for preparation. No download, training or local numerical experiment is started.
+
+One real SAM3 smoke attempted under the previous A/B queue:0/10 predictions, model load10.35s, runtime12.52s, guard requested provider shutdown at18.80s. The official `sam3/perflib/fused.py` forces BF16 in `addmm_act`; the next vision-MLP linear layer had FP32 weights. This is an implementation/precision failure, not a segmentation result. Preserve `results/sam3_handover_v1/{execute.log,A_smoke_0.log,pipeline_status.json}` and its ERROR receipt. Repair only the owned model-instance MLP arithmetic to remain FP32; do not alter vendor/global code, switch to mixed precision, or resume across source identities. Real-model inference remains unverified.
+
+F4 uses the exact native Stage2 source roles and the actual two query streams. Its seven predictions share native encoding; preserve original FG field, modes, denoised votes, seeds and grouping; replace the specified BG evidence and recompute complete Part4/CRF. 004 changes only Part4 BG scale; G performs the old final-native deletion without a second CRF. D keeps every C direction. E matches independent BG-token exposure and each branch's added prototype slots; report remaining aggregation/cut/effective-direction differences.
+
+Frozen first card:
+1. Assumption: native global counterevidence confuses some foreground modes; conditional counterevidence or source-role calibration changes those complete mask decisions.
+2. Hypothesis predictions, not measured gains or winning probabilities: C−native at least+1pp; D−C and D−E at least+.3pp; independent F−native at least+.5pp. Native first8 masks differ in0pixels, D has0 Stage2 monotonicity violations within FP32 tolerance, and exact G should reproduce the old DEV241 +.4560pp. The expanded research target remains a task gain of about5pp or a material quality/cost advantage.
+3. Match: use DEV only to retain the simplest supported mechanism; conditional coverage requires D beating BOTH C and matched E. Freeze the complete arm/ties/fallback/precision before any genuinely unexamined cohort.
+4. Mismatch: a source/geometry/native gate failure stops for repair and preserves evidence. C not beating B withdraws the extra-bank claim; D not beating E withdraws conditional-selection attribution; F-only success is calibration; complexity not beating G is not expanded. Do not tune banks/thresholds on confirmation labels.
+
+The first batch is8 old DEV episodes,2 per fold, followed by the complete241 if the implementation gates hold. These are development evidence. Old CONFIRM600 was already examined and must not be called fresh. New confirmation needs a frozen metadata-only all-role photo-exposure audit, excluding registered old support/query/pool photos; query PNG pixels stay unopened until the selected method's predictions freeze. Unexamined cohort availability is not yet verified.
+
+Prepare the finite queued steps and the next SAM3 stage before renting GPU; do not revive closed matrices or create filler load. Current modules: `tics/f4_conditional.py`, `tics/f4_calibration.py`, `scripts/f4_experiment.py`. CPU/source acceptance is pending; a written source file is not a ready or positive method claim. Overall goal remains active.

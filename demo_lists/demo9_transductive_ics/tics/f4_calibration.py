@@ -124,6 +124,7 @@ def run004(ctx, evidence=None):
         if len(calls) != 1:
             raise RuntimeError("004 complete source Part4 intervention missing")
     unchanged = _stage_identity(ctx.native, result)
+    result["stages"]["part4_sbn_used"] = field.detach().clone()
     result["audit"] = {**result.get("audit", {}), **audit, "arm": "F4-004",
                        "unchanged_source_stages": unchanged, "Part4_only": True,
                        "extra_encoder_calls": 0, "query_GT_used": False,
@@ -166,6 +167,8 @@ def query_core_field(native_work_mask, raw_native):
 def query_core_remove(ctx):
     """Arm G: edit final working mask, retaining the native source score as metadata."""
     native = ctx.native
+    if tuple(native["mask"].shape) != tuple(ctx.work_hw):
+        raise ValueError("G requires the original native FINAL WORKING mask, not an original-grid proxy")
     margin, audit = query_core_field(native["mask"], ctx.raw_native)
     if margin is None:
         output = native["mask"].clone()
@@ -175,7 +178,7 @@ def query_core_remove(ctx):
         output = native["mask"] & (enlarged > 0)
     if bool((output & ~native["mask"]).any()):
         raise RuntimeError("G must only delete on the final working grid")
-    return dict(mask=output, score=native["score"].clone(), stages=native["stages"],
+    return dict(mask=output, score=native["score"].clone(), stages=dict(native["stages"]),
                 part1=native["part1"], margin=margin,
                 audit={**audit, "arm": "query_core_remove", "query_GT_used": False,
                        "extra_encoder_calls": 0, "added_work_pixels": 0,
