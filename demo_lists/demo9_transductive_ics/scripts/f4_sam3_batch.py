@@ -258,8 +258,13 @@ def run_body(a):
             background = subprocess.Popen(analyze, cwd=plan["root"], stdout=background_log, stderr=background_log)
             emit("F4_CPU_ANALYSIS_BACKGROUND", pid=background.pid, GPU_next="SAM3_A_B")
             # No nested guard and no raised A/B safety fraction or budget.
-            command([plan["python"], str(Path(plan["root"]) / "scripts/sam3_handover_pipeline.py"),
-                     "run-body", "--plan", plan["ab_plan"], "--out", plan["ab_out"]], "SAM3_A_B")
+            ab_failure = None
+            try:
+                command([plan["python"], str(Path(plan["root"]) / "scripts/sam3_handover_pipeline.py"),
+                         "run-body", "--plan", plan["ab_plan"], "--out", plan["ab_out"]], "SAM3_A_B")
+            except (RuntimeError, subprocess.TimeoutExpired) as exc:
+                ab_failure = exc
+                emit("A_B_STOPPED_F4_EVIDENCE_PRESERVED", detail=str(exc))
             try: analysis_rc = background.wait(timeout=max(.01, min(60, remaining())))
             except subprocess.TimeoutExpired:
                 background.terminate(); analysis_rc = None
@@ -277,17 +282,51 @@ def run_body(a):
                 if selection_path.exists() and read(selection_path) != selection: raise RuntimeError("Frozen primary selection drift")
                 write(selection_path, selection)
                 emit(selection["state"], primary=selection["primary"], selection_sha256=sha(selection_path))
-                if selection["primary"] and confirmation:
+                if selection["primary"] and confirmation and ab_failure is None:
                     # The registered helper checks the single-primary freeze. Its
                     # output is evaluated against that primary, never re-selected.
                     command([plan["python"], confirmation["helper"], "--run", "--allow-gpu",
                              "--manifest", confirmation["manifest"], "--selection", str(selection_path),
                              "--cpu-receipt", plan["cpu_receipt"], "--out", confirmation["out"],
                              "--budget-seconds", str(max(1, int(remaining()))), "--resume"], "F4_registered_confirmation160")
-                elif selection["primary"]:
+                    fresh = read(confirmation["manifest"])
+                    fresh_report = Path(confirmation["out"]) / "report.json"
+                    # rc=0 can also mean COMPLETED_FINITE_BUDGET; count160 is
+                    # verified explicitly before any full-confirmation claim.
+                    try:
+                        check_f4_report(read(fresh_report), fresh, confirmation["manifest_sha256"], 160)
+                    except RuntimeError as exc:
+                        raise subprocess.TimeoutExpired("F4_confirmation160_incomplete: " + str(exc), plan["hard_cap_seconds"])
+                    write(out / "F4_confirmation160_completion.json", {"state": "F4_COMPLETE160_NATIVE_EXACT", "episodes": 160,
+                              "report_sha256": sha(fresh_report), "selection_sha256": sha(selection_path),
+                              "primary": selection["primary"], "no_primary_reselection": True})
+                    command([plan["python"], str(Path(plan["root"]) / "scripts/f4_experiment.py"),
+                             "--analyze", "--manifest", confirmation["manifest"], "--out", confirmation["out"]],
+                            "F4_confirmation160_analysis", maximum=60)
+                    result_path = Path(confirmation["out"]) / "analysis.json"; result = read(result_path)
+                    if result.get("episodes") != 160 or result.get("expected_episodes") != 160:
+                        raise RuntimeError("Full 160-case analysis required")
+                    primary = selection["primary"]
+                    supported = (comparison_pass(result, primary, "native", 2.0, 3) and
+                                 all(comparison_pass(result, primary, naive) for naive in selection["naive"]))
+                    write(out / "confirmation_primary_report.json", {
+                        "state": "FROZEN_PRIMARY_SUPPORTED" if supported else "FROZEN_PRIMARY_NOT_SUPPORTED",
+                        "primary": primary, "selection_sha256": sha(selection_path), "analysis_sha256": sha(result_path),
+                        "primary_vs_native": result["comparisons"][primary + "__minus__native"],
+                        "primary_vs_frozen_naive": {naive: result["comparisons"][primary + "__minus__" + naive]
+                                                    for naive in selection["naive"]},
+                        "episodes": 160, "all_historical_unseen_claim": False,
+                        "no_primary_reselection": True, "publication_goal_complete": False})
+                    emit("F4_CONFIRMATION160_COMPLETED", primary=primary, supported=supported)
+                elif selection["primary"] and not confirmation:
                     write(out / "confirmation_hold.json", {"state": "HOLD_REGISTERED_CONFIRMATION_NOT_PREPARED",
                                                             "primary": selection["primary"], "no_fake_unseen_flags": True})
                     emit("HOLD_REGISTERED_CONFIRMATION_NOT_PREPARED", primary=selection["primary"])
+                elif not selection["primary"]:
+                    write(out / "confirmation_not_started.json", {"state": "NOT_STARTED_NO_EXPANSION", "GPU_started": False,
+                              "selection_sha256": sha(selection_path), "reason": selection["reason"]})
+            if ab_failure is not None: raise ab_failure
+            if analysis_rc != 0: raise RuntimeError("F4 CPU analysis held; A/B completed and retained")
             emit("COMPLETED", automatic_new_stages=False, shutdown_owner="outer_guard",
                  confirmation_status="Conditional registered stop or frozen single-primary result; see selection/hold artifacts")
             return 0
