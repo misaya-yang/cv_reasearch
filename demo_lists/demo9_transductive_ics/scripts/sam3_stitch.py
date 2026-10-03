@@ -134,6 +134,8 @@ class Runner:
         masks = state["masks"]
         union = masks[:, 0].any(0) if masks.shape[0] else torch.zeros((CANVAS, CANVAS), dtype=torch.bool, device=masks.device)
         out = seen["out"]
+        if any(out[name].dtype != torch.float32 for name in ("pred_logits", "pred_masks", "presence_logit_dec")):
+            raise RuntimeError("Public SAM3 output precision differs from declared FP32")
         prob = (out["pred_logits"].sigmoid() * out["presence_logit_dec"].sigmoid().unsqueeze(1)).squeeze(-1)[0]
         top = prob.argsort(descending=True, stable=True)[:KEEP]
         raw = torch.nn.functional.interpolate(out["pred_masks"][0, top][:, None].float(), (CANVAS, CANVAS), mode="bilinear", align_corners=False)[:, 0] > 0
@@ -307,6 +309,8 @@ def work(a):
     from PIL import Image
     if not a.unguarded and os.environ.get("DEMO9_CUDA_GUARD") != "1":
         raise SystemExit("run under scripts/experiment_resource_guard.py, or pass --unguarded")
+    if a.memory_fraction != .3:
+        raise ValueError("This finite SAM3 recipe fixes memory fraction0.3; no implicit cap changes")
     man = json.loads(Path(a.manifest).read_text())
     out = Path(a.out)
     (out / "masks").mkdir(parents=True, exist_ok=True)
@@ -424,32 +428,53 @@ def score(a):
     rec_path = out / ("predictions_shard%d.jsonl" % a.shard[0])
     stream_path = out / ("episodes_shard%d.jsonl" % a.shard[0])
     report, freeze = json.loads(report_path.read_text()), json.loads(freeze_path.read_text())
-    if stream_path.exists() or report["state"] != "PREDICTIONS_FROZEN":
-        raise ValueError("Fresh scoring output and PREDICTIONS_FROZEN required")
+    if report["state"] == "COMPLETED" and a.resume:
+        if (report.get("scored_jsonl_sha256") != sha256(stream_path) or
+            freeze["manifest_sha256"] != sha256(a.manifest) or freeze["source_sha256"] != sha256(__file__) or
+            report["prediction_freeze_sha256"] != sha256(freeze_path) or freeze["predictions_jsonl_sha256"] != sha256(rec_path)):
+            raise ValueError("Completed scoring ledger changed")
+        for asset in freeze["prediction_files"]:
+            if asset["path"].startswith("masks/") and sha256(out/asset["path"]) != asset["sha256"]:
+                raise ValueError("Completed prediction mask changed")
+        print(json.dumps(dict(state="COMPLETED", reused_existing_scoring=True, query_GT_reopened=False)))
+        return
+    if report["state"] not in (("PREDICTIONS_FROZEN", "SCORING", "ERROR_SCORING") if a.resume else ("PREDICTIONS_FROZEN",)):
+        raise ValueError("Frozen inference or explicitly resumed failed scoring required")
+    if stream_path.exists() and not a.resume:
+        raise ValueError("Existing score ledger preserved; use explicit --resume")
     if (freeze["state"] != "PREDICTIONS_FROZEN" or freeze["query_annotation_opened"] is not False or
         freeze["manifest_sha256"] != sha256(a.manifest) or freeze["predictions_jsonl_sha256"] != sha256(rec_path) or
-        report["prediction_freeze_sha256"] != sha256(freeze_path)):
+        report["prediction_freeze_sha256"] != sha256(freeze_path) or freeze["source_sha256"] != sha256(__file__)):
         raise ValueError("Prediction identity or query-GT embargo failed")
     recs = [json.loads(line) for line in rec_path.read_text().splitlines() if line]
     expected = [(r["fold"], r["e"], r["c"], r["support"], r["query"]) for _, r in rows]
     observed = [(r["fold"], r["e"], r["c"], r["support"], r["query"]) for r in recs]
     if observed != expected or freeze["episodes"] != len(rows):
         raise ValueError("Frozen episode scope differs from manifest")
+    scored_prefix = [json.loads(line) for line in stream_path.read_text().splitlines() if line] if stream_path.exists() else []
+    scored_keys = [(r["fold"],r["e"],r["c"],r["support"],r["query"]) for r in scored_prefix]
+    if len(scored_prefix)>len(recs) or scored_keys != expected[:len(scored_prefix)]:
+        raise ValueError("Partial score ledger is not an exact frozen prefix")
+    scored_candidates = {r["candidate_file"] for r in scored_prefix}
     expected_assets = [r[k] for r in recs for k in ("prediction_file", "candidate_file")]
     observed_assets = [r["path"] for r in freeze["prediction_files"]]
     if len(observed_assets) != len(set(observed_assets)) or sorted(observed_assets) != sorted(expected_assets):
         raise ValueError("Freeze does not cover every arm/candidate file exactly once")
     for asset in freeze["prediction_files"]:
         path = out / asset["path"]
+        if not path.exists() and asset["path"] in scored_candidates:
+            continue  # interrupted cleanup after this case was already scored
         if path.stat().st_size != asset["bytes"] or sha256(path) != asset["sha256"]:
             raise ValueError("Frozen prediction asset changed: "+str(path))
     # All preceding validation is annotation-free. Query annotations open ONLY NOW.
     start = time.monotonic()
+    if a.resume:
+        report_path.with_name(report_path.stem+".before_score_resume_"+str(time.time_ns())+".json").write_text(json.dumps(report,indent=1))
     report.update(state="SCORING", query_annotation_opened=True, all_predictions_frozen_before_first_query_annotation=True)
     report_path.write_text(json.dumps(report, indent=1))
     try:
-        with open(stream_path, "x") as stream:
-            for rec in recs:
+        with open(stream_path, "a" if stream_path.exists() else "x") as stream:
+            for rec in recs[len(scored_prefix):]:
                 truth = np.asarray(Image.open(Path(man["annotation_root"]) / Path(rec["query"]).with_suffix(".png"))) == rec["c"]+1
                 with np.load(out / rec["prediction_file"], allow_pickle=False) as masks, np.load(out / rec["candidate_file"], allow_pickle=False) as candidates:
                     packed = {arm: masks[arm] for arm in ARMS}
@@ -459,21 +484,56 @@ def score(a):
         removal = []
         for asset in freeze["prediction_files"]:
             if asset["path"].startswith("candidates/") and not a.keep_candidates:
-                (out / asset["path"]).unlink()
-                removal.append(asset)
+                path = out/asset["path"]
+                if path.exists():
+                    path.unlink(); removal.append(asset)
         cleanup = dict(state="SCORING_TEMPORARIES_RETAINED_FOR_REUSE" if a.keep_candidates else "SCORING_TEMPORARIES_REMOVED", removed=removal,
                        released_bytes=sum(x["bytes"] for x in removal),
                        freeze_receipt_sha256=sha256(freeze_path), scalar_ledger_sha256=sha256(stream_path),
                        masks_preserved=True, arbitrary_new_candidate_rules_not_reconstructible=True)
         (out / ("candidate_cleanup_shard%d.json" % a.shard[0])).write_text(json.dumps(cleanup, indent=1))
         report.update(state="COMPLETED", scored_episodes=len(recs), score_elapsed_s=time.monotonic()-start,
-                      candidate_released_bytes=cleanup["released_bytes"], ledger_exact_unions=True)
+                      candidate_released_bytes=cleanup["released_bytes"], ledger_exact_unions=True,
+                      scored_jsonl_sha256=sha256(stream_path))
     except BaseException as err:
         report.update(state="ERROR_SCORING", error=repr(err))
         raise
     finally:
         report_path.write_text(json.dumps(report, indent=1))
     print(json.dumps(dict(state=report["state"], episodes=len(recs), freeze_before_query_GT=True, candidate_released_bytes=report["candidate_released_bytes"])))
+
+
+def cleanup_candidates(a):
+    """Own scoring-only temporaries; masks/ledgers/source evidence stay intact."""
+    out = Path(a.out)
+    freeze_path = out/("prediction_freeze_shard%d.json"%a.shard[0])
+    freeze = json.loads(freeze_path.read_text())
+    report = json.loads((out/("report_shard%d.json"%a.shard[0])).read_text())
+    ledger = out/("episodes_shard%d.jsonl"%a.shard[0])
+    if report["state"] != "COMPLETED" or report.get("scored_jsonl_sha256") != sha256(ledger):
+        raise ValueError("Cleanup needs unchanged complete score ledger")
+    receipt_path = out/("candidate_cleanup_after_reuse_shard%d.json"%a.shard[0])
+    if receipt_path.exists():
+        old = json.loads(receipt_path.read_text())
+        if (old["freeze_receipt_sha256"] != sha256(freeze_path) or old["scalar_ledger_sha256"] != sha256(ledger) or
+            any((out/x["path"]).exists() for x in old["removed"])):
+            raise ValueError("Previous candidate cleanup identity changed")
+        print(json.dumps(dict(state=old["state"],already_completed=True,released_bytes=old["released_bytes"])))
+        return
+    removed = []
+    for asset in freeze["prediction_files"]:
+        if not asset["path"].startswith("candidates/"):
+            continue
+        path = out/asset["path"]
+        if path.exists():
+            if path.stat().st_size != asset["bytes"] or sha256(path) != asset["sha256"]:
+                raise ValueError("Candidate asset identity changed before cleanup")
+            path.unlink(); removed.append(asset)
+    receipt = dict(state="SCORING_TEMPORARIES_REMOVED", removed=removed,
+                   released_bytes=sum(x["bytes"] for x in removed), masks_preserved=True,
+                   freeze_receipt_sha256=sha256(freeze_path), scalar_ledger_sha256=sha256(ledger))
+    receipt_path.write_text(json.dumps(receipt,indent=1))
+    print(json.dumps(dict(state=receipt["state"], released_bytes=receipt["released_bytes"])))
 
 
 def class_miou(recs, arm):
@@ -718,6 +778,7 @@ def main():
     p.add_argument("--merge", action="store_true")
     p.add_argument("--score", action="store_true", help="CPU only, after whole-stage PREDICTIONS_FROZEN")
     p.add_argument("--preflight", action="store_true", help="CPU paired UID/header contract; no annotation pixels/model")
+    p.add_argument("--cleanup-candidates", action="store_true", help="CPU own smoke candidate cleanup after DEV reuse")
     p.add_argument("--reuse-predictions-from", type=Path, help="exact engineering smoke prefix, not scored records")
     p.add_argument("--resume", action="store_true", help="same-code verified completed-case prefix; preserve old errors")
     p.add_argument("--keep-candidates", action="store_true", help="CPU score smoke: retain prefix candidates until DEV reuse")
@@ -727,9 +788,9 @@ def main():
     a = p.parse_args()
     if a.fixture:
         fixture()
-    if sum((a.merge, a.score, a.preflight)) > 1:
-        p.error("choose one of --merge/--score/--preflight")
-    (preflight if a.preflight else merge if a.merge else score if a.score else work)(a)
+    if sum((a.merge, a.score, a.preflight, a.cleanup_candidates)) > 1:
+        p.error("choose one CPU mode")
+    (cleanup_candidates if a.cleanup_candidates else preflight if a.preflight else merge if a.merge else score if a.score else work)(a)
 
 
 if __name__ == "__main__":

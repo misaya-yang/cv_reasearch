@@ -87,12 +87,16 @@ def check_paired_manifest(manifest, baseline_file):
 def decision(a_report, b_report, success_iou=0.5):
     """PLAN C only writes next decisions. It cannot launch a new experiment."""
     paired = a_report["against_foris"]
-    gain = float(paired["gain"])
-    lo, hi = map(float, paired["ci95"])
+    visual = paired.get("visual", paired)
+    gain = float(visual["gain"])
+    lo, hi = map(float, visual["ci95"])
     n = int(paired["episodes"])
     if n != int(a_report["episodes"]) or n <= 0:
         raise ValueError("A needs the complete paired cohort")
-    counts = paired["outcome_counts"]
+    counts = paired.get("outcome_counts", paired.get("episodes_by_outcome"))
+    if counts is None:
+        raise ValueError("Paired outcome counts required")
+    counts = {**counts, "both": counts.get("both", counts.get("both_above_half", 0))}
     exclusive = int(counts["only_foris"]) + int(counts["only_sam3"])
     if sum(int(counts[k]) for k in ("only_foris", "only_sam3", "both", "neither")) != n:
         raise ValueError("Outcome counts do not cover the cohort")
@@ -131,9 +135,14 @@ def estimate(smoke_a, smoke_b, total_a, total_b):
     """Measured same-worker smoke only. An estimate is not a timing claim."""
     values = []
     for report, count in ((smoke_a, total_a), (smoke_b, total_b)):
-        n = int(report.get("new_predictions", report.get("episodes", 0)))
+        n = int(report.get("new_predictions", report.get("new_episodes", report.get("episodes", 0))))
         elapsed = float(report.get("prediction_elapsed_s", report.get("elapsed_s", 0)))
         load = float(report.get("model_load_s", 0))
+        if n <= 0 and report.get("new_episode_seconds"):
+            # A recovered freeze may have no new work; its per-case GPU timings
+            # remain available, rather than treating the metadata replay as fast.
+            samples = [float(v) for v in report["new_episode_seconds"]]
+            n, elapsed = len(samples), sum(samples) + load
         if n <= 0 or elapsed <= 0:
             raise ValueError("Both same-configuration smoke timings are required")
         values.append(max(0.0, elapsed - load) / n * max(0, count - n) + 2 * load)
@@ -251,8 +260,8 @@ def run_body(plan_path, out):
             b = read_json(plan["stages"]["B_confirm"]["completion"])
             write_json(out / "decision.json", decision(a, b))
             emit("COMPLETED", next_stage="USER_REVIEW_OF_A_B", automatic_new_stages=False)
-        except (Halt, subprocess.TimeoutExpired) as exc:
-            state = exc.state if isinstance(exc, Halt) else "RESOURCE_INCOMPLETE"
+        except Exception as exc:
+            state = exc.state if isinstance(exc, Halt) else ("RESOURCE_INCOMPLETE" if isinstance(exc, subprocess.TimeoutExpired) else "PIPELINE_ERROR")
             emit(state, detail=str(exc), failed_artifacts_preserved=True)
             return 75 if state.startswith("HOLD_") else 2
     return 0
@@ -280,7 +289,10 @@ def cpu_checks():
     assert photo_uid("COCO_val2014_000000123456.jpg") == photo_uid("123456.jpg")
     budget = estimate({"episodes": 10, "elapsed_s": 20}, {"episodes": 10, "elapsed_s": 10}, 841, 841)
     assert budget["remaining_estimate_seconds"] == 2493
-    return {"state": "CPU_PIPELINE_CONTRACTS_PASSED", "checks": 7,
+    budget2 = estimate({"new_episodes": 10, "elapsed_s": 20}, {"new_episodes": 0, "model_load_s": 0,
+                       "new_episode_seconds": [1]*10}, 841, 841)
+    assert budget2["remaining_estimate_seconds"] == 2493
+    return {"state": "CPU_PIPELINE_CONTRACTS_PASSED", "checks": 8,
             "GPU_used": False, "shutdown_called": False, "not_a_task_quality_result": True}
 
 
@@ -295,6 +307,7 @@ def main():
     args = p.parse_args()
     if args.mode == "cpu-check":
         result = cpu_checks()
+        result["source_sha256"] = sha(__file__)
         write_json(args.out, result)
         print(json.dumps(result))
         return 0
