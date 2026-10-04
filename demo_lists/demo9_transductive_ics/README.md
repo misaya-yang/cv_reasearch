@@ -3,9 +3,7 @@
 任务：COCO-20i 单样本上下文分割。一张带掩码的参考图，一张查询图，冻结的 DINOv3 ViT-L/16。
 对手：INSID3（CVPR 2026 oral，57.6）、FoRIS（60.9）及后续工作。
 
-做法：匹配不动（完整公开的 FoRIS），只学习"在哪里下判断"。一个约 10 万权重、与类别无关的小读出，
-输入是成对证据图，输出加在 FoRIS 的分数上，初始恰好等于 FoRIS 自己的掩码。理论见 [HANDOFF.md](HANDOFF.md)，
-下一步实验见 [PLAN.md](PLAN.md)。
+当前确认的读出在冻结 FoRIS 分数上加一项，约 104k 参数。它推理时不输入类别名，但用基类 mask 监督拟合；这是 FoRIS 输出校正，不属于用户要求的独立方法。当前文献对照见 [`docs/reference/ladder.md`](../../docs/reference/ladder.md)，方向理论和历史失败见 [HANDOFF.md](HANDOFF.md)，未排期事项见 [PLAN.md](PLAN.md)。
 
 ## 已确认的数
 
@@ -94,6 +92,36 @@
 | 180 个 episode 拟合读出，不从宿主起步 | −3.4 | 过拟合；需要从宿主起步和留出类别早停 |
 | 文档 F4 七个臂 | 57.75（−1.37 [−2.70, −0.30]）、58.14、58.19；查询核心 59.58 | 没有臂过线 |
 | SAM3 负例挖掘（200 个官方 episode） | 56.22 对 59.93，−3.71 [−5.45, −0.43] | 明确为负 |
+
+### 2026-10-04：D1/T2 用户报告
+
+以下新数值来自用户更新的 STATUS/README，不是本次从原始报告重算的读数。服务器原始目录报告为 `/root/autodl-tmp/demo9_extent/results/decision_pivot_v1`；该目录中的 JSON 未在当前 checkout。本次只读 SSH 成功取回一份独立的 SAM3 JSONL；较大的缓存流在传输中关闭。因此 D1/T2 的臂级数字和协议细节仍待原始报告核对，不据此增添精确臂级结论。
+
+| 试了什么 | 结果 | 教训 |
+|---|---|---|
+| 读出只用自造样本对拟合（D1，DEV241，patch 级） | 用户报告三个卷积臂落后约 7–28 点；更细臂级原始数值未在此 checkout | 仅否定这次构造与设定；“同一实例/占比分布不同”是待复核的解释，不是已证明原因 |
+| COCO 上拟合的读出不重训，搬到 PASCAL-Part | 用户报告 +0.97，95% CI 跨零；例数/区间端点待原始报告核对 | 未定；将其解释为 COCO 校准是推测 |
+| 同上，PACO-Part | 用户报告 +0.08，95% CI 跨零；例数/区间端点待原始报告核对 | 未定；不据此声称可迁移或不迁移 |
+
+用户报告原始结果目录为服务器 `/root/autodl-tmp/demo9_extent/results/decision_pivot_v1`。LVIS、SUIM、肺部三个包没有完成。结论仅是：基类监督读出属于 FoRIS 输出校正，不是独立方法；本次 D1 构造失败且两项 T2 区间跨零。不要推广为所有无标注学习不可能或任何迁移都失败。
+
+### 2026-10-04：SAM3 proposal 相对筛选（已读取的保存报告）
+
+`relative_0.7` 在 DEV241 冻结；测试时从视觉臂的 top-20 proposals 中取 query crop 内非空 proposals，并保留满足 `score >= 0.7 × 该 episode 的 query proposal 最高分` 的项。规则使用图像内候选分数和 query 几何，不读 query 标注。官方 scorer 的 proposal score 是 `sigmoid(pred_logits) × sigmoid(presence_logit_dec)`；presence 项对同一 canvas 的候选共用，在相对比较中抵消。它仍然是对同一 SAM3 proposal 排序/分数做每图归一化，没有独立视觉表征或外部验证信号。掩码在 query crop 上合并后恢复到原图尺寸。
+
+| 读取项 | 结果 | 解释 |
+|---|---|---|
+| DEV241，原分辨率 `relative_0.7` 对固定 0.5 | 70.84；+8.22，95% CI [+5.76, +12.50] | DEV 用于选择规则，不能当确认集结果 |
+| CONFIRM600，冻结 `relative_0.7` 对固定 0.5 | mIoU 67.12；+6.27，95% CI [+4.37, +10.07]；四折 +4.78/+8.82/+2.70/+8.78；170 升、27 降；3 例未留 proposal | 保存报告中的配对原分辨率结果 |
+| 同批最佳固定阈值对照 `absolute_0.3` | mIoU 63.63；相对 0.5 +2.78，95% CI [+0.93, +6.12]；相对冻结规则的配对差 +3.49 [+1.29, +6.13] | 阈值在 DEV 选定；第三折自身为 −0.50 对固定 0.5 |
+| 新鲜、图像隔离的 915 个 rest episodes，冻结 `relative_0.7` 对固定 0.5 | mIoU 68.76；+5.53，95% CI [+3.18, +8.58]；四折 +3.77/+6.73/+5.77/+5.84；212 升、35 降；5 例未留 proposal | 现存 `fresh.json`，规则未用这些标签选择 |
+| 同一 915 例的固定阈值控制 `absolute_0.3` | mIoU 66.53；对 0.5 为 +3.29 [+0.57, +5.69]；冻结规则对它 +2.23 [+0.70, +4.81] | 这个相对正增益来自相同proposal与图像信息 |
+
+CONFIRM 保存的 ledger 把错误集中在：129/600 例同时保留目标与非目标 proposals（平均 IoU 46.65），26/600 例只保留非目标 proposals（平均 IoU 12.32）；另有 337 例保留目标但漏掉部分目标，11 例 top-20 内没有目标 proposal。说明错误在候选筛选和候选生成两处；这些计数不是独立方法收益，也不能用标签选择的 `labels` oracle 行代替部署规则。915 例的新鲜集与 DEV241/CONFIRM600 的 query、support 图像无交叠，四折都有；这是对既定规则的独立图像级读数，不是新候选的确认，也没有同集 FoRIS 配对结果。
+
+我核对了 CONFIRM 报告中的冻结项和身份记录：241/241 DEV、600/600 CONFIRM episode key 各出现一次；两 split 的 query/support 图像集合无交叠。`dev.json`、`confirm.json`、`fresh.json` 和其 `.episodes.jsonl` 在服务器 `/root/autodl-tmp/demo9_transductive_ics/results/sam3_relative_v1/`，也出现在用户的主 checkout `results/sam3_relative_v1/`（未跟踪文件，不含在本 PR）。当前 `sam3_keep_v1/dev` 位图已被 smoke 和正在运行的 DEV 反向检查读取；rest shard 0 有 1053 例位图。不能从汇总 IoU 反推新的 per-proposal 信号。
+
+**反向验证当前状态（服务器快照 2026-10-04 19:19 +08）。** `sam3_backward_check.py` 对每例最高分且位于 query crop 的最多 5 个 proposal，取其 query 区域二值图外接框，再用同一个 SAM3 在 stitched canvas 上作框提示；输入为 reference mask 和原 reference/query 图像，GPU 阶段不读 query 标注。脚本从 reference mask 计算反向预测的 `union_iou`、`best_iou`、`top_iou` 及分数。CPU 报告另用 query GT overlap `intersection/query proposal area > 0.5` 产生 on-target 标签算 AUC。它是同模型自一致性信号，不是独立分类器；需看反向 IoU 在相同 candidates、尤其 `relative_0.7` 保留集上是否补充正向分数。`presence` 本身不能充当独立反向信号。Smoke 已完成 10 例/40 pass；DEV 已完成 241 例/1,129 pass，DEV JSONL 共 241 rows；其 report 标记 `query_annotation_opened=false`。CONFIRM 反向检查当时 RUNNING 0/600，PID 7849；尚无 `.auc.json`。未干预 GPU。用户报告的另一项区域 CPU 诊断为 `aff` AUC .6733、`scoregap` .59439，差 .07891 [+.04772, +.11088]，219 episodes 四折为正；它只是局部候选信号，不是全流程分割收益。无 backward AUC/候选 tradeoff 前，不据此选规则、声称提升或设计下一方法。
 
 ### 写了但没有跑就撤回的
 
