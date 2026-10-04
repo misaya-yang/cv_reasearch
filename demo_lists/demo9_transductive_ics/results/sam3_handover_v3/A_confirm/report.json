@@ -1,0 +1,200 @@
+{
+ "state": "COMPLETED",
+ "episodes": 600,
+ "expected": 600,
+ "protocol": {
+  "fss_source_commit": "b82ba838678ae8c2f27f618d9500a50c171e223e",
+  "public_inference_layout_preserved": true,
+  "exact_published_episode_reproduction": false,
+  "reference_exemplar": "one 8-connected semantic-mask component; >1000 pixels else largest",
+  "public_loader_difference": "evaluate imports dataset_tool: noncrowd instance bbox, different sampled episodes",
+  "box_randomness": "random.Random(global manifest index); paired adaptation",
+  "visual_prompt": "no set_text_prompt; public processor inserts dummy visual",
+  "text_role": "privileged true category diagnostic",
+  "score_threshold": 0.5,
+  "layout": "1008 square; reference lower60%, query upper40%",
+  "precision": "FP32/TF32off; no fallback",
+  "precision_backend": "instance-only plainFP32 vitdet.Mlp; official fused.addmm_act unconditionally casts BF16",
+  "confirm_exposure": "600 paired images already scored by earlier Claude readouts/formula; not fresh confirmation"
+ },
+ "aggregation_source_sha256": "ac94e2df9425963b64c20c9ae2e2e406e5f46ab3c4b1a0d075472c414cfe8b07",
+ "prediction_source_sha256": [
+  "276a53fd8c5fd1fa45ce64317b695c22feef247ee25f3bade14b7587cedbc07d"
+ ],
+ "input_scored_jsonl_sha256": {
+  "episodes_shard0.jsonl": "8bfd85ae04c058adbfff11e1dedd7c67d1b69fdac3ee0c5629f56efecd4729df"
+ },
+ "ignored_historical_shard_reports": [
+  "report_shard0.before_score_resume_1791052238680286709.json"
+ ],
+ "scope": "original-resolution class mIoU on frozen paired episodes; legal component-box SAM3 adaptation",
+ "confirmation_exposure": "previously scored paired images, not independent fresh confirmation",
+ "class_miou": {
+  "visual": 61.0908495095037,
+  "text": 73.37585476561304
+ },
+ "per_fold": {
+  "visual": [
+   59.41185492227364,
+   63.15004388040675,
+   62.66841432601124,
+   59.13308490932318
+  ],
+  "text": [
+   77.4445624580338,
+   71.43531076149837,
+   70.56153466694259,
+   74.0620111759774
+  ]
+ },
+ "against_foris": {
+  "episodes": 600,
+  "foris": 59.78301598711189,
+  "exact_full_episode_and_SQ_coverage": true,
+  "same_original_image_dimensions": true,
+  "visual": {
+   "miou": 61.0908495095037,
+   "gain": 1.3078335223918103,
+   "ci95": [
+    -2.448891241406754,
+    3.5689575560327227
+   ],
+   "bootstrap_unit": "connected support/query photograph groups",
+   "groups": 561,
+   "largest_group": 4,
+   "draws": 2000
+  },
+  "text": {
+   "miou": 73.37585476561304,
+   "gain": 13.592838778501154,
+   "ci95": [
+    9.776451978189666,
+    14.991210430514865
+   ],
+   "bootstrap_unit": "connected support/query photograph groups",
+   "groups": 561,
+   "largest_group": 4,
+   "draws": 2000
+  },
+  "better_of_visual_and_foris_per_episode_LABELS": {
+   "miou": 70.0012063573133,
+   "gain": 10.218190370201405,
+   "ci95": [
+    8.564444139390872,
+    11.903401809857685
+   ],
+   "bootstrap_unit": "connected support/query photograph groups",
+   "groups": 561,
+   "largest_group": 4,
+   "draws": 2000
+  },
+  "episodes_by_outcome": {
+   "both_above_half": 333,
+   "only_foris": 86,
+   "only_sam3": 67,
+   "neither": 114,
+   "correlation": 0.4774352413107731
+  }
+ },
+ "ledger": {
+  "nothing_kept": {
+   "episodes": 133,
+   "mean_iou": 0.0
+  },
+  "kept_but_no_overlap": {
+   "episodes": 7,
+   "mean_iou": 0.0
+  },
+  "too_much": {
+   "episodes": 35,
+   "mean_iou": 37.88155825578096
+  },
+  "too_little": {
+   "episodes": 44,
+   "mean_iou": 39.26429859364253
+  },
+  "canvas_kept_but_query_empty": 133,
+  "mean_episode_iou": 59.036194972370836,
+  "reference_reproduction": {
+   "mean_iou": 76.62408621117777,
+   "below_half": 84,
+   "query_iou_when_below_half": 33.25813566048521,
+   "query_iou_when_above_half": 63.23262323244524,
+   "correlation_with_query_iou": 0.2637087038104396
+  },
+  "by_target_share_of_query": {
+   "0-0.01": {
+    "episodes": 53,
+    "mean_iou": 43.95649551692646
+   },
+   "0.01-0.03": {
+    "episodes": 175,
+    "mean_iou": 51.32612046462414
+   },
+   "0.03-0.1": {
+    "episodes": 161,
+    "mean_iou": 58.51728147540148
+   },
+   "0.1-0.3": {
+    "episodes": 134,
+    "mean_iou": 68.33790600976526
+   },
+   "0.3-1.01": {
+    "episodes": 77,
+    "mean_iou": 71.83623268659738
+   }
+  }
+ },
+ "proposal_reading": {
+  "note": "EXACT union of top20 proposals in query canvas crop; truncated family, different resolution from main table; privileged selection is not perfect-input oracle",
+  "threshold_0p5": 60.8285798771389,
+  "threshold_0.1": {
+   "miou": 46.533335588289674,
+   "gain": -14.295244288849226,
+   "ci95": [
+    -17.1074219910504,
+    -9.515566375674592
+   ],
+   "bootstrap_unit": "connected support/query photograph groups",
+   "groups": 561,
+   "largest_group": 4,
+   "draws": 2000
+  },
+  "threshold_0.3": {
+   "miou": 63.77682171734772,
+   "gain": 2.948241840208823,
+   "ci95": [
+    1.092299157839464,
+    6.297653147619691
+   ],
+   "bootstrap_unit": "connected support/query photograph groups",
+   "groups": 561,
+   "largest_group": 4,
+   "draws": 2000
+  },
+  "threshold_0.7": {
+   "miou": 47.284530941846455,
+   "gain": -13.544048935292444,
+   "ci95": [
+    -16.670839124883233,
+    -10.718101689199296
+   ],
+   "bootstrap_unit": "connected support/query photograph groups",
+   "groups": 561,
+   "largest_group": 4,
+   "draws": 2000
+  },
+  "proposals_mostly_on_target_LABELS": {
+   "miou": 81.69076676057706,
+   "gain": 20.862186883438163,
+   "ci95": [
+    17.408545501381084,
+    23.58422346071065
+   ],
+   "bootstrap_unit": "connected support/query photograph groups",
+   "groups": 561,
+   "largest_group": 4,
+   "draws": 2000
+  }
+ }
+}
