@@ -12,7 +12,9 @@ s: Q → R^N（per-patch 或 per-pixel），再用一条规则把它变成二值
 
 **当前方法的错配（可核对源码）。** 每一种冻结宿主都把判决水平写死，与 π 无关：
 - FoRIS：把分数场 min-max 归一化后切在中点（减 0.5），即 τ = (min s + max s)/2；
-- FROST：对数密度比在 0 处切（"equal priors"，等价于 π = 1/2）；
+- FROST：对数密度比在 0 处切。原文（arXiv 2606.31136）："a threshold the Bayes rule fixes at zero under equal
+  priors"、"the equal-prior assumption keeps at τ=0"；查询占比完全不估计，参考掩码的前景比例只用于空间 gating，
+  不进入逐 token 的切断水平。这是与本文直接对照的、被论文自己写明的固定水平；
 - INSID3：在相似度/聚类结构上切固定的分位，参考图多数投票。
 式 (1) 说正确水平应当由 π 决定；这是"水平误差"，与"排序误差"（同样水平下挑错了像素）正交。
 
