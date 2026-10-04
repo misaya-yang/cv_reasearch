@@ -1,0 +1,97 @@
+{
+  "state": "CPU_PORTABLE_CUE_SOURCE_CONTRACT_PASSED",
+  "CUDA_initialized": false,
+  "checks": 8,
+  "views": [
+    {
+      "view": "source",
+      "metadata": {
+        "official_commit": "2345a4ad109ac29c569da749c91d84f10dc08c40",
+        "explicitSourceBoxes": 0,
+        "image_state_cache_unchanged": true,
+        "find_stage_restored": true,
+        "prompt_hook_restored": true,
+        "image_encoder_hook_restored": true,
+        "fixed_cue_payload_unchanged": true,
+        "cue_payload_sha256": "3ec2c7f493c2f998e765c4717edf3ded7a9653dc8702a36db1dc823a21d4c42c",
+        "decoder_extra_image_encodings": 0,
+        "fresh_empty_geometric_prompt": true,
+        "model_parameters_FP32": true,
+        "find_stage_target_geometry_empty": true,
+        "adapter": "pretransform_ROI_maskgate_positive_label_finalproj_norm",
+        "explicit_box_direct": false,
+        "explicit_box_position": false,
+        "donor_geometry_attention": false,
+        "latent_position_information_absent_claimed": false
+      }
+    },
+    {
+      "view": "fixed_color_source",
+      "metadata": {
+        "official_commit": "2345a4ad109ac29c569da749c91d84f10dc08c40",
+        "explicitSourceBoxes": 0,
+        "image_state_cache_unchanged": true,
+        "find_stage_restored": true,
+        "prompt_hook_restored": true,
+        "image_encoder_hook_restored": true,
+        "fixed_cue_payload_unchanged": true,
+        "cue_payload_sha256": "3ec2c7f493c2f998e765c4717edf3ded7a9653dc8702a36db1dc823a21d4c42c",
+        "decoder_extra_image_encodings": 0,
+        "fresh_empty_geometric_prompt": true,
+        "model_parameters_FP32": true,
+        "find_stage_target_geometry_empty": true,
+        "adapter": "pretransform_ROI_maskgate_positive_label_finalproj_norm",
+        "explicit_box_direct": false,
+        "explicit_box_position": false,
+        "donor_geometry_attention": false,
+        "latent_position_information_absent_claimed": false
+      }
+    },
+    {
+      "view": "query",
+      "metadata": {
+        "official_commit": "2345a4ad109ac29c569da749c91d84f10dc08c40",
+        "explicitSourceBoxes": 0,
+        "image_state_cache_unchanged": true,
+        "find_stage_restored": true,
+        "prompt_hook_restored": true,
+        "image_encoder_hook_restored": true,
+        "fixed_cue_payload_unchanged": true,
+        "cue_payload_sha256": "3ec2c7f493c2f998e765c4717edf3ded7a9653dc8702a36db1dc823a21d4c42c",
+        "decoder_extra_image_encodings": 0,
+        "fresh_empty_geometric_prompt": true,
+        "model_parameters_FP32": true,
+        "find_stage_target_geometry_empty": true,
+        "adapter": "pretransform_ROI_maskgate_positive_label_finalproj_norm",
+        "explicit_box_direct": false,
+        "explicit_box_position": false,
+        "donor_geometry_attention": false,
+        "latent_position_information_absent_claimed": false
+      }
+    }
+  ],
+  "cue_sha256": "3ec2c7f493c2f998e765c4717edf3ded7a9653dc8702a36db1dc823a21d4c42c",
+  "uses_actual_source": [
+    "SequenceGeometryEncoder ROI modules",
+    "Sam3Image._get_img_feats",
+    "Sam3Image._encode_prompt",
+    "Sam3Image._get_dummy_prompt"
+  ],
+  "pretrained_model_or_quality_verified": false,
+  "fake_decoder_and_backbone": true,
+  "CPU_only_empty_target_ROI_bypass": {
+    "enabled": true,
+    "asserted_target_box_count": 0,
+    "observed_calls": 6,
+    "reason": "Official empty-box ROI branch calls scale.pin_memory without a NVIDIA driver",
+    "native_pool_restored_in_finally": true,
+    "cue_extraction_ROI_branch_bypassed": false,
+    "production_adapter_or_vendor_modified": false
+  },
+  "CUDA_path_verified": false,
+  "first_GPU_gate_pending": "Actual official empty-box geometry branch including pin_memory, fixed-cue injection and native decoding",
+  "source_files": {
+    "/root/autodl-tmp/sam3_preparation/code/sam3/model/geometry_encoders.py": "02c50b9ba5caf1c51c472a78a98b5b943cba6b480a1157485eb74c59c08d7680",
+    "/root/autodl-tmp/sam3_preparation/code/sam3/model/sam3_image.py": "2c20de90fb0b76b01dd437385eb7226f8c3cd4757a4c80cc8dec943dcf46a4a0"
+  }
+}

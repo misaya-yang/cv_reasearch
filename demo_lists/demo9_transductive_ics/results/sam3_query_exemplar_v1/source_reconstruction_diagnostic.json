@@ -1,0 +1,1285 @@
+{
+ "state": "CPU_SOURCE_RECONSTRUCTION_ASSOCIATION_DIAGNOSTIC_COMPLETED",
+ "input_report": "/root/autodl-tmp/demo9_transductive_ics/results/sam3_query_exemplar_v1/report.json",
+ "input_report_sha256": "4c7696eeaecab56c50b40c2c723a7e4640f1eec6f98ddf0baf07d8a63cbf2327",
+ "exposed_development": true,
+ "active_coverage": {
+  "total": 40,
+  "active": 40,
+  "usable": 40,
+  "inactive": [],
+  "invalid": [],
+  "source_IU_original_resolution_available": true,
+  "SourceU_available": true,
+  "SourceFG_available": true,
+  "true_query_FG_area_or_share_available": false,
+  "query_original_image_dimensions_available": false
+ },
+ "definitions": {
+  "source_score": "query-only SAM3 prediction on legal Source, original-resolution Source I/U; no Source positive box",
+  "query_quality": "already frozen/scored query_foris_only original I/U",
+  "gain": "per-episode query_foris_only IoU minus original native IoU; not class-mIoU gain",
+  "partial_correlation": "rank-residual Pearson correlation with intercept, fold1/2/3 indicators, optionally ranked log1p SourceFG/SourceU; optional nativeQueryU is a post-GT error/size proxy, NOT true target size or a deployment input",
+  "contrast": "paired Spearman(source score,q-only quality) minus Spearman(source score,native quality)",
+  "bootstrap": "connected support/query photo groups resampled together; 2000 draws seed0; same draw for every diagnostic"
+ },
+ "confounding": {
+  "fold_counts": {
+   "0": 10,
+   "1": 10,
+   "2": 10,
+   "3": 10
+  },
+  "observed_classes": 40,
+  "class_counts": {
+   "0": 1,
+   "1": 1,
+   "2": 1,
+   "3": 1,
+   "4": 1,
+   "5": 1,
+   "6": 1,
+   "7": 1,
+   "8": 1,
+   "9": 1,
+   "10": 1,
+   "11": 1,
+   "12": 1,
+   "13": 1,
+   "14": 1,
+   "15": 1,
+   "16": 1,
+   "17": 1,
+   "18": 1,
+   "19": 1,
+   "20": 1,
+   "21": 1,
+   "22": 1,
+   "23": 1,
+   "24": 1,
+   "25": 1,
+   "26": 1,
+   "27": 1,
+   "28": 1,
+   "29": 1,
+   "30": 1,
+   "31": 1,
+   "32": 1,
+   "33": 1,
+   "34": 1,
+   "35": 1,
+   "36": 1,
+   "37": 1,
+   "38": 1,
+   "39": 1
+  },
+  "class_fixed_effect_adjustment": "NOT IDENTIFIABLE: one episode per observed class saturates class effects",
+  "target_size_adjustment": "TRUE QUERY FOREGROUND AREA/SHARE absent from report; native-query U is only a declared post-GT size/error proxy. Do not claim target-size confounding removed"
+ },
+ "bootstrap": {
+  "unit": "connected support/query photograph groups",
+  "groups": 40,
+  "largest_group": 1,
+  "draws": 2000,
+  "seed": 0,
+  "CI_descriptive_multiple_comparisons_not_adjusted": true
+ },
+ "associations": {
+  "spearman_query_only_quality": {
+   "point": 0.5886257984307322,
+   "ci95": [
+    0.29985767566458155,
+    0.7828523322386755
+   ],
+   "finite_bootstrap_draws": 2000,
+   "directional_positive_interval": true
+  },
+  "spearman_native_quality": {
+   "point": 0.2102215411850883,
+   "ci95": [
+    -0.14218080852317308,
+    0.5038059225556771
+   ],
+   "finite_bootstrap_draws": 2000,
+   "directional_positive_interval": false
+  },
+  "spearman_query_only_minus_native_gain": {
+   "point": 0.35671139374865923,
+   "ci95": [
+    0.04562711376186417,
+    0.6222420212818885
+   ],
+   "finite_bootstrap_draws": 2000,
+   "directional_positive_interval": true
+  },
+  "pearson_query_only_quality": {
+   "point": 0.431034048185482,
+   "ci95": [
+    0.11321791556238191,
+    0.6836232945266227
+   ],
+   "finite_bootstrap_draws": 2000,
+   "directional_positive_interval": true
+  },
+  "pearson_native_quality": {
+   "point": 0.08730095214772787,
+   "ci95": [
+    -0.22106231974377316,
+    0.3983138255697727
+   ],
+   "finite_bootstrap_draws": 2000,
+   "directional_positive_interval": false
+  },
+  "pearson_query_only_minus_native_gain": {
+   "point": 0.28670802096303316,
+   "ci95": [
+    -0.042444013834492464,
+    0.5704602544390878
+   ],
+   "finite_bootstrap_draws": 2000,
+   "directional_positive_interval": false
+  },
+  "partial_spearman_fold_query_only_quality": {
+   "point": 0.6178659155849944,
+   "ci95": [
+    0.29960424728476676,
+    0.8185197083399461
+   ],
+   "finite_bootstrap_draws": 2000,
+   "directional_positive_interval": true
+  },
+  "partial_spearman_fold_native_quality": {
+   "point": 0.24413256407368022,
+   "ci95": [
+    -0.14386727790135556,
+    0.5521745365617596
+   ],
+   "finite_bootstrap_draws": 2000,
+   "directional_positive_interval": false
+  },
+  "partial_spearman_fold_query_only_minus_native_gain": {
+   "point": 0.38645855973643545,
+   "ci95": [
+    0.0642894276969799,
+    0.6419787873788784
+   ],
+   "finite_bootstrap_draws": 2000,
+   "directional_positive_interval": true
+  },
+  "partial_spearman_fold_SourceFG_SourceU_query_only_quality": {
+   "point": 0.6332265909691052,
+   "ci95": [
+    0.30710900274792857,
+    0.8352933582580002
+   ],
+   "finite_bootstrap_draws": 2000,
+   "directional_positive_interval": true
+  },
+  "partial_spearman_fold_SourceFG_SourceU_native_quality": {
+   "point": 0.2578289866575946,
+   "ci95": [
+    -0.16672612624899683,
+    0.5742791303942072
+   ],
+   "finite_bootstrap_draws": 2000,
+   "directional_positive_interval": false
+  },
+  "partial_spearman_fold_SourceFG_SourceU_query_only_minus_native_gain": {
+   "point": 0.3652441126032914,
+   "ci95": [
+    0.04398868497005678,
+    0.646465987051868
+   ],
+   "finite_bootstrap_draws": 2000,
+   "directional_positive_interval": true
+  },
+  "partial_spearman_fold_SourceFG_SourceU_nativeQueryU_proxy_query_only_quality": {
+   "point": 0.6710661910038007,
+   "ci95": [
+    0.3371025010844666,
+    0.8646918966749012
+   ],
+   "finite_bootstrap_draws": 2000,
+   "directional_positive_interval": true
+  },
+  "partial_spearman_fold_SourceFG_SourceU_nativeQueryU_proxy_native_quality": {
+   "point": 0.28215825648563103,
+   "ci95": [
+    -0.14899369644138044,
+    0.5997863927862745
+   ],
+   "finite_bootstrap_draws": 2000,
+   "directional_positive_interval": false
+  },
+  "partial_spearman_fold_SourceFG_SourceU_nativeQueryU_proxy_query_only_minus_native_gain": {
+   "point": 0.3601157875088664,
+   "ci95": [
+    0.04725048755064261,
+    0.6465702565650875
+   ],
+   "finite_bootstrap_draws": 2000,
+   "directional_positive_interval": true
+  },
+  "paired_spearman_difference_queryonly_vs_native": {
+   "point": 0.37840425724564386,
+   "ci95": [
+    0.0742944522150398,
+    0.6980611385913941
+   ],
+   "finite_bootstrap_draws": 2000,
+   "directional_positive_interval": true
+  }
+ },
+ "limitations": [
+  "No selector, threshold, calibration or method was fitted or changed",
+  "Source labels are legal; scored Query IoUs are diagnostic outcomes only, never new method inputs",
+  "Associations on exposed40 cannot prove causal action benefit or unseen-class generalisation",
+  "Class and true target-size confounding remain unresolved; high association is not a reliable-selector guarantee"
+ ],
+ "records": [
+  {
+   "case": [
+    0,
+    11,
+    0
+   ],
+   "fold": 0,
+   "c": 0,
+   "support": "val2014/COCO_val2014_000000415183.jpg",
+   "query": "val2014/COCO_val2014_000000166948.jpg",
+   "source_I": 0,
+   "source_U": 40835,
+   "source_FG": 40835,
+   "source_IoU": 0.0,
+   "query_only_IU": [
+    276,
+    210125
+   ],
+   "native_query_IU": [
+    142945,
+    152139
+   ],
+   "query_only_IoU": 0.0013135038667459846,
+   "native_IoU": 0.9395684209834427,
+   "episode_gain": -0.9382549171166967
+  },
+  {
+   "case": [
+    1,
+    5,
+    1
+   ],
+   "fold": 1,
+   "c": 1,
+   "support": "val2014/COCO_val2014_000000258860.jpg",
+   "query": "val2014/COCO_val2014_000000122302.jpg",
+   "source_I": 96145,
+   "source_U": 118856,
+   "source_FG": 114769,
+   "source_IoU": 0.8089200376926701,
+   "query_only_IU": [
+    32628,
+    55973
+   ],
+   "native_query_IU": [
+    0,
+    33458
+   ],
+   "query_only_IoU": 0.5829239097421971,
+   "native_IoU": 0.0,
+   "episode_gain": 0.5829239097421971
+  },
+  {
+   "case": [
+    2,
+    3,
+    2
+   ],
+   "fold": 2,
+   "c": 2,
+   "support": "val2014/COCO_val2014_000000032456.jpg",
+   "query": "val2014/COCO_val2014_000000497504.jpg",
+   "source_I": 6969,
+   "source_U": 16272,
+   "source_FG": 7626,
+   "source_IoU": 0.42828171091445427,
+   "query_only_IU": [
+    6702,
+    8453
+   ],
+   "native_query_IU": [
+    6742,
+    8012
+   ],
+   "query_only_IoU": 0.792854607831539,
+   "native_IoU": 0.8414877683474787,
+   "episode_gain": -0.04863316051593969
+  },
+  {
+   "case": [
+    3,
+    1,
+    3
+   ],
+   "fold": 3,
+   "c": 3,
+   "support": "val2014/COCO_val2014_000000338044.jpg",
+   "query": "val2014/COCO_val2014_000000457848.jpg",
+   "source_I": 103938,
+   "source_U": 121997,
+   "source_FG": 111956,
+   "source_IoU": 0.851971769797618,
+   "query_only_IU": [
+    65,
+    144336
+   ],
+   "native_query_IU": [
+    0,
+    144201
+   ],
+   "query_only_IoU": 0.00045033809998891477,
+   "native_IoU": 0.0,
+   "episode_gain": 0.00045033809998891477
+  },
+  {
+   "case": [
+    0,
+    47,
+    4
+   ],
+   "fold": 0,
+   "c": 4,
+   "support": "val2014/COCO_val2014_000000268944.jpg",
+   "query": "val2014/COCO_val2014_000000300066.jpg",
+   "source_I": 40209,
+   "source_U": 47347,
+   "source_FG": 44593,
+   "source_IoU": 0.8492407121887342,
+   "query_only_IU": [
+    18865,
+    23588
+   ],
+   "native_query_IU": [
+    18538,
+    23026
+   ],
+   "query_only_IoU": 0.7997710700356113,
+   "native_IoU": 0.8050898983757492,
+   "episode_gain": -0.00531882834013786
+  },
+  {
+   "case": [
+    1,
+    7,
+    5
+   ],
+   "fold": 1,
+   "c": 5,
+   "support": "val2014/COCO_val2014_000000051167.jpg",
+   "query": "val2014/COCO_val2014_000000218208.jpg",
+   "source_I": 0,
+   "source_U": 100363,
+   "source_FG": 100363,
+   "source_IoU": 0.0,
+   "query_only_IU": [
+    10006,
+    91345
+   ],
+   "native_query_IU": [
+    28584,
+    32489
+   ],
+   "query_only_IoU": 0.10954075209371066,
+   "native_IoU": 0.8798054726215027,
+   "episode_gain": -0.770264720527792
+  },
+  {
+   "case": [
+    2,
+    5,
+    6
+   ],
+   "fold": 2,
+   "c": 6,
+   "support": "val2014/COCO_val2014_000000061605.jpg",
+   "query": "val2014/COCO_val2014_000000465566.jpg",
+   "source_I": 45518,
+   "source_U": 61616,
+   "source_FG": 55831,
+   "source_IoU": 0.7387366917683719,
+   "query_only_IU": [
+    77286,
+    93697
+   ],
+   "native_query_IU": [
+    75984,
+    92263
+   ],
+   "query_only_IoU": 0.8248503153782939,
+   "native_IoU": 0.8235587396897998,
+   "episode_gain": 0.0012915756884941398
+  },
+  {
+   "case": [
+    3,
+    8,
+    7
+   ],
+   "fold": 3,
+   "c": 7,
+   "support": "val2014/COCO_val2014_000000267225.jpg",
+   "query": "val2014/COCO_val2014_000000267521.jpg",
+   "source_I": 9,
+   "source_U": 89866,
+   "source_FG": 60428,
+   "source_IoU": 0.0001001491108984488,
+   "query_only_IU": [
+    102,
+    85614
+   ],
+   "native_query_IU": [
+    0,
+    14539
+   ],
+   "query_only_IoU": 0.001191393930899152,
+   "native_IoU": 0.0,
+   "episode_gain": 0.001191393930899152
+  },
+  {
+   "case": [
+    0,
+    9,
+    8
+   ],
+   "fold": 0,
+   "c": 8,
+   "support": "val2014/COCO_val2014_000000013420.jpg",
+   "query": "val2014/COCO_val2014_000000128669.jpg",
+   "source_I": 0,
+   "source_U": 12141,
+   "source_FG": 12141,
+   "source_IoU": 0.0,
+   "query_only_IU": [
+    50865,
+    69271
+   ],
+   "native_query_IU": [
+    56469,
+    69305
+   ],
+   "query_only_IoU": 0.7342899626106163,
+   "native_IoU": 0.8147896977130077,
+   "episode_gain": -0.08049973510239139
+  },
+  {
+   "case": [
+    1,
+    17,
+    9
+   ],
+   "fold": 1,
+   "c": 9,
+   "support": "val2014/COCO_val2014_000000089459.jpg",
+   "query": "val2014/COCO_val2014_000000309802.jpg",
+   "source_I": 7839,
+   "source_U": 9973,
+   "source_FG": 9943,
+   "source_IoU": 0.7860222601022762,
+   "query_only_IU": [
+    3501,
+    7539
+   ],
+   "native_query_IU": [
+    3485,
+    3787
+   ],
+   "query_only_IoU": 0.4643851969757262,
+   "native_IoU": 0.9202534988117244,
+   "episode_gain": -0.45586830183599814
+  },
+  {
+   "case": [
+    2,
+    34,
+    10
+   ],
+   "fold": 2,
+   "c": 10,
+   "support": "val2014/COCO_val2014_000000499768.jpg",
+   "query": "val2014/COCO_val2014_000000216083.jpg",
+   "source_I": 8043,
+   "source_U": 13177,
+   "source_FG": 13090,
+   "source_IoU": 0.6103817257342339,
+   "query_only_IU": [
+    56194,
+    64121
+   ],
+   "native_query_IU": [
+    56036,
+    63704
+   ],
+   "query_only_IoU": 0.876374354735578,
+   "native_IoU": 0.879630792414919,
+   "episode_gain": -0.003256437679341029
+  },
+  {
+   "case": [
+    3,
+    37,
+    11
+   ],
+   "fold": 3,
+   "c": 11,
+   "support": "val2014/COCO_val2014_000000206391.jpg",
+   "query": "val2014/COCO_val2014_000000268755.jpg",
+   "source_I": 9988,
+   "source_U": 10521,
+   "source_FG": 10521,
+   "source_IoU": 0.9493394164052846,
+   "query_only_IU": [
+    63921,
+    67001
+   ],
+   "native_query_IU": [
+    63681,
+    66945
+   ],
+   "query_only_IoU": 0.9540305368576588,
+   "native_IoU": 0.9512435581447457,
+   "episode_gain": 0.002786978712913113
+  },
+  {
+   "case": [
+    0,
+    33,
+    12
+   ],
+   "fold": 0,
+   "c": 12,
+   "support": "val2014/COCO_val2014_000000240764.jpg",
+   "query": "val2014/COCO_val2014_000000073731.jpg",
+   "source_I": 69020,
+   "source_U": 88222,
+   "source_FG": 69556,
+   "source_IoU": 0.7823445399106799,
+   "query_only_IU": [
+    2607,
+    106950
+   ],
+   "native_query_IU": [
+    16745,
+    17506
+   ],
+   "query_only_IoU": 0.024375876577840114,
+   "native_IoU": 0.9565291899920028,
+   "episode_gain": -0.9321533134141626
+  },
+  {
+   "case": [
+    1,
+    6,
+    13
+   ],
+   "fold": 1,
+   "c": 13,
+   "support": "val2014/COCO_val2014_000000443299.jpg",
+   "query": "val2014/COCO_val2014_000000521133.jpg",
+   "source_I": 11415,
+   "source_U": 15467,
+   "source_FG": 15118,
+   "source_IoU": 0.7380228874377708,
+   "query_only_IU": [
+    61026,
+    214482
+   ],
+   "native_query_IU": [
+    58431,
+    162415
+   ],
+   "query_only_IoU": 0.2845273729263994,
+   "native_IoU": 0.35976356863590186,
+   "episode_gain": -0.07523619570950246
+  },
+  {
+   "case": [
+    2,
+    1,
+    14
+   ],
+   "fold": 2,
+   "c": 14,
+   "support": "val2014/COCO_val2014_000000469687.jpg",
+   "query": "val2014/COCO_val2014_000000082021.jpg",
+   "source_I": 107404,
+   "source_U": 116603,
+   "source_FG": 111097,
+   "source_IoU": 0.9211083762853443,
+   "query_only_IU": [
+    74628,
+    82429
+   ],
+   "native_query_IU": [
+    75403,
+    85013
+   ],
+   "query_only_IoU": 0.9053609773259411,
+   "native_IoU": 0.8869584651759143,
+   "episode_gain": 0.018402512150026862
+  },
+  {
+   "case": [
+    3,
+    3,
+    15
+   ],
+   "fold": 3,
+   "c": 15,
+   "support": "val2014/COCO_val2014_000000188651.jpg",
+   "query": "val2014/COCO_val2014_000000276706.jpg",
+   "source_I": 8411,
+   "source_U": 9058,
+   "source_FG": 8783,
+   "source_IoU": 0.9285714285714286,
+   "query_only_IU": [
+    12799,
+    13446
+   ],
+   "native_query_IU": [
+    12857,
+    13528
+   ],
+   "query_only_IoU": 0.951881600475978,
+   "native_IoU": 0.9503991720875222,
+   "episode_gain": 0.0014824283884558032
+  },
+  {
+   "case": [
+    0,
+    58,
+    16
+   ],
+   "fold": 0,
+   "c": 16,
+   "support": "val2014/COCO_val2014_000000499397.jpg",
+   "query": "val2014/COCO_val2014_000000150558.jpg",
+   "source_I": 22117,
+   "source_U": 24420,
+   "source_FG": 23548,
+   "source_IoU": 0.9056920556920557,
+   "query_only_IU": [
+    6494,
+    7677
+   ],
+   "native_query_IU": [
+    6505,
+    7804
+   ],
+   "query_only_IoU": 0.845903347661847,
+   "native_IoU": 0.8335468990261404,
+   "episode_gain": 0.012356448635706618
+  },
+  {
+   "case": [
+    1,
+    43,
+    17
+   ],
+   "fold": 1,
+   "c": 17,
+   "support": "val2014/COCO_val2014_000000364586.jpg",
+   "query": "val2014/COCO_val2014_000000549338.jpg",
+   "source_I": 139993,
+   "source_U": 155406,
+   "source_FG": 152832,
+   "source_IoU": 0.9008210751193647,
+   "query_only_IU": [
+    4874,
+    6121
+   ],
+   "native_query_IU": [
+    5043,
+    6186
+   ],
+   "query_only_IoU": 0.7962751184446986,
+   "native_IoU": 0.8152279340446169,
+   "episode_gain": -0.01895281559991835
+  },
+  {
+   "case": [
+    2,
+    2,
+    18
+   ],
+   "fold": 2,
+   "c": 18,
+   "support": "val2014/COCO_val2014_000000068050.jpg",
+   "query": "val2014/COCO_val2014_000000070334.jpg",
+   "source_I": 11130,
+   "source_U": 19179,
+   "source_FG": 18696,
+   "source_IoU": 0.5803222274362584,
+   "query_only_IU": [
+    26563,
+    29147
+   ],
+   "native_query_IU": [
+    26426,
+    29077
+   ],
+   "query_only_IoU": 0.9113459361169246,
+   "native_IoU": 0.9088282835230594,
+   "episode_gain": 0.0025176525938651606
+  },
+  {
+   "case": [
+    3,
+    29,
+    19
+   ],
+   "fold": 3,
+   "c": 19,
+   "support": "val2014/COCO_val2014_000000573455.jpg",
+   "query": "val2014/COCO_val2014_000000378968.jpg",
+   "source_I": 7344,
+   "source_U": 42730,
+   "source_FG": 42338,
+   "source_IoU": 0.1718698806459162,
+   "query_only_IU": [
+    51653,
+    57572
+   ],
+   "native_query_IU": [
+    51445,
+    58569
+   ],
+   "query_only_IoU": 0.8971896060585006,
+   "native_IoU": 0.8783656883334187,
+   "episode_gain": 0.018823917725081962
+  },
+  {
+   "case": [
+    0,
+    8,
+    20
+   ],
+   "fold": 0,
+   "c": 20,
+   "support": "val2014/COCO_val2014_000000170739.jpg",
+   "query": "val2014/COCO_val2014_000000359135.jpg",
+   "source_I": 148165,
+   "source_U": 172676,
+   "source_FG": 168021,
+   "source_IoU": 0.8580520744052446,
+   "query_only_IU": [
+    172351,
+    201670
+   ],
+   "native_query_IU": [
+    0,
+    182510
+   ],
+   "query_only_IoU": 0.8546189319184807,
+   "native_IoU": 0.0,
+   "episode_gain": 0.8546189319184807
+  },
+  {
+   "case": [
+    1,
+    2,
+    21
+   ],
+   "fold": 1,
+   "c": 21,
+   "support": "val2014/COCO_val2014_000000387355.jpg",
+   "query": "val2014/COCO_val2014_000000453981.jpg",
+   "source_I": 87805,
+   "source_U": 93090,
+   "source_FG": 89222,
+   "source_IoU": 0.9432269846385218,
+   "query_only_IU": [
+    88438,
+    93323
+   ],
+   "native_query_IU": [
+    0,
+    91947
+   ],
+   "query_only_IoU": 0.9476549189374538,
+   "native_IoU": 0.0,
+   "episode_gain": 0.9476549189374538
+  },
+  {
+   "case": [
+    2,
+    44,
+    22
+   ],
+   "fold": 2,
+   "c": 22,
+   "support": "val2014/COCO_val2014_000000107751.jpg",
+   "query": "val2014/COCO_val2014_000000151235.jpg",
+   "source_I": 0,
+   "source_U": 23067,
+   "source_FG": 23067,
+   "source_IoU": 0.0,
+   "query_only_IU": [
+    72791,
+    108182
+   ],
+   "native_query_IU": [
+    102756,
+    108814
+   ],
+   "query_only_IoU": 0.6728568523414247,
+   "native_IoU": 0.944327016744169,
+   "episode_gain": -0.2714701644027443
+  },
+  {
+   "case": [
+    3,
+    13,
+    23
+   ],
+   "fold": 3,
+   "c": 23,
+   "support": "val2014/COCO_val2014_000000235522.jpg",
+   "query": "val2014/COCO_val2014_000000267812.jpg",
+   "source_I": 29492,
+   "source_U": 37186,
+   "source_FG": 36488,
+   "source_IoU": 0.793094175227236,
+   "query_only_IU": [
+    59240,
+    71867
+   ],
+   "native_query_IU": [
+    59186,
+    72242
+   ],
+   "query_only_IoU": 0.8243004438754923,
+   "native_IoU": 0.8192741064754575,
+   "episode_gain": 0.005026337400034775
+  },
+  {
+   "case": [
+    0,
+    81,
+    24
+   ],
+   "fold": 0,
+   "c": 24,
+   "support": "val2014/COCO_val2014_000000204051.jpg",
+   "query": "val2014/COCO_val2014_000000153205.jpg",
+   "source_I": 0,
+   "source_U": 3424,
+   "source_FG": 3424,
+   "source_IoU": 0.0,
+   "query_only_IU": [
+    8096,
+    19270
+   ],
+   "native_query_IU": [
+    4444,
+    17156
+   ],
+   "query_only_IoU": 0.42013492475350284,
+   "native_IoU": 0.25903474003264165,
+   "episode_gain": 0.16110018472086118
+  },
+  {
+   "case": [
+    1,
+    8,
+    25
+   ],
+   "fold": 1,
+   "c": 25,
+   "support": "val2014/COCO_val2014_000000571931.jpg",
+   "query": "val2014/COCO_val2014_000000465272.jpg",
+   "source_I": 9652,
+   "source_U": 10542,
+   "source_FG": 10198,
+   "source_IoU": 0.915575792069816,
+   "query_only_IU": [
+    13328,
+    15814
+   ],
+   "native_query_IU": [
+    13712,
+    15894
+   ],
+   "query_only_IoU": 0.8427975211837613,
+   "native_IoU": 0.8627154901220586,
+   "episode_gain": -0.019917968938297337
+  },
+  {
+   "case": [
+    2,
+    8,
+    26
+   ],
+   "fold": 2,
+   "c": 26,
+   "support": "val2014/COCO_val2014_000000052376.jpg",
+   "query": "val2014/COCO_val2014_000000488539.jpg",
+   "source_I": 11624,
+   "source_U": 13092,
+   "source_FG": 12655,
+   "source_IoU": 0.8878704552398411,
+   "query_only_IU": [
+    6956,
+    63437
+   ],
+   "native_query_IU": [
+    0,
+    7275
+   ],
+   "query_only_IoU": 0.10965209578006527,
+   "native_IoU": 0.0,
+   "episode_gain": 0.10965209578006527
+  },
+  {
+   "case": [
+    3,
+    28,
+    27
+   ],
+   "fold": 3,
+   "c": 27,
+   "support": "val2014/COCO_val2014_000000471869.jpg",
+   "query": "val2014/COCO_val2014_000000052966.jpg",
+   "source_I": 0,
+   "source_U": 5133,
+   "source_FG": 5133,
+   "source_IoU": 0.0,
+   "query_only_IU": [
+    0,
+    46494
+   ],
+   "native_query_IU": [
+    0,
+    2487
+   ],
+   "query_only_IoU": 0.0,
+   "native_IoU": 0.0,
+   "episode_gain": 0.0
+  },
+  {
+   "case": [
+    0,
+    45,
+    28
+   ],
+   "fold": 0,
+   "c": 28,
+   "support": "val2014/COCO_val2014_000000210388.jpg",
+   "query": "val2014/COCO_val2014_000000101491.jpg",
+   "source_I": 0,
+   "source_U": 3303,
+   "source_FG": 3303,
+   "source_IoU": 0.0,
+   "query_only_IU": [
+    18249,
+    22295
+   ],
+   "native_query_IU": [
+    18407,
+    22308
+   ],
+   "query_only_IoU": 0.8185243328100471,
+   "native_IoU": 0.8251299982069212,
+   "episode_gain": -0.0066056653968741275
+  },
+  {
+   "case": [
+    1,
+    22,
+    29
+   ],
+   "fold": 1,
+   "c": 29,
+   "support": "val2014/COCO_val2014_000000574208.jpg",
+   "query": "val2014/COCO_val2014_000000461821.jpg",
+   "source_I": 1863,
+   "source_U": 2092,
+   "source_FG": 2076,
+   "source_IoU": 0.8905353728489483,
+   "query_only_IU": [
+    2687,
+    3018
+   ],
+   "native_query_IU": [
+    2673,
+    3005
+   ],
+   "query_only_IoU": 0.8903247183565275,
+   "native_IoU": 0.8895174708818636,
+   "episode_gain": 0.0008072474746638747
+  },
+  {
+   "case": [
+    2,
+    9,
+    30
+   ],
+   "fold": 2,
+   "c": 30,
+   "support": "val2014/COCO_val2014_000000256145.jpg",
+   "query": "val2014/COCO_val2014_000000357478.jpg",
+   "source_I": 0,
+   "source_U": 7740,
+   "source_FG": 7740,
+   "source_IoU": 0.0,
+   "query_only_IU": [
+    5155,
+    10902
+   ],
+   "native_query_IU": [
+    6900,
+    10086
+   ],
+   "query_only_IoU": 0.4728490185287103,
+   "native_IoU": 0.6841165972635336,
+   "episode_gain": -0.21126757873482327
+  },
+  {
+   "case": [
+    3,
+    2,
+    31
+   ],
+   "fold": 3,
+   "c": 31,
+   "support": "val2014/COCO_val2014_000000094944.jpg",
+   "query": "val2014/COCO_val2014_000000213465.jpg",
+   "source_I": 3014,
+   "source_U": 4879,
+   "source_FG": 4207,
+   "source_IoU": 0.6177495388399262,
+   "query_only_IU": [
+    977,
+    4397
+   ],
+   "native_query_IU": [
+    980,
+    3037
+   ],
+   "query_only_IoU": 0.22219695246759155,
+   "native_IoU": 0.3226868620349029,
+   "episode_gain": -0.10048990956731133
+  },
+  {
+   "case": [
+    0,
+    2,
+    32
+   ],
+   "fold": 0,
+   "c": 32,
+   "support": "val2014/COCO_val2014_000000041212.jpg",
+   "query": "val2014/COCO_val2014_000000074951.jpg",
+   "source_I": 3197,
+   "source_U": 3347,
+   "source_FG": 3325,
+   "source_IoU": 0.955183746638781,
+   "query_only_IU": [
+    2837,
+    2992
+   ],
+   "native_query_IU": [
+    2835,
+    2992
+   ],
+   "query_only_IoU": 0.9481951871657754,
+   "native_IoU": 0.9475267379679144,
+   "episode_gain": 0.0006684491978610207
+  },
+  {
+   "case": [
+    1,
+    42,
+    33
+   ],
+   "fold": 1,
+   "c": 33,
+   "support": "val2014/COCO_val2014_000000130586.jpg",
+   "query": "val2014/COCO_val2014_000000235093.jpg",
+   "source_I": 10496,
+   "source_U": 17246,
+   "source_FG": 17144,
+   "source_IoU": 0.6086048938884379,
+   "query_only_IU": [
+    2362,
+    3041
+   ],
+   "native_query_IU": [
+    2282,
+    2960
+   ],
+   "query_only_IoU": 0.7767181848076291,
+   "native_IoU": 0.7709459459459459,
+   "episode_gain": 0.00577223886168321
+  },
+  {
+   "case": [
+    2,
+    4,
+    34
+   ],
+   "fold": 2,
+   "c": 34,
+   "support": "val2014/COCO_val2014_000000089174.jpg",
+   "query": "val2014/COCO_val2014_000000421146.jpg",
+   "source_I": 5902,
+   "source_U": 8432,
+   "source_FG": 8340,
+   "source_IoU": 0.6999525616698292,
+   "query_only_IU": [
+    2115,
+    3199
+   ],
+   "native_query_IU": [
+    0,
+    3027
+   ],
+   "query_only_IoU": 0.6611441075336042,
+   "native_IoU": 0.0,
+   "episode_gain": 0.6611441075336042
+  },
+  {
+   "case": [
+    3,
+    5,
+    35
+   ],
+   "fold": 3,
+   "c": 35,
+   "support": "val2014/COCO_val2014_000000217593.jpg",
+   "query": "val2014/COCO_val2014_000000207019.jpg",
+   "source_I": 4147,
+   "source_U": 4707,
+   "source_FG": 4444,
+   "source_IoU": 0.88102825578925,
+   "query_only_IU": [
+    2280,
+    2541
+   ],
+   "native_query_IU": [
+    2280,
+    2543
+   ],
+   "query_only_IoU": 0.89728453364817,
+   "native_IoU": 0.896578843885175,
+   "episode_gain": 0.0007056897629950099
+  },
+  {
+   "case": [
+    0,
+    3,
+    36
+   ],
+   "fold": 0,
+   "c": 36,
+   "support": "val2014/COCO_val2014_000000332987.jpg",
+   "query": "val2014/COCO_val2014_000000057286.jpg",
+   "source_I": 0,
+   "source_U": 4164,
+   "source_FG": 4164,
+   "source_IoU": 0.0,
+   "query_only_IU": [
+    2166,
+    72100
+   ],
+   "native_query_IU": [
+    4176,
+    5843
+   ],
+   "query_only_IoU": 0.030041608876560332,
+   "native_IoU": 0.7147013520451823,
+   "episode_gain": -0.6846597431686219
+  },
+  {
+   "case": [
+    1,
+    44,
+    37
+   ],
+   "fold": 1,
+   "c": 37,
+   "support": "val2014/COCO_val2014_000000215897.jpg",
+   "query": "val2014/COCO_val2014_000000339468.jpg",
+   "source_I": 29671,
+   "source_U": 34450,
+   "source_FG": 31299,
+   "source_IoU": 0.861277213352685,
+   "query_only_IU": [
+    2595,
+    3994
+   ],
+   "native_query_IU": [
+    2604,
+    3398
+   ],
+   "query_only_IoU": 0.6497245868803205,
+   "native_IoU": 0.7663331371394938,
+   "episode_gain": -0.11660855025917327
+  },
+  {
+   "case": [
+    2,
+    25,
+    38
+   ],
+   "fold": 2,
+   "c": 38,
+   "support": "val2014/COCO_val2014_000000197350.jpg",
+   "query": "val2014/COCO_val2014_000000428241.jpg",
+   "source_I": 11023,
+   "source_U": 12151,
+   "source_FG": 12053,
+   "source_IoU": 0.9071681343099334,
+   "query_only_IU": [
+    7426,
+    8489
+   ],
+   "native_query_IU": [
+    7149,
+    8422
+   ],
+   "query_only_IoU": 0.8747791259276712,
+   "native_IoU": 0.8488482545713607,
+   "episode_gain": 0.025930871356310448
+  },
+  {
+   "case": [
+    3,
+    15,
+    39
+   ],
+   "fold": 3,
+   "c": 39,
+   "support": "val2014/COCO_val2014_000000209995.jpg",
+   "query": "val2014/COCO_val2014_000000114303.jpg",
+   "source_I": 0,
+   "source_U": 2199,
+   "source_FG": 2199,
+   "source_IoU": 0.0,
+   "query_only_IU": [
+    4700,
+    6565
+   ],
+   "native_query_IU": [
+    0,
+    5392
+   ],
+   "query_only_IoU": 0.715917745620716,
+   "native_IoU": 0.0,
+   "episode_gain": 0.715917745620716
+  }
+ ],
+ "local_numerical_execution": false,
+ "GPU_or_model_used": false,
+ "elapsed_seconds": 6.701750088483095,
+ "scientific_decision": "Diagnostic only; current primary C2 already failed its prewritten cheap-OR/survival gate; do not expand from correlation alone"
+}

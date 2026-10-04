@@ -1,0 +1,100 @@
+{
+  "state": "CPU_PREPARED_NOT_EVALUATED",
+  "features": "results/prepared/features.jsonl",
+  "features_sha256": "01e99856df928bf799731da69acb4c5a876e0227a303a5319208fa97a5959a37",
+  "feature_names": [
+    "source_iou",
+    "source_area",
+    "source_components_log",
+    "sam_presence_logit",
+    "sam_kept_log",
+    "query_proposal_conf_max",
+    "query_proposal_conf_mean",
+    "query_proposal_count_log",
+    "sam_area",
+    "sam_box_area",
+    "sam_box_fill",
+    "sam_edge_fraction",
+    "foris_area",
+    "foris_box_area",
+    "foris_box_fill",
+    "foris_edge_fraction",
+    "host_iou",
+    "intersection_over_sam",
+    "intersection_over_foris",
+    "sam_only_area",
+    "foris_only_area",
+    "log_area_ratio"
+  ],
+  "source_features": [
+    "source_iou",
+    "source_area",
+    "source_components_log"
+  ],
+  "records": 841,
+  "input_ledgers": {
+    "/root/autodl-tmp/demo9_transductive_ics/results/sam3_handover_v3/A_dev/predictions_shard0.jsonl": "4b39684f9dc08700cfc79b17ee138cac84dfc306e6d7a745e4895597ef43cd20",
+    "/root/autodl-tmp/demo9_transductive_ics/results/sam3_handover_v3/A_dev/prediction_freeze_shard0.json": "e686ba8a44b1d10ac236b372c19d1601ddfe9ceceada4679207d42ec61c6ee32",
+    "/root/autodl-tmp/demo9_transductive_ics/results/sam3_handover_v3/B_dev/freeze_report.json": "a18ec778d25d00e03976161925dd2d85dcdd3a89a913d232f85dd831c8e3bc42",
+    "/root/autodl-tmp/demo9_transductive_ics/results/sam3_handover_v3/A_confirm/predictions_shard0.jsonl": "87a432a18e6bcf6fb10904b2746f762c4c9385d17abb8b68b1450e0cc4fe306c",
+    "/root/autodl-tmp/demo9_transductive_ics/results/sam3_handover_v3/A_confirm/prediction_freeze_shard0.json": "8cbc532c526be588648dd2161d4ac3a9952dfd1f52ac0b9b4e8d58f95f6529b6",
+    "/root/autodl-tmp/demo9_transductive_ics/results/sam3_handover_v3/B_confirm/freeze_report.json": "2e282175a0c262dfc16e3b61ba8ec381e84dbc85d429f5420f5e3f8943dd32ef"
+  },
+  "script_sha256": "48da3436c2c7f56cd029f600fa28e361f8af220f00e79e4759ce9d25e5db9c98",
+  "scorer_sha256": "d9d32d2f0a4b89bc4a21bab2bd972f0fbaff145b8aab5c19f7faa9968f8dfac6",
+  "target_ledgers": {
+    "dev": "/root/autodl-tmp/demo9_transductive_ics/results/fixed_host_union_v1/dev_episodes.jsonl",
+    "confirm": "/root/autodl-tmp/demo9_transductive_ics/results/fixed_host_union_v1/confirm_episodes.jsonl"
+  },
+  "targets_opened": false,
+  "query_annotation_pixels_opened": false,
+  "GPU_used": false,
+  "partition": [
+    {
+      "fold": 0,
+      "train": 626,
+      "test": 211
+    },
+    {
+      "fold": 1,
+      "train": 628,
+      "test": 210
+    },
+    {
+      "fold": 2,
+      "train": 627,
+      "test": 210
+    },
+    {
+      "fold": 3,
+      "train": 626,
+      "test": 210
+    }
+  ],
+  "card": [
+    "Assumption tested: the frozen legal packet contains cross-class information about which complete host output to use, beyond a constant host or OR.",
+    "Null prediction: no gain over the best fixed control and no advantage over test-packet shuffling; baseline replay difference0. Alternative decision target: >=2pp over the strongest fixed control, not a forecast derived from oracle headroom.",
+    "If the null is refuted with positive aggregate gains and a matched signal contrast, identify which legal block carries the effect; this remains a supervised diagnostic and does not authorize a new method, fresh labels or GPU.",
+    "If the packet fails, stop this packet/decoder combination; do not sweep thresholds or reopen old selectors, and do not claim all model representations are insufficient. Any join, feature leakage, or baseline replay error invalidates the run."
+  ],
+  "seconds": 339.53289215639234,
+  "controls": [
+    "foris",
+    "sam",
+    "OR",
+    "AND",
+    "train_best_constant",
+    "random_four"
+  ],
+  "models": [
+    "source_linear",
+    "full_linear",
+    "full_rbf64"
+  ],
+  "primary": "full_rbf64",
+  "caveats": [
+    "Only recorded top20 visual proposal metadata used",
+    "All841 episodes previously exposed; cross-fitting is not fresh confirmation",
+    "No model class is an information upper bound"
+  ]
+}

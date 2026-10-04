@@ -1,0 +1,18 @@
+Error importing huggingface_hub.hf_api: No module named 'httpcore2'
+load <All keys matched successfully>
+Traceback (most recent call last):
+  File "/root/demo9_qk_staging/scripts/reference_qk_experiment.py", line 511, in <module>
+    if __name__=="__main__":main()
+                            ^^^^^^
+  File "/root/demo9_qk_staging/scripts/reference_qk_experiment.py", line 507, in main
+    elif args.run:run(args)
+                  ^^^^^^^^^
+  File "/root/demo9_qk_staging/scripts/reference_qk_experiment.py", line 422, in run
+    with reuse_native_basis(FoRIS,manifest["projection_basis"]):host=FoRIS(encoder,image_size=1024,svd_components=500,tau=.6,mask_refiner="crf",resize_to_orig_size=False,device="cuda").eval().requires_grad_(False)
+                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/autodl-tmp/demo8_local_verification/foris_source/models/foris.py", line 89, in __init__
+    self._crf, self._crf_band_px, self._crf_p_core = init_crf(
+                                                     ^^^^^^^^^
+  File "/root/autodl-tmp/demo8_local_verification/foris_source/utils/refinement.py", line 21, in init_crf
+    import CRF as CRF_lib
+ModuleNotFoundError: No module named 'CRF'

@@ -1,75 +1,51 @@
 # Server
 
-One rented machine, shared by every agent session.
-
-```
-ssh -p 57510 root@connect.westc.seetacloud.com
-```
+One rented AutoDL instance at a time, shared by every agent session. The current address is in `STATUS.md`;
+instances are recreated often, so do not trust an address written anywhere else.
 
 ## Limits
 
 - One GPU with 32 GB, time-sliced: N busy processes each get about 1/N of it.
-- System disk `/` 30 GB. Data disk `/root/autodl-tmp` 50 GB. Memory 90 GB (not what `free` shows). 25 CPU cores.
-- No access to Google Drive. Hugging Face only through `hf-mirror.com`; its API needs a `User-Agent` header.
+- No-card mode: 0.5 CPU core, 2 GB of memory. Only light CPU work fits; switching modes restarts the instance
+  and kills background jobs.
+- No access to Google Drive. Hugging Face only through `hf-mirror.com`. SAM3 is public on ModelScope.
 
 ## Layout
 
 | Path | What | Rule |
 |---|---|---|
-| `/root/autodl-pub/` | public datasets (COCO14, COCO2017, ADE20K, VOC, ImageNet, ...) | read only |
-| `/root/demo4_cache/` | shared by the live direction: `env/` (Python packages), `models/` (DINOv3 ViT-L), `data/` (COCO-20i masks) | read only; do not delete |
-| `/root/autodl-tmp/<direction>/` | code mirror of a repository directory | owned by the session that created it |
-| `/root/<direction>_cache/` | feature caches of one direction | delete when the run is done |
+| `/root/autodl-tmp/demo9_extent` | code, caches and results of the live decision line | owned by the decision line |
+| `/root/autodl-tmp/demo9_transductive_ics` | image-isolated manifests (`results/extent_head_t1_isolated_v1`) | read only |
+| `/root/autodl-tmp/datasets/ics` | COCO-20i, LVIS-92i, PASCAL-Part, PACO-Part, SUIM, lung X-ray | read only |
+| `/root/autodl-tmp/demo4/INSID3` | INSID3 checkout; its dataset loaders build the transfer packs | read only |
+| `/root/autodl-tmp/demo8_local_verification` | FoRIS and CRF sources used by every run | read only |
+| `/root/autodl-tmp/sam3_preparation` | SAM3 checkpoint | read only |
+| `/root/demo4_cache` | shared Python packages, DINOv3 weights, COCO masks | read only; never delete |
+| `/root/autodl-tmp/cvpr_*` | another chat's held experiments | not yours |
 
-Python: `/root/miniconda3/bin/python` (`python3` is not on `PATH`). Never install into the base environment.
-Use the shared packages with `PYTHONPATH=/root/demo4_cache/env`, or install into your own folder with
-`pip install --target`.
+Python is `/root/miniconda3/bin/python`. Never install into the base environment; use `pip install --target`
+into your own directory. The live line runs with
 
-Folders as of 2026-10-02:
-
-| Folder | Size | State |
-|---|---:|---|
-| `/root/autodl-tmp/demo9`, `/root/autodl-tmp/demo4` | 14 MB | live code mirror used by `PLAN.md` |
-| `/root/autodl-tmp/demo9_transductive_ics` | 2.0 GB | live, Codex session (open-pool runs) |
-| `/root/autodl-tmp/demo8_local_verification` | 49 MB | closed, but `foris_source/` is used by `run_blackbox.py`; keep |
-| `/root/demo4_cache` | 8.3 GB | shared assets; keep |
-| `/root/autodl-tmp/datasets/ics/` | growing | benchmark data in INSID3's layout, built by `scripts/get_data.sh`; shared, read only |
-| `/root/demo2_cache`, `/root/autodl-tmp/demo2_pilot`, `demo2_where_what_decoding` | 2.6 GB | closed direction; check references, then delete |
-| `/root/autodl-tmp/gic_validation`, `demo5_*`, `demo6_*`, `demo7` | 0.2 GB | closed directions; check references, then delete |
+    PYTHONPATH=/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions
 
 ## Running jobs
 
-- Latest user policy: the instance is currently in **no-GPU mode**. Finish local/CPU preparation before any
-  new CUDA run. A finite prepared queue must immediately continue or invoke AutoDL `/usr/bin/shutdown`
-  on completion/failure when no foreign GPU job is active. Never hold paid GPU capacity while writing code.
-  See `demo_lists/demo9_transductive_ics/scripts/experiment_resource_guard.py`; default is dry-run.
-  Provider command: [AutoDL shutdown documentation](https://www.autodl.com/docs/save_money/).
-
-- Look first: `nvidia-smi`, then `ps -eo pid,etimes,args | grep scripts/`. Read `STATUS.md` for who owns what.
-- Cap your memory (`torch.cuda.set_per_process_memory_fraction`; the live code reads `DEMO4_GPU_FRAC`, 0.3 to
-  0.45). One GPU job per agent.
-- Start detached: `ssh -n ... 'cd <dir> && nohup <cmd> > log 2>&1 < /dev/null &'`. A foreground job dies with
-  the connection.
-- Wait with a remote loop (`until grep -q <marker> log; do sleep 20; done`), not with local `sleep`.
-- Stop only your own processes, by PID, after reading the command line. `pkill -f` and `pgrep -f` match the
-  ssh shell that runs them.
-- Under contention each GPU-to-host sync (`.item()`, `.cpu()`, boolean indexing) costs a scheduling round
-  trip. Batch them.
+- Start detached: `nohup <cmd> > log 2>&1 < /dev/null &`. A foreground job dies with the connection.
+- Queues run through `scripts/experiment_resource_guard.py`. It returns `DEFER_FOREIGN_GPU` while another
+  job holds the GPU; the queue waits and retries. It issues `/usr/bin/shutdown` at the end.
+- Stop only your own processes, by PID. `pkill -f` and `pgrep -f` match the ssh shell that runs them.
+- Do not edit a bash queue script while it runs.
+- Cap GPU memory (`DEMO4_GPU_FRAC`, 0.3 to 0.45). One GPU job per agent.
 
 ## Pitfalls that cost time
 
-- Wait loops must not grep for "Error": a harmless `httpcore` warning contains it. Grep for your own marker
+- A first run that completes zero cases is almost always a path: run the smoke stage first.
+- Wait loops must not grep for "Error" (a harmless `httpcore` warning contains it). Grep for your own marker
   or for "Traceback".
-- `np.trapz` is gone in the installed numpy; use `np.trapezoid`.
-- INSID3's encoder runs in bfloat16. Encoding an image alone or in a (reference, query) pair changes the
-  features enough to change its clustering. Cache features with the same batch composition as the released
-  code and check item-level identity.
+- INSID3's encoder runs in bfloat16: encoding an image alone or in a pair changes its clustering. Cache with
+  the batch composition of the released code and compare masks episode by episode.
 - FoRIS and INSID3 both have top-level modules named `models` and `utils`. Import FoRIS first.
-- Inline Python through nested ssh quoting breaks on f-strings. Copy result files and compute locally.
-
-## Cleanup
-
-- Delete caches, weights and datasets in the same session they stop being needed. Keep small JSON and logs.
-- Before deleting anything outside your own folder: `grep -rl <path> /root/autodl-tmp/demo*`. Other sessions
-  reference shared caches.
-- Keep at least 5 GB free on each disk.
+- Thousands of open `np.load` handles exceed the limit of 1024 open files. Close them.
+- Caches are written in fold order: a prefix of a cache is fold 0 only.
+- Keep at least 5 GB free on each disk. Before deleting anything outside your own directory, grep the other
+  directories for the path.

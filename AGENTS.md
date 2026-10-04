@@ -37,10 +37,15 @@ evidence. An analysis paper does not count.
    real pipeline on a few real episodes, minutes) and ends with `/usr/bin/shutdown`. A passed smoke is the
    acceptance test; the full stages follow at once.
 2. Queues go through `scripts/experiment_resource_guard.py`: it waits for foreign GPU jobs and powers off.
-3. The server is shared. Look at `nvidia-smi` first. Stop only your own processes, by PID. Do not touch the
-   base Python environment or another agent's directories and caches.
-4. Ask the user before downloading models, weights or datasets.
-5. Delete caches and raw outputs once the run they feed has been read. Keep small JSON and logs.
+3. The server and the repository are shared with other agents. Look at `nvidia-smi` first. Stop only your own
+   processes, by PID. Leave the base Python environment and other agents' files, directories and caches alone.
+4. Delete your own caches and raw outputs once the run they feed has been read. Keep small JSON and logs.
+
+## Ask the user first
+
+Renting a GPU, or keeping one on beyond the approved session; downloading models, weights or datasets;
+deleting or overwriting what you did not create; committing or pushing; changing the research direction.
+Everything else that is reversible and inside the plan proceeds without asking.
 
 ## Repository
 
@@ -55,7 +60,7 @@ evidence. An analysis paper does not count.
   generated planning documents, weights, data, files over 1 MB.
 - Every number carries dataset, split, episode count, seed, control, interval and result file.
 - This file states the project's rules; agents do not append to it. It, `docs/harness/` and code are in
-  English. Commit only when the user asks.
+  English.
 
 ## Report
 

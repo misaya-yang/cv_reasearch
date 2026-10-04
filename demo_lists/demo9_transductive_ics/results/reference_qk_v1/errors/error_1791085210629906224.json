@@ -1,0 +1,7 @@
+{
+ "state": "ERROR_QK_INTERFACE_OR_FINITE_BUDGET",
+ "error": "ModuleNotFoundError(\"No module named 'CRF'\")",
+ "traceback": "Traceback (most recent call last):\n  File \"/root/demo9_qk_staging/scripts/reference_qk_experiment.py\", line 422, in run\n    with reuse_native_basis(FoRIS,manifest[\"projection_basis\"]):host=FoRIS(encoder,image_size=1024,svd_components=500,tau=.6,mask_refiner=\"crf\",resize_to_orig_size=False,device=\"cuda\").eval().requires_grad_(False)\n                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/autodl-tmp/demo8_local_verification/foris_source/models/foris.py\", line 89, in __init__\n    self._crf, self._crf_band_px, self._crf_p_core = init_crf(\n                                                     ^^^^^^^^^\n  File \"/root/autodl-tmp/demo8_local_verification/foris_source/utils/refinement.py\", line 21, in init_crf\n    import CRF as CRF_lib\nModuleNotFoundError: No module named 'CRF'\n",
+ "completed_cases": 0,
+ "scientific_negative": false
+}

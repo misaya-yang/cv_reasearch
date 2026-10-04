@@ -19,6 +19,9 @@ T2, transfer without refitting: the read-out fitted on COCO base classes, read i
 original resolution on packs of other benchmarks. Rule: PASS when at least three of the packs gain +1.5 or more with
 the lower end above 0 and no pack loses with its whole interval below 0; FAIL when fewer than two packs gain with the
 lower end above 0; PARTIAL otherwise.
+
+A verdict of FAIL is given only when no report that is still missing could change it; until then the verdict is
+INCOMPLETE and `missing` lists the fits or packs to rerun.
 """
 import argparse
 import json
@@ -52,8 +55,11 @@ def d1(root):
             if row["ci95"][0] > 0 and (best is None or row["gain"] > best["gain"]):
                 best = row
     conv = [r for r in rows if r["arm"] == ARMS[1] and r["gain"] >= 2.0 and r["ci95"][0] > 0]
-    verdict = "NOT_RUN" if not rows else "PASS" if conv else "PARTIAL" if best and best["gain"] >= 1.0 else "FAIL"
-    return dict(verdict=verdict, rows=rows, choice=best if verdict in ("PASS", "PARTIAL") else None,
+    missing = ["%s %s" % (s, a) for s in SETS for a in ARMS if not any(r["set"] == s and r["arm"] == a for r in rows)]
+    # FAIL needs every fit: a fit that did not run may be the one that passes
+    verdict = ("NOT_RUN" if not rows else "PASS" if conv else "PARTIAL" if best and best["gain"] >= 1.0
+               else "INCOMPLETE" if missing else "FAIL")
+    return dict(verdict=verdict, missing=missing, rows=rows, choice=best if verdict in ("PASS", "PARTIAL") else None,
                 reference=dict(label_fit_linear=2.19, label_fit_convctx_layers=4.12, scope="DEV241, patch level, each fold by a model that saw no source image of that fold"))
 
 
@@ -72,8 +78,14 @@ def t2(root):
     strong = sum(v["gain"] >= 1.5 and v["ci95"][0] > 0 for v in got.values())
     positive = sum(v["ci95"][0] > 0 for v in got.values())
     harmed = sum(v["ci95"][1] < 0 for v in got.values())
-    verdict = "NOT_RUN" if not got else "PASS" if strong >= 3 and not harmed else "FAIL" if positive < 2 else "PARTIAL"
-    return dict(verdict=verdict, packs=rows, scope="original resolution, complete FoRIS pipeline, class mIoU on each pack's own episodes; read-out fitted on COCO only")
+    missing = [k for k in PACKS if k not in got]
+    if not got:
+        verdict = "NOT_RUN"
+    elif missing:  # a pack that did not run may still gain or be harmed: only a FAIL that no missing pack could undo is final
+        verdict = "FAIL" if positive + len(missing) < 2 else "INCOMPLETE"
+    else:
+        verdict = "PASS" if strong >= 3 and not harmed else "FAIL" if positive < 2 else "PARTIAL"
+    return dict(verdict=verdict, missing=missing, packs=rows, scope="original resolution, complete FoRIS pipeline, class mIoU on each pack's own episodes; read-out fitted on COCO only")
 
 
 def main():
@@ -99,7 +111,8 @@ def main():
             print("  %-12s %s" % (k, "not run" if not v else "FoRIS %.2f  %+.2f [%+.2f, %+.2f]  %s episodes, removal only %s" % (
                 v["foris"], v["gain"], *v["ci95"], v["episodes"], "%+.2f" % v["removal_only"] if v["removal_only"] is not None else "-")))
         (a.root / "pivot.json").write_text(json.dumps(out, indent=1))
-    print(json.dumps(dict(d1=out["d1"]["verdict"], t2=out.get("t2", {}).get("verdict"))))
+    print(json.dumps(dict(d1=out["d1"]["verdict"], d1_missing=out["d1"]["missing"], t2=out.get("t2", {}).get("verdict"),
+                          t2_missing=out.get("t2", {}).get("missing"))))
     sys.exit(0)
 
 

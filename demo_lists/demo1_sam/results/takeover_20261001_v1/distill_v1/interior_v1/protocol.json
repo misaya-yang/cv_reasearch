@@ -1,8 +1,0 @@
-{
-  "hypothesis": "Constrain common counterfactual point probes to the original head foreground to reduce off-object boundary perturbations; distill the resulting decision into one original-view decode.",
-  "frozen_rule": "8-segment foreground ray, radius8 longest-edge1024; radius1/4/8 strong controls; boxes original head",
-  "models": "same fixed 4 ranker variants, 3 seeds, hyperparameters; no test selection",
-  "test": "384 fresh COCO images seed2032 excluding all prior1304; DAVIS30 firstframes secondary",
-  "native_control": "official SAM2 dynamic token0 stability .05/.98, plus original threecandidate head and largest",
-  "storage": "only compressed compact features and task metrics; canonical base weights reused"
-}

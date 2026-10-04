@@ -1,8 +1,10 @@
 # Closed directions
 
 Read before proposing an idea. Each entry: the idea, the measured reason it was closed, what is kept, what not
-to retry. Code that was versioned is in git history at commit `09ea15f` under the path given. Do not reopen an
-entry without new measured evidence and the user's agreement.
+to retry. The code is in git history at commit `b9efc2b` under the path given; files that were never committed
+are in the local ref `refs/backup/pre-cleanup-20261004`. Do not reopen an entry without new measured evidence
+and the user's agreement. Failed experiments of the live direction are in its own ledger
+(`demo_lists/demo9_transductive_ics/README.md`), not here.
 
 ## Lessons that recur
 
@@ -11,6 +13,10 @@ entry without new measured evidence and the user's agreement.
 - Oracle headroom was real but the available evidence could not reach it (demo4 rules, demo8, CPU probes).
 - Verified algebra did not become task gain (GIC).
 - Signs seen on 60 to 300 samples flipped at full scale (demo2, demo4).
+- Probes on 40 episodes were read as failures although their intervals (3 to 9 points) could not see the
+  2 to 4 point effects this project has confirmed (demo9).
+- Preparation grew in place of a real run: a first run completed zero cases on a missing path, and a prepared
+  fit would have trained for one epoch (demo9).
 
 ## Entries
 
@@ -35,7 +41,7 @@ entry without new measured evidence and the user's agreement.
   some time steps and degrades at others; no FID or GenEval result exists.
 - Do not resume without the user. The server folder (22 GB) has a `GPU_PAUSED` marker.
 
-**demo4 single-pair selection rules** (the directory stays as demo9's library). `demo_lists/demo4_incontext_seg/README.md`
+**demo4 single-pair selection rules** (`icx/common.py` stays as demo9's library). `demo_lists/demo4_incontext_seg/README.md`
 - INSID3 on COCO-20i: 56.3 reproduced; oracle selection among its clusters 82.1. Fourteen rule families over
   one (reference, query) pair failed (best 55.4 against 56.1 over four folds); supervised scorers reach 58 to
   60. Removing INSID3's coverage factor costs 9.4 points.
@@ -53,7 +59,8 @@ entry without new measured evidence and the user's agreement.
 - Closed 2026-10-02, the day it was opened. On MVTec AD 2 the baseline without augmentation loses nothing
   under lighting change: pixel AP varies 1 to 2 points across conditions in three categories, and a shared
   state differs from a free per-patch state by at most 0.6. Real exposure change is only x0.87 to x1.13.
-- Numbers and method: `.claude/skills/measure-first-research/references/worked-examples.md`, case B.
+- Numbers and method: git history at commit `b9efc2b`,
+  `.claude/skills/measure-first-research/references/worked-examples.md`, case B.
 
 **demo8_local_verification and the M-TAP / G-MDN plan: a learned local verifier for in-context segmentation.**
 `demo_lists/demo8_local_verification`, `demo_lists/research_decision_20261001`, `docs/research`, `PROJECT.md`, `.agents/teamwork`
@@ -74,10 +81,3 @@ entry without new measured evidence and the user's agreement.
   interval [-3.80, -1.98]. MegaDepth 1500 pairs: 69.96 against 67.89. A single update already hurts (-2.12).
 - All numerical checks of the algebra had passed. Do not tune the solver; reopening needs evidence that real
   match residuals have the assumed tangential-normal coupling.
-
-### 2026-10-02 — fixed native-angular covariance construct (demo9 direction remains live)
-- Same40 official COCO-20i seed0 dev tasks: native64.2836, paired63.9368; -.3467pp95CI[-1.7659,1.2468].
-- Paired loses pointwise to shuffled/FROST95 controls; intervals cross0;40 packed native identities exact, no errors/fallbacks.
-- Fitted-reference scatter drops median87.62%, yet query AUC and task gain do not establish transfer; no generic information-loss claim.
-- Close this fixed covariance intervention; no ridge/threshold sweep/restart; keep compact native_angular_v1 evidence, no feature bank exists.
-- Overall method goal remains open; saved diagnostics cannot yet separate rare-confuser, calibration and structural-decode causes; next work offline.
