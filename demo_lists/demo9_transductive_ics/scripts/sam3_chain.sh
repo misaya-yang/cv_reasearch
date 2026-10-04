@@ -87,7 +87,7 @@ for SET in smoke dev confirm; do
    [ "$(state "$R/$SET/report_shard0.json")" = PREDICTIONS_FROZEN ] || { say "$SET did not freeze; preserve partials"; exit 1; }
  fi
  SCORE_EXTRA=(--resume)
- if [ "$SET" = smoke ]; then SCORE_EXTRA+=(--keep-candidates); fi
+ if [ "$SET" = smoke ] || [ "${KEEP:-0}" = 1 ]; then SCORE_EXTRA+=(--keep-candidates); fi  # KEEP=1: proposal bitmaps stay for sam3_relative_decision.py
  cpu scripts/sam3_stitch.py --score --manifest "$MANIFEST" --out "$R/$SET" "${EXTRA[@]}" "${SCORE_EXTRA[@]}"
  cpu scripts/sam3_stitch.py --merge --manifest "$MANIFEST" --out "$R/$SET" --foris "$FORIS" "${EXTRA[@]}" > "$R/$SET/table.log"
  [ "$(state "$R/$SET/report.json")" = COMPLETED ] || exit 1
