@@ -1,64 +1,64 @@
 # AGENTS.md
 
-Rules for every agent in this repository. The user's latest instruction overrides this file.
+The user's latest message overrides this file.
 
-**Goal.** One method paper for CVPR 2027 (deadline 2026-11-16 AoE) that earns a solid accept: stronger than a
-CVPR 2026 oral and its best follow-ups in that oral's field, with independent, reproducible evidence. An
-analysis paper does not count.
+**Goal.** One method paper for CVPR 2027 (deadline 2026-11-16 AoE) that earns a solid accept: a method that
+beats a CVPR 2026 oral (INSID3) and its best follow-ups in in-context segmentation, with reproducible
+evidence. An analysis paper does not count.
 
-**Start here.** Read `docs/harness/STATUS.md` (what is live, who runs what), then the live direction's
-`HANDOFF.md` and `PLAN.md`. Do all research work by `.claude/skills/measure-first-research/SKILL.md`.
-Everything else is indexed in `docs/harness/INDEX.md`.
+**Read first.** `docs/harness/STATUS.md` (what is true now and the one next action), then the live direction's
+`PLAN.md` (experiments not yet run). Before proposing an idea: the failure ledger in the direction's
+`README.md`. Before the first `ssh`: `docs/harness/SERVER.md`.
 
-## Think
+## Research
 
-1. Measure before building. Size the problem on a strong baseline with ground-truth (oracle) experiments.
-   Build only what the measurement says is worth at least 5 points.
-2. Predict before running. Write four lines: the assumption tested, the predicted numbers, what a match
-   means, what a mismatch refutes and how the method changes. No fourth line, no run.
-3. Bracket every result with three rows: the baseline, the naive method using the same information, the
-   oracle upper bound.
-4. Believe only paired differences with an interval, on all folds. A subset, a single fold, a smoke test or an
-   oracle number is never the method's score.
-5. When a key test fails, stop the queue, find the cause in data already on disk, then propose one run.
-6. When a stop rule is met, stop. Closed directions stay closed unless new measured evidence exists and the
-   user agrees. Read `docs/harness/ARCHIVE.md` before proposing an idea.
-7. Plans and proofs without a measurement are not progress. Test the premise with the cheapest run instead.
+1. **Error before mechanism.** Before writing code for an idea, show from saved outputs which decision of the
+   strong host is wrong, what it costs in mIoU, and a test-time signal that separates those cases, with its
+   measured separation. An oracle gap is not that signal. Signal unmeasured: measure it; do not build.
+2. **One script to the first number.** A new idea gets one script and one run against the host and the
+   same-information control. No interfaces, fixtures, proofs, review passes or variants before that number.
+   Several methods means several independent methods, each with its own number.
+3. **Enough episodes to see the effect.** Real effects here are 2 to 4 mIoU. Measured half-widths of the
+   paired 95% interval: 40 episodes, 3 to 9; DEV241, 1.8; CONFIRM600, 1.5 against the same host and 3
+   against a different host. Choose on DEV241, confirm once on CONFIRM600. No method probes on 40 episodes.
+4. **What counts.** A method counts when it beats the strongest baseline of its column (training-free;
+   fitted on base classes; built on a foundation segmenter) and the same-information control, on CONFIRM600,
+   at original resolution, inside the complete pipeline. An added input (an image pool, a class name) is not
+   a contribution. No tables and no extra benchmarks before a first place in some column is in sight.
+5. **Reading a result.** Paired gain, 95% interval, gain per fold, episodes up and down; every number keeps
+   its arm name. A positive gain whose interval crosses zero is unresolved, not a failure. A failure limits
+   the construction and the setting that were tested and is not a ceiling: write one ledger row and name the
+   link that failed.
 
 ## Run
 
-1. Prepare first. Before taking the GPU: code smoke-tested on about 10 samples, caches built, four lines
-   written, the next job ready.
-2. Latest user resource policy (2026-10-02): prepare code, CPU checks and the finite queue before GPU rental.
-   Continue an immediately executable valuable next stage, or power off the AutoDL instance when the queue
-   ends/fails. Do not keep a paid GPU on for coding, literature or planning, and do not manufacture load.
-   The prepared resource guard interrupts only its own stalled jobs after 60 seconds of confirmed zero GPU
-   activity; foreign GPU jobs must be protected. AutoDL's instance command is `/usr/bin/shutdown` (no `-h now`).
-3. Get a signal in minutes: small sample, results streamed per unit. If the first few units show nothing, stop
-   and say so. Complete multi-hour runs are for final tables only.
-4. The server is shared. Check `nvidia-smi` and `STATUS.md` first, cap your GPU memory, run one job per agent,
-   and do not repeat a matrix another agent is running.
-5. Stop only your own processes, by PID. Do not touch the base Python environment, or another agent's
-   directories and caches. Details and pitfalls: `docs/harness/SERVER.md`.
-6. Clean as you go. Delete models, datasets, caches and raw outputs in the same work session unless they
-   feed the paper. Keep small JSON and log files.
-7. Ask the user before downloading models, weights or datasets. Gated, licence-bound or Google-Drive-only
-   files come from the user.
+1. The GPU is rented by the hour. Before queueing, state the total GPU cost and the column in which the
+   result would be first. Prepare code and the queue in no-card mode. A queue starts with a smoke stage (the
+   real pipeline on a few real episodes, minutes) and ends with `/usr/bin/shutdown`. A passed smoke is the
+   acceptance test; the full stages follow at once.
+2. Queues go through `scripts/experiment_resource_guard.py`: it waits for foreign GPU jobs and powers off.
+3. The server is shared. Look at `nvidia-smi` first. Stop only your own processes, by PID. Do not touch the
+   base Python environment or another agent's directories and caches.
+4. Ask the user before downloading models, weights or datasets.
+5. Delete caches and raw outputs once the run they feed has been read. Keep small JSON and logs.
 
-## Write
+## Repository
 
-1. One directory per direction under `demo_lists/`, with `README.md` (numbers), `HANDOFF.md` (method,
-   reasoning, pitfalls) and `PLAN.md` (next experiments with commands and stop rules). Layout rules:
-   `docs/harness/REPO.md`.
-2. Every number carries its dataset, split, sample count, seed, control, interval, script and result file.
-3. Write claims in three tiers: measured, inferred, unverified.
-4. When a direction changes state, update `docs/harness/STATUS.md` in the same change. When it closes, add
-   five lines to `ARCHIVE.md` and delete its directory.
-5. No diaries, scratch folders, generated planning documents or third-party checkouts in the repository.
-6. This file, `docs/harness/` and skills are in English. Commit only when the user asks.
+- `docs/harness/`: `STATUS.md` (at most 40 lines of at most 200 characters: now, measured, unverified, needed
+  from the user; replaced, never appended to), `SERVER.md`, `ARCHIVE.md` (closed directions).
+- `demo_lists/<direction>/`: `README.md` (numbers with provenance, failure ledger), `HANDOFF.md` (the method,
+  its reasoning, pitfalls), `PLAN.md` (only experiments not yet run: question, arms, data, command, cost, what
+  each outcome changes; an entry is deleted once it is read), `scripts/`, the package, `results/`.
+- When an experiment ends: its numbers go to the README, a failure gets one ledger row, and its code and
+  bulky outputs are deleted unless the live line imports them. Git history keeps the code.
+- Never in the repository: receipts, preflight records, checksums, acceptance logs, archives, per-chat notes,
+  generated planning documents, weights, data, files over 1 MB.
+- Every number carries dataset, split, episode count, seed, control, interval and result file.
+- This file states the project's rules; agents do not append to it. It, `docs/harness/` and code are in
+  English. Commit only when the user asks.
 
 ## Report
 
-Reply to the user in Chinese, conclusion first, with numbers and their controls. No result: say so. A failure:
-say so and give the numbers. List what you need from the user separately. Give short progress notes while
-working. Never answer "it cannot be done"; report the measured obstacle and the next move.
+Chinese, conclusion first, numbers with their controls and intervals, three tiers (measured, inferred,
+unverified), what is needed from the user listed separately. No guessed numbers or odds. Never "it cannot be
+done", and stopping is not offered as an option: give the measured obstacle and the next move.
