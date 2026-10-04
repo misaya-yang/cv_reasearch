@@ -1,5 +1,56 @@
 # demo9：完整参考条件推理的机制与证据交接
 
+## 决策理论（2026-10-04，论文主线；PLAN 首节为准）
+
+**设定。** 一张带标注参考图 (S, m)、一张查询图 Q、冻结主干 φ。宿主方法从 (S, m, Q) 产生一个实值分数场
+s: Q → R^N（per-patch 或 per-pixel），再用一条规则把它变成二值掩码。记查询像素（patch）i 的特征为 x_i，定义
+似然比 r(x) = p(x | 目标) / p(x | 背景)（两个条件密度都在查询图的像素分布上取）。逐像素贝叶斯判决是
+
+    M* = { i : log r(x_i) ≥ log((1 − π)/π) },   π = |M*| / N（查询里目标的占比，share）。   (1)
+
+三个量：两个外观条件密度（宿主用参考图估计的），和查询自身的占比 π（没有任何冻结方法在估计它）。
+
+**当前方法的错配（可核对源码）。** 每一种冻结宿主都把判决水平写死，与 π 无关：
+- FoRIS：把分数场 min-max 归一化后切在中点（减 0.5），即 τ = (min s + max s)/2；
+- FROST：对数密度比在 0 处切（"equal priors"，等价于 π = 1/2）；
+- INSID3：在相似度/聚类结构上切固定的分位，参考图多数投票。
+式 (1) 说正确水平应当由 π 决定；这是"水平误差"，与"排序误差"（同样水平下挑错了像素）正交。
+
+**可直接测量的推论。** 对任何分数场是 r 的单调变换的宿主，把固定水平换成与真实 π 匹配的水平，只动水平、不动
+排序，效果可从未被访问的分数场直接测出。DEV241、patch 级、FoRIS（`results/decision_v1/fit/report.json`）：
+
+| 干预 | mIoU | 相对 FoRIS | 95% 区间 |
+|---|---:|---:|---|
+| FoRIS 原生 | 56.996 | — | — |
+| 同一分数场，按真占比切（用标签） | 66.085 | **+9.089** | [+6.146, +10.448] |
+| 删掉每一个被错误包含的 patch（排序 oracle） | 76.969 | +19.973 | [+16.684, +21.797] |
+| 原分辨率完整流程里的 GT-cut（241 例） | — | +10.52 | [+8.49, +12.36] |
+
+排序项不可从冻结证据里拿到：争议区排序 AUC 0.664；没有任何 label-free 形式过 0.75/+3 的门；连有监督探针也把
+漏掉的目标部分排在错误包含区域之下（AUC 0.19–0.41，`results/evidence_v1/`）。因此水平项是可达项，排序项是需要
+新证据的项（本计划的 D1/P1 不碰它；区域观察批 G1–G5 是碰它的备选，见 PLAN）。
+
+**为什么手写规则全失败、学习却没有。** π 不是分数场自身的函数：分数场只是似然比的一个估计，差一个与图相关的
+单调变换，所以它自己的分位与 π 没有固定关系。四种 label-free 占比估计都差 0.66 个 log 面积（约 1.9 倍）；30 多条
+手写规则上限 +1.5～1.8（contrast cut +1.53 区间跨 0；query self-support trimming +1.68 [+0.72, +2.27]，patch 级）。
+要逼近 (1) 需要看到查询内部结构（它自己的确信核心、它自己的确定背景）和各深度上的参考边际差——这正是读出头的
+输入。按基类 episode 拟合：patch 级 +3.86 [+2.58, +5.25]，完整流程 +3.54 [+1.96, +4.96]（600 例确认集、四折全正）；
+同结构只看分数的对照 +2.27。线性档（19 个权重）在四折是**同一条公式**（系数余弦 0.988，17 个常数）：决策，与
+外观不同，是**类无关**的。
+
+**可识别性假说（D1 检验的东西）。** 决策映射是"宿主证据结构"的性质，不是类别的性质。若是，它应当能从**掩码按
+构造已知**的成对样本（同一张无标注图的两个窗口：一个当参考、一个当查询，区域在两边的掩码逐像素已知；尺度、
+长宽比、位置、占比都由构造控制）拟合出来，全程不用任何人工标注。判据：拟合出的常数与标签拟合公式的余弦 ≥0.9，
+且 DEV241 patch 级 ≥ +2.0。成立，则方法站在 INSID3/FoRIS 的免训练列里；不成立，则本节给出的是一个可报告的
+负结果（"类无关但不可无标注识别"），论文退回"类无关决策 + 基类拟合"。
+
+**与最近工作的边界。** RePRI（CVPR 2021）已用查询前景占比的先验做转导推理，但需要元训练的分割网络、整批查询；
+本文是冻结宿主、单查询、类无关输入、无标注可识别。FoRIS/FROST 的固定水平正是本文测出的错配对象；CNOS/SAM-6D 的
+global-first 选择是"排序/身份"路线的强对照，不是本文贡献。较亮的实测事实（一条 17 常数公式跨折一致、+9.09 的水平
+项、0.19–0.41 的排序墙）是本文的科学骨架，读出头的容量不是。
+
+以上所有数字的来源、脚本与结果文件见 README.md 与 PLAN.md 首节的逐条引用。
+
 最新完成（2026-10-04）：用户指定SAM200与QK40有限队列已全部完成。SAM标准与同作者backend/实例框的旧纯前端均59.9330、200/200逐像素相同；56.2190是独立maxneg0正例挖掘分支，不是旧纯前端。只验证此次同后端入口，不冒称旧Meta数值栈或4000例论文复现。QK固定九臂40/40：完整FoRIS65.1614，main58.7041，−6.4573CI[−9.0505,−3.9193]；Q-only58.7462，constant-c59.0895，pre-Part1-query65.2185。全部合法fallback计入，主方法未建立收益；本图bank胜共享bank+3.8735不改变两者均输native的事实。原生NoOp和旧掩码40/40exact，首次缺CRF路径导致0例运行错误已保留，v2只修环境路径。真实预测327.302秒、guard337.290秒自动关机，平台已独立确认；无卡只取回小证据。报告`results/sam3_author200/REPORT.md`与`results/reference_qk_v2/REPORT.md`。不扩QK参数/层/head，不把固定构造失败推广到所有冻结特征无信息。当前无下一条可运行GPU队列，总体论文贡献仍未成立；下方旧准备/端口/队列均不能自动恢复。
 
 接续状态：旧F4/A/B保持关闭。C2旧DEV40已完成：SAM3原生62.492，FoRIS查询框再提示63.557，+1.065CI[−7.539,9.691]，弱于简单OR67.418；GT框77.334只属特权诊断。原生掩码/NoOp精确，合法预测全部冻结后才读queryGT。E62 weste:12376 guard在101.851秒请求关机，平台STOPPED已核。随后无卡CPU旧600例完整掩码OR为62.829，对SAM3+1.738CI[−.297,5.381]，没有过线；对FoRIS+3.046CI[1.816,4.394]只能作朴素强对照。Source完整重构与Query质量跨40episode相关.589，不是同任务选候选的证据；CG-ICS已有完整Source-mask IoU概念选择，M2C已有冻结SAM3概念优化。未选新方法，未开新160；无科学作业在途，取回证据后已请求无卡关机。下方历史队列不恢复。
@@ -241,3 +292,22 @@ score_i=sum_FG P_ij/sum_all P_ij，阈值.5。有限rho松弛两侧边际，不�
 | `scripts/open_pool_*.py` | 另一个会话在本目录写的混合池子实验，不属于这份交接；改动前先和那个会话确认 |
 | `results/` | 已有结果的 JSON（按 `.gitignore` 不入库，只在本地和服务器） |
 | `../demo4_incontext_seg/` | 账本、失败的十四类规则、探索阶段的脚本（`scripts/stream_*.py`、`episodes_*.py`、`foris_stream.py`） |
+
+## 2026-10-04: saved-output decision granularity (read-only scientific replay)
+
+This finding does not change the active direction, select a new method, authorize a GPU queue, or reopen closed selectors. Script: `scripts/analyze_host_decision_granularity.py`; result: `results/fixed_host_union_v1/decision_granularity.json`. Inputs are the existing COCO-20i val2014 seed0 oldCONF600 original-resolution I/U records; all four folds, 561 connected support/query photograph groups. Native FoRIS59.7830, SAM61.0908, OR62.8291, AND56.8677 replay exactly. No model inference, new labels, fitting, downloads or remote actions.
+
+Measured diagnostic: selecting the higher episode-IoU host gives69.9718; choosing among both hosts/OR/AND gives70.6501. These are NOT class-mIoU upper bounds. Exact optimization of the class-summed ratio gives73.1900 for two hosts and73.9354 for four outputs; the existing pixelwise disagreement oracle is82.0846. The fractional optimization certificate uses sum_e max_a(I_ea-r*U_ea)=0 per class, with normalized residual below1e-12. Choices and source hashes are saved. The four-output extension adds only.7453pp, descriptive paired95%CI[.3312,1.0124]; pixel oracle minus optimal four is8.1492pp[6.9064,9.8775]. Bootstrap:2000 photo-group draws, Python Random seed0, original-data GT choices held fixed; exploratory, not independent confirmation or a reoptimized-bound interval.
+
+Inference: both whole-output reliability and within-output disagreement remain opportunities. Do not conclude that whole-output selection has only a70-point ceiling, or that a pixel-level construction is necessary to recover any substantial gain. Neither oracle proves an observable reliability signal. Query labels and class identities used in optimization are privileged and must not enter a method.
+
+Additional evidence constraint: `decision_v1/fit/report.json` has oldCONF600 patch-level learned convctx:layers+3.8643 versus learned conv:score+2.2706 (point difference1.5936; no direct paired CI computed). Architecture and inputs both differ, so this is not a clean causal estimate of extra evidence. Full-resolution learned-head+3.5424 is a separate result. Do not characterize all fixed-feature inference as having no useful information, or claim the head is an information upper bound.
+
+The local-budget "truly found" set uses (score>.5)&GT, whereas the legal core uses score>=.8 with a fallback. Their contrast changes coverage as well as purity; it does not isolate seed contamination. FoRIS-score FN-versus-FP ordering is zero by the threshold definitions and is not independent evidence of representation failure. These limits matter when selecting the next mechanism.
+
+
+## 2026-10-04: two server experiment preparations, no new method score
+
+User requested both preparations on westd:48002. Reliability: owned `/root/autodl-tmp/cvpr_host_reliability_01a105d0`,841 existing native-output episodes,22 legal features, class/photo-purged4folds; full synthetic CPU evaluator passed. No real readout fitting or scoring. Pro: owned `/root/autodl-tmp/cvpr_pro_regional_01a105d0`, `results/prepared_v2`, masked Query exactly as the supplied construction, oldDEV40,10 outputs sharing162 regional crops/pair. Actual imports/ROI/core CPU checks and56-file finite-guard preflight passed; synthetic scorer20.693s. Real pretrained/native-parity checks are deferred to the first8 GPU cases. No GPU was launched, no weights/data downloaded, no shared queues changed.
+
+Commands, frozen assumptions, controls and stop rules are the two “This chat” sections at the top of `PLAN.md`. Code: `scripts/host_reliability_probe.py`, `scripts/pro_regional_experiment.py`. Receipts: `results/host_reliability_v1/` and `results/pro_regional_v1/`. This is preparation completion, not scientific validation or a publication claim.
