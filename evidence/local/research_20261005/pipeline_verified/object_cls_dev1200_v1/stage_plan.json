@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "status": "PREPARED_ONLY_NOT_LAUNCHED",
+  "root_owns_dispatch": true,
+  "dispatch": "Root serial post4000 pipeline; no automatic wait or GPU queue armed",
+  "snapshot": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/object_cls_dev1200_v1/snapshot",
+  "entry_script_sha256": "cf0783275a7ab2f7a0a762d72a13d8fc76d1e556a03cfd9d0659c39a41e24c1d",
+  "CLS_implementation_sha256": "ecdf7d23e996701a343b150c4f4ded64cb5ef0c3b1bbf1b5a43ace0da9a7eb8a",
+  "required_preparation_seals": [
+    {
+      "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/object_cls_dev1200_v1/prepared.json",
+      "sha256": "e2d6c9f5d890d0b965652d4673ece1dbf9c79bcdf793127172328e7bd2ce8558",
+      "state": "CPU_CROPS_PREPARED_NO_ENCODER_RUN"
+    },
+    {
+      "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/object_cls_dev241_v1/sealed.json",
+      "sha256": "d89a4b073d239fa0948d229c74eef97279a950fa701f06e10b54a4859516fde6",
+      "state": "ALL_CLS_DESCRIPTORS_SEALED",
+      "descriptor_forwards": 367
+    },
+    {
+      "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen_subtoken1200_v1/sealed.json",
+      "sha256": "ab70271e626d8fd0ea76bc830401eef030123978e5754dcf81b98a1014df22c8",
+      "state": "ALL_PREDICTIONS_SEALED",
+      "n": 1200
+    }
+  ],
+  "prepared_config_sha256": "f8aa8ef6593aac66a96aea121e854b7e7d62f7126f06a670b2b1e82344e7a17e",
+  "prepared_crops_sha256": "cb784106bb599d28e22734448305758c2416bc664040ad60863f2f851be5d6eb",
+  "prepared_labels_sha256": "b6ea67bea75e530669dc532adba877087d4b10c746c85de6dd520260d0a66a60",
+  "resource": {
+    "fixed_max_batch": 4,
+    "torch_CPU_threads": 2,
+    "BLAS_threads": 1,
+    "new_cases": 247,
+    "new_image_views": 1033,
+    "new_encoder_calls": 323,
+    "reused_vectors": 367,
+    "total_vectors": 1400,
+    "compact_vector_storage_bytes": 5734400,
+    "measured_legacy_GPU_peak_bytes": 2080604672,
+    "measured_legacy367_views_seconds": 153.29069359600544,
+    "new_runtime_unverified": true
+  },
+  "metric_scope": {
+    "full1200": "CLS vs fixed stored NN region mean, same77 paired episodes/296 regions",
+    "legacy241": "CLS vs raw/projected region means, same original18 paired episodes/71 regions",
+    "raw_full1200_available": false,
+    "cross_cohort_comparison": false,
+    "GT_boxes_privileged": true
+  },
+  "stages": [
+    {
+      "id": "object_cls1200_infer",
+      "resource": "GPU",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "-u",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/object_cls_dev1200_v1/snapshot/scripts/diagnose_object_cls_dev1200.py",
+        "infer",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/object_cls_dev1200_v1"
+      ],
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env",
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1"
+      },
+      "required_seals": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/object_cls_dev1200_v1/prepared.json",
+          "sha256": "e2d6c9f5d890d0b965652d4673ece1dbf9c79bcdf793127172328e7bd2ce8558",
+          "state": "CPU_CROPS_PREPARED_NO_ENCODER_RUN"
+        },
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/object_cls_dev241_v1/sealed.json",
+          "sha256": "d89a4b073d239fa0948d229c74eef97279a950fa701f06e10b54a4859516fde6",
+          "state": "ALL_CLS_DESCRIPTORS_SEALED",
+          "descriptor_forwards": 367
+        },
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen_subtoken1200_v1/sealed.json",
+          "sha256": "ab70271e626d8fd0ea76bc830401eef030123978e5754dcf81b98a1014df22c8",
+          "state": "ALL_PREDICTIONS_SEALED",
+          "n": 1200
+        }
+      ],
+      "expected_seal": {
+        "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/object_cls_dev1200_v1/sealed.json",
+        "state": "ALL_CLS_DESCRIPTORS_SEALED",
+        "n": 332,
+        "query_regions": 736,
+        "descriptor_forwards": 1033,
+        "encoder_calls": 323,
+        "fixed_batch": 4,
+        "reused_descriptor_images": 367,
+        "total_descriptor_images": 1400
+      },
+      "expected_state": {
+        "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/object_cls_dev1200_v1/state.json",
+        "state": "ALL_CLS_DESCRIPTORS_SEALED",
+        "completed": 332
+      }
+    },
+    {
+      "id": "object_cls1200_score",
+      "resource": "CPU_ONLY",
+      "after": "object_cls1200_infer",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "-u",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/object_cls_dev1200_v1/snapshot/scripts/diagnose_object_cls_dev1200.py",
+        "score",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/object_cls_dev1200_v1"
+      ],
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env",
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "CUDA_VISIBLE_DEVICES": ""
+      },
+      "required_seal": {
+        "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/object_cls_dev1200_v1/sealed.json",
+        "state": "ALL_CLS_DESCRIPTORS_SEALED",
+        "descriptor_forwards": 1033,
+        "reused_descriptor_images": 367
+      },
+      "expected_state": {
+        "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/object_cls_dev1200_v1/score_state.json",
+        "state": "CPU_GT_CLS1200_DIAGNOSTIC_COMPLETE"
+      },
+      "expected_report": {
+        "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/object_cls_dev1200_v1/report.json",
+        "state": "CPU_GT_CLS1200_DIAGNOSTIC_COMPLETE",
+        "source_n": 1200,
+        "primary_eligible_episodes": 77,
+        "exact197_legacy_CLS_margin_parity": true,
+        "raw_full1200_available": false
+      }
+    }
+  ]
+}

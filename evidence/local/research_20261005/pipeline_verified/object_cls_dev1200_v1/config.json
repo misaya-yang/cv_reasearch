@@ -1,0 +1,102 @@
+{
+  "question": "Can actual object-focused global CLS separate hard semantic errors where patch-region means fail?",
+  "cohort": "all1200 fully sealed exposed DEV draws; same frozen crop/CLS construction, no new GT selection rule",
+  "primary": "mean episode AUROC on all1200 episodes with both eligible missed/stray regions",
+  "supplement": "pooled eligible regions are secondary; raw control remains restricted to original241",
+  "dataset": "COCO-20i, seed0, exposed development; not independent confirmation",
+  "resolution": 1024,
+  "fixed_inference_batch": 4,
+  "precision": "FP32 weights/input/activations, no autocast, TF32 disabled",
+  "descriptor": "actual final normalized prefix CLS token index0: encoder.m.forward_features(x)[:,0,:]",
+  "interface": "installed timm.models.eva.Eva, CLS followed by4 register tokens; bypass default avg pooling",
+  "reference_positive": "all supplied reference FG bounding box; square crop plus10percent context per edge; erase outside FG to ImageNet mean",
+  "reference_negative": "original supplied reference image, erase supplied FG to ImageNet mean; square padding, no additional context crop",
+  "query": "unmasked original RGB square crop around fixed GT/prediction region bbox plus10percent context per edge",
+  "aspect": "map working1024 bbox back to original RGB coordinates before forming square; no clipping of square extent, pad out-of-image area",
+  "context_per_edge": 0.1,
+  "neutral_RGB_uint8": [
+    124,
+    116,
+    104
+  ],
+  "neutral_precision": "ImageNet RGB mean rounded to nearest uint8 (124,116,104) for the unchanged PIL host transform",
+  "transform": "existing utils.data.build_transform(1024): PIL Resize(1024,1024), ToTensor, ImageNet Normalize",
+  "margin": "cosine(qCLS,rFG_CLS)-cosine(qCLS,rBG_CLS), higher is target FG",
+  "fixed_threshold": 0.0,
+  "fitting": false,
+  "sign_flip": false,
+  "sweeps": false,
+  "other_augmentations": false,
+  "bootstrap": {
+    "draws": 2000,
+    "rng": "RandomState(0)",
+    "unit": "connected reference/query photographs from source241",
+    "paired": true
+  },
+  "privilege": "query GT defines diagnostic region boxes before inference; this is not a deployable proposal generator or complete segmentation method",
+  "positive_consequence": "only justifies seeking a legal proposal producer; does not establish SOTA or complete-mask improvement",
+  "negative_consequence": "stop this fixed crop/global-CLS construction; not all global representations",
+  "full1200_control": "stored packet FGmax-BGmax, averaged over identical eligible pure64-grid tokens per region",
+  "raw_full1200_available": false,
+  "raw_control_scope": "original241 source cohort only, original18 paired episodes",
+  "model_dir": "/root/demo4_cache/models/dinov3-vitl16-timm",
+  "host_root": "/root/autodl-tmp/demo8_local_verification/foris_source",
+  "source_episodes": 1200,
+  "encoded_episodes": 332,
+  "query_regions": 736,
+  "expected_descriptor_forwards": 1033,
+  "total_descriptor_images": 1400,
+  "reused_descriptor_images": 367,
+  "source_code_sha256": "ecdf7d23e996701a343b150c4f4ded64cb5ef0c3b1bbf1b5a43ace0da9a7eb8a",
+  "entry_source_code_sha256": "cf0783275a7ab2f7a0a762d72a13d8fc76d1e556a03cfd9d0659c39a41e24c1d",
+  "descriptor_storage_estimate_bytes": 5734400,
+  "no_encoder_or_GPU_execution_in_prepare": true,
+  "dependency_sha256": {
+    "wrapper": {
+      "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/object_cls_dev1200_v1/snapshot/src/ics/data.py",
+      "sha256": "7664bfcc0de9a9183296273a3ea57390e00147b82afe626f47bde1bf2383b165"
+    },
+    "model_config": {
+      "path": "/root/demo4_cache/models/dinov3-vitl16-timm/config.json",
+      "sha256": "a71f705b0074e173540d0bdbd3aa940fa8d7d3c6c7f020a683004c46ca605b24"
+    },
+    "model_weights": {
+      "path": "/root/demo4_cache/models/dinov3-vitl16-timm/model.safetensors",
+      "sha256": "45172f209c9583c40538afc26b60a07033e6fcc2e8c30228338e6b2e932e7941"
+    },
+    "timm_eva": {
+      "path": "/root/demo4_cache/env/timm/models/eva.py",
+      "sha256": "a8c9807ef5e8dabc725c1e2a89439760a900d6af6cdafefea18fc121173643a2"
+    },
+    "host_transform": {
+      "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/data.py",
+      "sha256": "37211b2f55391694023cad806cdc9ec210944d32346ac1de0f9502df39731b53"
+    },
+    "package_init": {
+      "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/object_cls_dev1200_v1/snapshot/src/ics/__init__.py",
+      "sha256": "f5f646ff0c339439f0b2511d0e126bdf1db65eba332621dbd06df47545595d2b"
+    },
+    "entry_script": {
+      "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/object_cls_dev1200_v1/snapshot/scripts/diagnose_object_cls_dev1200.py",
+      "sha256": "cf0783275a7ab2f7a0a762d72a13d8fc76d1e556a03cfd9d0659c39a41e24c1d"
+    },
+    "frozen_cls_implementation": {
+      "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/object_cls_dev1200_v1/snapshot/scripts/diagnose_object_cls_dev241.py",
+      "sha256": "ecdf7d23e996701a343b150c4f4ded64cb5ef0c3b1bbf1b5a43ace0da9a7eb8a"
+    }
+  },
+  "source_metadata_sha256": {
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen_subtoken1200_v1/manifest.json": "1656f2b54350ce842c0d51cd445383d6bee1f9f78ae7ee93a79b628cd83f6aa6",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen_subtoken1200_v1/sealed.json": "ab70271e626d8fd0ea76bc830401eef030123978e5754dcf81b98a1014df22c8",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen_subtoken1200_v1/episodes.jsonl": "cf53a9248ddf51f476ba508044c1264c97ce94458b638aff359feccfa10fe46d",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen_subtoken1200_v1/report.json": "f039d05e802d2125bfb478c82439c909be8a4313cf8fe37b426669ee9ff85289",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen_subtoken1200_v1/score_state.json": "461b84dd0e5f7e71d00d139d3adc0c4ecce7f88f054bfcdd4adb0f4a2124743e",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/object_cls_dev241_v1/prepared.json": "d1a1839cb07f25d93ee580bb0d922e81248161fdc5b7e0f538aa049d2170a872",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/object_cls_dev241_v1/config.json": "701b954cd33a6d2330fa3fdc52310a314f1b8a5ad485ba7e45bae76c7767e96c",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/object_cls_dev241_v1/crops.json": "0d7a6fbfe2531c68085cbf24eecf914cbb5f9adfa7d6888bfecd5366ca538df4",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/object_cls_dev241_v1/labels.json": "cd9f37b63cd8d851f7a20e2bc215c4d628f3d4a257e2ba21af7fce183646f466",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/object_cls_dev241_v1/sealed.json": "d89a4b073d239fa0948d229c74eef97279a950fa701f06e10b54a4859516fde6",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/object_cls_dev241_v1/report.json": "0905dcd0f2a524af5d2c6b62d71a32b9f92812e3fabd6f62a35555bbbb866488",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/object_cls_dev241_v1/scored_regions.json": "3ac9208f73c254b19c9733b1b918f228cbad8d94c152cf275381a7ffb81abaee"
+  }
+}

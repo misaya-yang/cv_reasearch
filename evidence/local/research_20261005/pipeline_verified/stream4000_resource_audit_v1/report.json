@@ -1,0 +1,100 @@
+{
+  "date": "2026-10-05",
+  "scope": "Two completed read-only remote resource sampling windows; no experiment, GPU compute, process or queue changes by the auditor",
+  "remote_workspace": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+  "main_process": {"pid": 45702, "start_ticks": 953851020},
+  "main_log": "launch/frozen_subtoken4000_v1/events.jsonl.stage-0.log",
+  "sampling": {
+    "duration_seconds_each": 40.0,
+    "interval_seconds": 2.0,
+    "samples_each": 21,
+    "gpu_source": "nvidia-smi utilization.gpu, utilization.memory, memory.used, power.draw; memory.total additionally captured in the second window",
+    "cpu_source": "/proc/<pid>/stat deltas, thread counts/state/wchan; first window also /proc/<pid>/io",
+    "cpu_percent_unit": "100 percent equals one CPU core",
+    "gpu_summary_unit": "Arithmetic mean/fractions of sampled utilization readings, not continuous kernel occupancy",
+    "utc_window_start": null,
+    "utc_window_start_note": "Absolute sampling start timestamp was not retained; relative 0-to-40-second timing and progress events were retained"
+  },
+  "main_only_window": {
+    "gpu_util_mean_percent": 71.76190476190476,
+    "gpu_util_min_percent": 0.0,
+    "gpu_util_max_percent": 100.0,
+    "gpu_util_lt50_fraction": 0.23809523809523808,
+    "gpu_util_le20_fraction": 0.23809523809523808,
+    "gpu_util_ge90_fraction": 0.47619047619047616,
+    "gpu_memory_MiB": 2482.0,
+    "gpu_util_samples_percent": [100, 89, 8, 64, 100, 100, 100, 85, 0, 2, 100, 100, 100, 78, 8, 100, 85, 99, 100, 86, 3],
+    "cpu_mean_percent": {"45702": 103.51, "45748": 18.653, "45742": 16.5, "45735": 0.0},
+    "parent_threads": 10,
+    "parent_thread_observation": "Usually one runnable and nine sleeping; workers frequently pipe_read/futex waits; no D-state observed",
+    "parent_physical_read_MB_s": 0.0,
+    "parent_physical_write_mean_MB_s_approx": 0.073,
+    "parent_physical_write_peak_MB_s": 0.170,
+    "worker_physical_read_write_MB_s": 0.0,
+    "sampling_initial_progress": {"visited": 2520, "reused": 1200, "encoded": 1320, "completed": 2517, "pending_fine_RAM": 0, "seconds": 3213.0640203282237},
+    "sampling_final_progress": {"visited": 2540, "reused": 1200, "encoded": 1340, "completed": 2537, "pending_fine_RAM": 0, "seconds": 3261.7561814263463},
+    "subsequent_read_only_log_snapshot": {"visited": 2560, "reused": 1200, "encoded": 1360, "completed": 2557, "pending_fine_RAM": 0, "seconds": 3310.3000962417573},
+    "throughput_intervals": [
+      {"from_visited": 2500, "to_visited": 2520, "new_cases": 20, "seconds": 49.64017718285322, "seconds_per_new": 2.482008859142661},
+      {"from_visited": 2520, "to_visited": 2540, "new_cases": 20, "seconds": 48.6921610981226, "seconds_per_new": 2.4346080549061297},
+      {"from_visited": 2540, "to_visited": 2560, "new_cases": 20, "seconds": 48.54391481541097, "seconds_per_new": 2.4271957407705487}
+    ],
+    "throughput_reference_seconds_per_new_rounded": 2.448,
+    "throughput_reference_new_cases_per_minute_rounded": 24.5,
+    "interpretation": "No evidence of CPU solver backlog or physical disk I/O saturation. Periodic GPU gaps coexist with an approximately one-core main process and idle solver capacity; exact producer/decoder/synchronization timing was not measured."
+  },
+  "main_plus_cls_window": {
+    "cls_supervisor": {"pid": 48562, "start_ticks": 954245670},
+    "cls_inference_process": {"pid": 48569, "start_ticks": 954245687, "nice": 10, "threads": 7},
+    "cls_state_file": "launch/object_cls_dev241_v1/state.json",
+    "gpu_util_mean_percent": 95.76190476190476,
+    "gpu_util_lt50_fraction": 0.047619047619047616,
+    "gpu_util_ge90_fraction": 0.9047619047619048,
+    "gpu_memory_min_MiB": 5785.0,
+    "gpu_memory_max_MiB": 6085.0,
+    "gpu_memory_total_MiB": 32760.0,
+    "cpu_mean_percent": {"45702": 101.9325, "45748": 10.778, "45742": 8.325, "45735": 0.0, "48569": 104.433, "48562": 0.025},
+    "sampling_initial_progress": {"visited": 2820, "reused": 1200, "encoded": 1620, "completed": 2817, "pending_fine_RAM": 0, "seconds": 3939.1557882614434},
+    "sampling_final_progress": {"visited": 2840, "reused": 1200, "encoded": 1640, "completed": 2837, "pending_fine_RAM": 0, "seconds": 4019.195536253974},
+    "recent_throughput_intervals": [
+      {"from_encoded": 1560, "to_encoded": 1580, "new_cases": 20, "seconds": 48.023477129638195, "seconds_per_new": 2.40117385648191},
+      {"from_encoded": 1580, "to_encoded": 1600, "new_cases": 20, "seconds": 47.79563300870359, "seconds_per_new": 2.3897816504351796},
+      {"from_encoded": 1600, "to_encoded": 1620, "new_cases": 20, "seconds": 50.06740846671164, "seconds_per_new": 2.503370423335582},
+      {"from_encoded": 1620, "to_encoded": 1640, "new_cases": 20, "seconds": 80.03974799253047, "seconds_per_new": 4.001987399626524}
+    ],
+    "cls_model_setup_smoke": {
+      "source": "outputs/object_cls_dev241_v1/model_setup_smoke.json",
+      "state": "ACTUAL_CLS_INTERFACE_SMOKE_OK",
+      "tokens_shape": [3, 4101, 1024],
+      "normalized_CLS_index": 0,
+      "prefix_tokens": 5,
+      "default_global_pool": "avg",
+      "bypassed_pooling": true,
+      "dtype": "float32",
+      "no_autocast": true,
+      "L2_normalization_max_error": 1.1920928955078125e-07,
+      "cuda_peak_bytes": 1866449408,
+      "first_batch_descriptors_retained": true,
+      "peak_scope": "CLS process PyTorch CUDA allocated peak in the actual setup smoke; distinct from whole-device memory.used"
+    }
+  },
+  "comparison": {
+    "gpu_mean_increase_percentage_points": 24.0,
+    "main_seconds_per_case_increase_percent_rounded": 63.5,
+    "main_cases_per_minute_with_cls_rounded": 15.0,
+    "main_throughput_decrease_percent_rounded": 38.8,
+    "memory_risk_observation": "No material memory risk observed in the sampled window; whole-device peak 6085/32760 MiB, about18.6 percent",
+    "conclusion": "Higher GPU utilization accompanied substantial main-task throughput loss; this is not cost-free use of idle GPU gaps",
+    "causal_limit": "Windows use different consecutive episodes and are separated in time; this is temporal evidence consistent with shared-GPU competition, not a same-sample controlled causal comparison"
+  },
+  "root_decision_reported_after_alert": {
+    "cls_completed_episodes": 66,
+    "cls_fixed_total_episodes": 85,
+    "cls_remaining_episodes": 19,
+    "fixed_total_views": 367,
+    "decision": "Finish the remaining fixed19 cases; do not expand concurrent GPU work. Future CPU analysis may run concurrently; long GPU work should be queued serially. Keep the healthy main v1 unchanged.",
+    "verification_scope": "Decision and66/85 status supplied by root; no additional sampler or completion poll performed by this auditor"
+  },
+  "auditor_actions": {"notified_root_of_slowdown": true, "stopped_or_modified_jobs": false, "launched_gpu_compute": false, "cleanup": false, "additional_sampling_after_save_request": false},
+  "retention_limit": "Summaries and retained progress intervals are saved. Full raw /proc records and every second-window GPU sample were not persisted; omitted values have not been reconstructed or guessed."
+}

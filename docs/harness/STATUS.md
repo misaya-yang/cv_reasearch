@@ -34,8 +34,19 @@ Updated 2026-10-05. This file records current state; detailed evidence is linked
   paired missed-versus-stray comparison: raw AUROC .3944[.1680,.6072], cached prototype .2556
   [.0733,.4556], stored NN .3272[.1176,.5556]. No positive semantic discrimination is established;
   stop this fixed mean-prototype recovery branch. All197 eligible region descriptors are retained.
-  A fixed object-crop final-CLS diagnostic is being prepared for after the active GPU stream;
-  privileged GT geometry makes it a feasibility test, not a method or legal proposal producer.
+  Fixed object-crop final-CLS completed367views/85episodes/197regions,114 encoder calls,
+  153.29s encode/peak2,080,604,672bytes. Primary18episodes/71regions AUROC .5920[.3889,.7878],
+  versus raw region mean +.1975[-.0714,.4704]: unresolved. Extra crops, reference erasure and
+  privileged GT geometry make this a construction test, not a pure CLS ablation or method.
+  [CLS result](../../evidence/local/research_20261005/pipeline_verified/object_cls_dev241_v1/report.md).
+  Concurrent GPU mean rose71.8->95.8percent while main slowed2.448->4.002s/newpair; no free
+  throughput gain is claimed. Short fixed test ended; main recovered~2.39s/newpair.
+  [Resource audit](../../evidence/local/research_20261005/pipeline_verified/stream4000_resource_audit_v1/report.md).
+  Same-construction1200 CPU preparation completed47.52s:332 encoded episodes/736 eligible
+  regions,77 paired episodes/296 regions. Reuse all367 old descriptor views; only1033 new
+  views are required. All1200 fine64 I/U/source hashes and all original geometry passed.
+  Full1200 CLS-vs-NN uses the same77-case subset; legacy raw/projected controls keep their
+  original18-case subset separately. GPU launch is pending in one serial post4000 queue.
   [Cue diagnostic](../../evidence/local/research_20261005/pipeline_verified/region_prototypes_raw241_v2/interpretation.md).
 - Fixed600matchedcoarsecontrolcompleted:coarseguide64.273121,fine64.625380;
   fineadvantage+.352259[.325705,.544086],allsource600I/Uexact. GPUbatch4+CPU6readers/2writers,

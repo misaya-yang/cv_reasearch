@@ -1211,3 +1211,35 @@ result; v2 records actual source flags, retaining failed assets and reusable fea
 Decision: stop this fixed region-mean recovery branch; do not infer that all DINO semantic cues fail.
 [Diagnostic](research_20261005/pipeline_verified/region_prototypes_raw241_v2/interpretation.md),
 [verification](research_20261005/pipeline_verified/region_prototypes_raw241_v2/verification.json).
+
+### 2026-10-05: fixed object-crop global CLS construction remains unresolved
+
+Same197 eligible regions from exposed DEV241;85 encoded episodes,367 FP32 views/114 batch<=4
+encoder calls. Primary18paired episodes/40missed+31stray regions remain unchanged. Actual timm
+Eva final-LayerNorm CLS index0, same frozen weights, no autocast/TF32, fixed FG-minus-BG cosine.
+Reference FG is cropped and outside-FG RGB erased; negative reference erases known FG. Query RGB
+crops use privileged GT/prediction region bboxes, square with10percent context; no query erasure.
+This tests the entire crop/CLS construction, not token type alone or legal object proposals.
+CLS AUROC .591975[.388889,.787783]; raw region mean .394444[.167967,.607227]; cached projected
+mean .255556[.073286,.455556]. CLS-raw +.197531[-.071429,.470370]; CLS-projected +.336420
+[.124980,.562500]. All four CLS fold means exceed .5, but the main CI crosses chance; unresolved.
+Full197-region pooledCLS AUC .449059 and area-weighted .694408 are secondary descriptions,
+not replacements for the primary statistic. No fitted weights, sign reversal or sweep.
+Encode153.29s/peak2,080,604,672bytes; compact descriptors retained and sealed before score.
+[Report](research_20261005/pipeline_verified/object_cls_dev241_v1/report.md).
+
+Resource sampling: short CLS co-run raised GPU mean71.8->95.8percent but main4000 new-pair time
+rose2.448->4.002s; main throughput fell38.8percent. Memory stayed<=6085/32760MiB. Time relation
+supports GPU competition, not a controlled same-sample causal timing claim. Fixed CLS run ended,
+main resumed~2.39s/newpair. Do not call the utilization rise a free improvement; future long GPU
+work is queued serially while CPU analysis runs in parallel.
+[Resource audit](research_20261005/pipeline_verified/stream4000_resource_audit_v1/report.md).
+
+CPU-only crop-context audit (1.82s) kept all197 crops and verified original/working GT parity.
+Of83 stray crops,14 contain target GT outside the selected component (2 within the original bbox,
+12 introduced by square/context expansion); the primary31 negatives include4 such crops.
+At the fixed CLS>0 rule, primary false positives are3/4 GT-containing and17/27 GT-empty crops:
+85percent of primary false positives occur without any target GT in the crop. Context/ownership
+confounding exists but does not explain most false positives. No crops, threshold, subgroup AUC
+or method were selected from this diagnostic.
+[Context audit](research_20261005/pipeline_verified/object_cls_dev241_v1/crop_context_audit.md).

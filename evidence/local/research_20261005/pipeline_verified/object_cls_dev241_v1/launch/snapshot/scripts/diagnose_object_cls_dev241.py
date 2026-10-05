@@ -265,10 +265,8 @@ def infer(a):
     if any(p.is_floating_point() and p.dtype != torch.float32 for p in model.parameters()):
         raise ValueError("Require FP32 model parameters")
     (a.out / "descriptors").mkdir()
-    begin, forwards, encoder_calls, reused_images, hashes = time.monotonic(), 0, 0, 0, {}
-    expected_forwards = int(config["expected_descriptor_forwards"])
-    expected_total = sum(2 + len(case["regions"]) for case in cases)
-    state = dict(state="GPU_CLS_DESCRIPTOR_INFERENCE", completed=0, n=len(cases), pid=os.getpid(),
+    begin, forwards, encoder_calls, hashes = time.monotonic(), 0, 0, {}
+    state = dict(state="GPU_CLS_DESCRIPTOR_INFERENCE", completed=0, n=85, pid=os.getpid(),
                  descriptor_forwards=0, GT_boxes_privileged=True, labels_file_opened=False)
     write(a.out / "state.json", state)
     def encode(images):
@@ -298,25 +296,6 @@ def infer(a):
         for role in ("query", "reference", "reference_mask"):
             if sha(case[role]) != case["image_sha256"][role]:
                 raise ValueError("Changed source image/mask " + case["key"])
-        if case.get("reuse_descriptor"):
-            if sha(case["reuse_descriptor"]) != case["reuse_descriptor_sha256"]:
-                raise ValueError("Changed source reusable CLS descriptor")
-            with np.load(case["reuse_descriptor"], allow_pickle=False) as z:
-                if z["crop_ids"].tolist() != case["reuse_source_crop_ids"]:
-                    raise ValueError("Reusable source crop identities differ")
-                rfg, rbg = z["r_fg"].copy(), z["r_bg"].copy()
-                q = z["q"][case["reuse_query_indices"]].copy()
-            if any(v.dtype != np.float32 for v in (q, rfg, rbg)) or q.shape != (len(case["regions"]),1024):
-                raise ValueError("Reusable CLS precision/geometry differs")
-            reused_images += 2 + len(case["regions"])
-            path = a.out / "descriptors" / (case["key"] + ".npz")
-            np.savez_compressed(path, r_fg=rfg, r_bg=rbg, q=q,
-                                crop_ids=np.array([r["crop_id"] for r in case["regions"]]))
-            hashes[case["key"]] = sha(path)
-            state.update(completed=n, descriptor_forwards=forwards, encoder_calls=encoder_calls,
-                         reused_descriptor_images=reused_images, seconds=time.monotonic()-begin)
-            write(a.out / "state.json", state)
-            continue
         with Image.open(case["reference"]) as im:
             reference = im.convert("RGB")
         with Image.open(case["reference_mask"]) as im:
@@ -338,15 +317,13 @@ def infer(a):
         state.update(completed=n, descriptor_forwards=forwards, encoder_calls=encoder_calls,
                      seconds=time.monotonic() - begin)
         write(a.out / "state.json", state)
-        if n % 10 == 0 or n == len(cases):
+        if n % 10 == 0 or n == 85:
             print(json.dumps(state), flush=True)
-    if forwards != expected_forwards or forwards + reused_images != expected_total:
+    if forwards != 367:
         raise ValueError("Wrong fixed descriptor-forward count")
     torch.cuda.synchronize()
-    write(a.out / "sealed.json", dict(state="ALL_CLS_DESCRIPTORS_SEALED", n=len(cases),
-        query_regions=sum(len(case["regions"]) for case in cases),
+    write(a.out / "sealed.json", dict(state="ALL_CLS_DESCRIPTORS_SEALED", n=85, query_regions=197,
         descriptor_forwards=forwards, encoder_calls=encoder_calls, fixed_batch=4,
-        reused_descriptor_images=reused_images, total_descriptor_images=expected_total,
         descriptors=hashes, config_sha256=seal["config_sha256"],
         crops_sha256=seal["crops_sha256"], prepared_sha256=sha(a.out / "prepared.json"),
         labels_opened_in_infer=False, GT_boxes_privileged=True, seconds=time.monotonic() - begin,

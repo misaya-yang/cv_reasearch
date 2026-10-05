@@ -1,0 +1,78 @@
+{
+  "question": "Can actual object-focused global CLS separate hard semantic errors where patch-region means fail?",
+  "cohort": "full197 fixed eligible regions from exposed DEV241 region_prototypes_raw241_v2, no additional GT selection",
+  "primary": "same18 paired episodes,40 missed GT plus31 stray fine64 regions",
+  "supplement": "remaining fixed126 regions retained; all197-region pooled statistics are secondary only",
+  "dataset": "COCO-20i, seed0, exposed development; not independent confirmation",
+  "resolution": 1024,
+  "fixed_inference_batch": 4,
+  "precision": "FP32 weights/input/activations, no autocast, TF32 disabled",
+  "descriptor": "actual final normalized prefix CLS token index0: encoder.m.forward_features(x)[:,0,:]",
+  "interface": "installed timm.models.eva.Eva, CLS followed by4 register tokens; bypass default avg pooling",
+  "reference_positive": "all supplied reference FG bounding box; square crop plus10percent context per edge; erase outside FG to ImageNet mean",
+  "reference_negative": "original supplied reference image, erase supplied FG to ImageNet mean; square padding, no additional context crop",
+  "query": "unmasked original RGB square crop around fixed GT/prediction region bbox plus10percent context per edge",
+  "aspect": "map working1024 bbox back to original RGB coordinates before forming square; no clipping of square extent, pad out-of-image area",
+  "context_per_edge": 0.1,
+  "neutral_RGB_uint8": [
+    124,
+    116,
+    104
+  ],
+  "neutral_precision": "ImageNet RGB mean rounded to nearest uint8 (124,116,104) for the unchanged PIL host transform",
+  "transform": "existing utils.data.build_transform(1024): PIL Resize(1024,1024), ToTensor, ImageNet Normalize",
+  "margin": "cosine(qCLS,rFG_CLS)-cosine(qCLS,rBG_CLS), higher is target FG",
+  "fixed_threshold": 0.0,
+  "fitting": false,
+  "sign_flip": false,
+  "sweeps": false,
+  "other_augmentations": false,
+  "bootstrap": {
+    "draws": 2000,
+    "rng": "RandomState(0)",
+    "unit": "connected reference/query photographs from source241",
+    "paired": true
+  },
+  "privilege": "query GT defines diagnostic region boxes before inference; this is not a deployable proposal generator or complete segmentation method",
+  "positive_consequence": "only justifies seeking a legal proposal producer; does not establish SOTA or complete-mask improvement",
+  "negative_consequence": "stop this fixed crop/global-CLS construction; not all global representations",
+  "model_dir": "/root/demo4_cache/models/dinov3-vitl16-timm",
+  "host_root": "/root/autodl-tmp/demo8_local_verification/foris_source",
+  "dependency_sha256": {
+    "wrapper": {
+      "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/object_cls_dev241_v1/snapshot/src/ics/data.py",
+      "sha256": "7664bfcc0de9a9183296273a3ea57390e00147b82afe626f47bde1bf2383b165"
+    },
+    "model_config": {
+      "path": "/root/demo4_cache/models/dinov3-vitl16-timm/config.json",
+      "sha256": "a71f705b0074e173540d0bdbd3aa940fa8d7d3c6c7f020a683004c46ca605b24"
+    },
+    "model_weights": {
+      "path": "/root/demo4_cache/models/dinov3-vitl16-timm/model.safetensors",
+      "sha256": "45172f209c9583c40538afc26b60a07033e6fcc2e8c30228338e6b2e932e7941"
+    },
+    "timm_eva": {
+      "path": "/root/demo4_cache/env/timm/models/eva.py",
+      "sha256": "a8c9807ef5e8dabc725c1e2a89439760a900d6af6cdafefea18fc121173643a2"
+    },
+    "host_transform": {
+      "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/data.py",
+      "sha256": "37211b2f55391694023cad806cdc9ec210944d32346ac1de0f9502df39731b53"
+    }
+  },
+  "source_metadata_sha256": {
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/region_prototypes_raw241_v2/report.json": "f2781e0e6d49a00059e13f488a8d3b98460c5cc7e2be7febb2e4ca27fc47b049",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/region_prototypes_raw241_v2/receipt.json": "512bf38206d0c91b188d127a863731e75083b5ea1528129122d58181b6151a57",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/region_prototypes_raw241_v2/episodes.jsonl": "c32fd7cc993467d2d87984b36fff06fcc4668f202badd8e6d9ad34dcd554c379",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/region_prototypes_raw241_v2/state.json": "3b1bbdb2772b045883792dab424705d123e9f0612c18fac1d14b3f1a2ca12776"
+  },
+  "source_code_sha256": "dafa29dd7922494c1a8d4514bf4662a986efd791e02292359ba8a8737caaa985",
+  "source_episodes": 241,
+  "encoded_episodes": 85,
+  "query_regions": 197,
+  "expected_descriptor_forwards": 367,
+  "primary_paired_episodes": 18,
+  "primary_regions": 71,
+  "descriptor_storage_estimate_bytes": 1503232,
+  "no_encoder_or_GPU_execution_in_prepare": true
+}
