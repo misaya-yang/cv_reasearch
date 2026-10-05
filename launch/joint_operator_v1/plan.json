@@ -1,0 +1,144 @@
+{
+  "stages": [
+    {
+      "name": "smoke2_infer",
+      "kind": "gpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_joint_operator_v1/scripts/run_joint_operator.py",
+        "infer",
+        "--root",
+        "/root/autodl-tmp/demo9_extent",
+        "--stage-run",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/stage241_v1",
+        "--recheck-run",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/recheck241_v1",
+        "--proposal-run",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/edit_aux_dev241_resume_v1",
+        "--d-run",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/gpu_multilayer_dev241_v1",
+        "--mean-run",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/mean_graph_dev241_resume_v1",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/joint_operator_smoke2_v1",
+        "--smoke"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/edit_aux_dev241_resume_v1/sealed.json"
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/joint_operator_smoke2_v1/sealed.json",
+          "json_equals": {
+            "state": "ALL_PREDICTIONS_SEALED",
+            "n": 2
+          }
+        }
+      ]
+    },
+    {
+      "name": "smoke2_score",
+      "kind": "cpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_joint_operator_v1/scripts/run_joint_operator.py",
+        "score",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/joint_operator_smoke2_v1"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/joint_operator_smoke2_v1/sealed.json"
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/joint_operator_smoke2_v1/report.json",
+          "json_equals": {
+            "n": 2
+          }
+        }
+      ]
+    },
+    {
+      "name": "dev241_infer",
+      "kind": "gpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_joint_operator_v1/scripts/run_joint_operator.py",
+        "infer",
+        "--root",
+        "/root/autodl-tmp/demo9_extent",
+        "--stage-run",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/stage241_v1",
+        "--recheck-run",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/recheck241_v1",
+        "--proposal-run",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/edit_aux_dev241_resume_v1",
+        "--d-run",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/gpu_multilayer_dev241_v1",
+        "--mean-run",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/mean_graph_dev241_resume_v1",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/joint_operator_dev241_v1"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/edit_aux_dev241_resume_v1/sealed.json"
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/joint_operator_dev241_v1/sealed.json",
+          "json_equals": {
+            "state": "ALL_PREDICTIONS_SEALED",
+            "n": 241
+          }
+        }
+      ]
+    },
+    {
+      "name": "dev241_score",
+      "kind": "cpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_joint_operator_v1/scripts/run_joint_operator.py",
+        "score",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/joint_operator_dev241_v1"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/joint_operator_dev241_v1/sealed.json"
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/joint_operator_dev241_v1/report.json",
+          "json_equals": {
+            "n": 241
+          }
+        }
+      ]
+    }
+  ],
+  "authorization": "User resumed subsequent A*/B* family experiment on existing resources; GPU packed-mask algebra and CPU scoring; DEV only; no encoder"
+}

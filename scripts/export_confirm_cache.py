@@ -17,7 +17,7 @@ from types import SimpleNamespace
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--manifest", type=Path, required=True); p.add_argument("--stored", type=Path, required=True, help="packets of the existing FoRIS run")
+    p.add_argument("--manifest", type=Path, required=True); p.add_argument("--stored", type=Path, help="packets of an existing FoRIS run; without it the packet is built from this run")
     p.add_argument("--out", type=Path, required=True); p.add_argument("--host-root", type=Path, default=Path("/root/autodl-tmp/demo9_extent"))
     p.add_argument("--demo4-root", default="/root/autodl-tmp/demo4"); p.add_argument("--limit", type=int)
     a = p.parse_args()
@@ -40,8 +40,15 @@ def main():
             sp, qp = (Image.open(data / row[k]).convert("RGB") for k in ("support", "query"))
             gold = torch.from_numpy((np.asarray(Image.open(ann / Path(row["support"]).with_suffix(".png"))) == row["c"] + 1).copy())
             native, got, ref_mask, _ = run_foris(host, sp, gold, qp)
-            with np.load(a.stored / (name + ".npz"), allow_pickle=False) as z:
-                stored = {k: z[k].copy() for k in z.files}
+            if a.stored:
+                with np.load(a.stored / (name + ".npz"), allow_pickle=False) as z:
+                    stored = {k: z[k].copy() for k in z.files}
+            else:                                                             # same fields as scripts/run_foris.py
+                s0 = got["score"].float(); hw = tuple(native.shape)
+                truth_o = torch.from_numpy((np.asarray(Image.open(ann / Path(row["query"]).with_suffix(".png"))) == row["c"] + 1).copy()).to(native.device)
+                stored = dict(score=s0.cpu().numpy().astype(np.float32), s2=got["s2"].float().cpu().numpy().astype(np.float32), s3=got["s3"].float().cpu().numpy().astype(np.float32),
+                              cov=F.interpolate(ref_mask[None, None].float(), tuple(s0.shape), mode="area")[0, 0].cpu().numpy(), native=np.packbits(native.cpu().numpy()),
+                              pre=np.packbits(got["pre"].cpu().numpy()), truth=np.packbits(F.interpolate(truth_o[None, None].float(), hw, mode="nearest")[0, 0].bool().cpu().numpy()))
             differ = int(np.unpackbits(np.packbits(native.cpu().numpy()) ^ stored["native"]).sum())
             if differ > 0.001 * native.numel():
                 raise RuntimeError("stored mask not reproduced on %s: %d pixels differ" % (name, differ))

@@ -479,3 +479,46 @@ Sources: [600 report](research_20261005/recheck600_v1/report_wide.md), [241 repo
 
 部分对应（PCF）、不变概念与可移植提示、响应 pair-ratio 编辑器、响应训练路线曾在未取得足够前提证据时撤回。早期 `pair_bank.py` 准备被撤回，不表示后续 layer/joint 队列没有运行（结果见上）。撤回未运行构造不证明输入缺少信息。
 
+
+### 2026-10-05: locked Astra and all fixed controls on existing600
+
+COCO-20i 1-shot, seed0,1024,600episodes/80classes/561connected-photo groups (largest4).
+Previously exposed reevaluation; photograph-disjoint fromDEV241, not fresh confirmation.
+All10supplied arms plus completeFoRIS were replayed unchanged and sealed before scoring;
+five shared arms match the independent recheck output in every pixel on all600.
+FoRIS cache export:600/600bit-identical; response/coverage maximum differences0;889.018s.
+Paired2000RandomState(0) photo-connected bootstrap:
+
+| Complete arm | mIoU | Gain vs completeFoRIS [95%] | Consequence |
+|---|---:|---|---|
+| FoRIS |60.073377|reference|Same-cohort comparator|
+| MEAN_CONTROL |61.467653|+1.394276[.824740,1.907805]|Strongest supplied simple control; not the target+2|
+| RCG |61.067693|+.994316[.319832,1.583927]|Positive complete difference on this cohort|
+| C (RCG_count_matched_delete) |60.813312|+.739935[-.304543,1.611592]|Deletion-budget increment overRCG unestablished|
+| Fixed Astra external_mean__delete |60.673832|+.600455[-.631630,1.872440]|DEV241+3.579518 did not persist here|
+| Astra same-count RCG ranking |60.793953|+.720576[-.532466,1.832643]|Query-mean selection does not establish an increment|
+| Supplied cached INSID3 rule |55.650501|-4.422877[-6.070172,-2.301684]|This is the supplied cached rule, not an officialBF16 reproduction claim|
+
+Astra vsRCG:-.393861[-1.383725,.767139]; vsMEAN:-.793821[-1.876295,.470893].
+Astra gain vsFoRIS by fold:1.389016,.941713,1.656552,-1.585461;300up/295down/5tie.
+The lastC-to-Astra step is-.139480[-.642106,.729691], with1.025M true pixels and1.810M
+false pixels deleted. Same-count RCG ranking removes.935M true/1.901M false. These
+point differences locate a possible selection failure but do not establish a negative true effect.
+Frozen DEV-selected strict addition61.138748, vsFoRIS+1.065371[-.227695,2.228872],
+vsRCG+.071055[-1.008208,1.167585], vs same-count+.079651[-.195803,.441347];fold3
+gain-1.737282. No600nested/best-in-sample row was promoted to the fixed primary.
+Source:[fixed11-arm report](research_20261005/pipeline_verified/fixed600/report.json),
+[per-episode counts](research_20261005/pipeline_verified/fixed600/episodes.jsonl),
+[full replay parity](research_20261005/pipeline_verified/fixed600/replay_parity.json),
+[frozen comparison](research_20261005/pipeline_verified/recheck600/report_wide.json).
+
+### 2026-10-05: fixed raw-origin witness edits onDEV241
+
+COCO-20i1-shot,seed0,1024,DEV241/79classes/239photo groups. All89rows complete and
+scored. Best complete output remainsRCG61.019660,+1.944835[.983141,2.913596]vsFoRIS.
+The strongest witness-assisted complete combination is50.866779, vsRCG-10.152880
+[-13.031506,-7.764400]. Its RCG edit helper removes50.0%of harmful additions but
+loses42.1%of beneficial additions; protects78.4%of harmful deletions while losing59.5%
+of beneficial deletions. Selectivity alone does not preserve enough edits to reach a
+complete gain from rawNN. This limits the fixed thresholded witness construction.
+Source:[report](research_20261005/pipeline_verified/edit_aux241/report.json).
