@@ -1,0 +1,117 @@
+{
+  "stages": [
+    {
+      "name": "encode_missing_pairs",
+      "kind": "gpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_confirm1200_conditional_v1/scripts/export_feature_gaps.py",
+        "--manifest",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/confirm1200_conditional_v1/inputs/gap_manifest.json",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/confirm1200_conditional_v1/inputs/gap_features"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/confirm1200_conditional_v1/inputs/gap_manifest.json"
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/confirm1200_conditional_v1/inputs/gap_features/report.json",
+          "json_equals": {
+            "state": "COMPLETED",
+            "n": 54
+          }
+        }
+      ]
+    },
+    {
+      "name": "frozen1200_infer",
+      "kind": "gpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_confirm1200_conditional_v1/scripts/run_conditional1200.py",
+        "infer",
+        "--manifest",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/confirm1200_conditional_v1/inputs/manifest.json",
+        "--freeze",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/confirm1200_conditional_v1/freeze.json",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/conditional_public1200_v1"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/confirm1200_conditional_v1/inputs/gap_features/report.json",
+          "json_equals": {
+            "state": "COMPLETED"
+          }
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/conditional_public1200_v1/sealed.json",
+          "json_equals": {
+            "state": "ALL_PREDICTIONS_SEALED",
+            "n": 1200
+          }
+        }
+      ]
+    },
+    {
+      "name": "frozen1200_score",
+      "kind": "cpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_confirm1200_conditional_v1/scripts/run_conditional1200.py",
+        "score",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/conditional_public1200_v1"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/conditional_public1200_v1/sealed.json",
+          "json_equals": {
+            "n": 1200
+          }
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/conditional_public1200_v1/report.json",
+          "json_equals": {
+            "n": 1200
+          }
+        }
+      ]
+    }
+  ],
+  "authorization": "User explicitly requests larger1200sample evaluation when advantages remain uncertain; preserve reusable features; unchanged frozen candidate; no resources rented/downloaded/shutdown",
+  "comparison": "conditional.joint fixed onDEV241 versus completeFoRIS,RCG,MEAN,Astra,matched-count RCG andRCG-value-only controls",
+  "resources": {
+    "gap_pairs": 54,
+    "preserved_existing_features": 1146,
+    "extra_pair_forwards_only_for_missing": 54,
+    "one_encoder_at_a_time": false,
+    "cpu_threads": 1,
+    "expected_gap_time": "about80-120s from prior600export844s; unmeasured for this gap",
+    "selector_peak_expected_mib": 2048,
+    "temporary_identical_encoder_copies": 2,
+    "reason": "Only54missing pairs; other1146features preserved/reused; public chain already encodes batch2; existing32GBheadroom supports short overlap",
+    "measured_gpu_used_mib": 2484,
+    "peer_pid": 20997,
+    "peer_start_ticks": 952370038
+  }
+}
