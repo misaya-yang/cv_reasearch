@@ -262,3 +262,54 @@ spaces and differing numeric precision remain. It does not isolate a purely
 raw-DINO graph method or prove FoRIS's priors indispensable. This diagnostic
 also loads GT before computation and retains aggregate reports only; no new
 inference or parameter search was performed for this follow-up.
+
+## Public4000 block provenance before interpreting late-block decline
+
+Read-only remote inspection on2026-10-05 covered every
+`outputs/claude_official/run{0..6}/{sealed,audit,manifest}.json`, every
+`batch{0..6}.json`, and every exporter `root{0..6}/report.json`. No inference,
+download, deletion or queue change. The seven sealed records have identical
+six-arm lists and the **entire same seven-file `astra_sources` hash map**.
+Their RCG hash is `865ca65310cd9e1cf87f12e7015d97cd746fdc12eebdc672cb21ee3f5919f1e6`,
+matching the locked source. The actual retained remote file is
+`external/astra_emd/external_mean_delete600_modules/rcg_readout.py`; its content
+hash matches, and its literal CONFIG confirms alpha0.5,lambda16,crossK10,
+queryK20,purity0.9,floor0.1, CG1e-7/1e-9/300 and the unchanged FP32/bilinear1024
+`>0.5` renderer. No recorded RCG source/configuration change distinguishes
+the last two blocks.
+
+All seven batch manifests use the same data, annotation, FoRIS source and
+projection-basis paths. The recorded protocol is seed0 with consecutive
+per-fold draw ranges: 0-149,150-299,300-449,450-599,600-749,750-899,900-999.
+Each run's episode order exactly matches its batch manifest and each
+manifest passes its own sealed SHA. Blocks0-5 have600 episodes each and block6
+has400, balanced150/100 per fold. The exporter records conditionally-debiased
+counts `[589,595,594,594,592,595,398]`; these are varying decisions on different
+episodes, not evidence of a changed rule. Counts, identities, elapsed times
+and per-episode deletion/recheck diagnostics differ as expected for different
+inputs. No parameter/precision switch is explicitly recorded.
+
+The following gaps prevent claiming numerical pipeline identity across blocks:
+
+- Seals contain prediction/field hashes but **no input feature/packet hashes**.
+  Every run lacks `config.json`, `protocol.json` and a per-block runtime receipt.
+  The per-episode audit has only `K`, `recheck`, `seconds`; it discards RCG CG
+  diagnostics and records no encoder/projection/precision metadata.
+- Batch metadata records paths, not immutable encoder-weight, projection,
+  data/annotation content hashes, software versions, actual autocast/TF32
+  state, or exporter/host-wrapper source hashes at execution. Same paths do
+  not rule out content or runtime changes. Current exporter source saves q/r
+  as FP16 and converts them to FP32 for CPU readout; this is a source-level
+  recipe, not a historical per-block runtime receipt.
+- Exporter reports all4000 native masks "bit_identical" and zero max
+  score/coverage difference. They do not record whether `--stored` was supplied
+  or identify an independent comparator. The exporter can build `stored`
+  from that same forward (`scripts/export_confirm_cache.py:43-51`), so these
+  zeros alone establish neither independent encoder parity nor cross-block
+  numerical parity. No runtime/manifest file exists under the inspected
+  `root*/results/extent_v1/run/` apart from the episode packets.
+
+Thus **no recorded method/configuration drift explains the late-block decline**,
+but the surviving provenance is insufficient to exclude encoder/export/runtime
+drift numerically. Do not claim either drift or a particular data-distribution
+cause from this check, and do not infer numerical parity from source hashes.

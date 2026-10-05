@@ -4,23 +4,43 @@ Updated 2026-10-05. This file records current state; detailed evidence is linked
 
 ## Now
 
-- Latest user correction stops speculative new components and prioritizes explaining RCG.
-  User explicitly authorized parallel subagents; controller owns monitoring, while agents audit
-  ablation,4000quality/batch dependence andnative/pre geometry. Original rawgraph waiting queue
-  was held before inference; no CPUvariant launched. Existing boundaryGPUjob37422andOpusanatomy
-  CPUjob39355continue; no peer source/process modified. Own CPU4 native-state diagnostic4000
-  is dispatched,using saved masks only andchecking all native/RCGcounts against the verified ledger.
-- Initial historical600RCGablation:pre60.944388,rerank60.939394,smooth63.582277,both64.237696.
-  Rerankvs pre-.004994[-.584939,.279110];smoothvs pre+2.637889[1.792333,3.268409];
-  bothvs smooth+.655420[.056436,1.061844]. Graph propagation supplies most of this gain;
-  reference reranking adds conditional value. Pixelparity/convergence/source checks are being added.
-  This600is benchmarkDEVreuse,not a4000ablation orfresh confirmation.
-
-- Latest correction: FoRIS is a candidate prior within the A*/B* framework, not a required input.
-  Own raw-feature-only fullDEV241 comparison is prepared in `launch/raw_graph_dev241_v1`,
-  supervisor37718/start953352399, queued behind another worker's live subtoken GPU run37422.
-  Batched CUDA4 with CPU6readers/2writers; all predictions seal before CPU scoring.
-  No feature deletion, backbone change or extra encoder. Candidate result is still unmeasured.
+- User authorized parallel agents. Controller owns GPU monitoring/dispatch; three analyses
+  completed RCG stage,4000quality/batch andcomplete-native edit attribution. OpusCPUanatomy
+  andownstate/verification queues have completed. ExistingGPUboundaryjob37422/start953346485
+  completed600cases. Fixed80fine/coarse/RGB cue diagnosticcompleted,
+  `launch/boundary_features80_v1`,supervisor41485/start953486380,child43130/start953528542. Retain all80FP16finegrids,~2.5GiB; disk had21GiBfree.
+  Original rawgraph queue held before inference,CPUvariant neverlaunched; no assets deleted.
+- Fixed600matchedcoarsecontrolcompleted:coarseguide64.273121,fine64.625380;
+  fineadvantage+.352259[.325705,.544086],allsource600I/Uexact. GPUbatch4+CPU6readers/2writers,
+  19.92sinference/4.16sGPUcompute/10.87sCPUscore. Sourcelegacysealinput-keyfailureinfirstattempt
+  fixedinnewv2snapshot;failedoutputretained,CUDAfinalrenderer matchedsource. No featuresdeleted.
+  [Control](../../evidence/local/research_20261005/pipeline_verified/subtoken_coarse_control600_v2/report.md).
+  Fixed1200fine-readout/strongRCG64comparisonisbeingprepared;notyetlaunched.
+- Fine80boundarydiagnosticcompleted111sGPU+12sCPU;retain2.5GiBfinefeatures. Finevsbilinearcoarse
+  NNmargin AUROC+.0010[-.0041,.0056],parentrank-.0591[-.0859,-.0335]. Togetherwith600matched
+  control,thissupportsvalueinthetestedquery-affinityreadout,notimprovedreferenceNNsemanticmargin.
+  [Boundary report](../../evidence/local/research_20261005/pipeline_verified/boundary_features80_v1/report.md).
+- CPU4existing-reference-cue4000diagnosticcompleted170s. SignedNNmarginAUROC.253[.216,.293]
+  onwhole-missed-vs-strayregions(223eligibleepisodes),.233[.216,.250]ondeepFN/FP(1088).
+  No positiveevidenceforrecoveringtheseerrorsusingthatcue;don'tinvertposthocGTconditionalcueor
+  repeatNN-margin/prototype variants. Conditionaldiagnosticdoesnotruleoutallrepresentation.
+  [Cue result](../../evidence/local/research_20261005/pipeline_verified/rcg_remaining_cues4000_v1/interpretation.md).
+- Historical600fixed ablation is now independently verified:600RCGfields andmasks exact,
+  allCGstatuses/residuals pass; allpredictions sealedbeforeGT. Pre60.944388,rerank60.939394,
+  smooth63.582277,both64.237696. Smoothvs pre+2.637889[1.792333,3.268409];
+  rerankwithgraph+.655420[.056436,1.061844];factorialinteraction+.660413[.196835,1.183400].
+  Graph supplies most of thetestedgain;reranking isconditional. Not a4000ablation/confirmation.
+  [Verified result](../../evidence/local/research_20261005/pipeline_verified/rcg_ablation_verified600_v1/report.json).
+- Complete4000RCGvsnative+1.401930[1.094,1.686]. Last1000gain+.618vsfirst3000+1.661;
+  difference-1.043[-1.597,-.342],notexplainedbyquality/classmixalone. Exactclass-balanced
+  loss:FPremoval-.721andTPdeletion-.478,offsetpartlybylessnewFP+.256;GTdistance>16
+  accounts-.812[-1.326,-.163]. NativeCRFgainchange+.053[-.088,.226].
+  [Quality](../../evidence/local/research_20261005/pipeline_verified/rcg_quality4000_v1/report.md),
+  [exact attribution](../../evidence/local/research_20261005/pipeline_verified/rcg_quality4000_v1/state_report.md).
+  RemainingRCGerrors:body54.98percent,GTboundary<=16pixels25.70percent,untouched/straysemantic
+  components19.32percent. Whole-missedGTcomponentFNmassincreases4.044Mvsnative;boundarydominance
+  isnot supported. GTcomponent/area binsaresemanticproxies,notinstances;alltheseareGTdiagnostics.
+  Raw-DINO matching remains the common DEVorigin;4000raw features areunavailable.
 - Full4000 fixed-component readout completed: FoRIS60.931741,RCG62.333671,MEAN62.512972,
   Astra61.853251,delete-p62.328852. Delete-p vsFoRIS+1.397111[.783637,1.970674],
   vsRCG-.004819[-.568074,.523499],vsMEAN-.184120[-.751011,.351018]. Target remains unmet.

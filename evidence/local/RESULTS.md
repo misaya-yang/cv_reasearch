@@ -536,6 +536,31 @@ boundary / 8 to 16 px / further): missed 9.4 / 19.9 / 9.2 / 65.4; false 33.6 / 2
 better / worse 252 / 134 and 165 / 105 in the last two against about 270 / 120 before); the cause of the weaker last batches
 is not identified. Source: [ablation](research_20261005/rcg_ablate_fresh600/report.md), [anatomy](research_20261005/rcg_anatomy4000/report.md).
 
+### 2026-10-06: where RCG's remaining error sits by episode, and four label-free ways to set the cut level
+
+Diagnostics and rules scored from stored per-level counts; truth is read only to count. Public 4000, 1024, RCG 62.33.
+Concentration: the worst 10% of episodes hold 60% of the false pixels and 71% of the missed pixels. 511 episodes with precision
+< 0.5 and recall > 0.7 hold 52.8M of 118M false pixels; 174 episodes with precision > 0.7 and recall < 0.5 hold 34.9M of 104M
+missed pixels. Mask size over object size by object area (< 2% / 2-10% / 10-30% / > 30% of the image): 2.94 / 1.41 / 0.99 / 0.81.
+Cut level: best level per episode (GT) 71.24 for the RCG field and 70.18 for the FoRIS score; best single level per true-area
+bin 0.625 / 0.575 / 0.463 / 0.312, worth +3.21 / +1.46 / +0.37 / +5.29 inside the bins (GT bins); rank correlation of the best
+level with true area -0.36. Label-free rules on the RCG field: Otsu 36.22, isodata 49.71, median midpoint 49.68, Kittler 49.91;
+ridge from the whole area-versus-level curve to the best level, nested over folds, -3.44 [-4.14, -2.68]; level chosen per bin
+of the observable mask area at 0.5 (six bins, fitted on the other folds without shared photographs, so it uses base-fold
+labels): 62.71 = +0.38 [+0.13, +0.64], folds +0.54 / +0.44 / +0.40 / +0.14, picks 0.50 / 0.54 / 0.54 / 0.53 / 0.46 / 0.38 from
+small to large masks (FoRIS score: +0.83 [+0.52, +1.15]). fresh600: level maximising the share of reference foreground minus
+reference background tokens whose nearest query token is above the level: 57.41 against RCG 64.24 (soft matching 51.03); its
+rank correlation with the best level 0.14. Source: `research_20261005/cut_levels4000/`, `research_20261005/reference_cut_fresh600/`;
+server `outputs/claude_cut_levels4000`, `outputs/claude_reference_cut_fresh600`.
+
+### 2026-10-06: sub-token readout of the RCG field (fresh600, 1024)
+
+The sealed 64 x 64 RCG field upsampled with a 128 x 128 guide from four shifted encoder passes (+-4 px), nested over folds:
+64.63 = +0.39 [+0.33, +0.57] against RCG 64.24 and +0.18 [+0.01, +0.35] against RCG with the FoRIS CRF finish (64.45, itself
++0.21 [+0.08, +0.47]); the colour-guided control +0.15 [+0.02, +0.31]; CRF after the feature-guided readout adds nothing
+(64.50). Errors within 8 px of the true boundary move from 3.20M false / 3.57M missed to 3.11M / 3.33M. The GT ceiling for
+that band was +8.0. Source: [report](research_20261005/subtoken_fresh600/report.md).
+
 ### 写了但没有跑就撤回的
 
 部分对应（PCF）、不变概念与可移植提示、响应 pair-ratio 编辑器、响应训练路线曾在未取得足够前提证据时撤回。早期 `pair_bank.py` 准备被撤回，不表示后续 layer/joint 队列没有运行（结果见上）。撤回未运行构造不证明输入缺少信息。
@@ -1018,3 +1043,111 @@ The user corrected the overly FoRIS-dependent direction. A new complete raw-feat
 branch uses reference role-balanced similarity and query-neighborhood propagation, with explicit
 centering/no-centering and graph/unary controls; FoRIS/RCG/MEAN are evaluation rows only.
 It is queued with CPU prefetch/writing and batched CUDA; no result or novelty claim yet.
+
+
+### 2026-10-05: RCG mechanism attribution replaces speculative component search
+
+User authorized parallel subagents; root owns monitoring/dispatch. Historical600,seed0,1024,
+80classes;reused training-pool DEV,nofreshconfirmation. Fixed2x2readout:pre60.944388,
+rerank60.939394,smooth63.582277,both64.237696;completeFoRIS61.628013.
+Rerankvs pre-.004994[-.584939,.279110];smoothvs pre+2.637889[1.792333,3.268409];
+rerankwithgraph+.655420[.056436,1.061844];interaction+.660413[.196835,1.183400].
+Bothvsnative+2.609683[1.392159,3.229520]. All600returnedFP32RCGfields/storedmasks exact;
+allCGstatus/residual checks pass;fixedthreearms sealedbeforequeryGT. Per-drawI/U retained remotely.
+Thegraph accountsformostgaininthiscohort,withconditionalreferencevalue;thisisnot4000stageablation.
+[Verified report](research_20261005/pipeline_verified/rcg_ablation_verified600_v1/report.json),
+[audit](research_20261005/pipeline_verified/rcg_ablation_audit_v1/audit.md).
+MEAN4000=62.512972vsRCG62.333671:+.179301[-.003145,.375652];RCG superioritytoMEANisnotestablished.
+
+All4000publicdraws,80classes,2742connectedphoto groups,seed0,1024;benchmarkreuse.
+Native60.931741,pre60.410620,RCG62.333671. RCGvsnative+1.401930[1.094,1.686],
+vs pre+1.923051[1.615,2.222];nativevs pre+.521121[.456,.605]. Fullnative/RCGI/Umatchtheprevious
+independentannotationledger oneverydraw;16P/N/R/GTstatesexhausteverypixelandexactlyreconstructI/U.
+FinaleditsrelativecompleteFoRIS:addTP14,728,544/addFP17,576,193/deleteTP12,697,324/deleteFP28,099,342.
+These areGTcounts,notprobabilities;pooledpuritydoesnotdetermineclass-macrogain.
+[Native-state report](research_20261005/pipeline_verified/rcg_native_states4000_v1/report.json).
+
+Native-quality>=.9bin:RCGgain-.403[-.691,-.252]. QualityisGTdiagnosticonly,notaninferencegate.
+Earlier3000gain+1.661[1.301,2.000];later1000+.618[.142,1.173];late-minus-early-1.043
+[-1.597,-.342]. Quality/classcompositionaloneandceilingdonotexplainthisshrinkage;fixedbinand
+sharedclass-qualitysupportstandardizationsareobservationalandcannotestablishcausality.
+Exactfour-wayclassmacroaccountingusingJ_nativeandU_RCGattributeschangeasaddTP-.101[-.367,.245],
+wrongdeleteTP-.478[-.894,-.049],correctdeleteFP-.721[-1.140,-.239],newFP+.256[.015,.461].
+GTdistance>16component-.812[-1.326,-.163],about78percentofpointshrinkage. NativeCRFgainchange
+only+.053[-.088,.226]. Thisaccountingdoesnotseparateguide/graph/renderercausesonlatebatches.
+[Quality report](research_20261005/pipeline_verified/rcg_quality4000_v1/report.md),
+[exactterm report](research_20261005/pipeline_verified/rcg_quality4000_v1/state_report.md).
+
+RemainingRCGerrors:122.143Mbody54.98percent,57.096Mwithin16px25.70percent,42.934Muntouched/stray
+semanticregions19.32percent. Whole-missedGTregionFNmass9.361Mvsnative5.318M;within8falsemass
+19.957Mvsnative17.756M. GTbodyoracle+16.0976,within8+6.2154,8to16+2.3372,objectproxy+5.9258;
+twoGTboundarybucketstogether+8.77486,notthesumofseparateratiogains. TheseareGTcapacitydiagnostics,
+notmethodresults. ObjectbinsaretotalGTclassareaand8connectedsemanticproxies,notinstancecounts.
+Theclaimthaterrorsaredominantlyboundaryisnot supported.
+[Anatomy](research_20261005/pipeline_verified/rcg_anatomy4000_v1/report.md),
+[independent audit](research_20261005/pipeline_verified/rcg_anatomy_audit_v1/audit.md).
+
+Decision:holdrawgraph/newcomponentvariants;completeexistingboundaryrunwithoutusingitsscoreasnext
+methodselection. Fixed80feature-separabilitydiagnosticisqueuedaftercurrentGPUjob,withallfinefeatures
+retained;CPUtests existingreferencecuefeasibilityontheobservedremainingerrors. Neitherdiagnostic
+substitutestheunmetcomplete-method>=2/strong-controlobjective.
+
+
+### 2026-10-05: fixed80boundary diagnostic doesnot establish new fine information
+
+Historical600subset,sampledRandomState0beforeGT,20/fold,80episodes. Sourceunaryfeaturesremain
+FoRIS-debiasedcachedDINOspace;singleexistingreference,r/cov only. Fourreflected±4queryshifts,
+FP16finegridsretained~2.5GiB. All80features/fieldssealedbeforeCPUopenedqueryGT. GPU110.39s,
+CPUabout12s;setupincluded,no pricingclaim. Fixedpure8pxcoverage<=.1/>=.9,meansame-sideGTdistance
+<=16;80eligibleepisodes,1717eligible16pxparents/327680total,3078FG-BGpairs.
+FineNNboundaryAUROC.8762;bilinearcoarsefeatureNN.8568,bilinearcoarseNNmargin.8752,RGB.5564.
+Finevsbilinearmargin+.0010[-.0041,.0056];parentrankfine.8588vsbilinearmargin.9179,
+-.0591[-.0859,-.0335]. Finevsinterpolatedfeatures+.0194[.0136,.0259],butthatweakercontrol
+cannotestablishnewinformationbeyondthestrongerinterpolatedmargin. RCGcorrect-sidevalueexistsin
+51215/53989pureboundarycells;availabilityisGTdiagnosticcapacity,notlegalinferenceproof.
+[Report](research_20261005/pipeline_verified/boundary_features80_v1/report.md).
+
+Completedpeerfull600subtokenconstruction:nestedfine64.625380vsRCG64.237696,+.387683
+[.330002,.569782];vsRGBnested64.390177,+.235202[.143835,.423549];vsRCG+CRF64.448578,
++.176802[.007463,.346140]. ThisisreusedDEVwithGTfitting-foldselection,noseparatefreshconfirmation
+orcompletepublicSOTA;sourceprogramopensGTbeforeforwardthoughvisiblepredictiondoesnotuseit,
+anddoesnotsealsource/predictions. Mainknownmissingcontrolisthesamereadoutwithinterpolatedcoarse
+featuresandzeronewencoderforwards. Neitherthisscorealone norGToracleceilingschooseanextmethod.
+[Completedsource result](research_20261005/pipeline_verified/subtoken600_v1/report.json).
+
+
+### 2026-10-05: actual fine information matters in the matched query readout
+
+Samehistorical600,seed0,1024,80classes/564connectedphotogroups. Retainoriginalper-fold
+selectedsigma1.25,tau.07(folds0/3)/.15(folds1/2);no newselection/grid. Replacefour-shiftfinefeatures
+withunit-bilinearinterpolatedcoarsefeaturesonly;identical5x5kernel/neighborhoodandCUDAfinalizer.
+All600maskssealbeforeGT;allpriornative/RCG/selectedfineorderedI/Uexact. Completecoarseguide64.273121,
+fine64.625380;finevscoarse+.352259[.325705,.544086]. CPU6readers/2writers+GPUbatch4:
+19.92sinference/4.16sGPUcompute/10.87sCPUscore. Coarseproduceruseszeroencoderforwards/images.
+Thisisamatchinginformation-removalcontrol,notanoptimizedcoarsegridorindependentconfirmation;
+sourcefinepolicywasGTfitting-foldselected. Thecompletecontrast supportsvalueinthetestedquery
+readoutdespitenoimprovedreferenceNNboundarydiscrimination;neitherimplieseffectivehigherresolution.
+Legacysealhasnomapofinputhashes,soinitialv1failedbeforeprediction;v2recordsnewinputhashesand
+checksalloriginalcountsat score. Failedoutputretained,noassetsdeleted.
+[Result](research_20261005/pipeline_verified/subtoken_coarse_control600_v2/report.md).
+
+### 2026-10-05: reference nearest-neighbor margin fails the residual-error feasibility test
+
+All4000publicbenchmarkdraws/seed0/1024,reusedDEV;GTdiagnostic,noencoder. ExistingNNsignedmargin
+fg_max-bg_max,FoRISminmaxscoreandRCGfield evaluatedonfixedGTpure16pxtokens. Whole-missedGTsemantic
+regionsversusstrayRCGregions:NNmeanepisodeAUROC.253204[.215718,.293471],223eligibleepisodes/209groups.
+Deep>16pxFNversusFP:.232535[.215564,.249790],1088episodes/947groups;allfourfoldsbelow.5.
+NN>0pooledrecall/FPR23.30/72.44percentand32.60/73.43percent. Wholemiss1720regions,690havepure
+representativetokens,421positiveNN;stray3894,3680havepuretokens,2931positiveNN. Absenceofpuretokens
+isnotabsenceofsemanticinformation;1030wholemissregionslackpuretokens,including679under256pixels.
+RCGfieldpoorAUROCispartlytautologicalbecauseRCGerrorsdefinethecohort. DonotflipNNbasedonGTerror
+selection;negativeevidenceonlylimitsthiscue/conditioning,notallfeatures. All4000I/U,regioncountsand
+2000photo-bootstrapcomputations independentlyverified. CPU4fullrun170.28s,noGPU/newcomponent.
+[Interpretation](research_20261005/pipeline_verified/rcg_remaining_cues4000_v1/interpretation.md),
+[validation](research_20261005/pipeline_verified/rcg_remaining_cues4000_v1/validation.json).
+
+Nextfixedcomparisonexpandstheexistingfinequeryreadoutto1200withpreviouslytestedstrongλ64control
+andfineλ64composition;thisisnotnewcueinventingorparametersearch. All1200remainDEV,andcomplete
+>=2overFoRIS/strong-controlsuperiority remainunmet. Newfinearraysstreamwithoutfullcache;existing
+80finegridsandoriginal1200cachedfeaturesprotected. RCGsourcehashes/configpathsareunchangedacross
+public7blocks;missingruntime/weight/projectioncontentreceipts meanwecannotfullyexclude numericdrift.

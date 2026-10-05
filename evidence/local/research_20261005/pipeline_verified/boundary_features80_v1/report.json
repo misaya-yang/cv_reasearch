@@ -1,0 +1,702 @@
+{
+  "config": {
+    "purpose": "GT-labeled feature-separability diagnostic; not a deployable method or SOTA result",
+    "dataset": "COCO-20i, historical source600 reuse; not independent confirmation",
+    "episodes": 80,
+    "per_fold": 20,
+    "source_episodes": 600,
+    "sampling_rng": "RandomState(0)",
+    "sampling": "ascending folds; sample source-row indices without replacement, sort indices within fold",
+    "resolution": 1024,
+    "coarse_grid": 64,
+    "fine_grid": 128,
+    "fine_cell_pixels": 8,
+    "shifts": [
+      [
+        -4,
+        -4
+      ],
+      [
+        -4,
+        4
+      ],
+      [
+        4,
+        -4
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "padding": "reflect, 4 pixels",
+    "feature_space": "same cached last-layer space; host debias only when cached debiased flag is true",
+    "quantization": "normalize fine grid, store FP16, cast FP32 and renormalize for cosine; same for cached q/r",
+    "reference_roles": "single supplied reference, cov>=0.5 FG; cov<0.5 BG; require both",
+    "margin": "max FP32 cosine to reference FG minus max to reference BG; no temperature or tuning",
+    "coarse_feature_control": "unit bilinear interpolation of unit cached q from 64 to 128, align_corners=False",
+    "coarse_margin_control": "bilinear interpolation of cached q/r 64-grid NN margin, align_corners=False",
+    "rgb_control": "query avg_pool8 vs original supplied reference avg_pool16, negative squared RGB distance; FGmax-BGmax",
+    "local_rcg_diagnostic": "nearest-cosine query token among valid 5x5 coarse neighbors of nearest token center; sealed RCG value",
+    "local_rcg_roles": "value>0.5 FG; value<=0.5 BG; true-side availability uses GT only in score",
+    "query_gt_in_inference": false,
+    "encoder_forwards_per_episode": 4,
+    "feature_retention": "retain all80 FP16 fine grids and fields",
+    "gt_pure_cells": "8x8 truth coverage<=0.1 BG or >=0.9 FG",
+    "gt_boundary": "mean same-side distance to opposite GT label in each 8x8 cell <=16 pixels; no band for one-label truth",
+    "parent_ranking": "all FG/BG pure boundary-cell pairs inside each 16x16 parent; ties count 0.5; mean eligible-parent rate per episode",
+    "primary_statistic": "macro per-episode AUROC and macro per-episode parent ranking; exclude episodes lacking both labels",
+    "bootstrap": {
+      "draws": 2000,
+      "rng": "RandomState(0)",
+      "unit": "connected support/query photographs",
+      "paired": true
+    },
+    "tf32": false,
+    "tuning": false,
+    "source_code_sha256": "0221c53b31718a54cef433a9652d9dee097aeaa515968c25c144a2aa4dd5a4a6",
+    "experiment_sha256": "d95459d0b59c7048618661e7a16999248990b02e92cd1269d4629a497f62f843",
+    "source_manifest_sha256": "f33a69841a899030d5b102aa9c137bc3bc1868ae48fda1d3971b4dc00f26998b",
+    "source_seal_sha256": "4328a03d6a23c140eaf6d0d5768903d22448549ad89183bbf3faddd988cca9d0",
+    "selected_source_indices": [
+      7,
+      16,
+      33,
+      37,
+      40,
+      45,
+      51,
+      54,
+      62,
+      63,
+      71,
+      73,
+      76,
+      78,
+      86,
+      90,
+      100,
+      107,
+      114,
+      134,
+      156,
+      172,
+      176,
+      192,
+      197,
+      198,
+      213,
+      214,
+      215,
+      218,
+      227,
+      241,
+      242,
+      258,
+      269,
+      272,
+      280,
+      291,
+      293,
+      298,
+      312,
+      331,
+      346,
+      360,
+      362,
+      366,
+      369,
+      376,
+      377,
+      385,
+      396,
+      402,
+      404,
+      408,
+      413,
+      419,
+      421,
+      422,
+      429,
+      437,
+      459,
+      473,
+      499,
+      504,
+      525,
+      526,
+      530,
+      540,
+      547,
+      561,
+      564,
+      567,
+      572,
+      573,
+      587,
+      588,
+      589,
+      593,
+      596,
+      597
+    ],
+    "source_root": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/fresh600_root",
+    "source_run": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/recheck_fresh600_v1",
+    "host_manifest_sha256": "4dd6078054e91c7fc90df4443120624b763539e83c1c7752cd031bfb4c859d22",
+    "host_root": "/root/autodl-tmp/demo9_extent",
+    "demo4_root": "/root/autodl-tmp/demo4",
+    "chunk": 512,
+    "torch_threads": 1,
+    "torch_version": "2.12.1+cu130",
+    "device": "cuda",
+    "device_name": "NVIDIA GeForce RTX 4080 SUPER",
+    "disk_free_bytes_at_start": 21704691712
+  },
+  "n": 80,
+  "folds": {
+    "0": 20,
+    "1": 20,
+    "2": 20,
+    "3": 20
+  },
+  "photo_groups": 79,
+  "largest_photo_group": 2,
+  "units": "AUROC/ranking in [0,1]; contrasts are absolute differences, not mIoU",
+  "boundary_auroc": {
+    "arms": {
+      "fine_nn": {
+        "mean": 0.8762288220226765,
+        "ci95": [
+          0.8517838762247865,
+          0.8993402652380745
+        ],
+        "episodes": 80,
+        "bootstrap_valid_draws": 2000
+      },
+      "bilinear_feature_nn.control": {
+        "mean": 0.8568074598908424,
+        "ci95": [
+          0.8319159470027006,
+          0.8809906132585932
+        ],
+        "episodes": 80,
+        "bootstrap_valid_draws": 2000
+      },
+      "bilinear_margin.control": {
+        "mean": 0.8752377450466156,
+        "ci95": [
+          0.8514396751019186,
+          0.8979353921860457
+        ],
+        "episodes": 80,
+        "bootstrap_valid_draws": 2000
+      },
+      "rgb_nn.control": {
+        "mean": 0.5564095358364284,
+        "ci95": [
+          0.5099363763115289,
+          0.6010957244946621
+        ],
+        "episodes": 80,
+        "bootstrap_valid_draws": 2000
+      }
+    },
+    "folds": {
+      "0": {
+        "fine_nn": {
+          "mean": 0.89517922103405,
+          "ci95": [
+            0.8451972163149288,
+            0.9381895267963409
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "bilinear_feature_nn.control": {
+          "mean": 0.8847455352544784,
+          "ci95": [
+            0.8342486544224349,
+            0.9264028951957607
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "bilinear_margin.control": {
+          "mean": 0.8911288172006607,
+          "ci95": [
+            0.8401177224218845,
+            0.9331495384446212
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "rgb_nn.control": {
+          "mean": 0.6117393940687179,
+          "ci95": [
+            0.5031762823716222,
+            0.7164166424955639
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        }
+      },
+      "1": {
+        "fine_nn": {
+          "mean": 0.8826909959316254,
+          "ci95": [
+            0.832176550825437,
+            0.9247055123722099
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "bilinear_feature_nn.control": {
+          "mean": 0.8621064186096191,
+          "ci95": [
+            0.8138071337943538,
+            0.9046365689535282
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "bilinear_margin.control": {
+          "mean": 0.8771779268980027,
+          "ci95": [
+            0.8279149451501229,
+            0.9197510103599943
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "rgb_nn.control": {
+          "mean": 0.5175198033452034,
+          "ci95": [
+            0.45047140052556095,
+            0.5924619405323432
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        }
+      },
+      "2": {
+        "fine_nn": {
+          "mean": 0.9004946529865265,
+          "ci95": [
+            0.8572950785181352,
+            0.9353786610405553
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "bilinear_feature_nn.control": {
+          "mean": 0.882307055592537,
+          "ci95": [
+            0.8370045001681585,
+            0.918040023143348
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "bilinear_margin.control": {
+          "mean": 0.9085793375968934,
+          "ci95": [
+            0.8686812411013403,
+            0.9410679453391634
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "rgb_nn.control": {
+          "mean": 0.5839756175875663,
+          "ci95": [
+            0.501287727954163,
+            0.6637635598869788
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        }
+      },
+      "3": {
+        "fine_nn": {
+          "mean": 0.826550418138504,
+          "ci95": [
+            0.7765919003768691,
+            0.8765143423722
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "bilinear_feature_nn.control": {
+          "mean": 0.7980708301067352,
+          "ci95": [
+            0.7410974235406943,
+            0.8562948559597134
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "bilinear_margin.control": {
+          "mean": 0.8240648984909058,
+          "ci95": [
+            0.7765348780857616,
+            0.8735762187228961
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "rgb_nn.control": {
+          "mean": 0.5124033283442259,
+          "ci95": [
+            0.41895219647770987,
+            0.5955344898419248
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        }
+      }
+    },
+    "contrasts": {
+      "fine_nn minus bilinear_feature_nn.control": {
+        "mean": 0.01942136213183403,
+        "ci95": [
+          0.01358798061890236,
+          0.02588423504473027
+        ],
+        "episodes": 80,
+        "bootstrap_valid_draws": 2000
+      },
+      "fine_nn minus bilinear_margin.control": {
+        "mean": 0.0009910769760608674,
+        "ci95": [
+          -0.004105632438979766,
+          0.005559016868247111
+        ],
+        "episodes": 80,
+        "bootstrap_valid_draws": 2000
+      },
+      "fine_nn minus rgb_nn.control": {
+        "mean": 0.31981928618624805,
+        "ci95": [
+          0.2719869482703507,
+          0.36763695508297084
+        ],
+        "episodes": 80,
+        "bootstrap_valid_draws": 2000
+      },
+      "bilinear_feature_nn.control minus bilinear_margin.control": {
+        "mean": -0.018430285155773163,
+        "ci95": [
+          -0.025312439965296394,
+          -0.012193863700745227
+        ],
+        "episodes": 80,
+        "bootstrap_valid_draws": 2000
+      },
+      "bilinear_feature_nn.control minus rgb_nn.control": {
+        "mean": 0.300397924054414,
+        "ci95": [
+          0.2513423022849462,
+          0.3494594497461656
+        ],
+        "episodes": 80,
+        "bootstrap_valid_draws": 2000
+      },
+      "bilinear_margin.control minus rgb_nn.control": {
+        "mean": 0.3188282092101872,
+        "ci95": [
+          0.2726194508067226,
+          0.36635228216824933
+        ],
+        "episodes": 80,
+        "bootstrap_valid_draws": 2000
+      }
+    }
+  },
+  "parent_pair_ranking": {
+    "arms": {
+      "fine_nn": {
+        "mean": 0.8587562061853202,
+        "ci95": [
+          0.8200747928496693,
+          0.893364635565354
+        ],
+        "episodes": 80,
+        "bootstrap_valid_draws": 2000
+      },
+      "bilinear_feature_nn.control": {
+        "mean": 0.8300582727143571,
+        "ci95": [
+          0.795395154044304,
+          0.8635032680472218
+        ],
+        "episodes": 80,
+        "bootstrap_valid_draws": 2000
+      },
+      "bilinear_margin.control": {
+        "mean": 0.9178741852207132,
+        "ci95": [
+          0.8919414285260006,
+          0.9416179343503941
+        ],
+        "episodes": 80,
+        "bootstrap_valid_draws": 2000
+      },
+      "rgb_nn.control": {
+        "mean": 0.5583928171708854,
+        "ci95": [
+          0.5095787130029792,
+          0.6053077567163944
+        ],
+        "episodes": 80,
+        "bootstrap_valid_draws": 2000
+      }
+    },
+    "folds": {
+      "0": {
+        "fine_nn": {
+          "mean": 0.9034398106247197,
+          "ci95": [
+            0.8237816373436697,
+            0.960133128320349
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "bilinear_feature_nn.control": {
+          "mean": 0.8732661013643698,
+          "ci95": [
+            0.8088467544295931,
+            0.9285311619935819
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "bilinear_margin.control": {
+          "mean": 0.9209990773115772,
+          "ci95": [
+            0.8619445055891078,
+            0.9713711137509214
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "rgb_nn.control": {
+          "mean": 0.5905776838489717,
+          "ci95": [
+            0.47543737743592107,
+            0.6981335342803585
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        }
+      },
+      "1": {
+        "fine_nn": {
+          "mean": 0.8759645484180929,
+          "ci95": [
+            0.8063382369298759,
+            0.9328867436087603
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "bilinear_feature_nn.control": {
+          "mean": 0.8454113022833523,
+          "ci95": [
+            0.7857823937713927,
+            0.9041291031734664
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "bilinear_margin.control": {
+          "mean": 0.9454226540840889,
+          "ci95": [
+            0.9009218787605012,
+            0.978972188971476
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "rgb_nn.control": {
+          "mean": 0.5655616437249231,
+          "ci95": [
+            0.4895196089351542,
+            0.643793553079345
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        }
+      },
+      "2": {
+        "fine_nn": {
+          "mean": 0.8734403898819221,
+          "ci95": [
+            0.8064091333934379,
+            0.9335297634870003
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "bilinear_feature_nn.control": {
+          "mean": 0.821109831029186,
+          "ci95": [
+            0.7436817156298003,
+            0.8887903025793651
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "bilinear_margin.control": {
+          "mean": 0.9396694188428061,
+          "ci95": [
+            0.8898859229847852,
+            0.9791856812169313
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "rgb_nn.control": {
+          "mean": 0.5785289458525346,
+          "ci95": [
+            0.49694500794800095,
+            0.6637372655342004
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        }
+      },
+      "3": {
+        "fine_nn": {
+          "mean": 0.7821800758165461,
+          "ci95": [
+            0.6965751472605283,
+            0.8596585125006575
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "bilinear_feature_nn.control": {
+          "mean": 0.7804458561805208,
+          "ci95": [
+            0.721148621327461,
+            0.8471081545388617
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "bilinear_margin.control": {
+          "mean": 0.8654055906443807,
+          "ci95": [
+            0.809063407105742,
+            0.9194575432060865
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        },
+        "rgb_nn.control": {
+          "mean": 0.4989029952571119,
+          "ci95": [
+            0.3841984844656567,
+            0.5976510887422153
+          ],
+          "episodes": 20,
+          "bootstrap_valid_draws": 2000
+        }
+      }
+    },
+    "contrasts": {
+      "fine_nn minus bilinear_feature_nn.control": {
+        "mean": 0.02869793347096301,
+        "ci95": [
+          0.0007999978087822272,
+          0.05764937331537024
+        ],
+        "episodes": 80,
+        "bootstrap_valid_draws": 2000
+      },
+      "fine_nn minus bilinear_margin.control": {
+        "mean": -0.05911797903539303,
+        "ci95": [
+          -0.08585286308358515,
+          -0.03345287028702661
+        ],
+        "episodes": 80,
+        "bootstrap_valid_draws": 2000
+      },
+      "fine_nn minus rgb_nn.control": {
+        "mean": 0.3003633890144348,
+        "ci95": [
+          0.24813398802298917,
+          0.35272479449600136
+        ],
+        "episodes": 80,
+        "bootstrap_valid_draws": 2000
+      },
+      "bilinear_feature_nn.control minus bilinear_margin.control": {
+        "mean": -0.08781591250635604,
+        "ci95": [
+          -0.11471710563688906,
+          -0.06320225546509785
+        ],
+        "episodes": 80,
+        "bootstrap_valid_draws": 2000
+      },
+      "bilinear_feature_nn.control minus rgb_nn.control": {
+        "mean": 0.2716654555434718,
+        "ci95": [
+          0.21876171278150364,
+          0.32668447179615084
+        ],
+        "episodes": 80,
+        "bootstrap_valid_draws": 2000
+      },
+      "bilinear_margin.control minus rgb_nn.control": {
+        "mean": 0.3594813680498279,
+        "ci95": [
+          0.31183598690344355,
+          0.4062458848324381
+        ],
+        "episodes": 80,
+        "bootstrap_valid_draws": 2000
+      }
+    }
+  },
+  "parent_coverage": {
+    "eligible_parents": 1717,
+    "parents_with_pure_boundary_cells": 21711,
+    "total_parents": 327680,
+    "fg_bg_pairs": 3078,
+    "eligible_fraction_of_all_parents": 0.0052398681640625,
+    "eligible_fraction_of_pure_boundary_parents": 0.07908433512965778
+  },
+  "rcg_true_side_availability": {
+    "boundary_pure_cells": 53989,
+    "true_side_available": 51215,
+    "true_side_unavailable": 2774,
+    "nearest_feature_diagnostic": {
+      "local_rcg_fine_nn": {
+        "correct": 44406,
+        "wrong": 9583,
+        "available_but_wrong": 6809,
+        "unavailable_and_wrong": 2774
+      },
+      "local_rcg_coarse_nn": {
+        "correct": 43528,
+        "wrong": 10461,
+        "available_but_wrong": 7687,
+        "unavailable_and_wrong": 2774
+      }
+    }
+  },
+  "inference_seal_sha256": "d7026e3570ee1ce15246381d1819809f19b259149ffe3e214dc054c07b7c7e99",
+  "gt_use": "CPU labeled diagnostic only",
+  "notes": [
+    "Macro statistics weight eligible episodes equally, not pixels or classes.",
+    "Pairwise contrasts use the same eligible episodes and connected-photo bootstrap weights.",
+    "Parent coverage and availability counts are descriptive, pixel-weighted counts.",
+    "Available-but-wrong nearest-feature matches diagnose this fixed affinity readout only.",
+    "A signal or capacity diagnostic does not establish complete-mask improvement."
+  ],
+  "score_seconds": 11.928041659295559
+}
