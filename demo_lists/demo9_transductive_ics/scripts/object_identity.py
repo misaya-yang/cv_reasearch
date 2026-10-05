@@ -8,7 +8,8 @@ Candidates are the connected components of FoRIS's final score field (min-max no
 candidate's crop of the query and the reference object's crop are encoded by the same frozen DINOv3; no label is used:
   cls     cosine of the two crops' class tokens
   region  cosine of the mean patch token inside the candidate and inside the reference mask (both from the crop pass)
-  grey    cosine of the class tokens when everything outside the region is set to the mean colour
+  grey    cosine of the candidate's class token and the reference's class token with everything outside its mask set
+          to the mean colour (with --grey 1 the candidate's crop is greyed too)
 Stored with each candidate for the reading (labels are used only there): level, area, pixels on the target, and
 FoRIS's own mean score inside it (the host's evidence, the control).
 """
@@ -26,7 +27,7 @@ def main():
     p.add_argument("--manifest", required=True); p.add_argument("--packets", required=True); p.add_argument("--dino", required=True)
     p.add_argument("--out", required=True); p.add_argument("--prefix", default=""); p.add_argument("--side", type=int, default=224)
     p.add_argument("--margin", type=float, default=0.15); p.add_argument("--limit", type=int); p.add_argument("--device", default="mps")
-    p.add_argument("--field", default="score")
+    p.add_argument("--field", default="score"); p.add_argument("--low-memory", type=int, default=0); p.add_argument("--grey", type=int, default=1)
     a = p.parse_args()
     import numpy as np
     import timm
@@ -37,12 +38,33 @@ def main():
     man = json.loads(Path(a.manifest).read_text())
     data, ann = Path(a.prefix + man["data_root"]), Path(a.prefix + man["annotation_root"])
     cfg = json.loads((Path(a.dino) / "config.json").read_text())
-    model = timm.create_model(cfg["architecture"], pretrained=True, num_classes=0, dynamic_img_size=True,
-                              pretrained_cfg_overlay=dict(file=str(Path(a.dino) / "model.safetensors"))).to(a.device).eval()
+    if a.low_memory:  # the no-card server allows 2 GB: never hold two copies of the weights
+        from safetensors import safe_open
+        model = timm.create_model(cfg["architecture"], pretrained=False, num_classes=0, dynamic_img_size=True).half()
+        with safe_open(str(Path(a.dino) / "model.safetensors"), framework="pt") as f:
+            names = set(f.keys())
+            own = [n for n, _ in list(model.named_parameters()) + list(model.named_buffers())]
+            missing = [n for n in own if n not in names and n in dict(model.named_parameters())]
+            if missing or names - set(own):
+                raise SystemExit("weight names differ: missing %s, unused %s" % (missing[:5], sorted(names - set(own))[:5]))
+            for n in own:
+                if n in names:
+                    mod, leaf = model, n.split(".")
+                    for part in leaf[:-1]:
+                        mod = getattr(mod, part)
+                    t = f.get_tensor(n)
+                    if leaf[-1] in mod._parameters:
+                        mod._parameters[leaf[-1]] = torch.nn.Parameter(t, requires_grad=False)
+                    else:
+                        mod._buffers[leaf[-1]] = t
+        model = model.float().eval()
+    else:
+        model = timm.create_model(cfg["architecture"], pretrained=True, num_classes=0, dynamic_img_size=True,
+                                  pretrained_cfg_overlay=dict(file=str(Path(a.dino) / "model.safetensors"))).to(a.device).eval()
     mean, std = (torch.tensor(v, device=a.device).view(1, 3, 1, 1) for v in (MEAN, STD))
     prefix = model.num_prefix_tokens
 
-    def encode(image, mask, box):
+    def encode(image, mask, box, grey=False):
         """Class token, region token and grey-background class token of the crop `box` of an image; mask at image size."""
         x0, y0, x1, y1 = box
         crop, m = image.crop(box), mask[y0:y1, x0:x1]
@@ -51,10 +73,11 @@ def main():
         x = torch.from_numpy(np.asarray(crop.resize((W, H), Image.BICUBIC))).to(a.device).permute(2, 0, 1)[None].float() / 255
         mm = torch.from_numpy(np.asarray(Image.fromarray(m.astype(np.uint8) * 255).resize((W, H), Image.BILINEAR))).to(a.device).float()[None, None] / 255
         x = (x - mean) / std
-        tok = model.forward_features(torch.cat([x, x * mm]))  # the grey image: outside the region the normalised pixel is 0
+        # the grey image: outside the region the normalised pixel is 0
+        tok = model.forward_features(torch.cat([x, x * mm]) if (a.grey or grey) else x)
         w = F.adaptive_avg_pool2d(mm, (H // 16, W // 16)).flatten()
         region = (w[:, None] * tok[0, prefix:]).sum(0) / w.sum().clamp(min=1e-6)
-        return [F.normalize(v.float(), dim=0).cpu().numpy() for v in (tok[0, 0], region, tok[1, 0])]
+        return [F.normalize(v.float(), dim=0).cpu().numpy() for v in (tok[0, 0], region, tok[-1, 0])]
 
     def box_of(mask, size):
         ys, xs = np.nonzero(mask)
@@ -69,7 +92,7 @@ def main():
             z = np.load(Path(a.packets) / ("%d_%d_%d.npz" % key))
             ref, query = (Image.open(data / r[k]).convert("RGB") for k in ("support", "query"))
             ref_mask = np.asarray(Image.open(ann / Path(r["support"]).with_suffix(".png"))) == r["c"] + 1  # the reference label only
-            er = encode(ref, ref_mask, box_of(ref_mask, ref.size))
+            er = encode(ref, ref_mask, box_of(ref_mask, ref.size), grey=True)
             s = np.asarray(z[a.field], np.float32)
             sn = (s - s.min()) / max(float(s.max() - s.min()), 1e-6)
             truth = np.unpackbits(z["truth"])[:1024 * 1024].reshape(1024, 1024).astype(bool)  # read only into the stored record
