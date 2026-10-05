@@ -23,7 +23,8 @@ The user subsequently removed artificial duration/round/idle cutoffs; the owned 
 `scripts/experiment_pipeline.py` without those limits. Shutdown was not armed. After the GPU-idle
 correction all owned queues finished; the user later paused and powered off for network repair. The current user has now resumed
 pipeline tracking and authorized running the prepared work after the existing GPU is enabled.
-Ordinary hostname SSH works again; the latest check still reports no-card 0.5 CPU / 2 GiB.
+Ordinary hostname SSH works again. GPU is now enabled:32GB,12CPU,about62GiB. Existing600 exporter3393
+is live; root supervisor2161 and score watcher2162 use boot2 state files. The earlier PID5561 is dead.
 The isolated root queue is `launch/resume_dev241_20261005_v1`; do not confuse other live workers
 with its owned processes, and do not retry from a mere SSH observation timeout.
 This inventory is historical. Do not alter another worker's processes or assets.

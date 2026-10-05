@@ -57,7 +57,7 @@ def replay(job):
     q, r = feat['q'].float().numpy(), feat['r'].float().numpy()
     with np.load(packet, allow_pickle=False) as p:
         masks, audit = method.predict_one(q, r, p['cov'], p['score'], p['fg_max'], p['bg_max'])
-        masks.update({k: p[k].copy() for k in ('native', 'model.raw_nn', 'model.raw_mean')})
+        masks.update({k: p[k].copy() for k in ('native', 'model.raw_nn', 'model.raw_mean') if k in p.files})
     if any(m.dtype != np.uint8 or m.shape != (131072,) for m in masks.values()):
         raise ValueError('All complete masks must use the packed 1024 grid')
     write_npz(Path(destination), masks)
@@ -72,6 +72,55 @@ def source_hashes(astra):
              REPO / 'src/ics/native_basis.py', REPO / 'src/ics/methods/stage_bank.py']
     paths += sorted(Path(astra).glob('*.py'))
     return {str(p.resolve()): sha(p) for p in paths}
+
+
+def infer_cache(a):
+    """Reuse a completed exporter; recover every fixed control without another encoder."""
+    from ics.experiment import load_rows, sha
+    rows = load_rows(a.manifest)
+    man = json.loads(a.manifest.read_text())
+    if len(rows) != a.expected or (a.expected < 20 and not a.smoke):
+        raise ValueError('Exact cohort size required')
+    export = json.loads((a.cache_root / 'report.json').read_text())
+    if export.get('state') != 'COMPLETED' or export.get('episodes') != len(rows):
+        raise ValueError('Cache exporter has not completed the entire cohort')
+    paths = {r['key']:(a.cache_root/'cache/evidence_v1/feat'/(r['key']+'.pt'),
+                      a.cache_root/'results/extent_v1/run/packets'/(r['key']+'.npz')) for r in rows}
+    if any(not p.is_file() for pair in paths.values() for p in pair):
+        raise FileNotFoundError('Incomplete cohort cache')
+    (a.out/'predictions').mkdir(parents=True, exist_ok=False)
+    sources = source_hashes(a.astra)
+    protocol = dict(source_sha256=sources, source_manifest_sha256=sha(a.manifest),
+                    source_manifest=man, astra=str(a.astra.resolve()), expected=a.expected,
+                    cache_root=str(a.cache_root.resolve()), cache_export=export,
+                    cache_export_sha256=sha(a.cache_root/'report.json'), resolution=1024,
+                    encoder_instances=0, worker_count=a.workers,
+                    candidate='unchanged supplied run.predict_one; all ten fixed arms preserved',
+                    origin_definition='Raw-origin masks are unavailable in this existing cache; no substitute is named raw',
+                    parameter_selection='none on this cohort', query_gt_usage='score after all predictions sealed',
+                    native='stored complete FoRIS, audited by the existing exporter',
+                    insid3='supplied insid3_default cached complete rule', smoke=a.smoke)
+    write_json(a.out/'manifest.json', rows); write_json(a.out/'protocol.json', protocol)
+    completed = {}; begin = time.monotonic()
+    jobs = [(r['key'], str(paths[r['key']][0]), str(paths[r['key']][1]), str(a.astra.resolve()),
+             str(a.out/'predictions'/(r['key']+'.npz'))) for r in rows]
+    with ProcessPoolExecutor(max_workers=a.workers, mp_context=multiprocessing.get_context('spawn')) as pool:
+        for result in pool.map(replay, jobs):
+            completed[result['key']] = result
+            write_json(a.out/'progress.json',dict(predicted=len(completed),total=len(rows),seconds=time.monotonic()-begin))
+            print(json.dumps(dict(n=len(completed),key=result['key'],seconds=round(result['replay_seconds'],2))),flush=True)
+    if sources != source_hashes(a.astra):
+        raise ValueError('Source changed')
+    arms = next(iter(completed.values()))['arms']
+    if any(v['arms'] != arms for v in completed.values()):
+        raise ValueError('Arms differ across episodes')
+    write_json(a.out/'audit.json',dict(candidates=completed,seconds=time.monotonic()-begin))
+    write_json(a.out/'sealed.json',dict(state='ALL_PREDICTIONS_SEALED',n=len(rows),arms=arms,
+               manifest_sha256=sha(a.out/'manifest.json'),protocol_sha256=sha(a.out/'protocol.json'),
+               predictions={k:v['prediction_sha256'] for k,v in completed.items()},
+               inputs={k:{x:v[x] for x in ('feature_sha256','packet_sha256')} for k,v in completed.items()},
+               source_sha256=sources,query_gt_opened=False))
+    print('ALL_PREDICTIONS_SEALED',len(rows),flush=True)
 
 
 def infer(a):
@@ -219,6 +268,7 @@ def score(a):
     from statistics_randomstate import analyze
     scored = []
     torch.set_num_threads(1)
+    origins = [k for k in ('model.raw_nn','native','RCG','RCG_count_matched_delete') if k in seal['arms']]
     for row in rows:
         key = row['key']; path = a.out/'predictions'/(key+'.npz')
         if sha(path) != seal['predictions'][key]:
@@ -233,7 +283,7 @@ def score(a):
         for name, mask in masks.items():
             iu[name] = [int((mask & truth).sum()), int((mask | truth).sum())]
             edits[name] = {}
-            for origin in ('model.raw_nn','native','RCG','RCG_count_matched_delete'):
+            for origin in origins:
                 add, remove = mask & ~masks[origin], masks[origin] & ~mask
                 edits[name][origin] = dict(add_TP=int((add&truth).sum()), add_FP=int((add&~truth).sum()),
                                           delete_TP=int((remove&truth).sum()), delete_FP=int((remove&~truth).sum()))
@@ -248,26 +298,29 @@ def score(a):
                prediction_seal_sha256=sha(a.out/'sealed.json'), query_gt_used_for_selection=False,
                edit_totals={name:{origin:{k:sum(r['edits'][name][origin][k] for r in scored)
                             for k in ('add_TP','add_FP','delete_TP','delete_FP')}
-                            for origin in ('model.raw_nn','native','RCG','RCG_count_matched_delete')}
+                            for origin in origins}
                             for name in seal['arms']}))
     print(json.dumps(stats['point_estimates_pp'], indent=2))
 
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('stage', choices=('infer','score'))
+    p.add_argument('stage', choices=('infer','infer-cache','score'))
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--manifest', type=Path)
     p.add_argument('--astra', type=Path)
+    p.add_argument('--cache-root', type=Path)
     p.add_argument('--expected', type=int, default=600)
     p.add_argument('--workers', type=int, default=4)
     p.add_argument('--smoke', action='store_true')
     a = p.parse_args()
     if not 1 <= a.workers <= 6:
         p.error('workers must be between 1 and 6')
-    if a.stage == 'infer' and (a.manifest is None or a.astra is None):
+    if a.stage != 'score' and (a.manifest is None or a.astra is None):
         p.error('infer requires manifest and astra')
-    (infer if a.stage == 'infer' else score)(a)
+    if a.stage == 'infer-cache' and a.cache_root is None:
+        p.error('infer-cache requires cache-root')
+    {'infer':infer,'infer-cache':infer_cache,'score':score}[a.stage](a)
 
 
 if __name__ == '__main__':

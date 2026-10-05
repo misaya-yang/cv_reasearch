@@ -457,6 +457,24 @@ Lesson: re-weighting, re-cutting or mixing the two public pipelines' own terms d
 and the weights are already near their optimum on this term set, so a gain has to come from evidence outside it.
 Source: [report](research_20261005/stage241_v1/report.md); sealed masks on the server, `outputs/stage241_v1`.
 
+### 2026-10-05: the Astra `external_mean__delete` candidate replayed on DEV241 and read on the 600-episode cohort
+
+Delivered code unchanged (sha256 800ad3dc… of `external_mean_delete600.py`), CPU; seed 0, 1024, class mIoU, 2000 photo-group
+draws. DEV241 (development, repeatedly read): native 59.07, RCG 61.02, C 61.84, candidate 62.65 = +3.58 [+1.32, +4.82] vs
+native, +0.81 [-0.44, +1.64] vs C, +0.86 [-0.18, +1.85] vs its same-count lowest-RCG control; on the delivered 220 subset
+62.67 / 58.83 (reported 62.675 / 58.830). **600 cohort** (`confirm_episodes.json`, 80 classes, 561 photo groups; FoRIS masks
+are the stored `foris_confirm_v1`, features re-exported through the same host, 600 of 600 masks bit-identical): native 60.07;
+RCG 61.07 = +0.99 [+0.32, +1.58]; C 60.81 = +0.74 [-0.30, +1.61]; candidate 60.67 = +0.60 [-0.63, +1.87] vs native,
+-0.39 [-1.38, +0.77] vs RCG, -0.12 vs its same-count control; fold gains of the candidate +1.39 / +0.94 / +1.66 / -1.59;
+its last step removes 1.03M true and 1.81M false pixels (64% false; 71% on DEV241). Variants frozen from the DEV241 wide
+sweep before the 600 read: `astra + add[far, t0.4]` 61.14 = +1.07 [-0.23, +2.23] vs native, +0.46 [-0.15, +0.88] vs the
+candidate; `delete_p + add_far` 61.09; none separates from RCG. My split-pool proposal: 58.75 on DEV241 and 58.20 on 600 (worse).
+Operators chosen greedily from existing whole masks (DEV241): two steps reach RCG (61.02), further steps add 0.02.
+Lesson: the two deletion steps selected on DEV241 do not transfer; the only gain that holds on the 600 cohort is RCG's.
+The 600 cohort has now been read for these arms and for the sweep and is no longer untouched.
+Sources: [600 report](research_20261005/recheck600_v1/report_wide.md), [241 report](research_20261005/recheck241_v1/report_wide.md),
+[greedy](research_20261005/greedy241_v1/report.md); runs on the server `outputs/{recheck241_v1,recheck600_v1,confirm600_root,greedy241_v1}`.
+
 ### 写了但没有跑就撤回的
 
 部分对应（PCF）、不变概念与可移植提示、响应 pair-ratio 编辑器、响应训练路线曾在未取得足够前提证据时撤回。早期 `pair_bank.py` 准备被撤回，不表示后续 layer/joint 队列没有运行（结果见上）。撤回未运行构造不证明输入缺少信息。

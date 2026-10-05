@@ -5,6 +5,15 @@ contribution. This page organizes existing evidence; it does not introduce a res
 
 ## The one paper question
 
+The latest user framing is a unified training-free binary-segmentation framework: represent and
+select complementary additions from A* and deletions from B*, solve their joint optimization with
+explicit marginal value and inference cost, and validate the resulting complete method against
+strong published methods. The algebraic decomposition alone is not the method contribution.
+Raw matching is the common accounting origin; changing that origin is not the research objective.
+The optimization mechanism and public-protocol complete result must support the framework claim.
+See [framework derivation](../../evidence/local/research_20261005/operator_framework.md) for exact
+class-wise accounting, conditional optimality and counterexamples that shape the solver.
+
 Can a complete inference method use one labeled reference and a frozen DINOv3 backbone to identify the right
 query objects and recover their extent more reliably than complete FoRIS and the strongest same-information
 alternative, without extra images, class-name input, mask-pretrained models or base-class mask fitting?
@@ -82,3 +91,12 @@ is concentrated in class58; it does not add pixels beyond RCG. Integer-I/U stati
 recomputed, but the final portable entrypoint has not been run on full241 here. Source, controls and
 prepared replay are in the [intake](../../evidence/local/research_20261005/astra_intake.md).
 Next work is governed by [PLAN](PLAN.md), not this gap list.
+
+## Latest fixed Astra comparison and600 handoff
+
+Fixed query-mean Astra on allDEV241 reaches62.654343 vs completeFoRIS59.074825:
++3.579518[1.320378,4.824421]. Its improvement overRCG is+1.634674[-.348770,2.523257],
+so the full claim against strong controls remains unresolved. Last-step GPU replay matches all241
+frozen masks exactly. Source:[verified report](../../evidence/local/research_20261005/pipeline_verified/recheck241/report.json).
+Existing600 evaluation is running; it is previously exposed data. Frozen parameters and600-optimized
+search rows must remain separate. The operational transfer is recorded in[HANDOFF](../../HANDOFF.md).

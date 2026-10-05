@@ -4,15 +4,27 @@ Updated 2026-10-05. This file records current state; detailed evidence is linked
 
 ## Now
 
-- **Latest instruction: continue design, combination and experiments to improve the complete score.**
-  The common edit origin is direct matching from raw frozen-DINOv3 l24, not FoRIS. FoRIS, INSID3 and
-  other methods become comparison rows. Prior FoRIS-relative budgets remain historical diagnostics.
-  User resumed pipeline work after improving SSH. Isolated consecutive GPU stages are staged under
-  `launch/resume_dev241_20261005_v1`; supervisor PID 5561 is live and waiting for GPU. Current live check is still no-card (0.5 CPU / 2 GiB).
-  No rental/download or heavy no-card computation is allowed.
+- **Latest instruction: hand off continuous execution/goal to chat `01a10c9c-32fb-7330-be53-cdb43999fd4f`.**
+  Source chat supervises every45minutes (`cvpr2027-45`), coordinates corrections and next optimization.
+  The immediate priority is the existing600 fixed-method comparison. [Handoff](../../HANDOFF.md) has
+  commands, provenance, live handles and limitations. Raw DINO matching remains the common DEV origin.
+- GPU is enabled (32GB,12CPU,about62GiB). Existing600 export is complete:600/600 native masks bit-identical,
+  maximum response/coverage differences0, elapsed889.018s. Parent3391 now runs downstream600 prediction;
+  at15:27UTC285/600 prediction files existed. Fixed-control dependency watcher8066 is live under
+  `launch/frozen600_controls_v1/controller_watch_state.json`, reusing the completed cache with4CPUworkers.
+  Root's duplicate600 encoder queue was stopped before scientific execution.
+- Latest research framing is a reusable A*/B* addition/deletion-family optimization framework, with strong
+  complete-method benchmark results as its empirical validation. [Framework record](../../evidence/local/research_20261005/operator_framework.md)
+  gives exact marginal accounting and counterexamples to unconditional greedy/sparsity assumptions.
+- Latest fixed Astra DEV241 score:62.654343 vsFoRIS59.074825; +3.579518[1.320378,4.824421].
+  VsRCG:+1.634674[-.348770,2.523257]; superiority to the strong control remains unresolved.
+  Source: [verified report](../../evidence/local/research_20261005/pipeline_verified/recheck241/report.json).
+- DEV241 E/B proposals,206-map inference/score and mean-graph comparison completed. Fixed auxiliary
+  edits started as PID7814 under supervisor2161; CPU scoring watch2162. Use `boot2` state
+  files, not the old PID5561 state left by the earlier container restart.
 - Astra's supplied complete candidate is retained: exposed DEV220, 1024, +2.751185
   [1.102142, 3.810278] versus native and +0.709731 [-0.704856, 1.334083] versus RCG.
-  Its unchanged source, controls, statistics and DEV241 replay command are prepared locally.
+  This earlier candidate is superseded for the current fixed comparison by the query-mean version above.
   It restricts deletion location, sets a reference-BG count and ranks with RCG; it adds no foreground
   beyond RCG. See [intake](../../evidence/local/research_20261005/astra_intake.md).
 - **D is not a validated method/base.** Full DEV241, 1024 complete masks: native 59.074825;
@@ -23,7 +35,7 @@ Updated 2026-10-05. This file records current state; detailed evidence is linked
   The drift neither invalidates all predictions nor establishes bitwise identity. See
   [audit](../../evidence/local/research_20261005/native_replay_audit.md).
 - RCG full DEV241: 61.019660 versus native 59.074825, +1.944835 [0.983141, 2.913596].
-  Delta-only readout is 60.198027. No new complete method has established stable >=2 over native.
+  Delta-only readout is60.198027. The full objective, including strong-control superiority, remains unproven.
 - Latest correction: evidence must distinguish wrong-object deletion, boundary leakage removal,
   whole-object recovery and extent completion. Prioritize deployable addition signals; measure separate
   add/delete edits and their combination. GT error categories/oracles are diagnostics, not inference inputs.
@@ -56,6 +68,5 @@ Updated 2026-10-05. This file records current state; detailed evidence is linked
 
 ## Needed from the user
 
-- Current hardware availability is being checked. Preparation and analysis continue. No rental, download,
-  commit, push or shutdown was performed. Full-rate CPU work requires a suitably provisioned machine;
-  CPU-only code does not mean the 0.5-core no-card mode is suitable.
+- No new resource action is currently required. Existing queues run on the enabled machine.
+  No rental, download, commit, push or shutdown was performed by this handoff.

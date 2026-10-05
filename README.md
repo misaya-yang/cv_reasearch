@@ -8,6 +8,7 @@ results belong to separate resource settings.
 
 Codex and Claude Code share [AGENTS.md](AGENTS.md) directly. Read [STATUS](docs/harness/STATUS.md), then
 [CLAIM](docs/research/CLAIM.md). [PLAN](docs/research/PLAN.md) is the only pending-work list.
+Current operational handoff: [HANDOFF](HANDOFF.md); execution map: [REPO_MAP](REPO_MAP.md).
 Project Claude auto memory remains disabled; shared lessons are in [LESSONS](docs/research/LESSONS.md).
 
 ## Layout
@@ -40,5 +41,5 @@ The user deleted local demo8, and it has not been recreated. See [closed-directi
 Old source is available from Git/history or the recorded local backup, not copied into another active code
 tree. Scientific evidence remains inspectable. A stored result or a historical plan is not authorization to run.
 
-Current preparation: [six complete mechanisms, controls and finite GPU launch](evidence/local/research_20261005/README.md).
-The user stopped CPU experiments and will enable GPU mode. The batch has no new accuracy result yet.
+The existing600 cohort is being evaluated on the enabled GPU. Current ownership, completedDEV241 evidence
+and pending fixed-control comparisons are in [PLAN](docs/research/PLAN.md) and [HANDOFF](HANDOFF.md).
