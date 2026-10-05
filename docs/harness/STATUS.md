@@ -10,6 +10,18 @@ Updated 2026-10-05. This file records current state; detailed evidence is linked
   completed600cases. Fixed80fine/coarse/RGB cue diagnosticcompleted,
   `launch/boundary_features80_v1`,supervisor41485/start953486380,child43130/start953528542. Retain all80FP16finegrids,~2.5GiB; disk had21GiBfree.
   Original rawgraph queue held before inference,CPUvariant neverlaunched; no assets deleted.
+- Frozen1200six-armcomparisoncompleted:FoRIS61.612802,RCG63.598020,MEAN63.581592,
+  RCG64control63.690334,fine16control64.015315,primaryfine64=64.051866.
+  PrimaryvsFoRIS+2.439064[1.581170,3.237973],vsRCG64+.361532[.312316,.461490];
+  vsRCG+.453846[-.059653,.905474],MEAN+.470274[-.104917,1.001042],fine16+.036551
+  [-.520387,.457837]. Completeobjective remainsunproved. All1200baselineI/Uparityandindependent
+  score/CI/foldreconstructionpassed;netTPdamage persists. [Result](../../evidence/local/research_20261005/pipeline_verified/frozen_subtoken1200_v1/report.md).
+- Full4000streamisnowlive45702/start953851020,supervisor45693/start953850989.
+  Two-pairactualexporterFP16q/r/gate/native/λ16paritypassed. All1200completeoutputsreused;
+  onlyremaining2800newpairsencodeinboundedRAM;no featurearchives/deletion. GPU100percent,
+  measured~2.44s/newpair. CPU6CG/2writersparallel;all4000draws/naturalrepeatpreserved;
+  CPUscoreautoqueuedafterfullsealwithallold4000baselineand1200sixarmparityrequirements.
+  Benchmarkreuse,notindependentconfirmation;nofull4000candidateeffectyet.
 - Fixed600matchedcoarsecontrolcompleted:coarseguide64.273121,fine64.625380;
   fineadvantage+.352259[.325705,.544086],allsource600I/Uexact. GPUbatch4+CPU6readers/2writers,
   19.92sinference/4.16sGPUcompute/10.87sCPUscore. Sourcelegacysealinput-keyfailureinfirstattempt
@@ -17,7 +29,7 @@ Updated 2026-10-05. This file records current state; detailed evidence is linked
   [Control](../../evidence/local/research_20261005/pipeline_verified/subtoken_coarse_control600_v2/report.md).
   Fixed1200fine-readout/strongRCG64comparisonisrunning:CPU6preparedall1200in178.5s,
   exactλ16field/maskreplay. GPUchild44738/start953701760,supervisor44731/start953701724,
-  ~.99s/episodewithGPU100percent;CPUscorequeuedafterall1200sealed. NoGTopened.
+  ~.99s/episodewithGPU100percent;CPUscorecompletedafterall1200sealed.
   Full4000streamadapterisbeingpreparedbeforecurrentGPUjobends;decisionpending1200strongcontrols.
 - Fine80boundarydiagnosticcompleted111sGPU+12sCPU;retain2.5GiBfinefeatures. Finevsbilinearcoarse
   NNmargin AUROC+.0010[-.0041,.0056],parentrank-.0591[-.0859,-.0335]. Togetherwith600matched

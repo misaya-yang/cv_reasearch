@@ -1151,3 +1151,36 @@ andfineλ64composition;thisisnotnewcueinventingorparametersearch. All1200remainD
 >=2overFoRIS/strong-controlsuperiority remainunmet. Newfinearraysstreamwithoutfullcache;existing
 80finegridsandoriginal1200cachedfeaturesprotected. RCGsourcehashes/configpathsareunchangedacross
 public7blocks;missingruntime/weight/projectioncontentreceipts meanwecannotfullyexclude numericdrift.
+
+
+### 2026-10-05: frozen fine/query-graph comparison1200 completed; extend4000
+
+COCO2014val/publicblocks0/1,seed0,300/fold,1200draws,80classes/1046connectedphotogroups,1024;
+previouslyexposedDEV,notconfirmation. Singlecompleteclassmaskreference/samefrozenDINO,extra4query
+shiftswithfixed600foldsigma/tau;CPUlambda16replayandlambda64preparedwithsamegraph/equations.
+All1200ownmaskssealbeforeGT;native/RCG/MEANI/Uexactpriormatch. FoRIS61.612802,RCG63.598020,
+MEAN63.581592,RCG64control63.690334,fine16control64.015315,primaryfine64=64.051866.
+PrimaryvsFoRIS+2.439064[1.581170,3.237973];vsRCG64+.361532[.312316,.461490];
+vsRCG+.453846[-.059653,.905474],MEAN+.470274[-.104917,1.001042],fine16+.036551
+[-.520387,.457837]. Strong-control/completegoal remainsunresolved;point>=2aloneisnotsuccess.
+Foldprimary-vsFoRIS2.930471,1.471085,1.800627,3.554074;665up/520down/15tie.
+CPUprepare179.21s,GPUinfer1199.51s(1145.63compute),peak1.559GB,CPUscore32.22s;
+cachedpreparation+4shiftruntime isnotanend-to-endproducerbenchmark.
+[Report](research_20261005/pipeline_verified/frozen_subtoken1200_v1/report.md),
+[independent reconstruction](research_20261005/pipeline_verified/frozen_subtoken1200_verification_v1/verification.md).
+
+Exactstagegain2.439064=1.985218(RCG-native)+.092315(RCG64-RCG)+.361532(fine64-RCG64).
+Fine64relativecoarse64netTP+591286/netFP+95195;classmacro+.365483(TP)-.003951(FP).
+Fine64relativenativeclassmacro netTPterm-1.316673/netFPreductionterm+3.755738;
+thisisexactaccounting,notindependentcausaleffects. Sourcefour-wayRCGeditcountsverifiedbyI/U
+identitiesonly;fullnativecountsrequiremaskrecountinlaterledger. Raworigin1200absent;keepDEV241
+rawaccountingseparate,notmanufactured.
+
+Two-pairsourceparitypassedFP16q/r/gate/native/score/covandlambda16field/maskwithoutGT.
+Full4000launchedfrozen,inclusiveofprior1200benchmarkreuse;reuseall1200sixarmoutputsandonly
+encode2800newpairsinboundedRAM. No newfullfeaturecache,noexistingfeaturedeletion. CPU6CGand
+2writersparallelwithGPU,~2.44s/newpairinitialthroughput/GPU100percent. FullsourceForeISfinish
+currently retainedfornativeparity;futurePart1-onlyoptimizationmustpassownproofbeforeuse.
+All4000ownmaskssealbeforeCPUscore;native/RCG/MEAN all4000andoldsixarms1200mustmatchI/U.
+[Two-pair receipt](research_20261005/pipeline_verified/subtoken4000_smoke_v1/parity.json).
+Full4000candidateeffectstillunknown;publishedSOTAandindependentconfirmation arenotasserted.
