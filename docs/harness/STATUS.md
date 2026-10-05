@@ -4,6 +4,35 @@ Updated 2026-10-05. This file records current state; detailed evidence is linked
 
 ## Now
 
+- Latest user correction stops speculative new components and prioritizes explaining RCG.
+  User explicitly authorized parallel subagents; controller owns monitoring, while agents audit
+  ablation,4000quality/batch dependence andnative/pre geometry. Original rawgraph waiting queue
+  was held before inference; no CPUvariant launched. Existing boundaryGPUjob37422andOpusanatomy
+  CPUjob39355continue; no peer source/process modified. Own CPU4 native-state diagnostic4000
+  is dispatched,using saved masks only andchecking all native/RCGcounts against the verified ledger.
+- Initial historical600RCGablation:pre60.944388,rerank60.939394,smooth63.582277,both64.237696.
+  Rerankvs pre-.004994[-.584939,.279110];smoothvs pre+2.637889[1.792333,3.268409];
+  bothvs smooth+.655420[.056436,1.061844]. Graph propagation supplies most of this gain;
+  reference reranking adds conditional value. Pixelparity/convergence/source checks are being added.
+  This600is benchmarkDEVreuse,not a4000ablation orfresh confirmation.
+
+- Latest correction: FoRIS is a candidate prior within the A*/B* framework, not a required input.
+  Own raw-feature-only fullDEV241 comparison is prepared in `launch/raw_graph_dev241_v1`,
+  supervisor37718/start953352399, queued behind another worker's live subtoken GPU run37422.
+  Batched CUDA4 with CPU6readers/2writers; all predictions seal before CPU scoring.
+  No feature deletion, backbone change or extra encoder. Candidate result is still unmeasured.
+- Full4000 fixed-component readout completed: FoRIS60.931741,RCG62.333671,MEAN62.512972,
+  Astra61.853251,delete-p62.328852. Delete-p vsFoRIS+1.397111[.783637,1.970674],
+  vsRCG-.004819[-.568074,.523499],vsMEAN-.184120[-.751011,.351018]. Target remains unmet.
+  [Result](../../evidence/local/research_20261005/pipeline_verified/frozen_public4000_v1/report.json).
+  All sampled4000draws retained; benchmark reuse,not fresh confirmation. Serial seed0 episode
+  identities match official sampling logic on existing metadata; canonical metadata/encoder parity
+  remain unverified. No new full4000complete candidate result is asserted.
+- Spatial BG jackknife completedDEV241:63.248866,vsoriginalB+sameextent-.034775
+  [-.237678,.183151],vsoriginal-margin same-count-.001509[-.020362,.003954].
+  It does not establish a useful extra mechanism. Stop this prior-dependent stability branch.
+  [Result](../../evidence/local/research_20261005/pipeline_verified/spatial_jackknife_dev241_v1/report.json).
+
 - **Execution controller: chat `01a10c9c-32fb-7330-be53-cdb43999fd4f`, persistent goal active.**
   Latest user instruction prioritizes useful GPU work with CPU parallelism, independent management,
   and cleanup of poor600attempts after recording results. Reusable features must be retained.

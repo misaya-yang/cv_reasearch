@@ -42,3 +42,11 @@ Audit overlap with every previously inspected cohort, including DEV241 and exist
 The standard4000 benchmark can contain exposed episodes/photos; report this explicitly
 and separate any genuinely unseen photograph-isolated readout. Do not choose parameters
 or operator paths on either confirmation readout.
+
+
+Serial sampling replay (2026-10-05): official `opts.py` defaults to num_workers=0 and
+`inference.py` uses batch1/shuffleFalse. Replaying RandomState(0) class/target/distinct-reference
+calls against the existing class-wise fold pickle order matches all4000recorded identities
+(mismatch0). [Receipt](pipeline_verified/frozen_public4000_v1/sampling_parity.json).
+The inspected official Git tree contains no canonical pickle metadata, so this verifies RNG
+and ordering conditional on the existing metadata, not canonical split-file identity.

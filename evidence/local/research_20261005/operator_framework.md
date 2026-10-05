@@ -12,6 +12,15 @@ Then S = (O union A) minus B, uniquely, with A outside O and B inside O. This co
 binary mask changes regardless of how the underlying inference method was constructed.
 It does not, by itself, explain how to choose a correct edit without query labels.
 
+FoRIS is one complete proposal with particular inference priors, not a mandatory input.
+For each independently produced mask S_k, form A_k=S_k minus O and B_k=O minus S_k.
+This places FoRIS, INSID3 and raw-feature-only reference/query methods in the same library
+without requiring a FoRIS host field. Feature centering and graph agreement are other
+explicit priors and require removal controls. Calling all of them priors describes their
+inductive assumptions; it does not establish calibrated Bayesian probabilities.
+An origin-independent producer must be evaluated as a complete method before its edits
+can support a claim about selecting complementary families.
+
 Let A* and B* be available addition/deletion operator families. For selected operators,
 count their unions, not sums of their individual pixel counts. State-dependent operators
 may edit pixels introduced by earlier operators; record their order and recompute their

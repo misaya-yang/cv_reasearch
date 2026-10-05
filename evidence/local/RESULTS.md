@@ -485,15 +485,26 @@ Astra candidate 63.50 = +1.87 [+0.15, +2.92] vs native and -0.74 [-1.89, +0.27] 
 RCG is positive (+0.99, +2.61) and the two deletion steps sit below RCG (-0.39, -0.74), unresolved.
 Source: [report](research_20261005/recheck_fresh600_v1/report_wide.md), [original resolution](research_20261005/recheck_fresh600_v1/original.md).
 
-### 2026-10-06: fixed arms on the public COCO-20i list, first 3000 of 4000 episodes (interim; batches 5 and 6 still running)
+### 2026-10-06: fixed arms on the complete public COCO-20i list (4000 episodes, original resolution)
 
-Seed-0 draws 0 to 749 of each fold, 600 per batch, complete FoRIS run fresh; class mIoU at the original query resolution
-(sealed 1024 masks resized as FoRIS finishes), 2000 photo-group draws. Cumulative 3000: FoRIS 60.20 (folds 58.1 / 63.4 / 60.1 /
-59.1); RCG 61.87 = +1.67 [+1.19, +2.03]; C 61.70 = +1.50 [+0.93, +1.96]; Astra candidate 61.37 = +1.17 [+0.49, +1.79]; its
-same-count control +1.22. RCG per batch: +1.77, +2.13, +1.89, +1.53, +1.62. At 1024 the frozen pair `delete_p` reads +1.77
-[+1.01, +2.49] against RCG +1.66: no separation. The list includes the DEV241 draws (in batch 0) and overlaps the fresh600 draws.
-Our arms carry no CRF; FoRIS does. Source: [original resolution](research_20261005/official_batches/original.md),
+Seed-0 draws 0 to 999 of each fold (six batches of 600 and one of 400), complete FoRIS run fresh; class mIoU at the original
+query resolution (sealed 1024 masks resized as FoRIS finishes), 2000 photo-group draws. FoRIS 60.70 (folds 58.5 / 63.5 / 61.0 /
+59.8); RCG 62.11 = +1.41 [+1.08, +1.70], folds +1.30 / +1.14 / +1.41 / +1.78; C 61.95 = +1.25 [+0.80, +1.62]; Astra candidate
+61.66 = +0.95 [+0.36, +1.46], folds +1.03 / +0.32 / +1.65 / +0.81; its same-count control +1.03 [+0.45, +1.52]. RCG per batch:
++1.77, +2.13, +1.89, +1.53, +1.62, +0.67 [-0.03, +1.48], +0.42 [-0.37, +1.23]; cumulative RCG gain after each batch: +1.77,
++2.06, +1.84, +1.69, +1.67, +1.48, +1.41. At 1024: FoRIS 60.93, RCG +1.40 [+1.09, +1.69], frozen `delete_p` +1.40 [+0.78, +1.97],
+frozen addition pairs +0.91 to +1.34: nothing separates from RCG. The list includes the DEV241 draws (in batch 0) and overlaps the
+fresh600 draws. Our arms carry no CRF; FoRIS does. Source: [original resolution](research_20261005/official_batches/original.md),
 [1024 with frozen pairs](research_20261005/official_batches/cumulative.md); server `outputs/claude_official`.
+
+### 2026-10-06: RCG applied to other input scores (DEV241, 1024)
+
+The delivered RCG readout fed each stored 64 x 64 field in place of the final FoRIS score; features and coverage unchanged (FoRIS
+Part-1 debiased features). "Alone" is min-max > 0.5, a crude readout for raw scores. Complete FoRIS 59.07. FoRIS pre-CRF score:
+58.61 -> 61.05 (+1.97 [+1.01, +2.94] vs FoRIS); FoRIS stage 3: 56.36 -> 59.69 (+0.62 [-0.39, +2.36]); INSID3 combined: 52.69 ->
+53.54; model raw mean similarity: 37.98 -> 42.76 (-16.31 vs FoRIS); model raw nearest neighbour: 20.12 -> 20.89. RCG raises 17 of
+18 inputs over themselves (+0.8 to +10.5) but its level follows the input: on the model's own scores it is far below FoRIS.
+Source: [report](research_20261005/rcg_hosts241/report.md).
 
 ### 2026-10-06: grouping-based adder and deleter on RCG, and where RCG's remaining error lies (fresh600, 1024)
 
@@ -505,6 +516,25 @@ GT diagnostic (not inference): RCG leaves 17.13M false and 12.18M missed pixels;
 boundary and 26% / 41% within 16 px; correcting only the pixels within 8 px would read 72.26, within 16 px 75.25 (FoRIS: 68.87, 71.69).
 Lesson: similarity to the reference, the query's grouping and the score level are already used up by RCG at the 64 x 64 token
 grid; a large share of the remaining price sits below one token from the boundary. Source: [report](research_20261005/cluster_fresh600/report.md).
+
+### 2026-10-06: which part of RCG carries its gain (fresh600, 1024) and what it changes (public 4000, 1024)
+
+Diagnostics; truth is read only to count; nothing was selected. The re-solved RCG field matches the sealed one within 6e-8.
+Ablation, fresh600, against the FoRIS pre-CRF mask 60.94 (complete FoRIS 61.63): rank correction alone +0.00 [-0.58, +0.28];
+graph smoothing alone +2.64 [+1.79, +3.27]; both (RCG) +3.29 [+2.16, +4.00], and RCG minus smoothing-alone is +0.66 [+0.06, +1.06];
+equal anchoring -0.47 [-0.83, -0.18] against RCG; a 5 x 5 position graph in place of the feature graph +1.43 at its best
+strength (lambda 1), -11.89 at lambda 16; lambda 1 / 4 / 16 / 64: 62.02 / 63.19 / 64.24 / 64.71 (64 against 16: +0.47 [-0.40,
++1.01]); alpha 1: 46.35. RCG edits on fresh600: adds 1.93M true / 1.91M false, deletes 4.23M false / 1.57M true.
+Anatomy, public 4000, against the FoRIS pre-CRF mask 60.41 (complete FoRIS 60.93, RCG 62.33 = +1.92 [+1.61, +2.22] over pre):
+each family of RCG's edits applied alone: deleting connected parts almost whole +0.80 [+0.63, +0.98] (10.82M false / 2.31M
+true); deleting within 16 px of the edge +0.37; adding within 16 px +0.31; filling enclosed holes +0.26 (70% true); deleting
+interior +0.10; adding far +0.03 (37% true). Error RCG leaves (million pixels: object-level / within 8 px of the true
+boundary / 8 to 16 px / further): missed 9.4 / 19.9 / 9.2 / 65.4; false 33.6 / 20.0 / 8.1 / 56.8 (FoRIS pre: missed 4.2 / 20.5
+/ 9.8 / 69.8; false 43.7 / 21.4 / 8.8 / 61.7). GT ceilings from RCG: object-level alone 68.26, within 8 px 68.55, 8 to 16 px
+64.67, further than 16 px 78.43. RCG minus pre by object area (< 2% / 2-10% / 10-30% / > 30% of the image): +2.76 / +2.42 /
++0.97 / +1.09, with scores 33.6 / 58.1 / 70.9 / 70.1. By batch: +2.32, +2.89, +2.41, +2.15, +2.20, +1.33, +0.91 (episodes
+better / worse 252 / 134 and 165 / 105 in the last two against about 270 / 120 before); the cause of the weaker last batches
+is not identified. Source: [ablation](research_20261005/rcg_ablate_fresh600/report.md), [anatomy](research_20261005/rcg_anatomy4000/report.md).
 
 ### 写了但没有跑就撤回的
 
@@ -956,3 +986,35 @@ The existingpublic4000chain isfinishing itslast400draws. ACPU-onlyqueue willscor
 masks andpreviouslyfrozen delete-p/same-count statistics onall4000draws,includingthenaturalrepeat.
 Thiscompletesthepairedbaseline/retainedcomponent evidence boundary;itdoesnotpromoteafailedcandidate
 orclaimfull4000publicSOTAfor the2400composition. No encoder orfeaturedeletion/recreation.
+
+
+### 2026-10-05: frozen deletion completed all4000 benchmark draws; target failed
+
+COCO2014 val, four folds1000each, seed0,1024,4000sampled draws with3999unique identities;
+benchmark reuse including exposed cohorts,not fresh confirmation. CompleteRCG/MEAN/Astra masks
+independently reconstructed against GT; native and fixed deletion use sealed per-draw I/U.
+No candidate encoder or feature restoration/deletion. FoRIS60.931741,RCG62.333671,MEAN62.512972,
+Astra61.853251,delete-p62.328852,same-count62.351948. Delete-p versusFoRIS+1.397111
+[.783637,1.970674],versusRCG-.004819[-.568074,.523499],versusMEAN-.184120[-.751011,.351018],
+versussame-count-.023095[-.152283,.117530]. Stable>=2andstrong-control superiority remain unmet.
+[Report](research_20261005/pipeline_verified/frozen_public4000_v1/report.json),
+[receipt](research_20261005/pipeline_verified/frozen_public4000_v1/receipt.json).
+Official serial seed0 sampling replay matches all4000identities with existing fold metadata;
+canonical metadata content and official encoder/rendering numerical parity remain unverified.
+
+### 2026-10-05: spatial BG jackknife adds no established advantage
+
+FullDEV241,seed0,1024,79classes,239connected-photo groups. Four-by-four token spatial BGblocks,
+retain an original deletion only if every leave-block-out pool agrees. Existing extentA unchanged;
+originalBmask replay exact on all241cases; masks sealed before GT. Primary63.248866,Bonly63.088611,
+same-save-count63.250375,fixedslack63.256411,originalB+sameextent63.283640.
+PrimaryvsFoRIS+4.174040[1.793722,5.642150],vsRCG+2.229196[.185919,3.285708],
+vsMEAN+2.568749[.272781,3.633492],butvsoriginalB+sameextent-.034775[-.237678,.183151],
+vssamecount-.001509[-.020362,.003954],vsslack-.007546[-.110097,.166609].
+This does not establish the new mechanism. Stop this stability branch; do not rename its stronger
+control as the proposed method. [Report](research_20261005/pipeline_verified/spatial_jackknife_dev241_v1/report.json).
+
+The user corrected the overly FoRIS-dependent direction. A new complete raw-feature-onlyDEV241
+branch uses reference role-balanced similarity and query-neighborhood propagation, with explicit
+centering/no-centering and graph/unary controls; FoRIS/RCG/MEAN are evaluation rows only.
+It is queued with CPU prefetch/writing and batched CUDA; no result or novelty claim yet.

@@ -10,6 +10,10 @@ select complementary additions from A* and deletions from B*, solve their joint 
 explicit marginal value and inference cost, and validate the resulting complete method against
 strong published methods. The algebraic decomposition alone is not the method contribution.
 Raw matching is the common accounting origin; changing that origin is not the research objective.
+FoRIS contributes a particular collection of inference priors, not a required foundation.
+The proposal library must include complete alternatives that do not read FoRIS masks or fields.
+Reference matching, centering and query-graph agreement also carry explicit assumptions;
+their removal controls distinguish which prior supplies any observed benefit.
 The optimization mechanism and public-protocol complete result must support the framework claim.
 See [framework derivation](../../evidence/local/research_20261005/operator_framework.md) for exact
 class-wise accounting, conditional optimality and counterexamples that shape the solver.
