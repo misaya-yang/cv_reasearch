@@ -1,0 +1,145 @@
+{
+  "state": "COMPLETED",
+  "episodes": 241,
+  "seed": 0,
+  "dataset": "COCO-20i",
+  "split": "exposed DEV241",
+  "resolution": "1024 model size, no CRF; not original-resolution complete-pipeline evidence",
+  "photo_groups": 239,
+  "bootstrap_draws": 2000,
+  "recipe": "reference-balanced full-vector ridge; lambda=mean eigenvalue; fixed sign cut",
+  "added_information": "none; reference labels only, episode-local closed-form fit",
+  "arms": {
+    "reference_ridge": {
+      "miou": 49.72475777918877,
+      "gain_vs_pre_crf": -8.837247825649406,
+      "ci95": [
+        -12.377550751801843,
+        -6.444450347962086
+      ],
+      "up": 80,
+      "down": 159,
+      "pixel_costs": {
+        "corrected_fp": 4637904,
+        "corrected_fn": 1197390,
+        "removed_tp": 4277709,
+        "new_fp": 6430934
+      },
+      "per_fold_gain": {
+        "0": -11.991008987911371,
+        "1": -10.947803563360203,
+        "2": -4.009724320994287,
+        "3": -8.377465304262408
+      }
+    },
+    "reference_mean": {
+      "miou": 42.85762640831359,
+      "gain_vs_pre_crf": -15.704379196524584,
+      "ci95": [
+        -18.109154926520652,
+        -12.093619503658614
+      ],
+      "up": 47,
+      "down": 192,
+      "pixel_costs": {
+        "corrected_fp": 1533450,
+        "corrected_fn": 3280821,
+        "removed_tp": 900061,
+        "new_fp": 19475509
+      },
+      "per_fold_gain": {
+        "0": -19.969732335929763,
+        "1": -16.72915430926352,
+        "2": -8.095132124863127,
+        "3": -18.145556901279697
+      }
+    },
+    "foris_pre_crf": {
+      "miou": 58.56200560483818,
+      "gain_vs_pre_crf": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "up": 0,
+      "down": 0,
+      "pixel_costs": {
+        "corrected_fp": 0,
+        "corrected_fn": 0,
+        "removed_tp": 0,
+        "new_fp": 0
+      },
+      "per_fold_gain": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0
+      }
+    },
+    "foris_native_crf": {
+      "miou": 59.07482507561252,
+      "gain_vs_pre_crf": 0.5128194707743461,
+      "ci95": [
+        0.3361209437807135,
+        0.8884853654381433
+      ],
+      "up": 154,
+      "down": 85,
+      "pixel_costs": {
+        "corrected_fp": 877985,
+        "corrected_fn": 393218,
+        "removed_tp": 483065,
+        "new_fp": 538009
+      },
+      "per_fold_gain": {
+        "0": 0.710044903399961,
+        "1": 0.5957214768511179,
+        "2": 0.3349974922267549,
+        "3": 0.40512951271667674
+      }
+    }
+  },
+  "FN_TN": {
+    "reference_ridge": {
+      "pairs": 164,
+      "mean": 0.6733894552891029
+    },
+    "reference_mean": {
+      "pairs": 164,
+      "mean": 0.6644163322283869
+    },
+    "foris_score": {
+      "pairs": 164,
+      "mean": 0.567824000344121
+    }
+  },
+  "TP_FP": {
+    "reference_ridge": {
+      "pairs": 184,
+      "mean": 0.6524710576599193
+    },
+    "reference_mean": {
+      "pairs": 184,
+      "mean": 0.6256551398163694
+    },
+    "foris_score": {
+      "pairs": 184,
+      "mean": 0.546896084353188
+    }
+  },
+  "FN_FP": {
+    "reference_ridge": {
+      "pairs": 85,
+      "mean": 0.5629668232365785
+    },
+    "reference_mean": {
+      "pairs": 85,
+      "mean": 0.528069677686903
+    },
+    "foris_score": {
+      "pairs": 85,
+      "mean": 0.28845164807769014
+    }
+  },
+  "seconds": 440.62057884037495
+}

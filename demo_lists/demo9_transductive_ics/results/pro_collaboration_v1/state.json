@@ -1,0 +1,303 @@
+{
+  "version": 1,
+  "automation_id": "5-6-pro-20",
+  "conversation_id": "6ac28899-1524-83ea-9e1d-0900617ceb09",
+  "conversation_url": "https://chatgpt.com/c/6ac28899-1524-83ea-9e1d-0900617ceb09",
+  "model_verified_in_ui": "5.6 Pro",
+  "round": 11,
+  "pending": true,
+  "last_sent_message_id": "2b241e74-2051-45fc-8596-8651b0dc3806",
+  "last_sent_question": "第11轮：第10答已读完。掩码条件的原生head差分比凭同维余弦猜PE分类器更有依据，保留为待测语义读出。我不会再推进carrier。现在只把这一个读出的科学归因和缓存输入定清，不实现选词器或改GPU队列。\n\n独立代理与我的判断一致：SelfNative不是足够强的同信息对照。CrossNative平均多个generator的状态，SelfNative只看自己的一个generator；即使Cross涨分，也可能只是更多状态/更多proposal/coverage与降噪收益。并且各候选v排除自己的g=v后，使用的视觉状态集合不同，整体上也并非“所有验证词比较同一个视觉证据”。\n\n未触发clamp时，你的native差分可以写成：\nd_gv = phi_v^T W_h(mean_P h_g - mean_N h_g)/sqrt(d)。\n所以一个非常自然、必须保留的同信息读出是SharedNative：用同一有效generator集合G（不随v改变），每个generator等权，D_shared(v)=mean_{g∈G}d_gv，包括对角；再与leave-own-generator-out的CrossNative比。它拥有相同trained head、同mask标签、同所有状态。只有Cross赢它，才能把增量归到去掉自身生成条件；若Shared最好且完整router提高，说明native语义读出有用，但不该关掉整条语义路线，只应撤回“离对角解耦是关键”的主张。P/N差分仅取消共同加性项，slot/位置/objectness×prompt交互仍在；clamp也破坏精确相消。去掉同一个字符串还没去掉puppy/dog等同义注入。可算的OOD读出不是“非法”，只是信息和归因都未验证。\n\n还发现一个影响一次缓存能否重放的原始事实。你第六节说只有exact prompt没存，可从八个字符串重建text侧即可。但我只读查到服务器当前真实代码：\nsam3_image.py 的_encode_prompt把txt_feats、geo_feats、visual_prompt_embed拼起来；native scoring head接收完整prompt/prompt_mask。\nmodel_builder.py 的geometry_encoder是add_cls=True、num_layers=3。\ngeometry_encoders.py 即使dummy boxes为空，仍追加一个mask为False的有效CLS，然后三层cross-attend原图img_feats(memory=seq_first_img_feats)。\n因此这个native verifier输入里有图像相关的geometry CLS，不只是纯text encoder输出。当前token bank没存full backbone feature或exact prompt/geometry输出，单凭checkpoint和八个字符串不能精确重建它；偷偷去掉这项就改变了原生head。不要再次把可计算的近似当原版回放。\n\n同一原生forward实际上已算出psi_gj=hs_proj(h_gj)和phi_g=prompt_proj(mean(prompt_mlp(prompt_g)))。若以后要保持一次图像前向后全在CPU读数，最小充分的同次观测很可能就是保存这两个FP32投影向量、actual slot映射、scale/clamp和已有原始logit，直接重放每个generator×verifier；diag必须还原已有object logits。Source/query的phi有图像上下文，应分别保留，不假定相同。这个建议只是要保全实际原生输入，不是让你写一套额外前向/编辑器；当前脚本仍没改，这个cache字段也未实际测量或验收。\n\n请把唯一语义观测最后定为一个有共同证据基础的native concept readout：Shared/Self/Cross分别能支持什么结论，exact image-conditioned prompt对机制含义有什么影响，哪两个或最少几个same-pass字段足以忠实CPU回读？核对这些实际调用，不扩诊断列表、不改gate、不要求新图像前向/模型/训练。若必须依赖更多图像过程，请说清，我们不称当前缓存足够。\n\n另外TOKEN余弦的proposal-action cAUC与native head的concept选择不是同一命题。Native读出不能因TOKEN action signal没提高就被先验关闭；各自都要在同输入强宿主/朴素对照上拿到自己的真实数。所有统计仍待数据，当前45分钟只是TOKEN观测队列硬上限，不是这个新读出已经可执行或有收益。回答后我们应结束纯理论来回，把该观测的最小输入说准确，避免明天采完才发现还得重跑图像。",
+  "last_read_answer_id": "55547cfc-01f9-4075-8883-b4fd33d5a697",
+  "expected_answer": "Round11 was sent before user stopped Pro collaboration; do not send further questions or continue this automation.",
+  "history_review": {
+    "thread_id": "01a0f783-6584-7e60-b6d3-5bf227e7e7bc",
+    "pages": 11,
+    "turns": 105,
+    "reached_start": true,
+    "scope": "All available turn pages, user/assistant messages and failed-action summaries; command outputs were not all re-executed or independently verified.",
+    "mistakes": [
+      {
+        "issue": "替换用户任务",
+        "evidence": "要求五个独立方法，被写成一个方法五组对照；用户要求启动，临时改sam3_stitch.py；Pro原版被改写且未运行",
+        "change": "保留用户指定的实验和目的，研究选择不能偷偷改变任务、机制或协议"
+      },
+      {
+        "issue": "候选覆盖被误当候选辨识",
+        "evidence": "Oracle IoU到70–82，实用规则约55–59；SAM3 retained候选上反向/区域均值不胜前向分数",
+        "change": "要判断新增观测是否能纠正当前难负例并保护真前景，再形成完整算法"
+      },
+      {
+        "issue": "参考拟合被误当跨图泛化",
+        "evidence": "参考角度散度降低，查询未提高；F4只保护参考投影；GIC正确代数但AUC退步",
+        "change": "明确参考条件信息如何迁移到另一个实例，不能以参考约束或数值检查作任务证据"
+      },
+      {
+        "issue": "强对照与宿主混淆",
+        "evidence": "FoRIS direct predict64.2836而完整入口65.1614；SAM3作者标准59.93与挖掘56.22混报；QK常量拼接改了聚类阈值几何；SAM旧布局baseline也可用",
+        "change": "以同信息完整强基线归因；替换表示带来的整体宿主行为变化必须分开"
+      },
+      {
+        "issue": "样本与不确定性判断失准",
+        "evidence": "40例区间无法分辨2–4点；跨零正估计被自动判失败；单模型波动被误当paired增益门槛",
+        "change": "报告点估计和paired不确定性，不靠显著性二元标签取代科学判断"
+      },
+      {
+        "issue": "协议与信息预算漂移",
+        "evidence": "基类训练头被放进零训练叙事；图池额外参考预算；class-heldout存在照片重复；固定公式跨折平均用到各类；不同precision改变聚类",
+        "change": "分别报告DINO零训练、SAM3零训练和监督路线，明确类别/照片/数值协议"
+      },
+      {
+        "issue": "执行准备膨胀且未闭合",
+        "evidence": "CRF路径缺失首轮0例、合成类别全0导致只训1轮；上传旧脚本漏后半队列；新state-file无matching preflight；旧命令shutdown漏新增阶段",
+        "change": "无卡先准备真实入口与已授权有限队列，开卡后执行就绪脚本，新增任务从最新计划取"
+      },
+      {
+        "issue": "代理与监控替代研究目标",
+        "evidence": "26个代理局部证明/实现/审阅不能合成方法；反复轮询和无变化报告；在别的healthy job期间缺乏独立有用分析",
+        "change": "协作问答必须改变一个方法判断或下一项可执行验证；本轮只用指定Pro伙伴推进"
+      }
+    ]
+  },
+  "own_judgment": "User criticism is correct about selection: the failed source-only ridge was followed by a graph based on the same ambiguous affinities without measured identity correction. Joint constraints were too weak relative to within-query mixing (median edge-mass ratio .0001612); 70/241 predictions covered >=95% of the frame. Numerical convergence and within-bin AUC did not demonstrate useful semantic transfer. Do not rescue either construction with parameters/cuts or promote another unmeasured influence/gradient hypothesis. These failures do not establish a DINO/pair information ceiling; next scientific selection must explain a transferable target-identity observable and how the full method retains or replaces the host capabilities. Latest Opus result was read rather than copied: pure automatic seeds do not improve ranking over FoRIS in their subgroup. One CPU observation confirms wrong identity, rather than insufficient seed capacity, in 29/34 severely contaminated episodes. The source-pattern readout is not supported as a better purity selector.",
+  "prepared_next_question": null,
+  "server": {
+    "ssh": "ssh -p 48002 root@connect.westd.seetacloud.com",
+    "mode": "User authorizes server CPU work while foreign GPU runs. Live query: GPU100%, 3304MiB; cpu.max12 cores. No own GPU/CRF/encoding is launched.",
+    "policy": "Prepare with CPU; protect Claude and other sessions, do not change instance mode or shut down, no new downloads/push. No GPU queue for the unmeasured MCCS premise."
+  },
+  "plan_destination": "docs/codex_plan/10_05.md",
+  "plan_status": "Active original-method goal; no confirmed complete-pipeline DINO win. Independent supplied-plan review plus frozen matte/native comparison and same-unknown-set GT attribution completed. Matte increment over cached FoRIS+CRF is positive but unresolved. Original CRF CPU backend crashed; exact CRF/original-resolution path not verified. No GPU, Pro question, downloads, server-mode changes or push.",
+  "evidence_packet": "/tmp/cvpr2027_pro_failure_evidence_20261004.txt",
+  "attachment_status": "Uploaded /tmp/cvpr2027_pro_round2_sources.txt via ordinary macOS file chooser. Contains real open_fast source, vocabulary, DEV241/CONFIRM600 aggregates and 841 existing scored records; no new predictions or query labels reopened.",
+  "sent_screenshot": null,
+  "updated_at": "2026-10-05T02:23:02.513613+00:00",
+  "last_answer_file": "/tmp/cvpr2027_pro_round10_answer.txt",
+  "cpu_measurement": {
+    "result": "/tmp/route_support_fidelity_dev241.json",
+    "script": "/tmp/measure_route_support_fidelity.py",
+    "dataset": "COCO-20i",
+    "split": "DEV241",
+    "episodes": 241,
+    "seed": 0,
+    "groups": 239,
+    "bootstrap_draws": 2000,
+    "native_margin_deciles": 10,
+    "reference_iou_auc": 0.4951024042742654,
+    "reference_iou_ci95": [
+      0.4108527131782946,
+      0.584446190102121
+    ],
+    "source_product_auc": 0.5066785396260017,
+    "source_product_ci95": [
+      0.41708126036484244,
+      0.5988608624898292
+    ],
+    "limits": "Observational conditional route-choice diagnosis on exposed DEV; residual confounding possible; not a method score or information ceiling."
+  },
+  "preparation": {
+    "local_script": "/Users/yang/projects/CVPR2027/demo_lists/demo9_transductive_ics/scripts/sam3_semantic_operator_probe.py",
+    "remote_script": "/root/autodl-tmp/demo9_semantic_operator_probe_20261004/sam3_semantic_operator_probe.py",
+    "scope": "One H/S/A operator-alignment observation; no P or query100/C sweep",
+    "syntax_checked": true,
+    "local_and_server_help_passed": true,
+    "real_model_path_tested": false,
+    "peak_memory_measured": false,
+    "throughput_measured": false,
+    "gpu_started": false,
+    "confidence_weight": "legacy best-j confidence, frozen by Pro fourth answer",
+    "default_memory_fraction": 0.4,
+    "source_batch": 32,
+    "query_batch": 1,
+    "resource_limit": "No GPU run authorized by this heartbeat; smoke must determine actual cost before full finite queue.",
+    "remote_current": true
+  },
+  "latest_live_direction": "Shared PLAN now proposes a DINOv3 image-text head; its real signal and throughput remain unmeasured. It needs download authorization and same-head control; this chat has not adopted or executed it.",
+  "case_evidence": {
+    "panel": "/tmp/dev_visual_case_panels/case_06.png",
+    "scope": "Selected old DEV visual-error panel joined to current cached named/routed I/U; not representative frequency",
+    "apple_key": [
+      3,
+      38,
+      47
+    ],
+    "apple_visual_iou_pct": 37.32994979864291,
+    "apple_named_iou_pct": 41.450252534607735,
+    "vase_key": [
+      3,
+      0,
+      75
+    ],
+    "vase_visual_iou_pct": 68.31688180207543,
+    "vase_named_iou_pct": 41.63370313500981,
+    "pro_upload": "case_06.png via ordinary macOS chooser"
+  },
+  "candidate": {
+    "name": "RLGT",
+    "status": "Proposed; decoder identity margin and full method entirely unmeasured",
+    "field": "out['queries'] = hs[-1][:,:num_o2o]; aligned proposal decoder state",
+    "first_run": "DEV241, symmetric full-source/query FP32 on fixed top8; source/query masks, tokens, scores, slot and box metadata",
+    "review": "One explicitly requested independent supplied-plan judgment, read-only actual official decoder sources; no file changes or runs",
+    "prior_art": "ELFSS-AR arXiv2607.29278 already combines SAM3 dense foreground/background prototypes, text response and entity primitives; decoder-slot versus dense-pooling is a hypothesis requiring task evidence.",
+    "complete_method_candidate": "Carrier-aware RSEA held; role-transfer unmeasured, definition confounds collection coverage and instance completeness. No editor.",
+    "independent_review": "Same bounded read-only agent reviewed Pro9, no edits or trials; multi-instance counterexample and unmeasured semantic role highlighted.",
+    "semantic_candidate": "Masked native concept readout: unmeasured; Shared/Self/Cross distinction not yet finalized; no selector/editor implemented."
+  },
+  "topk_dev": {
+    "source": "/root/autodl-tmp/demo9_transductive_ics/results/sam3_relative_v1/rerank_dev.json",
+    "episodes": 241,
+    "seed": 0,
+    "host": "routed_old",
+    "host_miou": 75.24794359521793,
+    "qconf_miou": 73.1630172707548,
+    "qconf_gain": -2.084926324463126,
+    "qconf_ci95": [
+      -3.2672867703492607,
+      -0.1998561124497076
+    ],
+    "diagnostic_file": "/tmp/sam3_topk_route_diagnostic_20261004.json",
+    "diagnostic_script": "/tmp/sam3_topk_route_diagnostic.py",
+    "diagnostic_groups": 239,
+    "per_episode_best_visual8_miou": 80.22082730990367,
+    "per_episode_best_visual8_gain": 4.972883714685736,
+    "per_episode_best_visual8_ci95": [
+      3.305404794118928,
+      7.010860398915014
+    ],
+    "strict_saved_visual8_class_optimum": 80.42582810115287,
+    "raw_router_worse_with_label_selected_name": 109,
+    "scope": "Already-scored DEV I/U only, label-assisted diagnostics not methods or proof of available identity signal. No new CONFIRM read."
+  },
+  "entity_preparation": {
+    "local_script": "/Users/yang/projects/CVPR2027/demo_lists/demo9_transductive_ics/scripts/sam3_entity_token_probe.py",
+    "remote_script": "/root/autodl-tmp/demo9_entity_token_probe_20261004/sam3_entity_token_probe.py",
+    "plan": "/Users/yang/projects/CVPR2027/docs/codex_plan/10_05.md",
+    "scope": "Fixed top8 full-source/query FP32 proposal token observations and CPU TOKEN/POOL/META signal read plus INIT slot-prior diagnostic; no final mask editor",
+    "pool_field": "actual same-pass segmentation_head.instance_seg_head output, passively observed",
+    "slot": "actual decoder ID, not confidence rank 0..19",
+    "storage": "FP32 small vectors; packed binary masks; initial embeddings as metadata",
+    "primary": "Mean positive-minus-negative normalized cosine, source c>=.5/nonempty/finite box, purity>.5 vs<=.5; same actual slot excluded; NO_EVIDENCE not zero",
+    "read": "DEV241 only; query GT after capture. Quantile conditional useful-action concordance; all-evidence isolated add/delete sign costs; near-confidence on/off pairs; connected photo-group bootstrap",
+    "null_status": "rank/prompt nulls not implemented pending corrected interpretation",
+    "syntax_checked": true,
+    "local_help_passed": true,
+    "server_help_passed": true,
+    "real_model_tested": false,
+    "token_signal_measured": false,
+    "cpu_reader_executed": false,
+    "gpu_started": false,
+    "guard_plan_generated": true,
+    "budget_ceiling_gpu_minutes": 45,
+    "budget_authorized": false,
+    "guard_preflight_passed": true,
+    "remote_current": true,
+    "inputs_ready": true,
+    "primary_host": "sem_name:routed_by_semantic",
+    "primary_host_miou": 75.60271702753998,
+    "own_names": "/root/autodl-tmp/demo9_entity_token_probe_20261004/names.jsonl",
+    "own_host_names": "/root/autodl-tmp/demo9_entity_token_probe_20261004/host_names.jsonl",
+    "guard_plan": "/root/autodl-tmp/demo9_entity_token_probe_20261004/demo9_entity_token_guard_plan_20261004.json",
+    "query_GT_opened": false
+  },
+  "last_attachment": "sam3_entity_token_probe.py uploaded to fixed Pro conversation via ordinary file chooser; no data/weights/credentials.",
+  "send_interface_failure": "cua_repl timed out twice, 300 seconds each. No question8 sent through browser. Try native follow-up tool on same conversation, preserving settings.",
+  "send_interface": "Native send_message_to_thread, same fixed ChatGPT conversation, model/thinking omitted to preserve existing settings; new user message visible through read_thread.",
+  "prepared_queue_unchanged": true,
+  "last_primary_paper_read": "ELFSS-AR arXiv2607.29278: greedy-exclusive proposal primitives, FG/BG/text fields and entity classification; official category names supplied in experiments. Different information protocol, no measured RSEA gain.",
+  "native_semantic_readout": {
+    "status": "Question only; no observation or implementation",
+    "paper": "https://arxiv.org/html/2511.16719v2",
+    "source": "Read-only live /root/autodl-tmp/sam3_preparation/code/sam3",
+    "observed_architecture": "retain_cls_token=False, ln_post=False; text hidden1024 resized256, pooled return ignored; learned hs_proj/prompt_proj native instance scoring",
+    "risk": "Query state already prompt-conditioned; fixed-state cross-score may be circular or outside training; no implied pretrained CLIP compatibility",
+    "GPU_calls": 0,
+    "prompt_input": "Text plus valid geometry CLS that cross-attends raw image features even with empty boxes; live server source confirmed",
+    "current_cache_sufficient": false,
+    "prospective_minimum": "Actual same-pass hs_proj(h) and prompt_proj(mean(prompt_mlp(exact prompt))), actual IDs, scale/clamp, existing object logit; not captured yet",
+    "independent_review": "Same bounded agent agrees on ensemble versus decoupling confound; no edits/trials",
+    "comparison": "SharedNative all eligible generators common across candidate verifiers, Self diagonal, Cross candidate-specific leave-own-generator-out; all unmeasured"
+  },
+  "collaboration_status": "PAUSED_BY_USER_NO_FURTHER_MODEL_QUESTIONS",
+  "automation_status": "PAUSED",
+  "cpu_reference_discriminant": {
+    "episodes": 241,
+    "dataset": "COCO-20i",
+    "split": "exposed DEV241",
+    "seed": 0,
+    "resolution": "1024 model size, no CRF",
+    "miou": 49.72475777918877,
+    "host_pre_crf": 58.56200560483818,
+    "paired_gain": -8.837247825649406,
+    "ci95": [
+      -12.377550751801843,
+      -6.444450347962086
+    ],
+    "result": "demo_lists/demo9_transductive_ics/results/reference_discriminant_v1/report.json",
+    "decision": "Fixed reference-fitted readout/sign cut fails; no regularizer or threshold sweep; not an information ceiling."
+  },
+  "active_cpu_observation": {
+    "script": "demo_lists/demo9_transductive_ics/scripts/joint_reference_graph_cpu.py",
+    "remote": "/root/autodl-tmp/demo9_reference_discriminant_cpu",
+    "result": "demo_lists/demo9_transductive_ics/results/joint_reference_graph_v1/report.json",
+    "state": "COMPLETED_FAILED_RETIRED",
+    "scientific_status": "Classical joint reference/query graph first observation; no novelty or positive-gain claim."
+  },
+  "supplied_plan_judgment": {
+    "plan": "Opus5.5 2026-10-05 revised upstream FoRIS CPU analysis",
+    "independent_agent": "rlgt_mechanism_judgment",
+    "decision": "Accept withdrawing same-pair exhaustion and language-as-only-source. Study complete cross-image inference; do not adopt component deletion as the research endpoint.",
+    "limits": [
+      "Self-reference80.17 uses query labels, removes appearance/domain differences and changes multiple downstream stages; not an available bridge or a localization of the loss to one component.",
+      "Prior foreground/background covariance, reference readouts, QK and background veto experiments did address upstream evidence, though they do not exhaust constructions.",
+      "Component-removal effects measure dependence and interactions, not the attainable gain from a replacement.",
+      "An abstract shared-foreground pair relation must supply nonseparable test-time evidence beyond pointwise scores and cosine; naming the relation is not a mechanism or measured signal."
+    ],
+    "next": "Read full joint-reference graph CPU masks and same-information controls before constructing more graph or scalar-readout variants. No new GPU, download or Pro question."
+  },
+  "seed_identity_observation": {
+    "status": "MEASURED_SIGNAL_NOT_METHOD",
+    "result": "demo_lists/demo9_transductive_ics/results/seed_identity_signal_v1/report.json",
+    "dataset": "COCO-20i",
+    "split": "exposed DEV241",
+    "episodes": 241,
+    "seed": 0,
+    "bad41": 34,
+    "bad41_top1_wrong": 29,
+    "bad41_insufficient_target_capacity": 0,
+    "judgment": "The small pure-seed result is a label-assisted best-cut diagnostic. Most severe top-41 contamination already affects the top-scored query token. Reducing the seed count does not address this principal link. Source best-IoU ranks pure vs bad episodes worse than the native raw peak; source AUC has no established incremental separation. No selector, mask editor, GPU queue, or ceiling claim follows."
+  },
+  "query_hypothesis_observation": {
+    "status": "MEASURED_CANDIDATE_SIGNAL_AND_FAILED_MASK_CONSTRUCTION",
+    "candidate_report": "demo_lists/demo9_transductive_ics/results/query_candidate_identity_signal_v1/report.json",
+    "mask_report": "demo_lists/demo9_transductive_ics/results/query_hypothesis_mask_v1/report.json",
+    "judgment": "Source rank validation improves target-candidate choice in the 43 native-top-token errors (20 vs10), but hurts five choices overall. Low raw peak predicts some beneficial candidate switches. The fixed conversion to a source-calibrated cosine mask fails (39.05 vs58.56 model mIoU); all leave-one-fold-out gates choose never-switch. Scope transfer, not numerical execution, failed. No cut/gate/representation variants or GPU queue follows."
+  },
+  "boundary_plan_review": {
+    "status": "MEASURED_FROZEN_REPLACEMENT_REFINER_AND_REVIEWED_PLAN",
+    "independent_review": "complete_density_review",
+    "result": "demo_lists/demo9_transductive_ics/results/frozen_matte_vs_native_v1/report.json",
+    "judgment": "Existing matte has .88 gain before CRF; replacing cached model-resolution FoRIS+CRF gives+.369[-.111,+1.072], four folds positive, unresolved. Majority-block oracle is not a soft-field representation ceiling; boundary-band GT can fix identity. Ground-truth trimap gives both anchor labels and most pixels. No new GPU run or trimap menu is adopted. Original-resolution comparison and matte followed by identical CRF remain unverified.",
+    "cpu_native_crf_attempt": {
+      "state": "FAILED_NATIVE_EXTENSION",
+      "device": "cpu",
+      "threads": 1,
+      "key": "0_0_72",
+      "error": "malloc.c:4302 _int_malloc assertion during original crf_refine onCPU; no encoder or CUDA call. No CPU workaround or native-library edit attempted."
+    },
+    "latest_shared_plan": "Claude PLAN now prepares s8 shifted encodings and z2 2048 query tokens with256D PCA for hmatte. This chat has not adopted or launched that queue; its independent review requires projection/grid-matched controls before attributing finer-grid mechanism.",
+    "attribution_result": "demo_lists/demo9_transductive_ics/results/matte_trimap_attribution_v1/report.json",
+    "attribution_judgment": "Same unknown set/outside field: GT-only filtering of existing endpoint anchors gains2.46[1.65,3.06] over frozen matte; replacing unknown alpha by true coverage gains18.48[16.37,20.14]. Filtering has no FG endpoint in24 episodes, all24 have pure target tokens elsewhere,22 inside the predicted mask. Do not infer that a finer grid alone fixes endpoint selection or that current alpha is sufficient once trimap is improved. No variant/hires queue is adopted."
+  },
+  "mixture_validity": {
+    "signal": "demo_lists/demo9_transductive_ics/results/matte_line_validity_signal_v1/report.json",
+    "mask": "demo_lists/demo9_transductive_ics/results/validity_gated_matte_v1/report.json",
+    "judgment": "Low mixture-line residual improves conditional coverage-error AUC .6386[.5971,.6765] versus contrast .5491. However all four cross-fold mask gates choose accept-all; model mIoU increment .3634[-.1169,1.0617] versus complete cached FoRIS, only .0985[-.2281,.3697] versus stronger naive. No independently useful task gate. Do not tune its threshold or add gate variants."
+  },
+  "original_resolution_cpu_read": {
+    "state": "REAL_SMOKE_RETRY_WITH_DOCUMENTED_PYTHONPATH",
+    "script": "demo_lists/demo9_transductive_ics/scripts/frozen_matte_cpu.py",
+    "remote": "/root/autodl-tmp/demo9_frozen_matte_cpu_20261005",
+    "resources": "One four-thread CPU process, cached forward reused. Preserve foreign GPU process; no shutdown.",
+    "note": "First smoke lacked SciPy because shared runtime PYTHONPATH was omitted; retry only adds the documented existing /root/demo4_cache/env, no install."
+  }
+}

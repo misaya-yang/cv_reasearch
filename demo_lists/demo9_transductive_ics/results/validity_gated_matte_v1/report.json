@@ -1,0 +1,150 @@
+{
+  "dataset": "COCO-20i",
+  "split": "exposed DEV241, photograph-disjoint leave-one-fold-out scalar DEV gate",
+  "episodes": 241,
+  "seed": 0,
+  "resolution": "1024 model resolution; cached complete public FoRIS includes CRF; new method does not run an additional CRF",
+  "mechanism": "Retain cached complete FoRIS except unknown 16x16 cells where local mixture-line validity accepts the alpha-score mask.",
+  "parameter_tuning": "DEV query labels select one scalar constant; no base-class training or learned neural weights.",
+  "host_miou": 59.07482507561252,
+  "method_vs_host": {
+    "miou": 59.43821261078258,
+    "gain": 0.3633875351700553,
+    "ci95": [
+      -0.11686470934184551,
+      1.061682479851666
+    ],
+    "up": 121,
+    "down": 117,
+    "groups": 239,
+    "fold_gain": [
+      0.5859279610358499,
+      0.5652463947125383,
+      0.004110678237857712,
+      0.29483761045844403
+    ]
+  },
+  "naive_vs_host": {
+    "miou": 59.33975841917859,
+    "gain": 0.2649333435660637,
+    "ci95": [
+      -0.11720035525064264,
+      0.8841880772674858
+    ],
+    "up": 110,
+    "down": 128,
+    "groups": 239,
+    "fold_gain": [
+      0.185654060565426,
+      0.38753768928141596,
+      -0.050733944147417276,
+      0.5516093698805307
+    ]
+  },
+  "method_vs_naive": {
+    "miou": 59.43821261078258,
+    "gain": 0.0984541916039916,
+    "ci95": [
+      -0.22812141063995153,
+      0.3696722067538865
+    ],
+    "up": 124,
+    "down": 113,
+    "groups": 239,
+    "fold_gain": [
+      0.4002739004704239,
+      0.17770870543112238,
+      0.05484462238527499,
+      -0.25677175942208663
+    ]
+  },
+  "uniform_vs_host": {
+    "miou": 59.45383243567959,
+    "gain": 0.3790073600670638,
+    "ci95": [
+      -0.10469472205877839,
+      1.0772016643603186
+    ],
+    "up": 121,
+    "down": 117,
+    "groups": 239,
+    "fold_gain": [
+      0.5835097402649794,
+      0.5964674026490258,
+      0.011475341846697518,
+      0.32171219737288226
+    ]
+  },
+  "delete_only_vs_host": {
+    "miou": 59.47891677312299,
+    "gain": 0.4040916975104665,
+    "ci95": [
+      0.10271208512033746,
+      0.8911637800137912
+    ],
+    "up": 111,
+    "down": 127,
+    "groups": 239,
+    "fold_gain": [
+      0.185654060565426,
+      0.48256540624410604,
+      0.18687813391089492,
+      0.7800680046799755
+    ]
+  },
+  "fold_selection": [
+    {
+      "fold": 0,
+      "train_episodes": 180,
+      "test_episodes": 61,
+      "main": {
+        "rule": "negative_residual",
+        "threshold": "-inf"
+      },
+      "naive": {
+        "rule": "delete_only_matte"
+      }
+    },
+    {
+      "fold": 1,
+      "train_episodes": 181,
+      "test_episodes": 60,
+      "main": {
+        "rule": "negative_residual",
+        "threshold": "-inf"
+      },
+      "naive": {
+        "rule": "negative_signed_change",
+        "threshold": 0.007096149958670139
+      }
+    },
+    {
+      "fold": 2,
+      "train_episodes": 181,
+      "test_episodes": 60,
+      "main": {
+        "rule": "negative_residual",
+        "threshold": "-inf"
+      },
+      "naive": {
+        "rule": "native_uncertainty",
+        "threshold": -0.2291853666305542
+      }
+    },
+    {
+      "fold": 3,
+      "train_episodes": 181,
+      "test_episodes": 60,
+      "main": {
+        "rule": "negative_residual",
+        "threshold": "-inf"
+      },
+      "naive": {
+        "rule": "native_uncertainty",
+        "threshold": -0.3017840087413788
+      }
+    }
+  ],
+  "elapsed_seconds": 16.84116506576538,
+  "unverified": "Original-resolution complete fresh-forward pipeline and CONFIRM600. No GPU launched."
+}

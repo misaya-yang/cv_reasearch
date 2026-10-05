@@ -1,0 +1,57 @@
+{
+  "dataset": "COCO-20i",
+  "split": "exposed DEV241",
+  "episodes": 241,
+  "seed": 0,
+  "resolution": "1024 model image; no original-resolution confirmation",
+  "arm": "frozen two-token unknown band, nearest-six feature mixture averaged with original score; replaces CRF",
+  "baseline": "cached complete FoRIS at model resolution, including CRF",
+  "native_miou": 59.07482507561252,
+  "matte_vs_native": {
+    "miou": 59.44392863161182,
+    "gain": 0.36910355599929545,
+    "ci95": [
+      -0.11105934534458406,
+      1.0721559999862105
+    ],
+    "up": 121,
+    "down": 117,
+    "groups": 239,
+    "fold_gain": [
+      0.5197665097376856,
+      0.6255533740502699,
+      0.013411227836492401,
+      0.31497677323459783
+    ]
+  },
+  "matte_vs_pre": {
+    "miou": 59.44392863161182,
+    "gain": 0.8819230267736415,
+    "ci95": [
+      0.4906834716812156,
+      1.7283474817860323
+    ],
+    "up": 145,
+    "down": 94,
+    "groups": 239
+  },
+  "native_vs_pre": {
+    "miou": 59.07482507561252,
+    "gain": 0.5128194707743461,
+    "ci95": [
+      0.347080594371789,
+      0.9090781948791076
+    ],
+    "up": 154,
+    "down": 85,
+    "groups": 239
+  },
+  "error_counts_vs_native": {
+    "corrected_fp": 831169,
+    "corrected_fn": 785855,
+    "added_fp": 1236271,
+    "removed_tp": 353965
+  },
+  "elapsed_seconds": 15.516576051712036,
+  "unverified": "Matte followed by the identical CRF and original-resolution DEV241/CONFIRM600; finer tokens are not evaluated."
+}

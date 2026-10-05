@@ -1,0 +1,204 @@
+{
+  "dataset": "COCO-20i",
+  "split": "exposed DEV241",
+  "episodes": 241,
+  "seed": 0,
+  "quantity": "Within-episode AUC for an alpha-score update reducing versus increasing absolute true patch-coverage error; not method mIoU.",
+  "primary_signal": "Minus squared distance to the clipped local FG/BG mixture segment divided by endpoint contrast.",
+  "controls": [
+    "native_uncertainty",
+    "absolute_change",
+    "endpoint_contrast"
+  ],
+  "conditional_bins": "10 native-score bins x10 global label-free absolute-change quantiles, equal values kept together",
+  "bootstrap": {
+    "draws": 2000,
+    "photo_groups": 239,
+    "seed": 0
+  },
+  "results": {
+    "all_unknown": {
+      "negative_relative_residual": {
+        "auc": 0.6472066134184863,
+        "ci95": [
+          0.624194297667056,
+          0.6689591365126832
+        ],
+        "within_episode_pairs": 39152762,
+        "contributing_episodes": 241,
+        "minus_native_uncertainty": {
+          "auc": 0.19758760569688544,
+          "ci95": [
+            0.16433743873090176,
+            0.2295030403613858
+          ]
+        },
+        "minus_absolute_change": {
+          "auc": 0.16483838356027092,
+          "ci95": [
+            0.13581006542579188,
+            0.1923188797628106
+          ]
+        },
+        "minus_endpoint_contrast": {
+          "auc": 0.09504088115162856,
+          "ci95": [
+            0.061639788775393,
+            0.12822897475710762
+          ]
+        }
+      },
+      "native_uncertainty": {
+        "auc": 0.44961900772160085,
+        "ci95": [
+          0.42537972868297247,
+          0.4733974166976042
+        ],
+        "within_episode_pairs": 39152762,
+        "contributing_episodes": 241
+      },
+      "absolute_change": {
+        "auc": 0.48236822985821537,
+        "ci95": [
+          0.45626160366241963,
+          0.5088254339485407
+        ],
+        "within_episode_pairs": 39152762,
+        "contributing_episodes": 241
+      },
+      "endpoint_contrast": {
+        "auc": 0.5521657322668577,
+        "ci95": [
+          0.5297242328214312,
+          0.5748733808614875
+        ],
+        "within_episode_pairs": 39152762,
+        "contributing_episodes": 241
+      }
+    },
+    "conditional_on_native_score_and_change": {
+      "negative_relative_residual": {
+        "auc": 0.6385512844670561,
+        "ci95": [
+          0.5971409219257433,
+          0.6765302751375588
+        ],
+        "within_episode_pairs": 891576,
+        "contributing_episodes": 241,
+        "minus_native_uncertainty": {
+          "auc": 0.162148263300044,
+          "ci95": [
+            0.1071373295067177,
+            0.21919420501863027
+          ]
+        },
+        "minus_absolute_change": {
+          "auc": 0.10851851104112276,
+          "ci95": [
+            0.06732059546195865,
+            0.146322588217983
+          ]
+        },
+        "minus_endpoint_contrast": {
+          "auc": 0.08948984719193875,
+          "ci95": [
+            0.03273997034219723,
+            0.14663388775240094
+          ]
+        }
+      },
+      "native_uncertainty": {
+        "auc": 0.4764030211670121,
+        "ci95": [
+          0.4476508761434036,
+          0.5025097143439639
+        ],
+        "within_episode_pairs": 891576,
+        "contributing_episodes": 241
+      },
+      "absolute_change": {
+        "auc": 0.5300327734259334,
+        "ci95": [
+          0.5194442397144415,
+          0.5407116950837096
+        ],
+        "within_episode_pairs": 891576,
+        "contributing_episodes": 241
+      },
+      "endpoint_contrast": {
+        "auc": 0.5490614372751174,
+        "ci95": [
+          0.5176209329393979,
+          0.5826192746191384
+        ],
+        "within_episode_pairs": 891576,
+        "contributing_episodes": 241
+      }
+    },
+    "pure_endpoints_conditional": {
+      "negative_relative_residual": {
+        "auc": 0.7352548585655992,
+        "ci95": [
+          0.7191845596070513,
+          0.7520811165102423
+        ],
+        "within_episode_pairs": 289180,
+        "contributing_episodes": 201,
+        "minus_native_uncertainty": {
+          "auc": 0.2537761947575904,
+          "ci95": [
+            0.2279351717431374,
+            0.27774176926908967
+          ]
+        },
+        "minus_absolute_change": {
+          "auc": 0.1984438757867072,
+          "ci95": [
+            0.18050638038915215,
+            0.21642757025595208
+          ]
+        },
+        "minus_endpoint_contrast": {
+          "auc": 0.2222352859810498,
+          "ci95": [
+            0.20252573161490173,
+            0.24158984415480222
+          ]
+        }
+      },
+      "native_uncertainty": {
+        "auc": 0.48147866380800886,
+        "ci95": [
+          0.46564259788430046,
+          0.49938437095998756
+        ],
+        "within_episode_pairs": 289180,
+        "contributing_episodes": 201
+      },
+      "absolute_change": {
+        "auc": 0.536810982778892,
+        "ci95": [
+          0.527318313833663,
+          0.5470242338919536
+        ],
+        "within_episode_pairs": 289180,
+        "contributing_episodes": 201
+      },
+      "endpoint_contrast": {
+        "auc": 0.5130195725845494,
+        "ci95": [
+          0.49655806911727957,
+          0.5302648047413555
+        ],
+        "within_episode_pairs": 289180,
+        "contributing_episodes": 201
+      }
+    }
+  },
+  "counts": {
+    "improved_tokens": 106646,
+    "worsened_tokens": 62064,
+    "missing_evidence_episodes": 0
+  },
+  "elapsed_seconds": 12.77614712715149
+}

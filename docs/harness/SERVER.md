@@ -14,7 +14,8 @@ instances are recreated often, so do not trust an address written anywhere else.
 
 | Path | What | Rule |
 |---|---|---|
-| `/root/autodl-tmp/demo9_extent` | code, caches and results of the live decision line | owned by the decision line |
+| `/root/autodl-tmp/demo9_extent` | FoRIS runner, feature caches and packets every reading uses | read only |
+| `/root/autodl-tmp/demo9_lang` | the session prepared on 2026-10-05 (scripts, CPU readers, banks, guard plans) | Claude's |
 | `/root/autodl-tmp/demo9_transductive_ics` | image-isolated manifests (`results/extent_head_t1_isolated_v1`) | read only |
 | `/root/autodl-tmp/datasets/ics` | COCO-20i, LVIS-92i, PASCAL-Part, PACO-Part, SUIM, lung X-ray | read only |
 | `/root/autodl-tmp/demo4/INSID3` | INSID3 checkout; its dataset loaders build the transfer packs | read only |

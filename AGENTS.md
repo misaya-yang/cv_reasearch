@@ -49,15 +49,14 @@ Everything else that is reversible and inside the plan proceeds without asking.
 
 ## Repository
 
-- `docs/harness/`: `STATUS.md` (at most 40 lines of at most 200 characters: now, measured, unverified, needed
-  from the user; replaced, never appended to), `SERVER.md`, `ARCHIVE.md` (closed directions).
+- `docs/harness/`: `STATUS.md` (at most 40 lines: now, measured, unverified, needed from the user; replaced,
+  never appended to), `SERVER.md`, `ARCHIVE.md` (closed directions).
 - `demo_lists/<direction>/`: `README.md` (numbers with provenance, failure ledger), `HANDOFF.md` (the method,
   its reasoning, pitfalls), `PLAN.md` (only experiments not yet run: question, arms, data, command, cost, what
   each outcome changes; an entry is deleted once it is read), `scripts/`, the package, `results/`.
-- When an experiment ends: its numbers go to the README, a failure gets one ledger row, and its code and
-  bulky outputs are deleted unless the live line imports them. Git history keeps the code.
-- Never in the repository: receipts, preflight records, checksums, acceptance logs, archives, per-chat notes,
-  generated planning documents, weights, data, files over 1 MB.
+- When an experiment ends: its numbers go to the README and a failure gets one ledger row.
+- A commit the user asks for takes everything git does not ignore, whoever wrote it, as one commit, and is
+  pushed. `.gitignore` alone decides what stays out; no file is edited, deleted or left out to prepare a commit.
 - Every number carries dataset, split, episode count, seed, control, interval and result file.
 - This file states the project's rules; agents do not append to it. It, `docs/harness/` and code are in
   English.

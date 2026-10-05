@@ -1,0 +1,252 @@
+{
+  "dataset": "COCO-20i",
+  "split": "exposed DEV241, photograph-disjoint leave-one-fold-out scalar gate",
+  "episodes": 241,
+  "seed": 0,
+  "resolution": "1024 model image before CRF, not original-resolution confirmation",
+  "host": {
+    "arm": "FoRIS packet pre",
+    "miou": 58.56200560483818
+  },
+  "mechanism": "Query K=32 centroid hypotheses; source FG/BG rank AUC selects identity; source mask determines cosine cut; low native peak gate.",
+  "controls": "Same candidates/source-cut/scalar-gate budget, selection by reference FG-BG cosine or native score mean.",
+  "results": {
+    "source_verified": {
+      "miou": 58.56200560483818,
+      "gain": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "up": 0,
+      "down": 0,
+      "groups": 239,
+      "fold_gain": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "gates": [
+        {
+          "fold": 0,
+          "threshold": "-inf",
+          "train_episodes": 180,
+          "test_episodes": 61,
+          "switched": 0
+        },
+        {
+          "fold": 1,
+          "threshold": "-inf",
+          "train_episodes": 181,
+          "test_episodes": 60,
+          "switched": 0
+        },
+        {
+          "fold": 2,
+          "threshold": "-inf",
+          "train_episodes": 181,
+          "test_episodes": 60,
+          "switched": 0
+        },
+        {
+          "fold": 3,
+          "threshold": "-inf",
+          "train_episodes": 181,
+          "test_episodes": 60,
+          "switched": 0
+        }
+      ],
+      "ungated": {
+        "miou": 39.05175654220911,
+        "gain": -19.510249062629065,
+        "ci95": [
+          -21.53825220518301,
+          -14.638515078596614
+        ],
+        "up": 47,
+        "down": 193,
+        "groups": 239
+      }
+    },
+    "fg_bg_control": {
+      "miou": 58.56200560483818,
+      "gain": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "up": 0,
+      "down": 0,
+      "groups": 239,
+      "fold_gain": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "gates": [
+        {
+          "fold": 0,
+          "threshold": "-inf",
+          "train_episodes": 180,
+          "test_episodes": 61,
+          "switched": 0
+        },
+        {
+          "fold": 1,
+          "threshold": "-inf",
+          "train_episodes": 181,
+          "test_episodes": 60,
+          "switched": 0
+        },
+        {
+          "fold": 2,
+          "threshold": "-inf",
+          "train_episodes": 181,
+          "test_episodes": 60,
+          "switched": 0
+        },
+        {
+          "fold": 3,
+          "threshold": "-inf",
+          "train_episodes": 181,
+          "test_episodes": 60,
+          "switched": 0
+        }
+      ],
+      "ungated": {
+        "miou": 40.6790150544759,
+        "gain": -17.88299055036228,
+        "ci95": [
+          -19.919530337613224,
+          -12.96597644831139
+        ],
+        "up": 48,
+        "down": 192,
+        "groups": 239
+      }
+    },
+    "score_only_control": {
+      "miou": 58.56200560483818,
+      "gain": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "up": 0,
+      "down": 0,
+      "groups": 239,
+      "fold_gain": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "gates": [
+        {
+          "fold": 0,
+          "threshold": "-inf",
+          "train_episodes": 180,
+          "test_episodes": 61,
+          "switched": 0
+        },
+        {
+          "fold": 1,
+          "threshold": "-inf",
+          "train_episodes": 181,
+          "test_episodes": 60,
+          "switched": 0
+        },
+        {
+          "fold": 2,
+          "threshold": "-inf",
+          "train_episodes": 181,
+          "test_episodes": 60,
+          "switched": 0
+        },
+        {
+          "fold": 3,
+          "threshold": "-inf",
+          "train_episodes": 181,
+          "test_episodes": 60,
+          "switched": 0
+        }
+      ],
+      "ungated": {
+        "miou": 39.88152339276611,
+        "gain": -18.680482212072064,
+        "ci95": [
+          -20.551222374209996,
+          -13.851709489983087
+        ],
+        "up": 48,
+        "down": 192,
+        "groups": 239
+      }
+    }
+  },
+  "method_minus_controls": {
+    "fg_bg_control": {
+      "miou": 58.56200560483818,
+      "gain": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "up": 0,
+      "down": 0,
+      "groups": 239
+    },
+    "score_only_control": {
+      "miou": 58.56200560483818,
+      "gain": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "up": 0,
+      "down": 0,
+      "groups": 239
+    }
+  },
+  "elapsed_seconds": 40.645971059799194,
+  "error_account": {
+    "source_verified": {
+      "over95percent_frame": 13,
+      "over80percent_frame": 23,
+      "median_predicted_to_true_area_ratio": 2.1426824795207238,
+      "fp_pixels": 52273041,
+      "fn_pixels": 2796578,
+      "source_iou_median": 0.7884615384615384,
+      "selected_target_candidate_episodes": 184,
+      "target_candidate_episode_mean_iou": 0.5336012589946317,
+      "target_candidate_overmerge_1point5x": 96,
+      "target_candidate_undercoverage_two_thirds": 2
+    },
+    "fg_bg_control": {
+      "over95percent_frame": 11,
+      "over80percent_frame": 20,
+      "median_predicted_to_true_area_ratio": 1.9324793747286149,
+      "fp_pixels": 46209481,
+      "fn_pixels": 3087691,
+      "source_iou_median": 0.7708333333333334,
+      "selected_target_candidate_episodes": 189,
+      "target_candidate_episode_mean_iou": 0.5393578590518608,
+      "target_candidate_overmerge_1point5x": 90,
+      "target_candidate_undercoverage_two_thirds": 2
+    },
+    "score_only_control": {
+      "over95percent_frame": 8,
+      "over80percent_frame": 18,
+      "median_predicted_to_true_area_ratio": 2.090428309389602,
+      "fp_pixels": 46398358,
+      "fn_pixels": 2863866,
+      "source_iou_median": 0.7681159420289855,
+      "selected_target_candidate_episodes": 189,
+      "target_candidate_episode_mean_iou": 0.533378346043624,
+      "target_candidate_overmerge_1point5x": 94,
+      "target_candidate_undercoverage_two_thirds": 2
+    }
+  }
+}

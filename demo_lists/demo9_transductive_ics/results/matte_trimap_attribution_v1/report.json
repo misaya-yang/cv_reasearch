@@ -1,0 +1,115 @@
+{
+  "dataset": "COCO-20i",
+  "split": "exposed DEV241",
+  "episodes": 241,
+  "seed": 0,
+  "resolution": "1024 model image, no CRF on matte output",
+  "role": "GT diagnostics, not methods. Same two-token unknown set, outside field, nearest-six rule and alpha-score mean.",
+  "results": {
+    "frozen_matte": {
+      "miou": 59.44392863161182,
+      "gain": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "up": 0,
+      "down": 0,
+      "groups": 239,
+      "vs_cached_native": {
+        "miou": 59.44392863161182,
+        "gain": 0.36910355599929545,
+        "ci95": [
+          -0.11105934534458406,
+          1.0721559999862105
+        ],
+        "up": 121,
+        "down": 117,
+        "groups": 239
+      },
+      "fold_gain_vs_matte": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "oracle_filter_endpoints_same_unknown": {
+      "miou": 61.90567439780281,
+      "gain": 2.461745766190994,
+      "ci95": [
+        1.6519802815816833,
+        3.063874994562211
+      ],
+      "up": 137,
+      "down": 29,
+      "groups": 239,
+      "vs_cached_native": {
+        "miou": 61.90567439780281,
+        "gain": 2.8308493221902893,
+        "ci95": [
+          1.8807130420500975,
+          3.7022358463002227
+        ],
+        "up": 146,
+        "down": 92,
+        "groups": 239
+      },
+      "fold_gain_vs_matte": [
+        2.8000605935737397,
+        2.442106821297166,
+        2.339456815459215,
+        2.2550226801308
+      ]
+    },
+    "oracle_coverage_same_unknown": {
+      "miou": 77.9218085030309,
+      "gain": 18.477879871419084,
+      "ci95": [
+        16.370745494225748,
+        20.14242637191128
+      ],
+      "up": 239,
+      "down": 0,
+      "groups": 239,
+      "vs_cached_native": {
+        "miou": 77.9218085030309,
+        "gain": 18.84698342741838,
+        "ci95": [
+          16.76101950564521,
+          20.617881913304448
+        ],
+        "up": 239,
+        "down": 0,
+        "groups": 239
+      },
+      "fold_gain_vs_matte": [
+        15.68475468595711,
+        17.664919351464654,
+        19.899289834508906,
+        20.777538547552247
+      ]
+    }
+  },
+  "filtered_endpoints_unavailable_fallback_to_frozen": 24,
+  "endpoint_statistics": {
+    "episodes_with_no_pure_fg_anchor": 24,
+    "episodes_with_some_contaminated_fg_anchor": 153,
+    "episodes_with_some_contaminated_bg_anchor": 103
+  },
+  "elapsed_seconds": 25.43577814102173,
+  "empty_filtered_core_decomposition": {
+    "empty_filtered_core": 24,
+    "pure_target_tokens_exist_elsewhere": 24,
+    "no_pure_target_token_anywhere": 0,
+    "pure_target_inside_predicted_token_mask": 22,
+    "pure_target_only_outside_predicted_token_mask": 2
+  },
+  "empty_core_component_diagnostic": {
+    "empty_pure_core_cases": 24,
+    "pure_target_in_coreless_prediction_component": 15,
+    "pure_target_in_component_with_only_wrong_core": 16,
+    "pure_target_outside_prediction_only": 2,
+    "warning": "A case can have both kinds of target-containing components; tie ordering in fallback can differ from torch topk."
+  }
+}

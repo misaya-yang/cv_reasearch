@@ -1,0 +1,272 @@
+{
+  "state": "PARTIAL_READOUTS_COMPLETE",
+  "method": "query-only full-resolution SAM3 second pass; union first-pass top-score anchor with selected second-pass top-20 masks",
+  "labels_exposure": {
+    "dev": "development, previously exposed",
+    "confirm": "historically exposed by prior SAM3 readouts",
+    "rest0": "previously scored for relative-threshold study; exploratory only"
+  },
+  "selectable_rules": [
+    "anchor_plus_absolute_0.3",
+    "anchor_plus_absolute_0.5",
+    "anchor_plus_relative_0.6",
+    "anchor_plus_relative_0.7",
+    "anchor_plus_relative_0.8",
+    "anchor_plus_fallback_top1"
+  ],
+  "splits": {
+    "dev": {
+      "episodes": 241,
+      "groups": 239,
+      "rows_vs_first_relative_0.7": {
+        "first_relative_0.7": {
+          "miou": 70.84467267382954,
+          "gain": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_unit": "connected support/query photograph groups",
+          "groups": 239,
+          "largest_group": 2,
+          "draws": 2000
+        },
+        "first_fallback_top1": {
+          "miou": 68.68811947272401,
+          "gain": -2.156553201105524,
+          "ci95": [
+            -5.0484916786348935,
+            -0.5588786435256758
+          ],
+          "bootstrap_unit": "connected support/query photograph groups",
+          "groups": 239,
+          "largest_group": 2,
+          "draws": 2000
+        },
+        "anchor_only": {
+          "miou": 58.761217030109094,
+          "gain": -12.083455643720441,
+          "ci95": [
+            -15.217515123267948,
+            -8.550626327512214
+          ],
+          "bootstrap_unit": "connected support/query photograph groups",
+          "groups": 239,
+          "largest_group": 2,
+          "draws": 2000
+        },
+        "second_only_relative_0.7": {
+          "miou": 67.1996059352525,
+          "gain": -3.645066738577029,
+          "ci95": [
+            -5.6799784351937745,
+            -0.6672167514422687
+          ],
+          "bootstrap_unit": "connected support/query photograph groups",
+          "groups": 239,
+          "largest_group": 2,
+          "draws": 2000
+        },
+        "anchor_plus_absolute_0.5": {
+          "miou": 69.43016601297164,
+          "gain": -1.4145066608578958,
+          "ci95": [
+            -3.6580254727979096,
+            1.1925676679713217
+          ],
+          "bootstrap_unit": "connected support/query photograph groups",
+          "groups": 239,
+          "largest_group": 2,
+          "draws": 2000
+        },
+        "anchor_plus_absolute_0.3": {
+          "miou": 63.8480503964869,
+          "gain": -6.996622277342638,
+          "ci95": [
+            -8.764699482551032,
+            -2.878803546802846
+          ],
+          "bootstrap_unit": "connected support/query photograph groups",
+          "groups": 239,
+          "largest_group": 2,
+          "draws": 2000
+        },
+        "anchor_plus_relative_0.6": {
+          "miou": 69.2549471241886,
+          "gain": -1.5897255496409315,
+          "ci95": [
+            -3.7274325444434013,
+            1.051280196102767
+          ],
+          "bootstrap_unit": "connected support/query photograph groups",
+          "groups": 239,
+          "largest_group": 2,
+          "draws": 2000
+        },
+        "anchor_plus_relative_0.7": {
+          "miou": 68.69259543831569,
+          "gain": -2.1520772355138433,
+          "ci95": [
+            -4.2240183991296645,
+            0.5912548095495254
+          ],
+          "bootstrap_unit": "connected support/query photograph groups",
+          "groups": 239,
+          "largest_group": 2,
+          "draws": 2000
+        },
+        "anchor_plus_relative_0.8": {
+          "miou": 65.98047109004636,
+          "gain": -4.864201583783171,
+          "ci95": [
+            -6.929981798014717,
+            -1.6630792677601423
+          ],
+          "bootstrap_unit": "connected support/query photograph groups",
+          "groups": 239,
+          "largest_group": 2,
+          "draws": 2000
+        },
+        "anchor_plus_fallback_top1": {
+          "miou": 69.43016601297164,
+          "gain": -1.4145066608578958,
+          "ci95": [
+            -3.6580254727979096,
+            1.1925676679713217
+          ],
+          "bootstrap_unit": "connected support/query photograph groups",
+          "groups": 239,
+          "largest_group": 2,
+          "draws": 2000
+        }
+      },
+      "frozen_rule_vs_fallback": {
+        "miou": 69.43016601297164,
+        "gain": 0.7420465402476282,
+        "ci95": [
+          -0.5408364019692765,
+          3.9776281800935367
+        ],
+        "bootstrap_unit": "connected support/query photograph groups",
+        "groups": 239,
+        "largest_group": 2,
+        "draws": 2000
+      },
+      "frozen_rule_vs_anchor_only": {
+        "miou": 69.43016601297164,
+        "gain": 10.668948982862545,
+        "ci95": [
+          7.743744265304224,
+          13.74228439434599
+        ],
+        "bootstrap_unit": "connected support/query photograph groups",
+        "groups": 239,
+        "largest_group": 2,
+        "draws": 2000
+      },
+      "per_fold_gain_vs_relative_0.7": {
+        "0": 1.9652215093076677,
+        "1": -6.0938529394589835,
+        "2": -6.379119303493795,
+        "3": 5.179420445533239
+      }
+    },
+    "confirm": {
+      "episodes": 600,
+      "groups": 561,
+      "rows_vs_first_relative_0.7": {
+        "first_relative_0.7": {
+          "miou": 67.12153055674754,
+          "gain": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_unit": "connected support/query photograph groups",
+          "groups": 561,
+          "largest_group": 4,
+          "draws": 2000
+        },
+        "first_fallback_top1": {
+          "miou": 64.91190520751708,
+          "gain": -2.209625349230464,
+          "ci95": [
+            -4.247986532404002,
+            -0.09459155073978633
+          ],
+          "bootstrap_unit": "connected support/query photograph groups",
+          "groups": 561,
+          "largest_group": 4,
+          "draws": 2000
+        },
+        "anchor_only": {
+          "miou": 57.55435097086118,
+          "gain": -9.567179585886365,
+          "ci95": [
+            -12.547668448985737,
+            -6.499997164470101
+          ],
+          "bootstrap_unit": "connected support/query photograph groups",
+          "groups": 561,
+          "largest_group": 4,
+          "draws": 2000
+        },
+        "second_only_relative_0.7": {
+          "miou": 66.67528026542522,
+          "gain": -0.44625029132232896,
+          "ci95": [
+            -2.4960633108452663,
+            1.2283026271444177
+          ],
+          "bootstrap_unit": "connected support/query photograph groups",
+          "groups": 561,
+          "largest_group": 4,
+          "draws": 2000
+        },
+        "anchor_plus_absolute_0.5": {
+          "miou": 69.28627309675497,
+          "gain": 2.164742540007424,
+          "ci95": [
+            0.319925487751215,
+            3.5768785989715735
+          ],
+          "bootstrap_unit": "connected support/query photograph groups",
+          "groups": 561,
+          "largest_group": 4,
+          "draws": 2000
+        }
+      },
+      "frozen_rule_vs_fallback": {
+        "miou": 69.28627309675497,
+        "gain": 4.374367889237888,
+        "ci95": [
+          2.5034240243087895,
+          5.928880307166173
+        ],
+        "bootstrap_unit": "connected support/query photograph groups",
+        "groups": 561,
+        "largest_group": 4,
+        "draws": 2000
+      },
+      "frozen_rule_vs_anchor_only": {
+        "miou": 69.28627309675497,
+        "gain": 11.731922125893789,
+        "ci95": [
+          9.100810486710747,
+          14.08195814131001
+        ],
+        "bootstrap_unit": "connected support/query photograph groups",
+        "groups": 561,
+        "largest_group": 4,
+        "draws": 2000
+      },
+      "per_fold_gain_vs_relative_0.7": {
+        "0": 5.8811356407239685,
+        "1": 0.9450431156097494,
+        "2": 1.188071949991155,
+        "3": 0.6447194537048944
+      }
+    }
+  },
+  "selection_rule_frozen_on_dev": "anchor_plus_absolute_0.5"
+}

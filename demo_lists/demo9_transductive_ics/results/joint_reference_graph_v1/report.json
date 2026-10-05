@@ -1,0 +1,190 @@
+{
+  "state": "COMPLETED",
+  "episodes": 241,
+  "seed": 0,
+  "dataset": "COCO-20i",
+  "split": "exposed DEV241",
+  "resolution": "1024 model size, no CRF; not original-resolution complete-pipeline evidence",
+  "photo_groups": 239,
+  "bootstrap_draws": 2000,
+  "recipe": "Joint reference Dirichlet inference, equal FG/BG reference edge mass, fixed native 32-NN query graph, bandwidth .07",
+  "added_information": "none; reference labels only, episode-local closed-form fit",
+  "arms": {
+    "joint_reference": {
+      "miou": 23.17027393103304,
+      "gain_vs_pre_crf": -35.39173167380514,
+      "ci95": [
+        -37.703134344276016,
+        -30.19933259208809
+      ],
+      "up": 27,
+      "down": 212,
+      "pixel_costs": {
+        "corrected_fp": 3693865,
+        "corrected_fn": 4290387,
+        "removed_tp": 3377139,
+        "new_fp": 77297228
+      },
+      "per_fold_gain": {
+        "0": -41.579636045355535,
+        "1": -32.127678378737784,
+        "2": -34.600293756219116,
+        "3": -33.14708624338721
+      }
+    },
+    "reference_density": {
+      "miou": 35.16859778892811,
+      "gain_vs_pre_crf": -23.393407815910066,
+      "ci95": [
+        -26.669860558020876,
+        -19.81505176444619
+      ],
+      "up": 41,
+      "down": 199,
+      "pixel_costs": {
+        "corrected_fp": 1022304,
+        "corrected_fn": 4440941,
+        "removed_tp": 91999,
+        "new_fp": 39901992
+      },
+      "per_fold_gain": {
+        "0": -29.920115247696405,
+        "1": -25.46837964306752,
+        "2": -17.774968934452033,
+        "3": -20.253154786977674
+      }
+    },
+    "foris_graph": {
+      "miou": 31.08466416460344,
+      "gain_vs_pre_crf": -27.47734144023474,
+      "ci95": [
+        -30.867400578052624,
+        -23.541773087747497
+      ],
+      "up": 37,
+      "down": 202,
+      "pixel_costs": {
+        "corrected_fp": 4395719,
+        "corrected_fn": 2725803,
+        "removed_tp": 4761637,
+        "new_fp": 34009909
+      },
+      "per_fold_gain": {
+        "0": -27.730747536495358,
+        "1": -28.099029793048317,
+        "2": -28.647497541181075,
+        "3": -25.32444612442363
+      }
+    },
+    "foris_pre_crf": {
+      "miou": 58.56200560483818,
+      "gain_vs_pre_crf": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "up": 0,
+      "down": 0,
+      "pixel_costs": {
+        "corrected_fp": 0,
+        "corrected_fn": 0,
+        "removed_tp": 0,
+        "new_fp": 0
+      },
+      "per_fold_gain": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0
+      }
+    },
+    "foris_native_crf": {
+      "miou": 59.07482507561252,
+      "gain_vs_pre_crf": 0.5128194707743461,
+      "ci95": [
+        0.3361209437807135,
+        0.8884853654381433
+      ],
+      "up": 154,
+      "down": 85,
+      "pixel_costs": {
+        "corrected_fp": 877985,
+        "corrected_fn": 393218,
+        "removed_tp": 483065,
+        "new_fp": 538009
+      },
+      "per_fold_gain": {
+        "0": 0.710044903399961,
+        "1": 0.5957214768511179,
+        "2": 0.3349974922267549,
+        "3": 0.40512951271667674
+      }
+    }
+  },
+  "FN_TN": {
+    "foris_score": {
+      "pairs": 164,
+      "mean": 0.567824000344121
+    },
+    "joint_reference": {
+      "pairs": 164,
+      "mean": 0.7497132549955754
+    },
+    "reference_density": {
+      "pairs": 164,
+      "mean": 0.6745502421196883
+    }
+  },
+  "TP_FP": {
+    "foris_score": {
+      "pairs": 184,
+      "mean": 0.546896084353188
+    },
+    "joint_reference": {
+      "pairs": 184,
+      "mean": 0.6999766911550909
+    },
+    "reference_density": {
+      "pairs": 184,
+      "mean": 0.6452097698552328
+    }
+  },
+  "FN_FP": {
+    "foris_score": {
+      "pairs": 85,
+      "mean": 0.28845164807769014
+    },
+    "joint_reference": {
+      "pairs": 85,
+      "mean": 0.5837669079874953
+    },
+    "reference_density": {
+      "pairs": 85,
+      "mean": 0.4818289097449651
+    }
+  },
+  "joint_minus_same_information_control": {
+    "reference_density": {
+      "gain": -11.99832385789507,
+      "ci95": [
+        -14.324709871768732,
+        -7.153239875288832
+      ]
+    },
+    "foris_graph": {
+      "gain": -7.914390233570398,
+      "ci95": [
+        -9.87929577950052,
+        -3.634091320723399
+      ]
+    }
+  },
+  "seconds": 1040.6234735678881,
+  "novelty": "Classical harmonic control, not a novel-paper claim; query structure contributes only if it improves complete masks beyond both controls.",
+  "postmortem": {
+    "median_reference_to_query_edge_mass_ratio": 0.00016124540707096457,
+    "joint_predictions_over_95pct_frame": 70,
+    "joint_predictions_over_80pct_frame": 78,
+    "selection_error": "No demonstrated correction signal justified using the same ambiguous cross-image appearance in a joint graph. Weak reference constraints and strong mixing spread erroneous membership. Do not infer all joint inference must fail."
+  }
+}
