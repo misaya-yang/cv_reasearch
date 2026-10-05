@@ -18,19 +18,32 @@ Updated 2026-10-05. This file records current state; detailed evidence is linked
   score/CI/foldreconstructionpassed;netTPdamage persists. [Result](../../evidence/local/research_20261005/pipeline_verified/frozen_subtoken1200_v1/report.md).
 - Full4000streamisnowlive45702/start953851020,supervisor45693/start953850989.
   Two-pairactualexporterFP16q/r/gate/native/λ16paritypassed. All1200completeoutputsreused;
-  onlyremaining2800newpairsencodeinboundedRAM;no featurearchives/deletion. GPU100percent,
-  measured~2.44s/newpair. CPU6CG/2writersparallel;all4000draws/naturalrepeatpreserved;
+  onlyremaining2800newpairsencodeinboundedRAM;no featurearchives/deletion. A40s/21-point audit
+  measured meanGPU71.8percent (instantaneous100percent was not sustained),~2.448s/newpair.
+  CPU6CG/2writersparallel; no solver/backlog or write-I/O bottleneck observed. Frontend serial
+  production/synchronization is implicated; exact stage timings remain unmeasured.
+  All4000draws/naturalrepeatpreserved;
   CPUscoreautoqueuedafterfullsealwithallold4000baselineand1200sixarmparityrequirements.
   Benchmarkreuse,notindependentconfirmation;nofull4000candidateeffectyet.
+- Original DEV241 raw-origin accounting completed without new inference. Frozen fine64=60.515912,
+  native=59.074825, raw NN=42.903888 and complete INSID3 CRF=55.006020. Fine64-native
+  +1.441087[-.754819,3.052193]; fine64-coarse64 +.387231[.095634,.753852]. RCG/MEAN/fine16
+  superiority remains unresolved. All241 identities, pixel truth, six-arm I/U and raw/native edit
+  closure passed independent checks. [Accounting](../../evidence/local/research_20261005/pipeline_verified/frozen_fine_raw_dev241_v1/interpretation.md).
+- Fixed region-mean cue diagnostic completed CPU-only on DEV241. Only18 episodes support the
+  paired missed-versus-stray comparison: raw AUROC .3944[.1680,.6072], cached prototype .2556
+  [.0733,.4556], stored NN .3272[.1176,.5556]. No positive semantic discrimination is established;
+  stop this fixed mean-prototype recovery branch. All197 eligible region descriptors are retained.
+  A fixed object-crop final-CLS diagnostic is being prepared for after the active GPU stream;
+  privileged GT geometry makes it a feasibility test, not a method or legal proposal producer.
+  [Cue diagnostic](../../evidence/local/research_20261005/pipeline_verified/region_prototypes_raw241_v2/interpretation.md).
 - Fixed600matchedcoarsecontrolcompleted:coarseguide64.273121,fine64.625380;
   fineadvantage+.352259[.325705,.544086],allsource600I/Uexact. GPUbatch4+CPU6readers/2writers,
   19.92sinference/4.16sGPUcompute/10.87sCPUscore. Sourcelegacysealinput-keyfailureinfirstattempt
   fixedinnewv2snapshot;failedoutputretained,CUDAfinalrenderer matchedsource. No featuresdeleted.
   [Control](../../evidence/local/research_20261005/pipeline_verified/subtoken_coarse_control600_v2/report.md).
-  Fixed1200fine-readout/strongRCG64comparisonisrunning:CPU6preparedall1200in178.5s,
-  exactλ16field/maskreplay. GPUchild44738/start953701760,supervisor44731/start953701724,
-  ~.99s/episodewithGPU100percent;CPUscorecompletedafterall1200sealed.
-  Full4000streamadapterisbeingpreparedbeforecurrentGPUjobends;decisionpending1200strongcontrols.
+  Fixed1200fine-readout/strongRCG64comparison completed with exactλ16field/mask replay;
+  the expanded frozen4000 stream is now active as recorded above.
 - Fine80boundarydiagnosticcompleted111sGPU+12sCPU;retain2.5GiBfinefeatures. Finevsbilinearcoarse
   NNmargin AUROC+.0010[-.0041,.0056],parentrank-.0591[-.0859,-.0335]. Togetherwith600matched
   control,thissupportsvalueinthetestedquery-affinityreadout,notimprovedreferenceNNsemanticmargin.

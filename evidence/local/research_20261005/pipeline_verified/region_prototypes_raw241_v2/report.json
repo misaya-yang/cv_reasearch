@@ -1,0 +1,503 @@
+{
+  "state": "COMPLETED",
+  "n": 241,
+  "classes": 79,
+  "photo_groups": 239,
+  "largest_photo_group": 2,
+  "config": {
+    "purpose": "fixed, GT-privileged region-mean semantic-reference feasibility; not an inference method",
+    "dataset": "COCO-20i",
+    "cohort": "all241 existing exposed DEV identities; not independent confirmation",
+    "resolution": 1024,
+    "seed": 0,
+    "raw_layer": 24,
+    "grid": 64,
+    "region_geometry": "8-connected semantic GT components (not instances) and sealed fine.rcg64 components",
+    "positive_regions": "GT components with zero pixel overlap with fine.rcg64",
+    "negative_regions": "fine.rcg64 components with zero pixel overlap with GT",
+    "eligible_positive_tokens": "16x16 GT coverage>=0.9 and token center belongs to that GT component",
+    "eligible_negative_tokens": "16x16 GT coverage<=0.1 and token center belongs to that stray prediction component",
+    "token_center": "pixel index16*i+8, same geometry for every cue",
+    "region_descriptor": "unit(mean(unit(query_tokens))) over region's eligible tokens",
+    "reference_FG": "unit(mean(unit(r[cov>=0.9]))); if absent, single row-major argmax(cov) token",
+    "reference_BG": "unit(mean(unit(r[cov==0]))); require at least one exact-zero-coverage reference token",
+    "raw": "sealed q24/r24 FP32 encoder-intermediate norm_true activations, before FoRIS positional projection",
+    "projected": "matching1200 cached FP16 FoRIS q/r, with its recorded conditional debias flag; cast FP32 then token-normalize",
+    "precision_caveat": "raw FP32 versus cached FP16 includes quantization difference; only cache-debiased=True episodes applied projection, reported separately",
+    "prototype_margin": "fixed cosine(region_descriptor, FGprototype)-cosine(region_descriptor, BGprototype)",
+    "controls": "region mean of stored packet fg_max-bg_max; region mean of2x2-averaged128-grid fine64 field on same eligible64-grid tokens",
+    "orientation": "higher means target FG, never reverse posthoc",
+    "fitted_weights": 0,
+    "variants_searched": 0,
+    "thresholds": {
+      "raw_mean_prototype": 0.0,
+      "projected_mean_prototype": 0.0,
+      "stored_nn_mean": 0.0,
+      "fine64_field_mean": 0.5
+    },
+    "primary": "mean per-episode region AUROC, only episodes with both eligible positive and negative regions",
+    "secondary": "region-pooled AUROC and region-area-weighted pooled AUROC; fixed-threshold balanced accuracy",
+    "bootstrap": {
+      "draws": 2000,
+      "rng": "RandomState(0)",
+      "unit": "connected reference/query photographs",
+      "paired": true
+    },
+    "conditioning_caveat": "fine64 field scores are conditioned on errors of its own rendered mask; poor separation can be tautological",
+    "interpretation": "positive cue does not supply legal object proposals or complete-mask gains; negative result limits this fixed mean-prototype construction",
+    "encoder_forwards": 0,
+    "images_opened": 0,
+    "downloads": 0,
+    "device": "cpu",
+    "query_GT_for_diagnostics": true
+  },
+  "cues": {
+    "raw_mean_prototype": {
+      "episode_auc": {
+        "mean": 0.39444444444444443,
+        "ci95": [
+          0.16796666666666668,
+          0.607227443609022
+        ],
+        "eligible_episodes": 18,
+        "eligible_photo_groups": 18,
+        "finite_bootstrap_draws": 2000
+      },
+      "episode_auc_minus_chance": {
+        "mean": -0.10555555555555556,
+        "ci95": [
+          -0.33203333333333335,
+          0.10722744360902209
+        ],
+        "eligible_episodes": 18,
+        "eligible_photo_groups": 18,
+        "finite_bootstrap_draws": 2000
+      },
+      "balanced_accuracy": {
+        "mean": 0.4201388888888889,
+        "ci95": [
+          0.27957535885167467,
+          0.5694791666666664
+        ],
+        "eligible_episodes": 18,
+        "eligible_photo_groups": 18,
+        "finite_bootstrap_draws": 2000
+      },
+      "region_pooled_auc": 0.4476854787571338,
+      "region_area_weighted_pooled_auc": 0.34342385251212887,
+      "fixed_threshold": 0.0,
+      "pooled_rule": {
+        "TP": 80,
+        "FN": 34,
+        "FP": 62,
+        "TN": 21
+      }
+    },
+    "projected_mean_prototype": {
+      "episode_auc": {
+        "mean": 0.25555555555555554,
+        "ci95": [
+          0.07328571428571429,
+          0.4555555555555555
+        ],
+        "eligible_episodes": 18,
+        "eligible_photo_groups": 18,
+        "finite_bootstrap_draws": 2000
+      },
+      "episode_auc_minus_chance": {
+        "mean": -0.24444444444444446,
+        "ci95": [
+          -0.4267142857142857,
+          -0.044444444444444446
+        ],
+        "eligible_episodes": 18,
+        "eligible_photo_groups": 18,
+        "finite_bootstrap_draws": 2000
+      },
+      "balanced_accuracy": {
+        "mean": 0.3993055555555556,
+        "ci95": [
+          0.25,
+          0.5468936011904761
+        ],
+        "eligible_episodes": 18,
+        "eligible_photo_groups": 18,
+        "finite_bootstrap_draws": 2000
+      },
+      "region_pooled_auc": 0.43119847812301837,
+      "region_area_weighted_pooled_auc": 0.3605534006963067,
+      "fixed_threshold": 0.0,
+      "pooled_rule": {
+        "TP": 90,
+        "FN": 24,
+        "FP": 73,
+        "TN": 10
+      }
+    },
+    "stored_nn_mean": {
+      "episode_auc": {
+        "mean": 0.3271604938271605,
+        "ci95": [
+          0.11764705882352941,
+          0.5556186868686865
+        ],
+        "eligible_episodes": 18,
+        "eligible_photo_groups": 18,
+        "finite_bootstrap_draws": 2000
+      },
+      "episode_auc_minus_chance": {
+        "mean": -0.1728395061728395,
+        "ci95": [
+          -0.38235294117647056,
+          0.05561868686868652
+        ],
+        "eligible_episodes": 18,
+        "eligible_photo_groups": 18,
+        "finite_bootstrap_draws": 2000
+      },
+      "balanced_accuracy": {
+        "mean": 0.33541666666666664,
+        "ci95": [
+          0.20207386363636362,
+          0.47813210227272723
+        ],
+        "eligible_episodes": 18,
+        "eligible_photo_groups": 18,
+        "finite_bootstrap_draws": 2000
+      },
+      "region_pooled_auc": 0.398858592263792,
+      "region_area_weighted_pooled_auc": 0.20897751470838694,
+      "fixed_threshold": 0.0,
+      "pooled_rule": {
+        "TP": 63,
+        "FN": 51,
+        "FP": 60,
+        "TN": 23
+      }
+    },
+    "fine64_field_mean": {
+      "episode_auc": {
+        "mean": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "eligible_episodes": 18,
+        "eligible_photo_groups": 18,
+        "finite_bootstrap_draws": 2000
+      },
+      "episode_auc_minus_chance": {
+        "mean": -0.5,
+        "ci95": [
+          -0.5,
+          -0.5
+        ],
+        "eligible_episodes": 18,
+        "eligible_photo_groups": 18,
+        "finite_bootstrap_draws": 2000
+      },
+      "balanced_accuracy": {
+        "mean": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "eligible_episodes": 18,
+        "eligible_photo_groups": 18,
+        "finite_bootstrap_draws": 2000
+      },
+      "region_pooled_auc": 0.0,
+      "region_area_weighted_pooled_auc": 0.0,
+      "fixed_threshold": 0.5,
+      "pooled_rule": {
+        "TP": 0,
+        "FN": 114,
+        "FP": 83,
+        "TN": 0
+      }
+    }
+  },
+  "paired_contrasts": {
+    "raw_mean_prototype-minus-projected_mean_prototype": {
+      "mean": 0.1388888888888889,
+      "ci95": [
+        0.027777777777777776,
+        0.28125
+      ],
+      "eligible_episodes": 18,
+      "eligible_photo_groups": 18,
+      "finite_bootstrap_draws": 2000
+    },
+    "raw_mean_prototype-minus-stored_nn_mean": {
+      "mean": 0.06728395061728396,
+      "ci95": [
+        -0.06262626262626263,
+        0.225017361111111
+      ],
+      "eligible_episodes": 18,
+      "eligible_photo_groups": 18,
+      "finite_bootstrap_draws": 2000
+    },
+    "projected_mean_prototype-minus-stored_nn_mean": {
+      "mean": -0.07160493827160494,
+      "ci95": [
+        -0.15449206349206349,
+        0.0
+      ],
+      "eligible_episodes": 18,
+      "eligible_photo_groups": 18,
+      "finite_bootstrap_draws": 2000
+    },
+    "raw_mean_prototype-minus-fine64_field_mean": {
+      "mean": 0.39444444444444443,
+      "ci95": [
+        0.16796666666666668,
+        0.607227443609022
+      ],
+      "eligible_episodes": 18,
+      "eligible_photo_groups": 18,
+      "finite_bootstrap_draws": 2000
+    }
+  },
+  "regions": {
+    "whole_missed_GT": {
+      "all_regions": 170,
+      "eligible_regions": 114,
+      "regions_without_pure_tokens": 56,
+      "total_pixels": 1333939,
+      "eligible_pixels": 1305139,
+      "pixels_without_pure_tokens": 28800,
+      "pure_tokens": 3828,
+      "episodes_with_regions": 74,
+      "episodes_with_eligible_regions": 59,
+      "small_regions_area_lt256": 29,
+      "small_regions_without_pure_tokens": 29,
+      "no_pure_token_area_percentiles": [
+        2.0,
+        240.0,
+        1421.0,
+        2573.0
+      ]
+    },
+    "stray_fine64": {
+      "all_regions": 111,
+      "eligible_regions": 83,
+      "regions_without_pure_tokens": 28,
+      "total_pixels": 1527467,
+      "eligible_pixels": 1526749,
+      "pixels_without_pure_tokens": 718,
+      "pure_tokens": 5961,
+      "episodes_with_regions": 51,
+      "episodes_with_eligible_regions": 44,
+      "small_regions_area_lt256": 33,
+      "small_regions_without_pure_tokens": 28,
+      "no_pure_token_area_percentiles": [
+        1.0,
+        8.5,
+        76.70000000000003,
+        155.0
+      ]
+    }
+  },
+  "folds": {
+    "0": {
+      "n": 61,
+      "eligible_episodes": 4,
+      "episode_auc": {
+        "raw_mean_prototype": 0.4,
+        "projected_mean_prototype": 0.4,
+        "stored_nn_mean": 0.5,
+        "fine64_field_mean": 0.0
+      },
+      "raw_minus_projected": 0.0,
+      "raw_minus_stored_nn": -0.1
+    },
+    "1": {
+      "n": 60,
+      "eligible_episodes": 5,
+      "episode_auc": {
+        "raw_mean_prototype": 0.4,
+        "projected_mean_prototype": 0.4,
+        "stored_nn_mean": 0.4,
+        "fine64_field_mean": 0.0
+      },
+      "raw_minus_projected": 0.0,
+      "raw_minus_stored_nn": 0.0
+    },
+    "2": {
+      "n": 60,
+      "eligible_episodes": 4,
+      "episode_auc": {
+        "raw_mean_prototype": 0.375,
+        "projected_mean_prototype": 0.0,
+        "stored_nn_mean": 0.09722222222222222,
+        "fine64_field_mean": 0.0
+      },
+      "raw_minus_projected": 0.375,
+      "raw_minus_stored_nn": 0.2777777777777778
+    },
+    "3": {
+      "n": 60,
+      "eligible_episodes": 5,
+      "episode_auc": {
+        "raw_mean_prototype": 0.4,
+        "projected_mean_prototype": 0.2,
+        "stored_nn_mean": 0.3,
+        "fine64_field_mean": 0.0
+      },
+      "raw_minus_projected": 0.2,
+      "raw_minus_stored_nn": 0.1
+    }
+  },
+  "reference": {
+    "fallback_episodes": 0,
+    "fallback_max_coverage": [],
+    "pure_FG_tokens_percentiles": [
+      5.0,
+      53.0,
+      171.0,
+      647.0,
+      3947.0
+    ],
+    "exact_BG_tokens_percentiles": [
+      53.0,
+      3326.0,
+      3841.0,
+      3990.0,
+      4057.0
+    ],
+    "selected_FG_min_coverage_percentiles": [
+      0.90234375,
+      0.90625,
+      0.90625,
+      0.921875,
+      1.0
+    ],
+    "selected_FG_mean_coverage_percentiles": [
+      0.965624988079071,
+      0.994140625,
+      0.9964817762374878,
+      0.998335599899292,
+      1.0
+    ]
+  },
+  "source_space_subsets": {
+    "projection_applied": {
+      "n": 239,
+      "episode_auc": {
+        "raw_mean_prototype": {
+          "mean": 0.39444444444444443,
+          "ci95": [
+            0.16796666666666668,
+            0.607227443609022
+          ],
+          "eligible_episodes": 18,
+          "eligible_photo_groups": 18,
+          "finite_bootstrap_draws": 2000
+        },
+        "projected_mean_prototype": {
+          "mean": 0.25555555555555554,
+          "ci95": [
+            0.07328571428571429,
+            0.4555555555555555
+          ],
+          "eligible_episodes": 18,
+          "eligible_photo_groups": 18,
+          "finite_bootstrap_draws": 2000
+        },
+        "stored_nn_mean": {
+          "mean": 0.3271604938271605,
+          "ci95": [
+            0.11764705882352941,
+            0.5556186868686865
+          ],
+          "eligible_episodes": 18,
+          "eligible_photo_groups": 18,
+          "finite_bootstrap_draws": 2000
+        },
+        "fine64_field_mean": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "eligible_episodes": 18,
+          "eligible_photo_groups": 18,
+          "finite_bootstrap_draws": 2000
+        }
+      },
+      "raw_minus_projected": {
+        "mean": 0.1388888888888889,
+        "ci95": [
+          0.027777777777777776,
+          0.28125
+        ],
+        "eligible_episodes": 18,
+        "eligible_photo_groups": 18,
+        "finite_bootstrap_draws": 2000
+      },
+      "raw_minus_stored_nn": {
+        "mean": 0.06728395061728396,
+        "ci95": [
+          -0.06262626262626263,
+          0.225017361111111
+        ],
+        "eligible_episodes": 18,
+        "eligible_photo_groups": 18,
+        "finite_bootstrap_draws": 2000
+      }
+    },
+    "projection_not_applied": {
+      "n": 2,
+      "episode_auc": {
+        "raw_mean_prototype": {
+          "mean": null,
+          "ci95": null,
+          "eligible_episodes": 0,
+          "eligible_photo_groups": 0,
+          "finite_bootstrap_draws": 0
+        },
+        "projected_mean_prototype": {
+          "mean": null,
+          "ci95": null,
+          "eligible_episodes": 0,
+          "eligible_photo_groups": 0,
+          "finite_bootstrap_draws": 0
+        },
+        "stored_nn_mean": {
+          "mean": null,
+          "ci95": null,
+          "eligible_episodes": 0,
+          "eligible_photo_groups": 0,
+          "finite_bootstrap_draws": 0
+        },
+        "fine64_field_mean": {
+          "mean": null,
+          "ci95": null,
+          "eligible_episodes": 0,
+          "eligible_photo_groups": 0,
+          "finite_bootstrap_draws": 0
+        }
+      },
+      "raw_minus_projected": {
+        "mean": null,
+        "ci95": null,
+        "eligible_episodes": 0,
+        "eligible_photo_groups": 0,
+        "finite_bootstrap_draws": 0
+      },
+      "raw_minus_stored_nn": {
+        "mean": null,
+        "ci95": null,
+        "eligible_episodes": 0,
+        "eligible_photo_groups": 0,
+        "finite_bootstrap_draws": 0
+      }
+    }
+  },
+  "seconds": 33.77148720063269,
+  "source_code_sha256": "0b6b3d0c80377fbe5e9a6d164e16ac59dd2ee4dfee27d96f1dcbd2dd546787ee",
+  "all241_source_hashes_verified": true,
+  "all241_old_new_semantic_identities_matched": true,
+  "exact_prior1200_six_arm_IU_parity": true
+}

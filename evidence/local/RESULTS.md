@@ -1184,3 +1184,30 @@ currently retainedfornativeparity;futurePart1-onlyoptimizationmustpassownproofbe
 All4000ownmaskssealbeforeCPUscore;native/RCG/MEAN all4000andoldsixarms1200mustmatchI/U.
 [Two-pair receipt](research_20261005/pipeline_verified/subtoken4000_smoke_v1/parity.json).
 Full4000candidateeffectstillunknown;publishedSOTAandindependentconfirmation arenotasserted.
+
+### 2026-10-05: original DEV241 raw-origin accounting and fixed region-mean cue
+
+All original DEV241 draws, seed0,1024,79 classes/239 connected-photo groups; existing frozen1200
+outputs mapped by class/reference/query identity without new inference or tuning. Actual raw l24
+NN42.903888, canonical complete native59.074825,RCG61.019669,MEAN60.680117,coarse64=60.128680,
+fine16=61.500661, primary fine64=60.515912, released complete INSID3 CRF55.006020.
+Fine64-native +1.441087[-.754819,3.052193]; fine64-coarse64 +.387231[.095634,.753852];
+RCG/MEAN/fine16 superiority unresolved. All241 identities, pixel truth, six-arm I/U and raw/native
+four-edit closure verified; original GPU-native25-pixel drift remains a separately named control.
+Raw-relative primary edits: addTP4,127,069/addFP2,503,298/deleteTP1,658,440/deleteFP12,917,230.
+Native-relative: addTP902,363/addFP837,350/deleteTP994,107/deleteFP2,862,840,netTP-91,744.
+Assembly3.536s+CPUscore6.029s; independently reproduced all scores, folds and2000-photo CIs.
+[Accounting report](research_20261005/pipeline_verified/frozen_fine_raw_dev241_v1/interpretation.md).
+
+Fixed mean-prototype feasibility diagnostic, same DEV241, CPU2/33.77s, privileged GT regions:
+114 eligible whole-missed components and83 eligible stray fine64 components; only18 episodes have
+both types. Raw AUROC .3944[.1680,.6072], cached projected prototype .2556[.0733,.4556], stored NN
+mean .3272[.1176,.5556]. All four raw fold means are below .5; raw-minus-projected +.1389
+[.0278,.2813] does not establish useful separation against a failing control. No reference-FG
+fallback;239 caches were projected and2 were not; all18 paired cases were projected. FP32 raw vs
+FP16 cache is not a pure projection ablation. All source hashes,241six-arm I/U and independent
+AUROC/2000-photo CI reconstructions passed. V1 incorrect all-debiased assumption failed before a
+result; v2 records actual source flags, retaining failed assets and reusable features.
+Decision: stop this fixed region-mean recovery branch; do not infer that all DINO semantic cues fail.
+[Diagnostic](research_20261005/pipeline_verified/region_prototypes_raw241_v2/interpretation.md),
+[verification](research_20261005/pipeline_verified/region_prototypes_raw241_v2/verification.json).
