@@ -1,0 +1,38 @@
+{
+  "primary": "conditional.joint",
+  "simple_controls": [
+    "rcg",
+    "mean.control",
+    "conditional.same_count.control",
+    "conditional.rcg_value.control",
+    "conditional.greedy.control"
+  ],
+  "complete_comparators": [
+    "native",
+    "astra.control"
+  ],
+  "method_source_sha256": {
+    "run_directional_controls.py": "504fc214b07c3407e22e99372ac1da6a1fb348109635066b04de36d4ca5a88e9",
+    "pixel_budget_control.py": "d0483f9033455210a97191f8670bc53b47bdb5577c63faa1ec02fb4e60ed565a",
+    "run_calibrated_operator.py": "abeeaf4f20a56e12f7f7da01ef08308d4b9e509cc530a80171f653dfa4073383"
+  },
+  "candidate_CONFIG": {
+    "max_edit_fraction": 0.05,
+    "budget_fractions": [
+      0.25,
+      0.5,
+      1.0
+    ]
+  },
+  "target_n": 1200,
+  "per_fold": 300,
+  "parameter_updates_on_new_batches": true,
+  "exposure": "Previously inspected1200 development benchmark reuse; only fixed strong controls added; directional primary unchanged; not independent confirmation",
+  "accounting": "RCG-relative edits on1200; raw DINO remains common DEV accounting, not fabricated for these batches",
+  "source_chain": {
+    "pid": 14506,
+    "start_ticks": 951952344
+  },
+  "streaming_validation": "Read individual completed mask/field archives without GT; bind all captured hashes to final parent seals before own sealing/scoring",
+  "frozen_utc": "2026-10-05T18:09:38.672246+00:00"
+}

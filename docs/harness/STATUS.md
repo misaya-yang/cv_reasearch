@@ -41,12 +41,26 @@ Updated 2026-10-05. This file records current state; detailed evidence is linked
 - Conditional effective edits completedDEV241:61.083596,+2.008770[1.079517,2.986098]vsFoRIS,
   vsRCG+.063926[-.048161,.217392],vssame-countRCG+.009209[-.029547,.107188],vsRCG-value-only
   -.060566[-.155967,.054365]. Strong-control superiority remains unresolved. User requested1200.
-  Frozen1200queue22006/start952403608 is active;54missing pair encodes complete104.57s,1146cached
-  pair inputs preserved/reused,extra identical encoder released. Method parameters unchanged; GPU
-  selector22209/start952414466 then CPU scoring. [Pending execution](../research/PLAN.md).
+  Frozen1200queue22006 completed:63.679854vsFoRIS61.612802,+2.067053[1.480652,2.622434];vsRCG
+  +.081835[.011417,.162600],butvsRCG-value-only-.081893[-.150924,-.016964]. Retire the extra
+  two-estimator gate; the full objective remains unmet.54gap pairs replayed exactly,1146cached
+  inputs preserved/reused; no parameter updates. [1200report](../../evidence/local/research_20261005/pipeline_verified/conditional1200_v1/report.json).
+  Direction-specific rule is a newDEVconstruction:61.168023vsFoRIS+2.093198[1.161610,3.060837],
+  vsRCG+.148354[.017192,.310205],vsRCG-value-only+.023861[-.029879,.102806]. Its1200development
+  re-evaluation completed:63.760280,+2.147479[1.561716,2.702933]vsFoRIS and+.162261[.083281,.256631]
+  vsRCG,but-.001468[-.038359,.037012]vsRCG-value-only. Joint andgreedy remain equivalent.
+  [Directional1200](../../evidence/local/research_20261005/pipeline_verified/directional1200_dev_v1/report.json).
+  This1200was already read and is not confirmation. All arm scores were independently reconstructed;
+  actual directional source hashes are verified separately from the copied wrapper's incomplete source list.
+  Strong-control DEV241comparison completed:pixel optimum61.108318,p1greedy61.147027,single-family61.166854.
+  Directionaljointbeats pixel optimum+.059706[.009841,.154251],butvsbest single-family+.001170
+  [-.067942,.084219]. Original six output arms are bit-identical. Joint advantage remains unresolved.
+  Same fixed control expansion on1200is running under26160/start952668450,followed byCPUscore;
+  no extra encoder forwards. The unrestricted expected-count solver passed80exhaustive cases.
 - Existing public-labelled1200fixed delete-p63.958235vsFoRIS61.612802:+2.345433[1.135312,3.360488].
   VsRCG63.598020:+.360215[-.703107,1.273603],still unresolved; MEAN is being added to the complete
-  comparison. Public chain14506/start951952344 now encodes batch2; no peer queue/source changes.
+  comparison. CompleteMEAN1200=63.581592;delete-pvsMEAN+.376643[-.648147,1.314328],still unresolved.
+  Public chain14506/start951952344 continues its4000stream; no peer queue/source changes.
 - Another queue's4000public-labelled manifests contain allDEV241,old600 and historical isolated600;
   3999unique episode identities and6722photos. Preserve4000sampled draws; do not silently deduplicate.
   This is benchmark reuse,not4000fresh cases; sampling/worker RNG still needs version verification.

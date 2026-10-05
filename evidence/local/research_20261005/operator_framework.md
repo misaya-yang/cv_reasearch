@@ -124,3 +124,31 @@ score cannot be subtracted from a published original-resolution score.
 Protocol source checked: [FoRIS, Appendix A](https://arxiv.org/html/2609.03384v1#A1).
 It specifies 1024 input and original-resolution interpolation/CRF; the exact episode
 count and sampling implementation still require checking the official evaluation code.
+
+
+## Executable same-information pixel optimum
+
+The strong control in `scripts/pixel_budget_control.py` uses exactly the selector's p1 field,
+complete masks and edit budget K. Let DA be available additions outside O and DB available
+deletions inside O; they are disjoint. For feasible edits E with |E|<=K, write expected counts
+I(E)=I0+sum_A p-sum_B p and U(E)=U0+sum_A(1-p)-sum_B(1-p).
+For fixed q, maximizing I(E)-qU(E) is a linear cardinality problem: additions have coefficient
+p-q(1-p), deletions its negative. Choose the largest positive coefficients, up to K pixels.
+This inner solution is exact; no operator-overlap heuristic is required.
+
+On the constant16x16token probability field, there are at most8192weighted action groups,
+each with its available pixel count. Sort group coefficients and take a prefix, allowing
+part of the final group. This reproduces the pixel cardinality optimum. Stable pixel order
+inside a group determines the actual complete mask without accessing labels.
+Update q=I(E)/U(E). With positive unions, exact inner solves monotonically increase q and
+terminate on a finite family. If residual R=max_E[I(E)-qU(E)] is zero, q is the family optimum.
+For numerical stopping with R>=0 and U(E)>=u_min>0, the remaining ratio gap is at most R/u_min.
+The implementation checks convergence, the hard budget, and containment of the p1 structured mask.
+Independent exhaustive tests cover all16four-pixel origins and budgets0through4,80cases in total,
+with zero expected-ratio error. [Receipt](pixel_control_check.json).
+
+This certificate applies to the ratio of estimated counts, not expected realized IoU, calibrated
+membership, class-macro benchmark dominance, or a SOTA guarantee. Comparing its true complete-mask
+score with structured families tests whether family constraints regularize estimation errors or
+merely restrict an otherwise useful solution. Comparing joint,greedy andsingle-family rules then
+isolates the contribution of joint optimization at the same information and budget.

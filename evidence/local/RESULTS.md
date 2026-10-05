@@ -637,3 +637,106 @@ AllDEV241,old600 andhistorical isolated600 episode pairs recur; batch0 itself co
 historical isolated600. These are benchmark re-evaluations,not4000fresh cases. Do not remove a natural
 repeated draw to make the sampled benchmark unique. Official sampling/worker RNG still needs version verification.
 [Manifest audit](research_20261005/public_queue_manifest_audit.json).
+
+### 2026-10-05: frozen conditional selector expanded to1200
+
+User explicitly requested a larger sample when an advantage remained uncertain. FrozenDEV241 parameters
+were applied unchanged to the first300public-labelled draws/fold:1200episodes,80classes,1046connected
+photo groups (largest8),seed0,1024. This is benchmark re-evaluation with prior-exposed cases,not fresh confirmation.
+Features were preserved/reused for1146exact episode pairs;54missing pairs were encoded in104.57s.
+All54native replays were bit-identical; score/coverage differences0. Temporary identical-encoder overlap
+used measured29GBheadroom; the extra model exited after extraction. No peer process/source was changed.
+
+| Arm | mIoU |
+|---|---:|
+| native | 61.612802 |
+| rcg | 63.598020 |
+| mean.control | 63.581592 |
+| astra.control | 63.162218 |
+| conditional.joint | 63.679854 |
+| conditional.greedy.control | 63.679293 |
+| conditional.same_count.control | 63.676546 |
+| conditional.rcg_value.control | 63.761748 |
+
+Primary vs completeFoRIS:+2.067053[1.480652,2.622434];vsRCG:+.081835[.011417,.162600].
+VsMEAN:+.098263[-.160051,.386496];vssame-countRCG:+.003309[-.015667,.029584].
+VsRCG-value-only:-.081893[-.150924,-.016964]. The extra dual-estimator gate is worse than the
+strong simple same-information selector; retire this tested construction rather than promote its control
+as an independent winning method. The working objective remains unmet.
+
+Fold gains vsFoRIS:1.920883,1.592062,2.139417,2.615850;656up/529down/15tie.
+Edits vsRCG:primaryaddTP487,684/addFP628,614/deleteTP536,332/deleteFP945,243;
+RCG-value-onlyaddTP964,720/addFP1,121,141/deleteTP676,000/deleteFP1,108,994.
+These aggregate differences motivate a direction-specific test: preserve the simpler addition value
+while retaining reference evidence only in deletion eligibility. They are not set-level proof of veto causality.
+Its newDEV241construction has separate code/outputs; these1200are now development for any revised rule.
+
+Supplemental frozen delete-p63.958235 vsFoRIS+2.345433[1.135312,3.360488],vsRCG+.360215
+[-.703107,1.273603],vsMEAN+.376643[-.648147,1.314328],vssame-countdelete-p+.252550
+[-.033335,.615528]. Larger1200does not resolve its strong-control advantage. Missing full-mask edit
+diagnostics for this count-only arm remain marked missing,not replaced by zeros.
+
+[Main report](research_20261005/pipeline_verified/conditional1200_v1/report.json),
+[per-episode I/U](research_20261005/pipeline_verified/conditional1200_v1/episodes.jsonl),
+[local reconstruction/parity](research_20261005/pipeline_verified/conditional1200_v1/verification_receipt.json),
+[supplemental summary](research_20261005/conditional1200_extended_summary.json),
+[frozen rule](../../launch/confirm1200_conditional_v1/freeze.json).
+
+
+### 2026-10-05: direction-specific selector on retained1200
+
+The revised construction uses the RCG-ranked mass field for additions and the joint expected-I/U
+objective; reference transport also constrains deletion eligibility. Families and5percenteditbudget
+remain fixed. It was designed after the previous1200result, so these are development results.
+COCO-20i1-shot,seed0,1024;1200draws,300/fold,80classes,1046connected-photo groups.
+CompleteFoRIS61.612802,RCG63.598020,MEAN63.581592,Astra63.162218.
+Directionaljoint63.760280,greedy63.760375,addonly63.701098,deleteonly63.648647,
+same-countRCG63.748883,RCG-value-only63.761748.
+
+PrimaryvsFoRIS+2.147479[1.561716,2.702933];vsRCG+.162261[.083281,.256631];
+vsMEAN+.178689[-.072742,.466333];vsRCG-value-only-.001468[-.038359,.037012];
+vsgreedy-.000095[-.004253,.003637];vssame-count+.011397[-.000846,.028757].
+FoldgainsvsFoRIS:1.963464,1.738175,2.283754,2.604522;664up/521down/15tie.
+Batch0gainvsFoRIS+1.975866[1.297560,2.575664],vsRCG+.222238[.103588,.337750];
+batch1vsFoRIS+2.237091[1.352302,3.048288],vsRCG+.149927[.052856,.274309].
+EditsvsRCG:addTP969,991/addFP1,131,414/deleteTP523,348/deleteFP893,784.
+
+The directional rule recovers the loss of the earlier dual gate but does not establish superiority
+to the stronger RCG-value-only orgreedycontrols. StablepositiveFoRISgain is insufficient for the full
+framework contribution. Nextcomparison tests unrestricted pixel optimization,p1-onlygreedy andsingle
+family with identical information and budget; no control is relabeled as a novel method.
+
+Cached1200selection114.69s,peakCUDA241,310,208bytes; complete producer runtime is excluded.
+All predictions were sealed before CPUscoring; no extra encoderforward and no querylabels in inference.
+Independentlocal class-summed reconstruction reproduces everyarm within2.85e-14points.
+The copiedwrapper's source_code list names the original module; separate verification confirms the
+actual directionalmodule and helper against the immutablefreeze bound in the protocol.
+OfficialINSID3 replay andrawDINO1200masks remain unavailable; DEVraw-origin accounting is retained.
+
+DEV241directionaljoint61.168023,+2.093198[1.161610,3.060837]vsFoRIS,
++.148354[.017192,.310205]vsRCG,+.023861[-.029879,.102806]vsRCG-value-only.
+[DEVreport](research_20261005/pipeline_verified/directional241_v1/report.json),
+[1200report](research_20261005/pipeline_verified/directional1200_dev_v1/report.json),
+[1200reconstruction](research_20261005/pipeline_verified/directional1200_dev_v1/verification_receipt.json),
+[actualsourcebinding](research_20261005/pipeline_verified/directional1200_dev_v1/actual_source_verification.json).
+
+
+### 2026-10-05: strongest pixel,greedy andsingle-family controls onDEV241
+
+SameCOCO-20iDEV241,seed0,1024,79classes,239photo-connected groups. All previous six directional
+output arms reproduced bit-identically. Directionaljoint61.168023;unrestrictedpixel61.108318;
+p1familygreedy61.147027;best p1single-family61.166854. Primaryvspixel+.059706[.009841,.154251],
+vs p1greedy+.020996[-.033174,.101153],vssingle+.001170[-.067942,.084219]. These additional
+controls share the same probability field,complete producers and5percentbudget. The exact pixel
+solver weakly dominates every contained structured output on the expected-count objective,checked
+in inference. Its true score is lower: family restrictions may regularize this imperfect value field.
+Joint superiority to the simplest single-family selector remains unresolved; no unconditional sparsity
+or true-IoU optimizer claim follows. All rules remain development on a repeatedly read cohort.
+
+This fixed control expansion is queued/running on retained1200 with automatic subsequent CPUscore,
+no extra encoder or parameter fitting. Original predictions remain retained. All arm scores were
+independently reconstructed within4.27e-14points. Cached241selection122.94s,complete producer runtime excluded.
+[Fullreport](research_20261005/pipeline_verified/directional_controls241_v1/report.json),
+[original mask parity](research_20261005/pipeline_verified/directional_controls241_v1/original_arm_parity.json),
+[reconstruction](research_20261005/pipeline_verified/directional_controls241_v1/verification_receipt.json),
+[1200frozen queue](../../launch/directional_controls1200_dev_v1/plan.json).
