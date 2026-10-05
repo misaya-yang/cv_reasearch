@@ -15,7 +15,10 @@ Updated 2026-10-05. This file records current state; detailed evidence is linked
   19.92sinference/4.16sGPUcompute/10.87sCPUscore. Sourcelegacysealinput-keyfailureinfirstattempt
   fixedinnewv2snapshot;failedoutputretained,CUDAfinalrenderer matchedsource. No featuresdeleted.
   [Control](../../evidence/local/research_20261005/pipeline_verified/subtoken_coarse_control600_v2/report.md).
-  Fixed1200fine-readout/strongRCG64comparisonisbeingprepared;notyetlaunched.
+  Fixed1200fine-readout/strongRCG64comparisonisrunning:CPU6preparedall1200in178.5s,
+  exactλ16field/maskreplay. GPUchild44738/start953701760,supervisor44731/start953701724,
+  ~.99s/episodewithGPU100percent;CPUscorequeuedafterall1200sealed. NoGTopened.
+  Full4000streamadapterisbeingpreparedbeforecurrentGPUjobends;decisionpending1200strongcontrols.
 - Fine80boundarydiagnosticcompleted111sGPU+12sCPU;retain2.5GiBfinefeatures. Finevsbilinearcoarse
   NNmargin AUROC+.0010[-.0041,.0056],parentrank-.0591[-.0859,-.0335]. Togetherwith600matched
   control,thissupportsvalueinthetestedquery-affinityreadout,notimprovedreferenceNNsemanticmargin.

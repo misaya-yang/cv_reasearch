@@ -1,0 +1,149 @@
+{
+  "n": 1200,
+  "arms": [
+    "native",
+    "rcg",
+    "mean.control",
+    "rcg64.control",
+    "fine.rcg16.control",
+    "fine.rcg64"
+  ],
+  "primary": "fine.rcg64",
+  "exposure": "all1200 existing exposed DEV draws; no independent confirmation or SOTA claim",
+  "parameters": {
+    "0": {
+      "arm": "feat[s1.25,t0.07]",
+      "sigma": 1.25,
+      "tau": 0.07
+    },
+    "1": {
+      "arm": "feat[s1.25,t0.15]",
+      "sigma": 1.25,
+      "tau": 0.15
+    },
+    "2": {
+      "arm": "feat[s1.25,t0.15]",
+      "sigma": 1.25,
+      "tau": 0.15
+    },
+    "3": {
+      "arm": "feat[s1.25,t0.07]",
+      "sigma": 1.25,
+      "tau": 0.07
+    }
+  },
+  "fitting": "recorded600 fold choices frozen unchanged; no1200 fitting or grid",
+  "prepared": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/subtoken1200_rcg64_prepared_v1",
+  "prepared_seal_sha256": "0d715b0d30156b37e426ab9461230fe32355bd8fd3acef5efe8f156e471bbcc0",
+  "prepared_config_sha256": "caca076f0d0b6d497ccbc7a55016818cb4e52b0d377f5a84f250e4fe94502c88",
+  "prepared_metadata": {
+    "stage": "CPU_ONLY_FIXED_RCG64_PREPARATION",
+    "n": 1200,
+    "exposure": "all1200 previously exposed DEV draws; no independent confirmation or SOTA claim",
+    "source_manifest": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/confirm1200_conditional_v1/inputs/manifest.json",
+    "source_manifest_sha256": "1656f2b54350ce842c0d51cd445383d6bee1f9f78ae7ee93a79b628cd83f6aa6",
+    "parameter_report": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/claude_subtoken_fresh600/report.json",
+    "parameter_report_sha256": "9bc0339dd031f727ebbd6f6f68d5ba74a3ecd5e12645b4a0534500cd55b79e58",
+    "parameters": {
+      "0": {
+        "arm": "feat[s1.25,t0.07]",
+        "sigma": 1.25,
+        "tau": 0.07
+      },
+      "1": {
+        "arm": "feat[s1.25,t0.15]",
+        "sigma": 1.25,
+        "tau": 0.15
+      },
+      "2": {
+        "arm": "feat[s1.25,t0.15]",
+        "sigma": 1.25,
+        "tau": 0.15
+      },
+      "3": {
+        "arm": "feat[s1.25,t0.07]",
+        "sigma": 1.25,
+        "tau": 0.07
+      }
+    },
+    "source_code_sha256": {
+      "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/frozen_subtoken1200_prepare_v1/snapshot/scripts/run_frozen_subtoken1200.py": "1bbe2fb6d28864b74648d3695224a4ea6039801884de0846712494a007ee98a3",
+      "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/frozen_subtoken1200_prepare_v1/snapshot/src/ics/experiment.py": "d95459d0b59c7048618661e7a16999248990b02e92cd1269d4629a497f62f843",
+      "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/frozen_subtoken1200_prepare_v1/snapshot/src/ics/methods/rcg.py": "d9d8e15a69c0b939eb06dc4e41967afb684f29731f9dcb00519e73d944963d98"
+    },
+    "providers": {
+      "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/claude_official/run0": {
+        "seal_sha256": "e0898ec785afb5ba02de9a4d6a45debc44371ab5584047e7768c9626968c9baa"
+      },
+      "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/claude_official/run1": {
+        "seal_sha256": "cc5bd6472f3f7776a7f6c717a168c0f72011bd4dbf301d73f9505ed08ed542a3"
+      }
+    },
+    "graph_lambdas": [
+      16,
+      64
+    ],
+    "alpha": 0.5,
+    "cross_k": 10,
+    "query_k": 20,
+    "purity": 0.9,
+    "confidence_floor": 0.1,
+    "cg_rtol": 1e-07,
+    "cg_atol": 1e-09,
+    "cg_maxiter": 300,
+    "lambda16_parity": "exact FP32 source field and complete stored mask before lambda64 solve",
+    "workers": 6,
+    "query_gt_in_inference": false,
+    "encoder_forwards": 0,
+    "images_opened": 0,
+    "legacy_provider_inputs": "not assumed; fresh packet/cache hashes captured and prior I/U checked at score"
+  },
+  "source_code_sha256": {
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/frozen_subtoken1200_v1/snapshot/scripts/run_frozen_subtoken1200.py": "e802ea229d50bd83b88784fa0640105e65c79d31469fb5a0b769667d80995a5d",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/frozen_subtoken1200_v1/snapshot/src/ics/experiment.py": "d95459d0b59c7048618661e7a16999248990b02e92cd1269d4629a497f62f843"
+  },
+  "host_manifest": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/claude_official/batch0.json",
+  "host_manifest_sha256": "4dd6078054e91c7fc90df4443120624b763539e83c1c7752cd031bfb4c859d22",
+  "host_builder": "/root/autodl-tmp/demo9_extent/scripts/extent_experiment.py",
+  "host_builder_sha256": "14e99f553d93a3234d78551e67727fc3478ca7042b161d9b465dae5cc9769f2b",
+  "host_root": "/root/autodl-tmp/demo9_extent",
+  "demo4_root": "/root/autodl-tmp/demo4",
+  "feature_space": "source run_subtoken normalized/debiased four shifted grids, interleaved FP32; no FP16 re-quantization",
+  "feature_lifecycle": "one128x128x1024 fine tensor in bounded GPU RAM; both fixed readouts consume before release; no full fine cache",
+  "retained": "all1200 packed complete masks, scalar fields, source receipts; existing features/assets untouched",
+  "shifts": [
+    [
+      -4,
+      -4
+    ],
+    [
+      -4,
+      4
+    ],
+    [
+      4,
+      -4
+    ],
+    [
+      4,
+      4
+    ]
+  ],
+  "padding": "reflect4",
+  "window": 2,
+  "renderer": "CUDA bilinear128->1024 align_corners=False then>0.5; noCRF",
+  "baseline_renderer": "CPU fixed RCG64 bilinear64->1024, same locked RCG renderer",
+  "query_gt_in_inference": false,
+  "extra_encoder_forwards": 4800,
+  "reference_images_per_episode": 1,
+  "dataset": "COCO-20i",
+  "resolution": 1024,
+  "seed": 0,
+  "tf32": false,
+  "readers": 6,
+  "writers": 2,
+  "prefetch": 12,
+  "chunk": 512,
+  "torch_version": "2.12.1+cu130",
+  "device_name": "NVIDIA GeForce RTX 4080 SUPER"
+}

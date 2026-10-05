@@ -313,3 +313,55 @@ Thus **no recorded method/configuration drift explains the late-block decline**,
 but the surviving provenance is insufficient to exclude encoder/export/runtime
 drift numerically. Do not claim either drift or a particular data-distribution
 cause from this check, and do not infer numerical parity from source hashes.
+
+## Minimal producer checklist for temporary in-RAM feature reuse
+
+Read-only inspection of the existing source establishes the following recipe;
+it does not retroactively supply missing historical runtime hashes. The
+earlier suggested paired BF16 producer is **not verified**. The current source
+chain uses F32 model tensors and contains no autocast invocation.
+
+1. Use the existing source host/image transform: RGB PIL `Resize((1024,1024))`
+   then `ToTensor()` and ImageNet mean/std normalization. Do not replace it by
+   model-config bicubic/cropping defaults. Reference class mask is `c+1`, resized
+   by nearest to1024; coverage is area-resized to64. Preserve the original
+   support/query identities and draw keys, and reuse existing score/cov packets.
+2. `FoRIS.predict` concatenates **[reference,query] into one paired batch2**,
+   not two separate encoder calls (`models/foris.py:178-188,233-237`). The
+   existing Timm wrapper calls `forward_intermediates(indices=1,norm=True,
+   output_fmt='NCHW',intermediates_only=True)`. The source model file currently
+   contains318 F32 tensors; the wrapper and host have no autocast call. The
+   legacy host sets seed0 and disables both CUDA matmul/cuDNN TF32. Record
+   actual ambient autocast, input/output dtype and batch composition in the
+   new producer; do not infer them from an old filename or manifest.
+3. Normalize raw maps over channels before Part1. Preserve the source debias
+   gate (normalized reference-FG mean vs normalized-token query mean, semantic
+   cosine<0.8, nearest reference-token mask). On the projection branch, preserve
+   the actual source operations: `P_perp = I - U @ U.T`, `P_perp @ X`, then
+   channel normalization (`models/foris.py:294-361`). Do not substitute a
+   different matrix multiplication order or re-orthogonalize U.
+4. Basis path is
+   `/root/autodl-tmp/demo9_transductive_ics/results/native_runtime_v1/positional_basis.pt`.
+   Direct CPU metadata read confirms **FP32[1024,500]**, native normalized-black
+   source, SHA256
+   `9b9b20755a796cbda11bb7220d246ee540106e40cb024e249a5f63f884b6a116`.
+   The reuse context preserves that matrix, without QR or column rescaling.
+5. Original export is `q=deb[-1].flatten(1).T`, `r=deb[0].flatten(1).T`, followed
+   by **FP16 quantization** (`export_confirm_cache.py:55-62`). In RAM reproduce
+   that cast, then give the same FP32-converted/renormalized tokens to RCG;
+   feeding fresh unquantized FP32 tokens changes the existing readout input.
+   Frozen source score/cov and native/RCG/MEAN comparisons remain separate.
+
+Before any authorized4000 continuation, the smallest producer smoke is **two
+existing1200 pairs**, without query GT: directly compare both quantized q/r
+arrays and debias decision against their retained cache, then compare returned
+lambda16 FP32 fields and rendered/stored RCG masks against their sealed source.
+Record mismatch counts and maxdiff, input/source/basis/model-content hashes,
+resolved module files, Torch/timm/torchvision/PIL/CUDA versions, actual dtype,
+autocast and TF32 state. Matching source hashes is not this numerical test;
+matching two pairs is limited to those pairs. No broader reproduction loop,
+old600 restoration or another accumulated feature archive is implied.
+
+The checklist and exact basis identity were sent directly to
+`/root/boundary_probe_implementation`. This audit performed only source and
+stored-metadata reads; no encoder/GPU inference or experiment launch occurred.
