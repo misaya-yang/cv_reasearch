@@ -485,6 +485,16 @@ Astra candidate 63.50 = +1.87 [+0.15, +2.92] vs native and -0.74 [-1.89, +0.27] 
 RCG is positive (+0.99, +2.61) and the two deletion steps sit below RCG (-0.39, -0.74), unresolved.
 Source: [report](research_20261005/recheck_fresh600_v1/report_wide.md), [original resolution](research_20261005/recheck_fresh600_v1/original.md).
 
+### 2026-10-06: fixed arms on the public COCO-20i list, first 3000 of 4000 episodes (interim; batches 5 and 6 still running)
+
+Seed-0 draws 0 to 749 of each fold, 600 per batch, complete FoRIS run fresh; class mIoU at the original query resolution
+(sealed 1024 masks resized as FoRIS finishes), 2000 photo-group draws. Cumulative 3000: FoRIS 60.20 (folds 58.1 / 63.4 / 60.1 /
+59.1); RCG 61.87 = +1.67 [+1.19, +2.03]; C 61.70 = +1.50 [+0.93, +1.96]; Astra candidate 61.37 = +1.17 [+0.49, +1.79]; its
+same-count control +1.22. RCG per batch: +1.77, +2.13, +1.89, +1.53, +1.62. At 1024 the frozen pair `delete_p` reads +1.77
+[+1.01, +2.49] against RCG +1.66: no separation. The list includes the DEV241 draws (in batch 0) and overlaps the fresh600 draws.
+Our arms carry no CRF; FoRIS does. Source: [original resolution](research_20261005/official_batches/original.md),
+[1024 with frozen pairs](research_20261005/official_batches/cumulative.md); server `outputs/claude_official`.
+
 ### 写了但没有跑就撤回的
 
 部分对应（PCF）、不变概念与可移植提示、响应 pair-ratio 编辑器、响应训练路线曾在未取得足够前提证据时撤回。早期 `pair_bank.py` 准备被撤回，不表示后续 layer/joint 队列没有运行（结果见上）。撤回未运行构造不证明输入缺少信息。
@@ -825,3 +835,48 @@ Existing1200features are protected;future feature arrays are read fromtheprovide
 feature deletion/recreation. Compact source packets andsealed final masks are retained. Parent
 mask/field seals andoriginal deletion/count parity are required before accepting the new result.
 This is benchmark reuse with photo overlap,not photograph-isolated confirmation or a full4000SOTAclaim.
+
+
+### 2026-10-05: complete composition mapped to common raw-DINO DEV241
+
+All241class/support/query identities are matched to the sealed1200prediction set; no encoder rerun,
+feature changes or per-query GT routing. Masks assembled andsealed before separateCPUscore. The
+original native/RCG andpublic replay rows are separately retained andbit-identical onall241.
+COCO-20i,seed0,1024,79classes,239connected-photo groups;repeatedly inspecteddevelopment.
+Raw l24 nearest-reference-token42.903888,FoRIS59.074825,RCG61.019669,MEAN60.680117,
+fullB63.122337,composition62.936227,blind63.050336,pixel62.940648,unionquota62.769632.
+
+CompositionvsFoRIS+3.861402[1.609918,5.162354],vsRCG+1.916558[.037169,2.840281],
+vsMEAN+2.256110[.134353,3.184940],vsfullB-.186110[-.480213,.156544],vsblind-.114108
+[-.350990,.084153],vspixel-.004421[-.013464,.000363]. The sign ofaddition benefit differs from
+full1200's+.161083overB;it is not evidence ofstable superiority to strong controls.
+FoldgainsvsFoRIS:4.633201,2.311919,4.856930,3.632093;136up/102down/3tie.
+Commonraw-origin edits:addTP4,104,841/addFP2,219,540/deleteTP1,727,868/deleteFP13,125,956.
+Original/replaymask mismatch0pixels. Independentclass-summed reconstructionerror<=3.56e-14.
+[Report](research_20261005/pipeline_verified/composed_dev241_v1/report.json),
+[provenance](research_20261005/pipeline_verified/composed_dev241_v1/protocol.json),
+[verification](research_20261005/pipeline_verified/composed_dev241_v1/verification_receipt.json).
+
+### 2026-10-05: post-seal semantic errors andconditional addition roles
+
+GTdiagnostics only;none ofthese quantities enters the frozen2400prediction rule. Relative torawDINO,
+the composition removes4,375,137pixels belonging tootherannotatedclasses,638,563backgroundpixels
+within16pixels oftarget GT,and8,112,256far-backgroundpixels. It wrongly removes1,727,868targetpixels
+andadds2,219,540falsepixels. True additions:165,570pixels inpreviouslymissedGTregions and3,939,271
+inregions withprioroverlap. It recovers>=90percentof10of87previouslymissed8-connectedGTregions.
+Relative toRCG:only377trueadditionpixels lie inpreviouslymissedregions,156,222completeexisting
+regions;zeroof112missedregionsreach90percentcoverage. This construction primarily changesextent
+andfalseforeground; it doesnot yet establish whole missed-target recovery.
+
+Relative tothecompleteBmask,restoration contributes-.348848class-mIoUpoints,extent+.161303,
+andthefractional interaction+.001434,yielding-.186110onDEV241. Worstrestorationclassgains:
+class12-13.523871,class58-9.049205,class26-4.447630. Do nottreatpooledadditionpurity asclass-macrovalue.
+
+OriginalqueryBGbank:101,926tokens,7,598.168targettoken-equivalents(7.45percent),7,453target-dominated.
+Reference-NN BGfilter:97,890tokens,5,266.359targetequivalents(5.38percent),5,112target-dominated.
+Unfilteredsame-sizebank:7,551.695targetequivalents(7.71percent),7,408target-dominated. BetterGTpurity
+alone doesnotprove useful negative discrimination. ReferenceNNscores are fromdebiased cachedfeatures,
+distinctfromtherawaccountingorigin. These diagnostics motivate anewDEV-onlycompletecomparison of
+reference-NN-cleanedBplusextent-onlyA,withoriginalB,same-sizebanks,quota andpixelcontrols.
+Touchinginstances canmergeinsemantic8-connectedregions; these are region/proximity definitions,
+notverifiedinstanceidentities. [Diagnostics](research_20261005/pipeline_verified/composed_diagnostic241_v1/report.json).
