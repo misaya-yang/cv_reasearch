@@ -50,6 +50,7 @@ import time
 
 AUTODL_DOC = 'https://www.autodl.com/docs/save_money/#_3'
 SHUTDOWN_PATH = '/usr/bin/shutdown'
+KEEP_ON = Path('/root/autodl-tmp/KEEP_ON')  # touch it while you still work on the machine; power-off waits until it is 15 minutes old
 
 
 def decision(active_kind=None, next_ready=False, stage_failed=False, gpu_known=True,
@@ -137,6 +138,11 @@ def sha256_file(path, chunk_bytes=1024*1024):
         for chunk in iter(lambda:stream.read(chunk_bytes),b''):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def held(limit=900):
+    try:return time.time()-KEEP_ON.stat().st_mtime<limit
+    except OSError:return False
 
 
 def provider_shutdown(path=SHUTDOWN_PATH):
@@ -309,6 +315,8 @@ class ResourceGuard:
         # Runtime permission/helper verification; this is NOT a provider billing acknowledgement.
         if self.poweroff is None and (not sys.platform.startswith('linux') or os.geteuid()!=0 or not Path('/root/autodl-tmp').is_dir() or not os.access(SHUTDOWN_PATH,os.X_OK)):
             self.emit('SHUTDOWN_BLOCKED_HELPER_OR_PERMISSION',terminal_reason=state);return False
+        if self.poweroff is None and held():self.emit('SHUTDOWN_HELD_BY_KEEP_ON',file=str(KEEP_ON))
+        while self.poweroff is None and held():time.sleep(30)
         # Recheck after all permission/readiness work to minimize the startup race.
         second=self.inventory()
         if not second['known'] or set(second['pids'])-set(stopped_owned):
