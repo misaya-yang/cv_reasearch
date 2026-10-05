@@ -78,9 +78,22 @@ Updated 2026-10-05. This file records current state; detailed evidence is linked
   vsunionquota+.032162[-.017208,.127733],vspixel+.002634[-.001900,.007321]. Strong-control superiority
   andstable>=2points remain unestablished. All1200frozen-deletion/same-count I/U match exactly;full edits retained.
   [Completecomposition](../../evidence/local/research_20261005/pipeline_verified/composed1200_dev_v1/report.json).
-  Unchangedmethod is frozen andrunning under29248/start952865380 onlive publicblocks4/5,thenCPUscore;
-  merge with0/1to2400/600perfold andreportnew1200separately. Read live features inRAM,preservecompactpackets,
-  never delete/recreate features. Original1200cache protected. Not a full4000orindependentconfirmation claim.
+  Unchangedmethod2400/600perfold completed onblocks0/1/4/5:63.426455vsFoRIS61.635100,
+  +1.791355[1.098103,2.489658];vsRCG+.286291[-.347554,.878681],vsMEAN+.149259[-.493105,.752387].
+  New1200alone62.032075vsFoRIS61.016582,+1.015494;vsRCG+.020356,vsMEAN-.270258.
+  Targetandstrong-controlsuperiority remain unmet. Parentseals andall2400originaldeletion/countI/Uverified;
+  no featuredeletion/recreation. Original1200cache protected. [2400report](../../evidence/local/research_20261005/pipeline_verified/composed2400_v1/report.json).
+- NewcompositionDEV241raw-originreadout completed:62.936227vsFoRIS+3.861402[1.609918,5.162354],
+  vsRCG+1.916558[.037169,2.840281],butvsB-.186110[-.480213,.156544]. Native/RCGreplaymaskdifference0.
+  [Raw-originreport](../../evidence/local/research_20261005/pipeline_verified/composed_dev241_v1/report.json).
+  GTdiagnostics:restoration-.348848,extent+.161303;wholeGTregionrecovery beyondRCG is not established.
+  Reference-NN BGfilterreducesbanktargetmass7.45percentto5.38percent,butcompleteDEV241method62.807903
+  loses tooriginalB63.122337 andsame-sizeBGcomposition63.017747. BGpurityalone is insufficient.
+  Role-prototype construction completed:62.306604vsoriginalB63.122337,-.815733[-1.258972,-.289823].
+  Bonly62.400503,query-onlysplitB62.667190,unsplitreferenceguardB62.883290;oldB+newA63.035282.
+  Maxprototype splitting/referenceguard andwhole-query high-margin addition didnot improve this construction.
+  [Roleprototype result](../../evidence/local/research_20261005/pipeline_verified/role_prototypes_dev241_v1/report.json).
+  No encoder orfeaturedeletion. Do not extend this margin/role grid without a changed failed link.
 - Another queue's4000public-labelled manifests contain allDEV241,old600 and historical isolated600;
   3999unique episode identities and6722photos. Preserve4000sampled draws; do not silently deduplicate.
   This is benchmark reuse,not4000fresh cases; sampling/worker RNG still needs version verification.

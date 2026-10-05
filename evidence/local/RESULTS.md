@@ -495,6 +495,17 @@ same-count control +1.22. RCG per batch: +1.77, +2.13, +1.89, +1.53, +1.62. At 1
 Our arms carry no CRF; FoRIS does. Source: [original resolution](research_20261005/official_batches/original.md),
 [1024 with frozen pairs](research_20261005/official_batches/cumulative.md); server `outputs/claude_official`.
 
+### 2026-10-06: grouping-based adder and deleter on RCG, and where RCG's remaining error lies (fresh600, 1024)
+
+Average-linkage groups of the cached query features (tau 0.5 / 0.6 / 0.7); groups mostly inside R completed, groups mostly
+outside trimmed; 72 additions x 45 deletions, nested over folds. RCG 64.24; `add.nested` -0.08 [-0.46, +0.20]; `delete.nested`
+-0.04 [-0.40, +0.25]; `both.nested` -0.11 [-0.63, +0.27]; the same-count RCG-score control +0.11 [-0.31, +0.45]. Best addition
+alone: 1.23M true / 1.31M false (48% true), 64.29 against 64.40 for its same-count control: no variant beats its control.
+GT diagnostic (not inference): RCG leaves 17.13M false and 12.18M missed pixels; 19% / 29% of them lie within 8 px of the true
+boundary and 26% / 41% within 16 px; correcting only the pixels within 8 px would read 72.26, within 16 px 75.25 (FoRIS: 68.87, 71.69).
+Lesson: similarity to the reference, the query's grouping and the score level are already used up by RCG at the 64 x 64 token
+grid; a large share of the remaining price sits below one token from the boundary. Source: [report](research_20261005/cluster_fresh600/report.md).
+
 ### 写了但没有跑就撤回的
 
 部分对应（PCF）、不变概念与可移植提示、响应 pair-ratio 编辑器、响应训练路线曾在未取得足够前提证据时撤回。早期 `pair_bank.py` 准备被撤回，不表示后续 layer/joint 队列没有运行（结果见上）。撤回未运行构造不证明输入缺少信息。
@@ -880,3 +891,68 @@ distinctfromtherawaccountingorigin. These diagnostics motivate anewDEV-onlycompl
 reference-NN-cleanedBplusextent-onlyA,withoriginalB,same-sizebanks,quota andpixelcontrols.
 Touchinginstances canmergeinsemantic8-connectedregions; these are region/proximity definitions,
 notverifiedinstanceidentities. [Diagnostics](research_20261005/pipeline_verified/composed_diagnostic241_v1/report.json).
+
+
+### 2026-10-05: frozen composition2400 andseparate new1200readout
+
+COCO-20i,seed0,1024,80classes,600draws/fold;sourceblocks0/1/4/5,2400draws,1888connected-photo
+groups. Blocks4/5were chosen for live feature availability andthepredictor was frozen before their
+GTreadout. This is benchmark reusewithphoto overlap,notphotograph-isolated confirmation orfull4000.
+Parent mask/field seals,all2400original deletion/same-count I/U andRCG/MEAN/Astra counts passparity.
+No encoder rerun orfeaturedeletion/recreation. Compact packets/final masks remain retained.
+
+FoRIS61.635100,RCG63.140164,MEAN63.277195,B63.169303,composition63.426455;
+blind63.307392,unionquota63.413949,pixel63.423975. PrimaryvsFoRIS+1.791355[1.098103,2.489658],
+vsRCG+.286291[-.347554,.878681],vsMEAN+.149259[-.493105,.752387],vsB+.257152[.143756,.330256],
+vsblind+.119063[.039823,.185231],vsunionquota+.012506[-.026744,.069725],vspixel+.002480
+[.000170,.005456]. The tiny pixel difference doesnot establishthecompletegoal;stable>=2overFoRIS
+andstrongRCG/MEANsuperiority remainunmet. Do not keep extending this construction merelybecause
+it improved itsretainedBcomponent. Foldgains:1.861547,1.171776,1.970457,2.161640;
+1252up/1121down/27tie. RCGrelativeedits:addTP1,483,657/addFP1,251,686/deleteTP8,234,918/deleteFP15,781,100.
+
+New1200alone:FoRIS61.016582,RCG62.011720,MEAN62.302334,B61.699516,composition62.032075.
+VsFoRIS+1.015494[.141979,1.965818],vsRCG+.020356[-.784501,.750206],vsMEAN-.270258
+[-1.093285,.492537]. The original1200's+2.506516FoRISgain didnot hold onthe newdraws.
+[2400report](research_20261005/pipeline_verified/composed2400_v1/report.json),
+[per-draw counts](research_20261005/pipeline_verified/composed2400_v1/episodes.jsonl),
+[reconstruction](research_20261005/pipeline_verified/composed2400_v1/verification_receipt.json).
+
+### 2026-10-05: complete BG-cleaning andextent-only construction didnot improve
+
+NewDEV241construction,seed0,1024,79classes,239photo groups;no additional encoder. OriginalB63.122337,
+NN-BG-cleanB62.908069,same-sizeunfilteredB63.135103. Cleaningversussame-sizeB-.227034
+[-.514420,.203817]. CleanerbankGTpurity isnot a sufficient discriminator ofuseful negative evidence.
+PrimarycleanB+conditionalextent62.807903;vsB-.314434[-.628340,.187806],vsoriginalcomposition
+-.128324[-.402050,.303326],vssame-sizecomposition63.017747:-.209844[-.466653,.194616].
+OldB+extent63.006353,cleanBpixel62.809963,cleanBquota62.552528. Primaryvsquota+.255375
+[.129356,.444972],butno improvement overthe retainedstrongmethod. No control relabeled as a win.
+Allmaskssealed beforeGT;frozen2400method unchanged. [Report](research_20261005/pipeline_verified/background_clean_dev241_v1/report.json),
+[verification](research_20261005/pipeline_verified/background_clean_dev241_v1/verification_receipt.json).
+
+Next boundedDEVcomparison retainseasyandhardNN-FG-likebackground pools separately,usesa reference-FG
+positiveguard,andallowshigh-margin additionsoutsideprior maskunions. Its confidence marginsare not
+claimedascalibrated probabilities. The query-onlysplitB,unsplitguardB,oldB+newA,newB+oldA controls
+isolate the newlinks; no queryGToradditionalencoder. Thisisanewconstruction,notanupdated2400rule.
+
+
+### 2026-10-05: role prototypes andwhole-query addition failed
+
+CompleteDEV241,seed0,1024,79classes,239photo groups;no newencoder. Reference-NN votespartitionthe
+originalBGbank intoeasy/hardpools;maxBGscore,andmaxreference/query-seedFGscore guard. Additions can
+searchoutsideprior unions,withprototypegap>.1 andreferenceNNpositive,rank minimum margins,cap
+5percentRCGarea. Cosineconfidence rules,notcalibratedmembership probabilities. Allmaskssealed
+beforeGT;original2400methodunchanged;sourcefeatures/packets andsealedRCGfields verifyunchanged.
+
+Primary62.306604vsoriginalB63.122337:-.815733[-1.258972,-.289823];vsFoRIS+3.231779
+[.814910,4.734402],vsRCG+1.286934[-.779090,2.479245]. ComponentB62.400503,query-onlysplitB
+62.667190,unsplitreferenceguardB62.883290. OldB+newA63.035282,newB+oldA62.561005.
+PrimaryvsnewB+oldA-.254401[-.400551,-.126254],vsoldB+newA-.728678[-1.151337,-.196593].
+Neither max-prototype splitting/referenceguard norwhole-queryhigh-margin addition improved this
+construction. Stopthis role/margin grid;negativeevidence doesnotruleoutotherconditionaledit mechanisms.
+Independentclass-summed reconstructionandmetadata seals passed. [Result](research_20261005/pipeline_verified/role_prototypes_dev241_v1/report.json),
+[verification](research_20261005/pipeline_verified/role_prototypes_dev241_v1/verification_receipt.json).
+
+The existingpublic4000chain isfinishing itslast400draws. ACPU-onlyqueue willscore completeRCG/MEAN/Astra
+masks andpreviouslyfrozen delete-p/same-count statistics onall4000draws,includingthenaturalrepeat.
+Thiscompletesthepairedbaseline/retainedcomponent evidence boundary;itdoesnotpromoteafailedcandidate
+orclaimfull4000publicSOTAfor the2400composition. No encoder orfeaturedeletion/recreation.
