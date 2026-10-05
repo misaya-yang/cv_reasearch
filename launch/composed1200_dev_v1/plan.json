@@ -1,0 +1,149 @@
+{
+  "stages": [
+    {
+      "name": "smoke2_infer",
+      "kind": "gpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_composed1200_dev_v1/scripts/run_composed1200.py",
+        "infer",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/composed_smoke2_dev_v1",
+        "--manifest",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/confirm1200_conditional_v1/inputs/manifest.json",
+        "--freeze",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/composed1200_dev_v1/freeze.json",
+        "--smoke"
+      ],
+      "requires": [],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/composed_smoke2_dev_v1/sealed.json",
+          "json_equals": {
+            "n": 2
+          }
+        }
+      ]
+    },
+    {
+      "name": "smoke2_score",
+      "kind": "cpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_composed1200_dev_v1/scripts/run_composed1200.py",
+        "score",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/composed_smoke2_dev_v1",
+        "--prior",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/conditional_public1200_extended_v1/episodes.jsonl"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/composed_smoke2_dev_v1/sealed.json",
+          "json_equals": {
+            "n": 2
+          }
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/composed_smoke2_dev_v1/report.json",
+          "json_equals": {
+            "n": 2,
+            "fixed_deletion_replay_parity": 2
+          }
+        }
+      ]
+    },
+    {
+      "name": "full1200_infer",
+      "kind": "gpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_composed1200_dev_v1/scripts/run_composed1200.py",
+        "infer",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/composed_full1200_dev_v1",
+        "--manifest",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/confirm1200_conditional_v1/inputs/manifest.json",
+        "--freeze",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/composed1200_dev_v1/freeze.json"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/composed_smoke2_dev_v1/report.json",
+          "json_equals": {
+            "n": 2,
+            "fixed_deletion_replay_parity": 2
+          }
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/composed_full1200_dev_v1/sealed.json",
+          "json_equals": {
+            "n": 1200
+          }
+        }
+      ]
+    },
+    {
+      "name": "full1200_score",
+      "kind": "cpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_composed1200_dev_v1/scripts/run_composed1200.py",
+        "score",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/composed_full1200_dev_v1",
+        "--prior",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/conditional_public1200_extended_v1/episodes.jsonl"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/composed_full1200_dev_v1/sealed.json",
+          "json_equals": {
+            "n": 1200
+          }
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/composed_full1200_dev_v1/report.json",
+          "json_equals": {
+            "n": 1200,
+            "fixed_deletion_replay_parity": 1200
+          }
+        }
+      ]
+    }
+  ],
+  "scientific_comparison": "Complete frozen deletion plus conditional A-family selection versus unchanged deletion,blind composition,fixed restore/extent/union quota andsame-field pixel optimum. Exact deletion parity before full1200.",
+  "authorization": "Authorized A*/B* complete-method research on retained1200; no encoder,download,deletion or restoration",
+  "resources": {
+    "cpu_threads": 1,
+    "additional_encoder_forwards": 0,
+    "expected_peak_upper_mib": 2048,
+    "gpu_headroom_mib": 29748,
+    "read_only_cuda_peers": {
+      "27345": 952756181
+    },
+    "runtime": "Unmeasured; prior1200strong controls586.6scached selection"
+  }
+}

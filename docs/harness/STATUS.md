@@ -55,12 +55,32 @@ Updated 2026-10-05. This file records current state; detailed evidence is linked
   Strong-control DEV241comparison completed:pixel optimum61.108318,p1greedy61.147027,single-family61.166854.
   Directionaljointbeats pixel optimum+.059706[.009841,.154251],butvsbest single-family+.001170
   [-.067942,.084219]. Original six output arms are bit-identical. Joint advantage remains unresolved.
-  Same fixed control expansion on1200is running under26160/start952668450,followed byCPUscore;
-  no extra encoder forwards. The unrestricted expected-count solver passed80exhaustive cases.
+  Same fixed control expansion on1200completed:pixel63.718897,p1greedy63.761862,single-family63.797241.
+  Jointvspixel+.041384[.003448,.085630],butvssingle-family-.036960[-.080854,.006758].
+  Method-family constraints help this imperfect value field; joint choice superiority remains unestablished.
+  [1200strong controls](../../evidence/local/research_20261005/pipeline_verified/directional_controls1200_dev_v1/report.json).
+  No extra encoder forwards. The unrestricted expected-count solver passed80exhaustive cases.
 - Existing public-labelled1200fixed delete-p63.958235vsFoRIS61.612802:+2.345433[1.135312,3.360488].
   VsRCG63.598020:+.360215[-.703107,1.273603],still unresolved; MEAN is being added to the complete
   comparison. CompleteMEAN1200=63.581592;delete-pvsMEAN+.376643[-.648147,1.314328],still unresolved.
   Public chain14506/start951952344 continues its4000stream; no peer queue/source changes.
+- Frozen delete-p expanded unchanged to1800/450perfold:62.628810vsFoRIS60.484167,
+  +2.144643[1.221813,2.958440];vsRCG+.341148[-.465580,1.085701],vsMEAN+.210531[-.596419,.993175].
+  Strong-control superiority remains unresolved. All prior1200counts and complete RCG/MEAN/Astra masks
+  independently match existing annotations; no encoder or feature recreation.
+  [1800report](../../evidence/local/research_20261005/pipeline_verified/frozen_public1800_v1/report.json).
+- Complete INSID3 logic comparison onDEV241 finished:bilinear54.408042,640CRF55.006020;
+  versusFoRIS59.074825,CRFgain-4.068805[-6.395323,-.234831]. Released0c165a10logic,
+  common timm DINOv3-L weights,paired BF16 andnative FP32basis. Hub numerical parity is not asserted.
+  [Report](../../evidence/local/research_20261005/pipeline_verified/insid3_complete241_v2/report.json).
+- CompleteA/Bcomposition1200=64.119318,+2.506516[1.348066,3.435200]vsFoRIS and+.161083
+  [.017346,.276713]vsretainedB. VsRCG+.521298[-.465123,1.318251],vsMEAN+.537726[-.422437,1.389626];
+  vsunionquota+.032162[-.017208,.127733],vspixel+.002634[-.001900,.007321]. Strong-control superiority
+  andstable>=2points remain unestablished. All1200frozen-deletion/same-count I/U match exactly;full edits retained.
+  [Completecomposition](../../evidence/local/research_20261005/pipeline_verified/composed1200_dev_v1/report.json).
+  Unchangedmethod is frozen andrunning under29248/start952865380 onlive publicblocks4/5,thenCPUscore;
+  merge with0/1to2400/600perfold andreportnew1200separately. Read live features inRAM,preservecompactpackets,
+  never delete/recreate features. Original1200cache protected. Not a full4000orindependentconfirmation claim.
 - Another queue's4000public-labelled manifests contain allDEV241,old600 and historical isolated600;
   3999unique episode identities and6722photos. Preserve4000sampled draws; do not silently deduplicate.
   This is benchmark reuse,not4000fresh cases; sampling/worker RNG still needs version verification.

@@ -740,3 +740,88 @@ independently reconstructed within4.27e-14points. Cached241selection122.94s,comp
 [original mask parity](research_20261005/pipeline_verified/directional_controls241_v1/original_arm_parity.json),
 [reconstruction](research_20261005/pipeline_verified/directional_controls241_v1/verification_receipt.json),
 [1200frozen queue](../../launch/directional_controls1200_dev_v1/plan.json).
+
+
+### 2026-10-05: complete1200strong controls and larger1800fixed rule
+
+Frozen directional predictor and all previous baseline/control scores reproduce on retained1200,
+seed0,1024,80classes,300/fold,1046photo-connected groups. Additional controls:pixel63.718897,
+p1greedy63.761862,single-family63.797241. Primary63.760280vspixel+.041384[.003448,.085630],
+vsp1greedy-.001581[-.039024,.036369],vssingle-.036960[-.080854,.006758]. Single-familyvsMEAN
++.215649[-.043271,.508077]. Family constraints outperform unrestricted pixel optimization under
+this imperfect value field, but neither joint selection nor the strongest single-family output
+establishes the full objective. Query GT was opened only after every output was sealed.
+[1200report](research_20261005/pipeline_verified/directional_controls1200_dev_v1/report.json),
+[reconstruction](research_20261005/pipeline_verified/directional_controls1200_dev_v1/verification_receipt.json).
+
+Predeclared del[p,w0,t0] expanded unchanged to1800,450/fold,80classes,1507photo-connected groups,
+largest16;public benchmark reuse,seed0,1024. FoRIS60.484167,RCG62.287662,MEAN62.418279,
+Astra61.922673,frozen delete-p62.628810,same-countdeletion62.529434. PrimaryvsFoRIS
++2.144643[1.221813,2.958440],vsRCG+.341148[-.465580,1.085701],vsMEAN+.210531[-.596419,.993175],
+vssame-count+.099376[-.092148,.321754]. FoldgainsvsFoRIS:2.634257,1.938934,1.842898,2.162484;
+900up/875down/25tie. Advantage over strong controls is still unresolved at this larger sample.
+Every previously verified1200I/U is unchanged; fullRCG/MEAN/Astra masks independently match GT
+resized by the same nearest-neighbour rule. No encoder or feature recreation/deletion.
+Native/delete-p provenance remains count-only in this readout; missing full-mask/raw-DINO edits
+are explicitly absent. All1800draws are retained. Independentclass-summed reconstruction error
+<=3.56e-14points. [1800report](research_20261005/pipeline_verified/frozen_public1800_v1/report.json),
+[source receipts](research_20261005/pipeline_verified/frozen_public1800_v1/receipt.json).
+
+### 2026-10-05: complete released INSID3 logic on commonDEV241
+
+ReleasedINSID3 revision0c165a10cf52ab91f335883d06260de86854adbe is unchanged. The adapter uses the
+same local timm DINOv3-L weights as FoRIS;pairedBF16reference/query extraction, nativeFP32black-image
+basis with500components,tau.6,merge.2,1024rendering. The optional640CRF anddefaultbilinear outputs
+are separately named. Hub numerical parity and identity with the published score are not asserted.
+COCO-20iDEV241,seed0,79classes,239connected-photo groups;all predictions sealed beforeCPUscore.
+
+Bilinear54.408042vsFoRIS59.074825:-4.666783[-7.005642,-1.111330];640CRF55.006020vsFoRIS
+-4.068805[-6.395323,-.234831]. CRFvsbilinear+.597979[.321421,1.106677]. The earlier cached
+approximation54.469550 is retained as a separate arm. No method silently substituted.
+CRFfoldgainsvsFoRIS:-4.687947,-6.225261,-.008859,-5.420749;81up/158down/2tie.
+Raw-DINOrelativeedits:bilinearaddTP3,619,612/addFP2,629,379/deleteTP2,806,222/deleteFP12,356,987;
+CRFaddTP3,672,517/addFP2,441,148/deleteTP3,002,669/deleteFP12,667,482.
+FullGPUinference219.86s,including7.03ssetup;peakCUDA1,712,654,848bytes,CPU1. v1failed before
+encoding because a minimal snapshot omitted the existing encoder adapter;v2included it unchanged.
+No download/install or feature deletion. Independentlocalclass-summed reconstruction andmetadata
+seal checks passed. [Report](research_20261005/pipeline_verified/insid3_complete241_v2/report.json),
+[protocol](research_20261005/pipeline_verified/insid3_complete241_v2/protocol.json),
+[verification](research_20261005/pipeline_verified/insid3_complete241_v2/verification_receipt.json).
+
+
+### 2026-10-05: complete frozen B plus conditional A composition on1200
+
+Newconstruction after previously inspected1200/1800;development only. Retain exact del[p,w0,t0]
+anditsCbase as B. A families can restore deletedRCG pixels or add FoRIS/MEANextent,selected by p1
+expected I/U after B. Fixed5percentRCG-area budget andquarter/half/full frontiers. Six domain families;
+no extra encoder/querylabels. Compare complete B,blind A+B,fixedunion/restore/extent quotas andthe
+unrestricted same-field addition optimizer. FrozenB andsame-count masks reproduce all1200existing
+I/U exactly. All new masks sealed before CPUscore;full B masks now supply previously missing edits.
+
+COCO-20i1-shot,seed0,1024;1200/300perfold,80classes,1046connected-photo groups. FoRIS61.612802,
+RCG63.598020,MEAN63.581592,B63.958235,conditionalA+B64.119318. Controls:blind64.047304,
+unionquota64.087156,restorequota64.004858,extentquota63.935109,pixel64.116684.
+PrimaryvsFoRIS+2.506516[1.348066,3.435200],vsRCG+.521298[-.465123,1.318251],
+vsMEAN+.537726[-.422437,1.389626],vsB+.161083[.017346,.276713]. Vsunionquota+.032162
+[-.017208,.127733],vsblind+.072014[-.040877,.165543],vspixel+.002634[-.001900,.007321].
+The complete composition improves its retained deletion component, but superiority to the strongest
+simple controls andstable>=2points remain unestablished. Do not promote a tied control as a new method.
+
+FoldgainsvsFoRIS:3.314624,1.261556,2.142025,3.307860;632up/552down/16tie.
+FinalRCGrelativeedits:addTP664,326/addFP626,205/deleteTP3,997,175/deleteFP8,349,971.
+FullB:addTP0/addFP0/deleteTP5,073,086/deleteFP9,843,565. ConditionalA therefore restores
+1,075,911true pixels and1,493,594false pixels previously deleted byB, while adding664,326true
+and626,205false pixels outsideRCG. Restoration andextent are explicitly distinct operations.
+Blindcomposition:addTP989,716/addFP1,184,757;itsBdeletions are unchanged.
+Cached1200selection152.41s,peakCUDA283,252,736bytes;complete producer runtime excluded.
+Independentlocalclass-summed reconstruction error<=2.85e-14points;protocol/choices matchseal.
+[Report](research_20261005/pipeline_verified/composed1200_dev_v1/report.json),
+[per-episode I/U](research_20261005/pipeline_verified/composed1200_dev_v1/episodes.jsonl),
+[verification](research_20261005/pipeline_verified/composed1200_dev_v1/verification_receipt.json).
+
+The unchanged predictor is frozen for live publicblocks4/5,chosen for available feature lifetimes,
+not scores. Combinedreadout will use blocks0/1/4/5 for2400,600/fold;also report the new1200alone.
+Existing1200features are protected;future feature arrays are read fromtheprovider inRAM,with no
+feature deletion/recreation. Compact source packets andsealed final masks are retained. Parent
+mask/field seals andoriginal deletion/count parity are required before accepting the new result.
+This is benchmark reuse with photo overlap,not photograph-isolated confirmation or a full4000SOTAclaim.
