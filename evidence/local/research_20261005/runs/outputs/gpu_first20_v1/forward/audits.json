@@ -1,0 +1,5044 @@
+{
+  "setup": {
+    "source_input": "normalized_black_image",
+    "rank": 500,
+    "black_forwards": 1,
+    "svd_count": 2,
+    "seconds_by_svd": {
+      "transition": 0.8497632723301649,
+      "concat": 0.5545341204851866
+    },
+    "seconds_total": 1.6368916351348162,
+    "no_additional_natural_images": true
+  },
+  "episodes": {
+    "0_11_0": {
+      "timings": {
+        "native": {
+          "seconds": 1.9050437230616808,
+          "peak_cuda_bytes": 1742150144
+        },
+        "identity": {
+          "seconds": 1.494949884712696,
+          "peak_cuda_bytes": 1823988224
+        },
+        "masked_identity": {
+          "seconds": 1.4891668111085892,
+          "peak_cuda_bytes": 1977977856
+        },
+        "control": {
+          "seconds": 1.467234279960394,
+          "peak_cuda_bytes": 1910885376
+        },
+        "intervention": {
+          "seconds": 1.4806104637682438,
+          "peak_cuda_bytes": 1977977856
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.981593444943428,
+          "peak_cuda_bytes": 1829505024
+        },
+        "multilayer.native_audit": {
+          "seconds": 0.9761736318469048
+        },
+        "multilayer.control": {
+          "seconds": 1.025680061429739
+        },
+        "multilayer": {
+          "seconds": 1.0238674692809582
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "identity": {
+          "attention": {
+            "arm": "identity",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "native",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": false,
+            "role_mean": -0.004875704646110535,
+            "role_rms": 0.20838415622711182,
+            "bias_rms": 0.0,
+            "bias_max_abs": 0.0,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "masked_identity": {
+          "attention": {
+            "arm": "masked_identity",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.004875704646110535,
+            "role_rms": 0.20838415622711182,
+            "bias_rms": 0.0,
+            "bias_max_abs": 0.0,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.004875704646110535,
+            "role_rms": 0.20838415622711182,
+            "bias_rms": 0.030099190771579742,
+            "bias_max_abs": 0.0785648450255394,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.004875704646110535,
+            "role_rms": 0.20838415622711182,
+            "bias_rms": 0.030099190771579742,
+            "bias_max_abs": 0.20506978034973145,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 2,
+          "intervention": false,
+          "native_tap_max_abs_error": 0.0,
+          "seconds_feature_forward_and_cpu_copy": 0.9814484603703022
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.8317880313843489,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 2,
+            "intervention": false,
+            "native_tap_max_abs_error": 0.0,
+            "seconds_feature_forward_and_cpu_copy": 0.9814484603703022
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.8844333402812481,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 2,
+            "intervention": false,
+            "native_tap_max_abs_error": 0.0,
+            "seconds_feature_forward_and_cpu_copy": 0.9814484603703022
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.8783975746482611,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 2,
+            "intervention": false,
+            "native_tap_max_abs_error": 0.0,
+            "seconds_feature_forward_and_cpu_copy": 0.9814484603703022
+          }
+        }
+      }
+    },
+    "0_38_44": {
+      "timings": {
+        "native": {
+          "seconds": 1.3733692076057196,
+          "peak_cuda_bytes": 1822939648
+        },
+        "control": {
+          "seconds": 1.3259829841554165,
+          "peak_cuda_bytes": 1944439808
+        },
+        "intervention": {
+          "seconds": 1.343881445005536,
+          "peak_cuda_bytes": 2011532288
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.5076303333044052,
+          "peak_cuda_bytes": 1829545984
+        },
+        "multilayer.native_audit": {
+          "seconds": 0.8987229093909264
+        },
+        "multilayer.control": {
+          "seconds": 0.8835018239915371
+        },
+        "multilayer": {
+          "seconds": 0.8755623437464237
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.16166774928569794,
+            "role_rms": 0.3232792019844055,
+            "bias_rms": 0.07244042307138443,
+            "bias_max_abs": 0.1635376662015915,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.16166774928569794,
+            "role_rms": 0.3232792019844055,
+            "bias_rms": 0.07244042307138443,
+            "bias_max_abs": 0.369193971157074,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 1,
+          "intervention": false,
+          "native_tap_max_abs_error": null,
+          "seconds_feature_forward_and_cpu_copy": 0.5075017772614956
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.7545781452208757,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5075017772614956
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.7401258368045092,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5075017772614956
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.7324357070028782,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5075017772614956
+          }
+        }
+      }
+    },
+    "0_22_20": {
+      "timings": {
+        "native": {
+          "seconds": 1.4099681489169598,
+          "peak_cuda_bytes": 1856494080
+        },
+        "control": {
+          "seconds": 1.4947697687894106,
+          "peak_cuda_bytes": 1944439808
+        },
+        "intervention": {
+          "seconds": 1.4739958718419075,
+          "peak_cuda_bytes": 2011532288
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.503819277510047,
+          "peak_cuda_bytes": 1829545984
+        },
+        "multilayer.native_audit": {
+          "seconds": 1.0366667341440916
+        },
+        "multilayer.control": {
+          "seconds": 1.0349702015519142
+        },
+        "multilayer": {
+          "seconds": 1.0623120572417974
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.08357010781764984,
+            "role_rms": 0.3235428035259247,
+            "bias_rms": 0.07255861163139343,
+            "bias_max_abs": 0.15629203617572784,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.08357010781764984,
+            "role_rms": 0.3235428035259247,
+            "bias_rms": 0.07255861163139343,
+            "bias_max_abs": 0.33665475249290466,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 1,
+          "intervention": false,
+          "native_tap_max_abs_error": null,
+          "seconds_feature_forward_and_cpu_copy": 0.5036704260855913
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.8922516796737909,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5036704260855913
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": false,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.8910984992980957,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5036704260855913
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.9175765626132488,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5036704260855913
+          }
+        }
+      }
+    },
+    "0_0_72": {
+      "timings": {
+        "native": {
+          "seconds": 1.37365466915071,
+          "peak_cuda_bytes": 1856494080
+        },
+        "control": {
+          "seconds": 1.4449759032577276,
+          "peak_cuda_bytes": 1944439808
+        },
+        "intervention": {
+          "seconds": 1.368148161098361,
+          "peak_cuda_bytes": 2011532288
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.510461863130331,
+          "peak_cuda_bytes": 1829545984
+        },
+        "multilayer.native_audit": {
+          "seconds": 0.9391430038958788
+        },
+        "multilayer.control": {
+          "seconds": 0.9493367243558168
+        },
+        "multilayer": {
+          "seconds": 0.9564607162028551
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.12174227088689804,
+            "role_rms": 0.2243070751428604,
+            "bias_rms": 0.034874774515628815,
+            "bias_max_abs": 0.102337546646595,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.12174227088689804,
+            "role_rms": 0.2243070751428604,
+            "bias_rms": 0.034874774515628815,
+            "bias_max_abs": 0.3003022074699402,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 1,
+          "intervention": false,
+          "native_tap_max_abs_error": null,
+          "seconds_feature_forward_and_cpu_copy": 0.5103248246014118
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.8007151279598475,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5103248246014118
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.8108062278479338,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5103248246014118
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.8179710153490305,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5103248246014118
+          }
+        }
+      }
+    },
+    "0_1_44": {
+      "timings": {
+        "native": {
+          "seconds": 1.3231776673346758,
+          "peak_cuda_bytes": 1856494080
+        },
+        "control": {
+          "seconds": 1.32908078096807,
+          "peak_cuda_bytes": 1944439808
+        },
+        "intervention": {
+          "seconds": 1.3342382945120335,
+          "peak_cuda_bytes": 2011532288
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.5054178033024073,
+          "peak_cuda_bytes": 1829545984
+        },
+        "multilayer.native_audit": {
+          "seconds": 0.9382392037659883
+        },
+        "multilayer.control": {
+          "seconds": 0.9396519493311644
+        },
+        "multilayer": {
+          "seconds": 0.9470529202371836
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.12517079710960388,
+            "role_rms": 0.3095223307609558,
+            "bias_rms": 0.06640631705522537,
+            "bias_max_abs": 0.16318464279174805,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.12517079710960388,
+            "role_rms": 0.3095223307609558,
+            "bias_rms": 0.06640630960464478,
+            "bias_max_abs": 0.4010043442249298,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 1,
+          "intervention": false,
+          "native_tap_max_abs_error": null,
+          "seconds_feature_forward_and_cpu_copy": 0.5052821040153503
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.784464517608285,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5052821040153503
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.7868659980595112,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5052821040153503
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.7938446905463934,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5052821040153503
+          }
+        }
+      }
+    },
+    "1_5_1": {
+      "timings": {
+        "native": {
+          "seconds": 1.4024368934333324,
+          "peak_cuda_bytes": 1856494080
+        },
+        "control": {
+          "seconds": 1.4081908836960793,
+          "peak_cuda_bytes": 1944439808
+        },
+        "intervention": {
+          "seconds": 1.4672565199434757,
+          "peak_cuda_bytes": 2011532288
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.5061564203351736,
+          "peak_cuda_bytes": 1829545984
+        },
+        "multilayer.native_audit": {
+          "seconds": 1.0454722307622433
+        },
+        "multilayer.control": {
+          "seconds": 1.058000836521387
+        },
+        "multilayer": {
+          "seconds": 1.0255943853408098
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.028447920456528664,
+            "role_rms": 0.3027802109718323,
+            "bias_rms": 0.063544861972332,
+            "bias_max_abs": 0.15363231301307678,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.028447920456528664,
+            "role_rms": 0.3027802109718323,
+            "bias_rms": 0.063544861972332,
+            "bias_max_abs": 0.37143662571907043,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 1,
+          "intervention": false,
+          "native_tap_max_abs_error": null,
+          "seconds_feature_forward_and_cpu_copy": 0.5060236882418394
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.8612413629889488,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5060236882418394
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.8965838998556137,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5060236882418394
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.8651571553200483,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5060236882418394
+          }
+        }
+      }
+    },
+    "1_38_5": {
+      "timings": {
+        "native": {
+          "seconds": 1.3874078635126352,
+          "peak_cuda_bytes": 1856494080
+        },
+        "control": {
+          "seconds": 1.3844973556697369,
+          "peak_cuda_bytes": 1944439808
+        },
+        "intervention": {
+          "seconds": 1.4181249402463436,
+          "peak_cuda_bytes": 2011532288
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.5009998921304941,
+          "peak_cuda_bytes": 1829545984
+        },
+        "multilayer.native_audit": {
+          "seconds": 0.9311970099806786
+        },
+        "multilayer.control": {
+          "seconds": 0.897947059944272
+        },
+        "multilayer": {
+          "seconds": 0.8711152579635382
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.1682731807231903,
+            "role_rms": 0.38659465312957764,
+            "bias_rms": 0.10359461605548859,
+            "bias_max_abs": 0.19296492636203766,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.1682731807231903,
+            "role_rms": 0.38659465312957764,
+            "bias_rms": 0.10359461605548859,
+            "bias_max_abs": 0.3594343960285187,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 1,
+          "intervention": false,
+          "native_tap_max_abs_error": null,
+          "seconds_feature_forward_and_cpu_copy": 0.5008978545665741
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.7818748578429222,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5008978545665741
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.7359846699982882,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5008978545665741
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.719117121770978,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5008978545665741
+          }
+        }
+      }
+    },
+    "1_21_65": {
+      "timings": {
+        "native": {
+          "seconds": 1.3762252535670996,
+          "peak_cuda_bytes": 1856494080
+        },
+        "control": {
+          "seconds": 1.381634209305048,
+          "peak_cuda_bytes": 1944439808
+        },
+        "intervention": {
+          "seconds": 1.377466131001711,
+          "peak_cuda_bytes": 2011532288
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.5048987325280905,
+          "peak_cuda_bytes": 1829545984
+        },
+        "multilayer.native_audit": {
+          "seconds": 0.938324810937047
+        },
+        "multilayer.control": {
+          "seconds": 0.9857770558446646
+        },
+        "multilayer": {
+          "seconds": 1.0311745759099722
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.006899501197040081,
+            "role_rms": 0.2771730422973633,
+            "bias_rms": 0.053250961005687714,
+            "bias_max_abs": 0.14482471346855164,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.006899501197040081,
+            "role_rms": 0.2771730422973633,
+            "bias_rms": 0.053250961005687714,
+            "bias_max_abs": 0.39387452602386475,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 1,
+          "intervention": false,
+          "native_tap_max_abs_error": null,
+          "seconds_feature_forward_and_cpu_copy": 0.5047679301351309
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.7918881643563509,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5047679301351309
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.823246244341135,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5047679301351309
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.8831752426922321,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5047679301351309
+          }
+        }
+      }
+    },
+    "1_0_73": {
+      "timings": {
+        "native": {
+          "seconds": 1.3713551834225655,
+          "peak_cuda_bytes": 1856494080
+        },
+        "control": {
+          "seconds": 1.404067812487483,
+          "peak_cuda_bytes": 1944439808
+        },
+        "intervention": {
+          "seconds": 1.4125652685761452,
+          "peak_cuda_bytes": 2011532288
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.5090948287397623,
+          "peak_cuda_bytes": 1829545984
+        },
+        "multilayer.native_audit": {
+          "seconds": 0.9101233221590519
+        },
+        "multilayer.control": {
+          "seconds": 0.8638223353773355
+        },
+        "multilayer": {
+          "seconds": 0.8584760911762714
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.04823600873351097,
+            "role_rms": 0.3909602463245392,
+            "bias_rms": 0.10594748705625534,
+            "bias_max_abs": 0.23977182805538177,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.04823600873351097,
+            "role_rms": 0.3909602463245392,
+            "bias_rms": 0.10594748705625534,
+            "bias_max_abs": 0.5426322817802429,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 1,
+          "intervention": false,
+          "native_tap_max_abs_error": null,
+          "seconds_feature_forward_and_cpu_copy": 0.5089669730514288
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.7590179219841957,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5089669730514288
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.7121454682201147,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5089669730514288
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.706780131906271,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5089669730514288
+          }
+        }
+      }
+    },
+    "1_1_77": {
+      "timings": {
+        "native": {
+          "seconds": 1.447783576324582,
+          "peak_cuda_bytes": 1856494080
+        },
+        "control": {
+          "seconds": 1.4520608969032764,
+          "peak_cuda_bytes": 1944439808
+        },
+        "intervention": {
+          "seconds": 1.419376203790307,
+          "peak_cuda_bytes": 2011532288
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.5048937611281872,
+          "peak_cuda_bytes": 1829545984
+        },
+        "multilayer.native_audit": {
+          "seconds": 0.9305586218833923
+        },
+        "multilayer.control": {
+          "seconds": 0.9365575164556503
+        },
+        "multilayer": {
+          "seconds": 0.9295852910727262
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.147244393825531,
+            "role_rms": 0.43521741032600403,
+            "bias_rms": 0.13129191100597382,
+            "bias_max_abs": 0.24492546916007996,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.147244393825531,
+            "role_rms": 0.43521741032600403,
+            "bias_rms": 0.13129191100597382,
+            "bias_max_abs": 0.4569092094898224,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 1,
+          "intervention": false,
+          "native_tap_max_abs_error": null,
+          "seconds_feature_forward_and_cpu_copy": 0.5047790836542845
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.7908397279679775,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5047790836542845
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.8033544477075338,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5047790836542845
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.7962106857448816,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5047790836542845
+          }
+        }
+      }
+    },
+    "2_3_2": {
+      "timings": {
+        "native": {
+          "seconds": 1.2605577073991299,
+          "peak_cuda_bytes": 1856494080
+        },
+        "control": {
+          "seconds": 1.2922741994261742,
+          "peak_cuda_bytes": 1944439808
+        },
+        "intervention": {
+          "seconds": 1.2805374711751938,
+          "peak_cuda_bytes": 2011532288
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.5082092080265284,
+          "peak_cuda_bytes": 1829545984
+        },
+        "multilayer.native_audit": {
+          "seconds": 0.8434681221842766
+        },
+        "multilayer.control": {
+          "seconds": 0.8524096515029669
+        },
+        "multilayer": {
+          "seconds": 0.8494203872978687
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.2853384017944336,
+            "role_rms": 0.41598576307296753,
+            "bias_rms": 0.11994506418704987,
+            "bias_max_abs": 0.2504376173019409,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.2853384017944336,
+            "role_rms": 0.41598576307296753,
+            "bias_rms": 0.11994506418704987,
+            "bias_max_abs": 0.5228977799415588,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 1,
+          "intervention": false,
+          "native_tap_max_abs_error": null,
+          "seconds_feature_forward_and_cpu_copy": 0.5081173107028008
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.7022215072065592,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5081173107028008
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.7128512654453516,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5081173107028008
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.7087203841656446,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5081173107028008
+          }
+        }
+      }
+    },
+    "2_38_50": {
+      "timings": {
+        "native": {
+          "seconds": 1.366469632834196,
+          "peak_cuda_bytes": 1856494080
+        },
+        "control": {
+          "seconds": 1.3423288948833942,
+          "peak_cuda_bytes": 1944439808
+        },
+        "intervention": {
+          "seconds": 1.4438524674624205,
+          "peak_cuda_bytes": 2011532288
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.5130282659083605,
+          "peak_cuda_bytes": 1829545984
+        },
+        "multilayer.native_audit": {
+          "seconds": 0.9890148136764765
+        },
+        "multilayer.control": {
+          "seconds": 1.0149773880839348
+        },
+        "multilayer": {
+          "seconds": 1.0261421091854572
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.10828489065170288,
+            "role_rms": 0.4242826998233795,
+            "bias_rms": 0.12477745115756989,
+            "bias_max_abs": 0.2567993104457855,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.10828489065170288,
+            "role_rms": 0.4242826998233795,
+            "bias_rms": 0.12477745115756989,
+            "bias_max_abs": 0.5285080075263977,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 1,
+          "intervention": false,
+          "native_tap_max_abs_error": null,
+          "seconds_feature_forward_and_cpu_copy": 0.5128643605858088
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.8398916702717543,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5128643605858088
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.8666067160665989,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5128643605858088
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.8778307419270277,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5128643605858088
+          }
+        }
+      }
+    },
+    "2_21_78": {
+      "timings": {
+        "native": {
+          "seconds": 1.3618859611451626,
+          "peak_cuda_bytes": 1856494080
+        },
+        "control": {
+          "seconds": 1.303540751338005,
+          "peak_cuda_bytes": 1944439808
+        },
+        "intervention": {
+          "seconds": 1.3125100694596767,
+          "peak_cuda_bytes": 2011532288
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.49686726555228233,
+          "peak_cuda_bytes": 1829545984
+        },
+        "multilayer.native_audit": {
+          "seconds": 0.8757238294929266
+        },
+        "multilayer.control": {
+          "seconds": 0.8937672413885593
+        },
+        "multilayer": {
+          "seconds": 0.8873852007091045
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.170942485332489,
+            "role_rms": 0.2658027708530426,
+            "bias_rms": 0.04897162318229675,
+            "bias_max_abs": 0.12503214180469513,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.170942485332489,
+            "role_rms": 0.2658027708530426,
+            "bias_rms": 0.048971619457006454,
+            "bias_max_abs": 0.31922647356987,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 1,
+          "intervention": false,
+          "native_tap_max_abs_error": null,
+          "seconds_feature_forward_and_cpu_copy": 0.4967734385281801
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.7387275360524654,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.4967734385281801
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.754174031317234,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.4967734385281801
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.7504372112452984,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.4967734385281801
+          }
+        }
+      }
+    },
+    "2_0_74": {
+      "timings": {
+        "native": {
+          "seconds": 1.2722814437001944,
+          "peak_cuda_bytes": 1856494080
+        },
+        "control": {
+          "seconds": 1.3350983671844006,
+          "peak_cuda_bytes": 1944439808
+        },
+        "intervention": {
+          "seconds": 1.324491212144494,
+          "peak_cuda_bytes": 2011532288
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.5027549751102924,
+          "peak_cuda_bytes": 1829545984
+        },
+        "multilayer.native_audit": {
+          "seconds": 0.8577145598828793
+        },
+        "multilayer.control": {
+          "seconds": 0.8717474937438965
+        },
+        "multilayer": {
+          "seconds": 0.8827631920576096
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.3282111585140228,
+            "role_rms": 0.506895124912262,
+            "bias_rms": 0.17809909582138062,
+            "bias_max_abs": 0.33003127574920654,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.3282111585140228,
+            "role_rms": 0.506895124912262,
+            "bias_rms": 0.178099125623703,
+            "bias_max_abs": 0.6115732789039612,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 1,
+          "intervention": false,
+          "native_tap_max_abs_error": null,
+          "seconds_feature_forward_and_cpu_copy": 0.5026575606316328
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.7122711054980755,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5026575606316328
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.722335696220398,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5026575606316328
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.7281949315220118,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5026575606316328
+          }
+        }
+      }
+    },
+    "2_6_74": {
+      "timings": {
+        "native": {
+          "seconds": 1.2840742785483599,
+          "peak_cuda_bytes": 1856494080
+        },
+        "control": {
+          "seconds": 1.2948903478682041,
+          "peak_cuda_bytes": 1944439808
+        },
+        "intervention": {
+          "seconds": 1.3105909153819084,
+          "peak_cuda_bytes": 2011532288
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.5159711502492428,
+          "peak_cuda_bytes": 1829545984
+        },
+        "multilayer.native_audit": {
+          "seconds": 0.8583522960543633
+        },
+        "multilayer.control": {
+          "seconds": 0.8694281112402678
+        },
+        "multilayer": {
+          "seconds": 0.8586990479379892
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.3799910247325897,
+            "role_rms": 0.4666903018951416,
+            "bias_rms": 0.15096734464168549,
+            "bias_max_abs": 0.2758146822452545,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.3799910247325897,
+            "role_rms": 0.4666903018951416,
+            "bias_rms": 0.15096734464168549,
+            "bias_max_abs": 0.5039085745811462,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 1,
+          "intervention": false,
+          "native_tap_max_abs_error": null,
+          "seconds_feature_forward_and_cpu_copy": 0.5158295053988695
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.7114196680486202,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5158295053988695
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.7328913044184446,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5158295053988695
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.7227370887994766,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5158295053988695
+          }
+        }
+      }
+    },
+    "3_1_3": {
+      "timings": {
+        "native": {
+          "seconds": 1.3645578790456057,
+          "peak_cuda_bytes": 1856494080
+        },
+        "control": {
+          "seconds": 1.3674960806965828,
+          "peak_cuda_bytes": 1944439808
+        },
+        "intervention": {
+          "seconds": 1.3653977941721678,
+          "peak_cuda_bytes": 2011532288
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.5079907085746527,
+          "peak_cuda_bytes": 1829545984
+        },
+        "multilayer.native_audit": {
+          "seconds": 0.9566002152860165
+        },
+        "multilayer.control": {
+          "seconds": 0.9457175135612488
+        },
+        "multilayer": {
+          "seconds": 0.9439788926392794
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.06588324904441833,
+            "role_rms": 0.3097788095474243,
+            "bias_rms": 0.06651641428470612,
+            "bias_max_abs": 0.1724315732717514,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.06588324904441833,
+            "role_rms": 0.3097788095474243,
+            "bias_rms": 0.06651641428470612,
+            "bias_max_abs": 0.44699713587760925,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 1,
+          "intervention": false,
+          "native_tap_max_abs_error": null,
+          "seconds_feature_forward_and_cpu_copy": 0.5078886058181524
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": false,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.8081352170556784,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5078886058181524
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": false,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.8012934979051352,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5078886058181524
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": false,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.7996663004159927,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5078886058181524
+          }
+        }
+      }
+    },
+    "3_38_47": {
+      "timings": {
+        "native": {
+          "seconds": 1.339008679613471,
+          "peak_cuda_bytes": 1856494080
+        },
+        "control": {
+          "seconds": 1.3653753884136677,
+          "peak_cuda_bytes": 1944439808
+        },
+        "intervention": {
+          "seconds": 1.3520340975373983,
+          "peak_cuda_bytes": 2011532288
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.5041290037333965,
+          "peak_cuda_bytes": 1829545984
+        },
+        "multilayer.native_audit": {
+          "seconds": 0.8393690604716539
+        },
+        "multilayer.control": {
+          "seconds": 0.905914481729269
+        },
+        "multilayer": {
+          "seconds": 0.8749032132327557
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.10983522981405258,
+            "role_rms": 0.41612234711647034,
+            "bias_rms": 0.12002383917570114,
+            "bias_max_abs": 0.2327796071767807,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.10983522981405258,
+            "role_rms": 0.41612234711647034,
+            "bias_rms": 0.12002383917570114,
+            "bias_max_abs": 0.4514631927013397,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 1,
+          "intervention": false,
+          "native_tap_max_abs_error": null,
+          "seconds_feature_forward_and_cpu_copy": 0.5040331892669201
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.6960168071091175,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5040331892669201
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.761938164010644,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5040331892669201
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.7324786651879549,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5040331892669201
+          }
+        }
+      }
+    },
+    "3_21_39": {
+      "timings": {
+        "native": {
+          "seconds": 1.3241234496235847,
+          "peak_cuda_bytes": 1856494080
+        },
+        "control": {
+          "seconds": 1.3328475188463926,
+          "peak_cuda_bytes": 1944439808
+        },
+        "intervention": {
+          "seconds": 1.3317589163780212,
+          "peak_cuda_bytes": 2011532288
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.5047818124294281,
+          "peak_cuda_bytes": 1829545984
+        },
+        "multilayer.native_audit": {
+          "seconds": 0.9119784068316221
+        },
+        "multilayer.control": {
+          "seconds": 0.9107918459922075
+        },
+        "multilayer": {
+          "seconds": 0.9208349790424109
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.19468390941619873,
+            "role_rms": 0.4317992925643921,
+            "bias_rms": 0.12923772633075714,
+            "bias_max_abs": 0.24223622679710388,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.19468390941619873,
+            "role_rms": 0.4317992925643921,
+            "bias_rms": 0.12923771142959595,
+            "bias_max_abs": 0.4540345370769501,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 1,
+          "intervention": false,
+          "native_tap_max_abs_error": null,
+          "seconds_feature_forward_and_cpu_copy": 0.5046828575432301
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.7640058286488056,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5046828575432301
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.7627615015953779,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5046828575432301
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.7732584234327078,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5046828575432301
+          }
+        }
+      }
+    },
+    "3_0_75": {
+      "timings": {
+        "native": {
+          "seconds": 1.35997330583632,
+          "peak_cuda_bytes": 1856494080
+        },
+        "control": {
+          "seconds": 1.378005774691701,
+          "peak_cuda_bytes": 1944439808
+        },
+        "intervention": {
+          "seconds": 1.3431306518614292,
+          "peak_cuda_bytes": 2011532288
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.5025264695286751,
+          "peak_cuda_bytes": 1829545984
+        },
+        "multilayer.native_audit": {
+          "seconds": 0.9317508824169636
+        },
+        "multilayer.control": {
+          "seconds": 0.9699964113533497
+        },
+        "multilayer": {
+          "seconds": 1.0294581186026335
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.021140206605196,
+            "role_rms": 0.3350064158439636,
+            "bias_rms": 0.07779142260551453,
+            "bias_max_abs": 0.16299737989902496,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.021140206605196,
+            "role_rms": 0.3350064158439636,
+            "bias_rms": 0.07779142260551453,
+            "bias_max_abs": 0.3415305018424988,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 1,
+          "intervention": false,
+          "native_tap_max_abs_error": null,
+          "seconds_feature_forward_and_cpu_copy": 0.5024236086755991
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.764886224642396,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5024236086755991
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.7787239644676447,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5024236086755991
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.8589175008237362,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5024236086755991
+          }
+        }
+      }
+    },
+    "3_4_51": {
+      "timings": {
+        "native": {
+          "seconds": 1.603577096015215,
+          "peak_cuda_bytes": 1856494080
+        },
+        "control": {
+          "seconds": 1.5036255475133657,
+          "peak_cuda_bytes": 1944439808
+        },
+        "intervention": {
+          "seconds": 1.491679748520255,
+          "peak_cuda_bytes": 2011532288
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.5076910424977541,
+          "peak_cuda_bytes": 1829545984
+        },
+        "multilayer.native_audit": {
+          "seconds": 1.058754762634635
+        },
+        "multilayer.control": {
+          "seconds": 1.0499665569514036
+        },
+        "multilayer": {
+          "seconds": 1.0763872042298317
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.117497518658638,
+            "role_rms": 0.3180323541164398,
+            "bias_rms": 0.0701080784201622,
+            "bias_max_abs": 0.18871279060840607,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.117497518658638,
+            "role_rms": 0.3180323541164398,
+            "bias_rms": 0.0701080784201622,
+            "bias_max_abs": 0.5079659223556519,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 1,
+          "intervention": false,
+          "native_tap_max_abs_error": null,
+          "seconds_feature_forward_and_cpu_copy": 0.5075834728777409
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.9157359227538109,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5075834728777409
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.9077068064361811,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5075834728777409
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.9093312919139862,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5075834728777409
+          }
+        }
+      }
+    }
+  },
+  "first_episode_mask_path": {
+    "identity": {
+      "full_mask_exact": true,
+      "full_score_close": true,
+      "full_score_max_abs": 0.0,
+      "reference_exact": true,
+      "reference_close": true,
+      "reference_max_abs": 0.0,
+      "reference_directly_biased": false,
+      "sdpa_path": "native mask",
+      "numerical_tolerance": {
+        "atol": 1e-05,
+        "rtol": 1e-05
+      }
+    },
+    "masked_identity": {
+      "full_mask_exact": true,
+      "full_score_close": true,
+      "full_score_max_abs": 0.0,
+      "reference_exact": true,
+      "reference_close": true,
+      "reference_max_abs": 0.0,
+      "reference_directly_biased": false,
+      "sdpa_path": "full zero additive mask, same shape as candidate",
+      "numerical_tolerance": {
+        "atol": 1e-05,
+        "rtol": 1e-05
+      }
+    },
+    "control.reference_vs_masked_identity": {
+      "exact": true,
+      "close": true,
+      "max_abs": 0.0,
+      "reference_directly_biased": false
+    },
+    "intervention.reference_vs_masked_identity": {
+      "exact": true,
+      "close": true,
+      "max_abs": 0.0,
+      "reference_directly_biased": false
+    }
+  },
+  "first_episode_pre_multilayer_timings": {
+    "native": {
+      "seconds": 1.9050437230616808,
+      "peak_cuda_bytes": 1742150144
+    },
+    "identity": {
+      "seconds": 1.494949884712696,
+      "peak_cuda_bytes": 1823988224
+    },
+    "masked_identity": {
+      "seconds": 1.4891668111085892,
+      "peak_cuda_bytes": 1977977856
+    },
+    "control": {
+      "seconds": 1.467234279960394,
+      "peak_cuda_bytes": 1910885376
+    },
+    "intervention": {
+      "seconds": 1.4806104637682438,
+      "peak_cuda_bytes": 1977977856
+    }
+  }
+}

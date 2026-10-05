@@ -1,0 +1,38 @@
+{
+  "stages": [
+    {
+      "name": "mean_score",
+      "kind": "cpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env",
+        "OPENBLAS_NUM_THREADS": "1",
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_resume_v1/scripts/run_mechanisms.py",
+        "evaluate",
+        "--root",
+        "/root/autodl-tmp/demo9_extent",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/mean_graph_dev241_resume_v1",
+        "--threads",
+        "1"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/mean_graph_dev241_resume_v1/sealed.json"
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/mean_graph_dev241_resume_v1/report.json"
+        }
+      ]
+    }
+  ],
+  "authorization": "User resumed pipeline on existing GPU on 2026-10-05. No rental/download/shutdown. All DEV241."
+}

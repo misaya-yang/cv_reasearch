@@ -1,0 +1,220 @@
+{
+  "stages": [
+    {
+      "name": "complete_proposals",
+      "kind": "gpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env",
+        "OPENBLAS_NUM_THREADS": "1",
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_resume_v1/scripts/run_edit_auxiliary.py",
+        "--root",
+        "/root/autodl-tmp/demo9_extent",
+        "--manifest",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_resume_v1/evidence/local/research_20261005/dev241.json",
+        "--d-run",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/gpu_multilayer_dev241_v1",
+        "--rcg-run",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/rcg241",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/edit_aux_dev241_resume_v1",
+        "--device",
+        "cuda",
+        "--threads",
+        "1",
+        "--workers",
+        "3",
+        "--stage",
+        "infer",
+        "--proposals-only"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_resume_v1/evidence/local/research_20261005/dev241.json"
+        },
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/gpu_multilayer_dev241_v1/sealed.json"
+        },
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/rcg241/sealed.json"
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/edit_aux_dev241_resume_v1/proposal_sealed.json"
+        }
+      ]
+    },
+    {
+      "name": "auxiliary_evidence",
+      "kind": "gpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env",
+        "OPENBLAS_NUM_THREADS": "1",
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_resume_v1/scripts/run_aux_evidence.py",
+        "infer",
+        "--root",
+        "/root/autodl-tmp/demo9_extent",
+        "--manifest",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_resume_v1/evidence/local/research_20261005/dev241.json",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/aux_dev241_resume_v1",
+        "--device",
+        "cuda",
+        "--threads",
+        "2",
+        "--workers",
+        "1",
+        "--expected",
+        "241",
+        "--host",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/stage241_v1/predictions:model.raw_nn",
+        "--layers",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/gpu_multilayer_dev241_v1/layers",
+        "--bases",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/gpu_multilayer_dev241_v1/arm_bases.pt",
+        "--proposer",
+        "rcg=/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/rcg241/predictions:rcg:/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/rcg241/fields:rcg",
+        "--proposer",
+        "delta=/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/gpu_multilayer_dev241_v1/predictions:multilayer.delta.control:/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/gpu_multilayer_dev241_v1/packets:multilayer.delta.control",
+        "--proposer",
+        "D=/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/gpu_multilayer_dev241_v1/predictions:multilayer:/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/gpu_multilayer_dev241_v1/packets:multilayer",
+        "--proposer",
+        "concat=/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/gpu_multilayer_dev241_v1/predictions:multilayer.control:/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/gpu_multilayer_dev241_v1/packets:multilayer.control",
+        "--proposer",
+        "E=/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/edit_aux_dev241_resume_v1/proposals:latent_native:/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/edit_aux_dev241_resume_v1/fields:latent_native",
+        "--proposer",
+        "Efixed=/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/edit_aux_dev241_resume_v1/proposals:latent_native.control:/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/edit_aux_dev241_resume_v1/fields:latent_native.control",
+        "--proposer",
+        "Etwo=/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/edit_aux_dev241_resume_v1/proposals:latent_native.two_slot_em.control:/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/edit_aux_dev241_resume_v1/fields:latent_native.two_slot_em.control",
+        "--proposer",
+        "Bkernel=/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/edit_aux_dev241_resume_v1/proposals:structure_conditioned.kernel.control:/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/edit_aux_dev241_resume_v1/fields:structure_conditioned.kernel.control",
+        "--proposer",
+        "foris=/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/edit_aux_dev241_resume_v1/proposals:native:/root/autodl-tmp/demo9_extent/results/extent_v1/run/packets:score",
+        "--proposer",
+        "insid3=/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/stage241_v1/predictions:insid3.final",
+        "--proposer",
+        "rawmean=/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/stage241_v1/predictions:model.raw_mean"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/edit_aux_dev241_resume_v1/proposal_sealed.json"
+        },
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/stage241_v1/sealed.json"
+        },
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/gpu_multilayer_dev241_v1/arm_bases.pt"
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/aux_dev241_resume_v1/sealed.json"
+        }
+      ]
+    },
+    {
+      "name": "mean_graph",
+      "kind": "gpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env",
+        "OPENBLAS_NUM_THREADS": "1",
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_resume_v1/scripts/run_mechanisms.py",
+        "infer",
+        "--root",
+        "/root/autodl-tmp/demo9_extent",
+        "--manifest",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_resume_v1/evidence/local/research_20261005/dev241.json",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/mean_graph_dev241_resume_v1",
+        "--device",
+        "cuda",
+        "--threads",
+        "1",
+        "--methods",
+        "mean_graph"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_resume_v1/evidence/local/research_20261005/dev241.json"
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/mean_graph_dev241_resume_v1/sealed.json"
+        }
+      ]
+    },
+    {
+      "name": "fixed_auxiliary_edits",
+      "kind": "gpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env",
+        "OPENBLAS_NUM_THREADS": "1",
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_resume_v1/scripts/run_edit_auxiliary.py",
+        "--root",
+        "/root/autodl-tmp/demo9_extent",
+        "--manifest",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_resume_v1/evidence/local/research_20261005/dev241.json",
+        "--d-run",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/gpu_multilayer_dev241_v1",
+        "--rcg-run",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/rcg241",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/edit_aux_dev241_resume_v1",
+        "--device",
+        "cuda",
+        "--threads",
+        "1",
+        "--workers",
+        "3",
+        "--stage",
+        "infer",
+        "--origin",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/stage241_v1:model.raw_nn"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/edit_aux_dev241_resume_v1/proposal_sealed.json"
+        },
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/stage241_v1/sealed.json"
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/edit_aux_dev241_resume_v1/sealed.json"
+        }
+      ]
+    }
+  ],
+  "authorization": "User resumed pipeline on existing GPU on 2026-10-05. No rental/download/shutdown. All DEV241.",
+  "time_limits": null
+}

@@ -48,32 +48,68 @@ def source(spec, named=True):
 
 
 def seal_of(mask_dir):
-    """Digests of a mask directory's files from the seal beside it, or None when it has no seal."""
+    """Read one of the actually supported immutable source schemas; fail closed."""
+    from ics.experiment import sha
     d = Path(mask_dir)
-    for name in ("sealed.json", "proposal_sealed.json", "freeze.json"):
+    for name in ("sealed.json", "proposal_sealed.json", "freeze.json", "sealed_predictions.json"):
         if (d.parent / name).exists():
             s = json.loads((d.parent / name).read_text())
-            if d.name == "predictions" and isinstance(s.get("predictions"), dict): return dict(s["predictions"])
+            if "manifest_sha256" in s and sha(d.parent / "manifest.json") != s["manifest_sha256"]:
+                raise ValueError(f"{d.parent}: source manifest differs from its seal")
+            if isinstance(s.get(d.name), dict) and all(isinstance(v, str) for v in s[d.name].values()):
+                return dict(s[d.name])
             got = {Path(k).stem: v for k, v in s.get("files", {}).items() if isinstance(v, str) and k.startswith(d.name + "/")}
             if got: return got
-    return None
+            if name == "freeze.json" and d.name == "frozen":
+                if s.get("state") != "ALL_REQUESTED_EPISODE_PREDICTIONS_FROZEN_NO_QUERY_GT":
+                    raise ValueError("Astra cohort predictions are not completely frozen")
+                got = {k: r["sha256"] for k, r in s.get("records", {}).items()
+                       if r.get("path") == f"frozen/{k}.npz"}
+                if len(got) != s.get("episodes") or not got:
+                    raise ValueError("Astra freeze records are incomplete or have unexpected paths")
+                return got
+    raise ValueError(f"No supported prediction seal for {d}; unsealed inputs are not accepted")
 
 
-def read_mask(src, key, seals):
+def read_mask(src, key, seals, expected_sha=None):
     import numpy as np
     from ics.experiment import unpack, sha
     path = Path(src["masks"]) / f"{key}.npz"
     if src["masks"] not in seals: seals[src["masks"]] = seal_of(src["masks"])
     digest = sha(path)
-    if seals[src["masks"]] is not None and seals[src["masks"]].get(key) != digest:
+    if seals[src["masks"]].get(key) != digest:
         raise ValueError(f"{path} differs from its run's seal")
+    if expected_sha is not None and digest != expected_sha:
+        raise ValueError(f"{path} changed after the evidence was frozen")
     with np.load(path, allow_pickle=False) as f:
         return unpack(f[src["arm"]]), digest
 
 
+def source_identity(src, rows):
+    """A matching numeric episode key is insufficient if its photographs changed."""
+    from ics.experiment import load_rows, sha
+    root = Path(src["masks"]).parent
+    manifest, freeze = root / "manifest.json", root / "freeze.json"
+    if manifest.exists():
+        source_rows, digest = load_rows(manifest), sha(manifest)
+    elif freeze.exists():
+        source_rows, digest = json.loads(freeze.read_text())["manifest"], sha(freeze)
+    else:
+        raise ValueError(f"{root}: a sealed source must declare its episode/photo identities")
+    index = {f"{int(r['fold'])}_{int(r['e'])}_{int(r['c'])}": r for r in source_rows}
+    if len(index) != len(source_rows): raise ValueError(f"{root}: duplicate source episode identities")
+    for row in rows:
+        old = index.get(row["key"])
+        if old is None or any(Path(str(old[k])).name != Path(str(row[k])).name for k in ("support", "query")):
+            raise ValueError(f"{root}: source photographs do not match {row['key']}")
+    return digest
+
+
 def start_worker(threads):
     import torch
-    torch.set_num_threads(threads); torch.set_num_interop_threads(1); torch.manual_seed(0)
+    torch.set_num_threads(threads)
+    if torch.get_num_interop_threads() != 1: torch.set_num_interop_threads(1)
+    torch.manual_seed(0)
     torch.backends.cuda.matmul.allow_tf32 = False; torch.backends.cudnn.allow_tf32 = False
 
 
@@ -138,13 +174,19 @@ def infer_episode(task):
         mask, receipt[f"proposer_sha256:{name}"] = read_mask(src, key, seals)
         field = None
         if src["fields"]:
-            with np.load(Path(src["fields"]) / f"{key}.npz", allow_pickle=False) as f: field = f[src["field_key"]].astype(np.float32)
+            field_path = Path(src["fields"]) / f"{key}.npz"
+            with np.load(field_path, allow_pickle=False) as f: field = f[src["field_key"]].astype(np.float32)
+            receipt[f"proposer_field_sha256:{name}"] = sha(field_path)
         props[name] = (mask, field); sizes[name] = dict(add=int((mask & ~hmask).sum()), delete=int((hmask & ~mask).sum()))
     layers = bases = None
     if _FORWARD is not None:
         layers, bases = forward_layers(row), _FORWARD["bases"]
     elif cfg["layers"]:
-        with np.load(Path(cfg["layers"]) / f"{key}.npz", allow_pickle=False) as f: layers = {k: f[k] for k in f.files}
+        layer_path = Path(cfg["layers"]) / f"{key}.npz"
+        if sha(layer_path) != seal_of(cfg["layers"]).get(key):
+            raise ValueError(f"{layer_path}: saved layers differ from their source seal")
+        with np.load(layer_path, allow_pickle=False) as f: layers = {k: f[k] for k in f.files}
+        receipt["layers_sha256"] = sha(layer_path)
     if cfg["bases"] and _FORWARD is None: bases = torch.load(cfg["bases"], map_location="cpu", weights_only=True)
     names, maps, info = aux_evidence.library(key, q, r, cov, score, hmask, props, packet=cached, layers=layers, bases=bases, device=cfg["device"])
     if cfg["device"] == "cuda": torch.cuda.synchronize()
@@ -169,7 +211,10 @@ def infer(a):
     from ics.methods import aux_evidence
     if a.out.exists(): raise FileExistsError("Use a fresh output directory")
     if a.device == "cuda" and a.workers != 1: raise ValueError("One process on the GPU; use --workers for CPU inference")
+    if a.device == "cuda": start_worker(a.threads)
     rows = load_rows(a.manifest)
+    if len(rows) != a.expected:
+        raise ValueError(f"Expected exactly {a.expected} manifest episodes; got {len(rows)}")
     if a.limit:  # round robin across folds, as the cache runner does for a smoke
         folds = sorted({r["fold"] for r in rows}); bins = {f: [r for r in rows if r["fold"] == f] for f in folds}; ordered = []
         while any(bins.values()):
@@ -177,11 +222,15 @@ def infer(a):
                 if bins[f]: ordered.append(bins[f].pop(0))
         rows = ordered[:a.limit]
     host, proposers = source(a.host, named=False), dict(source(s) for s in a.proposer)
-    if len(proposers) != len(a.proposer) or UNIVERSE in proposers: raise ValueError(f"Proposer names must be unique and not '{UNIVERSE}'")
+    reserved = {UNIVERSE, "native", "origin"}
+    if len(proposers) != len(a.proposer) or reserved.intersection(proposers):
+        raise ValueError(f"Proposer names must be unique and not in {sorted(reserved)}")
+    identities = {src["masks"]: source_identity(src, rows) for src in [host, *proposers.values()]}
     (a.out / "evidence").mkdir(parents=True)
     (a.out / "manifest.json").write_text(json.dumps(rows, indent=2) + "\n")
     cfg = dict(root=str(a.root.resolve()), host=host, proposers=proposers, layers=str(a.layers.resolve()) if a.layers else None,
-               bases=str(a.bases.resolve()) if a.bases else None, device=a.device, forward_layers=None)
+               bases=str(a.bases.resolve()) if a.bases else None, device=a.device, forward_layers=None,
+               edit_origin_arm=host["arm"], source_identity_sha256=identities)
     if a.forward_layers:  # more layers than were saved: one extra paired forward per episode, nothing stored but the maps
         global _FORWARD
         import torch
@@ -203,7 +252,11 @@ def infer(a):
         seal["evidence"][got["key"]] = got["sha"]; seal["inputs"][got["key"]] = got["receipt"]; audits.append(got["audit"]); checked.update(got["sealed_sources"])
         print(json.dumps(dict(key=got["key"], seconds=round(got["audit"]["seconds"], 2), maps=len(names))), flush=True)
     (a.out / "audits.json").write_text(json.dumps(audits, indent=2) + "\n")
-    config = dict(library=aux_evidence.CONFIG, maps=names, source_sha256=sha(aux_evidence.__file__), bases_sha256=sha(a.bases) if a.bases else None,
+    code_paths = [Path(__file__), Path(aux_evidence.__file__), Path(__file__).resolve().parents[1] / "src/ics/edit_counts.py",
+                  Path(__file__).resolve().parents[1] / "src/ics/experiment.py"]
+    config = dict(library=aux_evidence.CONFIG, maps=names, source_sha256=sha(aux_evidence.__file__),
+                  code_sha256={str(p.resolve()): sha(p) for p in code_paths},
+                  bases_sha256=sha(cfg["bases"]) if cfg["bases"] else None,
                   threads=a.threads, workers=a.workers, sources_checked_against_a_seal=checked,
                   parameter_selection="library constants fixed before any query scoring; budgets are chosen across folds in score", **cfg)
     (a.out / "config.json").write_text(json.dumps(config, indent=2) + "\n")
@@ -216,15 +269,16 @@ def count_episode(task):
     import numpy as np
     from ics.experiment import packet, unpack, sha
     from ics.edit_counts import OPS, blocks, edit_set
-    row, root, host, proposers, evidence_sha, packet_sha, out = task; key, seals = row["key"], {}
+    row, root, host, proposers, evidence_sha, input_receipt, out = task; key, seals = row["key"], {}
     if sha(Path(out) / "evidence" / f"{key}.npz") != evidence_sha: raise ValueError("Evidence changed after sealing")
-    if sha(packet(root, row)) != packet_sha: raise ValueError("Evaluation packet changed")
+    if sha(packet(root, row)) != input_receipt["packet_sha256"]: raise ValueError("Evaluation packet changed")
     with np.load(packet(root, row), allow_pickle=False) as f: truth, cached = unpack(f["truth"]), unpack(f["native"])
-    hmask, _ = read_mask(host, key, seals)
+    hmask, _ = read_mask(host, key, seals, input_receipt["host_sha256"])
     got = dict(key=key, base=[int((hmask & truth).sum()), int((hmask | truth).sum())], host=int(hmask.sum()),
-               replay=int((hmask != cached).sum()), missed=int((truth & ~hmask).sum()), false=int((hmask & ~truth).sum()), full={}, good={}, bad={})
+               foris=[int((cached & truth).sum()), int((cached | truth).sum())],
+               origin_vs_foris_pixels=int((hmask != cached).sum()), missed=int((truth & ~hmask).sum()), false=int((hmask & ~truth).sum()), full={}, good={}, bad={})
     for p in list(proposers) + [UNIVERSE]:
-        mask = None if p == UNIVERSE else read_mask(proposers[p], key, seals)[0]
+        mask = None if p == UNIVERSE else read_mask(proposers[p], key, seals, input_receipt[f"proposer_sha256:{p}"])[0]
         if mask is not None: got["full"][p] = [int((mask & truth).sum()), int((mask | truth).sum())]
         for op in OPS:
             e = edit_set(hmask, mask, op); g = e & (truth if op == "add" else ~truth)
@@ -245,18 +299,22 @@ def score(a):
         raise ValueError("Manifest or config changed after inference")
     if (out / "report.json").exists(): raise FileExistsError("This run is already scored")
     rows = json.loads((out / "manifest.json").read_text()); config = json.loads((out / "config.json").read_text())
+    if not config.get("code_sha256"):
+        raise ValueError("This run predates complete source receipts; use the original scorer or generate a new evidence run")
+    for path, digest in config["code_sha256"].items():
+        if sha(Path(path)) != digest: raise ValueError(f"Source changed after evidence freeze: {path}")
     host, proposers, maps = config["host"], config["proposers"], config["maps"]; names = list(proposers); n, m = len(rows), len(maps)
     cls, fold, groups = np.array([r["c"] for r in rows]), np.array([r["fold"] for r in rows]), photo_groups(rows)
 
     # pass 1 (parallel): per-token counts of every operator, and the sealed maps
-    tasks = [(row, str(a.root), host, proposers, seal["evidence"][row["key"]], seal["inputs"][row["key"]]["packet_sha256"], str(out)) for row in rows]
+    tasks = [(row, str(a.root), host, proposers, seal["evidence"][row["key"]], seal["inputs"][row["key"]], str(out)) for row in rows]
     operators = [(p, op) for p in names + [UNIVERSE] for op in OPS]
-    base, hsize, err = np.zeros((n, 2)), np.zeros(n), np.zeros((n, 2))
+    base, foris, hsize, err = np.zeros((n, 2)), np.zeros((n, 2)), np.zeros(n), np.zeros((n, 2))
     good = {o: np.zeros((n, 4096), np.float32) for o in operators}; bad = {o: np.zeros((n, 4096), np.float32) for o in operators}
-    full = {p: np.zeros((n, 2)) for p in names}; bins = np.zeros((n, m, 4096), np.uint8); replay = []
+    full = {p: np.zeros((n, 2)) for p in names}; bins = np.zeros((n, m, 4096), np.uint8); origin_differences = []
     for i, got in enumerate(pool(count_episode, tasks, a.workers, 1)):
-        base[i], hsize[i], err[i] = got["base"], got["host"], (got["missed"], got["false"])
-        if got["replay"]: replay.append([got["key"], got["replay"]])
+        base[i], foris[i], hsize[i], err[i] = got["base"], got["foris"], got["host"], (got["missed"], got["false"])
+        if got["origin_vs_foris_pixels"]: origin_differences.append([got["key"], got["origin_vs_foris_pixels"]])
         for p in names: full[p][i] = got["full"][p]
         for o in operators: good[o][i], bad[o][i] = got["good"][o], got["bad"][o]
         if got["maps"].shape != (m, 4096): raise ValueError("Evidence shape differs from the sealed library")
@@ -330,8 +388,9 @@ def score(a):
             table.append(row)
         print(f"swept {p}/{op}: {len(maps)} maps, {time.perf_counter() - started:.0f} s", flush=True)
 
-    report = dict(n=n, classes=len(ids), photo_groups=g, host=host, proposers=proposers, native=float(native), maps=m,
-                  rows=len(table), host_differs_from_cached_native=replay, levels=BINS, shares=list(SHARES), budgets_of_host_area=list(BUDGETS),
+    report = dict(n=n, classes=len(ids), photo_groups=g, host=host, edit_origin_arm=config["edit_origin_arm"],
+                  proposers=proposers, origin_miou=float(native), foris_miou=float(miou(foris)), gain_reference="explicit_edit_origin", maps=m,
+                  rows=len(table), origin_differs_from_foris=origin_differences, levels=BINS, shares=list(SHARES), budgets_of_host_area=list(BUDGETS),
                   bootstrap={"draws": 2000, "rng": "RandomState(0)", "unit": "connected support/query photographs"},
                   exposure="development; not independent confirmation; every row was read on the same episodes")
     missed, false = err[:, 0].sum(), err[:, 1].sum(); roles = {}
@@ -355,6 +414,13 @@ def score(a):
             real_below_placebo_selectivity_min=int(sum((r["selectivity_within"] or .5) < ns.min() for r in real)))
         for r in mine: r["clears_placebo"] = bool(r["kind"] != "placebo" and r[key] > ng.max())
     report["placebo_calibration"] = calibration
+    report["placebo_interpretation"] = dict(
+        scope="single fixed noise-library search benchmark, not a calibrated familywise or false-discovery error rate",
+        real_map_count=sum(k != "placebo" for k in kinds), placebo_map_count=sum(k == "placebo" for k in kinds),
+        cardinality_matched=sum(k != "placebo" for k in kinds) == sum(k == "placebo" for k in kinds),
+        formal_error_rate_control=False,
+        ranking="row budgets are cross-fitted, but ranking all reported rows reuses their held-out results",
+        complete_comparison="the edit/control compositions select their full rules on training folds only")
     families = {}
     for r in table:  # (3) by family and space
         if r["kind"] == "placebo": continue
@@ -380,20 +446,23 @@ def score(a):
     show = lambda t: None if t is None else dict(proposer=t[1][0], map=None if t[1][2] is None else maps[t[1][2]], mode=t[1][3], level=t[1][4], fit_gain=t[0])
     report["composition"] = {arm: dict(gain=float(miou(iu) - native), ci95=ci(iu), picks={f: dict(add=show(x), delete=show(y)) for f, (x, y) in chosen[arm].items()})
                              for arm, iu in arms.items()}
+    for arm, iu in arms.items():
+        report["composition"][arm]["minus_complete_foris"] = dict(gain=float(miou(iu) - miou(foris)), ci95=ci(iu, foris))
     for ref in ("edit.unfiltered.control", "edit.placebo.control", "edit.simple_auxiliary.control"):
         report["composition"]["edit"]["minus " + ref] = dict(gain=float(miou(arms["edit"]) - miou(arms[ref])), ci95=ci(arms["edit"], arms[ref]))
 
     # render the chosen masks with the same thresholds, check them against the counts, seal, write the common report
     (out / "predictions").mkdir(exist_ok=True); arrays, corrections, pseal, seals = {}, {}, {}, {}
     for i, row in enumerate(rows):
-        key, f = row["key"], int(fold[i]); hmask, _ = read_mask(host, key, seals)
-        masks = {p: read_mask(proposers[p], key, seals)[0] for p in names}
-        with np.load(packet(a.root, row), allow_pickle=False) as fh: truth = unpack(fh["truth"])
+        key, f = row["key"], int(fold[i]); receipt = seal["inputs"][key]
+        hmask, _ = read_mask(host, key, seals, receipt["host_sha256"])
+        masks = {p: read_mask(proposers[p], key, seals, receipt[f"proposer_sha256:{p}"])[0] for p in names}
+        with np.load(packet(a.root, row), allow_pickle=False) as fh: truth, foris_mask = unpack(fh["truth"]), unpack(fh["native"])
         def take(t):
             if t is None: return np.zeros_like(hmask)
             p, op, j, _, _ = t[1]; e = edit_set(hmask, None if p == UNIVERSE else masks[p], op)
             return e if j is None else accepted(e, bins[i, j], op, int(t[3][i]))
-        produced = {"native": hmask, **masks}
+        produced = {"native": foris_mask, "origin": hmask, **masks}
         for arm in arms:
             add, delete = (take(t) for t in chosen[arm][f]); produced[arm] = (hmask & ~delete) | add
             if arm == "edit": produced["edit.add_only"], produced["edit.delete_only"] = hmask | add, hmask & ~delete
@@ -408,21 +477,26 @@ def score(a):
     (out / "sealed_predictions.json").write_text(json.dumps(dict(state="ALL_PREDICTIONS_SEALED", predictions=pseal,
         note="masks follow from sealed evidence and rules chosen without the held-out fold's truth"), indent=2) + "\n")
     report["complete_masks"], draws_out = summarize(rows, {k: np.asarray(v, np.int64) for k, v in arrays.items()}, corrections)
+    report["complete_masks"]["corrections_vs_origin"] = report["complete_masks"].pop("corrections_vs_native")
+    report["complete_masks"]["edit_origin_arm"] = config["edit_origin_arm"]
+    report["complete_masks"]["arm_roles"] = dict(native="complete cached FoRIS", origin=config["edit_origin_arm"])
     (out / "report.json").write_text(json.dumps(report, indent=1) + "\n"); np.save(out / "bootstrap_photo_draws.npy", draws_out)
 
-    L = [f"# Sweep: {n} episodes, native {native:.2f}, {m} maps, {len(table)} rows", "", "## Proposals as operators", "",
+    L = [f"# Sweep: {n} episodes, origin {native:.2f}, complete FoRIS {miou(foris):.2f}, {m} maps, {len(table)} rows", "",
+         f"Edit origin: `{config['edit_origin_arm']}`. All operator gains below are relative to that origin.", "", "## Proposals as operators", "",
          "| Proposal | Op | Reach | Good share | Now [95%] | Side effect halved | Removed |", "|---|---|---:|---:|---:|---:|---:|"]
     for p in names:
         for op in OPS:
             r = roles[p][op]
             L.append(f"| {p} | {op} | {100 * r['reach']:.1f}% | {100 * r['good_share']:.1f}% | {r['gain_now']:+.2f} [{r['ci95'][0]:+.2f}, {r['ci95'][1]:+.2f}] | {r['gain_side_effect_halved']:+.2f} | {r['gain_side_effect_removed']:+.2f} |")
     L += ["", "## Placebo calibration (the same sweep on seeded noise maps)", "",
+          "This single noise library is a search benchmark, not familywise/FDR control. Its search cardinality may differ from the real library; row rankings remain exploratory.", "",
           "| Operator | Statistic | Placebo max / p95 | Real rows above the placebo max | Placebo selectivity min..max | Real rows outside it (above / below) |", "|---|---|---:|---:|---:|---:|"]
     for k, c in calibration.items():
         L.append(f"| {k} | {c['statistic']} | {c['placebo_gain_max']:+.2f} / {c['placebo_gain_p95']:+.2f} | {c['real_above_placebo_gain_max']} of {c['real_rows']} | "
                  f"{c['placebo_selectivity_min']:.3f}..{c['placebo_selectivity_max']:.3f} | {c['real_above_placebo_selectivity_max']} / {c['real_below_placebo_selectivity_min']} |")
     for op in OPS:
-        L += ["", f"## Best rows, {op} (nested gain vs native; budget chosen on three folds)", "",
+        L += ["", f"## Best rows, {op} (nested gain vs origin; budget chosen on three folds)", "",
               "| Proposal | Map | Kind | Nested gain [95%] | Minus all-or-nothing | Selectivity within / pooled | Kept good / bad | Clears placebo |", "|---|---|---|---:|---:|---:|---:|---|"]
         for r in [r for r in report["sweep"] if r["op"] == op][:a.show]:
             w = "n/a" if r["selectivity_within"] is None else f"{r['selectivity_within']:.3f}"
@@ -434,7 +508,9 @@ def score(a):
         L.append(f"| {k} | {d['rows']} | {d['rows_clearing_placebo']} | {d['best_nested_gain']:+.2f} | {d['best']} | {d['median_selectivity_within']:.3f} |")
     L += ["", "## Composition (additions of one rule, deletions of another; whole choice nested over folds)", ""]
     for arm, c in report["composition"].items():
-        L.append(f"- `{arm}`: {c['gain']:+.2f} [{c['ci95'][0]:+.2f}, {c['ci95'][1]:+.2f}] vs native")
+        v = c["minus_complete_foris"]
+        L.append(f"- `{arm}`: {c['gain']:+.2f} [{c['ci95'][0]:+.2f}, {c['ci95'][1]:+.2f}] vs origin; "
+                 f"{v['gain']:+.2f} [{v['ci95'][0]:+.2f}, {v['ci95'][1]:+.2f}] vs complete FoRIS")
     for ref in ("edit.unfiltered.control", "edit.placebo.control", "edit.simple_auxiliary.control"):
         d = report["composition"]["edit"]["minus " + ref]; L.append(f"- `edit` minus `{ref}`: {d['gain']:+.2f} [{d['ci95'][0]:+.2f}, {d['ci95'][1]:+.2f}]")
     L += ["", "Picks of `edit` by fold: " + json.dumps(report["composition"]["edit"]["picks"]), ""]
@@ -452,6 +528,7 @@ def main():
     p.add_argument("--device", choices=["cpu", "cuda"], default="cpu"); p.add_argument("--threads", type=int, default=1)
     p.add_argument("--workers", type=int, default=1, help="CPU processes: episodes in infer (CPU device) and in the counting pass of score")
     p.add_argument("--limit", type=int); p.add_argument("--top", type=int, default=8, help="rules kept per fold, operator and kind for the pair search")
+    p.add_argument("--expected", type=int, default=241, help="exact full manifest count before any explicit execution-only --limit")
     p.add_argument("--show", type=int, default=25, help="rows printed per operator")
     a = p.parse_args()
     if a.stage in ("infer", "all"):

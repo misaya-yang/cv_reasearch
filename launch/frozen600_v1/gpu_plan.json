@@ -1,0 +1,103 @@
+{
+  "stages": [
+    {
+      "name": "smoke2",
+      "kind": "gpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions",
+        "DEMO4_GPU_FRAC": "0.70",
+        "OPENBLAS_NUM_THREADS": "1",
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_frozen600_v1/scripts/run_frozen_cohort.py",
+        "infer",
+        "--manifest",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_frozen600_v1/launch/frozen600_v1/smoke2.json",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen600_smoke2_v1",
+        "--astra",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/external/astra_emd/external_mean_delete600_modules",
+        "--expected",
+        "2",
+        "--workers",
+        "4",
+        "--smoke"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_frozen600_v1/launch/frozen600_v1/smoke2.json"
+        },
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/external/astra_emd/external_mean_delete600_modules/run.py"
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen600_smoke2_v1/sealed.json",
+          "json_equals": {
+            "state": "ALL_PREDICTIONS_SEALED",
+            "n": 2
+          }
+        }
+      ]
+    },
+    {
+      "name": "full600",
+      "kind": "gpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions",
+        "DEMO4_GPU_FRAC": "0.70",
+        "OPENBLAS_NUM_THREADS": "1",
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_frozen600_v1/scripts/run_frozen_cohort.py",
+        "infer",
+        "--manifest",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_frozen600_v1/evidence/local/research_20261005/existing600.json",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen600_v1",
+        "--astra",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/external/astra_emd/external_mean_delete600_modules",
+        "--expected",
+        "600",
+        "--workers",
+        "4"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_frozen600_v1/evidence/local/research_20261005/existing600.json"
+        },
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/external/astra_emd/external_mean_delete600_modules/run.py"
+        },
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen600_smoke2_v1/sealed.json",
+          "json_equals": {
+            "state": "ALL_PREDICTIONS_SEALED",
+            "n": 2
+          }
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen600_v1/sealed.json",
+          "json_equals": {
+            "state": "ALL_PREDICTIONS_SEALED",
+            "n": 600
+          }
+        }
+      ]
+    }
+  ],
+  "authorization": "Prepare and execute fixed method on existing600; smoke2 verifies execution, not efficacy; no parameter tuning."
+}

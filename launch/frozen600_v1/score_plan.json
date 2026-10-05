@@ -1,0 +1,41 @@
+{
+  "stages": [
+    {
+      "name": "frozen600_score",
+      "kind": "cpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions",
+        "DEMO4_GPU_FRAC": "0.70",
+        "OPENBLAS_NUM_THREADS": "1",
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/code_frozen600_v1/scripts/run_frozen_cohort.py",
+        "score",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen600_v1"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen600_v1/sealed.json",
+          "json_equals": {
+            "state": "ALL_PREDICTIONS_SEALED",
+            "n": 600
+          }
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen600_v1/report.json",
+          "json_equals": {
+            "n": 600
+          }
+        }
+      ]
+    }
+  ]
+}

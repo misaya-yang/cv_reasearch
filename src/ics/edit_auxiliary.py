@@ -16,7 +16,7 @@ PROPOSALS = {
     "delta": (None, None, "multilayer.delta.control"),
     "rcg": (None, None, "rcg"),
 }
-MODES = ("noaux", "aux", "native_score")
+MODES = ("noaux", "aux", "foris_score")
 ACTIONS = ("add_TP", "add_FP", "delete_FP", "delete_TP")
 BUCKETS = ("wrong_object", "boundary_leakage", "whole_object_missed", "extent_incomplete")
 
@@ -26,7 +26,7 @@ def recipes():
     out = {}
     for alias in PROPOSALS:
         for mode in MODES:
-            suffix = ".control" if mode == "native_score" else ""
+            suffix = ".control" if mode == "foris_score" else ""
             for kind in ("only_add", "only_delete"):
                 out[f"edit.{alias}.{mode}.{kind}{suffix}"] = {
                     "A": alias if kind == "only_add" else None,
@@ -34,16 +34,16 @@ def recipes():
     pairs = [(a, a) for a in PROPOSALS] + [(a, "rcg") for a in PROPOSALS if a != "rcg"]
     for a, b in pairs:
         for mode in MODES:
-            suffix = ".control" if mode == "native_score" else ""
+            suffix = ".control" if mode == "foris_score" else ""
             out[f"edit.{a}__{b}.{mode}.combined{suffix}"] = {"A": a, "B": b, "mode": mode}
     # Coverage alone can be bought by editing more area. These controls keep
     # each raw proposal's count but remove its localization information.
     for alias in PROPOSALS:
         for kind in ("only_add", "only_delete"):
-            out[f"edit.{alias}.global_native_count.{kind}.control"] = {
+            out[f"edit.{alias}.global_foris_count.{kind}.control"] = {
                 "A": alias if kind == "only_add" else None,
                 "B": alias if kind == "only_delete" else None,
-                "mode": "global_native_count"}
+                "mode": "global_foris_count"}
     return out
 
 
@@ -66,48 +66,48 @@ def matched_count(region, score, count, *, high):
     if count:
         values = np.asarray(score).ravel()[indices]
         if not np.isfinite(values).all():
-            raise ValueError("Nonfinite native scores")
+            raise ValueError("Nonfinite FoRIS scores")
         order = np.lexsort((indices, -values if high else values))
         out.ravel()[indices[order[:count]]] = True
     return out
 
 
-def accepted_edits(native, proposals, helper_fg, native_score):
-    """No GT: A=proposal outside N, B=proposal exclusion inside N."""
+def accepted_edits(origin, proposals, helper_fg, foris_score):
+    """No GT: edit explicit origin O; FoRIS is ordinary ranking evidence."""
     edits = {}
-    if native.shape != helper_fg.shape or native.shape != native_score.shape:
-        raise ValueError("Native, helper and continuous native score shapes differ")
-    if not np.isfinite(native_score).all():
-        raise ValueError("Nonfinite native scores")
+    if origin.shape != helper_fg.shape or origin.shape != foris_score.shape:
+        raise ValueError("Origin, helper and continuous FoRIS score shapes differ")
+    if not np.isfinite(foris_score).all():
+        raise ValueError("Nonfinite FoRIS scores")
     # Sort each full domain once, retaining deterministic row-major ties.
     global_orders = {}
-    for name, region, high in (("A", ~native, True), ("B", native, False)):
+    for name, region, high in (("A", ~origin, True), ("B", origin, False)):
         indices = np.flatnonzero(region)
-        values = native_score.ravel()[indices]
+        values = foris_score.ravel()[indices]
         global_orders[name] = indices[np.lexsort((indices, -values if high else values))]
     for alias, proposal in proposals.items():
-        if proposal.shape != native.shape:
-            raise ValueError("Proposal shape differs from native")
-        a, b = proposal & ~native, native & ~proposal
+        if proposal.shape != origin.shape:
+            raise ValueError("Proposal shape differs from origin")
+        a, b = proposal & ~origin, origin & ~proposal
         aa, bb = a & helper_fg, b & ~helper_fg
         for mode, addition, deletion in (
             ("noaux", a, b), ("aux", aa, bb),
-            ("native_score", matched_count(a, native_score, int(aa.sum()), high=True),
-             matched_count(b, native_score, int(bb.sum()), high=False)),
+            ("foris_score", matched_count(a, foris_score, int(aa.sum()), high=True),
+             matched_count(b, foris_score, int(bb.sum()), high=False)),
         ):
             edits[f"{alias}.{mode}.A"] = addition
             edits[f"{alias}.{mode}.B"] = deletion
         for name, count in (("A", int(a.sum())), ("B", int(b.sum()))):
-            selected = np.zeros_like(native, dtype=bool)
+            selected = np.zeros_like(origin, dtype=bool)
             selected.ravel()[global_orders[name][:count]] = True
-            edits[f"{alias}.global_native_count.{name}"] = selected
+            edits[f"{alias}.global_foris_count.{name}"] = selected
     return edits
 
 
-def compose(native, edits, recipe):
+def compose(origin, edits, recipe):
     addition = edits[f"{recipe['A']}.{recipe['mode']}.A"] if recipe["A"] else False
     deletion = edits[f"{recipe['B']}.{recipe['mode']}.B"] if recipe["B"] else False
-    return (native & ~np.asarray(deletion)) | addition
+    return (origin & ~np.asarray(deletion)) | addition
 
 
 def action_counts(addition, deletion, truth):
@@ -115,7 +115,7 @@ def action_counts(addition, deletion, truth):
                 delete_FP=int((deletion & ~truth).sum()), delete_TP=int((deletion & truth).sum()))
 
 
-def error_buckets(native, truth):
+def error_buckets(origin, truth):
     """Opus diagnostic: 8-connected components with strictly <10% overlap."""
     from scipy import ndimage
     def low_components(mask, other):
@@ -125,13 +125,13 @@ def error_buckets(native, truth):
         low = hit / np.maximum(size, 1) < .1
         low[0] = False
         return low[labels]
-    wrong = low_components(native, truth)
-    missed = low_components(truth, native)
+    wrong = low_components(origin, truth)
+    missed = low_components(truth, origin)
     return {
         "wrong_object": wrong & ~truth,
-        "boundary_leakage": native & ~wrong & ~truth,
-        "whole_object_missed": missed & ~native,
-        "extent_incomplete": truth & ~missed & ~native,
+        "boundary_leakage": origin & ~wrong & ~truth,
+        "whole_object_missed": missed & ~origin,
+        "extent_incomplete": truth & ~missed & ~origin,
     }
 
 

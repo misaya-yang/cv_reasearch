@@ -1,0 +1,62 @@
+{
+  "state": "INFERENCE_ONLY",
+  "config": {
+    "name": "layer_transition_foris",
+    "layers_one_based": [
+      16,
+      24
+    ],
+    "main": "concat(unit_l24, unit(unit_l24-unit_l16))/sqrt(2)",
+    "control": "concat(unit_l24, unit_l16)/sqrt(2)",
+    "positional_rank": 500,
+    "readout": "source FoRIS parts 1,2,3,4; native binarizer and CRF",
+    "field_semantics": "raw FoRIS part-4 score; use finalize, never cut directly at 0.5",
+    "new_pair_forwards": 1,
+    "black_forwards_once": 1,
+    "query_gt_used": false
+  },
+  "delta_control": {
+    "name": "multilayer.delta_only",
+    "layers_one_based": [
+      16,
+      24
+    ],
+    "descriptor": "unit(unit_l24-unit_l16)",
+    "positional_rank": 500,
+    "readout": "source FoRIS parts 1,2,3,4; native binarizer and CRF",
+    "field_semantics": "raw FoRIS part-4 score; use finalize, never cut directly at 0.5",
+    "query_gt_used": false,
+    "fitted_parameters": 0
+  },
+  "source_sha256": {
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/scripts/run_multilayer_complete.py": "8c01b9a0f05301b4393f1c1ffcf1ebb0bb9dcd8f14c2a42233b5198527aca22d",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/src/ics/methods/multilayer.py": "e005087eb2609a083544250c6576d367463f89781879dfaa99463ad84cc180fd",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/src/ics/methods/multilayer_controls.py": "5267f37239bca4526ef5d2bc648ab973b3284822cf58f3eee25b8bf4feb3cee5",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/src/ics/methods/layer_extract.py": "306bfcffe3d5824401d0a0b5549f61ed5917ca2a55271d9c99cc4b495f0cfa01"
+  },
+  "source_manifest_sha256": "1babdc09d206f0e18cf3a8c5498c13adf87eaf202f42de0bf85defbf37b3c793",
+  "native_basis_sha256": "9b9b20755a796cbda11bb7220d246ee540106e40cb024e249a5f63f884b6a116",
+  "model_resolution": 1024,
+  "encoder_instances": 1,
+  "ordinary_pair_forwards_per_episode": 1,
+  "first_episode_extra_pair_forwards": 2,
+  "first_episode_total_pair_forwards": 3,
+  "setup_black_forwards": 1,
+  "setup_svd_count": 3,
+  "query_gt_usage": "none; separate score_forward_run.py only after cohort sealing",
+  "development_only": true,
+  "fixed_arms": [
+    "native",
+    "multilayer",
+    "multilayer.control",
+    "multilayer.delta.control"
+  ],
+  "action_diagnostics": [
+    "multilayer.delete_only",
+    "multilayer.add_only"
+  ],
+  "save_layers": true,
+  "layer_dtype": "float32",
+  "estimated_uncompressed_layer_bytes": 16173236224,
+  "runtime_state": "frozen v1 recipes; one new predetermined delta-only control"
+}

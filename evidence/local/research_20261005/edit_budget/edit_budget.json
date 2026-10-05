@@ -1,0 +1,859 @@
+{
+ "n": 241,
+ "classes": 79,
+ "photo_groups": 239,
+ "scores": {
+  "native": 59.074809714091536,
+  "multilayer": 59.19275131343954,
+  "multilayer.control": 55.448749056903665,
+  "multilayer.delta.control": 60.198027104821875,
+  "multilayer.delete_only": 59.61012246411287,
+  "multilayer.add_only": 58.73808519628418,
+  "rcg": 61.01965958775598,
+  "set: delete by D, add by RCG": 59.89729745539106,
+  "set: delete by RCG, add by D": 60.26904926408946,
+  "set: delete where D and RCG both delete": 59.83268024423014,
+  "set: delete where D or RCG deletes": 60.5531104473879,
+  "set: add where D and RCG both add": 59.30790734194896,
+  "set: add where D or RCG adds": 58.869518602022396,
+  "set: majority of native, D, RCG": 60.067937208550525,
+  "gt: delete every false pixel": 81.9170534937656,
+  "gt: delete whole wrong regions": 66.60858869397205,
+  "gt: delete false pixels attached to the target": 70.49498409531381,
+  "gt: add every missed pixel": 72.38313819257397,
+  "gt: add whole missed objects": 62.53735960664441,
+  "gt: complete objects already touched": 68.92058830002111,
+  "gt: delete wrong regions and add missed objects": 70.70510099712038
+ },
+ "bootstrap": {
+  "draws": 2000,
+  "rng": "RandomState(0)",
+  "unit": "connected support/query photographs"
+ },
+ "error_mass": {
+  "truth": 29334395,
+  "native": 32658292,
+  "wrong": 4198809,
+  "leak": 5071586,
+  "missed": 1303313,
+  "part": 4614281
+ },
+ "reach": {
+  "multilayer": {
+   "wrong_deleted": 892424,
+   "leak_deleted": 1089375,
+   "missed_added": 56637,
+   "part_added": 432185
+  },
+  "multilayer.control": {
+   "wrong_deleted": 1472099,
+   "leak_deleted": 1595302,
+   "missed_added": 432518,
+   "part_added": 548769
+  },
+  "multilayer.delta.control": {
+   "wrong_deleted": 1517558,
+   "leak_deleted": 1256141,
+   "missed_added": 324104,
+   "part_added": 629707
+  },
+  "rcg": {
+   "wrong_deleted": 1299385,
+   "leak_deleted": 849186,
+   "missed_added": 51145,
+   "part_added": 769877
+  }
+ },
+ "episodes_with": {
+  "wrong": 216,
+  "missed": 59,
+  "wrong_over_10pct_of_native": 57,
+  "missed_over_10pct_of_truth": 24
+ },
+ "native_replay_mismatch": [
+  [
+   "2_8_26",
+   20
+  ],
+  [
+   "1_37_1",
+   5
+  ]
+ ],
+ "corrections_vs_native": {
+  "native": {
+   "add_TP": 0,
+   "delete_FP": 0,
+   "delete_TP": 0,
+   "add_FP": 0
+  },
+  "multilayer": {
+   "add_TP": 473681,
+   "delete_FP": 1979298,
+   "delete_TP": 768609,
+   "add_FP": 1229180
+  },
+  "multilayer.control": {
+   "add_TP": 958229,
+   "delete_FP": 3062414,
+   "delete_TP": 2121721,
+   "add_FP": 3333877
+  },
+  "multilayer.delta.control": {
+   "add_TP": 947299,
+   "delete_FP": 2767430,
+   "delete_TP": 1182300,
+   "add_FP": 1666005
+  },
+  "multilayer.delete_only": {
+   "add_TP": 0,
+   "delete_FP": 1979298,
+   "delete_TP": 768609,
+   "add_FP": 0
+  },
+  "multilayer.add_only": {
+   "add_TP": 473681,
+   "delete_FP": 0,
+   "delete_TP": 0,
+   "add_FP": 1229180
+  },
+  "rcg": {
+   "add_TP": 813592,
+   "delete_FP": 2136169,
+   "delete_TP": 531734,
+   "add_FP": 1012415
+  },
+  "set: delete by D, add by RCG": {
+   "add_TP": 813592,
+   "delete_FP": 1979298,
+   "delete_TP": 768609,
+   "add_FP": 1012415
+  },
+  "set: delete by RCG, add by D": {
+   "add_TP": 473681,
+   "delete_FP": 2136169,
+   "delete_TP": 531734,
+   "add_FP": 1229180
+  },
+  "set: delete where D and RCG both delete": {
+   "add_TP": 0,
+   "delete_FP": 754420,
+   "delete_TP": 150375,
+   "add_FP": 0
+  },
+  "set: delete where D or RCG deletes": {
+   "add_TP": 0,
+   "delete_FP": 3361047,
+   "delete_TP": 1149968,
+   "add_FP": 0
+  },
+  "set: add where D and RCG both add": {
+   "add_TP": 205465,
+   "delete_FP": 0,
+   "delete_TP": 0,
+   "add_FP": 203878
+  },
+  "set: add where D or RCG adds": {
+   "add_TP": 1081808,
+   "delete_FP": 0,
+   "delete_TP": 0,
+   "add_FP": 2037717
+  },
+  "set: majority of native, D, RCG": {
+   "add_TP": 205465,
+   "delete_FP": 754420,
+   "delete_TP": 150375,
+   "add_FP": 203878
+  },
+  "gt: delete every false pixel": {
+   "add_TP": 0,
+   "delete_FP": 9212015,
+   "delete_TP": 0,
+   "add_FP": 0
+  },
+  "gt: delete whole wrong regions": {
+   "add_TP": 0,
+   "delete_FP": 4140429,
+   "delete_TP": 58380,
+   "add_FP": 0
+  },
+  "gt: delete false pixels attached to the target": {
+   "add_TP": 0,
+   "delete_FP": 5071586,
+   "delete_TP": 0,
+   "add_FP": 0
+  },
+  "gt: add every missed pixel": {
+   "add_TP": 5888118,
+   "delete_FP": 0,
+   "delete_TP": 0,
+   "add_FP": 0
+  },
+  "gt: add whole missed objects": {
+   "add_TP": 1273837,
+   "delete_FP": 0,
+   "delete_TP": 0,
+   "add_FP": 0
+  },
+  "gt: complete objects already touched": {
+   "add_TP": 4614281,
+   "delete_FP": 0,
+   "delete_TP": 0,
+   "add_FP": 0
+  },
+  "gt: delete wrong regions and add missed objects": {
+   "add_TP": 1273837,
+   "delete_FP": 4140429,
+   "delete_TP": 47913,
+   "add_FP": 0
+  }
+ },
+ "contrasts_vs_native": {
+  "native": null,
+  "multilayer": {
+   "gain": 0.11794159934800064,
+   "ci95": [
+    -0.828175855966447,
+    1.581831407027853
+   ],
+   "up": 131,
+   "down": 107,
+   "tie": 3
+  },
+  "multilayer.control": {
+   "gain": -3.626060657187871,
+   "ci95": [
+    -5.184137265994426,
+    -0.8920469425182199
+   ],
+   "up": 109,
+   "down": 130,
+   "tie": 2
+  },
+  "multilayer.delta.control": {
+   "gain": 1.123217390730339,
+   "ci95": [
+    -0.7085178595521315,
+    2.63380530012907
+   ],
+   "up": 127,
+   "down": 111,
+   "tie": 3
+  },
+  "multilayer.delete_only": {
+   "gain": 0.5353127500213333,
+   "ci95": [
+    -0.4141354786684344,
+    1.8674563901863135
+   ],
+   "up": 126,
+   "down": 109,
+   "tie": 6
+  },
+  "multilayer.add_only": {
+   "gain": -0.3367245178073546,
+   "ci95": [
+    -0.7790015123006263,
+    0.23422599690469803
+   ],
+   "up": 124,
+   "down": 110,
+   "tie": 7
+  },
+  "rcg": {
+   "gain": 1.9448498736644453,
+   "ci95": [
+    0.9831558003340977,
+    2.9136136529255037
+   ],
+   "up": 134,
+   "down": 104,
+   "tie": 3
+  },
+  "set: delete by D, add by RCG": {
+   "gain": 0.8224877412995255,
+   "ci95": [
+    -0.1313056091302174,
+    1.9326065003713002
+   ],
+   "up": 130,
+   "down": 108,
+   "tie": 3
+  },
+  "set: delete by RCG, add by D": {
+   "gain": 1.1942395499979241,
+   "ci95": [
+    0.32717030603663577,
+    2.1533028145342907
+   ],
+   "up": 128,
+   "down": 109,
+   "tie": 4
+  },
+  "set: delete where D and RCG both delete": {
+   "gain": 0.7578705301386037,
+   "ci95": [
+    0.4141799629268187,
+    1.1863045134695493
+   ],
+   "up": 144,
+   "down": 85,
+   "tie": 12
+  },
+  "set: delete where D or RCG deletes": {
+   "gain": 1.478300733296365,
+   "ci95": [
+    0.24185274493944392,
+    3.076988300999503
+   ],
+   "up": 116,
+   "down": 122,
+   "tie": 3
+  },
+  "set: add where D and RCG both add": {
+   "gain": 0.2330976278574255,
+   "ci95": [
+    0.10533175246842692,
+    0.46661104414417676
+   ],
+   "up": 151,
+   "down": 80,
+   "tie": 10
+  },
+  "set: add where D or RCG adds": {
+   "gain": -0.20529111206914052,
+   "ci95": [
+    -0.7875753083821551,
+    0.41377694864159825
+   ],
+   "up": 118,
+   "down": 120,
+   "tie": 3
+  },
+  "set: majority of native, D, RCG": {
+   "gain": 0.9931274944589887,
+   "ci95": [
+    0.6264487513199407,
+    1.4437923027497872
+   ],
+   "up": 164,
+   "down": 73,
+   "tie": 4
+  },
+  "gt: delete every false pixel": {
+   "gain": 22.842243779674057,
+   "ci95": [
+    19.337699544196326,
+    25.164428771927167
+   ],
+   "up": 237,
+   "down": 0,
+   "tie": 4
+  },
+  "gt: delete whole wrong regions": {
+   "gain": 7.533778979880516,
+   "ci95": [
+    4.84496528719074,
+    8.916208432190793
+   ],
+   "up": 209,
+   "down": 4,
+   "tie": 28
+  },
+  "gt: delete false pixels attached to the target": {
+   "gain": 11.420174381222274,
+   "ci95": [
+    9.228377637666219,
+    13.977639870015876
+   ],
+   "up": 231,
+   "down": 0,
+   "tie": 10
+  },
+  "gt: add every missed pixel": {
+   "gain": 13.30832847848243,
+   "ci95": [
+    11.298337901533497,
+    15.706592599312655
+   ],
+   "up": 239,
+   "down": 0,
+   "tie": 2
+  },
+  "gt: add whole missed objects": {
+   "gain": 3.4625498925528717,
+   "ci95": [
+    1.9428093378939377,
+    5.048859722289492
+   ],
+   "up": 59,
+   "down": 0,
+   "tie": 182
+  },
+  "gt: complete objects already touched": {
+   "gain": 9.845778585929573,
+   "ci95": [
+    8.271885349843314,
+    11.859878404994292
+   ],
+   "up": 230,
+   "down": 0,
+   "tie": 11
+  },
+  "gt: delete wrong regions and add missed objects": {
+   "gain": 11.630291283028846,
+   "ci95": [
+    8.542881777252736,
+    14.949007027673556
+   ],
+   "up": 219,
+   "down": 1,
+   "tie": 21
+  }
+ },
+ "folds": {
+  "0": {
+   "n": 61,
+   "scores": {
+    "native": 61.7645971040903,
+    "multilayer": 61.851247191341564,
+    "multilayer.control": 53.20631937960029,
+    "multilayer.delta.control": 61.48709493663487,
+    "multilayer.delete_only": 61.884683968624174,
+    "multilayer.add_only": 61.75909911082253,
+    "rcg": 63.726086291984416,
+    "set: delete by D, add by RCG": 62.56020831920719,
+    "set: delete by RCG, add by D": 62.92095503377416,
+    "set: delete where D and RCG both delete": 62.39288954264677,
+    "set: delete where D or RCG deletes": 62.51257104058867,
+    "set: add where D and RCG both add": 62.138187526997704,
+    "set: add where D or RCG adds": 62.07232032321688,
+    "set: majority of native, D, RCG": 62.76989832358869,
+    "gt: delete every false pixel": 81.20274575187837,
+    "gt: delete whole wrong regions": 71.1818876659833,
+    "gt: delete false pixels attached to the target": 69.15722383652316,
+    "gt: add every missed pixel": 76.83296232756105,
+    "gt: add whole missed objects": 65.0508771742127,
+    "gt: complete objects already touched": 73.54668225743863,
+    "gt: delete wrong regions and add missed objects": 75.01753388153507
+   },
+   "gain_vs_native": {
+    "native": 0.0,
+    "multilayer": 0.08665008725126455,
+    "multilayer.control": -8.558277724490011,
+    "multilayer.delta.control": -0.277502167455431,
+    "multilayer.delete_only": 0.1200868645338744,
+    "multilayer.add_only": -0.0054979932677667875,
+    "rcg": 1.9614891878941165,
+    "set: delete by D, add by RCG": 0.7956112151168924,
+    "set: delete by RCG, add by D": 1.156357929683864,
+    "set: delete where D and RCG both delete": 0.6282924385564712,
+    "set: delete where D or RCG deletes": 0.7479739364983686,
+    "set: add where D and RCG both add": 0.3735904229074052,
+    "set: add where D or RCG adds": 0.3077232191265793,
+    "set: majority of native, D, RCG": 1.0053012194983921,
+    "gt: delete every false pixel": 19.43814864778807,
+    "gt: delete whole wrong regions": 9.417290561892997,
+    "gt: delete false pixels attached to the target": 7.392626732432859,
+    "gt: add every missed pixel": 15.06836522347075,
+    "gt: add whole missed objects": 3.2862800701224018,
+    "gt: complete objects already touched": 11.782085153348334,
+    "gt: delete wrong regions and add missed objects": 13.252936777444773
+   }
+  },
+  "1": {
+   "n": 60,
+   "scores": {
+    "native": 61.746947869535894,
+    "multilayer": 60.22057937597135,
+    "multilayer.control": 56.432444468700595,
+    "multilayer.delta.control": 60.210594797208984,
+    "multilayer.delete_only": 62.078486280688985,
+    "multilayer.add_only": 60.06575827324667,
+    "rcg": 63.429939163946926,
+    "set: delete by D, add by RCG": 62.36633473228576,
+    "set: delete by RCG, add by D": 61.430486068789314,
+    "set: delete where D and RCG both delete": 62.62147475744666,
+    "set: delete where D or RCG deletes": 62.63662604932899,
+    "set: add where D and RCG both add": 61.96342941909656,
+    "set: add where D or RCG adds": 60.22032373093159,
+    "set: majority of native, D, RCG": 62.84138929885255,
+    "gt: delete every false pixel": 83.10847301538506,
+    "gt: delete whole wrong regions": 65.7607934307327,
+    "gt: delete false pixels attached to the target": 75.3017035862656,
+    "gt: add every missed pixel": 74.01282786449482,
+    "gt: add whole missed objects": 64.02697237964449,
+    "gt: complete objects already touched": 71.73280335438622,
+    "gt: delete wrong regions and add missed objects": 68.5536148476523
+   },
+   "gain_vs_native": {
+    "native": 0.0,
+    "multilayer": -1.5263684935645472,
+    "multilayer.control": -5.314503400835299,
+    "multilayer.delta.control": -1.5363530723269108,
+    "multilayer.delete_only": 0.33153841115309035,
+    "multilayer.add_only": -1.6811895962892223,
+    "rcg": 1.682991294411032,
+    "set: delete by D, add by RCG": 0.6193868627498631,
+    "set: delete by RCG, add by D": -0.3164618007465805,
+    "set: delete where D and RCG both delete": 0.8745268879107684,
+    "set: delete where D or RCG deletes": 0.8896781797930942,
+    "set: add where D and RCG both add": 0.2164815495606689,
+    "set: add where D or RCG adds": -1.526624138604305,
+    "set: majority of native, D, RCG": 1.0944414293166531,
+    "gt: delete every false pixel": 21.361525145849164,
+    "gt: delete whole wrong regions": 4.01384556119681,
+    "gt: delete false pixels attached to the target": 13.554755716729709,
+    "gt: add every missed pixel": 12.26587999495893,
+    "gt: add whole missed objects": 2.2800245101085963,
+    "gt: complete objects already touched": 9.985855484850326,
+    "gt: delete wrong regions and add missed objects": 6.806666978116404
+   }
+  },
+  "2": {
+   "n": 60,
+   "scores": {
+    "native": 55.35445387759146,
+    "multilayer": 55.75477173613198,
+    "multilayer.control": 56.67989198356609,
+    "multilayer.delta.control": 59.72117536879189,
+    "multilayer.delete_only": 55.601645167733224,
+    "multilayer.add_only": 55.54751469566923,
+    "rcg": 57.067612762580936,
+    "set: delete by D, add by RCG": 56.02417587464551,
+    "set: delete by RCG, add by D": 56.58384803239087,
+    "set: delete where D and RCG both delete": 55.58187748705908,
+    "set: delete where D or RCG deletes": 56.651120909452416,
+    "set: add where D and RCG both add": 55.44657869639782,
+    "set: add where D or RCG adds": 55.905786155109396,
+    "set: majority of native, D, RCG": 55.67490398913699,
+    "gt: delete every false pixel": 77.78170361604532,
+    "gt: delete whole wrong regions": 65.29493700891778,
+    "gt: delete false pixels attached to the target": 63.16056030519148,
+    "gt: add every missed pixel": 72.08042779153135,
+    "gt: add whole missed objects": 61.94918775118532,
+    "gt: complete objects already touched": 65.48569391793747,
+    "gt: delete wrong regions and add missed objects": 72.92631313805768
+   },
+   "gain_vs_native": {
+    "native": 0.0,
+    "multilayer": 0.40031785854051805,
+    "multilayer.control": 1.3254381059746265,
+    "multilayer.delta.control": 4.36672149120043,
+    "multilayer.delete_only": 0.2471912901417639,
+    "multilayer.add_only": 0.1930608180777682,
+    "rcg": 1.7131588849894754,
+    "set: delete by D, add by RCG": 0.6697219970540473,
+    "set: delete by RCG, add by D": 1.229394154799408,
+    "set: delete where D and RCG both delete": 0.2274236094676212,
+    "set: delete where D or RCG deletes": 1.2966670318609559,
+    "set: add where D and RCG both add": 0.09212481880636147,
+    "set: add where D or RCG adds": 0.5513322775179361,
+    "set: majority of native, D, RCG": 0.32045011154553293,
+    "gt: delete every false pixel": 22.42724973845386,
+    "gt: delete whole wrong regions": 9.940483131326324,
+    "gt: delete false pixels attached to the target": 7.806106427600021,
+    "gt: add every missed pixel": 16.72597391393989,
+    "gt: add whole missed objects": 6.59473387359386,
+    "gt: complete objects already touched": 10.131240040346007,
+    "gt: delete wrong regions and add missed objects": 17.57185926046622
+   }
+  },
+  "3": {
+   "n": 60,
+   "scores": {
+    "native": 57.346841599414645,
+    "multilayer": 58.93133619435923,
+    "multilayer.control": 55.477792571476336,
+    "multilayer.delta.control": 59.32983364359015,
+    "multilayer.delete_only": 58.83701928020999,
+    "multilayer.add_only": 57.519015205878,
+    "rcg": 59.79370226644618,
+    "set: delete by D, add by RCG": 58.57221686595396,
+    "set: delete by RCG, add by D": 60.13416364020948,
+    "set: delete where D and RCG both delete": 58.67667913427002,
+    "set: delete where D or RCG deletes": 60.404703439802255,
+    "set: add where D and RCG both add": 57.597935113901386,
+    "set: add where D or RCG adds": 57.19596659866376,
+    "set: majority of native, D, RCG": 58.928589854943525,
+    "gt: delete every false pixel": 85.76783043901605,
+    "gt: delete whole wrong regions": 64.06979709005877,
+    "gt: delete false pixels attached to the target": 74.5638941563256,
+    "gt: add every missed pixel": 66.30229250218939,
+    "gt: add whole missed objects": 58.94266646442405,
+    "gt: complete objects already touched": 64.70646763717994,
+    "gt: delete wrong regions and add missed objects": 66.09230218040048
+   },
+   "gain_vs_native": {
+    "native": 0.0,
+    "multilayer": 1.5844945949445872,
+    "multilayer.control": -1.8690490279383098,
+    "multilayer.delta.control": 1.9829920441755036,
+    "multilayer.delete_only": 1.490177680795341,
+    "multilayer.add_only": 0.17217360646335322,
+    "rcg": 2.4468606670315367,
+    "set: delete by D, add by RCG": 1.2253752665393165,
+    "set: delete by RCG, add by D": 2.787322040794834,
+    "set: delete where D and RCG both delete": 1.329837534855372,
+    "set: delete where D or RCG deletes": 3.057861840387609,
+    "set: add where D and RCG both add": 0.25109351448674033,
+    "set: add where D or RCG adds": -0.15087500075088656,
+    "set: majority of native, D, RCG": 1.581748255528879,
+    "gt: delete every false pixel": 28.420988839601407,
+    "gt: delete whole wrong regions": 6.722955490644125,
+    "gt: delete false pixels attached to the target": 17.217052556910957,
+    "gt: add every missed pixel": 8.955450902774743,
+    "gt: add whole missed objects": 1.595824865009405,
+    "gt: complete objects already touched": 7.359626037765295,
+    "gt: delete wrong regions and add missed objects": 8.745460580985835
+   }
+  }
+ },
+ "batches": {
+  "arrived100_exposed": {
+   "n": 100,
+   "scores": {
+    "native": 59.76407143878154,
+    "multilayer": 58.061540982449976,
+    "multilayer.control": 55.989567110802206,
+    "multilayer.delta.control": 59.24788676957188,
+    "multilayer.delete_only": 58.42349680237414,
+    "multilayer.add_only": 59.415677629547424,
+    "rcg": 60.955717634823124,
+    "set: delete by D, add by RCG": 59.056215546881475,
+    "set: delete by RCG, add by D": 59.904918402944816,
+    "set: delete where D and RCG both delete": 60.119330161701534,
+    "set: delete where D or RCG deletes": 58.63570950721715,
+    "set: add where D and RCG both add": 59.97796374180938,
+    "set: add where D or RCG adds": 59.826034312004175,
+    "set: majority of native, D, RCG": 60.33072121446993,
+    "gt: delete every false pixel": 79.89649753753653,
+    "gt: delete whole wrong regions": 68.84178519533516,
+    "gt: delete false pixels attached to the target": 67.71963620689776,
+    "gt: add every missed pixel": 73.95557653776605,
+    "gt: add whole missed objects": 63.574243750698145,
+    "gt: complete objects already touched": 70.14540422584943,
+    "gt: delete wrong regions and add missed objects": 73.52300087415206
+   },
+   "gain_vs_native": {
+    "native": 0.0,
+    "multilayer": -1.7025304563315657,
+    "multilayer.control": -3.7745043279793364,
+    "multilayer.delta.control": -0.5161846692096645,
+    "multilayer.delete_only": -1.3405746364074034,
+    "multilayer.add_only": -0.34839380923411767,
+    "rcg": 1.1916461960415816,
+    "set: delete by D, add by RCG": -0.707855891900067,
+    "set: delete by RCG, add by D": 0.14084696416327347,
+    "set: delete where D and RCG both delete": 0.3552587229199915,
+    "set: delete where D or RCG deletes": -1.1283619315643918,
+    "set: add where D and RCG both add": 0.21389230302784057,
+    "set: add where D or RCG adds": 0.061962873222633164,
+    "set: majority of native, D, RCG": 0.5666497756883899,
+    "gt: delete every false pixel": 20.13242609875499,
+    "gt: delete whole wrong regions": 9.07771375655362,
+    "gt: delete false pixels attached to the target": 7.9555647681162185,
+    "gt: add every missed pixel": 14.191505098984507,
+    "gt: add whole missed objects": 3.8101723119166024,
+    "gt: complete objects already touched": 10.38133278706789,
+    "gt: delete wrong regions and add missed objects": 13.758929435370518
+   }
+  },
+  "new40": {
+   "n": 40,
+   "scores": {
+    "native": 58.86161592221273,
+    "multilayer": 60.936443074713644,
+    "multilayer.control": 56.03886076152611,
+    "multilayer.delta.control": 59.44140463043218,
+    "multilayer.delete_only": 60.721577537251534,
+    "multilayer.add_only": 59.393776636249974,
+    "rcg": 61.48158352532269,
+    "set: delete by D, add by RCG": 61.18081263695241,
+    "set: delete by RCG, add by D": 60.03292617435264,
+    "set: delete where D and RCG both delete": 59.111407994185974,
+    "set: delete where D or RCG deletes": 62.203063827757774,
+    "set: add where D and RCG both add": 59.9018086138327,
+    "set: add where D or RCG adds": 59.321400452075935,
+    "set: majority of native, D, RCG": 60.17096369093973,
+    "gt: delete every false pixel": 81.76075625912108,
+    "gt: delete whole wrong regions": 62.23431411931853,
+    "gt: delete false pixels attached to the target": 73.90617850900605,
+    "gt: add every missed pixel": 73.86390130322869,
+    "gt: add whole missed objects": 60.33736552244875,
+    "gt: complete objects already touched": 72.38815170299266,
+    "gt: delete wrong regions and add missed objects": 63.72358973389968
+   },
+   "gain_vs_native": {
+    "native": 0.0,
+    "multilayer": 2.074827152500916,
+    "multilayer.control": -2.8227551606866186,
+    "multilayer.delta.control": 0.5797887082194535,
+    "multilayer.delete_only": 1.8599616150388059,
+    "multilayer.add_only": 0.5321607140372464,
+    "rcg": 2.619967603109963,
+    "set: delete by D, add by RCG": 2.3191967147396824,
+    "set: delete by RCG, add by D": 1.1713102521399108,
+    "set: delete where D and RCG both delete": 0.24979207197324627,
+    "set: delete where D or RCG deletes": 3.3414479055450457,
+    "set: add where D and RCG both add": 1.0401926916199713,
+    "set: add where D or RCG adds": 0.4597845298632066,
+    "set: majority of native, D, RCG": 1.309347768727001,
+    "gt: delete every false pixel": 22.899140336908353,
+    "gt: delete whole wrong regions": 3.372698197105805,
+    "gt: delete false pixels attached to the target": 15.044562586793326,
+    "gt: add every missed pixel": 15.002285381015959,
+    "gt: add whole missed objects": 1.4757496002360213,
+    "gt: complete objects already touched": 13.52653578077993,
+    "gt: delete wrong regions and add missed objects": 4.861973811686951
+   }
+  },
+  "new60": {
+   "n": 60,
+   "scores": {
+    "native": 61.845302396730204,
+    "multilayer": 63.138215014397645,
+    "multilayer.control": 57.133087524187566,
+    "multilayer.delta.control": 63.386203125714026,
+    "multilayer.delete_only": 62.9273308165913,
+    "multilayer.add_only": 62.09051414605785,
+    "rcg": 63.0895486899297,
+    "set: delete by D, add by RCG": 62.895485708371126,
+    "set: delete by RCG, add by D": 63.16012646737771,
+    "set: delete where D and RCG both delete": 62.719960470293856,
+    "set: delete where D or RCG deletes": 63.25049847890241,
+    "set: add where D and RCG both add": 62.01622581860809,
+    "set: add where D or RCG adds": 62.17110342574222,
+    "set: majority of native, D, RCG": 62.887159189075994,
+    "gt: delete every false pixel": 80.33888649447172,
+    "gt: delete whole wrong regions": 67.18568531068641,
+    "gt: delete false pixels attached to the target": 72.63620485139039,
+    "gt: add every missed pixel": 75.6254476220508,
+    "gt: add whole missed objects": 64.65503396005009,
+    "gt: complete objects already touched": 72.8157160587309,
+    "gt: delete wrong regions and add missed objects": 72.86241501816716
+   },
+   "gain_vs_native": {
+    "native": 0.0,
+    "multilayer": 1.2929126176674401,
+    "multilayer.control": -4.7122148725426385,
+    "multilayer.delta.control": 1.5409007289838215,
+    "multilayer.delete_only": 1.0820284198610963,
+    "multilayer.add_only": 0.24521174932764467,
+    "rcg": 1.2442462931994953,
+    "set: delete by D, add by RCG": 1.0501833116409216,
+    "set: delete by RCG, add by D": 1.3148240706475036,
+    "set: delete where D and RCG both delete": 0.8746580735636513,
+    "set: delete where D or RCG deletes": 1.4051960821722034,
+    "set: add where D and RCG both add": 0.17092342187788745,
+    "set: add where D or RCG adds": 0.3258010290120126,
+    "set: majority of native, D, RCG": 1.04185679234579,
+    "gt: delete every false pixel": 18.49358409774152,
+    "gt: delete whole wrong regions": 5.340382913956205,
+    "gt: delete false pixels attached to the target": 10.790902454660184,
+    "gt: add every missed pixel": 13.780145225320595,
+    "gt: add whole missed objects": 2.809731563319886,
+    "gt: complete objects already touched": 10.970413662000695,
+    "gt: delete wrong regions and add missed objects": 11.01711262143695
+   }
+  },
+  "old20": {
+   "n": 20,
+   "scores": {
+    "native": 67.14318082720723,
+    "multilayer": 65.16274990234947,
+    "multilayer.control": 61.36383131093369,
+    "multilayer.delta.control": 65.41715683302701,
+    "multilayer.delete_only": 65.9409602205795,
+    "multilayer.add_only": 66.36157272878656,
+    "rcg": 70.74275452199139,
+    "set: delete by D, add by RCG": 66.86661918960588,
+    "set: delete by RCG, add by D": 68.69404381965842,
+    "set: delete where D and RCG both delete": 67.20042463659888,
+    "set: delete where D or RCG deletes": 68.66701671259807,
+    "set: add where D and RCG both add": 67.35903828620502,
+    "set: add where D or RCG adds": 66.96515292324172,
+    "set: majority of native, D, RCG": 67.4167562708271,
+    "gt: delete every false pixel": 83.71175964709472,
+    "gt: delete whole wrong regions": 72.01683342512244,
+    "gt: delete false pixels attached to the target": 78.62192344597145,
+    "gt: add every missed pixel": 80.06210726258438,
+    "gt: add whole missed objects": 69.67425872160511,
+    "gt: complete objects already touched": 77.5310293681865,
+    "gt: delete wrong regions and add missed objects": 75.45532698372261
+   },
+   "gain_vs_native": {
+    "native": 0.0,
+    "multilayer": -1.9804309248577567,
+    "multilayer.control": -5.779349516273541,
+    "multilayer.delta.control": -1.726023994180224,
+    "multilayer.delete_only": -1.2022206066277334,
+    "multilayer.add_only": -0.7816080984206764,
+    "rcg": 3.599573694784155,
+    "set: delete by D, add by RCG": -0.2765616376013469,
+    "set: delete by RCG, add by D": 1.5508629924511865,
+    "set: delete where D and RCG both delete": 0.0572438093916503,
+    "set: delete where D or RCG deletes": 1.523835885390838,
+    "set: add where D and RCG both add": 0.21585745899778885,
+    "set: add where D or RCG adds": -0.17802790396551416,
+    "set: majority of native, D, RCG": 0.27357544361986186,
+    "gt: delete every false pixel": 16.56857881988749,
+    "gt: delete whole wrong regions": 4.8736525979152105,
+    "gt: delete false pixels attached to the target": 11.478742618764215,
+    "gt: add every missed pixel": 12.918926435377145,
+    "gt: add whole missed objects": 2.5310778943978818,
+    "gt: complete objects already touched": 10.387848540979263,
+    "gt: delete wrong regions and add missed objects": 8.312146156515382
+   }
+  },
+  "remaining21_existing_dev": {
+   "n": 21,
+   "scores": {
+    "native": 64.49325864022136,
+    "multilayer": 65.62519377167848,
+    "multilayer.control": 68.56887792620398,
+    "multilayer.delta.control": 67.67496047128064,
+    "multilayer.delete_only": 65.82282391814634,
+    "multilayer.add_only": 64.29112154582117,
+    "rcg": 63.86979039958328,
+    "set: delete by D, add by RCG": 64.65127606339924,
+    "set: delete by RCG, add by D": 64.83471211496314,
+    "set: delete where D and RCG both delete": 64.36506253520362,
+    "set: delete where D or RCG deletes": 66.62642681240865,
+    "set: add where D and RCG both add": 64.6506305472652,
+    "set: add where D or RCG adds": 63.186157192435054,
+    "set: majority of native, D, RCG": 64.52108540964136,
+    "gt: delete every false pixel": 86.22305518059137,
+    "gt: delete whole wrong regions": 67.16131218983847,
+    "gt: delete false pixels attached to the target": 76.63459035711927,
+    "gt: add every missed pixel": 74.23103279754473,
+    "gt: add whole missed objects": 66.28023927529212,
+    "gt: complete objects already touched": 72.44405216247398,
+    "gt: delete wrong regions and add missed objects": 68.96036928289041
+   },
+   "gain_vs_native": {
+    "native": 0.0,
+    "multilayer": 1.1319351314571264,
+    "multilayer.control": 4.075619285982626,
+    "multilayer.delta.control": 3.1817018310592857,
+    "multilayer.delete_only": 1.329565277924985,
+    "multilayer.add_only": -0.2021370944001859,
+    "rcg": -0.6234682406380756,
+    "set: delete by D, add by RCG": 0.15801742317788126,
+    "set: delete by RCG, add by D": 0.3414534747417832,
+    "set: delete where D and RCG both delete": -0.12819610501773582,
+    "set: delete where D or RCG deletes": 2.133168172187297,
+    "set: add where D and RCG both add": 0.15737190704383863,
+    "set: add where D or RCG adds": -1.3071014477863017,
+    "set: majority of native, D, RCG": 0.027826769420002506,
+    "gt: delete every false pixel": 21.729796540370018,
+    "gt: delete whole wrong regions": 2.668053549617113,
+    "gt: delete false pixels attached to the target": 12.14133171689791,
+    "gt: add every missed pixel": 9.737774157323372,
+    "gt: add whole missed objects": 1.786980635070762,
+    "gt: complete objects already touched": 7.950793522252624,
+    "gt: delete wrong regions and add missed objects": 4.467110642669056
+   }
+  }
+ }
+}

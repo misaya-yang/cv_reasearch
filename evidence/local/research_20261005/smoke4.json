@@ -1,0 +1,53 @@
+{
+  "data_root": "/root/demo4_cache/data/COCO2014",
+  "annotation_root": "/root/autodl-tmp/datasets/ics/COCO2014/annotations",
+  "foris_root": "/root/autodl-tmp/demo8_local_verification/foris_source",
+  "projection_basis": "/root/autodl-tmp/demo9_transductive_ics/results/native_runtime_v1/positional_basis.pt",
+  "seed": 0,
+  "episodes": [
+    {
+      "fold": 0,
+      "e": 11,
+      "c": 0,
+      "support": "val2014/COCO_val2014_000000415183.jpg",
+      "query": "val2014/COCO_val2014_000000166948.jpg",
+      "key": "0_11_0",
+      "batch": "old20",
+      "exposure": "development_not_independent_confirmation"
+    },
+    {
+      "fold": 1,
+      "e": 38,
+      "c": 5,
+      "support": "val2014/COCO_val2014_000000052007.jpg",
+      "query": "val2014/COCO_val2014_000000069944.jpg",
+      "key": "1_38_5",
+      "batch": "new40",
+      "exposure": "development_not_independent_confirmation"
+    },
+    {
+      "fold": 2,
+      "e": 21,
+      "c": 78,
+      "support": "val2014/COCO_val2014_000000563615.jpg",
+      "query": "val2014/COCO_val2014_000000186276.jpg",
+      "key": "2_21_78",
+      "batch": "new60",
+      "exposure": "development_not_independent_confirmation"
+    },
+    {
+      "fold": 3,
+      "e": 0,
+      "c": 75,
+      "support": "val2014/COCO_val2014_000000262631.jpg",
+      "query": "val2014/COCO_val2014_000000295564.jpg",
+      "key": "3_0_75",
+      "batch": "arrived100_exposed",
+      "exposure": "development_not_independent_confirmation"
+    }
+  ],
+  "cohort": "smoke4",
+  "resolution": 1024,
+  "exposure": "development_only",
+  "selection": "source order stratified by fold and recorded batch; no score/GT used"
+}

@@ -54,9 +54,31 @@ SAM3 control. Some latest reports are server-only, and their numbers were not in
 Theory and attribution corrections: [dots 03](../../evidence/dots-2026-10-05/03_novelty_and_contribution.md),
 [05](../../evidence/dots-2026-10-05/05_theory_and_identifiability.md), [09](../../evidence/dots-2026-10-05/09_fp_fn_correction_mechanisms.md).
 
+## Current complete-method correction (2026-10-05)
+
+The new D layer-transition candidate did not establish the claim: DEV241 native 59.074825, D 59.192751,
+paired +0.117926 [-0.828163, +1.581804], and -1.826908 versus RCG. Its first20 +3.260 was not stable.
+RCG reaches +1.944835 on the same DEV241; a delta-only complete readout reaches 60.198027. These are
+reused development outputs. Native replay differed by only 25 pixels across two episodes and is reported
+under both baselines in the [audit](../../evidence/local/research_20261005/native_replay_audit.md).
+
+Core working hypothesis: reference-conditioned evidence can improve the choice of **edits** to a strong
+complete mask—recover true omissions while removing false inclusions—and joint inference can preserve
+useful additions while repairing side effects. This is an outcome target, not a mandatory two-mask
+architecture or an established contribution. Separate add/delete ablations and four error categories must
+show where a deployable mechanism earns its gain. Query-GT error budgets alone do not establish a signal.
+For class-summed mIoU, edit value is evaluated from per-class I/U; one pooled 38%/62% purity threshold is
+not a universal decision rule.
+
 ## Missing evidence
 
 No current candidate establishes the primary claim against the strong complete and same-information controls
-in an original-resolution independent confirmation. Dots' new100 was frozen but unscored at export; the last
-21 and complete reproduction assets were not in the bundle. The local DEV241 results are a different record,
-so their existence does not complete the cloud cohort. Next work is governed by [PLAN](PLAN.md), not this gap list.
+in an original-resolution independent confirmation. The later supplied Astra package advances the old
+dots export: exposed DEV220 native 58.829934, retained candidate 61.581120, +2.751185
+[1.102142, 3.810278]. Versus RCG it gains +0.709731 [-0.704856, 1.334083]; versus same-domain,
+same-ranking fixed fraction +0.482531 [-0.521612, 1.098586]. It is a promising complete exploratory
+candidate, not an established independent adaptive-budget contribution. Its additional deletion gain
+is concentrated in class58; it does not add pixels beyond RCG. Integer-I/U statistics have been locally
+recomputed, but the final portable entrypoint has not been run on full241 here. Source, controls and
+prepared replay are in the [intake](../../evidence/local/research_20261005/astra_intake.md).
+Next work is governed by [PLAN](PLAN.md), not this gap list.

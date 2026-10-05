@@ -30,7 +30,7 @@ def main():
     p.add_argument("--device", choices=["cpu", "cuda"], default="cuda"); p.add_argument("--threads", type=int, default=2)
     p.add_argument("--suite", type=Path, help="output directory of run_edit_auxiliary.py (its proposals/ and fields/)")
     p.add_argument("--astra", type=Path, help="output directory of the Astra replay (its frozen/)")
-    p.add_argument("--host", help="MASK_DIR:ARM; default: the suite's copy of the cached native, else the replayed native of the D run")
+    p.add_argument("--host", required=True, help="explicit sealed raw-model origin MASK_DIR:ARM; never defaults to FoRIS")
     p.add_argument("--no-layers", action="store_true", help="last-layer evidence only")
     p.add_argument("--forward-layers", help="e.g. 4,8,12,16,20,22,24: one extra paired forward per episode (GPU only)")
     p.add_argument("--workers", type=int, default=6, help="CPU processes for the counting pass, and for inference on CPU")
@@ -46,17 +46,21 @@ def main():
                                                               "/root/autodl-tmp/demo8_local_verification/runtime/extensions"])) if a.forward_layers else env
     proposers = [f"{n}={root / run / 'predictions'}:{arm}:{root / run / sub}:{arm}" for n, run, arm, sub in SEALED]
     requires = [{"path": manifest}, {"path": str(root / D241 / "sealed.json")}, {"path": str(root / RCG / "sealed.json")}]
-    host = a.host or f"{root / D241 / 'predictions'}:native"
+    host = a.host
+    # FoRIS is an ordinary proposer and a complete comparator, not the edit origin.
+    foris_masks = root / D241 / "predictions"
     if a.suite:
         suite = a.suite.resolve(); requires.append({"path": str(suite / "proposal_sealed.json"), "json_equals": {"state": "ALL_PREDICTIONS_SEALED"}})
         proposers += [f"{n}={suite / 'proposals'}:{arm}:{suite / 'fields'}:{arm}" for n, arm in SUITE]
-        host = a.host or f"{suite / 'proposals'}:native"
+        foris_masks = suite / "proposals"
     if a.astra:
         astra = a.astra.resolve(); requires.append({"path": str(astra / "freeze.json")})
         proposers.append(f"astra={astra / 'frozen'}:RCG_count_matched_delete")
     proposers += a.proposer
+    proposers.append(f"foris={foris_masks}:native:{Path(a.cache_root) / 'results/extent_v1/run/packets'}:score")
     argv = [a.python, "scripts/run_aux_evidence.py", "infer", "--root", a.cache_root, "--manifest", manifest, "--out", str(out),
-            "--device", a.device, "--threads", str(a.threads), "--workers", "1" if a.device == "cuda" else str(a.workers), "--host", host]
+            "--device", a.device, "--threads", str(a.threads), "--workers", "1" if a.device == "cuda" else str(a.workers),
+            "--host", host, "--expected", str(a.expected)]
     for s in proposers: argv += ["--proposer", s]
     if a.forward_layers:
         argv += ["--forward-layers", a.forward_layers]

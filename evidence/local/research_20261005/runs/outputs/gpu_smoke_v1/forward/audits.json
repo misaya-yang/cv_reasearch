@@ -1,0 +1,1140 @@
+{
+  "setup": {
+    "source_input": "normalized_black_image",
+    "rank": 500,
+    "black_forwards": 1,
+    "svd_count": 2,
+    "seconds_by_svd": {
+      "transition": 0.8576369639486074,
+      "concat": 0.5539457499980927
+    },
+    "seconds_total": 1.714530799537897,
+    "no_additional_natural_images": true
+  },
+  "episodes": {
+    "0_11_0": {
+      "timings": {
+        "native": {
+          "seconds": 1.9442951381206512,
+          "peak_cuda_bytes": 1742150144
+        },
+        "identity": {
+          "seconds": 1.5298438742756844,
+          "peak_cuda_bytes": 1823988224
+        },
+        "masked_identity": {
+          "seconds": 1.4840871319174767,
+          "peak_cuda_bytes": 1977977856
+        },
+        "control": {
+          "seconds": 1.479023078456521,
+          "peak_cuda_bytes": 1910885376
+        },
+        "intervention": {
+          "seconds": 1.476839516311884,
+          "peak_cuda_bytes": 1977977856
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.9770928286015987,
+          "peak_cuda_bytes": 1829505024
+        },
+        "multilayer.native_audit": {
+          "seconds": 0.9723409973084927
+        },
+        "multilayer.control": {
+          "seconds": 1.030287316069007
+        },
+        "multilayer": {
+          "seconds": 0.9968765154480934
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "identity": {
+          "attention": {
+            "arm": "identity",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "native",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": false,
+            "role_mean": -0.004875704646110535,
+            "role_rms": 0.20838415622711182,
+            "bias_rms": 0.0,
+            "bias_max_abs": 0.0,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "masked_identity": {
+          "attention": {
+            "arm": "masked_identity",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.004875704646110535,
+            "role_rms": 0.20838415622711182,
+            "bias_rms": 0.0,
+            "bias_max_abs": 0.0,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.004875704646110535,
+            "role_rms": 0.20838415622711182,
+            "bias_rms": 0.030099190771579742,
+            "bias_max_abs": 0.0785648450255394,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.004875704646110535,
+            "role_rms": 0.20838415622711182,
+            "bias_rms": 0.030099190771579742,
+            "bias_max_abs": 0.20506978034973145,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 2,
+          "intervention": false,
+          "native_tap_max_abs_error": 0.0,
+          "seconds_feature_forward_and_cpu_copy": 0.9769683387130499
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.8241697084158659,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 2,
+            "intervention": false,
+            "native_tap_max_abs_error": 0.0,
+            "seconds_feature_forward_and_cpu_copy": 0.9769683387130499
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.8749637436121702,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 2,
+            "intervention": false,
+            "native_tap_max_abs_error": 0.0,
+            "seconds_feature_forward_and_cpu_copy": 0.9769683387130499
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.8557748030871153,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 2,
+            "intervention": false,
+            "native_tap_max_abs_error": 0.0,
+            "seconds_feature_forward_and_cpu_copy": 0.9769683387130499
+          }
+        }
+      }
+    },
+    "1_38_5": {
+      "timings": {
+        "native": {
+          "seconds": 1.4279557690024376,
+          "peak_cuda_bytes": 1822939648
+        },
+        "control": {
+          "seconds": 1.4022939074784517,
+          "peak_cuda_bytes": 1944439808
+        },
+        "intervention": {
+          "seconds": 1.4414658788591623,
+          "peak_cuda_bytes": 2011532288
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.5034057423472404,
+          "peak_cuda_bytes": 1829545984
+        },
+        "multilayer.native_audit": {
+          "seconds": 1.0649161878973246
+        },
+        "multilayer.control": {
+          "seconds": 1.050257807597518
+        },
+        "multilayer": {
+          "seconds": 0.9823052380234003
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.1682731807231903,
+            "role_rms": 0.38659465312957764,
+            "bias_rms": 0.10359461605548859,
+            "bias_max_abs": 0.19296492636203766,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.1682731807231903,
+            "role_rms": 0.38659465312957764,
+            "bias_rms": 0.10359461605548859,
+            "bias_max_abs": 0.3594343960285187,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 1,
+          "intervention": false,
+          "native_tap_max_abs_error": null,
+          "seconds_feature_forward_and_cpu_copy": 0.5032854210585356
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.9119233470410109,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5032854210585356
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.8922547623515129,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5032854210585356
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.827541021630168,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5032854210585356
+          }
+        }
+      }
+    },
+    "2_21_78": {
+      "timings": {
+        "native": {
+          "seconds": 1.4324359465390444,
+          "peak_cuda_bytes": 1856494080
+        },
+        "control": {
+          "seconds": 1.4267893489450216,
+          "peak_cuda_bytes": 1944439808
+        },
+        "intervention": {
+          "seconds": 1.5013158563524485,
+          "peak_cuda_bytes": 2011532288
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.5107629876583815,
+          "peak_cuda_bytes": 1829545984
+        },
+        "multilayer.native_audit": {
+          "seconds": 0.9837898444384336
+        },
+        "multilayer.control": {
+          "seconds": 0.9759294800460339
+        },
+        "multilayer": {
+          "seconds": 0.982249416410923
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.170942485332489,
+            "role_rms": 0.2658027708530426,
+            "bias_rms": 0.04897162318229675,
+            "bias_max_abs": 0.12503214180469513,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.170942485332489,
+            "role_rms": 0.2658027708530426,
+            "bias_rms": 0.048971619457006454,
+            "bias_max_abs": 0.31922647356987,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 1,
+          "intervention": false,
+          "native_tap_max_abs_error": null,
+          "seconds_feature_forward_and_cpu_copy": 0.5106533281505108
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.8440129458904266,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5106533281505108
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.836430137977004,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5106533281505108
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.8420674167573452,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5106533281505108
+          }
+        }
+      }
+    },
+    "3_0_75": {
+      "timings": {
+        "native": {
+          "seconds": 1.513190796598792,
+          "peak_cuda_bytes": 1856494080
+        },
+        "control": {
+          "seconds": 1.5411706119775772,
+          "peak_cuda_bytes": 1944439808
+        },
+        "intervention": {
+          "seconds": 1.614720419049263,
+          "peak_cuda_bytes": 2011532288
+        },
+        "multilayer.shared_forward": {
+          "seconds": 0.5063184499740601,
+          "peak_cuda_bytes": 1829545984
+        },
+        "multilayer.native_audit": {
+          "seconds": 1.0225684456527233
+        },
+        "multilayer.control": {
+          "seconds": 1.0555770434439182
+        },
+        "multilayer": {
+          "seconds": 1.0429482124745846
+        }
+      },
+      "receipts": {
+        "native": {
+          "attention": {},
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "control": {
+          "attention": {
+            "arm": "control",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.021140206605196,
+            "role_rms": 0.3350064158439636,
+            "bias_rms": 0.07779142260551453,
+            "bias_max_abs": 0.16299737989902496,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "intervention": {
+          "attention": {
+            "arm": "intervention",
+            "config": {
+              "block_from_end": 6,
+              "temperature": 0.1,
+              "max_bias": 0.6931471805599453,
+              "chunk_size": 512
+            },
+            "attention_calls": 1,
+            "sdpa_calls": 1,
+            "added_encoder_forwards": 0,
+            "batch_order": "reference,query",
+            "sdpa_mask_path": "dense_additive",
+            "reference_directly_biased": false,
+            "reference_kernel_can_change": true,
+            "role_mean": -0.021140206605196,
+            "role_rms": 0.3350064158439636,
+            "bias_rms": 0.07779142260551453,
+            "bias_max_abs": 0.3415305018424988,
+            "patch_grid": [
+              64,
+              64
+            ],
+            "prefix_tokens": 5
+          },
+          "paired_input": {
+            "calls": 1,
+            "order": "reference,query",
+            "transform": "identity",
+            "shape": [
+              2,
+              3,
+              1024,
+              1024
+            ]
+          }
+        },
+        "multilayer.extraction": {
+          "space": "encoder_intermediate_norm_true",
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "indices_zero_based": [
+            15,
+            23
+          ],
+          "batch_order": [
+            "reference",
+            "query"
+          ],
+          "pair_forwards": 1,
+          "intervention": false,
+          "native_tap_max_abs_error": null,
+          "seconds_feature_forward_and_cpu_copy": 0.5062062069773674
+        },
+        "multilayer.native_audit": {
+          "method": "layer_transition_foris",
+          "arm": "native",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 1024,
+          "positional_rank": 500,
+          "seconds_readout": 0.854035634547472,
+          "layers_one_based": [
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5062062069773674
+          }
+        },
+        "multilayer.control": {
+          "method": "layer_transition_foris",
+          "arm": "concat",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.88730638474226,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5062062069773674
+          }
+        },
+        "multilayer": {
+          "method": "layer_transition_foris",
+          "arm": "transition",
+          "parts_1_through_4_completed": true,
+          "native_finalization_pending": false,
+          "debias_applied": true,
+          "native_rgb_xy_query_state_restored": true,
+          "representation_channels": 2048,
+          "positional_rank": 500,
+          "seconds_readout": 0.8739543184638023,
+          "layers_one_based": [
+            16,
+            24
+          ],
+          "query_gt_used": false,
+          "layers_source": {
+            "space": "encoder_intermediate_norm_true",
+            "layers_one_based": [
+              16,
+              24
+            ],
+            "indices_zero_based": [
+              15,
+              23
+            ],
+            "batch_order": [
+              "reference",
+              "query"
+            ],
+            "pair_forwards": 1,
+            "intervention": false,
+            "native_tap_max_abs_error": null,
+            "seconds_feature_forward_and_cpu_copy": 0.5062062069773674
+          }
+        }
+      }
+    }
+  },
+  "first_episode_mask_path": {
+    "identity": {
+      "full_mask_exact": true,
+      "full_score_close": true,
+      "full_score_max_abs": 0.0,
+      "reference_exact": true,
+      "reference_close": true,
+      "reference_max_abs": 0.0,
+      "reference_directly_biased": false,
+      "sdpa_path": "native mask",
+      "numerical_tolerance": {
+        "atol": 1e-05,
+        "rtol": 1e-05
+      }
+    },
+    "masked_identity": {
+      "full_mask_exact": true,
+      "full_score_close": true,
+      "full_score_max_abs": 0.0,
+      "reference_exact": true,
+      "reference_close": true,
+      "reference_max_abs": 0.0,
+      "reference_directly_biased": false,
+      "sdpa_path": "full zero additive mask, same shape as candidate",
+      "numerical_tolerance": {
+        "atol": 1e-05,
+        "rtol": 1e-05
+      }
+    },
+    "control.reference_vs_masked_identity": {
+      "exact": true,
+      "close": true,
+      "max_abs": 0.0,
+      "reference_directly_biased": false
+    },
+    "intervention.reference_vs_masked_identity": {
+      "exact": true,
+      "close": true,
+      "max_abs": 0.0,
+      "reference_directly_biased": false
+    }
+  },
+  "first_episode_pre_multilayer_timings": {
+    "native": {
+      "seconds": 1.9442951381206512,
+      "peak_cuda_bytes": 1742150144
+    },
+    "identity": {
+      "seconds": 1.5298438742756844,
+      "peak_cuda_bytes": 1823988224
+    },
+    "masked_identity": {
+      "seconds": 1.4840871319174767,
+      "peak_cuda_bytes": 1977977856
+    },
+    "control": {
+      "seconds": 1.479023078456521,
+      "peak_cuda_bytes": 1910885376
+    },
+    "intervention": {
+      "seconds": 1.476839516311884,
+      "peak_cuda_bytes": 1977977856
+    }
+  }
+}

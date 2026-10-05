@@ -16,7 +16,7 @@ Project Claude auto memory remains disabled; shared lessons are in [LESSONS](doc
 src/ics/        shared data/encoder, complete FoRIS entry, native basis and paired statistics
 scripts/        run_foris.py and experiment_resource_guard.py
 evidence/       recorded results and reports; no active experiment queues
-  local/        local experiment ledger and retained numeric evidence
+  local/        local evidence; research_20261005 holds the prepared six-mechanism batch
   insid3/       historical INSID3 diagnostics
   dots-2026-10-05/  supplied research synthesis and portable cloud evidence
 docs/
@@ -39,3 +39,6 @@ The user deleted local demo8, and it has not been recreated. See [closed-directi
 
 Old source is available from Git/history or the recorded local backup, not copied into another active code
 tree. Scientific evidence remains inspectable. A stored result or a historical plan is not authorization to run.
+
+Current preparation: [six complete mechanisms, controls and finite GPU launch](evidence/local/research_20261005/README.md).
+The user stopped CPU experiments and will enable GPU mode. The batch has no new accuracy result yet.

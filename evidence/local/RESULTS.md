@@ -428,6 +428,35 @@ Language channel：
 
 运行/收尾：main guard elapsed_seconds=1476.0639655012637；language guard 到 SHUTDOWN_REQUESTED 为 783.7706240154803；两段 guard 合计 2259.834589516744 秒。session PID 在 read_window 开始时已运行 37m39s，再加 read_window 51.5386 秒及关机请求 0.5179 秒，从 session 进程启动到 guard 关机请求约 38m31s；main 收尾清理 hires bank 约 51 秒不包含在 guard 阶段用时。guard 的 SHUTDOWN_REQUESTED helper=/usr/bin/shutdown，但 billing_stop_confirmed=false。读回时数据盘 17G/50G 可用，overlay 系统盘 19G/30G 可用。用户随后重启为无卡模式以读取结果；额外无卡空闲时长不算入 GPU 队列运行时长。
 
+### 2026-10-05: native's errors as delete and add budgets; sealed arms as edit operators (CPU, GT diagnostics)
+
+DEV241, complete 1024 masks, native 59.07; sealed masks only. Budgets with truth: delete every false pixel +22.84
+(whole wrong regions +7.53, attached to the target +11.42); add every missed pixel +13.31 (whole missed objects +3.46,
+completing touched objects +9.85). As edit operators: RCG deletions only +1.67 [+0.82, +2.64] (80.1% false), additions
+only +0.34 [-0.05, +0.70] (44.6% true); D +0.54 / -0.34; transition only +1.42 / -0.16; concat -0.98 / -2.28. Pooled
+break-even: 62.2% false for a deletion, 37.8% true for an addition; all eight signs follow it. Screens: D reads +3.26
+on first20, +1.08 on mini50, +0.12 on 241; a random 50 of 241 has sd 1.1 to 1.6. Lesson: every arm so far is a
+deleter; nothing adds. With side effects halved and no benefit lost, transition-only additions plus RCG deletions read
++3.14 [+2.20, +4.27] (now +1.32); arms rejected on net gain recover far more missed pixels than RCG (two-slot EM 53.9%
+on mini50 against 8.0%). Full tables: [edit_budget.md](research_20261005/edit_budget.md).
+
+### 2026-10-05: the model origin, INSID3 and FoRIS stage by stage on it, and the family containing both (stage241_v1)
+
+DEV241 (79 classes, 239 photo groups), seed 0, 1024, class mIoU, development data; float32 saved final-layer tokens,
+no CRF except `native`. Scores: origin `model.raw_nn` 42.90; `model.raw_mean` 39.56; rebuilt INSID3 rule 54.47;
+rebuilt FoRIS pre-CRF 58.61; complete FoRIS 59.07. Parity with the cached public stage responses: final response
+within 1e-4 on 218 of 241 episodes (s2 240, s3 223); rebuilt pre-CRF mask differs from the cached one in 72,736
+pixels over 29 episodes. Complete FoRIS as an edit of the origin: adds 4.14M true / 3.36M false (55% true), deletes
+11.74M false / 1.58M true (88% false); additions alone 48.78, deletions alone 52.77. FoRIS chain: s2 51.94, +vote
+52.20, +seed prior 56.36, +penalty 57.35, +cluster delta 58.61, +CRF 59.07. Removing one term from pre-CRF (no
+selection, in sample): fg -5.16, prior -2.09, delta -1.26, penalty -0.72, bg +0.10, vote +0.75; never projecting -2.97.
+Family chosen on three folds and read on the fourth: all terms 57.35, -1.73 [-2.80, +0.05] vs native; threshold only
+58.79, -0.29 [-1.24, +0.47]; one-at-a-time lines 58.88, -0.19 [-1.41, +0.66]; best point in sample 59.92.
+Value by response level: FoRIS's per-image level turns positive between 0.525 and 0.575 (cut 0.5).
+Lesson: re-weighting, re-cutting or mixing the two public pipelines' own terms does not beat complete FoRIS; the cut
+and the weights are already near their optimum on this term set, so a gain has to come from evidence outside it.
+Source: [report](research_20261005/stage241_v1/report.md); sealed masks on the server, `outputs/stage241_v1`.
+
 ### 写了但没有跑就撤回的
 
 部分对应（PCF）、不变概念与可移植提示、响应 pair-ratio 编辑器、响应训练路线曾在未取得足够前提证据时撤回。早期 `pair_bank.py` 准备被撤回，不表示后续 layer/joint 队列没有运行（结果见上）。撤回未运行构造不证明输入缺少信息。

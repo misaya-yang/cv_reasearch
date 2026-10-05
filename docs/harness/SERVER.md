@@ -1,16 +1,42 @@
 # Server operations
 
 This is the only server runbook. It describes the recorded environment, not live availability or authorization.
-Last recorded endpoint (2026-10-05): `ssh -p 48002 root@connect.westd.seetacloud.com`.
-Last recorded mode: no-card. Neither was rechecked during repository cleanup; instances and ports can change.
+Live endpoint checked in the 2026-10-05 preparation task: `ssh -p 48002 root@connect.westd.seetacloud.com`.
+Preparation mode was no-card, cgroup `cpu.max=50000 100000` (0.5 CPU), `memory.max=2147483648` (2 GiB).
+Host-level nproc/free are misleading for this container. Its no-card nvidia-smi is a stub, so the expected
+future GPU/12-core/60GB configuration remains unverified. SSH initially timed out, then succeeded without
+changing the endpoint. No experiment process was observed in the read-only process inventory.
+All 241 manifest reference/query RGB, mask, feature and packet paths exist; DINOv3 model.safetensors is
+1,212,347,640 bytes. Existence/size is not model-content or runtime verification.
+Full receipt: [server inventory](../../evidence/local/research_20261005/server_inventory.json).
+The user subsequently stopped all CPU testing; only code preparation and static checks continue.
+
+## Active GPU session
+
+The user enabled GPU mode and resumed experiments. Live inventory reports RTX 4080 SUPER, 32,760 MiB,
+12 CPU quota (`1200000 100000`), 66,571,993,088 memory bytes and no foreign GPU jobs at launch.
+The original hostname occasionally fails through the local fake-IP resolver. For this session, its live
+AliDNS answer was 36.103.198.204; using `HostName` with the original host-key alias and strict checking
+restored access. This is a temporary transport observation, not a permanent DNS or SSH configuration.
+Owned workspace: `/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9`.
+The user subsequently removed artificial duration/round/idle cutoffs; the owned pipeline used
+`scripts/experiment_pipeline.py` without those limits. Shutdown was not armed. After the GPU-idle
+correction all owned queues finished; the user later paused and powered off for network repair. The current user has now resumed
+pipeline tracking and authorized running the prepared work after the existing GPU is enabled.
+Ordinary hostname SSH works again; the latest check still reports no-card 0.5 CPU / 2 GiB.
+The isolated root queue is `launch/resume_dev241_20261005_v1`; do not confuse other live workers
+with its owned processes, and do not retry from a mere SSH observation timeout.
+This inventory is historical. Do not alter another worker's processes or assets.
 
 ## One resource policy
 
 Use the budget and lifecycle approved for the current session. There is no standing “keep on forever” rule
-and no permission to shut down another worker's session. Before an authorized queue, state the bounded total
-GPU time/cost and scientific comparison; unknown price/runtime stays unknown, not an invented estimate.
+and no permission to shut down another worker's session. Before an authorized queue, state its scientific
+comparison and measured resource expectations; unknown price/runtime stays unknown. The current task
+removed artificial time/round/idle caps; do not restore them from this older runbook.
 Prepare on CPU/no-card, then use a short real-pipeline smoke followed immediately by the authorized stages.
-Run through `scripts/experiment_resource_guard.py`.
+The current pipeline is `scripts/experiment_pipeline.py`; the finite resource guard is historical.
+Neither runner is permission to resume held compute.
 
 The guard waits for foreign GPU jobs. With explicit shutdown authorization it invokes `/usr/bin/shutdown`
 at the end of the finite session, subject to foreign-job checks and the shared KEEP_ON hold.

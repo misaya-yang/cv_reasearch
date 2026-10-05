@@ -1,0 +1,887 @@
+{
+  "plan": {
+    "question": "Does explicit source-background matching rank useful FP deletion above harmful TP deletion inside the conservative RCG deletion domain, beyond weak FG matching and host confidence?",
+    "domain": "D_deleted=R & ~(source_contrast_mean | scalar_contrast), where conservative retained mask D=R&(source|scalar). This diagnostic never deletes from mere candidate absence.",
+    "primary": "BG_minus_FG",
+    "scores": [
+      "BG_minus_FG",
+      "BG_only",
+      "negative_FG",
+      "negative_RCG",
+      "bank_absence"
+    ],
+    "semantics": "fg_max/bg_max=max normalized Part1 query-reference similarity across reference coverage>=.5 / <.5. This is legacy pre-Part2 source cosine evidence, not the final host score. Each packet is checked against eight fixed token rows of cached FP16 q/r, max allowed difference .001; stored field is used without replacement.",
+    "source_code": [
+      "repo/demo_lists/demo9_transductive_ics/scripts/extent_experiment.py:111-118,168-178",
+      "repo/demo_lists/demo9_transductive_ics/scripts/evidence_audit.py:198-210",
+      "readout_sources/FoRIS_official.py:340-361"
+    ],
+    "source_verification": "Generator extracts actual Part1 maps; original FoRIS returns input unit maps or normalized position-debiased maps. cov comes only from reference mask resized by area. All feature audits occur without query-GT.",
+    "data": "All existing exposed DEV220, old120/new100 reported separately. Not independent confirmation.",
+    "evaluation": "Scores are token-constant on64. Exact original1024 D FP and TP pixel counts aggregate per16x16 token. Positive=FP that should be deleted, negative=TP that should survive. Primary within-episode AUC jointly conditions on independently computed RCG and FG quintiles among D-touched tokens; same25 cells for all scores. Also raw and RCG-only conditional AUC. Macro across common evaluable episodes, RandomState0 2000 photograph-group paired bootstrap.",
+    "controls": "BG alone; negative FG alone, to distinguish genuine negative evidence from weak positive matching; negative RCG; one minus equal vote of all unique original64 candidate masks. Candidate absence is a diagnostic comparator only.",
+    "decision": "No gate or mask before this first signal result; no threshold grid. An advantage needs consistency across batches and gain over negativeFG within RCGxFG bins.",
+    "prior_distinction": "Prior reference RBF/linear filters acted on QMI additions. This fresh NN negative-evidence diagnostic acts only on conservative RCG deletions; it does not rename or rerun that addition filter.",
+    "cost": "One CPU/BLAS/Torch thread. Cached packets, fields, masks, eight fixed query feature rows per episode; no GPU/download/fit."
+  },
+  "cohorts": {
+    "old120": {
+      "episodes": 120,
+      "deleted_TP": 526312.0,
+      "deleted_FP": 1239046.0,
+      "metrics": {
+        "raw": {
+          "evaluable": 109,
+          "macro_auc": {
+            "BG_minus_FG": 0.5172578715799814,
+            "BG_only": 0.49451677285264,
+            "negative_FG": 0.5043851447818314,
+            "negative_RCG": 0.49159899749539704,
+            "bank_absence": 0.46477504797580793
+          },
+          "comparisons": {
+            "BG_minus_FG__minus__negative_FG": {
+              "gain": 0.012872726798150052,
+              "ci95": [
+                -0.042698282668587696,
+                0.06483871396193437
+              ],
+              "per_fold": {
+                "0": -0.04164029559837454,
+                "1": -0.03277562744507345,
+                "2": 0.06494829660194786,
+                "3": 0.05943798039726923
+              },
+              "episodes_up": 52,
+              "episodes_down": 55,
+              "episodes_tie": 2
+            },
+            "BG_minus_FG__minus__negative_RCG": {
+              "gain": 0.025658874084584365,
+              "ci95": [
+                -0.022075624419481115,
+                0.07109976145479509
+              ],
+              "per_fold": {
+                "0": -0.031580313751376696,
+                "1": 0.011074906513625742,
+                "2": 0.08768266128083788,
+                "3": 0.03692117508059267
+              },
+              "episodes_up": 60,
+              "episodes_down": 47,
+              "episodes_tie": 2
+            },
+            "BG_minus_FG__minus__bank_absence": {
+              "gain": 0.05248282360417342,
+              "ci95": [
+                0.011954700704277685,
+                0.0910252902857482
+              ],
+              "per_fold": {
+                "0": 0.05186581824922457,
+                "1": 0.023801753132875803,
+                "2": 0.0961160265059622,
+                "3": 0.04064091918562669
+              },
+              "episodes_up": 68,
+              "episodes_down": 40,
+              "episodes_tie": 1
+            },
+            "BG_only__minus__negative_FG": {
+              "gain": -0.009868371929191405,
+              "ci95": [
+                -0.08598929851588943,
+                0.06512455644371211
+              ],
+              "per_fold": {
+                "0": -0.07451697340831619,
+                "1": -0.06978702845575982,
+                "2": 0.05962817187899872,
+                "3": 0.04380079452393869
+              },
+              "episodes_up": 60,
+              "episodes_down": 49,
+              "episodes_tie": 0
+            },
+            "BG_only__minus__negative_RCG": {
+              "gain": 0.00291777535724291,
+              "ci95": [
+                -0.061598658965568695,
+                0.06703996639935442
+              ],
+              "per_fold": {
+                "0": -0.06445699156131837,
+                "1": -0.02593649449706063,
+                "2": 0.08236253655788882,
+                "3": 0.021283989207262124
+              },
+              "episodes_up": 60,
+              "episodes_down": 49,
+              "episodes_tie": 0
+            }
+          }
+        },
+        "conditional_RCG": {
+          "evaluable": 108,
+          "macro_auc": {
+            "BG_minus_FG": 0.5303568675734603,
+            "BG_only": 0.518622683544742,
+            "negative_FG": 0.4962607433246952,
+            "negative_RCG": 0.5060193961596995,
+            "bank_absence": 0.4833311011919573
+          },
+          "comparisons": {
+            "BG_minus_FG__minus__negative_FG": {
+              "gain": 0.03409612424876508,
+              "ci95": [
+                -0.021751365447571776,
+                0.08536430314996975
+              ],
+              "per_fold": {
+                "0": -0.02672167473907466,
+                "1": -0.03104307386964635,
+                "2": 0.08632859843986983,
+                "3": 0.10244015162504849
+              },
+              "episodes_up": 58,
+              "episodes_down": 46,
+              "episodes_tie": 4
+            },
+            "BG_minus_FG__minus__negative_RCG": {
+              "gain": 0.024337471413760862,
+              "ci95": [
+                -0.01967866097781199,
+                0.06610037562708893
+              ],
+              "per_fold": {
+                "0": 0.028139307129051033,
+                "1": -0.019663363766799797,
+                "2": 0.003250640810878165,
+                "3": 0.08080065820522789
+              },
+              "episodes_up": 56,
+              "episodes_down": 46,
+              "episodes_tie": 6
+            },
+            "BG_minus_FG__minus__bank_absence": {
+              "gain": 0.04702576638150302,
+              "ci95": [
+                0.011814586052575602,
+                0.07999227427546708
+              ],
+              "per_fold": {
+                "0": 0.08856905457595367,
+                "1": -0.01657435968474452,
+                "2": 0.0739453022350587,
+                "3": 0.04485921391738303
+              },
+              "episodes_up": 62,
+              "episodes_down": 44,
+              "episodes_tie": 2
+            },
+            "BG_only__minus__negative_FG": {
+              "gain": 0.022361940220046665,
+              "ci95": [
+                -0.05309665513793219,
+                0.09428841705715073
+              ],
+              "per_fold": {
+                "0": -0.10352824065822788,
+                "1": -0.08224235108088528,
+                "2": 0.1318514994202852,
+                "3": 0.134456148108119
+              },
+              "episodes_up": 60,
+              "episodes_down": 45,
+              "episodes_tie": 3
+            },
+            "BG_only__minus__negative_RCG": {
+              "gain": 0.01260328738504244,
+              "ci95": [
+                -0.04165075410473915,
+                0.06303137393224584
+              ],
+              "per_fold": {
+                "0": -0.04866725879010218,
+                "1": -0.07086264097803871,
+                "2": 0.048773541791293555,
+                "3": 0.1128166546882984
+              },
+              "episodes_up": 58,
+              "episodes_down": 47,
+              "episodes_tie": 3
+            }
+          }
+        },
+        "conditional_RCG_and_FG": {
+          "evaluable": 107,
+          "macro_auc": {
+            "BG_minus_FG": 0.51748526281078,
+            "BG_only": 0.5400551667792787,
+            "negative_FG": 0.4828290837425867,
+            "negative_RCG": 0.5071950930113613,
+            "bank_absence": 0.48874379488400266
+          },
+          "comparisons": {
+            "BG_minus_FG__minus__negative_FG": {
+              "gain": 0.0346561790681933,
+              "ci95": [
+                -0.008292134425291487,
+                0.07678444853793404
+              ],
+              "per_fold": {
+                "0": -0.004815732010779192,
+                "1": 0.024679921969872145,
+                "2": 0.06915690688951018,
+                "3": 0.04704024097421901
+              },
+              "episodes_up": 51,
+              "episodes_down": 44,
+              "episodes_tie": 12
+            },
+            "BG_minus_FG__minus__negative_RCG": {
+              "gain": 0.010290169799418668,
+              "ci95": [
+                -0.03283286119663501,
+                0.05183214922459788
+              ],
+              "per_fold": {
+                "0": 0.03919084546617132,
+                "1": -0.01475356706769688,
+                "2": -0.027857972997050114,
+                "3": 0.042894160021883905
+              },
+              "episodes_up": 44,
+              "episodes_down": 51,
+              "episodes_tie": 12
+            },
+            "BG_minus_FG__minus__bank_absence": {
+              "gain": 0.028741467926777394,
+              "ci95": [
+                -0.0026862156195837164,
+                0.05790350550323282
+              ],
+              "per_fold": {
+                "0": 0.054968693567697055,
+                "1": -0.0168374626288972,
+                "2": 0.05415714278648166,
+                "3": 0.025780879569119154
+              },
+              "episodes_up": 53,
+              "episodes_down": 45,
+              "episodes_tie": 9
+            },
+            "BG_only__minus__negative_FG": {
+              "gain": 0.05722608303669194,
+              "ci95": [
+                0.0036386033310361445,
+                0.11332053469412534
+              ],
+              "per_fold": {
+                "0": -0.028849107259244108,
+                "1": 0.058031103877864816,
+                "2": 0.12338149489936713,
+                "3": 0.0713675825628016
+              },
+              "episodes_up": 54,
+              "episodes_down": 43,
+              "episodes_tie": 10
+            },
+            "BG_only__minus__negative_RCG": {
+              "gain": 0.03286007376791732,
+              "ci95": [
+                -0.017088752028059033,
+                0.0829148028572697
+              ],
+              "per_fold": {
+                "0": 0.015157470217706385,
+                "1": 0.018597614840295793,
+                "2": 0.026366615012806835,
+                "3": 0.06722150161046649
+              },
+              "episodes_up": 51,
+              "episodes_down": 46,
+              "episodes_tie": 10
+            }
+          }
+        }
+      }
+    },
+    "new100": {
+      "episodes": 100,
+      "deleted_TP": 716728.0,
+      "deleted_FP": 728795.0,
+      "metrics": {
+        "raw": {
+          "evaluable": 89,
+          "macro_auc": {
+            "BG_minus_FG": 0.5214125709769865,
+            "BG_only": 0.49225271649984426,
+            "negative_FG": 0.5351535297375707,
+            "negative_RCG": 0.5153131767670418,
+            "bank_absence": 0.49904352425070314
+          },
+          "comparisons": {
+            "BG_minus_FG__minus__negative_FG": {
+              "gain": -0.013740958760584296,
+              "ci95": [
+                -0.0733767433410086,
+                0.04570588440783899
+              ],
+              "per_fold": {
+                "0": 0.014753548257506566,
+                "1": -0.03825466857142243,
+                "2": 0.0632664306986297,
+                "3": -0.0960243502915097
+              },
+              "episodes_up": 47,
+              "episodes_down": 42,
+              "episodes_tie": 0
+            },
+            "BG_minus_FG__minus__negative_RCG": {
+              "gain": 0.006099394209944619,
+              "ci95": [
+                -0.039820036068431514,
+                0.05120431758427561
+              ],
+              "per_fold": {
+                "0": 0.014393751885915384,
+                "1": -0.006598881453483085,
+                "2": -0.0017112970971774359,
+                "3": 0.01793698724652492
+              },
+              "episodes_up": 48,
+              "episodes_down": 41,
+              "episodes_tie": 0
+            },
+            "BG_minus_FG__minus__bank_absence": {
+              "gain": 0.022369046726283367,
+              "ci95": [
+                -0.015680948345618787,
+                0.06039565044178271
+              ],
+              "per_fold": {
+                "0": 0.02242588639646036,
+                "1": 0.002205712451266041,
+                "2": 0.004027557578641846,
+                "3": 0.060814446857393505
+              },
+              "episodes_up": 50,
+              "episodes_down": 39,
+              "episodes_tie": 0
+            },
+            "BG_only__minus__negative_FG": {
+              "gain": -0.042900813237726466,
+              "ci95": [
+                -0.13624048428745097,
+                0.049912792607582586
+              ],
+              "per_fold": {
+                "0": 0.013865730075138093,
+                "1": -0.12969501261530988,
+                "2": 0.1022170962723501,
+                "3": -0.16057136410639625
+              },
+              "episodes_up": 42,
+              "episodes_down": 47,
+              "episodes_tie": 0
+            },
+            "BG_only__minus__negative_RCG": {
+              "gain": -0.023060460267197554,
+              "ci95": [
+                -0.08784266938058073,
+                0.04442169466345535
+              ],
+              "per_fold": {
+                "0": 0.0135059337035469,
+                "1": -0.0980392254973705,
+                "2": 0.03723936847654297,
+                "3": -0.0466100265683616
+              },
+              "episodes_up": 43,
+              "episodes_down": 45,
+              "episodes_tie": 1
+            }
+          }
+        },
+        "conditional_RCG": {
+          "evaluable": 89,
+          "macro_auc": {
+            "BG_minus_FG": 0.5315500939140965,
+            "BG_only": 0.4987084327703525,
+            "negative_FG": 0.5189721292937092,
+            "negative_RCG": 0.4985480766464847,
+            "bank_absence": 0.502789861164686
+          },
+          "comparisons": {
+            "BG_minus_FG__minus__negative_FG": {
+              "gain": 0.012577964620387285,
+              "ci95": [
+                -0.045893317471955235,
+                0.07245740830287418
+              ],
+              "per_fold": {
+                "0": 0.0011816853318512603,
+                "1": 0.035332613605678104,
+                "2": 0.09315897663852701,
+                "3": -0.07884340439957384
+              },
+              "episodes_up": 47,
+              "episodes_down": 37,
+              "episodes_tie": 5
+            },
+            "BG_minus_FG__minus__negative_RCG": {
+              "gain": 0.033002017267611775,
+              "ci95": [
+                -0.02574251429666252,
+                0.08753402372269357
+              ],
+              "per_fold": {
+                "0": 0.04574948986625142,
+                "1": -0.021607893238922208,
+                "2": 0.07450632874471216,
+                "3": 0.03278071312574026
+              },
+              "episodes_up": 46,
+              "episodes_down": 40,
+              "episodes_tie": 3
+            },
+            "BG_minus_FG__minus__bank_absence": {
+              "gain": 0.028760232749410326,
+              "ci95": [
+                -0.012491606817586764,
+                0.07214299862503895
+              ],
+              "per_fold": {
+                "0": -0.015488340994108426,
+                "1": 0.019077563658690115,
+                "2": 0.03664286550640414,
+                "3": 0.07682014163317906
+              },
+              "episodes_up": 46,
+              "episodes_down": 41,
+              "episodes_tie": 2
+            },
+            "BG_only__minus__negative_FG": {
+              "gain": -0.020263696523356748,
+              "ci95": [
+                -0.10847959507510906,
+                0.06676607583910593
+              ],
+              "per_fold": {
+                "0": 0.058841709985921406,
+                "1": -0.04646920312836263,
+                "2": 0.1235342186317574,
+                "3": -0.22055721187861946
+              },
+              "episodes_up": 43,
+              "episodes_down": 44,
+              "episodes_tie": 2
+            },
+            "BG_only__minus__negative_RCG": {
+              "gain": 0.00016035612386773511,
+              "ci95": [
+                -0.06063627302132273,
+                0.061765498141448515
+              ],
+              "per_fold": {
+                "0": 0.10340951452032156,
+                "1": -0.10340970997296295,
+                "2": 0.10488157073794256,
+                "3": -0.10893309435330539
+              },
+              "episodes_up": 44,
+              "episodes_down": 42,
+              "episodes_tie": 3
+            }
+          }
+        },
+        "conditional_RCG_and_FG": {
+          "evaluable": 88,
+          "macro_auc": {
+            "BG_minus_FG": 0.5315701025942583,
+            "BG_only": 0.5190143266390504,
+            "negative_FG": 0.487713808282029,
+            "negative_RCG": 0.4910532279570992,
+            "bank_absence": 0.5148145069784686
+          },
+          "comparisons": {
+            "BG_minus_FG__minus__negative_FG": {
+              "gain": 0.04385629431222929,
+              "ci95": [
+                -0.010654458591967305,
+                0.09892108883576517
+              ],
+              "per_fold": {
+                "0": 0.01760498839289991,
+                "1": 0.01634287633527977,
+                "2": 0.14519059063341413,
+                "3": -0.004728433660561251
+              },
+              "episodes_up": 47,
+              "episodes_down": 34,
+              "episodes_tie": 7
+            },
+            "BG_minus_FG__minus__negative_RCG": {
+              "gain": 0.040516874637159125,
+              "ci95": [
+                -0.014418213845646018,
+                0.09704327302387852
+              ],
+              "per_fold": {
+                "0": 0.10314400897273569,
+                "1": 0.010391880672477321,
+                "2": 0.021201940724523582,
+                "3": 0.023719461474431526
+              },
+              "episodes_up": 42,
+              "episodes_down": 38,
+              "episodes_tie": 8
+            },
+            "BG_minus_FG__minus__bank_absence": {
+              "gain": 0.01675559561578959,
+              "ci95": [
+                -0.016682126959183214,
+                0.05201249620511223
+              ],
+              "per_fold": {
+                "0": -0.018929051093683636,
+                "1": 0.023622323216160403,
+                "2": 0.030561719035951094,
+                "3": 0.034181507609416885
+              },
+              "episodes_up": 48,
+              "episodes_down": 37,
+              "episodes_tie": 3
+            },
+            "BG_only__minus__negative_FG": {
+              "gain": 0.03130051835702146,
+              "ci95": [
+                -0.03711270556843282,
+                0.09690020911932867
+              ],
+              "per_fold": {
+                "0": 0.020369093468764796,
+                "1": 0.013745384730030659,
+                "2": 0.15146555015954297,
+                "3": -0.06422305247306295
+              },
+              "episodes_up": 44,
+              "episodes_down": 39,
+              "episodes_tie": 5
+            },
+            "BG_only__minus__negative_RCG": {
+              "gain": 0.027961098681951294,
+              "ci95": [
+                -0.03126983453643324,
+                0.08609051248683694
+              ],
+              "per_fold": {
+                "0": 0.10590811404860058,
+                "1": 0.007794389067228214,
+                "2": 0.027476900250652435,
+                "3": -0.035775157338070185
+              },
+              "episodes_up": 44,
+              "episodes_down": 38,
+              "episodes_tie": 6
+            }
+          }
+        }
+      }
+    },
+    "combined220": {
+      "episodes": 220,
+      "deleted_TP": 1243040.0,
+      "deleted_FP": 1967841.0,
+      "metrics": {
+        "raw": {
+          "evaluable": 198,
+          "macro_auc": {
+            "BG_minus_FG": 0.5191253879756048,
+            "BG_only": 0.4934990909566863,
+            "negative_FG": 0.5182153784235527,
+            "negative_RCG": 0.5022584013094192,
+            "bank_absence": 0.4801785549882609
+          },
+          "comparisons": {
+            "BG_minus_FG__minus__negative_FG": {
+              "gain": 0.0009100095520522845,
+              "ci95": [
+                -0.04136640872277667,
+                0.04013655175555444
+              ],
+              "per_fold": {
+                "0": -0.015699127424669227,
+                "1": -0.035235605093638295,
+                "2": 0.06417744139626035,
+                "3": -0.007624201468478551
+              },
+              "episodes_up": 99,
+              "episodes_down": 97,
+              "episodes_tie": 2
+            },
+            "BG_minus_FG__minus__negative_RCG": {
+              "gain": 0.01686698666618569,
+              "ci95": [
+                -0.018739792240031642,
+                0.04997075230638381
+              ],
+              "per_fold": {
+                "0": -0.010432243558222342,
+                "1": 0.0031397364059442268,
+                "2": 0.04671043035758086,
+                "3": 0.028731917583543827
+              },
+              "episodes_up": 108,
+              "episodes_down": 88,
+              "episodes_tie": 2
+            },
+            "BG_minus_FG__minus__bank_absence": {
+              "gain": 0.03894683298734405,
+              "ci95": [
+                0.011855511779273695,
+                0.06590607483965202
+              ],
+              "per_fold": {
+                "0": 0.03832344959695304,
+                "1": 0.014105571602357134,
+                "2": 0.05390881158094037,
+                "3": 0.04934322524011434
+              },
+              "episodes_up": 118,
+              "episodes_down": 79,
+              "episodes_tie": 1
+            },
+            "BG_only__minus__negative_FG": {
+              "gain": -0.024716287466866254,
+              "ci95": [
+                -0.0881730287402459,
+                0.033516406227698886
+              ],
+              "per_fold": {
+                "0": -0.03386092980592723,
+                "1": -0.09668449073147616,
+                "2": 0.07914809555928477,
+                "3": -0.04435974449306854
+              },
+              "episodes_up": 102,
+              "episodes_down": 96,
+              "episodes_tie": 0
+            },
+            "BG_only__minus__negative_RCG": {
+              "gain": -0.008759310352732851,
+              "ci95": [
+                -0.05625148796842296,
+                0.03879069646804126
+              ],
+              "per_fold": {
+                "0": -0.028594045939480353,
+                "1": -0.05830914923189363,
+                "2": 0.0616810845206053,
+                "3": -0.008003625441046157
+              },
+              "episodes_up": 103,
+              "episodes_down": 94,
+              "episodes_tie": 1
+            }
+          }
+        },
+        "conditional_RCG": {
+          "evaluable": 197,
+          "macro_auc": {
+            "BG_minus_FG": 0.530895939372022,
+            "BG_only": 0.5096258900476827,
+            "negative_FG": 0.5065212171888691,
+            "negative_RCG": 0.5026440284608359,
+            "bank_absence": 0.492122114580652
+          },
+          "comparisons": {
+            "BG_minus_FG__minus__negative_FG": {
+              "gain": 0.02437472218315278,
+              "ci95": [
+                -0.016547203234023793,
+                0.0630061068777324
+              ],
+              "per_fold": {
+                "0": -0.013624179195578817,
+                "1": -0.0012417447990925182,
+                "2": 0.0894591884475877,
+                "3": 0.02423940196736828
+              },
+              "episodes_up": 105,
+              "episodes_down": 83,
+              "episodes_tie": 9
+            },
+            "BG_minus_FG__minus__negative_RCG": {
+              "gain": 0.028251910911185892,
+              "ci95": [
+                -0.00833540870431484,
+                0.06397360645787517
+              ],
+              "per_fold": {
+                "0": 0.03640531127100223,
+                "1": -0.020536417815507822,
+                "2": 0.03590949778055208,
+                "3": 0.06008617209250772
+              },
+              "episodes_up": 102,
+              "episodes_down": 86,
+              "episodes_tie": 9
+            },
+            "BG_minus_FG__minus__bank_absence": {
+              "gain": 0.038773824791369774,
+              "ci95": [
+                0.01187178942946628,
+                0.06583792021913197
+              ],
+              "per_fold": {
+                "0": 0.03972578726755718,
+                "1": -0.0005673736938146795,
+                "2": 0.056848352067758685,
+                "3": 0.0586462807751774
+              },
+              "episodes_up": 108,
+              "episodes_down": 85,
+              "episodes_tie": 4
+            },
+            "BG_only__minus__negative_FG": {
+              "gain": 0.003104672858813641,
+              "ci95": [
+                -0.05425669521903661,
+                0.05928099395147827
+              ],
+              "per_fold": {
+                "0": -0.02731377402934149,
+                "1": -0.06618093771444655,
+                "2": 0.12803941239220998,
+                "3": -0.018686869925376035
+              },
+              "episodes_up": 103,
+              "episodes_down": 89,
+              "episodes_tie": 5
+            },
+            "BG_only__minus__negative_RCG": {
+              "gain": 0.006981861586846762,
+              "ci95": [
+                -0.03325415672773102,
+                0.04733972350584159
+              ],
+              "per_fold": {
+                "0": 0.022715716437239564,
+                "1": -0.08547561073086184,
+                "2": 0.07448972172517435,
+                "3": 0.017159900199763423
+              },
+              "episodes_up": 102,
+              "episodes_down": 89,
+              "episodes_tie": 6
+            }
+          }
+        },
+        "conditional_RCG_and_FG": {
+          "evaluable": 195,
+          "macro_auc": {
+            "BG_minus_FG": 0.5238414982002471,
+            "BG_only": 0.5305598132800988,
+            "negative_FG": 0.485033472252694,
+            "negative_RCG": 0.49991055903815584,
+            "bank_absence": 0.5005090393163771
+          },
+          "comparisons": {
+            "BG_minus_FG__minus__negative_FG": {
+              "gain": 0.03880802594755314,
+              "ci95": [
+                0.005903522377270915,
+                0.07306670124947362
+              ],
+              "per_fold": {
+                "0": 0.005927529849317045,
+                "1": 0.020936758623728628,
+                "2": 0.10400567860546617,
+                "3": 0.0252973976276113
+              },
+              "episodes_up": 98,
+              "episodes_down": 78,
+              "episodes_tie": 19
+            },
+            "BG_minus_FG__minus__negative_RCG": {
+              "gain": 0.023930939162091287,
+              "ci95": [
+                -0.009829072376610593,
+                0.058267379849364614
+              ],
+              "per_fold": {
+                "0": 0.06983506964640009,
+                "1": -0.003463774204761523,
+                "2": -0.005372179207995508,
+                "3": 0.034840786631953904
+              },
+              "episodes_up": 86,
+              "episodes_down": 89,
+              "episodes_tie": 20
+            },
+            "BG_minus_FG__minus__bank_absence": {
+              "gain": 0.023332458883870078,
+              "ci95": [
+                2.1227344158366158e-05,
+                0.04658287707677968
+              ],
+              "per_fold": {
+                "0": 0.01955935758411881,
+                "1": 0.0013281555056184596,
+                "2": 0.04334257356748849,
+                "3": 0.029309143346044203
+              },
+              "episodes_up": 101,
+              "episodes_down": 82,
+              "episodes_tie": 12
+            },
+            "BG_only__minus__negative_FG": {
+              "gain": 0.045526341027404764,
+              "ci95": [
+                0.0038143601942785296,
+                0.08875006839724377
+              ],
+              "per_fold": {
+                "0": -0.0052653860770731755,
+                "1": 0.038147719770673966,
+                "2": 0.13625335356028104,
+                "3": 0.014419515847738483
+              },
+              "episodes_up": 98,
+              "episodes_down": 82,
+              "episodes_tie": 15
+            },
+            "BG_only__minus__negative_RCG": {
+              "gain": 0.030649254241942904,
+              "ci95": [
+                -0.0068697235919548795,
+                0.0677182979658268
+              ],
+              "per_fold": {
+                "0": 0.05864215372000986,
+                "1": 0.013747186942183827,
+                "2": 0.0268754957468194,
+                "3": 0.02396290485208109
+              },
+              "episodes_up": 95,
+              "episodes_down": 84,
+              "episodes_tie": 16
+            }
+          }
+        }
+      }
+    }
+  },
+  "all220_D_deletion_counts_match_prior": true,
+  "semantics_audit": {
+    "episodes": 220,
+    "replay_rows_per_episode": 8,
+    "max_FG_error": 4.902482032775879e-05,
+    "max_BG_error": 6.651878356933594e-05,
+    "max_unit_norm_error": 7.88569450378418e-05
+  },
+  "seconds": 15.384836435317993
+}
