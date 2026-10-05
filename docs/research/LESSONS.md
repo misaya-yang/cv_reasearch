@@ -51,3 +51,17 @@ inform the lead's judgment; they neither replace the user request nor confer per
 
 The cleanup changes the repository and its entry points. It does not establish a new segmentation result,
 erase the historical failures, or guarantee that an already-open agent has reloaded its instructions.
+
+## 2026-10-05 A*/B* optimization evidence
+
+- Compare matched depth and direct complete selection. The large joint2-vs-one-step gain mostly paid
+  for reconstructing a complete source mask; joint2 did not beat greedy2 or direct selection onDEV241.
+- Reference self-match calibration need not transport to cross-image margins. Cross-image calibration
+  improved foreground area estimation while localization still failed. Mass, ranking and final-mask
+  utility are separate links; test their combination against the strongest same-information rule.
+- Two weak value estimators agreeing on a change is a surrogate condition,not a true-IoU guarantee.
+  OnDEV241 the two-estimator guard added0.031points over the unguarded rule with an interval crossing zero.
+- Retain reusable features and compact sufficient statistics. Poor accuracy is a reason to retire a
+  tested construction; it is not a reason to remove feature inputs shared by later constructions.
+- The public-labelled4000list includes every previously used241/600/600episode pair. Bind benchmark
+  scores to their protocol and exposure; a larger list does not turn old cases into fresh confirmation.

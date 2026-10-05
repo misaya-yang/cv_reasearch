@@ -147,7 +147,7 @@ def infer(a):
             for threshold in (.3,.4,.6,.7):library[f"field:{label}>{threshold:g}"]=np.packbits(up>threshold)
         if sorted(library)!=names:raise ValueError("Family membership changed")
         query_fg=query_bg=None
-        if a.calibration=="cross":
+        if a.calibration in ("cross", "rank", "robust"):
             from ics.experiment import unpack
             cover=lambda mask:unpack(mask).reshape(64,16,64,16).mean((1,3)).reshape(-1)
             candidates=np.flatnonzero(cover(comparisons["astra.control"])>.5)
@@ -159,28 +159,65 @@ def infer(a):
             query_bg=torch.zeros(4096,dtype=torch.bool,device="cuda");query_bg[anchors]=True
         probability,info=posterior(torch.as_tensor(q,device="cuda"),torch.as_tensor(r,device="cuda"),cov,exclusion,query_fg,query_bg)
         if query_fg is not None:info.update(query_foreground_anchors=int(query_fg.sum()),query_background_anchors=int(query_bg.sum()))
+        secondary_probability=probability
+        if a.calibration in ("rank", "robust") and probability is not None:
+            from ics.experiment import unpack
+            consensus=np.stack([unpack(comparisons[name]) for name in ("native","rcg","astra.control","mean.control")])
+            lower=float(consensus.all(0).mean());upper=float(consensus.any(0).mean())
+            original_prior=float(probability.mean());target=float(np.clip(original_prior,lower,upper))
+            ranked=torch.as_tensor(rcg.reshape(-1),device="cuda").clamp(1e-4,1-1e-4)
+            logits=torch.logit(ranked);lo,hi=-30.,30.
+            for _ in range(50):
+                middle=(lo+hi)/2
+                if float(torch.sigmoid(logits+middle).mean())<target:lo=middle
+                else:hi=middle
+            probability=torch.sigmoid(logits+(lo+hi)/2)
+            info.update(reference_prior=original_prior,consensus_area_lower=lower,consensus_area_upper=upper,
+                rank_area_target=target,rank_logit_shift=(lo+hi)/2,prior=float(probability.mean()),
+                posterior_min=float(probability.min()),posterior_max=float(probability.max()),posterior_mean=float(probability.mean()))
         masks=torch.as_tensor(np.stack([library[name] for name in names]),device="cuda")
         origin=torch.as_tensor(comparisons["origin"],device="cuda")
         if probability is None:
-            final={name:comparisons["native"] for name in ("posterior.joint2","posterior.greedy2","posterior.direct.control","posterior.pixel.control","posterior.half.control")}
+            final={name:comparisons["native"] for name in ("posterior.joint2","posterior.greedy2","posterior.direct.control","posterior.pixel.control","posterior.half.control","posterior.area.control")}
+            if a.calibration=="robust":final["posterior.unguarded.control"]=comparisons["native"]
             probability=torch.full((4096,),.5,device="cuda")
         else:
             weights=probability.reshape(64,64).repeat_interleave(16,0).repeat_interleave(2,1).reshape(-1)
             area=probability.sum()*256
-            def expected(mask):
+            def expected(mask,weights=weights,area=area):
                 bits=bytes_count(mask);inter=(bits*weights).sum(-1);union=area+bits.sum(-1)-inter
                 return inter/union.clamp_min(1e-6)
+            second_weights=secondary_probability.reshape(64,64).repeat_interleave(16,0).repeat_interleave(2,1).reshape(-1)
+            second_area=secondary_probability.sum()*256
             op_masks=torch.stack([torch.full_like(origin,255) if name is None else masks[names.index(name)] for _,name in ops])
             results=torch.empty(len(recipes),device="cuda")
+            secondary=torch.empty_like(results)
             for start in range(0,len(recipes),128):
                 end=min(start+128,len(recipes));fi,se=first[start:end],second[start:end]
                 intermediate=torch.where(add_op[fi,None],origin|op_masks[fi],origin&op_masks[fi])
                 composed=torch.where(add_op[se,None],intermediate|op_masks[se],intermediate&op_masks[se])
                 results[start:end]=expected(composed)
-            choice=int(results.argmax());direct=int(expected(masks).argmax())
+                if a.calibration=="robust":secondary[start:end]=expected(composed,second_weights,second_area)
+            raw_choice=int(results.argmax());choice=raw_choice
+            direct_scores=expected(masks);direct=int(direct_scores.argmax())
+            if a.calibration=="robust":
+                baseline_mask=torch.as_tensor(comparisons["astra.control"],device="cuda")
+                baseline_first=expected(baseline_mask);baseline_second=expected(baseline_mask,second_weights,second_area)
+                feasible=(results>=baseline_first-1e-6)&(secondary>=baseline_second-1e-6)
+                choice=int(torch.where(feasible,results,-torch.inf).argmax())
+                complete_feasible=(direct_scores>=baseline_first-1e-6)&(expected(masks,second_weights,second_area)>=baseline_second-1e-6)
+                direct=int(torch.where(complete_feasible,direct_scores,-torch.inf).argmax())
+                if not bool(feasible.any()) or not bool(complete_feasible.any()):raise ValueError("Astra baseline containment failed")
             greedy=int(results[:len(ops)].argmax());first_choice=recipes[greedy][0]
             pool=[recipe_index[(first_choice,j)] if first_choice and j else recipe_index[(first_choice or j,0)] for j in range(len(ops))]
             greedy2=pool[int(results[pool].argmax())]
+            if a.calibration=="robust":
+                if bool(feasible[pool].any()):
+                    greedy2=pool[int(torch.where(feasible[pool],results[pool],-torch.inf).argmax())]
+                else:
+                    add_astra=ops.index(["add","recheck:external_mean__delete"])
+                    delete_astra=ops.index(["delete","recheck:external_mean__delete"])
+                    greedy2=recipe_index[(add_astra,delete_astra)]
             def apply(mask,index):
                 return mask|op_masks[index] if add_op[index] else mask&op_masks[index]
             joint=apply(apply(origin,recipes[choice][0]),recipes[choice][1])
@@ -189,10 +226,16 @@ def infer(a):
             intersection=ordered.cumsum(0);unions=probability.sum()+torch.arange(1,4097,device="cuda")-intersection
             k=int((intersection/unions.clamp_min(1e-6)).argmax())+1
             pixels=torch.zeros(4096,dtype=torch.bool,device="cuda");pixels[indices[:k]]=True
+            same_area=torch.zeros(4096,dtype=torch.bool,device="cuda")
+            same_area[indices[:int(round(float(probability.sum())))]]=True
             render=lambda x:np.packbits(x.reshape(64,64).repeat_interleave(16,0).repeat_interleave(16,1).cpu().numpy())
             final={"posterior.joint2":joint.cpu().numpy(),"posterior.greedy2":gm.cpu().numpy(),
                 "posterior.direct.control":masks[direct].cpu().numpy(),"posterior.pixel.control":render(pixels),
-                "posterior.half.control":render(probability>.5)}
+                "posterior.half.control":render(probability>.5),"posterior.area.control":render(same_area)}
+            if a.calibration=="robust":
+                final["posterior.unguarded.control"]=apply(apply(origin,recipes[raw_choice][0]),recipes[raw_choice][1]).cpu().numpy()
+                info.update(guarded_candidates=int(feasible.sum()),guard_baseline="astra.control",
+                    guard_estimators=["RCG-ranked mass-calibrated field","cross-image reference-calibrated field"])
             info.update(joint_recipe=recipes[choice],greedy2_recipe=recipes[greedy2],direct=names[direct],
                         expected_joint=float(results[choice]),expected_direct=float(expected(masks[direct:direct+1])[0]),
                         pixel_tokens=k,posterior_objective_certified_within_family=True)
@@ -260,10 +303,12 @@ def score(a):
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument("phase",choices=("infer","score"));p.add_argument("--root",type=Path,required=True)
     p.add_argument("--family",type=Path);p.add_argument("--out",type=Path,required=True);p.add_argument("--smoke",action="store_true")
-    p.add_argument("--calibration",choices=("self","cross"),default="self")
+    p.add_argument("--calibration",choices=("self","cross","rank","robust"),default="self")
     a=p.parse_args()
     CONFIG["calibration"]=a.calibration
-    CONFIG["cross_calibration"]="symmetric cross-image top10 margins; reference labels; query anchor roles from sealed complete masks" if a.calibration=="cross" else None
+    CONFIG["cross_calibration"]="symmetric cross-image top10 margins; reference labels; query anchor roles from sealed complete masks" if a.calibration in ("cross","rank","robust") else None
+    CONFIG["rank_calibration"]="preserve RCG field ordering; match cross-view estimated foreground mass clipped between complete-mask intersection/union areas; no claim these bound the true area" if a.calibration in ("rank","robust") else None
+    CONFIG["guard"]="both expected-I/U estimators must weakly improve over fixed Astra; query labels absent" if a.calibration=="robust" else None
     if a.phase=="infer" and a.family is None:p.error("--family required")
     {"infer":infer,"score":score}[a.phase](a)
 

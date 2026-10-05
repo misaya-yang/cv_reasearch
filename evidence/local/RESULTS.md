@@ -575,3 +575,65 @@ launching any scientific child. No peer process/source change.
 Exact four-pixel set accounting passed all65,536truth/origin/two-mask combinations: same-family
 overlap and both orders of add/delete conflict, separated into true/false counts. This checks accounting,
 not efficacy. [Receipt](research_20261005/operator_pair_accounting_check.json).
+
+### 2026-10-05: matched-depth A*/B* optimization and reference-only inference
+
+COCO-20i1-shot,seed0,1024,DEV241/79classes/239connected-photo groups; rawNN accounting origin.
+The matched-depth comparison uses the same36sealed masks and5257fixed recipes. Joint2 vs greedy2
+-0.141093[-0.216928,0.020940]; robust fitting-fold selection vs direct +0.000131[-0.000065,0.000422].
+It does not establish an optimization advantage. Exact counts/overlaps/conflicts remain reusable.
+Source:[matched-depth report](research_20261005/pipeline_verified/joint241_v3/report.json),
+[family table](research_20261005/pipeline_verified/joint241_v3/family_table.csv).
+
+All four subsequent inference rules use only the supplied reference coverage, frozen q/r features and
+sealed producer masks/fields; no query labels or additional encoder forward. Final masks are sealed
+before separate CPU scoring. Configurations were developed sequentially on this exposed DEV cohort.
+
+| Rule | mIoU | vs complete FoRIS [95%] | vs RCG [95%] | vs same-information direct selector [95%] |
+|---|---:|---|---|---|
+| Reference self-calibration | 37.893435 | -21.181390 [-24.900560,-17.964650] | -23.126235 [-27.092015,-19.776346] | -2.351101 [-2.924906,-1.685347] |
+| Symmetric cross-image calibration | 40.726408 | -18.348417 [-21.610803,-14.374340] | -20.293262 [-23.563030,-16.142545] | -3.455120 [-4.345526,-2.351355] |
+| Cross-image mass + RCG ordering | 61.042872 | +1.968047 [0.477729,3.497351] | +0.023203 [-1.057945,1.208822] | +0.070994 [-0.194423,0.358380] |
+| Two-estimator guard | 61.073647 | +1.998822 [0.567860,3.480652] | +0.053978 [-1.017131,1.207666] | -0.099949 [-0.310364,0.205661] |
+
+The self-calibrated rule overestimates query foreground by400,820pixels on average (Brier0.3434).
+Cross-image calibration reduces mean bias to-10,832pixels (Brier0.1395) while complete mIoU remains40.7264.
+RCG ordering plus consensus-bounded mass reduces Brier to0.04542 and mean absolute area error to43,445pixels.
+Its gain over same-area RCG cutoff is+1.579200[1.071977,3.406243], but gain over RCG is unresolved.
+The two-estimator guard improves the unguarded rule only+0.030775[-0.211685,0.290778]; it does not repair
+full-mask quality ranking sufficiently. Do not extend this global-calibration grid without a changed failed link.
+
+Guarded rule fold gains vsFoRIS:0.178822,1.939118,1.886174,4.096036;121up/115down/5tie.
+Edits vsrawNN:addTP4,253,460/addFP3,416,454/deleteTP1,083,881/deleteFP11,437,357.
+Inference runtimes are cached selection only; they exclude complete producer execution. Protocol/seals retain
+exact code, inputs and recipe choices. Results and separate readouts:
+- [calibrated241_v1](research_20261005/pipeline_verified/calibrated241_v1/report.json).
+- [calibrated241_v2](research_20261005/pipeline_verified/calibrated241_v2/report.json).
+- [calibrated241_v3](research_20261005/pipeline_verified/calibrated241_v3/report.json).
+- [calibrated241_v4](research_20261005/pipeline_verified/calibrated241_v4/report.json).
+
+### 2026-10-05: independent complete controls on historical isolated600
+
+COCO-20i1-shot,seed0,1024,600episodes/80classes/564connected-photo groups; historical training-pool reuse,
+not never-seen confirmation. Fixed delete-p was recorded on DEV before this cohort; the wide search stays exploratory.
+Independent CPU scoring reproduces all native/RCG/C/Astra per-episode I/U from the sweep and adds MEAN.
+FoRIS61.628013,RCG64.237696,MEAN64.264087,Astra63.500125,frozen delete-p64.369663.
+Delete-p vsFoRIS+2.741650[0.661121,3.681100],vsRCG+0.131967[-1.315411,1.147701],
+vsMEAN+0.105576[-1.414670,1.172892],vsAstra+0.869538[0.051397,1.349022].
+Fold gains vsFoRIS:2.077050,0.745346,4.458309,3.685895;298up/294down/8tie.
+Frozen delete-p full-mask edit counts are unavailable in the count-only sweep; no zero diagnostics substituted.
+The six sealed fixed mask controls retain genuine four-count diagnostics. Strong-control superiority is unresolved.
+Source:[complete controls](research_20261005/pipeline_verified/fresh600_complete/report.json),
+[per-episode counts](research_20261005/pipeline_verified/fresh600_complete/episodes.jsonl),
+[fixed recipe](research_20261005/pipeline_verified/fresh600_complete/recheck_fresh600_v1_frozen.json).
+
+Independent local class-summed reconstruction of every arm in all six reports differs by at most3.56e-14points.
+[Receipt](research_20261005/complete_score_reconstruction_receipt.json).
+
+### 2026-10-05: public-labelled4000 manifest boundary
+
+The other queue declares1000draws/fold and4000total, with3999unique episode identities and6722photos.
+AllDEV241,old600 andhistorical isolated600 episode pairs recur; batch0 itself contains allDEV241 and305of
+historical isolated600. These are benchmark re-evaluations,not4000fresh cases. Do not remove a natural
+repeated draw to make the sampled benchmark unique. Official sampling/worker RNG still needs version verification.
+[Manifest audit](research_20261005/public_queue_manifest_audit.json).

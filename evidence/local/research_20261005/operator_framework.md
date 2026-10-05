@@ -104,9 +104,20 @@ Neither oracle purity nor a fitted-per-query rule is a zero-training inference m
 The inference gap is the key empirical question: can label-free evidence rank marginal
 edits accurately enough to retain useful joint effects?
 
-The immediate experiment remains the existing600 fixed-candidate/control reevaluation.
-After it, the DEV241 family table and complete-output comparisons determine the next
-solver construction. Public benchmark evaluation must use a frozen final rule and the
+The existing600 reevaluation and DEV241 family table are complete. The matched-depth
+comparison found joint2=61.5031 versus greedy2=61.6442 and direct complete selection=61.9934.
+The one-step comparison's large gain mostly reflects the ability to reconstruct an
+existing complete mask. A worst-fitting-fold guard adds only0.00013 over direct selection.
+Reference self-calibration failed to transport to query pixels; cross-image calibration
+reduced area bias but still localized badly. Combining its mass estimate with RCG ranking
+improved the mask to61.0429; two-estimator guarding gave61.0736, without established gain
+over direct selection or RCG. These results locate the next gap in conditional edit value,
+not a general proof that the available frozen representation cannot improve.
+See [family table](pipeline_verified/joint241_v3/family_table.csv) and
+[guarded complete comparison](pipeline_verified/calibrated241_v4/report.json).
+All timings here refer to selection from cached producer outputs, not end-to-end production.
+
+Public benchmark evaluation must use a frozen final rule and the
 official episode, resolution, CRF, encoder and metric contracts. A current 1024 subset
 score cannot be subtracted from a published original-resolution score.
 

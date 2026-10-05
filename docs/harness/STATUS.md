@@ -15,19 +15,33 @@ Updated 2026-10-05. This file records current state; detailed evidence is linked
   MEAN_CONTROL61.467653,+1.394276[.824740,1.907805]vsFoRIS60.073377; fixedAstra60.673832,
   +.600455[-.631630,1.872440]. Target+2 and strong-control superiority remain unestablished.
   [Full fixed results](../../evidence/local/research_20261005/pipeline_verified/fixed600/report.json).
-- At16:22UTC historical-training-pool isolated600 export is complete (844.10s). Parent10003 now runs
-  CPU recheck13272 with11workers,238/600. Its initiator is unverified; no process/source changes made.
-  `fresh600_v1` is not never-seen confirmation; exporter parity is self-comparison. Seven-layer smoke
-  failed because its PYTHONPATH omitted the existing CRF extension; no efficacy output was produced.
-  It is held while the controller resumes the main A*/B* optimizer comparison.
+- Historical-training-pool isolated600 export/recheck/sweep are complete. Independent CPU scoring
+  adds the omitted MEAN control:FoRIS61.628013,RCG64.237696,MEAN64.264087,Astra63.500125.
+  Frozen delete-p64.369663,+2.741650[.661121,3.681100]vsFoRIS;vsMEAN+.105576[-1.414670,1.172892].
+  It does not establish strong-control superiority. [Complete600](../../evidence/local/research_20261005/pipeline_verified/fresh600_complete/report.json).
+  This600 is historical training-pool reuse,not never-seen confirmation; exporter parity is self-comparison.
+  Seven-layer smoke failed from a missing existing CRF path; held without rerun.
 - Cleanup exceeded the user's scope:10,067,480,435bytes of reusable old600features were mistakenly
   removed, plus18,836,073bytes of exploratory predictions/fields/counts. Fixed-control masks,
   code,reports,per-episode I/U and source hashes remain. At16:21UTC disk had32GiBfree.
   No reconstruction was launched; the user rejected making restoration the next task.
   [Historical deletion receipt](../../evidence/local/research_20261005/cleanup_existing600_receipt.json).
-- `joint_operator_v3` adds same-depth greedy2, a fixed worst-fitting-fold guard for joint selection,
-  retained sufficient statistics and exact family overlap/conflict accounting. Existing sealed DEV241
-  masks are reused; no encoder or query-GT routing is added. Runtime/result pending in [PLAN](../research/PLAN.md).
+- A*/B* matched-depth search is complete:greedy2=61.644155,joint2=61.503062; joint-vs-greedy2
+  -.141093[-.216928,.020940]. Robust fitting-fold selection61.993517 is only+.000131 over direct
+  selection. Exact family counts, overlaps and conflicts are retained;65,536set-accounting checks pass.
+  [Result](../../evidence/local/research_20261005/pipeline_verified/joint241_v3/report.json).
+- Reference-only A*/B* value estimation completed four fullDEV241 comparisons. Self-calibration37.8934,
+  cross-image calibration40.7264,RCG-ranked mass calibration61.0429,two-estimator guarded selection61.0736.
+  Guarded output vsFoRIS+1.998822[.567860,3.480652],vsRCG+.053978[-1.017131,1.207666],vsguarded
+  direct selection-.099949[-.310364,.205661]. Strong-control/combination advantage remains unestablished.
+  [Result](../../evidence/local/research_20261005/pipeline_verified/calibrated241_v4/report.json).
+  All predictions sealed before CPU scoring; no query labels in inference and no extra encoder forwards.
+  Cached selection time is not complete producer runtime. Main next work is conditional edit value,
+  rather than extending the failed global mask-quality estimators.
+- Another queue's4000public-labelled manifests contain allDEV241,old600 and historical isolated600;
+  3999unique episode identities and6722photos. Preserve4000sampled draws; do not silently deduplicate.
+  This is benchmark reuse,not4000fresh cases; sampling/worker RNG still needs version verification.
+  [Manifest audit](../../evidence/local/research_20261005/public_queue_manifest_audit.json).
 - Latest research framing is a reusable A*/B* addition/deletion-family optimization framework, with strong
   complete-method benchmark results as its empirical validation. [Framework record](../../evidence/local/research_20261005/operator_framework.md)
   gives exact marginal accounting and counterexamples to unconditional greedy/sparsity assumptions.
