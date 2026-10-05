@@ -1,0 +1,2736 @@
+{
+  "source_report": "cpu_method/rcg_loo120/degree_control_report.json",
+  "source_sha256": "e51c25e37307975eeedcca752238a552d4b972f67ff546019f8eeb673859f22e",
+  "report": {
+    "scope": "Evaluate frozen exact RCG leave-one-data-term-out signals; never change a mask.\nPrimary target: pixel-weighted TP versus FP inside actual RCG foreground.\nEach64cell carries its exact1024pixel TP and FP counts, including mixed cells.\nConditional comparisons use same-episode10 fixed original-score bins; also z bins.\n",
+    "additional_control_provenance": "Added after primary results as a necessary mechanism check, not preregistered: diagonal-only precision inverse h0=a/(a+16degree). Compare same residual divided by1-h0 against exact h normalization. No parameter/score orientation selected from GT.",
+    "direction": "All scores are oriented larger=TP. loo-u is graph support relative to its own unary; z-u is the original smoothing residual with the same direction. negative_h treats high self influence as less supported. No orientation picked from GT.",
+    "identity_limit": "The LOO term is conditional on all graph weights, confidence weights, ranks and other unaries being frozen. It is not an independent semantic observation. loo-u=(z-u)/(1-h), hence it never changes the residual sign.",
+    "cohorts": {
+      "new40": {
+        "episodes": 40,
+        "coverage": {
+          "all_TP": 3838255,
+          "all_FP": 1605734,
+          "valid_TP": 3836742,
+          "valid_FP": 1604358,
+          "invalid_TP": 1513,
+          "invalid_FP": 1376,
+          "TP_valid_fraction": 0.9996058104529272,
+          "FP_valid_fraction": 0.9991430710192348
+        },
+        "metrics": {
+          "all_valid": {
+            "s10": {
+              "episodes": 38,
+              "macro_AUC": {
+                "loo_minus_u": 0.6038368665829814,
+                "z_minus_u": 0.6011495823996365,
+                "loo": 0.6420548856622342,
+                "z": 0.6357303201210739,
+                "u": 0.5473045051826609,
+                "s": 0.5571386951597999,
+                "confidence_abs": 0.5603584828259615,
+                "negative_h": 0.6171024357318258,
+                "degree": 0.6274885169360144,
+                "onehop_u": 0.5823572550120786,
+                "onehop_minus_u": 0.5750360958775872,
+                "degree_normalized_residual": 0.6040107251134708,
+                "degree_loo": 0.6419200066990872
+              },
+              "contrasts": {
+                "loo_minus_u__minus__z_minus_u": {
+                  "delta_AUC": 0.00268728418334513,
+                  "CI95": [
+                    0.0001635893325258403,
+                    0.005073925118578914
+                  ],
+                  "up": 21,
+                  "down": 15,
+                  "ties": 2
+                },
+                "loo__minus__z": {
+                  "delta_AUC": 0.0063245655411604705,
+                  "CI95": [
+                    0.0015062037335442896,
+                    0.0114156556534771
+                  ],
+                  "up": 27,
+                  "down": 10,
+                  "ties": 1
+                },
+                "loo__minus__u": {
+                  "delta_AUC": 0.09475038047957356,
+                  "CI95": [
+                    0.04708899326026868,
+                    0.14636028910276197
+                  ],
+                  "up": 27,
+                  "down": 11,
+                  "ties": 0
+                },
+                "loo__minus__onehop_u": {
+                  "delta_AUC": 0.05969763065015587,
+                  "CI95": [
+                    0.025287242217441483,
+                    0.09382710078395505
+                  ],
+                  "up": 27,
+                  "down": 11,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__onehop_minus_u": {
+                  "delta_AUC": 0.0288007707053944,
+                  "CI95": [
+                    -0.003856187216523779,
+                    0.056796368904893514
+                  ],
+                  "up": 27,
+                  "down": 10,
+                  "ties": 1
+                },
+                "loo_minus_u__minus__s": {
+                  "delta_AUC": 0.04669817142318157,
+                  "CI95": [
+                    -0.019549521045837723,
+                    0.11098961351612963
+                  ],
+                  "up": 21,
+                  "down": 17,
+                  "ties": 0
+                },
+                "negative_h__minus__degree": {
+                  "delta_AUC": -0.01038608120418841,
+                  "CI95": [
+                    -0.033744387349840435,
+                    0.011941700279695147
+                  ],
+                  "up": 18,
+                  "down": 20,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__degree_normalized_residual": {
+                  "delta_AUC": -0.0001738585304893327,
+                  "CI95": [
+                    -0.0008524833625185191,
+                    0.0004339487954608832
+                  ],
+                  "up": 17,
+                  "down": 14,
+                  "ties": 7
+                },
+                "loo__minus__degree_loo": {
+                  "delta_AUC": 0.00013487896314716638,
+                  "CI95": [
+                    -0.0023119662433503164,
+                    0.0025616542925782433
+                  ],
+                  "up": 21,
+                  "down": 16,
+                  "ties": 1
+                }
+              }
+            },
+            "z10": {
+              "episodes": 38,
+              "macro_AUC": {
+                "loo_minus_u": 0.522179987704915,
+                "z_minus_u": 0.5200152894055603,
+                "loo": 0.6008779703769997,
+                "z": 0.5917954268174686,
+                "u": 0.5164500185191879,
+                "s": 0.5373049104147037,
+                "confidence_abs": 0.5404759322118283,
+                "negative_h": 0.5693034475367396,
+                "degree": 0.5895320767133762,
+                "onehop_u": 0.5186139318348179,
+                "onehop_minus_u": 0.5049892528387716,
+                "degree_normalized_residual": 0.5222050628631312,
+                "degree_loo": 0.6016344418360315
+              },
+              "contrasts": {
+                "loo_minus_u__minus__z_minus_u": {
+                  "delta_AUC": 0.002164698299354667,
+                  "CI95": [
+                    -0.001018284938299216,
+                    0.004981315833288937
+                  ],
+                  "up": 24,
+                  "down": 12,
+                  "ties": 2
+                },
+                "loo__minus__z": {
+                  "delta_AUC": 0.009082543559531094,
+                  "CI95": [
+                    -0.002158819984657928,
+                    0.019951404125374553
+                  ],
+                  "up": 23,
+                  "down": 15,
+                  "ties": 0
+                },
+                "loo__minus__u": {
+                  "delta_AUC": 0.0844279518578119,
+                  "CI95": [
+                    0.037694986151798504,
+                    0.1330499074043803
+                  ],
+                  "up": 25,
+                  "down": 13,
+                  "ties": 0
+                },
+                "loo__minus__onehop_u": {
+                  "delta_AUC": 0.082264038542182,
+                  "CI95": [
+                    0.03864344126243974,
+                    0.12626544019257083
+                  ],
+                  "up": 28,
+                  "down": 10,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__onehop_minus_u": {
+                  "delta_AUC": 0.017190734866143444,
+                  "CI95": [
+                    -0.012255252931170618,
+                    0.043994688991789224
+                  ],
+                  "up": 24,
+                  "down": 14,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__s": {
+                  "delta_AUC": -0.01512492270978868,
+                  "CI95": [
+                    -0.10348495366711957,
+                    0.06910707378917423
+                  ],
+                  "up": 18,
+                  "down": 20,
+                  "ties": 0
+                },
+                "negative_h__minus__degree": {
+                  "delta_AUC": -0.020228629176636388,
+                  "CI95": [
+                    -0.04932493267277459,
+                    0.009016844091975413
+                  ],
+                  "up": 17,
+                  "down": 21,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__degree_normalized_residual": {
+                  "delta_AUC": -2.5075158216076338e-05,
+                  "CI95": [
+                    -0.0006237732799045381,
+                    0.0004973144050812527
+                  ],
+                  "up": 17,
+                  "down": 12,
+                  "ties": 9
+                },
+                "loo__minus__degree_loo": {
+                  "delta_AUC": -0.000756471459031881,
+                  "CI95": [
+                    -0.004196468506277029,
+                    0.002673424217834802
+                  ],
+                  "up": 21,
+                  "down": 17,
+                  "ties": 0
+                }
+              }
+            }
+          },
+          "pure_cells": {
+            "s10": {
+              "episodes": 27,
+              "macro_AUC": {
+                "loo_minus_u": 0.6639256368998301,
+                "z_minus_u": 0.6626610113426901,
+                "loo": 0.7145485467910463,
+                "z": 0.7084097467044527,
+                "u": 0.5861979926062266,
+                "s": 0.5986030705548978,
+                "confidence_abs": 0.613942537986835,
+                "negative_h": 0.6146813375987188,
+                "degree": 0.6572919287838476,
+                "onehop_u": 0.6508689614161381,
+                "onehop_minus_u": 0.6340426361347276,
+                "degree_normalized_residual": 0.6649510133759734,
+                "degree_loo": 0.7209917926408139
+              },
+              "contrasts": {
+                "loo_minus_u__minus__z_minus_u": {
+                  "delta_AUC": 0.0012646255571399747,
+                  "CI95": [
+                    -0.0008022128500166064,
+                    0.004040618549501659
+                  ],
+                  "up": 6,
+                  "down": 9,
+                  "ties": 12
+                },
+                "loo__minus__z": {
+                  "delta_AUC": 0.006138800086593753,
+                  "CI95": [
+                    -0.0020244108936198547,
+                    0.01878046470662338
+                  ],
+                  "up": 12,
+                  "down": 8,
+                  "ties": 7
+                },
+                "loo__minus__u": {
+                  "delta_AUC": 0.12835055418481972,
+                  "CI95": [
+                    0.04338627366728422,
+                    0.21257926819015893
+                  ],
+                  "up": 22,
+                  "down": 5,
+                  "ties": 0
+                },
+                "loo__minus__onehop_u": {
+                  "delta_AUC": 0.06367958537490818,
+                  "CI95": [
+                    -0.008341524941451836,
+                    0.13578762026488525
+                  ],
+                  "up": 17,
+                  "down": 8,
+                  "ties": 2
+                },
+                "loo_minus_u__minus__onehop_minus_u": {
+                  "delta_AUC": 0.029883000765102623,
+                  "CI95": [
+                    -0.03138978733806309,
+                    0.08599635615911069
+                  ],
+                  "up": 18,
+                  "down": 7,
+                  "ties": 2
+                },
+                "loo_minus_u__minus__s": {
+                  "delta_AUC": 0.06532256634493241,
+                  "CI95": [
+                    -0.04360898092601454,
+                    0.17353868043297302
+                  ],
+                  "up": 16,
+                  "down": 10,
+                  "ties": 1
+                },
+                "negative_h__minus__degree": {
+                  "delta_AUC": -0.0426105911851287,
+                  "CI95": [
+                    -0.10447863847365586,
+                    0.014140290440128841
+                  ],
+                  "up": 10,
+                  "down": 15,
+                  "ties": 2
+                },
+                "loo_minus_u__minus__degree_normalized_residual": {
+                  "delta_AUC": -0.0010253764761431164,
+                  "CI95": [
+                    -0.0027762179229978063,
+                    0.0004308773718030779
+                  ],
+                  "up": 4,
+                  "down": 11,
+                  "ties": 12
+                },
+                "loo__minus__degree_loo": {
+                  "delta_AUC": -0.006443245849767685,
+                  "CI95": [
+                    -0.01685135660547957,
+                    -5.108992177684017e-05
+                  ],
+                  "up": 7,
+                  "down": 10,
+                  "ties": 10
+                }
+              }
+            },
+            "z10": {
+              "episodes": 29,
+              "macro_AUC": {
+                "loo_minus_u": 0.5579430513034536,
+                "z_minus_u": 0.5199485612085187,
+                "loo": 0.6038604921892131,
+                "z": 0.5870420050777971,
+                "u": 0.5268719540494897,
+                "s": 0.5576988182919045,
+                "confidence_abs": 0.5689923806048338,
+                "negative_h": 0.5891490981063219,
+                "degree": 0.6332479426274569,
+                "onehop_u": 0.5116887827546862,
+                "onehop_minus_u": 0.48441603592233656,
+                "degree_normalized_residual": 0.5574285386982408,
+                "degree_loo": 0.6118642852115634
+              },
+              "contrasts": {
+                "loo_minus_u__minus__z_minus_u": {
+                  "delta_AUC": 0.03799449009493467,
+                  "CI95": [
+                    0.0004052780712498094,
+                    0.10959644865901913
+                  ],
+                  "up": 8,
+                  "down": 9,
+                  "ties": 12
+                },
+                "loo__minus__z": {
+                  "delta_AUC": 0.01681848711141582,
+                  "CI95": [
+                    -0.06399793701664579,
+                    0.07713607931606777
+                  ],
+                  "up": 19,
+                  "down": 7,
+                  "ties": 3
+                },
+                "loo__minus__u": {
+                  "delta_AUC": 0.07698853813972342,
+                  "CI95": [
+                    -0.0603642227714101,
+                    0.20452324583861475
+                  ],
+                  "up": 21,
+                  "down": 7,
+                  "ties": 1
+                },
+                "loo__minus__onehop_u": {
+                  "delta_AUC": 0.092171709434527,
+                  "CI95": [
+                    -0.049416991452766706,
+                    0.2352489121101854
+                  ],
+                  "up": 20,
+                  "down": 8,
+                  "ties": 1
+                },
+                "loo_minus_u__minus__onehop_minus_u": {
+                  "delta_AUC": 0.07352701538111693,
+                  "CI95": [
+                    -0.025303391876770207,
+                    0.18099728578816374
+                  ],
+                  "up": 19,
+                  "down": 8,
+                  "ties": 2
+                },
+                "loo_minus_u__minus__s": {
+                  "delta_AUC": 0.00024423301154910825,
+                  "CI95": [
+                    -0.1788116956939022,
+                    0.18003162414199556
+                  ],
+                  "up": 12,
+                  "down": 16,
+                  "ties": 1
+                },
+                "negative_h__minus__degree": {
+                  "delta_AUC": -0.044098844521134925,
+                  "CI95": [
+                    -0.16978989490317797,
+                    0.080707663544586
+                  ],
+                  "up": 10,
+                  "down": 16,
+                  "ties": 3
+                },
+                "loo_minus_u__minus__degree_normalized_residual": {
+                  "delta_AUC": 0.0005145126052126717,
+                  "CI95": [
+                    -0.0008649689170985326,
+                    0.002558842845696861
+                  ],
+                  "up": 5,
+                  "down": 9,
+                  "ties": 15
+                },
+                "loo__minus__degree_loo": {
+                  "delta_AUC": -0.008003793022350386,
+                  "CI95": [
+                    -0.028635757592786668,
+                    0.0058285229555292955
+                  ],
+                  "up": 12,
+                  "down": 9,
+                  "ties": 8
+                }
+              }
+            }
+          },
+          "mixed_cells": {
+            "s10": {
+              "episodes": 38,
+              "macro_AUC": {
+                "loo_minus_u": 0.5132643161027475,
+                "z_minus_u": 0.5118218172760994,
+                "loo": 0.5333723045254296,
+                "z": 0.5301344293704812,
+                "u": 0.4998663523803725,
+                "s": 0.5044085166411899,
+                "confidence_abs": 0.5060523799794121,
+                "negative_h": 0.549881887516516,
+                "degree": 0.5375461721308535,
+                "onehop_u": 0.5060063236518717,
+                "onehop_minus_u": 0.5123295241698568,
+                "degree_normalized_residual": 0.5130929196578301,
+                "degree_loo": 0.5331285660609516
+              },
+              "contrasts": {
+                "loo_minus_u__minus__z_minus_u": {
+                  "delta_AUC": 0.001442498826648026,
+                  "CI95": [
+                    -0.0022735968147750917,
+                    0.005707056647207491
+                  ],
+                  "up": 16,
+                  "down": 16,
+                  "ties": 6
+                },
+                "loo__minus__z": {
+                  "delta_AUC": 0.003237875154948691,
+                  "CI95": [
+                    -0.003967890085034045,
+                    0.010363185942487658
+                  ],
+                  "up": 20,
+                  "down": 17,
+                  "ties": 1
+                },
+                "loo__minus__u": {
+                  "delta_AUC": 0.03350595214505729,
+                  "CI95": [
+                    -0.004933062572567311,
+                    0.07336732897577365
+                  ],
+                  "up": 22,
+                  "down": 16,
+                  "ties": 0
+                },
+                "loo__minus__onehop_u": {
+                  "delta_AUC": 0.027365980873558,
+                  "CI95": [
+                    0.00015566587142005212,
+                    0.05774676364429693
+                  ],
+                  "up": 24,
+                  "down": 14,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__onehop_minus_u": {
+                  "delta_AUC": 0.0009347919328907273,
+                  "CI95": [
+                    -0.015723525273652797,
+                    0.018152308248997686
+                  ],
+                  "up": 18,
+                  "down": 19,
+                  "ties": 1
+                },
+                "loo_minus_u__minus__s": {
+                  "delta_AUC": 0.008855799461557545,
+                  "CI95": [
+                    -0.044020625580469354,
+                    0.06569435954161644
+                  ],
+                  "up": 18,
+                  "down": 20,
+                  "ties": 0
+                },
+                "negative_h__minus__degree": {
+                  "delta_AUC": 0.012335715385662159,
+                  "CI95": [
+                    0.000154005917299474,
+                    0.027600811142993315
+                  ],
+                  "up": 26,
+                  "down": 12,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__degree_normalized_residual": {
+                  "delta_AUC": 0.00017139644491740466,
+                  "CI95": [
+                    -0.0010027609489636588,
+                    0.0011915613420904491
+                  ],
+                  "up": 16,
+                  "down": 5,
+                  "ties": 17
+                },
+                "loo__minus__degree_loo": {
+                  "delta_AUC": 0.00024373846447809698,
+                  "CI95": [
+                    -0.0041871122410741205,
+                    0.003810806562164101
+                  ],
+                  "up": 20,
+                  "down": 16,
+                  "ties": 2
+                }
+              }
+            },
+            "z10": {
+              "episodes": 38,
+              "macro_AUC": {
+                "loo_minus_u": 0.4877874141835455,
+                "z_minus_u": 0.4882194629446541,
+                "loo": 0.539809498183098,
+                "z": 0.5378032076468047,
+                "u": 0.517933658616272,
+                "s": 0.5236298680290535,
+                "confidence_abs": 0.5179885817303287,
+                "negative_h": 0.5174086213425028,
+                "degree": 0.5361163727832817,
+                "onehop_u": 0.5128377666013629,
+                "onehop_minus_u": 0.49096367614283226,
+                "degree_normalized_residual": 0.48767438617195885,
+                "degree_loo": 0.5396269390827235
+              },
+              "contrasts": {
+                "loo_minus_u__minus__z_minus_u": {
+                  "delta_AUC": -0.0004320487611086563,
+                  "CI95": [
+                    -0.003982945166999451,
+                    0.0028880667409991218
+                  ],
+                  "up": 16,
+                  "down": 17,
+                  "ties": 5
+                },
+                "loo__minus__z": {
+                  "delta_AUC": 0.0020062905362931995,
+                  "CI95": [
+                    -0.004857209367510304,
+                    0.008994479249051819
+                  ],
+                  "up": 18,
+                  "down": 19,
+                  "ties": 1
+                },
+                "loo__minus__u": {
+                  "delta_AUC": 0.021875839566825685,
+                  "CI95": [
+                    -0.016851472285445316,
+                    0.06175994905822295
+                  ],
+                  "up": 21,
+                  "down": 17,
+                  "ties": 0
+                },
+                "loo__minus__onehop_u": {
+                  "delta_AUC": 0.02697173158173485,
+                  "CI95": [
+                    -0.002430495898432078,
+                    0.0577078994931181
+                  ],
+                  "up": 24,
+                  "down": 14,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__onehop_minus_u": {
+                  "delta_AUC": -0.0031762619592868506,
+                  "CI95": [
+                    -0.018015915520232826,
+                    0.012732923639693805
+                  ],
+                  "up": 17,
+                  "down": 20,
+                  "ties": 1
+                },
+                "loo_minus_u__minus__s": {
+                  "delta_AUC": -0.035842453845508236,
+                  "CI95": [
+                    -0.0896065050346282,
+                    0.01677235569892733
+                  ],
+                  "up": 14,
+                  "down": 24,
+                  "ties": 0
+                },
+                "negative_h__minus__degree": {
+                  "delta_AUC": -0.018707751440779033,
+                  "CI95": [
+                    -0.034872936861219804,
+                    -0.0036531204475643547
+                  ],
+                  "up": 14,
+                  "down": 24,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__degree_normalized_residual": {
+                  "delta_AUC": 0.00011302801158665601,
+                  "CI95": [
+                    -0.0010577546836087442,
+                    0.0011812603115991715
+                  ],
+                  "up": 11,
+                  "down": 9,
+                  "ties": 18
+                },
+                "loo__minus__degree_loo": {
+                  "delta_AUC": 0.00018255910037427494,
+                  "CI95": [
+                    -0.004113176257626352,
+                    0.0040914833406428775
+                  ],
+                  "up": 18,
+                  "down": 19,
+                  "ties": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "new60": {
+        "episodes": 60,
+        "coverage": {
+          "all_TP": 5116295,
+          "all_FP": 1525246,
+          "valid_TP": 5113999,
+          "valid_FP": 1524088,
+          "invalid_TP": 2296,
+          "invalid_FP": 1158,
+          "TP_valid_fraction": 0.9995512377609188,
+          "FP_valid_fraction": 0.9992407782088922
+        },
+        "metrics": {
+          "all_valid": {
+            "s10": {
+              "episodes": 58,
+              "macro_AUC": {
+                "loo_minus_u": 0.5999212969894832,
+                "z_minus_u": 0.5964054359563039,
+                "loo": 0.6600261642197476,
+                "z": 0.6557867935109458,
+                "u": 0.5803034116684905,
+                "s": 0.5826228710342461,
+                "confidence_abs": 0.5835263424710239,
+                "negative_h": 0.6241973499056401,
+                "degree": 0.6397553981697433,
+                "onehop_u": 0.6221846261841519,
+                "onehop_minus_u": 0.5657528166740249,
+                "degree_normalized_residual": 0.6002146445990937,
+                "degree_loo": 0.6607924337372141
+              },
+              "contrasts": {
+                "loo_minus_u__minus__z_minus_u": {
+                  "delta_AUC": 0.0035158610331793468,
+                  "CI95": [
+                    0.0015477380868880119,
+                    0.005786442076479725
+                  ],
+                  "up": 38,
+                  "down": 19,
+                  "ties": 1
+                },
+                "loo__minus__z": {
+                  "delta_AUC": 0.00423937070880197,
+                  "CI95": [
+                    -0.0008184742002921769,
+                    0.009758411176403695
+                  ],
+                  "up": 31,
+                  "down": 27,
+                  "ties": 0
+                },
+                "loo__minus__u": {
+                  "delta_AUC": 0.07972275255125726,
+                  "CI95": [
+                    0.04318416368864596,
+                    0.11467091565823559
+                  ],
+                  "up": 49,
+                  "down": 9,
+                  "ties": 0
+                },
+                "loo__minus__onehop_u": {
+                  "delta_AUC": 0.03784153803559577,
+                  "CI95": [
+                    0.012760205434635009,
+                    0.06087541812073886
+                  ],
+                  "up": 39,
+                  "down": 19,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__onehop_minus_u": {
+                  "delta_AUC": 0.03416848031545833,
+                  "CI95": [
+                    0.004437398018853492,
+                    0.06205531313236188
+                  ],
+                  "up": 36,
+                  "down": 22,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__s": {
+                  "delta_AUC": 0.017298425955236982,
+                  "CI95": [
+                    -0.027439141669269543,
+                    0.05961873051410197
+                  ],
+                  "up": 33,
+                  "down": 25,
+                  "ties": 0
+                },
+                "negative_h__minus__degree": {
+                  "delta_AUC": -0.015558048264103154,
+                  "CI95": [
+                    -0.039517470742670785,
+                    0.007948616780392615
+                  ],
+                  "up": 25,
+                  "down": 33,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__degree_normalized_residual": {
+                  "delta_AUC": -0.00029334760961045105,
+                  "CI95": [
+                    -0.0010920952987778093,
+                    0.0003473586903894289
+                  ],
+                  "up": 27,
+                  "down": 22,
+                  "ties": 9
+                },
+                "loo__minus__degree_loo": {
+                  "delta_AUC": -0.00076626951746656,
+                  "CI95": [
+                    -0.0031470672989452053,
+                    0.0011826310617512594
+                  ],
+                  "up": 26,
+                  "down": 30,
+                  "ties": 2
+                }
+              }
+            },
+            "z10": {
+              "episodes": 58,
+              "macro_AUC": {
+                "loo_minus_u": 0.5107112636171535,
+                "z_minus_u": 0.5075996993721003,
+                "loo": 0.6123625120581856,
+                "z": 0.6096262838164691,
+                "u": 0.5464645508477028,
+                "s": 0.5558326490674839,
+                "confidence_abs": 0.5765872349060992,
+                "negative_h": 0.5784247560723125,
+                "degree": 0.6291794932492446,
+                "onehop_u": 0.56113497648419,
+                "onehop_minus_u": 0.4898535443242687,
+                "degree_normalized_residual": 0.5106826112419469,
+                "degree_loo": 0.6141905769796618
+              },
+              "contrasts": {
+                "loo_minus_u__minus__z_minus_u": {
+                  "delta_AUC": 0.0031115642450529352,
+                  "CI95": [
+                    0.001234134737617605,
+                    0.004978594155230119
+                  ],
+                  "up": 41,
+                  "down": 15,
+                  "ties": 2
+                },
+                "loo__minus__z": {
+                  "delta_AUC": 0.002736228241716067,
+                  "CI95": [
+                    -0.010691767741246264,
+                    0.01636475626860364
+                  ],
+                  "up": 28,
+                  "down": 30,
+                  "ties": 0
+                },
+                "loo__minus__u": {
+                  "delta_AUC": 0.06589796121048218,
+                  "CI95": [
+                    0.023592769210673513,
+                    0.10672586410614074
+                  ],
+                  "up": 41,
+                  "down": 17,
+                  "ties": 0
+                },
+                "loo__minus__onehop_u": {
+                  "delta_AUC": 0.051227535573995286,
+                  "CI95": [
+                    0.009209246307732868,
+                    0.09224525640353598
+                  ],
+                  "up": 39,
+                  "down": 19,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__onehop_minus_u": {
+                  "delta_AUC": 0.020857719292884762,
+                  "CI95": [
+                    -0.008330703998881386,
+                    0.04932644043956506
+                  ],
+                  "up": 35,
+                  "down": 23,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__s": {
+                  "delta_AUC": -0.04512138545033045,
+                  "CI95": [
+                    -0.12178636568754918,
+                    0.030147469138881736
+                  ],
+                  "up": 28,
+                  "down": 30,
+                  "ties": 0
+                },
+                "negative_h__minus__degree": {
+                  "delta_AUC": -0.05075473717693223,
+                  "CI95": [
+                    -0.08570564083164557,
+                    -0.017802868769950898
+                  ],
+                  "up": 17,
+                  "down": 41,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__degree_normalized_residual": {
+                  "delta_AUC": 2.8652375206350604e-05,
+                  "CI95": [
+                    -0.000518219555789276,
+                    0.0005125267119359538
+                  ],
+                  "up": 24,
+                  "down": 25,
+                  "ties": 9
+                },
+                "loo__minus__degree_loo": {
+                  "delta_AUC": -0.0018280649214764994,
+                  "CI95": [
+                    -0.005850496686081383,
+                    0.002249647430239123
+                  ],
+                  "up": 27,
+                  "down": 31,
+                  "ties": 0
+                }
+              }
+            }
+          },
+          "pure_cells": {
+            "s10": {
+              "episodes": 44,
+              "macro_AUC": {
+                "loo_minus_u": 0.6698498445612685,
+                "z_minus_u": 0.6657641882214748,
+                "loo": 0.735008722511517,
+                "z": 0.7284535553870254,
+                "u": 0.6068402374607066,
+                "s": 0.6154562166486408,
+                "confidence_abs": 0.6053249332638111,
+                "negative_h": 0.5926323856256714,
+                "degree": 0.6712967936877704,
+                "onehop_u": 0.6693308625675353,
+                "onehop_minus_u": 0.6013482889556498,
+                "degree_normalized_residual": 0.6715591036967079,
+                "degree_loo": 0.7341246021631073
+              },
+              "contrasts": {
+                "loo_minus_u__minus__z_minus_u": {
+                  "delta_AUC": 0.004085656339793665,
+                  "CI95": [
+                    -0.002098421525664057,
+                    0.013325015362239132
+                  ],
+                  "up": 17,
+                  "down": 12,
+                  "ties": 15
+                },
+                "loo__minus__z": {
+                  "delta_AUC": 0.006555167124491656,
+                  "CI95": [
+                    -0.001150876992237343,
+                    0.016667767461223507
+                  ],
+                  "up": 17,
+                  "down": 10,
+                  "ties": 17
+                },
+                "loo__minus__u": {
+                  "delta_AUC": 0.12816848505081052,
+                  "CI95": [
+                    0.03470476580552188,
+                    0.21893537892630188
+                  ],
+                  "up": 28,
+                  "down": 12,
+                  "ties": 4
+                },
+                "loo__minus__onehop_u": {
+                  "delta_AUC": 0.06567785994398162,
+                  "CI95": [
+                    -0.009156653676702186,
+                    0.14074651841774982
+                  ],
+                  "up": 24,
+                  "down": 14,
+                  "ties": 6
+                },
+                "loo_minus_u__minus__onehop_minus_u": {
+                  "delta_AUC": 0.06850155560561871,
+                  "CI95": [
+                    -0.0050147340206748246,
+                    0.14515984863522105
+                  ],
+                  "up": 23,
+                  "down": 17,
+                  "ties": 4
+                },
+                "loo_minus_u__minus__s": {
+                  "delta_AUC": 0.054393627912627675,
+                  "CI95": [
+                    -0.06129065138016314,
+                    0.16323513406757328
+                  ],
+                  "up": 26,
+                  "down": 16,
+                  "ties": 2
+                },
+                "negative_h__minus__degree": {
+                  "delta_AUC": -0.07866440806209861,
+                  "CI95": [
+                    -0.17641149890533325,
+                    0.0076919661464197675
+                  ],
+                  "up": 18,
+                  "down": 22,
+                  "ties": 4
+                },
+                "loo_minus_u__minus__degree_normalized_residual": {
+                  "delta_AUC": -0.0017092591354393551,
+                  "CI95": [
+                    -0.0050860271009327,
+                    0.0003607213252326096
+                  ],
+                  "up": 10,
+                  "down": 9,
+                  "ties": 25
+                },
+                "loo__minus__degree_loo": {
+                  "delta_AUC": 0.0008841203484096426,
+                  "CI95": [
+                    -0.0007514707053255965,
+                    0.003048038842121231
+                  ],
+                  "up": 10,
+                  "down": 9,
+                  "ties": 25
+                }
+              }
+            },
+            "z10": {
+              "episodes": 42,
+              "macro_AUC": {
+                "loo_minus_u": 0.4884912504689493,
+                "z_minus_u": 0.47659737919533207,
+                "loo": 0.6321690049700969,
+                "z": 0.6125265978423577,
+                "u": 0.5368973435706386,
+                "s": 0.5681869115343962,
+                "confidence_abs": 0.5432969471501136,
+                "negative_h": 0.5899377127940929,
+                "degree": 0.6416447016826585,
+                "onehop_u": 0.5659856468858466,
+                "onehop_minus_u": 0.4853915471769302,
+                "degree_normalized_residual": 0.4877731827052189,
+                "degree_loo": 0.6317738664138421
+              },
+              "contrasts": {
+                "loo_minus_u__minus__z_minus_u": {
+                  "delta_AUC": 0.01189387127361723,
+                  "CI95": [
+                    -0.0014230217166761676,
+                    0.03424397586421201
+                  ],
+                  "up": 18,
+                  "down": 10,
+                  "ties": 14
+                },
+                "loo__minus__z": {
+                  "delta_AUC": 0.019642407127739212,
+                  "CI95": [
+                    -0.026949400843476457,
+                    0.08260516656046833
+                  ],
+                  "up": 16,
+                  "down": 22,
+                  "ties": 4
+                },
+                "loo__minus__u": {
+                  "delta_AUC": 0.09527166139945856,
+                  "CI95": [
+                    -0.010156296083406456,
+                    0.20865140712890382
+                  ],
+                  "up": 24,
+                  "down": 17,
+                  "ties": 1
+                },
+                "loo__minus__onehop_u": {
+                  "delta_AUC": 0.06618335808425044,
+                  "CI95": [
+                    -0.04736065883239773,
+                    0.18590538938270487
+                  ],
+                  "up": 24,
+                  "down": 16,
+                  "ties": 2
+                },
+                "loo_minus_u__minus__onehop_minus_u": {
+                  "delta_AUC": 0.0030997032920191416,
+                  "CI95": [
+                    -0.06084531872217548,
+                    0.0678425802094336
+                  ],
+                  "up": 21,
+                  "down": 19,
+                  "ties": 2
+                },
+                "loo_minus_u__minus__s": {
+                  "delta_AUC": -0.07969566106544672,
+                  "CI95": [
+                    -0.2478790292699383,
+                    0.10013926183444466
+                  ],
+                  "up": 20,
+                  "down": 21,
+                  "ties": 1
+                },
+                "negative_h__minus__degree": {
+                  "delta_AUC": -0.05170698888856538,
+                  "CI95": [
+                    -0.14023313180189156,
+                    0.040466646136655446
+                  ],
+                  "up": 11,
+                  "down": 29,
+                  "ties": 2
+                },
+                "loo_minus_u__minus__degree_normalized_residual": {
+                  "delta_AUC": 0.0007180677637304807,
+                  "CI95": [
+                    -0.003900274271341818,
+                    0.007199752575129899
+                  ],
+                  "up": 8,
+                  "down": 13,
+                  "ties": 21
+                },
+                "loo__minus__degree_loo": {
+                  "delta_AUC": 0.0003951385562547895,
+                  "CI95": [
+                    -0.016988108515410622,
+                    0.024126932963990003
+                  ],
+                  "up": 14,
+                  "down": 18,
+                  "ties": 10
+                }
+              }
+            }
+          },
+          "mixed_cells": {
+            "s10": {
+              "episodes": 58,
+              "macro_AUC": {
+                "loo_minus_u": 0.5229198946947247,
+                "z_minus_u": 0.5196396613005396,
+                "loo": 0.5541971497155957,
+                "z": 0.5535606961083651,
+                "u": 0.5323679954000206,
+                "s": 0.5405084285736396,
+                "confidence_abs": 0.5381194908223994,
+                "negative_h": 0.5353367711933736,
+                "degree": 0.5445912283328013,
+                "onehop_u": 0.539687895519514,
+                "onehop_minus_u": 0.5110131581644355,
+                "degree_normalized_residual": 0.5220960414801298,
+                "degree_loo": 0.5559814397515415
+              },
+              "contrasts": {
+                "loo_minus_u__minus__z_minus_u": {
+                  "delta_AUC": 0.0032802333941848462,
+                  "CI95": [
+                    -4.788731915434938e-05,
+                    0.0075584425448272695
+                  ],
+                  "up": 23,
+                  "down": 26,
+                  "ties": 9
+                },
+                "loo__minus__z": {
+                  "delta_AUC": 0.0006364536072307805,
+                  "CI95": [
+                    -0.004567768837680233,
+                    0.005489596912151328
+                  ],
+                  "up": 26,
+                  "down": 26,
+                  "ties": 6
+                },
+                "loo__minus__u": {
+                  "delta_AUC": 0.021829154315575312,
+                  "CI95": [
+                    -0.006310594446762335,
+                    0.0479037916748823
+                  ],
+                  "up": 38,
+                  "down": 20,
+                  "ties": 0
+                },
+                "loo__minus__onehop_u": {
+                  "delta_AUC": 0.01450925419608186,
+                  "CI95": [
+                    0.00022932581979595606,
+                    0.029939039443482765
+                  ],
+                  "up": 37,
+                  "down": 21,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__onehop_minus_u": {
+                  "delta_AUC": 0.011906736530289144,
+                  "CI95": [
+                    -0.006067624941443051,
+                    0.030152515240807216
+                  ],
+                  "up": 33,
+                  "down": 25,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__s": {
+                  "delta_AUC": -0.01758853387891482,
+                  "CI95": [
+                    -0.05695991170278614,
+                    0.019860271053438662
+                  ],
+                  "up": 28,
+                  "down": 30,
+                  "ties": 0
+                },
+                "negative_h__minus__degree": {
+                  "delta_AUC": -0.009254457139427356,
+                  "CI95": [
+                    -0.024970026197036733,
+                    0.006156420445697371
+                  ],
+                  "up": 23,
+                  "down": 35,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__degree_normalized_residual": {
+                  "delta_AUC": 0.0008238532145947872,
+                  "CI95": [
+                    -7.926940827010508e-05,
+                    0.0018491227980756884
+                  ],
+                  "up": 20,
+                  "down": 16,
+                  "ties": 22
+                },
+                "loo__minus__degree_loo": {
+                  "delta_AUC": -0.0017842900359456312,
+                  "CI95": [
+                    -0.005518280983094559,
+                    0.000870019704981785
+                  ],
+                  "up": 22,
+                  "down": 23,
+                  "ties": 13
+                }
+              }
+            },
+            "z10": {
+              "episodes": 58,
+              "macro_AUC": {
+                "loo_minus_u": 0.48312807467524466,
+                "z_minus_u": 0.4820668634586234,
+                "loo": 0.5386651395756759,
+                "z": 0.5442952423420739,
+                "u": 0.5340940885204993,
+                "s": 0.5345026661517914,
+                "confidence_abs": 0.5431760201998138,
+                "negative_h": 0.5007680622179869,
+                "degree": 0.5350762879049902,
+                "onehop_u": 0.537526658852443,
+                "onehop_minus_u": 0.4811920196555284,
+                "degree_normalized_residual": 0.48275601330789863,
+                "degree_loo": 0.5434452400396595
+              },
+              "contrasts": {
+                "loo_minus_u__minus__z_minus_u": {
+                  "delta_AUC": 0.0010612112166215556,
+                  "CI95": [
+                    -0.0010531206588594577,
+                    0.003350311128039558
+                  ],
+                  "up": 23,
+                  "down": 26,
+                  "ties": 9
+                },
+                "loo__minus__z": {
+                  "delta_AUC": -0.005630102766397998,
+                  "CI95": [
+                    -0.0180549634061128,
+                    0.00662955474983999
+                  ],
+                  "up": 23,
+                  "down": 34,
+                  "ties": 1
+                },
+                "loo__minus__u": {
+                  "delta_AUC": 0.004571051055176571,
+                  "CI95": [
+                    -0.021844237435630964,
+                    0.031523585396986506
+                  ],
+                  "up": 32,
+                  "down": 26,
+                  "ties": 0
+                },
+                "loo__minus__onehop_u": {
+                  "delta_AUC": 0.0011384807232330014,
+                  "CI95": [
+                    -0.01919905642313873,
+                    0.020506195322080797
+                  ],
+                  "up": 32,
+                  "down": 25,
+                  "ties": 1
+                },
+                "loo_minus_u__minus__onehop_minus_u": {
+                  "delta_AUC": 0.0019360550197162886,
+                  "CI95": [
+                    -0.015385577875946754,
+                    0.019209003073517004
+                  ],
+                  "up": 30,
+                  "down": 28,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__s": {
+                  "delta_AUC": -0.05137459147654671,
+                  "CI95": [
+                    -0.09845704925158416,
+                    -0.007119076587594569
+                  ],
+                  "up": 23,
+                  "down": 35,
+                  "ties": 0
+                },
+                "negative_h__minus__degree": {
+                  "delta_AUC": -0.03430822568700322,
+                  "CI95": [
+                    -0.057086590052590196,
+                    -0.01411216398233009
+                  ],
+                  "up": 19,
+                  "down": 39,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__degree_normalized_residual": {
+                  "delta_AUC": 0.0003720613673460646,
+                  "CI95": [
+                    -0.00027672363417987066,
+                    0.0012158278845469327
+                  ],
+                  "up": 15,
+                  "down": 19,
+                  "ties": 24
+                },
+                "loo__minus__degree_loo": {
+                  "delta_AUC": -0.00478010046398354,
+                  "CI95": [
+                    -0.010408390999529393,
+                    -7.98531778202745e-05
+                  ],
+                  "up": 20,
+                  "down": 31,
+                  "ties": 7
+                }
+              }
+            }
+          }
+        }
+      },
+      "old20": {
+        "episodes": 20,
+        "coverage": {
+          "all_TP": 3185032,
+          "all_FP": 797532,
+          "valid_TP": 3184673,
+          "valid_FP": 797066,
+          "invalid_TP": 359,
+          "invalid_FP": 466,
+          "TP_valid_fraction": 0.9998872852768826,
+          "FP_valid_fraction": 0.9994156974265609
+        },
+        "metrics": {
+          "all_valid": {
+            "s10": {
+              "episodes": 20,
+              "macro_AUC": {
+                "loo_minus_u": 0.6055844253687438,
+                "z_minus_u": 0.604518665621806,
+                "loo": 0.6432073485547483,
+                "z": 0.6406771948803361,
+                "u": 0.5237906303760965,
+                "s": 0.5603713658300774,
+                "confidence_abs": 0.5596713062370352,
+                "negative_h": 0.6227799748225789,
+                "degree": 0.6146688590641853,
+                "onehop_u": 0.6017950622053212,
+                "onehop_minus_u": 0.5916481658300345,
+                "degree_normalized_residual": 0.6050190228279206,
+                "degree_loo": 0.6418773142344136
+              },
+              "contrasts": {
+                "loo_minus_u__minus__z_minus_u": {
+                  "delta_AUC": 0.001065759746937875,
+                  "CI95": [
+                    -0.0016148292381779257,
+                    0.003653867002698413
+                  ],
+                  "up": 10,
+                  "down": 9,
+                  "ties": 1
+                },
+                "loo__minus__z": {
+                  "delta_AUC": 0.002530153674412161,
+                  "CI95": [
+                    -0.0010357143445442307,
+                    0.006114276177025085
+                  ],
+                  "up": 12,
+                  "down": 8,
+                  "ties": 0
+                },
+                "loo__minus__u": {
+                  "delta_AUC": 0.11941671817865171,
+                  "CI95": [
+                    0.04402985712036094,
+                    0.1895120338828945
+                  ],
+                  "up": 16,
+                  "down": 4,
+                  "ties": 0
+                },
+                "loo__minus__onehop_u": {
+                  "delta_AUC": 0.041412286349427195,
+                  "CI95": [
+                    -0.019906910948956424,
+                    0.10368185544065175
+                  ],
+                  "up": 13,
+                  "down": 7,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__onehop_minus_u": {
+                  "delta_AUC": 0.0139362595387092,
+                  "CI95": [
+                    -0.036786391582188584,
+                    0.06646698256817272
+                  ],
+                  "up": 10,
+                  "down": 10,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__s": {
+                  "delta_AUC": 0.04521305953866646,
+                  "CI95": [
+                    -0.040147098781167914,
+                    0.12819930064338064
+                  ],
+                  "up": 14,
+                  "down": 6,
+                  "ties": 0
+                },
+                "negative_h__minus__degree": {
+                  "delta_AUC": 0.008111115758393591,
+                  "CI95": [
+                    -0.014323507109582528,
+                    0.03168043967620128
+                  ],
+                  "up": 8,
+                  "down": 12,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__degree_normalized_residual": {
+                  "delta_AUC": 0.0005654025408231538,
+                  "CI95": [
+                    -7.300928850369202e-05,
+                    0.0011920591387060142
+                  ],
+                  "up": 11,
+                  "down": 8,
+                  "ties": 1
+                },
+                "loo__minus__degree_loo": {
+                  "delta_AUC": 0.0013300343203346387,
+                  "CI95": [
+                    -0.00016431810106310729,
+                    0.003197300856816179
+                  ],
+                  "up": 10,
+                  "down": 10,
+                  "ties": 0
+                }
+              }
+            },
+            "z10": {
+              "episodes": 20,
+              "macro_AUC": {
+                "loo_minus_u": 0.5098258387038601,
+                "z_minus_u": 0.5084653902659084,
+                "loo": 0.5867895197290769,
+                "z": 0.5858212328584392,
+                "u": 0.5218457973639599,
+                "s": 0.5456765933347313,
+                "confidence_abs": 0.5455793184879187,
+                "negative_h": 0.5854388078083086,
+                "degree": 0.6070651517822048,
+                "onehop_u": 0.5335807764500976,
+                "onehop_minus_u": 0.4957597486455951,
+                "degree_normalized_residual": 0.5092063245681735,
+                "degree_loo": 0.5879568978325694
+              },
+              "contrasts": {
+                "loo_minus_u__minus__z_minus_u": {
+                  "delta_AUC": 0.0013604484379515975,
+                  "CI95": [
+                    -0.0005248852298096907,
+                    0.0030847847669196083
+                  ],
+                  "up": 15,
+                  "down": 5,
+                  "ties": 0
+                },
+                "loo__minus__z": {
+                  "delta_AUC": 0.0009682868706375802,
+                  "CI95": [
+                    -0.014467804964411815,
+                    0.014261971194470507
+                  ],
+                  "up": 11,
+                  "down": 9,
+                  "ties": 0
+                },
+                "loo__minus__u": {
+                  "delta_AUC": 0.0649437223651171,
+                  "CI95": [
+                    -0.009783501768918443,
+                    0.14178809060936856
+                  ],
+                  "up": 13,
+                  "down": 7,
+                  "ties": 0
+                },
+                "loo__minus__onehop_u": {
+                  "delta_AUC": 0.05320874327897929,
+                  "CI95": [
+                    -0.03388763393281858,
+                    0.14314907314968484
+                  ],
+                  "up": 13,
+                  "down": 7,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__onehop_minus_u": {
+                  "delta_AUC": 0.014066090058264955,
+                  "CI95": [
+                    -0.030715933657791836,
+                    0.06166522882585909
+                  ],
+                  "up": 10,
+                  "down": 10,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__s": {
+                  "delta_AUC": -0.03585075463087119,
+                  "CI95": [
+                    -0.13822560365959605,
+                    0.07481783086653566
+                  ],
+                  "up": 10,
+                  "down": 10,
+                  "ties": 0
+                },
+                "negative_h__minus__degree": {
+                  "delta_AUC": -0.02162634397389601,
+                  "CI95": [
+                    -0.05731286050424339,
+                    0.013564573023095024
+                  ],
+                  "up": 7,
+                  "down": 13,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__degree_normalized_residual": {
+                  "delta_AUC": 0.0006195141356864553,
+                  "CI95": [
+                    -6.904252873206339e-06,
+                    0.0014008139319857198
+                  ],
+                  "up": 13,
+                  "down": 6,
+                  "ties": 1
+                },
+                "loo__minus__degree_loo": {
+                  "delta_AUC": -0.0011673781034924834,
+                  "CI95": [
+                    -0.005357969983780386,
+                    0.002921370858259186
+                  ],
+                  "up": 10,
+                  "down": 10,
+                  "ties": 0
+                }
+              }
+            }
+          },
+          "pure_cells": {
+            "s10": {
+              "episodes": 17,
+              "macro_AUC": {
+                "loo_minus_u": 0.6347171231224316,
+                "z_minus_u": 0.6337487388049018,
+                "loo": 0.6611622214579557,
+                "z": 0.6584251110888252,
+                "u": 0.5096415448945268,
+                "s": 0.5369723925329402,
+                "confidence_abs": 0.5582027463461608,
+                "negative_h": 0.6124852144865054,
+                "degree": 0.5849326968527311,
+                "onehop_u": 0.6353997779321103,
+                "onehop_minus_u": 0.6615279012447828,
+                "degree_normalized_residual": 0.6343047153274121,
+                "degree_loo": 0.659944095699265
+              },
+              "contrasts": {
+                "loo_minus_u__minus__z_minus_u": {
+                  "delta_AUC": 0.0009683843175297739,
+                  "CI95": [
+                    -0.0003959833534256135,
+                    0.003141032625078834
+                  ],
+                  "up": 5,
+                  "down": 5,
+                  "ties": 7
+                },
+                "loo__minus__z": {
+                  "delta_AUC": 0.0027371103691304875,
+                  "CI95": [
+                    -0.00020056772716888762,
+                    0.006138479203830553
+                  ],
+                  "up": 8,
+                  "down": 4,
+                  "ties": 5
+                },
+                "loo__minus__u": {
+                  "delta_AUC": 0.15152067656342877,
+                  "CI95": [
+                    -0.0696334567145378,
+                    0.3525973589525485
+                  ],
+                  "up": 11,
+                  "down": 4,
+                  "ties": 2
+                },
+                "loo__minus__onehop_u": {
+                  "delta_AUC": 0.02576244352584536,
+                  "CI95": [
+                    -0.062069654687113354,
+                    0.11900066158159364
+                  ],
+                  "up": 9,
+                  "down": 6,
+                  "ties": 2
+                },
+                "loo_minus_u__minus__onehop_minus_u": {
+                  "delta_AUC": -0.026810778122351206,
+                  "CI95": [
+                    -0.11653290044848155,
+                    0.058224143544118874
+                  ],
+                  "up": 7,
+                  "down": 8,
+                  "ties": 2
+                },
+                "loo_minus_u__minus__s": {
+                  "delta_AUC": 0.09774473058949137,
+                  "CI95": [
+                    -0.06193594234163676,
+                    0.27906552610460017
+                  ],
+                  "up": 9,
+                  "down": 7,
+                  "ties": 1
+                },
+                "negative_h__minus__degree": {
+                  "delta_AUC": 0.02755251763377446,
+                  "CI95": [
+                    -0.007514479211074382,
+                    0.07002295680755989
+                  ],
+                  "up": 8,
+                  "down": 6,
+                  "ties": 3
+                },
+                "loo_minus_u__minus__degree_normalized_residual": {
+                  "delta_AUC": 0.00041240779501965823,
+                  "CI95": [
+                    -3.068530775839906e-05,
+                    0.001124219973875006
+                  ],
+                  "up": 6,
+                  "down": 4,
+                  "ties": 7
+                },
+                "loo__minus__degree_loo": {
+                  "delta_AUC": 0.0012181257586906507,
+                  "CI95": [
+                    -0.00013734576569665867,
+                    0.0029177765588739297
+                  ],
+                  "up": 6,
+                  "down": 4,
+                  "ties": 7
+                }
+              }
+            },
+            "z10": {
+              "episodes": 16,
+              "macro_AUC": {
+                "loo_minus_u": 0.4449400374662252,
+                "z_minus_u": 0.4441020985778914,
+                "loo": 0.5294419530522778,
+                "z": 0.5664857116691215,
+                "u": 0.5249853092022436,
+                "s": 0.5759861647929707,
+                "confidence_abs": 0.6007344835365994,
+                "negative_h": 0.5168871959823459,
+                "degree": 0.5351697655194348,
+                "onehop_u": 0.5780054960523106,
+                "onehop_minus_u": 0.45182046673387033,
+                "degree_normalized_residual": 0.4446362926976084,
+                "degree_loo": 0.5379735536336693
+              },
+              "contrasts": {
+                "loo_minus_u__minus__z_minus_u": {
+                  "delta_AUC": 0.0008379388883338577,
+                  "CI95": [
+                    0.00012837806727633154,
+                    0.001605334564937534
+                  ],
+                  "up": 9,
+                  "down": 1,
+                  "ties": 6
+                },
+                "loo__minus__z": {
+                  "delta_AUC": -0.03704375861684387,
+                  "CI95": [
+                    -0.07934639165387014,
+                    -0.0029166857335281415
+                  ],
+                  "up": 5,
+                  "down": 10,
+                  "ties": 1
+                },
+                "loo__minus__u": {
+                  "delta_AUC": 0.004456643850034157,
+                  "CI95": [
+                    -0.2114246163723874,
+                    0.2192965434075707
+                  ],
+                  "up": 10,
+                  "down": 5,
+                  "ties": 1
+                },
+                "loo__minus__onehop_u": {
+                  "delta_AUC": -0.04856354300003269,
+                  "CI95": [
+                    -0.2571228212688587,
+                    0.15788897546362182
+                  ],
+                  "up": 6,
+                  "down": 9,
+                  "ties": 1
+                },
+                "loo_minus_u__minus__onehop_minus_u": {
+                  "delta_AUC": -0.006880429267645056,
+                  "CI95": [
+                    -0.1172550084695569,
+                    0.10838805200645991
+                  ],
+                  "up": 6,
+                  "down": 9,
+                  "ties": 1
+                },
+                "loo_minus_u__minus__s": {
+                  "delta_AUC": -0.13104612732674553,
+                  "CI95": [
+                    -0.37948348049175845,
+                    0.11344745941002049
+                  ],
+                  "up": 6,
+                  "down": 9,
+                  "ties": 1
+                },
+                "negative_h__minus__degree": {
+                  "delta_AUC": -0.018282569537089007,
+                  "CI95": [
+                    -0.19131091504741496,
+                    0.15144166165657505
+                  ],
+                  "up": 5,
+                  "down": 10,
+                  "ties": 1
+                },
+                "loo_minus_u__minus__degree_normalized_residual": {
+                  "delta_AUC": 0.0003037447686167691,
+                  "CI95": [
+                    -9.343908075079566e-06,
+                    0.000700742761699363
+                  ],
+                  "up": 6,
+                  "down": 3,
+                  "ties": 7
+                },
+                "loo__minus__degree_loo": {
+                  "delta_AUC": -0.008531600581391501,
+                  "CI95": [
+                    -0.02202677994220046,
+                    0.0008405450139511574
+                  ],
+                  "up": 4,
+                  "down": 8,
+                  "ties": 4
+                }
+              }
+            }
+          },
+          "mixed_cells": {
+            "s10": {
+              "episodes": 20,
+              "macro_AUC": {
+                "loo_minus_u": 0.5406650276231122,
+                "z_minus_u": 0.5417218108898155,
+                "loo": 0.5439783875613571,
+                "z": 0.5442255261873292,
+                "u": 0.5022679560375971,
+                "s": 0.5119627576663345,
+                "confidence_abs": 0.5187661440640297,
+                "negative_h": 0.509334090386597,
+                "degree": 0.5097426325548192,
+                "onehop_u": 0.5235033579055823,
+                "onehop_minus_u": 0.5297884889803021,
+                "degree_normalized_residual": 0.5406993012115376,
+                "degree_loo": 0.5453684489103656
+              },
+              "contrasts": {
+                "loo_minus_u__minus__z_minus_u": {
+                  "delta_AUC": -0.0010567832667032733,
+                  "CI95": [
+                    -0.0031204280554224,
+                    0.0009223154951167813
+                  ],
+                  "up": 7,
+                  "down": 10,
+                  "ties": 3
+                },
+                "loo__minus__z": {
+                  "delta_AUC": -0.000247138625972107,
+                  "CI95": [
+                    -0.005457792517458313,
+                    0.005385680217319945
+                  ],
+                  "up": 7,
+                  "down": 12,
+                  "ties": 1
+                },
+                "loo__minus__u": {
+                  "delta_AUC": 0.041710431523759875,
+                  "CI95": [
+                    0.004555668609563257,
+                    0.0808984842434047
+                  ],
+                  "up": 13,
+                  "down": 7,
+                  "ties": 0
+                },
+                "loo__minus__onehop_u": {
+                  "delta_AUC": 0.02047502965577479,
+                  "CI95": [
+                    -0.009578242208190974,
+                    0.057498142193937916
+                  ],
+                  "up": 12,
+                  "down": 8,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__onehop_minus_u": {
+                  "delta_AUC": 0.010876538642810124,
+                  "CI95": [
+                    -0.013121307501455626,
+                    0.03580728882679134
+                  ],
+                  "up": 11,
+                  "down": 9,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__s": {
+                  "delta_AUC": 0.028702269956777705,
+                  "CI95": [
+                    -0.031196516170183396,
+                    0.09708105125868971
+                  ],
+                  "up": 9,
+                  "down": 11,
+                  "ties": 0
+                },
+                "negative_h__minus__degree": {
+                  "delta_AUC": -0.0004085421682222534,
+                  "CI95": [
+                    -0.010884794595508679,
+                    0.011942407519721077
+                  ],
+                  "up": 7,
+                  "down": 13,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__degree_normalized_residual": {
+                  "delta_AUC": -3.427358842546524e-05,
+                  "CI95": [
+                    -0.00047368344298888974,
+                    0.00045813519577148255
+                  ],
+                  "up": 5,
+                  "down": 9,
+                  "ties": 6
+                },
+                "loo__minus__degree_loo": {
+                  "delta_AUC": -0.0013900613490085063,
+                  "CI95": [
+                    -0.003286792025915819,
+                    -2.0629786620532456e-05
+                  ],
+                  "up": 5,
+                  "down": 11,
+                  "ties": 4
+                }
+              }
+            },
+            "z10": {
+              "episodes": 20,
+              "macro_AUC": {
+                "loo_minus_u": 0.509314435636192,
+                "z_minus_u": 0.5083654058126227,
+                "loo": 0.5101615096476796,
+                "z": 0.5138866955726268,
+                "u": 0.5031337159557334,
+                "s": 0.5026967508351372,
+                "confidence_abs": 0.49954951361247646,
+                "negative_h": 0.5280513913532413,
+                "degree": 0.5306493449435745,
+                "onehop_u": 0.5010677842984637,
+                "onehop_minus_u": 0.5075568336111098,
+                "degree_normalized_residual": 0.5093999180735479,
+                "degree_loo": 0.5159198157550257
+              },
+              "contrasts": {
+                "loo_minus_u__minus__z_minus_u": {
+                  "delta_AUC": 0.0009490298235694361,
+                  "CI95": [
+                    -0.0002937285150641844,
+                    0.0022230668197453806
+                  ],
+                  "up": 10,
+                  "down": 5,
+                  "ties": 5
+                },
+                "loo__minus__z": {
+                  "delta_AUC": -0.0037251859249473967,
+                  "CI95": [
+                    -0.014988902052244412,
+                    0.007272057388659221
+                  ],
+                  "up": 9,
+                  "down": 11,
+                  "ties": 0
+                },
+                "loo__minus__u": {
+                  "delta_AUC": 0.00702779369194613,
+                  "CI95": [
+                    -0.02676621478899787,
+                    0.045339780837341914
+                  ],
+                  "up": 9,
+                  "down": 11,
+                  "ties": 0
+                },
+                "loo__minus__onehop_u": {
+                  "delta_AUC": 0.00909372534921582,
+                  "CI95": [
+                    -0.02385620392943228,
+                    0.04523122651722873
+                  ],
+                  "up": 11,
+                  "down": 9,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__onehop_minus_u": {
+                  "delta_AUC": 0.0017576020250823748,
+                  "CI95": [
+                    -0.022737838525855328,
+                    0.024443429850102012
+                  ],
+                  "up": 9,
+                  "down": 11,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__s": {
+                  "delta_AUC": 0.006617684801054832,
+                  "CI95": [
+                    -0.0548622478881292,
+                    0.07012658166775364
+                  ],
+                  "up": 8,
+                  "down": 12,
+                  "ties": 0
+                },
+                "negative_h__minus__degree": {
+                  "delta_AUC": -0.002597953590333102,
+                  "CI95": [
+                    -0.020454159909592057,
+                    0.016262998867404302
+                  ],
+                  "up": 9,
+                  "down": 11,
+                  "ties": 0
+                },
+                "loo_minus_u__minus__degree_normalized_residual": {
+                  "delta_AUC": -8.548243735588545e-05,
+                  "CI95": [
+                    -0.0004379101119477896,
+                    0.0002763335587740859
+                  ],
+                  "up": 6,
+                  "down": 6,
+                  "ties": 8
+                },
+                "loo__minus__degree_loo": {
+                  "delta_AUC": -0.005758306107346156,
+                  "CI95": [
+                    -0.01717389122867986,
+                    0.0015102490455108188
+                  ],
+                  "up": 8,
+                  "down": 11,
+                  "ties": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "supplementary_pooled": {
+      "episodes": 120,
+      "coverage": {
+        "all_TP": 12139582,
+        "all_FP": 3928512,
+        "valid_TP": 12135414,
+        "valid_FP": 3925512,
+        "invalid_TP": 4168,
+        "invalid_FP": 3000,
+        "TP_valid_fraction": 0.9996566603364103,
+        "FP_valid_fraction": 0.9992363520844534
+      },
+      "metrics": {
+        "all_valid": {
+          "s10": {
+            "episodes": 116,
+            "macro_AUC": {
+              "loo_minus_u": 0.602180385025157,
+              "z_minus_u": 0.5993583855955855,
+              "loo": 0.6512392254397007,
+              "z": 0.6466114662572622,
+              "u": 0.5597498420796163,
+              "s": 0.5704381401091397,
+              "confidence_abs": 0.5718239339262641,
+              "negative_h": 0.6216287788688627,
+              "degree": 0.6314116717129084,
+              "onehop_u": 0.6056222866659158,
+              "onehop_minus_u": 0.5732586062676073,
+              "degree_normalized_residual": 0.6022865292898081,
+              "degree_loo": 0.6513488594483795
+            },
+            "contrasts": {
+              "loo_minus_u__minus__z_minus_u": {
+                "delta_AUC": 0.002821999429571333,
+                "CI95": [
+                  0.0014935058711040116,
+                  0.0042642952397747005
+                ],
+                "up": 69,
+                "down": 43,
+                "ties": 4
+              },
+              "loo__minus__z": {
+                "delta_AUC": 0.004627759182438408,
+                "CI95": [
+                  0.0016000645410255726,
+                  0.00784994141019596
+                ],
+                "up": 70,
+                "down": 45,
+                "ties": 1
+              },
+              "loo__minus__u": {
+                "delta_AUC": 0.09148938336008404,
+                "CI95": [
+                  0.0652387282921484,
+                  0.11866069895727514
+                ],
+                "up": 92,
+                "down": 24,
+                "ties": 0
+              },
+              "loo__minus__onehop_u": {
+                "delta_AUC": 0.04561693877378467,
+                "CI95": [
+                  0.025476369602063686,
+                  0.06544150885368623
+                ],
+                "up": 79,
+                "down": 37,
+                "ties": 0
+              },
+              "loo_minus_u__minus__onehop_minus_u": {
+                "delta_AUC": 0.02892177875754961,
+                "CI95": [
+                  0.008991144945436095,
+                  0.04902549301861232
+                ],
+                "up": 73,
+                "down": 42,
+                "ties": 1
+              },
+              "loo_minus_u__minus__s": {
+                "delta_AUC": 0.03174224491601701,
+                "CI95": [
+                  -0.0020751478890846274,
+                  0.066863590191809
+                ],
+                "up": 68,
+                "down": 48,
+                "ties": 0
+              },
+              "negative_h__minus__degree": {
+                "delta_AUC": -0.009782892844045436,
+                "CI95": [
+                  -0.024406750765313893,
+                  0.004410450133780562
+                ],
+                "up": 51,
+                "down": 65,
+                "ties": 0
+              },
+              "loo_minus_u__minus__degree_normalized_residual": {
+                "delta_AUC": -0.00010614426465118728,
+                "CI95": [
+                  -0.0005860802414045741,
+                  0.0003002754993040395
+                ],
+                "up": 55,
+                "down": 44,
+                "ties": 17
+              },
+              "loo__minus__degree_loo": {
+                "delta_AUC": -0.00010963400867909813,
+                "CI95": [
+                  -0.0015571369285657221,
+                  0.0011450370464382838
+                ],
+                "up": 57,
+                "down": 56,
+                "ties": 3
+              }
+            }
+          },
+          "z10": {
+            "episodes": 116,
+            "macro_AUC": {
+              "loo_minus_u": 0.5143155999711972,
+              "z_minus_u": 0.5118161324682008,
+              "loo": 0.6041911980024333,
+              "z": 0.5996808218757569,
+              "u": 0.5323875913808199,
+              "s": 0.548012173347995,
+              "confidence_abs": 0.5594114777444967,
+              "negative_h": 0.576646060472038,
+              "degree": 0.6123787289586949,
+              "onehop_u": 0.5424549446104142,
+              "onehop_minus_u": 0.4958301047551104,
+              "degree_normalized_residual": 0.5142026752775464,
+              "degree_loo": 0.6055543121658706
+            },
+            "contrasts": {
+              "loo_minus_u__minus__z_minus_u": {
+                "delta_AUC": 0.0024994675029963755,
+                "CI95": [
+                  0.0011220222842966477,
+                  0.0037969446128650356
+                ],
+                "up": 80,
+                "down": 32,
+                "ties": 4
+              },
+              "loo__minus__z": {
+                "delta_AUC": 0.004510376126676423,
+                "CI95": [
+                  -0.0034450925506552097,
+                  0.012721649155024021
+                ],
+                "up": 62,
+                "down": 54,
+                "ties": 0
+              },
+              "loo__minus__u": {
+                "delta_AUC": 0.07180360662161346,
+                "CI95": [
+                  0.043425759846049856,
+                  0.10265745253719875
+                ],
+                "up": 79,
+                "down": 37,
+                "ties": 0
+              },
+              "loo__minus__onehop_u": {
+                "delta_AUC": 0.06173625339201921,
+                "CI95": [
+                  0.03297231368938759,
+                  0.09130987692082465
+                ],
+                "up": 80,
+                "down": 36,
+                "ties": 0
+              },
+              "loo_minus_u__minus__onehop_minus_u": {
+                "delta_AUC": 0.018485495216086778,
+                "CI95": [
+                  -0.00029259026887421544,
+                  0.03825832174273593
+                ],
+                "up": 69,
+                "down": 47,
+                "ties": 0
+              },
+              "loo_minus_u__minus__s": {
+                "delta_AUC": -0.033696573376797934,
+                "CI95": [
+                  -0.0849518812155806,
+                  0.01570476829603658
+                ],
+                "up": 56,
+                "down": 60,
+                "ties": 0
+              },
+              "negative_h__minus__degree": {
+                "delta_AUC": -0.035732668486656655,
+                "CI95": [
+                  -0.056133911733052905,
+                  -0.017163788202188664
+                ],
+                "up": 41,
+                "down": 75,
+                "ties": 0
+              },
+              "loo_minus_u__minus__degree_normalized_residual": {
+                "delta_AUC": 0.00011292469365074603,
+                "CI95": [
+                  -0.00023788794206107687,
+                  0.00042133445508134857
+                ],
+                "up": 54,
+                "down": 43,
+                "ties": 19
+              },
+              "loo__minus__degree_loo": {
+                "delta_AUC": -0.0013631141634370526,
+                "CI95": [
+                  -0.003708590680418475,
+                  0.0010682926070049734
+                ],
+                "up": 58,
+                "down": 58,
+                "ties": 0
+              }
+            }
+          }
+        },
+        "pure_cells": {
+          "s10": {
+            "episodes": 88,
+            "macro_AUC": {
+              "loo_minus_u": 0.6612451869326429,
+              "z_minus_u": 0.6586272744054642,
+              "loo": 0.7144653672573889,
+              "z": 0.7087755282563563,
+              "u": 0.5817298012709792,
+              "s": 0.5951237171657094,
+              "confidence_abs": 0.5988658213311017,
+              "negative_h": 0.6032326105564271,
+              "degree": 0.6503158732491158,
+              "onehop_u": 0.6571115470006045,
+              "onehop_minus_u": 0.6230051160323584,
+              "degree_normalized_residual": 0.6623347509587775,
+              "degree_loo": 0.7157648923109793
+            },
+            "contrasts": {
+              "loo_minus_u__minus__z_minus_u": {
+                "delta_AUC": 0.0026179125271784853,
+                "CI95": [
+                  -0.000561005586647001,
+                  0.0073225426074130205
+                ],
+                "up": 28,
+                "down": 26,
+                "ties": 34
+              },
+              "loo__minus__z": {
+                "delta_AUC": 0.005689839001032756,
+                "CI95": [
+                  0.000775914733249769,
+                  0.01192416691726685
+                ],
+                "up": 37,
+                "down": 22,
+                "ties": 29
+              },
+              "loo__minus__u": {
+                "delta_AUC": 0.13273556598641006,
+                "CI95": [
+                  0.0639149749600064,
+                  0.20060104174645862
+                ],
+                "up": 61,
+                "down": 21,
+                "ties": 6
+              },
+              "loo__minus__onehop_u": {
+                "delta_AUC": 0.05735382025678503,
+                "CI95": [
+                  0.008800016011599946,
+                  0.10389843418777231
+                ],
+                "up": 50,
+                "down": 28,
+                "ties": 10
+              },
+              "loo_minus_u__minus__onehop_minus_u": {
+                "delta_AUC": 0.038240070900284355,
+                "CI95": [
+                  -0.007460937415265603,
+                  0.08519200790735038
+                ],
+                "up": 48,
+                "down": 32,
+                "ties": 8
+              },
+              "loo_minus_u__minus__s": {
+                "delta_AUC": 0.06612146976693346,
+                "CI95": [
+                  -0.004716487401082236,
+                  0.1357894654865943
+                ],
+                "up": 51,
+                "down": 33,
+                "ties": 4
+              },
+              "negative_h__minus__degree": {
+                "delta_AUC": -0.04708326269268917,
+                "CI95": [
+                  -0.09834429667592931,
+                  -0.003179644732942493
+                ],
+                "up": 36,
+                "down": 43,
+                "ties": 9
+              },
+              "loo_minus_u__minus__degree_normalized_residual": {
+                "delta_AUC": -0.0010895640261347906,
+                "CI95": [
+                  -0.0030308076961998083,
+                  0.00012836114277877032
+                ],
+                "up": 20,
+                "down": 24,
+                "ties": 44
+              },
+              "loo__minus__degree_loo": {
+                "delta_AUC": -0.001299525053590479,
+                "CI95": [
+                  -0.004740732486794913,
+                  0.001185005875795019
+                ],
+                "up": 23,
+                "down": 23,
+                "ties": 42
+              }
+            }
+          },
+          "z10": {
+            "episodes": 87,
+            "macro_AUC": {
+              "loo_minus_u": 0.5036324322638578,
+              "z_minus_u": 0.4850716296378996,
+              "loo": 0.6038405026559505,
+              "z": 0.5955644441763343,
+              "u": 0.5313648280992863,
+              "s": 0.5661252258804297,
+              "confidence_abs": 0.5624253167175925,
+              "negative_h": 0.5762402634270435,
+              "degree": 0.6192641845422857,
+              "onehop_u": 0.5500972391486026,
+              "onehop_minus_u": 0.4788923849531122,
+              "degree_normalized_residual": 0.503058413552068,
+              "degree_loo": 0.607886707110982
+            },
+            "contrasts": {
+              "loo_minus_u__minus__z_minus_u": {
+                "delta_AUC": 0.018560802625958283,
+                "CI95": [
+                  0.0011285861755113633,
+                  0.04599340271706555
+                ],
+                "up": 35,
+                "down": 20,
+                "ties": 32
+              },
+              "loo__minus__z": {
+                "delta_AUC": 0.008276058479616138,
+                "CI95": [
+                  -0.029085690434368067,
+                  0.048531662263665794
+                ],
+                "up": 40,
+                "down": 39,
+                "ties": 8
+              },
+              "loo__minus__u": {
+                "delta_AUC": 0.0724756745566642,
+                "CI95": [
+                  -0.009084251793136811,
+                  0.1497433821726064
+                ],
+                "up": 55,
+                "down": 29,
+                "ties": 3
+              },
+              "loo__minus__onehop_u": {
+                "delta_AUC": 0.053743263507348024,
+                "CI95": [
+                  -0.027560052326940553,
+                  0.13470733298246435
+                ],
+                "up": 50,
+                "down": 33,
+                "ties": 4
+              },
+              "loo_minus_u__minus__onehop_minus_u": {
+                "delta_AUC": 0.024740047310745666,
+                "CI95": [
+                  -0.02235376061443932,
+                  0.07617017709176407
+                ],
+                "up": 46,
+                "down": 36,
+                "ties": 5
+              },
+              "loo_minus_u__minus__s": {
+                "delta_AUC": -0.06249279361657203,
+                "CI95": [
+                  -0.1786551787463051,
+                  0.05157699039690639
+                ],
+                "up": 38,
+                "down": 46,
+                "ties": 3
+              },
+              "negative_h__minus__degree": {
+                "delta_AUC": -0.04302392111524236,
+                "CI95": [
+                  -0.10953054940643721,
+                  0.02304302117792369
+                ],
+                "up": 26,
+                "down": 55,
+                "ties": 6
+              },
+              "loo_minus_u__minus__degree_normalized_residual": {
+                "delta_AUC": 0.0005740187117898387,
+                "CI95": [
+                  -0.0017183569577402912,
+                  0.0037492565132481114
+                ],
+                "up": 19,
+                "down": 25,
+                "ties": 43
+              },
+              "loo__minus__degree_loo": {
+                "delta_AUC": -0.004046204455031311,
+                "CI95": [
+                  -0.014875006925764192,
+                  0.008414623089380494
+                ],
+                "up": 30,
+                "down": 35,
+                "ties": 22
+              }
+            }
+          }
+        },
+        "mixed_cells": {
+          "s10": {
+            "episodes": 116,
+            "macro_AUC": {
+              "loo_minus_u": 0.5228163660056955,
+              "z_minus_u": 0.5208859106010294,
+              "loo": 0.5456133621267071,
+              "z": 0.5442770621906038,
+              "u": 0.5165312434862697,
+              "s": 0.5237609279565774,
+              "confidence_abs": 0.524277963691357,
+              "negative_h": 0.5356183298497863,
+              "degree": 0.5362749865118215,
+              "onehop_u": 0.525863839629436,
+              "onehop_minus_u": 0.5146815075137747,
+              "degree_normalized_residual": 0.5223542015265157,
+              "degree_loo": 0.5466653275354558
+            },
+            "contrasts": {
+              "loo_minus_u__minus__z_minus_u": {
+                "delta_AUC": 0.0019304554046662122,
+                "CI95": [
+                  -0.00027884583683677745,
+                  0.00452676574182051
+                ],
+                "up": 46,
+                "down": 52,
+                "ties": 18
+              },
+              "loo__minus__z": {
+                "delta_AUC": 0.0013362999361033912,
+                "CI95": [
+                  -0.002152527908728011,
+                  0.00504018800103496
+                ],
+                "up": 53,
+                "down": 55,
+                "ties": 8
+              },
+              "loo__minus__u": {
+                "delta_AUC": 0.029082118640437436,
+                "CI95": [
+                  0.009912600056814791,
+                  0.04982017399949564
+                ],
+                "up": 73,
+                "down": 43,
+                "ties": 0
+              },
+              "loo__minus__onehop_u": {
+                "delta_AUC": 0.019749522497271105,
+                "CI95": [
+                  0.006976971786202266,
+                  0.03357521450419791
+                ],
+                "up": 73,
+                "down": 43,
+                "ties": 0
+              },
+              "loo_minus_u__minus__onehop_minus_u": {
+                "delta_AUC": 0.008134858491920865,
+                "CI95": [
+                  -0.00314680902918999,
+                  0.01957997813994668
+                ],
+                "up": 62,
+                "down": 53,
+                "ties": 1
+              },
+              "loo_minus_u__minus__s": {
+                "delta_AUC": -0.0009445619508820593,
+                "CI95": [
+                  -0.02899894139384701,
+                  0.028885187890050196
+                ],
+                "up": 55,
+                "down": 61,
+                "ties": 0
+              },
+              "negative_h__minus__degree": {
+                "delta_AUC": -0.0006566566620350826,
+                "CI95": [
+                  -0.009861523354798332,
+                  0.008749171517401805
+                ],
+                "up": 56,
+                "down": 60,
+                "ties": 0
+              },
+              "loo_minus_u__minus__degree_normalized_residual": {
+                "delta_AUC": 0.00046216447917973906,
+                "CI95": [
+                  -0.0001811323533476572,
+                  0.0010873762191781933
+                ],
+                "up": 41,
+                "down": 30,
+                "ties": 45
+              },
+              "loo__minus__degree_loo": {
+                "delta_AUC": -0.0010519654087486987,
+                "CI95": [
+                  -0.0032723295131266623,
+                  0.0008248657609699165
+                ],
+                "up": 47,
+                "down": 50,
+                "ties": 19
+              }
+            }
+          },
+          "z10": {
+            "episodes": 116,
+            "macro_AUC": {
+              "loo_minus_u": 0.4891692998522653,
+              "z_minus_u": 0.4886166016271506,
+              "loo": 0.5341255967181078,
+              "z": 0.5369256884299259,
+              "u": 0.5234621593165687,
+              "s": 0.5254571089535404,
+              "confidence_abs": 0.5274031512895794,
+              "negative_h": 0.510923302126924,
+              "degree": 0.5346537393372898,
+              "onehop_u": 0.5231529054332995,
+              "onehop_minus_u": 0.4889387371178491,
+              "degree_normalized_residual": 0.4889609811022716,
+              "degree_loo": 0.5374486545046916
+            },
+            "contrasts": {
+              "loo_minus_u__minus__z_minus_u": {
+                "delta_AUC": 0.0005526982251147414,
+                "CI95": [
+                  -0.0009386276278396638,
+                  0.002186314608558405
+                ],
+                "up": 49,
+                "down": 48,
+                "ties": 19
+              },
+              "loo__minus__z": {
+                "delta_AUC": -0.0028000917118180192,
+                "CI95": [
+                  -0.00939512820585725,
+                  0.0037409998611777563
+                ],
+                "up": 50,
+                "down": 64,
+                "ties": 2
+              },
+              "loo__minus__u": {
+                "delta_AUC": 0.010663437401539135,
+                "CI95": [
+                  -0.007815437042465314,
+                  0.031067798953359902
+                ],
+                "up": 62,
+                "down": 54,
+                "ties": 0
+              },
+              "loo__minus__onehop_u": {
+                "delta_AUC": 0.010972691284808232,
+                "CI95": [
+                  -0.004592519463189384,
+                  0.02640910146047308
+                ],
+                "up": 67,
+                "down": 48,
+                "ties": 1
+              },
+              "loo_minus_u__minus__onehop_minus_u": {
+                "delta_AUC": 0.0002305627344163101,
+                "CI95": [
+                  -0.010599545999930052,
+                  0.011631558136415324
+                ],
+                "up": 56,
+                "down": 59,
+                "ties": 1
+              },
+              "loo_minus_u__minus__s": {
+                "delta_AUC": -0.036287809101275215,
+                "CI95": [
+                  -0.06691412760410405,
+                  -0.005650511093854388
+                ],
+                "up": 45,
+                "down": 71,
+                "ties": 0
+              },
+              "negative_h__minus__degree": {
+                "delta_AUC": -0.02373043721036597,
+                "CI95": [
+                  -0.037380620340607705,
+                  -0.011669012905975228
+                ],
+                "up": 42,
+                "down": 74,
+                "ties": 0
+              },
+              "loo_minus_u__minus__degree_normalized_residual": {
+                "delta_AUC": 0.00020831874999350836,
+                "CI95": [
+                  -0.00031141497965625486,
+                  0.0007347047030559828
+                ],
+                "up": 32,
+                "down": 34,
+                "ties": 50
+              },
+              "loo__minus__degree_loo": {
+                "delta_AUC": -0.003323057786584017,
+                "CI95": [
+                  -0.006747140475938151,
+                  -0.00022274843639918333
+                ],
+                "up": 46,
+                "down": 61,
+                "ties": 9
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

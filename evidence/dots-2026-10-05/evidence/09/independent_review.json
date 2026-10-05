@@ -1,0 +1,26 @@
+{
+  "state": "PASS_AFTER_INDEPENDENT_CROSS_REVIEW",
+  "scope": "Source-operator and claimed FP/FN effects; primary-paper Table3 lookup; independently reaggregated saved I/U and four-direction counters, no query pixels or predictions recomputed.",
+  "document_sha256": "46fb1363810b9aa33185d732a9273fb0184a85d59dd180453fd22fd612b059a4",
+  "document": "09_fp_fn_correction_mechanisms.md",
+  "source_paper": "https://arxiv.org/html/2609.03384v1",
+  "paper_values_verified": {
+    "Table3b_COCO_noDense": 60.1,
+    "Table3b_COCO_Dense": 60.9,
+    "Table3d_COCO_none": 58.5,
+    "Table3d_COCO_SDP": 59.9,
+    "Table3d_COCO_SR": 60.2,
+    "Table3d_COCO_both": 60.9
+  },
+  "local_links": 1,
+  "four_direction_accounting": "All120 rows exactly satisfy deltaI=addTP-deleteTP and deltaU=addFP-deleteFP; all four cohort class-mIoU values match saved I/U sums.",
+  "claim_limits_verified": [
+    "Local raw-score suppression is not guaranteed final FP removal because minmax cutoff changes.",
+    "Query seed prototype is used in the prior; no invented repeated query-FG prototype re-estimation step.",
+    "Stage1 positive scalar gating cancellation is stated with the default branch and real-arithmetic qualifications.",
+    "One-space cached INSID3 and weak FG-BG mean control are not claimed as official pipeline/module-causal ablations.",
+    "Pixel totals do not imply class-macro IoU changes.",
+    "Reference/query cache uses given preprocessing;119debiased and1nondebiased stated.",
+    "Changed unmeasured module importance wording to joint participation in the final score."
+  ]
+}

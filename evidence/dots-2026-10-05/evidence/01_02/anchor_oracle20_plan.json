@@ -1,0 +1,16 @@
+{
+  "source_report": "cpu_method/reference_anchor_identifiability20/plan.json",
+  "source_sha256": "8c467859f6c7cd03425cd82041ac222c35ae8c7d56349a5acdceea4e907f6722",
+  "extracted_utc": "2026-10-05T07:45:00Z",
+  "extraction": "Only large per-episode/per-class arrays, file-hash maps, and raw audit arrays omitted; metric values unchanged.",
+  "report": {
+    "scope": "GT-privileged expressivity diagnostic, not a deployable method",
+    "question": "Can a correct existing complete hypothesis be selected by any positive convex combination of actual reference-FG directions, and is this capability specific to FG rather than equal-count BG directions?",
+    "scores": "For source token t and hypothesis H, r_t dot raw mean(q_H); stored unit-mean projections multiplied by mean norm.",
+    "families": "All FG; deterministic equal-count FG/BG source controls using RandomState0 without labels from query.",
+    "simple_controls": "Uniform source mean and single-source-token attainable choices, with mean included to preserve baseline coverage.",
+    "threshold": 1e-07,
+    "margin_note": "Strict margin above1e-7 on unique masks certifies attainability; fixed tie cases include known mean/single-anchor choices. No GT-dependent weight choice is presented as an algorithm.",
+    "failure_scope": "If foreground and background families both recover the bank oracle, the oracle freedom is not specific identity evidence; if restricted oracle fails, it rejects only this readout family, not all DINO information."
+  }
+}

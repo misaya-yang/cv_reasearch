@@ -1,0 +1,6575 @@
+{
+  "scope": "Old120 exposed development; frozen 1024 masks only. mean_FG_BG is raw source-mean FG-BG zero cut, token binary then bilinear. cached INSID3 is one-space adaptation, not published dual-space pipeline. All changes include final normalization/renderer. No module-causal attribution.",
+  "cohorts": {
+    "old20": {
+      "episodes": 20,
+      "classes": 20,
+      "class_mIoU": {
+        "mean_FG_BG": 57.83887352556174,
+        "insid3_cached": 65.87337602575094,
+        "foris_pre": 66.60337218300744,
+        "foris_native": 67.14318082720723
+      },
+      "raw_pixel_edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 53787,
+          "add_FP": 71732,
+          "delete_TP": 493462,
+          "delete_FP": 1253313,
+          "net_TP": -439675,
+          "net_FP": -1181581,
+          "corrected": 1307100,
+          "damaged": 565194
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 258194,
+          "add_FP": 275868,
+          "delete_TP": 138180,
+          "delete_FP": 389427,
+          "net_TP": 120014,
+          "net_FP": -113559,
+          "corrected": 647621,
+          "damaged": 414048
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 272390,
+          "add_FP": 273413,
+          "delete_TP": 146297,
+          "delete_FP": 402580,
+          "net_TP": 126093,
+          "net_FP": -129167,
+          "corrected": 674970,
+          "damaged": 419710
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 50485,
+          "add_FP": 44505,
+          "delete_TP": 44406,
+          "delete_FP": 60113,
+          "net_TP": 6079,
+          "net_FP": -15608,
+          "corrected": 110598,
+          "damaged": 88911
+        }
+      }
+    },
+    "new40": {
+      "episodes": 40,
+      "classes": 30,
+      "class_mIoU": {
+        "mean_FG_BG": 43.781358250284605,
+        "insid3_cached": 56.086238514365284,
+        "foris_pre": 58.05891778461042,
+        "foris_native": 58.86161592221273
+      },
+      "raw_pixel_edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 81855,
+          "add_FP": 262675,
+          "delete_TP": 934613,
+          "delete_FP": 3598128,
+          "net_TP": -852758,
+          "net_FP": -3335453,
+          "corrected": 3679983,
+          "damaged": 1197288
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 545559,
+          "add_FP": 536115,
+          "delete_TP": 223673,
+          "delete_FP": 681802,
+          "net_TP": 321886,
+          "net_FP": -145687,
+          "corrected": 1227361,
+          "damaged": 759788
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 549491,
+          "add_FP": 531983,
+          "delete_TP": 251075,
+          "delete_FP": 727542,
+          "net_TP": 298416,
+          "net_FP": -195559,
+          "corrected": 1277033,
+          "damaged": 783058
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 55873,
+          "add_FP": 86449,
+          "delete_TP": 79343,
+          "delete_FP": 136321,
+          "net_TP": -23470,
+          "net_FP": -49872,
+          "corrected": 192194,
+          "damaged": 165792
+        }
+      }
+    },
+    "new60": {
+      "episodes": 60,
+      "classes": 45,
+      "class_mIoU": {
+        "mean_FG_BG": 43.42159304556494,
+        "insid3_cached": 61.746199171524,
+        "foris_pre": 60.87454923166542,
+        "foris_native": 61.845266208900895
+      },
+      "raw_pixel_edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 292502,
+          "add_FP": 292725,
+          "delete_TP": 686138,
+          "delete_FP": 5234205,
+          "net_TP": -393636,
+          "net_FP": -4941480,
+          "corrected": 5526707,
+          "damaged": 978863
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 384516,
+          "add_FP": 881525,
+          "delete_TP": 549135,
+          "delete_FP": 616474,
+          "net_TP": -164619,
+          "net_FP": 265051,
+          "corrected": 1000990,
+          "damaged": 1430660
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 388720,
+          "add_FP": 826414,
+          "delete_TP": 587094,
+          "delete_FP": 687579,
+          "net_TP": -198374,
+          "net_FP": 138835,
+          "corrected": 1076299,
+          "damaged": 1413508
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 104929,
+          "add_FP": 114100,
+          "delete_TP": 138684,
+          "delete_FP": 240316,
+          "net_TP": -33755,
+          "net_FP": -126216,
+          "corrected": 345245,
+          "damaged": 252784
+        }
+      }
+    },
+    "pooled120": {
+      "episodes": 120,
+      "classes": 67,
+      "class_mIoU": {
+        "mean_FG_BG": 45.09700798988732,
+        "insid3_cached": 62.18927795908479,
+        "foris_pre": 61.155710482844405,
+        "foris_native": 62.017552736969606
+      },
+      "raw_pixel_edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 428144,
+          "add_FP": 627132,
+          "delete_TP": 2114213,
+          "delete_FP": 10085646,
+          "net_TP": -1686069,
+          "net_FP": -9458514,
+          "corrected": 10513790,
+          "damaged": 2741345
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 1188269,
+          "add_FP": 1693508,
+          "delete_TP": 910988,
+          "delete_FP": 1687703,
+          "net_TP": 277281,
+          "net_FP": 5805,
+          "corrected": 2875972,
+          "damaged": 2604496
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 1210601,
+          "add_FP": 1631810,
+          "delete_TP": 984466,
+          "delete_FP": 1817701,
+          "net_TP": 226135,
+          "net_FP": -185891,
+          "corrected": 3028302,
+          "damaged": 2616276
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 211287,
+          "add_FP": 245054,
+          "delete_TP": 262433,
+          "delete_FP": 436750,
+          "net_TP": -51146,
+          "net_FP": -191696,
+          "corrected": 648037,
+          "damaged": 507487
+        }
+      }
+    }
+  },
+  "episodes": [
+    {
+      "fold": 0,
+      "e": 9,
+      "c": 8,
+      "support": "val2014/COCO_val2014_000000013420.jpg",
+      "query": "val2014/COCO_val2014_000000128669.jpg",
+      "cohort": "old20",
+      "key": "0_9_8",
+      "iu": {
+        "mean_FG_BG": [
+          160549,
+          234544
+        ],
+        "insid3_cached": [
+          176538,
+          239501
+        ],
+        "foris_pre": [
+          181229,
+          239611
+        ],
+        "foris_native": [
+          181775,
+          239019
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 33918,
+          "add_FP": 5834,
+          "delete_TP": 17929,
+          "delete_FP": 877
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 4780,
+          "add_FP": 236,
+          "delete_TP": 89,
+          "delete_FP": 126
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 5817,
+          "add_FP": 163,
+          "delete_TP": 580,
+          "delete_FP": 645
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 2114,
+          "add_FP": 30,
+          "delete_TP": 1568,
+          "delete_FP": 622
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 11,
+      "c": 0,
+      "support": "val2014/COCO_val2014_000000415183.jpg",
+      "query": "val2014/COCO_val2014_000000166948.jpg",
+      "cohort": "old20",
+      "key": "0_11_0",
+      "iu": {
+        "mean_FG_BG": [
+          501592,
+          756390
+        ],
+        "insid3_cached": [
+          439540,
+          524336
+        ],
+        "foris_pre": [
+          471208,
+          532555
+        ],
+        "foris_native": [
+          472980,
+          533010
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 62052,
+          "delete_FP": 232054
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 42580,
+          "add_FP": 12717,
+          "delete_TP": 10912,
+          "delete_FP": 4498
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 45892,
+          "add_FP": 13435,
+          "delete_TP": 12452,
+          "delete_FP": 4761
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 5431,
+          "add_FP": 3204,
+          "delete_TP": 3659,
+          "delete_FP": 2749
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 22,
+      "c": 20,
+      "support": "val2014/COCO_val2014_000000028449.jpg",
+      "query": "val2014/COCO_val2014_000000451872.jpg",
+      "cohort": "new60",
+      "key": "0_22_20",
+      "iu": {
+        "mean_FG_BG": [
+          206450,
+          270838
+        ],
+        "insid3_cached": [
+          198839,
+          230505
+        ],
+        "foris_pre": [
+          195908,
+          222635
+        ],
+        "foris_native": [
+          197554,
+          220051
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 81,
+          "add_FP": 1947,
+          "delete_TP": 7692,
+          "delete_FP": 42280
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 2406,
+          "add_FP": 1496,
+          "delete_TP": 5337,
+          "delete_FP": 9366
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 4245,
+          "add_FP": 1389,
+          "delete_TP": 5530,
+          "delete_FP": 11843
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 4505,
+          "add_FP": 1863,
+          "delete_TP": 2859,
+          "delete_FP": 4447
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 23,
+      "c": 32,
+      "support": "val2014/COCO_val2014_000000487898.jpg",
+      "query": "val2014/COCO_val2014_000000090374.jpg",
+      "cohort": "new60",
+      "key": "0_23_32",
+      "iu": {
+        "mean_FG_BG": [
+          3152,
+          32346
+        ],
+        "insid3_cached": [
+          2876,
+          8696
+        ],
+        "foris_pre": [
+          3178,
+          25681
+        ],
+        "foris_native": [
+          3033,
+          24608
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 276,
+          "delete_FP": 23650
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 302,
+          "add_FP": 16993,
+          "delete_TP": 0,
+          "delete_FP": 8
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 253,
+          "add_FP": 16292,
+          "delete_TP": 96,
+          "delete_FP": 380
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 31,
+          "add_FP": 740,
+          "delete_TP": 176,
+          "delete_FP": 1813
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 24,
+      "c": 68,
+      "support": "val2014/COCO_val2014_000000334291.jpg",
+      "query": "val2014/COCO_val2014_000000355256.jpg",
+      "cohort": "new60",
+      "key": "0_24_68",
+      "iu": {
+        "mean_FG_BG": [
+          23002,
+          41977
+        ],
+        "insid3_cached": [
+          22060,
+          40103
+        ],
+        "foris_pre": [
+          22571,
+          34445
+        ],
+        "foris_native": [
+          22940,
+          34972
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 9,
+          "add_FP": 5065,
+          "delete_TP": 951,
+          "delete_FP": 6939
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 516,
+          "add_FP": 1,
+          "delete_TP": 5,
+          "delete_FP": 5659
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 951,
+          "add_FP": 71,
+          "delete_TP": 71,
+          "delete_FP": 5202
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 461,
+          "add_FP": 1350,
+          "delete_TP": 92,
+          "delete_FP": 823
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 25,
+      "c": 68,
+      "support": "val2014/COCO_val2014_000000571808.jpg",
+      "query": "val2014/COCO_val2014_000000124594.jpg",
+      "cohort": "new60",
+      "key": "0_25_68",
+      "iu": {
+        "mean_FG_BG": [
+          75096,
+          82003
+        ],
+        "insid3_cached": [
+          77039,
+          89020
+        ],
+        "foris_pre": [
+          76895,
+          84492
+        ],
+        "foris_native": [
+          75939,
+          82314
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 2119,
+          "add_FP": 7865,
+          "delete_TP": 176,
+          "delete_FP": 848
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 75,
+          "add_FP": 36,
+          "delete_TP": 219,
+          "delete_FP": 4564
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 15,
+          "add_FP": 507,
+          "delete_TP": 1115,
+          "delete_FP": 7213
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 68,
+          "add_FP": 538,
+          "delete_TP": 1024,
+          "delete_FP": 2716
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 26,
+      "c": 40,
+      "support": "val2014/COCO_val2014_000000100231.jpg",
+      "query": "val2014/COCO_val2014_000000138517.jpg",
+      "cohort": "new60",
+      "key": "0_26_40",
+      "iu": {
+        "mean_FG_BG": [
+          27902,
+          86534
+        ],
+        "insid3_cached": [
+          22851,
+          33024
+        ],
+        "foris_pre": [
+          21829,
+          35712
+        ],
+        "foris_native": [
+          22268,
+          33594
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 5051,
+          "delete_FP": 53510
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 864,
+          "add_FP": 4259,
+          "delete_TP": 1886,
+          "delete_FP": 1571
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 1841,
+          "add_FP": 2868,
+          "delete_TP": 2424,
+          "delete_FP": 2298
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 1410,
+          "add_FP": 640,
+          "delete_TP": 971,
+          "delete_FP": 2758
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 27,
+      "c": 48,
+      "support": "val2014/COCO_val2014_000000575020.jpg",
+      "query": "val2014/COCO_val2014_000000363666.jpg",
+      "cohort": "new60",
+      "key": "0_27_48",
+      "iu": {
+        "mean_FG_BG": [
+          9130,
+          95135
+        ],
+        "insid3_cached": [
+          6619,
+          25120
+        ],
+        "foris_pre": [
+          8321,
+          47976
+        ],
+        "foris_native": [
+          8382,
+          44814
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 2511,
+          "delete_FP": 70015
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 1751,
+          "add_FP": 23171,
+          "delete_TP": 49,
+          "delete_FP": 315
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 2008,
+          "add_FP": 21352,
+          "delete_TP": 245,
+          "delete_FP": 1658
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 483,
+          "add_FP": 2290,
+          "delete_TP": 422,
+          "delete_FP": 5452
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 28,
+      "c": 52,
+      "support": "val2014/COCO_val2014_000000324979.jpg",
+      "query": "val2014/COCO_val2014_000000420610.jpg",
+      "cohort": "new60",
+      "key": "0_28_52",
+      "iu": {
+        "mean_FG_BG": [
+          15624,
+          423624
+        ],
+        "insid3_cached": [
+          15362,
+          24652
+        ],
+        "foris_pre": [
+          15661,
+          32825
+        ],
+        "foris_native": [
+          15698,
+          31222
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 248,
+          "add_FP": 1288,
+          "delete_TP": 510,
+          "delete_FP": 400260
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 428,
+          "add_FP": 10800,
+          "delete_TP": 129,
+          "delete_FP": 2627
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 614,
+          "add_FP": 9750,
+          "delete_TP": 278,
+          "delete_FP": 3180
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 296,
+          "add_FP": 1441,
+          "delete_TP": 259,
+          "delete_FP": 3044
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 29,
+      "c": 0,
+      "support": "val2014/COCO_val2014_000000006417.jpg",
+      "query": "val2014/COCO_val2014_000000527038.jpg",
+      "cohort": "new60",
+      "key": "0_29_0",
+      "iu": {
+        "mean_FG_BG": [
+          74681,
+          239312
+        ],
+        "insid3_cached": [
+          50084,
+          84705
+        ],
+        "foris_pre": [
+          65465,
+          90085
+        ],
+        "foris_native": [
+          64059,
+          89991
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 512,
+          "add_FP": 0,
+          "delete_TP": 25109,
+          "delete_FP": 154607
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 15711,
+          "add_FP": 5380,
+          "delete_TP": 330,
+          "delete_FP": 0
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 15048,
+          "add_FP": 5286,
+          "delete_TP": 1073,
+          "delete_FP": 0
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 746,
+          "add_FP": 748,
+          "delete_TP": 2152,
+          "delete_FP": 842
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 30,
+      "c": 48,
+      "support": "val2014/COCO_val2014_000000051174.jpg",
+      "query": "val2014/COCO_val2014_000000494810.jpg",
+      "cohort": "new60",
+      "key": "0_30_48",
+      "iu": {
+        "mean_FG_BG": [
+          111303,
+          613944
+        ],
+        "insid3_cached": [
+          111173,
+          367831
+        ],
+        "foris_pre": [
+          110211,
+          264984
+        ],
+        "foris_native": [
+          110546,
+          263231
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 210,
+          "delete_TP": 130,
+          "delete_FP": 246323
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 8,
+          "add_FP": 40749,
+          "delete_TP": 970,
+          "delete_FP": 143596
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 22,
+          "add_FP": 41348,
+          "delete_TP": 649,
+          "delete_FP": 145948
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 492,
+          "add_FP": 3461,
+          "delete_TP": 157,
+          "delete_FP": 5214
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 31,
+      "c": 56,
+      "support": "val2014/COCO_val2014_000000065883.jpg",
+      "query": "val2014/COCO_val2014_000000358389.jpg",
+      "cohort": "new60",
+      "key": "0_31_56",
+      "iu": {
+        "mean_FG_BG": [
+          145998,
+          233226
+        ],
+        "insid3_cached": [
+          163480,
+          244137
+        ],
+        "foris_pre": [
+          160035,
+          329385
+        ],
+        "foris_native": [
+          161712,
+          323508
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 25962,
+          "add_FP": 11811,
+          "delete_TP": 8480,
+          "delete_FP": 900
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 4191,
+          "add_FP": 92827,
+          "delete_TP": 7636,
+          "delete_FP": 7579
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 4939,
+          "add_FP": 89364,
+          "delete_TP": 6707,
+          "delete_FP": 9993
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 3776,
+          "add_FP": 5153,
+          "delete_TP": 2099,
+          "delete_FP": 11030
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 32,
+      "c": 32,
+      "support": "val2014/COCO_val2014_000000029719.jpg",
+      "query": "val2014/COCO_val2014_000000063617.jpg",
+      "cohort": "new60",
+      "key": "0_32_32",
+      "iu": {
+        "mean_FG_BG": [
+          8870,
+          63948
+        ],
+        "insid3_cached": [
+          8870,
+          10024
+        ],
+        "foris_pre": [
+          8902,
+          10164
+        ],
+        "foris_native": [
+          8369,
+          9300
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 0,
+          "delete_FP": 53924
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 32,
+          "add_FP": 185,
+          "delete_TP": 0,
+          "delete_FP": 45
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 3,
+          "add_FP": 1,
+          "delete_TP": 504,
+          "delete_FP": 725
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 533,
+          "delete_FP": 864
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 33,
+      "c": 12,
+      "support": "val2014/COCO_val2014_000000240764.jpg",
+      "query": "val2014/COCO_val2014_000000073731.jpg",
+      "cohort": "old20",
+      "key": "0_33_12",
+      "iu": {
+        "mean_FG_BG": [
+          58433,
+          383818
+        ],
+        "insid3_cached": [
+          58643,
+          384304
+        ],
+        "foris_pre": [
+          45911,
+          333129
+        ],
+        "foris_native": [
+          47104,
+          334597
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 210,
+          "add_FP": 13916,
+          "delete_TP": 0,
+          "delete_FP": 13430
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 0,
+          "add_FP": 22399,
+          "delete_TP": 12732,
+          "delete_FP": 73574
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 7,
+          "add_FP": 23360,
+          "delete_TP": 11546,
+          "delete_FP": 73067
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 2654,
+          "add_FP": 4548,
+          "delete_TP": 1461,
+          "delete_FP": 3080
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 34,
+      "c": 76,
+      "support": "val2014/COCO_val2014_000000353982.jpg",
+      "query": "val2014/COCO_val2014_000000550322.jpg",
+      "cohort": "new60",
+      "key": "0_34_76",
+      "iu": {
+        "mean_FG_BG": [
+          73491,
+          206209
+        ],
+        "insid3_cached": [
+          71652,
+          143424
+        ],
+        "foris_pre": [
+          71814,
+          85030
+        ],
+        "foris_native": [
+          70639,
+          83295
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 208,
+          "add_FP": 1889,
+          "delete_TP": 2047,
+          "delete_FP": 64674
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 1388,
+          "add_FP": 49,
+          "delete_TP": 1226,
+          "delete_FP": 58443
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 1059,
+          "add_FP": 229,
+          "delete_TP": 2072,
+          "delete_FP": 60358
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 1034,
+          "add_FP": 352,
+          "delete_TP": 2209,
+          "delete_FP": 2087
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 35,
+      "c": 36,
+      "support": "val2014/COCO_val2014_000000218721.jpg",
+      "query": "val2014/COCO_val2014_000000102848.jpg",
+      "cohort": "new60",
+      "key": "0_35_36",
+      "iu": {
+        "mean_FG_BG": [
+          57889,
+          108122
+        ],
+        "insid3_cached": [
+          53746,
+          85091
+        ],
+        "foris_pre": [
+          53564,
+          70659
+        ],
+        "foris_native": [
+          52406,
+          68218
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 209,
+          "add_FP": 1839,
+          "delete_TP": 4352,
+          "delete_FP": 24870
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 2060,
+          "add_FP": 735,
+          "delete_TP": 2242,
+          "delete_FP": 15167
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 2880,
+          "add_FP": 1293,
+          "delete_TP": 4220,
+          "delete_FP": 18166
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 1900,
+          "add_FP": 1830,
+          "delete_TP": 3058,
+          "delete_FP": 4271
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 36,
+      "c": 8,
+      "support": "val2014/COCO_val2014_000000442822.jpg",
+      "query": "val2014/COCO_val2014_000000117704.jpg",
+      "cohort": "new60",
+      "key": "0_36_8",
+      "iu": {
+        "mean_FG_BG": [
+          146556,
+          169623
+        ],
+        "insid3_cached": [
+          145037,
+          185800
+        ],
+        "foris_pre": [
+          144478,
+          177409
+        ],
+        "foris_native": [
+          144408,
+          178335
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 965,
+          "add_FP": 17024,
+          "delete_TP": 2484,
+          "delete_FP": 847
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 1255,
+          "add_FP": 197,
+          "delete_TP": 1814,
+          "delete_FP": 8588
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 1541,
+          "add_FP": 549,
+          "delete_TP": 2170,
+          "delete_FP": 8014
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 1733,
+          "add_FP": 3167,
+          "delete_TP": 1803,
+          "delete_FP": 2241
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 37,
+      "c": 12,
+      "support": "val2014/COCO_val2014_000000414882.jpg",
+      "query": "val2014/COCO_val2014_000000107004.jpg",
+      "cohort": "new60",
+      "key": "0_37_12",
+      "iu": {
+        "mean_FG_BG": [
+          34432,
+          68546
+        ],
+        "insid3_cached": [
+          34432,
+          83880
+        ],
+        "foris_pre": [
+          34663,
+          109493
+        ],
+        "foris_native": [
+          34797,
+          99771
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 16056,
+          "delete_TP": 0,
+          "delete_FP": 722
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 789,
+          "add_FP": 66072,
+          "delete_TP": 558,
+          "delete_FP": 40459
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 633,
+          "add_FP": 59157,
+          "delete_TP": 268,
+          "delete_FP": 43266
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 491,
+          "add_FP": 5737,
+          "delete_TP": 357,
+          "delete_FP": 15459
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 38,
+      "c": 44,
+      "support": "val2014/COCO_val2014_000000140545.jpg",
+      "query": "val2014/COCO_val2014_000000134574.jpg",
+      "cohort": "new40",
+      "key": "0_38_44",
+      "iu": {
+        "mean_FG_BG": [
+          18300,
+          38298
+        ],
+        "insid3_cached": [
+          15365,
+          23813
+        ],
+        "foris_pre": [
+          13976,
+          21874
+        ],
+        "foris_native": [
+          13743,
+          21627
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 272,
+          "add_FP": 1428,
+          "delete_TP": 3207,
+          "delete_FP": 15913
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 358,
+          "add_FP": 225,
+          "delete_TP": 1747,
+          "delete_FP": 2164
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 562,
+          "add_FP": 217,
+          "delete_TP": 2184,
+          "delete_FP": 2403
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 913,
+          "add_FP": 334,
+          "delete_TP": 1146,
+          "delete_FP": 581
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 39,
+      "c": 64,
+      "support": "val2014/COCO_val2014_000000255573.jpg",
+      "query": "val2014/COCO_val2014_000000035498.jpg",
+      "cohort": "new40",
+      "key": "0_39_64",
+      "iu": {
+        "mean_FG_BG": [
+          233856,
+          260803
+        ],
+        "insid3_cached": [
+          248615,
+          260176
+        ],
+        "foris_pre": [
+          237430,
+          257712
+        ],
+        "foris_native": [
+          240539,
+          257958
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 17208,
+          "add_FP": 2044,
+          "delete_TP": 2449,
+          "delete_FP": 2671
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 1476,
+          "add_FP": 193,
+          "delete_TP": 12661,
+          "delete_FP": 2657
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 2518,
+          "add_FP": 987,
+          "delete_TP": 10594,
+          "delete_FP": 3205
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 4667,
+          "add_FP": 1414,
+          "delete_TP": 1558,
+          "delete_FP": 1168
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 40,
+      "c": 60,
+      "support": "val2014/COCO_val2014_000000174336.jpg",
+      "query": "val2014/COCO_val2014_000000202225.jpg",
+      "cohort": "new40",
+      "key": "0_40_60",
+      "iu": {
+        "mean_FG_BG": [
+          2565,
+          86854
+        ],
+        "insid3_cached": [
+          11169,
+          86876
+        ],
+        "foris_pre": [
+          42032,
+          193629
+        ],
+        "foris_native": [
+          43790,
+          191126
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 11169,
+          "add_FP": 2517,
+          "delete_TP": 2565,
+          "delete_FP": 2495
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 33361,
+          "add_FP": 108020,
+          "delete_TP": 2498,
+          "delete_FP": 1267
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 34817,
+          "add_FP": 105327,
+          "delete_TP": 2196,
+          "delete_FP": 1077
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 3989,
+          "add_FP": 13863,
+          "delete_TP": 2231,
+          "delete_FP": 16366
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 41,
+      "c": 60,
+      "support": "val2014/COCO_val2014_000000388988.jpg",
+      "query": "val2014/COCO_val2014_000000529762.jpg",
+      "cohort": "new40",
+      "key": "0_41_60",
+      "iu": {
+        "mean_FG_BG": [
+          187063,
+          353293
+        ],
+        "insid3_cached": [
+          37064,
+          207273
+        ],
+        "foris_pre": [
+          144907,
+          251550
+        ],
+        "foris_native": [
+          142323,
+          255568
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 256,
+          "delete_TP": 149999,
+          "delete_FP": 146276
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 107843,
+          "add_FP": 47766,
+          "delete_TP": 0,
+          "delete_FP": 3489
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 105421,
+          "add_FP": 50327,
+          "delete_TP": 162,
+          "delete_FP": 2032
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 2657,
+          "add_FP": 6458,
+          "delete_TP": 5241,
+          "delete_FP": 2440
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 42,
+      "c": 44,
+      "support": "val2014/COCO_val2014_000000381382.jpg",
+      "query": "val2014/COCO_val2014_000000191359.jpg",
+      "cohort": "new40",
+      "key": "0_42_44",
+      "iu": {
+        "mean_FG_BG": [
+          10453,
+          35341
+        ],
+        "insid3_cached": [
+          9348,
+          28616
+        ],
+        "foris_pre": [
+          4699,
+          17149
+        ],
+        "foris_native": [
+          3803,
+          16415
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 362,
+          "add_FP": 3760,
+          "delete_TP": 1467,
+          "delete_FP": 10485
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 4,
+          "add_FP": 7,
+          "delete_TP": 4653,
+          "delete_FP": 11474
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 6,
+          "add_FP": 47,
+          "delete_TP": 5551,
+          "delete_FP": 12248
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 32,
+          "add_FP": 109,
+          "delete_TP": 928,
+          "delete_FP": 843
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 43,
+      "c": 36,
+      "support": "val2014/COCO_val2014_000000429726.jpg",
+      "query": "val2014/COCO_val2014_000000514550.jpg",
+      "cohort": "new40",
+      "key": "0_43_36",
+      "iu": {
+        "mean_FG_BG": [
+          10918,
+          528037
+        ],
+        "insid3_cached": [
+          10710,
+          27554
+        ],
+        "foris_pre": [
+          10828,
+          26648
+        ],
+        "foris_native": [
+          10754,
+          24940
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 208,
+          "delete_FP": 500483
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 118,
+          "add_FP": 2275,
+          "delete_TP": 0,
+          "delete_FP": 3181
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 100,
+          "add_FP": 1508,
+          "delete_TP": 56,
+          "delete_FP": 4122
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 22,
+          "add_FP": 1245,
+          "delete_TP": 96,
+          "delete_FP": 2953
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 44,
+      "c": 76,
+      "support": "val2014/COCO_val2014_000000179850.jpg",
+      "query": "val2014/COCO_val2014_000000423058.jpg",
+      "cohort": "new40",
+      "key": "0_44_76",
+      "iu": {
+        "mean_FG_BG": [
+          14609,
+          137805
+        ],
+        "insid3_cached": [
+          14217,
+          18877
+        ],
+        "foris_pre": [
+          14163,
+          18829
+        ],
+        "foris_native": [
+          13341,
+          16866
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 392,
+          "delete_FP": 118928
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 140,
+          "add_FP": 529,
+          "delete_TP": 194,
+          "delete_FP": 577
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 134,
+          "add_FP": 114,
+          "delete_TP": 1010,
+          "delete_FP": 2125
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 92,
+          "add_FP": 112,
+          "delete_TP": 914,
+          "delete_FP": 2075
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 46,
+      "c": 28,
+      "support": "val2014/COCO_val2014_000000456638.jpg",
+      "query": "val2014/COCO_val2014_000000463360.jpg",
+      "cohort": "new40",
+      "key": "0_46_28",
+      "iu": {
+        "mean_FG_BG": [
+          73129,
+          301510
+        ],
+        "insid3_cached": [
+          47805,
+          78382
+        ],
+        "foris_pre": [
+          53784,
+          103842
+        ],
+        "foris_native": [
+          53762,
+          105676
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 25324,
+          "delete_FP": 223128
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 6473,
+          "add_FP": 25609,
+          "delete_TP": 494,
+          "delete_FP": 149
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 7325,
+          "add_FP": 27685,
+          "delete_TP": 1368,
+          "delete_FP": 391
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 1756,
+          "add_FP": 2763,
+          "delete_TP": 1778,
+          "delete_FP": 929
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 47,
+      "c": 4,
+      "support": "val2014/COCO_val2014_000000268944.jpg",
+      "query": "val2014/COCO_val2014_000000300066.jpg",
+      "cohort": "old20",
+      "key": "0_47_4",
+      "iu": {
+        "mean_FG_BG": [
+          65483,
+          81440
+        ],
+        "insid3_cached": [
+          50858,
+          74909
+        ],
+        "foris_pre": [
+          63612,
+          79054
+        ],
+        "foris_native": [
+          61129,
+          74933
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 128,
+          "add_FP": 82,
+          "delete_TP": 14753,
+          "delete_FP": 6613
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 12754,
+          "add_FP": 4147,
+          "delete_TP": 0,
+          "delete_FP": 2
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 11194,
+          "add_FP": 1098,
+          "delete_TP": 923,
+          "delete_FP": 1074
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 1020,
+          "add_FP": 218,
+          "delete_TP": 3503,
+          "delete_FP": 4339
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 48,
+      "c": 28,
+      "support": "val2014/COCO_val2014_000000164325.jpg",
+      "query": "val2014/COCO_val2014_000000053677.jpg",
+      "cohort": "new40",
+      "key": "0_48_28",
+      "iu": {
+        "mean_FG_BG": [
+          15288,
+          37727
+        ],
+        "insid3_cached": [
+          14707,
+          21892
+        ],
+        "foris_pre": [
+          14327,
+          18047
+        ],
+        "foris_native": [
+          13308,
+          17024
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 1280,
+          "delete_TP": 581,
+          "delete_FP": 17115
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 95,
+          "add_FP": 104,
+          "delete_TP": 475,
+          "delete_FP": 3949
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 275,
+          "add_FP": 125,
+          "delete_TP": 1674,
+          "delete_FP": 4993
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 277,
+          "add_FP": 267,
+          "delete_TP": 1296,
+          "delete_FP": 1290
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 49,
+      "c": 48,
+      "support": "val2014/COCO_val2014_000000087383.jpg",
+      "query": "val2014/COCO_val2014_000000346788.jpg",
+      "cohort": "new40",
+      "key": "0_49_48",
+      "iu": {
+        "mean_FG_BG": [
+          61971,
+          71851
+        ],
+        "insid3_cached": [
+          23587,
+          70489
+        ],
+        "foris_pre": [
+          62158,
+          69091
+        ],
+        "foris_native": [
+          62806,
+          70684
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 2300,
+          "add_FP": 2242,
+          "delete_TP": 40684,
+          "delete_FP": 3604
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 41098,
+          "add_FP": 1757,
+          "delete_TP": 2527,
+          "delete_FP": 3155
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 41382,
+          "add_FP": 3085,
+          "delete_TP": 2163,
+          "delete_FP": 2890
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 1035,
+          "add_FP": 1785,
+          "delete_TP": 387,
+          "delete_FP": 192
+        }
+      }
+    },
+    {
+      "fold": 0,
+      "e": 58,
+      "c": 16,
+      "support": "val2014/COCO_val2014_000000499397.jpg",
+      "query": "val2014/COCO_val2014_000000150558.jpg",
+      "cohort": "old20",
+      "key": "0_58_16",
+      "iu": {
+        "mean_FG_BG": [
+          26371,
+          290611
+        ],
+        "insid3_cached": [
+          27332,
+          39288
+        ],
+        "foris_pre": [
+          27651,
+          39660
+        ],
+        "foris_native": [
+          27930,
+          38002
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 1320,
+          "add_FP": 1706,
+          "delete_TP": 359,
+          "delete_FP": 253029
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 690,
+          "add_FP": 1165,
+          "delete_TP": 371,
+          "delete_FP": 793
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 1247,
+          "add_FP": 1185,
+          "delete_TP": 649,
+          "delete_FP": 2471
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 829,
+          "add_FP": 774,
+          "delete_TP": 550,
+          "delete_FP": 2432
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 5,
+      "c": 1,
+      "support": "val2014/COCO_val2014_000000258860.jpg",
+      "query": "val2014/COCO_val2014_000000122302.jpg",
+      "cohort": "old20",
+      "key": "1_5_1",
+      "iu": {
+        "mean_FG_BG": [
+          184436,
+          584884
+        ],
+        "insid3_cached": [
+          182639,
+          540420
+        ],
+        "foris_pre": [
+          180746,
+          328933
+        ],
+        "foris_native": [
+          181246,
+          326447
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 276,
+          "add_FP": 4200,
+          "delete_TP": 2073,
+          "delete_FP": 48664
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 161,
+          "add_FP": 4063,
+          "delete_TP": 2054,
+          "delete_FP": 215550
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 1231,
+          "add_FP": 4397,
+          "delete_TP": 2624,
+          "delete_FP": 218370
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 1796,
+          "add_FP": 3421,
+          "delete_TP": 1296,
+          "delete_FP": 5907
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 6,
+      "c": 13,
+      "support": "val2014/COCO_val2014_000000443299.jpg",
+      "query": "val2014/COCO_val2014_000000521133.jpg",
+      "cohort": "old20",
+      "key": "1_6_13",
+      "iu": {
+        "mean_FG_BG": [
+          248356,
+          622428
+        ],
+        "insid3_cached": [
+          2915,
+          547671
+        ],
+        "foris_pre": [
+          169368,
+          590915
+        ],
+        "foris_native": [
+          171158,
+          582649
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 9426,
+          "delete_TP": 245441,
+          "delete_FP": 84183
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 166803,
+          "add_FP": 61342,
+          "delete_TP": 350,
+          "delete_FP": 18098
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 168785,
+          "add_FP": 54383,
+          "delete_TP": 542,
+          "delete_FP": 19405
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 8173,
+          "add_FP": 2909,
+          "delete_TP": 6383,
+          "delete_FP": 11175
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 7,
+      "c": 5,
+      "support": "val2014/COCO_val2014_000000051167.jpg",
+      "query": "val2014/COCO_val2014_000000218208.jpg",
+      "cohort": "old20",
+      "key": "1_7_5",
+      "iu": {
+        "mean_FG_BG": [
+          83321,
+          313141
+        ],
+        "insid3_cached": [
+          83213,
+          134541
+        ],
+        "foris_pre": [
+          81998,
+          220354
+        ],
+        "foris_native": [
+          81365,
+          222675
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 897,
+          "add_FP": 1151,
+          "delete_TP": 1005,
+          "delete_FP": 179751
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 637,
+          "add_FP": 92504,
+          "delete_TP": 1852,
+          "delete_FP": 6691
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 937,
+          "add_FP": 92986,
+          "delete_TP": 2785,
+          "delete_FP": 4852
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 913,
+          "add_FP": 7044,
+          "delete_TP": 1546,
+          "delete_FP": 4723
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 17,
+      "c": 9,
+      "support": "val2014/COCO_val2014_000000089459.jpg",
+      "query": "val2014/COCO_val2014_000000309802.jpg",
+      "cohort": "old20",
+      "key": "1_17_9",
+      "iu": {
+        "mean_FG_BG": [
+          12337,
+          38022
+        ],
+        "insid3_cached": [
+          13290,
+          34319
+        ],
+        "foris_pre": [
+          12638,
+          31290
+        ],
+        "foris_native": [
+          13037,
+          30905
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 1241,
+          "add_FP": 5185,
+          "delete_TP": 288,
+          "delete_FP": 8888
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 170,
+          "add_FP": 454,
+          "delete_TP": 822,
+          "delete_FP": 3483
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 250,
+          "add_FP": 790,
+          "delete_TP": 503,
+          "delete_FP": 4204
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 781,
+          "add_FP": 771,
+          "delete_TP": 382,
+          "delete_FP": 1156
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 21,
+      "c": 65,
+      "support": "val2014/COCO_val2014_000000122467.jpg",
+      "query": "val2014/COCO_val2014_000000379842.jpg",
+      "cohort": "new60",
+      "key": "1_21_65",
+      "iu": {
+        "mean_FG_BG": [
+          127028,
+          565686
+        ],
+        "insid3_cached": [
+          124697,
+          140137
+        ],
+        "foris_pre": [
+          126152,
+          141631
+        ],
+        "foris_native": [
+          125288,
+          137991
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 2331,
+          "delete_FP": 425549
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 1474,
+          "add_FP": 4316,
+          "delete_TP": 19,
+          "delete_FP": 2822
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 1101,
+          "add_FP": 3072,
+          "delete_TP": 510,
+          "delete_FP": 5218
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 52,
+          "add_FP": 1608,
+          "delete_TP": 916,
+          "delete_FP": 5248
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 23,
+      "c": 45,
+      "support": "val2014/COCO_val2014_000000498537.jpg",
+      "query": "val2014/COCO_val2014_000000245874.jpg",
+      "cohort": "new60",
+      "key": "1_23_45",
+      "iu": {
+        "mean_FG_BG": [
+          10893,
+          157245
+        ],
+        "insid3_cached": [
+          18887,
+          39585
+        ],
+        "foris_pre": [
+          6064,
+          55870
+        ],
+        "foris_native": [
+          6597,
+          53094
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 8923,
+          "add_FP": 1248,
+          "delete_TP": 929,
+          "delete_FP": 118908
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 505,
+          "add_FP": 17794,
+          "delete_TP": 13328,
+          "delete_FP": 1509
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 1007,
+          "add_FP": 15405,
+          "delete_TP": 13297,
+          "delete_FP": 1896
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 1240,
+          "add_FP": 2158,
+          "delete_TP": 707,
+          "delete_FP": 4934
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 24,
+      "c": 29,
+      "support": "val2014/COCO_val2014_000000236189.jpg",
+      "query": "val2014/COCO_val2014_000000017029.jpg",
+      "cohort": "new60",
+      "key": "1_24_29",
+      "iu": {
+        "mean_FG_BG": [
+          8388,
+          11325
+        ],
+        "insid3_cached": [
+          8088,
+          10089
+        ],
+        "foris_pre": [
+          8464,
+          10640
+        ],
+        "foris_native": [
+          8508,
+          9961
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 300,
+          "delete_FP": 1236
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 376,
+          "add_FP": 656,
+          "delete_TP": 0,
+          "delete_FP": 105
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 421,
+          "add_FP": 480,
+          "delete_TP": 1,
+          "delete_FP": 608
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 48,
+          "add_FP": 119,
+          "delete_TP": 4,
+          "delete_FP": 798
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 25,
+      "c": 29,
+      "support": "val2014/COCO_val2014_000000401244.jpg",
+      "query": "val2014/COCO_val2014_000000450055.jpg",
+      "cohort": "new60",
+      "key": "1_25_29",
+      "iu": {
+        "mean_FG_BG": [
+          11658,
+          13043
+        ],
+        "insid3_cached": [
+          11539,
+          12650
+        ],
+        "foris_pre": [
+          11582,
+          12516
+        ],
+        "foris_native": [
+          10881,
+          12302
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 119,
+          "delete_FP": 393
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 99,
+          "add_FP": 42,
+          "delete_TP": 56,
+          "delete_FP": 176
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 108,
+          "add_FP": 37,
+          "delete_TP": 766,
+          "delete_FP": 385
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 51,
+          "add_FP": 21,
+          "delete_TP": 752,
+          "delete_FP": 235
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 26,
+      "c": 5,
+      "support": "val2014/COCO_val2014_000000003134.jpg",
+      "query": "val2014/COCO_val2014_000000248488.jpg",
+      "cohort": "new60",
+      "key": "1_26_5",
+      "iu": {
+        "mean_FG_BG": [
+          63800,
+          288504
+        ],
+        "insid3_cached": [
+          63216,
+          285228
+        ],
+        "foris_pre": [
+          61878,
+          269677
+        ],
+        "foris_native": [
+          63371,
+          278781
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 1713,
+          "add_FP": 12183,
+          "delete_TP": 2297,
+          "delete_FP": 15459
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 1107,
+          "add_FP": 3636,
+          "delete_TP": 2445,
+          "delete_FP": 19187
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 2112,
+          "add_FP": 12157,
+          "delete_TP": 1957,
+          "delete_FP": 18604
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 2663,
+          "add_FP": 15355,
+          "delete_TP": 1170,
+          "delete_FP": 6251
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 27,
+      "c": 41,
+      "support": "val2014/COCO_val2014_000000037688.jpg",
+      "query": "val2014/COCO_val2014_000000254745.jpg",
+      "cohort": "new60",
+      "key": "1_27_41",
+      "iu": {
+        "mean_FG_BG": [
+          5460,
+          71213
+        ],
+        "insid3_cached": [
+          9467,
+          12502
+        ],
+        "foris_pre": [
+          8947,
+          71974
+        ],
+        "foris_native": [
+          9394,
+          66383
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 4007,
+          "add_FP": 765,
+          "delete_TP": 0,
+          "delete_FP": 59476
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 299,
+          "add_FP": 60405,
+          "delete_TP": 819,
+          "delete_FP": 933
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 471,
+          "add_FP": 55235,
+          "delete_TP": 544,
+          "delete_FP": 1354
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 677,
+          "add_FP": 5445,
+          "delete_TP": 230,
+          "delete_FP": 11036
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 28,
+      "c": 77,
+      "support": "val2014/COCO_val2014_000000311759.jpg",
+      "query": "val2014/COCO_val2014_000000199047.jpg",
+      "cohort": "new60",
+      "key": "1_28_77",
+      "iu": {
+        "mean_FG_BG": [
+          120656,
+          153708
+        ],
+        "insid3_cached": [
+          118447,
+          133147
+        ],
+        "foris_pre": [
+          119123,
+          132354
+        ],
+        "foris_native": [
+          118076,
+          131751
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 2209,
+          "delete_FP": 20561
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 1062,
+          "add_FP": 803,
+          "delete_TP": 386,
+          "delete_FP": 1596
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 1022,
+          "add_FP": 1369,
+          "delete_TP": 1393,
+          "delete_FP": 2765
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 544,
+          "add_FP": 1690,
+          "delete_TP": 1591,
+          "delete_FP": 2293
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 29,
+      "c": 77,
+      "support": "val2014/COCO_val2014_000000142182.jpg",
+      "query": "val2014/COCO_val2014_000000175443.jpg",
+      "cohort": "new60",
+      "key": "1_29_77",
+      "iu": {
+        "mean_FG_BG": [
+          159578,
+          176928
+        ],
+        "insid3_cached": [
+          156440,
+          169426
+        ],
+        "foris_pre": [
+          158467,
+          170519
+        ],
+        "foris_native": [
+          157328,
+          168942
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 256,
+          "delete_TP": 3138,
+          "delete_FP": 7758
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 2345,
+          "add_FP": 1821,
+          "delete_TP": 318,
+          "delete_FP": 728
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 1876,
+          "add_FP": 1448,
+          "delete_TP": 988,
+          "delete_FP": 1932
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 550,
+          "add_FP": 813,
+          "delete_TP": 1689,
+          "delete_FP": 2390
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 30,
+      "c": 13,
+      "support": "val2014/COCO_val2014_000000353505.jpg",
+      "query": "val2014/COCO_val2014_000000515226.jpg",
+      "cohort": "new60",
+      "key": "1_30_13",
+      "iu": {
+        "mean_FG_BG": [
+          314179,
+          536830
+        ],
+        "insid3_cached": [
+          441242,
+          543462
+        ],
+        "foris_pre": [
+          370191,
+          536022
+        ],
+        "foris_native": [
+          375475,
+          536462
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 132549,
+          "add_FP": 7244,
+          "delete_TP": 5486,
+          "delete_FP": 612
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 4603,
+          "add_FP": 195,
+          "delete_TP": 75654,
+          "delete_FP": 7635
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 8102,
+          "add_FP": 886,
+          "delete_TP": 73869,
+          "delete_FP": 7886
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 20806,
+          "add_FP": 1399,
+          "delete_TP": 15522,
+          "delete_FP": 959
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 31,
+      "c": 41,
+      "support": "val2014/COCO_val2014_000000473869.jpg",
+      "query": "val2014/COCO_val2014_000000221067.jpg",
+      "cohort": "new60",
+      "key": "1_31_41",
+      "iu": {
+        "mean_FG_BG": [
+          30775,
+          94546
+        ],
+        "insid3_cached": [
+          28954,
+          43630
+        ],
+        "foris_pre": [
+          27928,
+          50081
+        ],
+        "foris_native": [
+          27797,
+          49378
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 175,
+          "add_FP": 81,
+          "delete_TP": 1996,
+          "delete_FP": 50997
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 845,
+          "add_FP": 7088,
+          "delete_TP": 1871,
+          "delete_FP": 637
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 1043,
+          "add_FP": 7137,
+          "delete_TP": 2200,
+          "delete_FP": 1389
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 1549,
+          "add_FP": 1509,
+          "delete_TP": 1680,
+          "delete_FP": 2212
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 32,
+      "c": 21,
+      "support": "val2014/COCO_val2014_000000145439.jpg",
+      "query": "val2014/COCO_val2014_000000028957.jpg",
+      "cohort": "new60",
+      "key": "1_32_21",
+      "iu": {
+        "mean_FG_BG": [
+          175618,
+          193608
+        ],
+        "insid3_cached": [
+          174845,
+          186721
+        ],
+        "foris_pre": [
+          172334,
+          183038
+        ],
+        "foris_native": [
+          169345,
+          180361
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 447,
+          "add_FP": 321,
+          "delete_TP": 1220,
+          "delete_FP": 7208
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 384,
+          "add_FP": 436,
+          "delete_TP": 2895,
+          "delete_FP": 4119
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 283,
+          "add_FP": 250,
+          "delete_TP": 5783,
+          "delete_FP": 6610
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 382,
+          "add_FP": 274,
+          "delete_TP": 3371,
+          "delete_FP": 2951
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 33,
+      "c": 77,
+      "support": "val2014/COCO_val2014_000000508115.jpg",
+      "query": "val2014/COCO_val2014_000000011390.jpg",
+      "cohort": "new60",
+      "key": "1_33_77",
+      "iu": {
+        "mean_FG_BG": [
+          320245,
+          374738
+        ],
+        "insid3_cached": [
+          330625,
+          357170
+        ],
+        "foris_pre": [
+          290423,
+          359970
+        ],
+        "foris_native": [
+          289203,
+          355090
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 17779,
+          "add_FP": 167,
+          "delete_TP": 7399,
+          "delete_FP": 17735
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 3213,
+          "add_FP": 4811,
+          "delete_TP": 43415,
+          "delete_FP": 2011
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 4484,
+          "add_FP": 3745,
+          "delete_TP": 45906,
+          "delete_FP": 5825
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 2837,
+          "add_FP": 1326,
+          "delete_TP": 4057,
+          "delete_FP": 6206
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 34,
+      "c": 57,
+      "support": "val2014/COCO_val2014_000000159030.jpg",
+      "query": "val2014/COCO_val2014_000000395550.jpg",
+      "cohort": "new60",
+      "key": "1_34_57",
+      "iu": {
+        "mean_FG_BG": [
+          437390,
+          776109
+        ],
+        "insid3_cached": [
+          512819,
+          557100
+        ],
+        "foris_pre": [
+          176835,
+          536554
+        ],
+        "foris_native": [
+          176465,
+          534257
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 80200,
+          "add_FP": 6545,
+          "delete_TP": 4771,
+          "delete_FP": 225554
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 3353,
+          "add_FP": 1901,
+          "delete_TP": 339337,
+          "delete_FP": 22447
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 5141,
+          "add_FP": 2299,
+          "delete_TP": 341495,
+          "delete_FP": 25142
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 15594,
+          "add_FP": 1917,
+          "delete_TP": 15964,
+          "delete_FP": 4214
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 35,
+      "c": 65,
+      "support": "val2014/COCO_val2014_000000168425.jpg",
+      "query": "val2014/COCO_val2014_000000259567.jpg",
+      "cohort": "new60",
+      "key": "1_35_65",
+      "iu": {
+        "mean_FG_BG": [
+          15172,
+          131342
+        ],
+        "insid3_cached": [
+          13016,
+          177429
+        ],
+        "foris_pre": [
+          13016,
+          115098
+        ],
+        "foris_native": [
+          13016,
+          113769
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 47495,
+          "delete_TP": 2156,
+          "delete_FP": 1408
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 0,
+          "add_FP": 85,
+          "delete_TP": 0,
+          "delete_FP": 62416
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 0,
+          "add_FP": 436,
+          "delete_TP": 0,
+          "delete_FP": 64096
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 0,
+          "add_FP": 2011,
+          "delete_TP": 0,
+          "delete_FP": 3340
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 36,
+      "c": 49,
+      "support": "val2014/COCO_val2014_000000110999.jpg",
+      "query": "val2014/COCO_val2014_000000320972.jpg",
+      "cohort": "new60",
+      "key": "1_36_49",
+      "iu": {
+        "mean_FG_BG": [
+          200909,
+          378897
+        ],
+        "insid3_cached": [
+          198319,
+          210807
+        ],
+        "foris_pre": [
+          198680,
+          210733
+        ],
+        "foris_native": [
+          196813,
+          206438
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 2590,
+          "delete_FP": 168090
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 801,
+          "add_FP": 1679,
+          "delete_TP": 440,
+          "delete_FP": 1753
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 667,
+          "add_FP": 533,
+          "delete_TP": 2173,
+          "delete_FP": 4902
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 145,
+          "add_FP": 271,
+          "delete_TP": 2012,
+          "delete_FP": 4566
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 37,
+      "c": 1,
+      "support": "val2014/COCO_val2014_000000551383.jpg",
+      "query": "val2014/COCO_val2014_000000255232.jpg",
+      "cohort": "new60",
+      "key": "1_37_1",
+      "iu": {
+        "mean_FG_BG": [
+          265531,
+          388142
+        ],
+        "insid3_cached": [
+          176741,
+          309805
+        ],
+        "foris_pre": [
+          174540,
+          308533
+        ],
+        "foris_native": [
+          163037,
+          307040
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 1152,
+          "add_FP": 338,
+          "delete_TP": 89942,
+          "delete_FP": 78675
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 14774,
+          "add_FP": 2053,
+          "delete_TP": 16975,
+          "delete_FP": 3325
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 9846,
+          "add_FP": 1695,
+          "delete_TP": 23550,
+          "delete_FP": 4460
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 7275,
+          "add_FP": 1118,
+          "delete_TP": 18778,
+          "delete_FP": 2611
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 38,
+      "c": 5,
+      "support": "val2014/COCO_val2014_000000052007.jpg",
+      "query": "val2014/COCO_val2014_000000069944.jpg",
+      "cohort": "new40",
+      "key": "1_38_5",
+      "iu": {
+        "mean_FG_BG": [
+          248762,
+          283424
+        ],
+        "insid3_cached": [
+          247484,
+          277350
+        ],
+        "foris_pre": [
+          245858,
+          273417
+        ],
+        "foris_native": [
+          247034,
+          276029
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 1443,
+          "add_FP": 1353,
+          "delete_TP": 2721,
+          "delete_FP": 7427
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 1382,
+          "add_FP": 919,
+          "delete_TP": 3008,
+          "delete_FP": 4852
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 3683,
+          "add_FP": 4365,
+          "delete_TP": 4133,
+          "delete_FP": 5686
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 3526,
+          "add_FP": 4560,
+          "delete_TP": 2350,
+          "delete_FP": 1948
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 39,
+      "c": 77,
+      "support": "val2014/COCO_val2014_000000044068.jpg",
+      "query": "val2014/COCO_val2014_000000522638.jpg",
+      "cohort": "new40",
+      "key": "1_39_77",
+      "iu": {
+        "mean_FG_BG": [
+          561785,
+          833280
+        ],
+        "insid3_cached": [
+          561785,
+          832256
+        ],
+        "foris_pre": [
+          555226,
+          719816
+        ],
+        "foris_native": [
+          556604,
+          723786
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 2304,
+          "delete_TP": 0,
+          "delete_FP": 3328
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 0,
+          "add_FP": 432,
+          "delete_TP": 6559,
+          "delete_FP": 112872
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 0,
+          "add_FP": 43,
+          "delete_TP": 5181,
+          "delete_FP": 108513
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 2485,
+          "add_FP": 7803,
+          "delete_TP": 1107,
+          "delete_FP": 3833
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 40,
+      "c": 25,
+      "support": "val2014/COCO_val2014_000000483867.jpg",
+      "query": "val2014/COCO_val2014_000000088682.jpg",
+      "cohort": "new40",
+      "key": "1_40_25",
+      "iu": {
+        "mean_FG_BG": [
+          9193,
+          22590
+        ],
+        "insid3_cached": [
+          8281,
+          11260
+        ],
+        "foris_pre": [
+          9249,
+          11535
+        ],
+        "foris_native": [
+          8749,
+          10716
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 61,
+          "add_FP": 195,
+          "delete_TP": 973,
+          "delete_FP": 11525
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 969,
+          "add_FP": 471,
+          "delete_TP": 1,
+          "delete_FP": 196
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 869,
+          "add_FP": 323,
+          "delete_TP": 401,
+          "delete_FP": 867
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 151,
+          "add_FP": 274,
+          "delete_TP": 651,
+          "delete_FP": 1093
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 41,
+      "c": 13,
+      "support": "val2014/COCO_val2014_000000324139.jpg",
+      "query": "val2014/COCO_val2014_000000574392.jpg",
+      "cohort": "new40",
+      "key": "1_41_13",
+      "iu": {
+        "mean_FG_BG": [
+          61483,
+          98193
+        ],
+        "insid3_cached": [
+          60047,
+          67933
+        ],
+        "foris_pre": [
+          59454,
+          65261
+        ],
+        "foris_native": [
+          59020,
+          63321
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 131,
+          "add_FP": 614,
+          "delete_TP": 1567,
+          "delete_FP": 30874
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 160,
+          "add_FP": 128,
+          "delete_TP": 753,
+          "delete_FP": 2800
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 400,
+          "add_FP": 90,
+          "delete_TP": 1427,
+          "delete_FP": 4702
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 578,
+          "add_FP": 172,
+          "delete_TP": 1012,
+          "delete_FP": 2112
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 43,
+      "c": 17,
+      "support": "val2014/COCO_val2014_000000364586.jpg",
+      "query": "val2014/COCO_val2014_000000549338.jpg",
+      "cohort": "old20",
+      "key": "1_43_17",
+      "iu": {
+        "mean_FG_BG": [
+          18162,
+          29938
+        ],
+        "insid3_cached": [
+          17734,
+          24236
+        ],
+        "foris_pre": [
+          17175,
+          22575
+        ],
+        "foris_native": [
+          16601,
+          21566
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 509,
+          "add_FP": 725,
+          "delete_TP": 937,
+          "delete_FP": 6427
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 99,
+          "add_FP": 12,
+          "delete_TP": 658,
+          "delete_FP": 1673
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 401,
+          "add_FP": 26,
+          "delete_TP": 1534,
+          "delete_FP": 2696
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 484,
+          "add_FP": 63,
+          "delete_TP": 1058,
+          "delete_FP": 1072
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 45,
+      "c": 61,
+      "support": "val2014/COCO_val2014_000000441473.jpg",
+      "query": "val2014/COCO_val2014_000000156533.jpg",
+      "cohort": "new40",
+      "key": "1_45_61",
+      "iu": {
+        "mean_FG_BG": [
+          158202,
+          181072
+        ],
+        "insid3_cached": [
+          158673,
+          167033
+        ],
+        "foris_pre": [
+          154494,
+          162649
+        ],
+        "foris_native": [
+          153851,
+          161600
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 956,
+          "add_FP": 1092,
+          "delete_TP": 485,
+          "delete_FP": 15131
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 253,
+          "add_FP": 286,
+          "delete_TP": 4432,
+          "delete_FP": 4670
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 212,
+          "add_FP": 199,
+          "delete_TP": 5034,
+          "delete_FP": 5632
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 1104,
+          "add_FP": 603,
+          "delete_TP": 1747,
+          "delete_FP": 1652
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 46,
+      "c": 69,
+      "support": "val2014/COCO_val2014_000000407614.jpg",
+      "query": "val2014/COCO_val2014_000000163518.jpg",
+      "cohort": "new40",
+      "key": "1_46_69",
+      "iu": {
+        "mean_FG_BG": [
+          19476,
+          123984
+        ],
+        "insid3_cached": [
+          17396,
+          110930
+        ],
+        "foris_pre": [
+          18316,
+          245723
+        ],
+        "foris_native": [
+          19291,
+          243680
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 693,
+          "add_FP": 53898,
+          "delete_TP": 2773,
+          "delete_FP": 66952
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 1606,
+          "add_FP": 147346,
+          "delete_TP": 686,
+          "delete_FP": 12553
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 2112,
+          "add_FP": 147977,
+          "delete_TP": 217,
+          "delete_FP": 15227
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 1252,
+          "add_FP": 8777,
+          "delete_TP": 277,
+          "delete_FP": 10820
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 47,
+      "c": 13,
+      "support": "val2014/COCO_val2014_000000506127.jpg",
+      "query": "val2014/COCO_val2014_000000461007.jpg",
+      "cohort": "new40",
+      "key": "1_47_13",
+      "iu": {
+        "mean_FG_BG": [
+          91478,
+          191258
+        ],
+        "insid3_cached": [
+          87393,
+          124405
+        ],
+        "foris_pre": [
+          88137,
+          124826
+        ],
+        "foris_native": [
+          85681,
+          117904
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 4085,
+          "delete_FP": 66853
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 813,
+          "add_FP": 1511,
+          "delete_TP": 69,
+          "delete_FP": 1090
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 400,
+          "add_FP": 179,
+          "delete_TP": 2112,
+          "delete_FP": 6680
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 272,
+          "add_FP": 125,
+          "delete_TP": 2728,
+          "delete_FP": 7047
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 48,
+      "c": 29,
+      "support": "val2014/COCO_val2014_000000498657.jpg",
+      "query": "val2014/COCO_val2014_000000128654.jpg",
+      "cohort": "new40",
+      "key": "1_48_29",
+      "iu": {
+        "mean_FG_BG": [
+          12384,
+          51914
+        ],
+        "insid3_cached": [
+          12138,
+          14806
+        ],
+        "foris_pre": [
+          12203,
+          14449
+        ],
+        "foris_native": [
+          11807,
+          13147
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 246,
+          "delete_FP": 37108
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 186,
+          "add_FP": 311,
+          "delete_TP": 121,
+          "delete_FP": 668
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 101,
+          "add_FP": 12,
+          "delete_TP": 432,
+          "delete_FP": 1671
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 8,
+          "add_FP": 2,
+          "delete_TP": 404,
+          "delete_FP": 1304
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "e": 49,
+      "c": 53,
+      "support": "val2014/COCO_val2014_000000113369.jpg",
+      "query": "val2014/COCO_val2014_000000468613.jpg",
+      "cohort": "new40",
+      "key": "1_49_53",
+      "iu": {
+        "mean_FG_BG": [
+          45407,
+          55318
+        ],
+        "insid3_cached": [
+          45933,
+          55324
+        ],
+        "foris_pre": [
+          42979,
+          51002
+        ],
+        "foris_native": [
+          43283,
+          50751
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 526,
+          "add_FP": 1266,
+          "delete_TP": 0,
+          "delete_FP": 1260
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 15,
+          "add_FP": 4,
+          "delete_TP": 2969,
+          "delete_FP": 4326
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 221,
+          "add_FP": 133,
+          "delete_TP": 2871,
+          "delete_FP": 4706
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 1446,
+          "add_FP": 551,
+          "delete_TP": 1142,
+          "delete_FP": 802
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 1,
+      "c": 14,
+      "support": "val2014/COCO_val2014_000000469687.jpg",
+      "query": "val2014/COCO_val2014_000000082021.jpg",
+      "cohort": "old20",
+      "key": "2_1_14",
+      "iu": {
+        "mean_FG_BG": [
+          338508,
+          445998
+        ],
+        "insid3_cached": [
+          330621,
+          406701
+        ],
+        "foris_pre": [
+          283970,
+          415474
+        ],
+        "foris_native": [
+          285203,
+          417417
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 10762,
+          "add_FP": 15218,
+          "delete_TP": 18649,
+          "delete_FP": 54515
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 14879,
+          "add_FP": 26576,
+          "delete_TP": 61530,
+          "delete_FP": 17803
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 15985,
+          "add_FP": 31480,
+          "delete_TP": 61403,
+          "delete_FP": 20764
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 6744,
+          "add_FP": 8062,
+          "delete_TP": 5511,
+          "delete_FP": 6119
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 2,
+      "c": 18,
+      "support": "val2014/COCO_val2014_000000068050.jpg",
+      "query": "val2014/COCO_val2014_000000070334.jpg",
+      "cohort": "old20",
+      "key": "2_2_18",
+      "iu": {
+        "mean_FG_BG": [
+          93997,
+          109915
+        ],
+        "insid3_cached": [
+          91388,
+          103984
+        ],
+        "foris_pre": [
+          91437,
+          102894
+        ],
+        "foris_native": [
+          90936,
+          101397
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 108,
+          "add_FP": 148,
+          "delete_TP": 2717,
+          "delete_FP": 6079
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 1829,
+          "add_FP": 1896,
+          "delete_TP": 1780,
+          "delete_FP": 2986
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 1981,
+          "add_FP": 1175,
+          "delete_TP": 2433,
+          "delete_FP": 3762
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 1239,
+          "add_FP": 742,
+          "delete_TP": 1740,
+          "delete_FP": 2239
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 3,
+      "c": 2,
+      "support": "val2014/COCO_val2014_000000032456.jpg",
+      "query": "val2014/COCO_val2014_000000497504.jpg",
+      "cohort": "old20",
+      "key": "2_3_2",
+      "iu": {
+        "mean_FG_BG": [
+          25339,
+          94409
+        ],
+        "insid3_cached": [
+          16540,
+          28360
+        ],
+        "foris_pre": [
+          17583,
+          28276
+        ],
+        "foris_native": [
+          17300,
+          28666
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 8799,
+          "delete_FP": 66049
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 1130,
+          "add_FP": 344,
+          "delete_TP": 87,
+          "delete_FP": 428
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 1067,
+          "add_FP": 1001,
+          "delete_TP": 307,
+          "delete_FP": 695
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 548,
+          "add_FP": 1046,
+          "delete_TP": 831,
+          "delete_FP": 656
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 5,
+      "c": 6,
+      "support": "val2014/COCO_val2014_000000061605.jpg",
+      "query": "val2014/COCO_val2014_000000465566.jpg",
+      "cohort": "old20",
+      "key": "2_5_6",
+      "iu": {
+        "mean_FG_BG": [
+          278916,
+          335469
+        ],
+        "insid3_cached": [
+          271939,
+          337286
+        ],
+        "foris_pre": [
+          271473,
+          325523
+        ],
+        "foris_native": [
+          271792,
+          327057
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 2227,
+          "add_FP": 10185,
+          "delete_TP": 9204,
+          "delete_FP": 8368
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 2841,
+          "add_FP": 1145,
+          "delete_TP": 3307,
+          "delete_FP": 12908
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 2782,
+          "add_FP": 735,
+          "delete_TP": 2929,
+          "delete_FP": 10964
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 1824,
+          "add_FP": 3960,
+          "delete_TP": 1505,
+          "delete_FP": 2426
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 21,
+      "c": 78,
+      "support": "val2014/COCO_val2014_000000563615.jpg",
+      "query": "val2014/COCO_val2014_000000186276.jpg",
+      "cohort": "new60",
+      "key": "2_21_78",
+      "iu": {
+        "mean_FG_BG": [
+          17242,
+          20609
+        ],
+        "insid3_cached": [
+          0,
+          86491
+        ],
+        "foris_pre": [
+          18882,
+          55950
+        ],
+        "foris_native": [
+          18658,
+          53406
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 65956,
+          "delete_TP": 17242,
+          "delete_FP": 74
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 18882,
+          "add_FP": 34258,
+          "delete_TP": 0,
+          "delete_FP": 64799
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 18658,
+          "add_FP": 32079,
+          "delete_TP": 0,
+          "delete_FP": 65164
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 496,
+          "add_FP": 1778,
+          "delete_TP": 720,
+          "delete_FP": 4322
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 22,
+      "c": 30,
+      "support": "val2014/COCO_val2014_000000538741.jpg",
+      "query": "val2014/COCO_val2014_000000444183.jpg",
+      "cohort": "new60",
+      "key": "2_22_30",
+      "iu": {
+        "mean_FG_BG": [
+          14752,
+          47466
+        ],
+        "insid3_cached": [
+          11243,
+          21509
+        ],
+        "foris_pre": [
+          11903,
+          21815
+        ],
+        "foris_native": [
+          9249,
+          19680
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 3509,
+          "delete_FP": 25957
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 851,
+          "add_FP": 930,
+          "delete_TP": 191,
+          "delete_FP": 624
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 377,
+          "add_FP": 490,
+          "delete_TP": 2371,
+          "delete_FP": 2319
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 121,
+          "add_FP": 238,
+          "delete_TP": 2775,
+          "delete_FP": 2373
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 23,
+      "c": 62,
+      "support": "val2014/COCO_val2014_000000400265.jpg",
+      "query": "val2014/COCO_val2014_000000110857.jpg",
+      "cohort": "new60",
+      "key": "2_23_62",
+      "iu": {
+        "mean_FG_BG": [
+          7512,
+          180654
+        ],
+        "insid3_cached": [
+          0,
+          19220
+        ],
+        "foris_pre": [
+          604,
+          114713
+        ],
+        "foris_native": [
+          130,
+          109720
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 3794,
+          "delete_TP": 7512,
+          "delete_FP": 165228
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 604,
+          "add_FP": 100955,
+          "delete_TP": 0,
+          "delete_FP": 5462
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 130,
+          "add_FP": 96551,
+          "delete_TP": 0,
+          "delete_FP": 6051
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 0,
+          "add_FP": 3638,
+          "delete_TP": 474,
+          "delete_FP": 8631
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 24,
+      "c": 2,
+      "support": "val2014/COCO_val2014_000000457453.jpg",
+      "query": "val2014/COCO_val2014_000000287550.jpg",
+      "cohort": "new60",
+      "key": "2_24_2",
+      "iu": {
+        "mean_FG_BG": [
+          12979,
+          61449
+        ],
+        "insid3_cached": [
+          9066,
+          15070
+        ],
+        "foris_pre": [
+          8908,
+          15163
+        ],
+        "foris_native": [
+          8617,
+          14519
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 3913,
+          "delete_FP": 46379
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 51,
+          "add_FP": 530,
+          "delete_TP": 209,
+          "delete_FP": 437
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 96,
+          "add_FP": 147,
+          "delete_TP": 545,
+          "delete_FP": 698
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 195,
+          "add_FP": 206,
+          "delete_TP": 486,
+          "delete_FP": 850
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 26,
+      "c": 50,
+      "support": "val2014/COCO_val2014_000000132116.jpg",
+      "query": "val2014/COCO_val2014_000000149284.jpg",
+      "cohort": "new60",
+      "key": "2_26_50",
+      "iu": {
+        "mean_FG_BG": [
+          39663,
+          564751
+        ],
+        "insid3_cached": [
+          37203,
+          48017
+        ],
+        "foris_pre": [
+          37071,
+          46124
+        ],
+        "foris_native": [
+          36884,
+          45472
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 2460,
+          "delete_FP": 516734
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 244,
+          "add_FP": 279,
+          "delete_TP": 376,
+          "delete_FP": 2172
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 448,
+          "add_FP": 251,
+          "delete_TP": 767,
+          "delete_FP": 2796
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 385,
+          "add_FP": 392,
+          "delete_TP": 572,
+          "delete_FP": 1044
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 27,
+      "c": 6,
+      "support": "val2014/COCO_val2014_000000002894.jpg",
+      "query": "val2014/COCO_val2014_000000433182.jpg",
+      "cohort": "new60",
+      "key": "2_27_6",
+      "iu": {
+        "mean_FG_BG": [
+          50420,
+          125648
+        ],
+        "insid3_cached": [
+          48653,
+          56425
+        ],
+        "foris_pre": [
+          50981,
+          60545
+        ],
+        "foris_native": [
+          50148,
+          58751
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 668,
+          "add_FP": 1124,
+          "delete_TP": 2435,
+          "delete_FP": 70347
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 2343,
+          "add_FP": 4814,
+          "delete_TP": 15,
+          "delete_FP": 694
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 1954,
+          "add_FP": 3277,
+          "delete_TP": 459,
+          "delete_FP": 951
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 283,
+          "add_FP": 1467,
+          "delete_TP": 1116,
+          "delete_FP": 3261
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 28,
+      "c": 2,
+      "support": "val2014/COCO_val2014_000000397522.jpg",
+      "query": "val2014/COCO_val2014_000000106794.jpg",
+      "cohort": "new60",
+      "key": "2_28_2",
+      "iu": {
+        "mean_FG_BG": [
+          31098,
+          206585
+        ],
+        "insid3_cached": [
+          29635,
+          36924
+        ],
+        "foris_pre": [
+          30554,
+          38933
+        ],
+        "foris_native": [
+          30366,
+          37923
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 1463,
+          "delete_FP": 169661
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 921,
+          "add_FP": 2119,
+          "delete_TP": 2,
+          "delete_FP": 110
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 919,
+          "add_FP": 1159,
+          "delete_TP": 188,
+          "delete_FP": 160
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 221,
+          "add_FP": 227,
+          "delete_TP": 409,
+          "delete_FP": 1237
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 29,
+      "c": 14,
+      "support": "val2014/COCO_val2014_000000353898.jpg",
+      "query": "val2014/COCO_val2014_000000460972.jpg",
+      "cohort": "new60",
+      "key": "2_29_14",
+      "iu": {
+        "mean_FG_BG": [
+          9659,
+          16496
+        ],
+        "insid3_cached": [
+          9712,
+          17979
+        ],
+        "foris_pre": [
+          8992,
+          15116
+        ],
+        "foris_native": [
+          7519,
+          14308
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 1208,
+          "add_FP": 2120,
+          "delete_TP": 1155,
+          "delete_FP": 637
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 562,
+          "add_FP": 322,
+          "delete_TP": 1282,
+          "delete_FP": 3185
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 591,
+          "add_FP": 203,
+          "delete_TP": 2784,
+          "delete_FP": 3874
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 481,
+          "add_FP": 216,
+          "delete_TP": 1954,
+          "delete_FP": 1024
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 30,
+      "c": 70,
+      "support": "val2014/COCO_val2014_000000337354.jpg",
+      "query": "val2014/COCO_val2014_000000135561.jpg",
+      "cohort": "new60",
+      "key": "2_30_70",
+      "iu": {
+        "mean_FG_BG": [
+          11086,
+          38483
+        ],
+        "insid3_cached": [
+          10552,
+          15821
+        ],
+        "foris_pre": [
+          10840,
+          21972
+        ],
+        "foris_native": [
+          11065,
+          20818
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 534,
+          "delete_FP": 22662
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 289,
+          "add_FP": 6347,
+          "delete_TP": 1,
+          "delete_FP": 196
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 612,
+          "add_FP": 5784,
+          "delete_TP": 99,
+          "delete_FP": 787
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 377,
+          "add_FP": 603,
+          "delete_TP": 152,
+          "delete_FP": 1757
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 31,
+      "c": 42,
+      "support": "val2014/COCO_val2014_000000331712.jpg",
+      "query": "val2014/COCO_val2014_000000161807.jpg",
+      "cohort": "new60",
+      "key": "2_31_42",
+      "iu": {
+        "mean_FG_BG": [
+          7086,
+          15535
+        ],
+        "insid3_cached": [
+          7420,
+          41937
+        ],
+        "foris_pre": [
+          7577,
+          15189
+        ],
+        "foris_native": [
+          7334,
+          13362
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 438,
+          "add_FP": 27722,
+          "delete_TP": 104,
+          "delete_FP": 1320
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 157,
+          "add_FP": 45,
+          "delete_TP": 0,
+          "delete_FP": 26793
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 85,
+          "add_FP": 26,
+          "delete_TP": 171,
+          "delete_FP": 28601
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 19,
+          "add_FP": 314,
+          "delete_TP": 262,
+          "delete_FP": 2141
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 32,
+      "c": 46,
+      "support": "val2014/COCO_val2014_000000446917.jpg",
+      "query": "val2014/COCO_val2014_000000150788.jpg",
+      "cohort": "new60",
+      "key": "2_32_46",
+      "iu": {
+        "mean_FG_BG": [
+          401721,
+          449667
+        ],
+        "insid3_cached": [
+          388018,
+          413122
+        ],
+        "foris_pre": [
+          396756,
+          415255
+        ],
+        "foris_native": [
+          394063,
+          412695
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 13703,
+          "delete_FP": 36545
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 8791,
+          "add_FP": 2847,
+          "delete_TP": 53,
+          "delete_FP": 714
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 6684,
+          "add_FP": 1625,
+          "delete_TP": 639,
+          "delete_FP": 2052
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 512,
+          "add_FP": 926,
+          "delete_TP": 3205,
+          "delete_FP": 3486
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 33,
+      "c": 38,
+      "support": "val2014/COCO_val2014_000000530656.jpg",
+      "query": "val2014/COCO_val2014_000000565203.jpg",
+      "cohort": "new60",
+      "key": "2_33_38",
+      "iu": {
+        "mean_FG_BG": [
+          19482,
+          25053
+        ],
+        "insid3_cached": [
+          18521,
+          21754
+        ],
+        "foris_pre": [
+          18951,
+          21735
+        ],
+        "foris_native": [
+          18211,
+          20597
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 961,
+          "delete_FP": 3299
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 439,
+          "add_FP": 122,
+          "delete_TP": 9,
+          "delete_FP": 141
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 332,
+          "add_FP": 4,
+          "delete_TP": 642,
+          "delete_FP": 1161
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 95,
+          "add_FP": 0,
+          "delete_TP": 835,
+          "delete_FP": 1138
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 34,
+      "c": 10,
+      "support": "val2014/COCO_val2014_000000499768.jpg",
+      "query": "val2014/COCO_val2014_000000216083.jpg",
+      "cohort": "old20",
+      "key": "2_34_10",
+      "iu": {
+        "mean_FG_BG": [
+          225517,
+          255412
+        ],
+        "insid3_cached": [
+          216802,
+          252207
+        ],
+        "foris_pre": [
+          217000,
+          249885
+        ],
+        "foris_native": [
+          216290,
+          249046
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 95,
+          "add_FP": 1024,
+          "delete_TP": 8810,
+          "delete_FP": 4229
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 2002,
+          "add_FP": 909,
+          "delete_TP": 1804,
+          "delete_FP": 3231
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 3221,
+          "add_FP": 815,
+          "delete_TP": 3733,
+          "delete_FP": 3976
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 2027,
+          "add_FP": 645,
+          "delete_TP": 2737,
+          "delete_FP": 1484
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 35,
+      "c": 78,
+      "support": "val2014/COCO_val2014_000000315219.jpg",
+      "query": "val2014/COCO_val2014_000000416930.jpg",
+      "cohort": "new60",
+      "key": "2_35_78",
+      "iu": {
+        "mean_FG_BG": [
+          5622,
+          171094
+        ],
+        "insid3_cached": [
+          713,
+          164529
+        ],
+        "foris_pre": [
+          16654,
+          206869
+        ],
+        "foris_native": [
+          15779,
+          205232
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 713,
+          "add_FP": 1439,
+          "delete_TP": 5622,
+          "delete_FP": 8004
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 16600,
+          "add_FP": 43329,
+          "delete_TP": 659,
+          "delete_FP": 989
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 15739,
+          "add_FP": 42007,
+          "delete_TP": 673,
+          "delete_FP": 1304
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 1896,
+          "add_FP": 2846,
+          "delete_TP": 2771,
+          "delete_FP": 4483
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 36,
+      "c": 30,
+      "support": "val2014/COCO_val2014_000000299631.jpg",
+      "query": "val2014/COCO_val2014_000000127990.jpg",
+      "cohort": "new60",
+      "key": "2_36_30",
+      "iu": {
+        "mean_FG_BG": [
+          7866,
+          77654
+        ],
+        "insid3_cached": [
+          6301,
+          19043
+        ],
+        "foris_pre": [
+          6817,
+          26897
+        ],
+        "foris_native": [
+          5822,
+          20906
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 1565,
+          "delete_FP": 58611
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 644,
+          "add_FP": 11594,
+          "delete_TP": 128,
+          "delete_FP": 3740
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 299,
+          "add_FP": 7350,
+          "delete_TP": 778,
+          "delete_FP": 5487
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 22,
+          "add_FP": 751,
+          "delete_TP": 1017,
+          "delete_FP": 6742
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 37,
+      "c": 26,
+      "support": "val2014/COCO_val2014_000000253742.jpg",
+      "query": "val2014/COCO_val2014_000000151820.jpg",
+      "cohort": "new60",
+      "key": "2_37_26",
+      "iu": {
+        "mean_FG_BG": [
+          9851,
+          165169
+        ],
+        "insid3_cached": [
+          8210,
+          12194
+        ],
+        "foris_pre": [
+          9438,
+          18959
+        ],
+        "foris_native": [
+          8755,
+          16733
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 1641,
+          "delete_FP": 152975
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 1230,
+          "add_FP": 6769,
+          "delete_TP": 2,
+          "delete_FP": 4
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 882,
+          "add_FP": 4971,
+          "delete_TP": 337,
+          "delete_FP": 432
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 315,
+          "add_FP": 400,
+          "delete_TP": 998,
+          "delete_FP": 2626
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 38,
+      "c": 50,
+      "support": "val2014/COCO_val2014_000000069577.jpg",
+      "query": "val2014/COCO_val2014_000000001064.jpg",
+      "cohort": "new40",
+      "key": "2_38_50",
+      "iu": {
+        "mean_FG_BG": [
+          458563,
+          550011
+        ],
+        "insid3_cached": [
+          138031,
+          539039
+        ],
+        "foris_pre": [
+          152498,
+          538257
+        ],
+        "foris_native": [
+          145048,
+          537281
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 2707,
+          "add_FP": 647,
+          "delete_TP": 323239,
+          "delete_FP": 11619
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 22077,
+          "add_FP": 1056,
+          "delete_TP": 7610,
+          "delete_FP": 1838
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 18231,
+          "add_FP": 1063,
+          "delete_TP": 11214,
+          "delete_FP": 2821
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 5584,
+          "add_FP": 499,
+          "delete_TP": 13034,
+          "delete_FP": 1475
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 39,
+      "c": 62,
+      "support": "val2014/COCO_val2014_000000215244.jpg",
+      "query": "val2014/COCO_val2014_000000093948.jpg",
+      "cohort": "new40",
+      "key": "2_39_62",
+      "iu": {
+        "mean_FG_BG": [
+          193968,
+          263435
+        ],
+        "insid3_cached": [
+          119336,
+          242809
+        ],
+        "foris_pre": [
+          73402,
+          242160
+        ],
+        "foris_native": [
+          70647,
+          242112
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 74632,
+          "delete_FP": 20626
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 517,
+          "add_FP": 0,
+          "delete_TP": 46451,
+          "delete_FP": 649
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 560,
+          "add_FP": 0,
+          "delete_TP": 49249,
+          "delete_FP": 697
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 744,
+          "add_FP": 0,
+          "delete_TP": 3499,
+          "delete_FP": 48
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 40,
+      "c": 34,
+      "support": "val2014/COCO_val2014_000000307703.jpg",
+      "query": "val2014/COCO_val2014_000000160864.jpg",
+      "cohort": "new40",
+      "key": "2_40_34",
+      "iu": {
+        "mean_FG_BG": [
+          9630,
+          161326
+        ],
+        "insid3_cached": [
+          6742,
+          14640
+        ],
+        "foris_pre": [
+          7120,
+          14727
+        ],
+        "foris_native": [
+          5680,
+          13102
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 2888,
+          "delete_FP": 146686
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 548,
+          "add_FP": 503,
+          "delete_TP": 170,
+          "delete_FP": 416
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 453,
+          "add_FP": 218,
+          "delete_TP": 1515,
+          "delete_FP": 1756
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 190,
+          "add_FP": 66,
+          "delete_TP": 1630,
+          "delete_FP": 1691
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 41,
+      "c": 42,
+      "support": "val2014/COCO_val2014_000000132362.jpg",
+      "query": "val2014/COCO_val2014_000000204311.jpg",
+      "cohort": "new40",
+      "key": "2_41_42",
+      "iu": {
+        "mean_FG_BG": [
+          10645,
+          77926
+        ],
+        "insid3_cached": [
+          9773,
+          38718
+        ],
+        "foris_pre": [
+          10410,
+          34162
+        ],
+        "foris_native": [
+          9954,
+          32115
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 466,
+          "delete_TP": 872,
+          "delete_FP": 39674
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 753,
+          "add_FP": 1061,
+          "delete_TP": 116,
+          "delete_FP": 5617
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 817,
+          "add_FP": 1096,
+          "delete_TP": 636,
+          "delete_FP": 7699
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 169,
+          "add_FP": 1591,
+          "delete_TP": 625,
+          "delete_FP": 3638
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 42,
+      "c": 34,
+      "support": "val2014/COCO_val2014_000000351463.jpg",
+      "query": "val2014/COCO_val2014_000000542792.jpg",
+      "cohort": "new40",
+      "key": "2_42_34",
+      "iu": {
+        "mean_FG_BG": [
+          70905,
+          104733
+        ],
+        "insid3_cached": [
+          69000,
+          84728
+        ],
+        "foris_pre": [
+          69470,
+          83173
+        ],
+        "foris_native": [
+          68844,
+          79758
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 12,
+          "add_FP": 500,
+          "delete_TP": 1917,
+          "delete_FP": 20505
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 939,
+          "add_FP": 494,
+          "delete_TP": 469,
+          "delete_FP": 2049
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 1201,
+          "add_FP": 517,
+          "delete_TP": 1357,
+          "delete_FP": 5487
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 467,
+          "add_FP": 455,
+          "delete_TP": 1093,
+          "delete_FP": 3870
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 43,
+      "c": 78,
+      "support": "val2014/COCO_val2014_000000333020.jpg",
+      "query": "val2014/COCO_val2014_000000134290.jpg",
+      "cohort": "new40",
+      "key": "2_43_78",
+      "iu": {
+        "mean_FG_BG": [
+          35311,
+          65113
+        ],
+        "insid3_cached": [
+          36241,
+          65785
+        ],
+        "foris_pre": [
+          33180,
+          64349
+        ],
+        "foris_native": [
+          31707,
+          64184
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 3234,
+          "add_FP": 2562,
+          "delete_TP": 2304,
+          "delete_FP": 1890
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 1504,
+          "add_FP": 9,
+          "delete_TP": 4565,
+          "delete_FP": 1445
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 1204,
+          "add_FP": 18,
+          "delete_TP": 5738,
+          "delete_FP": 1619
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 999,
+          "add_FP": 221,
+          "delete_TP": 2472,
+          "delete_FP": 386
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 45,
+      "c": 50,
+      "support": "val2014/COCO_val2014_000000403951.jpg",
+      "query": "val2014/COCO_val2014_000000498368.jpg",
+      "cohort": "new40",
+      "key": "2_45_50",
+      "iu": {
+        "mean_FG_BG": [
+          211173,
+          423520
+        ],
+        "insid3_cached": [
+          229357,
+          564512
+        ],
+        "foris_pre": [
+          172555,
+          311271
+        ],
+        "foris_native": [
+          170885,
+          306119
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 23258,
+          "add_FP": 157664,
+          "delete_TP": 5074,
+          "delete_FP": 16672
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 618,
+          "add_FP": 675,
+          "delete_TP": 57420,
+          "delete_FP": 253916
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 1687,
+          "add_FP": 968,
+          "delete_TP": 60159,
+          "delete_FP": 259361
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 6211,
+          "add_FP": 5012,
+          "delete_TP": 7881,
+          "delete_FP": 10164
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 46,
+      "c": 62,
+      "support": "val2014/COCO_val2014_000000224509.jpg",
+      "query": "val2014/COCO_val2014_000000349915.jpg",
+      "cohort": "new40",
+      "key": "2_46_62",
+      "iu": {
+        "mean_FG_BG": [
+          10241,
+          15382
+        ],
+        "insid3_cached": [
+          11675,
+          16436
+        ],
+        "foris_pre": [
+          12486,
+          15105
+        ],
+        "foris_native": [
+          12270,
+          14352
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 1434,
+          "add_FP": 3430,
+          "delete_TP": 0,
+          "delete_FP": 2376
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 818,
+          "add_FP": 511,
+          "delete_TP": 7,
+          "delete_FP": 1842
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 641,
+          "add_FP": 166,
+          "delete_TP": 46,
+          "delete_FP": 2250
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 26,
+          "add_FP": 380,
+          "delete_TP": 242,
+          "delete_FP": 1133
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 47,
+      "c": 30,
+      "support": "val2014/COCO_val2014_000000531020.jpg",
+      "query": "val2014/COCO_val2014_000000508119.jpg",
+      "cohort": "new40",
+      "key": "2_47_30",
+      "iu": {
+        "mean_FG_BG": [
+          12806,
+          65874
+        ],
+        "insid3_cached": [
+          11988,
+          26199
+        ],
+        "foris_pre": [
+          12820,
+          31036
+        ],
+        "foris_native": [
+          11979,
+          29020
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 818,
+          "delete_FP": 39675
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 832,
+          "add_FP": 6829,
+          "delete_TP": 0,
+          "delete_FP": 1992
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 418,
+          "add_FP": 6217,
+          "delete_TP": 427,
+          "delete_FP": 3396
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 0,
+          "add_FP": 988,
+          "delete_TP": 841,
+          "delete_FP": 3004
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "e": 48,
+      "c": 6,
+      "support": "val2014/COCO_val2014_000000452461.jpg",
+      "query": "val2014/COCO_val2014_000000197420.jpg",
+      "cohort": "new40",
+      "key": "2_48_6",
+      "iu": {
+        "mean_FG_BG": [
+          256659,
+          289658
+        ],
+        "insid3_cached": [
+          267137,
+          298170
+        ],
+        "foris_pre": [
+          264796,
+          291127
+        ],
+        "foris_native": [
+          265990,
+          291828
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 11672,
+          "add_FP": 8529,
+          "delete_TP": 1194,
+          "delete_FP": 17
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 1317,
+          "add_FP": 159,
+          "delete_TP": 3658,
+          "delete_FP": 7202
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 2547,
+          "add_FP": 1069,
+          "delete_TP": 3694,
+          "delete_FP": 7411
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 3017,
+          "add_FP": 2088,
+          "delete_TP": 1823,
+          "delete_FP": 1387
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 1,
+      "c": 3,
+      "support": "val2014/COCO_val2014_000000338044.jpg",
+      "query": "val2014/COCO_val2014_000000457848.jpg",
+      "cohort": "old20",
+      "key": "3_1_3",
+      "iu": {
+        "mean_FG_BG": [
+          532347,
+          640352
+        ],
+        "insid3_cached": [
+          467337,
+          614577
+        ],
+        "foris_pre": [
+          442141,
+          597080
+        ],
+        "foris_native": [
+          447088,
+          598380
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 340,
+          "add_FP": 1616,
+          "delete_TP": 65350,
+          "delete_FP": 27391
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 2704,
+          "add_FP": 761,
+          "delete_TP": 27900,
+          "delete_FP": 18258
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 5068,
+          "add_FP": 1317,
+          "delete_TP": 25317,
+          "delete_FP": 17514
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 7967,
+          "add_FP": 3091,
+          "delete_TP": 3020,
+          "delete_FP": 1791
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 3,
+      "c": 15,
+      "support": "val2014/COCO_val2014_000000188651.jpg",
+      "query": "val2014/COCO_val2014_000000276706.jpg",
+      "cohort": "old20",
+      "key": "3_3_15",
+      "iu": {
+        "mean_FG_BG": [
+          73007,
+          85341
+        ],
+        "insid3_cached": [
+          72194,
+          79498
+        ],
+        "foris_pre": [
+          71496,
+          77544
+        ],
+        "foris_native": [
+          71517,
+          76096
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 813,
+          "delete_FP": 5843
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 162,
+          "add_FP": 328,
+          "delete_TP": 860,
+          "delete_FP": 2282
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 487,
+          "add_FP": 271,
+          "delete_TP": 1164,
+          "delete_FP": 3673
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 932,
+          "add_FP": 389,
+          "delete_TP": 911,
+          "delete_FP": 1837
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 8,
+      "c": 7,
+      "support": "val2014/COCO_val2014_000000267225.jpg",
+      "query": "val2014/COCO_val2014_000000267521.jpg",
+      "cohort": "old20",
+      "key": "3_8_7",
+      "iu": {
+        "mean_FG_BG": [
+          48608,
+          281180
+        ],
+        "insid3_cached": [
+          28799,
+          50365
+        ],
+        "foris_pre": [
+          28903,
+          94610
+        ],
+        "foris_native": [
+          29306,
+          93648
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 19809,
+          "delete_FP": 230815
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 197,
+          "add_FP": 44502,
+          "delete_TP": 93,
+          "delete_FP": 257
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 796,
+          "add_FP": 43845,
+          "delete_TP": 289,
+          "delete_FP": 562
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 686,
+          "add_FP": 2156,
+          "delete_TP": 283,
+          "delete_FP": 3118
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 21,
+      "c": 39,
+      "support": "val2014/COCO_val2014_000000017909.jpg",
+      "query": "val2014/COCO_val2014_000000558840.jpg",
+      "cohort": "new60",
+      "key": "3_21_39",
+      "iu": {
+        "mean_FG_BG": [
+          29929,
+          259873
+        ],
+        "insid3_cached": [
+          29037,
+          99372
+        ],
+        "foris_pre": [
+          14297,
+          83949
+        ],
+        "foris_native": [
+          12982,
+          75458
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 22485,
+          "delete_TP": 892,
+          "delete_FP": 182986
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 407,
+          "add_FP": 27958,
+          "delete_TP": 15147,
+          "delete_FP": 43381
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 482,
+          "add_FP": 22310,
+          "delete_TP": 16537,
+          "delete_FP": 46224
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 617,
+          "add_FP": 3865,
+          "delete_TP": 1932,
+          "delete_FP": 12356
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 22,
+      "c": 3,
+      "support": "val2014/COCO_val2014_000000307438.jpg",
+      "query": "val2014/COCO_val2014_000000140465.jpg",
+      "cohort": "new60",
+      "key": "3_22_3",
+      "iu": {
+        "mean_FG_BG": [
+          242059,
+          503571
+        ],
+        "insid3_cached": [
+          220921,
+          257436
+        ],
+        "foris_pre": [
+          221139,
+          260558
+        ],
+        "foris_native": [
+          222473,
+          259890
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 187,
+          "delete_TP": 21138,
+          "delete_FP": 246322
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 2327,
+          "add_FP": 3973,
+          "delete_TP": 2109,
+          "delete_FP": 851
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 3023,
+          "add_FP": 3709,
+          "delete_TP": 1471,
+          "delete_FP": 1255
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 2284,
+          "add_FP": 974,
+          "delete_TP": 950,
+          "delete_FP": 1642
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 23,
+      "c": 43,
+      "support": "val2014/COCO_val2014_000000107020.jpg",
+      "query": "val2014/COCO_val2014_000000019484.jpg",
+      "cohort": "new60",
+      "key": "3_23_43",
+      "iu": {
+        "mean_FG_BG": [
+          44076,
+          145330
+        ],
+        "insid3_cached": [
+          40342,
+          61376
+        ],
+        "foris_pre": [
+          42624,
+          62797
+        ],
+        "foris_native": [
+          41878,
+          54554
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 3734,
+          "delete_FP": 83954
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 2323,
+          "add_FP": 2783,
+          "delete_TP": 41,
+          "delete_FP": 1362
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 2994,
+          "add_FP": 1671,
+          "delete_TP": 1458,
+          "delete_FP": 8493
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 1126,
+          "add_FP": 757,
+          "delete_TP": 1872,
+          "delete_FP": 9000
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 24,
+      "c": 15,
+      "support": "val2014/COCO_val2014_000000149646.jpg",
+      "query": "val2014/COCO_val2014_000000443303.jpg",
+      "cohort": "new60",
+      "key": "3_24_15",
+      "iu": {
+        "mean_FG_BG": [
+          240814,
+          253317
+        ],
+        "insid3_cached": [
+          86121,
+          247964
+        ],
+        "foris_pre": [
+          125364,
+          244830
+        ],
+        "foris_native": [
+          123598,
+          244292
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 307,
+          "add_FP": 717,
+          "delete_TP": 155000,
+          "delete_FP": 6070
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 40241,
+          "add_FP": 8,
+          "delete_TP": 998,
+          "delete_FP": 3142
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 38386,
+          "add_FP": 114,
+          "delete_TP": 909,
+          "delete_FP": 3786
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 3530,
+          "add_FP": 309,
+          "delete_TP": 5296,
+          "delete_FP": 847
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 25,
+      "c": 63,
+      "support": "val2014/COCO_val2014_000000194434.jpg",
+      "query": "val2014/COCO_val2014_000000243777.jpg",
+      "cohort": "new60",
+      "key": "3_25_63",
+      "iu": {
+        "mean_FG_BG": [
+          250611,
+          298011
+        ],
+        "insid3_cached": [
+          248487,
+          259560
+        ],
+        "foris_pre": [
+          249239,
+          261892
+        ],
+        "foris_native": [
+          249027,
+          258514
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 463,
+          "add_FP": 213,
+          "delete_TP": 2587,
+          "delete_FP": 38664
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 1890,
+          "add_FP": 3271,
+          "delete_TP": 1138,
+          "delete_FP": 939
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 2245,
+          "add_FP": 802,
+          "delete_TP": 1705,
+          "delete_FP": 1848
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 1234,
+          "add_FP": 127,
+          "delete_TP": 1446,
+          "delete_FP": 3505
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 26,
+      "c": 3,
+      "support": "val2014/COCO_val2014_000000054039.jpg",
+      "query": "val2014/COCO_val2014_000000580108.jpg",
+      "cohort": "new60",
+      "key": "3_26_3",
+      "iu": {
+        "mean_FG_BG": [
+          388252,
+          477047
+        ],
+        "insid3_cached": [
+          344576,
+          449647
+        ],
+        "foris_pre": [
+          367397,
+          451557
+        ],
+        "foris_native": [
+          365485,
+          450618
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 237,
+          "add_FP": 531,
+          "delete_TP": 43913,
+          "delete_FP": 27931
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 24137,
+          "add_FP": 3122,
+          "delete_TP": 1316,
+          "delete_FP": 1212
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 23851,
+          "add_FP": 3245,
+          "delete_TP": 2942,
+          "delete_FP": 2274
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 4973,
+          "add_FP": 1375,
+          "delete_TP": 6885,
+          "delete_FP": 2314
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 27,
+      "c": 39,
+      "support": "val2014/COCO_val2014_000000301963.jpg",
+      "query": "val2014/COCO_val2014_000000106849.jpg",
+      "cohort": "new60",
+      "key": "3_27_39",
+      "iu": {
+        "mean_FG_BG": [
+          36038,
+          231301
+        ],
+        "insid3_cached": [
+          19,
+          68658
+        ],
+        "foris_pre": [
+          37180,
+          178976
+        ],
+        "foris_native": [
+          36383,
+          179998
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 36019,
+          "delete_FP": 162643
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 37161,
+          "add_FP": 114376,
+          "delete_TP": 0,
+          "delete_FP": 4058
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 36364,
+          "add_FP": 114472,
+          "delete_TP": 0,
+          "delete_FP": 3132
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 1659,
+          "add_FP": 11230,
+          "delete_TP": 2456,
+          "delete_FP": 10208
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 29,
+      "c": 19,
+      "support": "val2014/COCO_val2014_000000573455.jpg",
+      "query": "val2014/COCO_val2014_000000378968.jpg",
+      "cohort": "old20",
+      "key": "3_29_19",
+      "iu": {
+        "mean_FG_BG": [
+          183559,
+          213884
+        ],
+        "insid3_cached": [
+          178501,
+          204068
+        ],
+        "foris_pre": [
+          172439,
+          198741
+        ],
+        "foris_native": [
+          171196,
+          197369
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 1756,
+          "add_FP": 1316,
+          "delete_TP": 6814,
+          "delete_FP": 11132
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 2712,
+          "add_FP": 309,
+          "delete_TP": 8774,
+          "delete_FP": 5636
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 3187,
+          "add_FP": 713,
+          "delete_TP": 10492,
+          "delete_FP": 7412
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 2644,
+          "add_FP": 1004,
+          "delete_TP": 3887,
+          "delete_FP": 2376
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 30,
+      "c": 71,
+      "support": "val2014/COCO_val2014_000000242363.jpg",
+      "query": "val2014/COCO_val2014_000000277563.jpg",
+      "cohort": "new60",
+      "key": "3_30_71",
+      "iu": {
+        "mean_FG_BG": [
+          120171,
+          221831
+        ],
+        "insid3_cached": [
+          0,
+          151204
+        ],
+        "foris_pre": [
+          120274,
+          247247
+        ],
+        "foris_native": [
+          120251,
+          240939
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 7260,
+          "delete_TP": 120171,
+          "delete_FP": 77887
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 120274,
+          "add_FP": 98107,
+          "delete_TP": 0,
+          "delete_FP": 2064
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 120251,
+          "add_FP": 91389,
+          "delete_TP": 0,
+          "delete_FP": 1654
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 0,
+          "add_FP": 5454,
+          "delete_TP": 23,
+          "delete_FP": 11762
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 31,
+      "c": 47,
+      "support": "val2014/COCO_val2014_000000299001.jpg",
+      "query": "val2014/COCO_val2014_000000214367.jpg",
+      "cohort": "new60",
+      "key": "3_31_47",
+      "iu": {
+        "mean_FG_BG": [
+          66629,
+          313280
+        ],
+        "insid3_cached": [
+          62316,
+          82329
+        ],
+        "foris_pre": [
+          64073,
+          81751
+        ],
+        "foris_native": [
+          63057,
+          78442
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 4313,
+          "delete_FP": 230951
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 1958,
+          "add_FP": 1985,
+          "delete_TP": 201,
+          "delete_FP": 2563
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 1740,
+          "add_FP": 1237,
+          "delete_TP": 999,
+          "delete_FP": 5124
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 583,
+          "add_FP": 898,
+          "delete_TP": 1599,
+          "delete_FP": 4207
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 32,
+      "c": 75,
+      "support": "val2014/COCO_val2014_000000475024.jpg",
+      "query": "val2014/COCO_val2014_000000111706.jpg",
+      "cohort": "new60",
+      "key": "3_32_75",
+      "iu": {
+        "mean_FG_BG": [
+          183941,
+          302891
+        ],
+        "insid3_cached": [
+          168993,
+          280529
+        ],
+        "foris_pre": [
+          192854,
+          309607
+        ],
+        "foris_native": [
+          192687,
+          304009
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 10394,
+          "add_FP": 6931,
+          "delete_TP": 25342,
+          "delete_FP": 29293
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 27841,
+          "add_FP": 34107,
+          "delete_TP": 3980,
+          "delete_FP": 5029
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 29510,
+          "add_FP": 31106,
+          "delete_TP": 5816,
+          "delete_FP": 7626
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 7855,
+          "add_FP": 5517,
+          "delete_TP": 8022,
+          "delete_FP": 11115
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 33,
+      "c": 39,
+      "support": "val2014/COCO_val2014_000000108193.jpg",
+      "query": "val2014/COCO_val2014_000000319696.jpg",
+      "cohort": "new60",
+      "key": "3_33_39",
+      "iu": {
+        "mean_FG_BG": [
+          33246,
+          74601
+        ],
+        "insid3_cached": [
+          28602,
+          65081
+        ],
+        "foris_pre": [
+          29790,
+          55779
+        ],
+        "foris_native": [
+          29706,
+          56677
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 643,
+          "add_FP": 9758,
+          "delete_TP": 5287,
+          "delete_FP": 19278
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 1633,
+          "add_FP": 544,
+          "delete_TP": 445,
+          "delete_FP": 9846
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 2371,
+          "add_FP": 391,
+          "delete_TP": 1267,
+          "delete_FP": 8795
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 1122,
+          "add_FP": 2583,
+          "delete_TP": 1206,
+          "delete_FP": 1685
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 34,
+      "c": 35,
+      "support": "val2014/COCO_val2014_000000501172.jpg",
+      "query": "val2014/COCO_val2014_000000519055.jpg",
+      "cohort": "new60",
+      "key": "3_34_35",
+      "iu": {
+        "mean_FG_BG": [
+          16002,
+          225852
+        ],
+        "insid3_cached": [
+          16150,
+          20740
+        ],
+        "foris_pre": [
+          16190,
+          18693
+        ],
+        "foris_native": [
+          15748,
+          17411
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 173,
+          "add_FP": 851,
+          "delete_TP": 25,
+          "delete_FP": 205963
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 81,
+          "add_FP": 214,
+          "delete_TP": 41,
+          "delete_FP": 2261
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 48,
+          "add_FP": 93,
+          "delete_TP": 450,
+          "delete_FP": 3422
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 14,
+          "add_FP": 65,
+          "delete_TP": 456,
+          "delete_FP": 1347
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 35,
+      "c": 51,
+      "support": "val2014/COCO_val2014_000000203095.jpg",
+      "query": "val2014/COCO_val2014_000000435475.jpg",
+      "cohort": "new60",
+      "key": "3_35_51",
+      "iu": {
+        "mean_FG_BG": [
+          77944,
+          337169
+        ],
+        "insid3_cached": [
+          67525,
+          81884
+        ],
+        "foris_pre": [
+          69215,
+          81904
+        ],
+        "foris_native": [
+          69775,
+          81611
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 10419,
+          "delete_FP": 255285
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 2105,
+          "add_FP": 304,
+          "delete_TP": 415,
+          "delete_FP": 284
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 3362,
+          "add_FP": 281,
+          "delete_TP": 1112,
+          "delete_FP": 554
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 2140,
+          "add_FP": 165,
+          "delete_TP": 1580,
+          "delete_FP": 458
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 36,
+      "c": 63,
+      "support": "val2014/COCO_val2014_000000133464.jpg",
+      "query": "val2014/COCO_val2014_000000263687.jpg",
+      "cohort": "new60",
+      "key": "3_36_63",
+      "iu": {
+        "mean_FG_BG": [
+          16010,
+          80132
+        ],
+        "insid3_cached": [
+          9183,
+          35575
+        ],
+        "foris_pre": [
+          11679,
+          40381
+        ],
+        "foris_native": [
+          11613,
+          39366
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 6827,
+          "delete_FP": 44557
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 2514,
+          "add_FP": 4842,
+          "delete_TP": 18,
+          "delete_FP": 36
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 2551,
+          "add_FP": 4030,
+          "delete_TP": 121,
+          "delete_FP": 239
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 535,
+          "add_FP": 435,
+          "delete_TP": 601,
+          "delete_FP": 1450
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 37,
+      "c": 11,
+      "support": "val2014/COCO_val2014_000000206391.jpg",
+      "query": "val2014/COCO_val2014_000000268755.jpg",
+      "cohort": "old20",
+      "key": "3_37_11",
+      "iu": {
+        "mean_FG_BG": [
+          251807,
+          265990
+        ],
+        "insid3_cached": [
+          244147,
+          261014
+        ],
+        "foris_pre": [
+          243006,
+          259923
+        ],
+        "foris_native": [
+          242110,
+          259539
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 7660,
+          "delete_FP": 4976
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 1064,
+          "add_FP": 59,
+          "delete_TP": 2205,
+          "delete_FP": 1150
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 2055,
+          "add_FP": 238,
+          "delete_TP": 4092,
+          "delete_FP": 1713
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 1679,
+          "add_FP": 428,
+          "delete_TP": 2575,
+          "delete_FP": 812
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 38,
+      "c": 47,
+      "support": "val2014/COCO_val2014_000000392850.jpg",
+      "query": "val2014/COCO_val2014_000000165884.jpg",
+      "cohort": "new40",
+      "key": "3_38_47",
+      "iu": {
+        "mean_FG_BG": [
+          131164,
+          626013
+        ],
+        "insid3_cached": [
+          131491,
+          386654
+        ],
+        "foris_pre": [
+          131029,
+          386124
+        ],
+        "foris_native": [
+          130780,
+          387701
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 694,
+          "add_FP": 1354,
+          "delete_TP": 367,
+          "delete_FP": 240713
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 392,
+          "add_FP": 1889,
+          "delete_TP": 854,
+          "delete_FP": 2419
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 675,
+          "add_FP": 4289,
+          "delete_TP": 1386,
+          "delete_FP": 3242
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 444,
+          "add_FP": 3239,
+          "delete_TP": 693,
+          "delete_FP": 1662
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 39,
+      "c": 79,
+      "support": "val2014/COCO_val2014_000000514089.jpg",
+      "query": "val2014/COCO_val2014_000000549746.jpg",
+      "cohort": "new40",
+      "key": "3_39_79",
+      "iu": {
+        "mean_FG_BG": [
+          6570,
+          26706
+        ],
+        "insid3_cached": [
+          7876,
+          13158
+        ],
+        "foris_pre": [
+          7599,
+          21692
+        ],
+        "foris_native": [
+          7552,
+          17577
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 1306,
+          "add_FP": 998,
+          "delete_TP": 0,
+          "delete_FP": 14546
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 288,
+          "add_FP": 9233,
+          "delete_TP": 565,
+          "delete_FP": 699
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 333,
+          "add_FP": 5603,
+          "delete_TP": 657,
+          "delete_FP": 1184
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 193,
+          "add_FP": 302,
+          "delete_TP": 240,
+          "delete_FP": 4417
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 40,
+      "c": 27,
+      "support": "val2014/COCO_val2014_000000359066.jpg",
+      "query": "val2014/COCO_val2014_000000240185.jpg",
+      "cohort": "new40",
+      "key": "3_40_27",
+      "iu": {
+        "mean_FG_BG": [
+          26125,
+          542180
+        ],
+        "insid3_cached": [
+          24461,
+          32040
+        ],
+        "foris_pre": [
+          24417,
+          96238
+        ],
+        "foris_native": [
+          24237,
+          94700
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 1664,
+          "delete_FP": 510140
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 1188,
+          "add_FP": 64651,
+          "delete_TP": 1232,
+          "delete_FP": 453
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 1300,
+          "add_FP": 63435,
+          "delete_TP": 1524,
+          "delete_FP": 775
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 319,
+          "add_FP": 2446,
+          "delete_TP": 499,
+          "delete_FP": 3984
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 41,
+      "c": 79,
+      "support": "val2014/COCO_val2014_000000187177.jpg",
+      "query": "val2014/COCO_val2014_000000008418.jpg",
+      "cohort": "new40",
+      "key": "3_41_79",
+      "iu": {
+        "mean_FG_BG": [
+          64501,
+          477886
+        ],
+        "insid3_cached": [
+          60115,
+          276965
+        ],
+        "foris_pre": [
+          60737,
+          124703
+        ],
+        "foris_native": [
+          57324,
+          117257
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 4386,
+          "delete_FP": 200921
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 1321,
+          "add_FP": 2757,
+          "delete_TP": 699,
+          "delete_FP": 155019
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 1130,
+          "add_FP": 1424,
+          "delete_TP": 3921,
+          "delete_FP": 161132
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 402,
+          "add_FP": 4087,
+          "delete_TP": 3815,
+          "delete_FP": 11533
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 42,
+      "c": 31,
+      "support": "val2014/COCO_val2014_000000330205.jpg",
+      "query": "val2014/COCO_val2014_000000215914.jpg",
+      "cohort": "new40",
+      "key": "3_42_31",
+      "iu": {
+        "mean_FG_BG": [
+          14667,
+          59990
+        ],
+        "insid3_cached": [
+          13273,
+          29038
+        ],
+        "foris_pre": [
+          10391,
+          25014
+        ],
+        "foris_native": [
+          8732,
+          22782
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 154,
+          "add_FP": 614,
+          "delete_TP": 1548,
+          "delete_FP": 31566
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 400,
+          "add_FP": 556,
+          "delete_TP": 3282,
+          "delete_FP": 4580
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 247,
+          "add_FP": 461,
+          "delete_TP": 4788,
+          "delete_FP": 6717
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 505,
+          "add_FP": 634,
+          "delete_TP": 2164,
+          "delete_FP": 2866
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 43,
+      "c": 15,
+      "support": "val2014/COCO_val2014_000000449379.jpg",
+      "query": "val2014/COCO_val2014_000000504167.jpg",
+      "cohort": "new40",
+      "key": "3_43_15",
+      "iu": {
+        "mean_FG_BG": [
+          636769,
+          713393
+        ],
+        "insid3_cached": [
+          634236,
+          675593
+        ],
+        "foris_pre": [
+          591850,
+          655290
+        ],
+        "foris_native": [
+          590848,
+          653232
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 1081,
+          "add_FP": 688,
+          "delete_TP": 3614,
+          "delete_FP": 38488
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 976,
+          "add_FP": 604,
+          "delete_TP": 43362,
+          "delete_FP": 20907
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 900,
+          "add_FP": 414,
+          "delete_TP": 44288,
+          "delete_FP": 22775
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 5410,
+          "add_FP": 976,
+          "delete_TP": 6412,
+          "delete_FP": 3034
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 44,
+      "c": 59,
+      "support": "val2014/COCO_val2014_000000476664.jpg",
+      "query": "val2014/COCO_val2014_000000398489.jpg",
+      "cohort": "new40",
+      "key": "3_44_59",
+      "iu": {
+        "mean_FG_BG": [
+          257839,
+          837419
+        ],
+        "insid3_cached": [
+          18976,
+          824108
+        ],
+        "foris_pre": [
+          317215,
+          847118
+        ],
+        "foris_native": [
+          317509,
+          848487
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 1182,
+          "add_FP": 7876,
+          "delete_TP": 240045,
+          "delete_FP": 21187
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 298587,
+          "add_FP": 25183,
+          "delete_TP": 348,
+          "delete_FP": 2173
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 298937,
+          "add_FP": 26235,
+          "delete_TP": 404,
+          "delete_FP": 1856
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 598,
+          "add_FP": 2289,
+          "delete_TP": 304,
+          "delete_FP": 920
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 45,
+      "c": 71,
+      "support": "val2014/COCO_val2014_000000066879.jpg",
+      "query": "val2014/COCO_val2014_000000246106.jpg",
+      "cohort": "new40",
+      "key": "3_45_71",
+      "iu": {
+        "mean_FG_BG": [
+          8953,
+          124897
+        ],
+        "insid3_cached": [
+          8654,
+          11241
+        ],
+        "foris_pre": [
+          8975,
+          28145
+        ],
+        "foris_native": [
+          8950,
+          21693
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 299,
+          "delete_FP": 113656
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 321,
+          "add_FP": 16919,
+          "delete_TP": 0,
+          "delete_FP": 15
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 314,
+          "add_FP": 10856,
+          "delete_TP": 18,
+          "delete_FP": 404
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 3,
+          "add_FP": 1084,
+          "delete_TP": 28,
+          "delete_FP": 7536
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 46,
+      "c": 47,
+      "support": "val2014/COCO_val2014_000000548506.jpg",
+      "query": "val2014/COCO_val2014_000000203636.jpg",
+      "cohort": "new40",
+      "key": "3_46_47",
+      "iu": {
+        "mean_FG_BG": [
+          9358,
+          577375
+        ],
+        "insid3_cached": [
+          7605,
+          72223
+        ],
+        "foris_pre": [
+          198,
+          91829
+        ],
+        "foris_native": [
+          0,
+          92380
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 2422,
+          "delete_TP": 1753,
+          "delete_FP": 507574
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 0,
+          "add_FP": 59114,
+          "delete_TP": 7407,
+          "delete_FP": 39508
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 0,
+          "add_FP": 60486,
+          "delete_TP": 7605,
+          "delete_FP": 40329
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 0,
+          "add_FP": 7552,
+          "delete_TP": 198,
+          "delete_FP": 7001
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 47,
+      "c": 39,
+      "support": "val2014/COCO_val2014_000000449522.jpg",
+      "query": "val2014/COCO_val2014_000000439525.jpg",
+      "cohort": "new40",
+      "key": "3_47_39",
+      "iu": {
+        "mean_FG_BG": [
+          23483,
+          86534
+        ],
+        "insid3_cached": [
+          0,
+          44311
+        ],
+        "foris_pre": [
+          14853,
+          48218
+        ],
+        "foris_native": [
+          16397,
+          46222
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 512,
+          "delete_TP": 23483,
+          "delete_FP": 42735
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 14853,
+          "add_FP": 4363,
+          "delete_TP": 0,
+          "delete_FP": 456
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 16397,
+          "add_FP": 3820,
+          "delete_TP": 0,
+          "delete_FP": 1909
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 3730,
+          "add_FP": 1004,
+          "delete_TP": 2186,
+          "delete_FP": 3000
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "e": 48,
+      "c": 47,
+      "support": "val2014/COCO_val2014_000000406570.jpg",
+      "query": "val2014/COCO_val2014_000000098674.jpg",
+      "cohort": "new40",
+      "key": "3_48_47",
+      "iu": {
+        "mean_FG_BG": [
+          65110,
+          382515
+        ],
+        "insid3_cached": [
+          60320,
+          87373
+        ],
+        "foris_pre": [
+          59669,
+          86511
+        ],
+        "foris_native": [
+          57598,
+          82706
+        ]
+      },
+      "edits": {
+        "mean_FG_BG__to__insid3_cached": {
+          "add_TP": 0,
+          "add_FP": 164,
+          "delete_TP": 4790,
+          "delete_FP": 295306
+        },
+        "insid3_cached__to__foris_pre": {
+          "add_TP": 960,
+          "add_FP": 1656,
+          "delete_TP": 1611,
+          "delete_FP": 2518
+        },
+        "insid3_cached__to__foris_native": {
+          "add_TP": 961,
+          "add_FP": 885,
+          "delete_TP": 3683,
+          "delete_FP": 5552
+        },
+        "foris_pre__to__foris_native": {
+          "add_TP": 600,
+          "add_FP": 319,
+          "delete_TP": 2671,
+          "delete_FP": 4124
+        }
+      }
+    }
+  ]
+}

@@ -1,39 +1,31 @@
 # Status
 
-Updated 2026-10-05 13:10 CST. Replace, never append. At most 40 lines; history goes to the ledger in the direction's README.
+Updated 2026-10-05. This file records current state; detailed evidence is linked, not duplicated.
 
 ## Now
 
-- Live: `demo_lists/demo9_transductive_ics`. Server `ssh -p 48002 root@connect.westd.seetacloud.com`, no-card mode, nothing runs.
-- **The one next action:** in GPU mode start `session_all.sh` (PLAN.md): finer query tokens + layer probe for DEV241, read on
-  the server's CPUs; pipeline and CONFIRM600 stages skip themselves unless the DEV241 gate passes. Both preflights passed.
-- Work mode: the GPU fills a bank and confirms one frozen arm; arms are chosen on a CPU. The text-head gate is ready, held.
+- Repository/context cleanup is complete. No new research or remote execution was performed.
+- No validated paper method has been selected. Primary question and evidence: [CLAIM](../research/CLAIM.md).
+- New sessions use root `AGENTS.md` (shared directly with Claude Code), this file and CLAIM.
+- Pending and held work is centralized in [PLAN](../research/PLAN.md); dated plans are historical.
 
-## Measured
+## Measured / recorded
 
-COCO-20i 1-shot, standard list (4 x 1000, seed 0), class mIoU at original resolution.
+- The base-class-fitted FoRIS readout has an original-resolution CONFIRM600 positive result; it is supervised.
+- Dots' RCG result is on exposed old120 at 1024 working resolution, not original-resolution confirmation.
+- Original-resolution DEV241 matte did not establish an advantage over complete FoRIS or delete-only control.
+- SAM3 visual/naming results belong to a different resource setting. None establishes the primary DINO claim.
+- Numeric comparisons, intervals and sources are in CLAIM and the [ledger](../../evidence/local/RESULTS.md).
 
-| Method | Whole list (4000) | CONFIRM600 | 915 fresh |
-|---|---:|---:|---:|
-| FoRIS (public code; DINO only) | not run | 59.78 | not run |
-| FoRIS + read-out fitted on base classes | not run | 63.33, +3.54 [+1.96, +4.96] | not run |
-| SAM3 exemplar, proposals >= 0.7 x top score | 68.86 | 67.12 | 68.76 |
-| SAM3 exemplar or self-named, routed by confidence | 73.14 [71.85, 74.41] | 72.62 | 73.82 |
-| SAM3, true class name (privileged) | not run | 78.34 | 78.92 |
+## Unverified / held
 
-- FoRIS's errors: wrongly included regions resemble the reference more (0.53) than missed target parts (0.44); the true
-  share is worth +8.67 and four label-free estimates of it fail; contested-area AUC 0.664, best label-free reading 0.724.
-- CPU replay 2026-10-05 (DEV241, before the CRF, FoRIS 58.52; about 30 readings, README): none above +1. FoRIS uses the
-  reference as one mean vector (its other reference terms are inert). True pixels within 16 px of FoRIS's boundary: +15.8;
-  its CRF +0.5; mixing share on 64 x 64 tokens +0.88 [+0.50, +1.71]. Wrong objects far away: +12, untouched by any reading.
-- Published: INSID3 57.6, FoRIS 60.9 (DINOv3 only); UINO-FSS 64.5 (trained); FSS-SAM3 66.1; CG-ICS 72.3 (SAM3 + MLLM);
-  SegIC 76.1, UNICL-SAM 77.8 (trained on COCO).
-
-## Unverified
-
-- Whether the text head's patch tokens carry the category where FoRIS errs (gate held).
+- Dots records new100 predictions frozen but unscored, with 21 missing episodes; this is the imported snapshot,
+  not a live inventory. The bundle has small reports, not the complete cache or all reproduction scripts.
+- Original-resolution independent confirmation of the cloud candidate is absent.
+- Old experiment implementations are retired from the working tree; no research queue is prepared.
+- Server was last recorded in no-card mode. Current power, address validity and foreign jobs were not checked
+  in this cleanup. See [SERVER](SERVER.md) before any later authorized remote operation.
 
 ## Needed from the user
 
-- GPU mode: about 35 min if the boundary gate fails, 1.5 h if it passes; plus 20 to 60 min with the text-head gate (RUN_LANG=1).
-- Optional: results of the GPT chat/agent runs on the uploaded DEV241 archives; candidates are re-read on all 241 here.
+- Nothing for the cleanup. There is no automatic research queue to resume when a new session opens.

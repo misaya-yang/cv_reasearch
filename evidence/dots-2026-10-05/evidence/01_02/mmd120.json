@@ -1,0 +1,1427 @@
+{
+  "source_report": "cpu_method/mmd_hypotheses120/report.json",
+  "source_sha256": "ccd0bd1fce6fb9c0f0bc8ae01f0a20705648f5f25ed58be36126cbf7e71d9c5d",
+  "extracted_utc": "2026-10-05T07:45:00Z",
+  "extraction": "Only large per-episode/per-class arrays, file-hash maps, and raw audit arrays omitted; metric values unchanged.",
+  "report": {
+    "scope": "Exposed old120 development; fixed full bank and bandwidth, scores all frozen before I/U lookup. No new100 data, tuning, gates, or empty/altered masks.",
+    "generator": "RandomState(seed0),2000 photograph-group draws",
+    "fallback_counts": {
+      "rbf_mmd": 0,
+      "linear_mmd": 0,
+      "kde_cross_mean": 0,
+      "foreground_mean_dot": 0,
+      "foreground_mean_cos": 0
+    },
+    "cohorts": {
+      "old20": {
+        "episodes": 20,
+        "classes": 20,
+        "photograph_groups": 20,
+        "point_estimates_pp": {
+          "foreground_mean_cos": 64.66018668580209,
+          "foreground_mean_dot": 64.52586402310943,
+          "scalar_contrast": 69.0356542206484,
+          "query_saliency": 51.96618423016447,
+          "relative_context_cos": 62.99884759525762,
+          "insid3_default": 65.87337602575091,
+          "native_pre": 66.60337218300742,
+          "rbf_mmd": 59.087497901946435,
+          "linear_mmd": 61.941468609700806,
+          "kde_cross_mean": 64.52586402310943,
+          "rcg": 70.74267319858676,
+          "foris_native": 67.1431808272072,
+          "source_contrast_mean_existing": 66.48914344698122
+        },
+        "comparisons": {
+          "foreground_mean_cos__minus__native_pre": {
+            "gain_pp": -1.9431854972053344,
+            "ci95_pp": [
+              -5.4903681417156704,
+              1.5590240865477483
+            ],
+            "per_fold_gain_pp": {
+              "0": -4.048784362924436,
+              "1": -2.6966179241189456,
+              "2": 0.7639451657294558,
+              "3": -1.7912848675073838
+            },
+            "episodes_up": 7,
+            "episodes_down": 13,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "foreground_mean_dot__minus__native_pre": {
+            "gain_pp": -2.077508159897988,
+            "ci95_pp": [
+              -8.582781158518896,
+              4.504875943851227
+            ],
+            "per_fold_gain_pp": {
+              "0": -6.722033455741206,
+              "1": 2.4444525726549875,
+              "2": 0.991925988766414,
+              "3": -5.024377745272206
+            },
+            "episodes_up": 6,
+            "episodes_down": 14,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "scalar_contrast__minus__native_pre": {
+            "gain_pp": 2.4322820376409737,
+            "ci95_pp": [
+              -5.290991950290095,
+              9.221382550063725
+            ],
+            "per_fold_gain_pp": {
+              "0": 11.592962223024987,
+              "1": 5.943108946453364,
+              "2": -7.157305764526251,
+              "3": -0.6496372543882302
+            },
+            "episodes_up": 6,
+            "episodes_down": 14,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "query_saliency__minus__native_pre": {
+            "gain_pp": -14.63718795284295,
+            "ci95_pp": [
+              -27.354812583811206,
+              -1.3975645708826294
+            ],
+            "per_fold_gain_pp": {
+              "0": -19.970590380174826,
+              "1": -36.76891888624029,
+              "2": -9.910584990538974,
+              "3": 8.101342445582244
+            },
+            "episodes_up": 7,
+            "episodes_down": 13,
+            "episodes_tie": 0,
+            "interpretation": "negative"
+          },
+          "relative_context_cos__minus__native_pre": {
+            "gain_pp": -3.6045245877498004,
+            "ci95_pp": [
+              -8.681240782964277,
+              1.392457961971289
+            ],
+            "per_fold_gain_pp": {
+              "0": -7.18654359804562,
+              "1": 6.088549556628974,
+              "2": -8.265341547488845,
+              "3": -5.054762762093671
+            },
+            "episodes_up": 5,
+            "episodes_down": 15,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "insid3_default__minus__native_pre": {
+            "gain_pp": -0.7299961572565081,
+            "ci95_pp": [
+              -4.726442476876544,
+              3.218593200100472
+            ],
+            "per_fold_gain_pp": {
+              "0": -3.564821792948023,
+              "1": -5.843630439903054,
+              "2": 0.8912149808171336,
+              "3": 5.597252623007977
+            },
+            "episodes_up": 7,
+            "episodes_down": 13,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "rbf_mmd__minus__native_pre": {
+            "gain_pp": -7.515874281060988,
+            "ci95_pp": [
+              -10.988712065531502,
+              -3.8033781125247117
+            ],
+            "per_fold_gain_pp": {
+              "0": -4.048784362924436,
+              "1": -7.4416431333908495,
+              "2": -9.1344411284996,
+              "3": -9.438628499429084
+            },
+            "episodes_up": 3,
+            "episodes_down": 17,
+            "episodes_tie": 0,
+            "interpretation": "negative"
+          },
+          "linear_mmd__minus__native_pre": {
+            "gain_pp": -4.661903573306617,
+            "ci95_pp": [
+              -7.487271890653757,
+              -1.7060867563550706
+            ],
+            "per_fold_gain_pp": {
+              "0": -4.048784362924436,
+              "1": -9.091943488310577,
+              "2": -1.151314422065019,
+              "3": -4.355572019926507
+            },
+            "episodes_up": 5,
+            "episodes_down": 15,
+            "episodes_tie": 0,
+            "interpretation": "negative"
+          },
+          "kde_cross_mean__minus__native_pre": {
+            "gain_pp": -2.077508159897988,
+            "ci95_pp": [
+              -8.582781158518896,
+              4.504875943851227
+            ],
+            "per_fold_gain_pp": {
+              "0": -6.722033455741206,
+              "1": 2.4444525726549875,
+              "2": 0.991925988766414,
+              "3": -5.024377745272206
+            },
+            "episodes_up": 6,
+            "episodes_down": 14,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "rcg__minus__native_pre": {
+            "gain_pp": 4.139301015579335,
+            "ci95_pp": [
+              0.6177363277980075,
+              6.876593941618291
+            ],
+            "per_fold_gain_pp": {
+              "0": 1.8739044446573678,
+              "1": 7.462269923724267,
+              "2": 1.4460319012333387,
+              "3": 5.774997792702373
+            },
+            "episodes_up": 16,
+            "episodes_down": 4,
+            "episodes_tie": 0,
+            "interpretation": "positive"
+          },
+          "foris_native__minus__native_pre": {
+            "gain_pp": 0.5398086441997805,
+            "ci95_pp": [
+              0.1815595396185719,
+              0.9062282547887648
+            ],
+            "per_fold_gain_pp": {
+              "0": 1.1712944975655746,
+              "1": 0.6610900245765408,
+              "2": -0.26485289563571685,
+              "3": 0.5917029502927577
+            },
+            "episodes_up": 14,
+            "episodes_down": 6,
+            "episodes_tie": 0,
+            "interpretation": "positive"
+          },
+          "source_contrast_mean_existing__minus__native_pre": {
+            "gain_pp": -0.11422873602620598,
+            "ci95_pp": [
+              -8.915167521592851,
+              8.111334059236441
+            ],
+            "per_fold_gain_pp": {
+              "0": 7.537646436361433,
+              "1": 2.4444525726549875,
+              "2": 0.8912149808171336,
+              "3": -11.33022893393838
+            },
+            "episodes_up": 5,
+            "episodes_down": 15,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "rbf_mmd__minus__linear_mmd": {
+            "gain_pp": -2.853970707754371,
+            "ci95_pp": [
+              -7.586246804489797,
+              1.6990356181070396
+            ],
+            "per_fold_gain_pp": {
+              "0": 0.0,
+              "1": 1.6503003549197275,
+              "2": -7.9831267064345806,
+              "3": -5.083056479502577
+            },
+            "episodes_up": 1,
+            "episodes_down": 4,
+            "episodes_tie": 15,
+            "interpretation": "observed_unresolved"
+          },
+          "rbf_mmd__minus__kde_cross_mean": {
+            "gain_pp": -5.438366121163,
+            "ci95_pp": [
+              -12.304941313539507,
+              1.2736001318289156
+            ],
+            "per_fold_gain_pp": {
+              "0": 2.673249092816769,
+              "1": -9.886095706045834,
+              "2": -10.126367117266014,
+              "3": -4.414250754156877
+            },
+            "episodes_up": 4,
+            "episodes_down": 10,
+            "episodes_tie": 6,
+            "interpretation": "observed_unresolved"
+          },
+          "rbf_mmd__minus__foreground_mean_dot": {
+            "gain_pp": -5.438366121163,
+            "ci95_pp": [
+              -12.304941313539507,
+              1.2736001318289156
+            ],
+            "per_fold_gain_pp": {
+              "0": 2.673249092816769,
+              "1": -9.886095706045834,
+              "2": -10.126367117266014,
+              "3": -4.414250754156877
+            },
+            "episodes_up": 4,
+            "episodes_down": 10,
+            "episodes_tie": 6,
+            "interpretation": "observed_unresolved"
+          },
+          "rbf_mmd__minus__foreground_mean_cos": {
+            "gain_pp": -5.572688783855654,
+            "ci95_pp": [
+              -10.298976478825814,
+              -1.0069759298376286
+            ],
+            "per_fold_gain_pp": {
+              "0": 0.0,
+              "1": -4.745025209271903,
+              "2": -9.898386294229056,
+              "3": -7.6473436319217
+            },
+            "episodes_up": 1,
+            "episodes_down": 9,
+            "episodes_tie": 10,
+            "interpretation": "negative"
+          },
+          "rbf_mmd__minus__source_contrast_mean_existing": {
+            "gain_pp": -7.401645545034782,
+            "ci95_pp": [
+              -15.461012282050586,
+              0.6680200277838677
+            ],
+            "per_fold_gain_pp": {
+              "0": -11.58643079928587,
+              "1": -9.886095706045834,
+              "2": -10.025656109316733,
+              "3": 1.8916004345092958
+            },
+            "episodes_up": 4,
+            "episodes_down": 11,
+            "episodes_tie": 5,
+            "interpretation": "observed_unresolved"
+          },
+          "rbf_mmd__minus__insid3_default": {
+            "gain_pp": -6.78587812380448,
+            "ci95_pp": [
+              -12.208754381821317,
+              -1.597110996659049
+            ],
+            "per_fold_gain_pp": {
+              "0": -0.48396256997641274,
+              "1": -1.5980126934877945,
+              "2": -10.025656109316733,
+              "3": -15.035881122437061
+            },
+            "episodes_up": 3,
+            "episodes_down": 12,
+            "episodes_tie": 5,
+            "interpretation": "negative"
+          },
+          "rbf_mmd__minus__rcg": {
+            "gain_pp": -11.655175296640323,
+            "ci95_pp": [
+              -15.777641605534896,
+              -7.344555633033182
+            ],
+            "per_fold_gain_pp": {
+              "0": -5.922688807581804,
+              "1": -14.903913057115114,
+              "2": -10.58047302973294,
+              "3": -15.213626292131456
+            },
+            "episodes_up": 2,
+            "episodes_down": 18,
+            "episodes_tie": 0,
+            "interpretation": "negative"
+          }
+        },
+        "omitted_noncommon_arms": [],
+        "bootstrap_represented_classes": {
+          "minimum": 8,
+          "mean": 12.8265,
+          "maximum": 17
+        },
+        "independent_verification": null
+      },
+      "new40": {
+        "episodes": 40,
+        "classes": 30,
+        "photograph_groups": 40,
+        "point_estimates_pp": {
+          "foreground_mean_cos": 53.35253519195687,
+          "foreground_mean_dot": 54.31201546671858,
+          "scalar_contrast": 54.691157623664104,
+          "query_saliency": 46.29571447981012,
+          "relative_context_cos": 51.85376848269064,
+          "insid3_default": 56.086238514365284,
+          "native_pre": 58.058917784610415,
+          "rbf_mmd": 48.64063389205774,
+          "linear_mmd": 50.35052660943318,
+          "kde_cross_mean": 54.46624878983639,
+          "rcg": 61.48162333277131,
+          "foris_native": 58.861615922212735,
+          "source_contrast_mean_existing": 56.77744890660929
+        },
+        "comparisons": {
+          "foreground_mean_cos__minus__native_pre": {
+            "gain_pp": -4.706382592653547,
+            "ci95_pp": [
+              -9.400546726686363,
+              0.2588215828822928
+            ],
+            "per_fold_gain_pp": {
+              "0": -15.86873115357991,
+              "1": -2.1390488132357866,
+              "2": -9.641307612349342,
+              "3": 6.811398010973045
+            },
+            "episodes_up": 15,
+            "episodes_down": 25,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "foreground_mean_dot__minus__native_pre": {
+            "gain_pp": -3.7469023178918377,
+            "ci95_pp": [
+              -9.24688454234089,
+              1.7426530713977901
+            ],
+            "per_fold_gain_pp": {
+              "0": -11.163395593837647,
+              "1": -2.3967472908365504,
+              "2": -8.36835400959842,
+              "3": 5.43614450174875
+            },
+            "episodes_up": 17,
+            "episodes_down": 23,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "scalar_contrast__minus__native_pre": {
+            "gain_pp": -3.367760160946311,
+            "ci95_pp": [
+              -9.675771480982613,
+              0.9583013145757823
+            ],
+            "per_fold_gain_pp": {
+              "0": -11.335192060152906,
+              "1": -2.48381134813839,
+              "2": -1.9739071213331865,
+              "3": 1.5001725283900553
+            },
+            "episodes_up": 17,
+            "episodes_down": 23,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "query_saliency__minus__native_pre": {
+            "gain_pp": -11.763203304800292,
+            "ci95_pp": [
+              -20.650745889939202,
+              -2.9390890229247497
+            ],
+            "per_fold_gain_pp": {
+              "0": -33.00285495167932,
+              "1": -13.593733583145436,
+              "2": -4.970631361386942,
+              "3": 2.7085217140772926
+            },
+            "episodes_up": 11,
+            "episodes_down": 29,
+            "episodes_tie": 0,
+            "interpretation": "negative"
+          },
+          "relative_context_cos__minus__native_pre": {
+            "gain_pp": -6.205149301919775,
+            "ci95_pp": [
+              -12.211228092380411,
+              -2.278150206094568
+            ],
+            "per_fold_gain_pp": {
+              "0": -15.925737946823105,
+              "1": -4.036704105759304,
+              "2": -3.2468607240841076,
+              "3": -2.456581939396062
+            },
+            "episodes_up": 13,
+            "episodes_down": 27,
+            "episodes_tie": 0,
+            "interpretation": "negative"
+          },
+          "insid3_default__minus__native_pre": {
+            "gain_pp": -1.9726792702451306,
+            "ci95_pp": [
+              -7.412554545823635,
+              3.1751850276629514
+            ],
+            "per_fold_gain_pp": {
+              "0": -10.657068851866455,
+              "1": -1.6787322987724038,
+              "2": 1.6505547976606851,
+              "3": 2.1618848327832354
+            },
+            "episodes_up": 18,
+            "episodes_down": 22,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "rbf_mmd__minus__native_pre": {
+            "gain_pp": -9.418283892552672,
+            "ci95_pp": [
+              -15.099204432317839,
+              -2.792348009879398
+            ],
+            "per_fold_gain_pp": {
+              "0": -17.109906301358006,
+              "1": -13.527326415009606,
+              "2": -4.479880318432002,
+              "3": -2.9001748897467112
+            },
+            "episodes_up": 14,
+            "episodes_down": 26,
+            "episodes_tie": 0,
+            "interpretation": "negative"
+          },
+          "linear_mmd__minus__native_pre": {
+            "gain_pp": -7.708391175177233,
+            "ci95_pp": [
+              -11.76408023773493,
+              -2.784686414480138
+            ],
+            "per_fold_gain_pp": {
+              "0": -17.664136473875587,
+              "1": -2.1390488132357866,
+              "2": -9.65895065198183,
+              "3": -2.8597168585535955
+            },
+            "episodes_up": 12,
+            "episodes_down": 28,
+            "episodes_tie": 0,
+            "interpretation": "negative"
+          },
+          "kde_cross_mean__minus__native_pre": {
+            "gain_pp": -3.592668994774023,
+            "ci95_pp": [
+              -9.057579944916386,
+              1.843263432326484
+            ],
+            "per_fold_gain_pp": {
+              "0": -11.163395593837647,
+              "1": -2.3967472908365504,
+              "2": -8.36835400959842,
+              "3": 6.014519463440532
+            },
+            "episodes_up": 18,
+            "episodes_down": 22,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "rcg__minus__native_pre": {
+            "gain_pp": 3.4227055481608986,
+            "ci95_pp": [
+              0.4448348461693641,
+              5.803993710052762
+            ],
+            "per_fold_gain_pp": {
+              "0": 0.3965054197451415,
+              "1": 0.547740730138867,
+              "2": 0.9857894022857856,
+              "3": 11.077897106187502
+            },
+            "episodes_up": 22,
+            "episodes_down": 18,
+            "episodes_tie": 0,
+            "interpretation": "positive"
+          },
+          "foris_native__minus__native_pre": {
+            "gain_pp": 0.8026981376023201,
+            "ci95_pp": [
+              0.006841611550957973,
+              1.4712799876398195
+            ],
+            "per_fold_gain_pp": {
+              "0": 0.4421067576015259,
+              "1": 1.2569689508547293,
+              "2": -0.1877188706821618,
+              "3": 1.530559664099508
+            },
+            "episodes_up": 23,
+            "episodes_down": 17,
+            "episodes_tie": 0,
+            "interpretation": "positive"
+          },
+          "source_contrast_mean_existing__minus__native_pre": {
+            "gain_pp": -1.281468878001128,
+            "ci95_pp": [
+              -8.138786234411096,
+              3.169431152392934
+            ],
+            "per_fold_gain_pp": {
+              "0": -11.347101185400971,
+              "1": -1.6579666725128255,
+              "2": -2.8710228921222885,
+              "3": 9.293316947841474
+            },
+            "episodes_up": 17,
+            "episodes_down": 23,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "rbf_mmd__minus__linear_mmd": {
+            "gain_pp": -1.709892717375439,
+            "ci95_pp": [
+              -5.315782810923521,
+              2.377100997144588
+            ],
+            "per_fold_gain_pp": {
+              "0": 0.5542301725175821,
+              "1": -11.388277601773819,
+              "2": 5.179070333549828,
+              "3": -0.040458031193115834
+            },
+            "episodes_up": 3,
+            "episodes_down": 9,
+            "episodes_tie": 28,
+            "interpretation": "observed_unresolved"
+          },
+          "rbf_mmd__minus__kde_cross_mean": {
+            "gain_pp": -5.8256148977786495,
+            "ci95_pp": [
+              -11.389781809907529,
+              0.8193893768533882
+            ],
+            "per_fold_gain_pp": {
+              "0": -5.946510707520359,
+              "1": -11.130579124173055,
+              "2": 3.888473691166417,
+              "3": -8.914694353187244
+            },
+            "episodes_up": 5,
+            "episodes_down": 15,
+            "episodes_tie": 20,
+            "interpretation": "observed_unresolved"
+          },
+          "rbf_mmd__minus__foreground_mean_dot": {
+            "gain_pp": -5.671381574660835,
+            "ci95_pp": [
+              -11.250528929936651,
+              1.0050274664801984
+            ],
+            "per_fold_gain_pp": {
+              "0": -5.946510707520359,
+              "1": -11.130579124173055,
+              "2": 3.888473691166417,
+              "3": -8.336319391495461
+            },
+            "episodes_up": 6,
+            "episodes_down": 15,
+            "episodes_tie": 19,
+            "interpretation": "observed_unresolved"
+          },
+          "rbf_mmd__minus__foreground_mean_cos": {
+            "gain_pp": -4.711901299899125,
+            "ci95_pp": [
+              -9.615341413980072,
+              1.455232002392984
+            ],
+            "per_fold_gain_pp": {
+              "0": -1.2411751477780955,
+              "1": -11.388277601773819,
+              "2": 5.161427293917337,
+              "3": -9.711572900719757
+            },
+            "episodes_up": 3,
+            "episodes_down": 11,
+            "episodes_tie": 26,
+            "interpretation": "observed_unresolved"
+          },
+          "rbf_mmd__minus__source_contrast_mean_existing": {
+            "gain_pp": -8.136815014551544,
+            "ci95_pp": [
+              -12.705791206034784,
+              -0.8482581909094794
+            ],
+            "per_fold_gain_pp": {
+              "0": -5.762805115957034,
+              "1": -11.86935974249678,
+              "2": -1.6088574263097146,
+              "3": -12.193491837588184
+            },
+            "episodes_up": 6,
+            "episodes_down": 16,
+            "episodes_tie": 18,
+            "interpretation": "negative"
+          },
+          "rbf_mmd__minus__insid3_default": {
+            "gain_pp": -7.445604622307542,
+            "ci95_pp": [
+              -13.034621720811634,
+              -0.6047371238397907
+            ],
+            "per_fold_gain_pp": {
+              "0": -6.452837449491548,
+              "1": -11.848594116237201,
+              "2": -6.130435116092689,
+              "3": -5.062059722529947
+            },
+            "episodes_up": 4,
+            "episodes_down": 16,
+            "episodes_tie": 20,
+            "interpretation": "negative"
+          },
+          "rbf_mmd__minus__rcg": {
+            "gain_pp": -12.840989440713571,
+            "ci95_pp": [
+              -19.496698433520066,
+              -4.803738994725533
+            ],
+            "per_fold_gain_pp": {
+              "0": -17.506411721103145,
+              "1": -14.075067145148473,
+              "2": -5.465669720717789,
+              "3": -13.978071995934211
+            },
+            "episodes_up": 15,
+            "episodes_down": 25,
+            "episodes_tie": 0,
+            "interpretation": "negative"
+          }
+        },
+        "omitted_noncommon_arms": [],
+        "bootstrap_represented_classes": {
+          "minimum": 14,
+          "mean": 21.3035,
+          "maximum": 27
+        },
+        "independent_verification": null
+      },
+      "new60": {
+        "episodes": 60,
+        "classes": 45,
+        "photograph_groups": 60,
+        "point_estimates_pp": {
+          "foreground_mean_cos": 60.671237894355876,
+          "foreground_mean_dot": 61.2823365119874,
+          "scalar_contrast": 65.10135548916703,
+          "query_saliency": 44.430821444319854,
+          "relative_context_cos": 57.89238274124512,
+          "insid3_default": 61.746199171524,
+          "native_pre": 60.87454923166539,
+          "rbf_mmd": 49.75153264901363,
+          "linear_mmd": 55.801702773952385,
+          "kde_cross_mean": 61.37371678518052,
+          "rcg": 63.08954681493703,
+          "foris_native": 61.84526620890088,
+          "source_contrast_mean_existing": 63.44413712109087
+        },
+        "comparisons": {
+          "foreground_mean_cos__minus__native_pre": {
+            "gain_pp": -0.20331133730951478,
+            "ci95_pp": [
+              -4.8059566583533,
+              2.8785426040965643
+            ],
+            "per_fold_gain_pp": {
+              "0": 1.0822596371009165,
+              "1": 11.500796995505988,
+              "2": -5.268199009820094,
+              "3": -8.542650465686476
+            },
+            "episodes_up": 21,
+            "episodes_down": 39,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "foreground_mean_dot__minus__native_pre": {
+            "gain_pp": 0.4077872803220117,
+            "ci95_pp": [
+              -4.326789239465639,
+              3.844580628084611
+            ],
+            "per_fold_gain_pp": {
+              "0": 1.6492735045902698,
+              "1": 12.163615963433427,
+              "2": -1.228563787340934,
+              "3": -12.049786459027017
+            },
+            "episodes_up": 22,
+            "episodes_down": 38,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "scalar_contrast__minus__native_pre": {
+            "gain_pp": 4.226806257501643,
+            "ci95_pp": [
+              0.6195434204099838,
+              8.017855974853015
+            ],
+            "per_fold_gain_pp": {
+              "0": -0.31048418127149385,
+              "1": 8.861264638763721,
+              "2": 5.831725093371193,
+              "3": 2.6477479615975916
+            },
+            "episodes_up": 28,
+            "episodes_down": 32,
+            "episodes_tie": 0,
+            "interpretation": "positive"
+          },
+          "query_saliency__minus__native_pre": {
+            "gain_pp": -16.443727787345537,
+            "ci95_pp": [
+              -21.88746965017299,
+              -8.963350338313905
+            ],
+            "per_fold_gain_pp": {
+              "0": -24.815839867719315,
+              "1": -11.346510801360022,
+              "2": -3.146406630886356,
+              "3": -27.960917363232177
+            },
+            "episodes_up": 14,
+            "episodes_down": 46,
+            "episodes_tie": 0,
+            "interpretation": "negative"
+          },
+          "relative_context_cos__minus__native_pre": {
+            "gain_pp": -2.982166490420269,
+            "ci95_pp": [
+              -7.5011347405600866,
+              1.997269985794361
+            ],
+            "per_fold_gain_pp": {
+              "0": -9.623307374523696,
+              "1": 6.2582745407878,
+              "2": -1.1339945215547214,
+              "3": -7.3950889264638064
+            },
+            "episodes_up": 21,
+            "episodes_down": 39,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "insid3_default__minus__native_pre": {
+            "gain_pp": 0.8716499398586066,
+            "ci95_pp": [
+              -3.0659583167847306,
+              4.3967598732561495
+            ],
+            "per_fold_gain_pp": {
+              "0": -0.09057158066387494,
+              "1": 12.753173014623458,
+              "2": -1.228563787340934,
+              "3": -8.523103145116378
+            },
+            "episodes_up": 24,
+            "episodes_down": 36,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "rbf_mmd__minus__native_pre": {
+            "gain_pp": -11.123016582651758,
+            "ci95_pp": [
+              -16.552745220815588,
+              -4.988171114353366
+            ],
+            "per_fold_gain_pp": {
+              "0": -17.940665210970874,
+              "1": 8.172689081928562,
+              "2": -6.952364249743792,
+              "3": -29.17189725919686
+            },
+            "episodes_up": 17,
+            "episodes_down": 43,
+            "episodes_tie": 0,
+            "interpretation": "negative"
+          },
+          "linear_mmd__minus__native_pre": {
+            "gain_pp": -5.0728464577130055,
+            "ci95_pp": [
+              -9.880978259645566,
+              -0.8324328834459227
+            ],
+            "per_fold_gain_pp": {
+              "0": -7.515377710419789,
+              "1": 8.172689081928562,
+              "2": -5.273340148519491,
+              "3": -16.47130561910286
+            },
+            "episodes_up": 21,
+            "episodes_down": 39,
+            "episodes_tie": 0,
+            "interpretation": "negative"
+          },
+          "kde_cross_mean__minus__native_pre": {
+            "gain_pp": 0.49916755351512876,
+            "ci95_pp": [
+              -4.252000126342754,
+              3.927396870198776
+            ],
+            "per_fold_gain_pp": {
+              "0": 1.6492735045902698,
+              "1": 12.537444353768889,
+              "2": -1.228563787340934,
+              "3": -12.049786459027017
+            },
+            "episodes_up": 22,
+            "episodes_down": 38,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "rcg__minus__native_pre": {
+            "gain_pp": 2.2149975832716393,
+            "ci95_pp": [
+              0.5148018731668861,
+              3.8048366413919066
+            ],
+            "per_fold_gain_pp": {
+              "0": 5.643910837809625,
+              "1": 1.6644954282820257,
+              "2": 1.0720383895437322,
+              "3": 0.07740508078808617
+            },
+            "episodes_up": 39,
+            "episodes_down": 21,
+            "episodes_tie": 0,
+            "interpretation": "positive"
+          },
+          "foris_native__minus__native_pre": {
+            "gain_pp": 0.9707169772354902,
+            "ci95_pp": [
+              0.3429163980932106,
+              1.4740201529007484
+            ],
+            "per_fold_gain_pp": {
+              "0": 1.2400238707217888,
+              "1": 0.29556696227395773,
+              "2": 0.5798880046537337,
+              "3": 1.8592084886076836
+            },
+            "episodes_up": 43,
+            "episodes_down": 17,
+            "episodes_tie": 0,
+            "interpretation": "positive"
+          },
+          "source_contrast_mean_existing__minus__native_pre": {
+            "gain_pp": 2.5695878894254776,
+            "ci95_pp": [
+              -0.7042333842700428,
+              6.014496353198655
+            ],
+            "per_fold_gain_pp": {
+              "0": 1.2934539085508618,
+              "1": 3.798747785722924,
+              "2": 5.908270451026958,
+              "3": -1.2575462933740487
+            },
+            "episodes_up": 25,
+            "episodes_down": 35,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "rbf_mmd__minus__linear_mmd": {
+            "gain_pp": -6.050170124938752,
+            "ci95_pp": [
+              -11.155225456075993,
+              -0.8059482571432292
+            ],
+            "per_fold_gain_pp": {
+              "0": -10.425287500551079,
+              "1": 0.0,
+              "2": -1.6790241012243012,
+              "3": -12.700591640093995
+            },
+            "episodes_up": 2,
+            "episodes_down": 10,
+            "episodes_tie": 48,
+            "interpretation": "negative"
+          },
+          "rbf_mmd__minus__kde_cross_mean": {
+            "gain_pp": -11.622184136166887,
+            "ci95_pp": [
+              -16.18000810883707,
+              -5.267847153641864
+            ],
+            "per_fold_gain_pp": {
+              "0": -19.58993871556114,
+              "1": -4.364755271840327,
+              "2": -5.723800462402859,
+              "3": -17.12211080016984
+            },
+            "episodes_up": 8,
+            "episodes_down": 27,
+            "episodes_tie": 25,
+            "interpretation": "negative"
+          },
+          "rbf_mmd__minus__foreground_mean_dot": {
+            "gain_pp": -11.53080386297377,
+            "ci95_pp": [
+              -16.10919163065166,
+              -5.157421720397879
+            ],
+            "per_fold_gain_pp": {
+              "0": -19.58993871556114,
+              "1": -3.990926881504865,
+              "2": -5.723800462402859,
+              "3": -17.12211080016984
+            },
+            "episodes_up": 9,
+            "episodes_down": 27,
+            "episodes_tie": 24,
+            "interpretation": "negative"
+          },
+          "rbf_mmd__minus__foreground_mean_cos": {
+            "gain_pp": -10.919705245342243,
+            "ci95_pp": [
+              -14.9663316557135,
+              -4.824839728696044
+            ],
+            "per_fold_gain_pp": {
+              "0": -19.02292484807179,
+              "1": -3.3281079135774263,
+              "2": -1.6841652399236982,
+              "3": -20.629246793510383
+            },
+            "episodes_up": 4,
+            "episodes_down": 21,
+            "episodes_tie": 35,
+            "interpretation": "negative"
+          },
+          "rbf_mmd__minus__source_contrast_mean_existing": {
+            "gain_pp": -13.692604472077235,
+            "ci95_pp": [
+              -19.041567375698623,
+              -7.9003125103699166
+            ],
+            "per_fold_gain_pp": {
+              "0": -19.23411911952173,
+              "1": 4.373941296205637,
+              "2": -12.86063470077075,
+              "3": -27.91435096582281
+            },
+            "episodes_up": 8,
+            "episodes_down": 30,
+            "episodes_tie": 22,
+            "interpretation": "negative"
+          },
+          "rbf_mmd__minus__insid3_default": {
+            "gain_pp": -11.994666522510364,
+            "ci95_pp": [
+              -17.13748235060144,
+              -6.0479631776400655
+            ],
+            "per_fold_gain_pp": {
+              "0": -17.850093630306993,
+              "1": -4.580483932694897,
+              "2": -5.723800462402859,
+              "3": -20.648794114080477
+            },
+            "episodes_up": 10,
+            "episodes_down": 29,
+            "episodes_tie": 21,
+            "interpretation": "negative"
+          },
+          "rbf_mmd__minus__rcg": {
+            "gain_pp": -13.338014165923397,
+            "ci95_pp": [
+              -19.447407992030353,
+              -6.594707587310132
+            ],
+            "per_fold_gain_pp": {
+              "0": -23.58457604878049,
+              "1": 6.5081936536465355,
+              "2": -8.024402639287528,
+              "3": -29.24930233998495
+            },
+            "episodes_up": 14,
+            "episodes_down": 46,
+            "episodes_tie": 0,
+            "interpretation": "negative"
+          }
+        },
+        "omitted_noncommon_arms": [],
+        "bootstrap_represented_classes": {
+          "minimum": 24,
+          "mean": 31.7865,
+          "maximum": 39
+        },
+        "independent_verification": null
+      },
+      "pooled120": {
+        "episodes": 120,
+        "classes": 67,
+        "photograph_groups": 120,
+        "point_estimates_pp": {
+          "foreground_mean_cos": 60.84153236987562,
+          "foreground_mean_dot": 60.97229834436975,
+          "scalar_contrast": 63.806820354459205,
+          "query_saliency": 46.681314421066936,
+          "relative_context_cos": 58.90333103418926,
+          "insid3_default": 62.189277959084784,
+          "native_pre": 61.1557104828444,
+          "rbf_mmd": 52.744357836137446,
+          "linear_mmd": 57.60722181327029,
+          "kde_cross_mean": 61.102732851641754,
+          "rcg": 63.72299552522738,
+          "foris_native": 62.01755273696959,
+          "source_contrast_mean_existing": 62.63980747570246
+        },
+        "comparisons": {
+          "foreground_mean_cos__minus__native_pre": {
+            "gain_pp": -0.31417811296877574,
+            "ci95_pp": [
+              -3.865148353518884,
+              1.590167376401991
+            ],
+            "per_fold_gain_pp": {
+              "0": -2.6811106181406004,
+              "1": 5.743482658211146,
+              "2": -2.567426181611597,
+              "3": -1.8775149945761276
+            },
+            "episodes_up": 43,
+            "episodes_down": 77,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "foreground_mean_dot__minus__native_pre": {
+            "gain_pp": -0.183412138474651,
+            "ci95_pp": [
+              -4.225819426438633,
+              2.7096902064416866
+            ],
+            "per_fold_gain_pp": {
+              "0": -1.707523672667751,
+              "1": 6.417706795293346,
+              "2": -0.2973507533444982,
+              "3": -5.07023184644717
+            },
+            "episodes_up": 45,
+            "episodes_down": 75,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "scalar_contrast__minus__native_pre": {
+            "gain_pp": 2.651109871614807,
+            "ci95_pp": [
+              -1.0373222071621768,
+              5.079910727860776
+            ],
+            "per_fold_gain_pp": {
+              "0": 0.4169284761383365,
+              "1": 4.2634838457399775,
+              "2": 2.2807124583057585,
+              "3": 3.7311609750315293
+            },
+            "episodes_up": 51,
+            "episodes_down": 69,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "query_saliency__minus__native_pre": {
+            "gain_pp": -14.474396061777462,
+            "ci95_pp": [
+              -19.831210346555775,
+              -8.903620538170737
+            ],
+            "per_fold_gain_pp": {
+              "0": -26.026918134796386,
+              "1": -18.48640914480116,
+              "2": 1.0538430732100632,
+              "3": -11.93168825584041
+            },
+            "episodes_up": 32,
+            "episodes_down": 88,
+            "episodes_tie": 0,
+            "interpretation": "negative"
+          },
+          "relative_context_cos__minus__native_pre": {
+            "gain_pp": -2.252379448655141,
+            "ci95_pp": [
+              -6.308779366318471,
+              -0.01790144965498436
+            ],
+            "per_fold_gain_pp": {
+              "0": -8.159089308948351,
+              "1": 2.485273706306061,
+              "2": -0.8699238499402914,
+              "3": -1.9556829857013662
+            },
+            "episodes_up": 39,
+            "episodes_down": 81,
+            "episodes_tie": 0,
+            "interpretation": "negative"
+          },
+          "insid3_default__minus__native_pre": {
+            "gain_pp": 1.0335674762403855,
+            "ci95_pp": [
+              -2.747141876762758,
+              3.82926440500039
+            ],
+            "per_fold_gain_pp": {
+              "0": -1.661297258095277,
+              "1": 5.8922791049343965,
+              "2": 2.394199234668974,
+              "3": -2.172315397064634
+            },
+            "episodes_up": 49,
+            "episodes_down": 71,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "rbf_mmd__minus__native_pre": {
+            "gain_pp": -8.411352646706952,
+            "ci95_pp": [
+              -12.697234308472071,
+              -4.917604009652693
+            ],
+            "per_fold_gain_pp": {
+              "0": -11.733025235505993,
+              "1": -0.6753849204250892,
+              "2": -6.884554681626764,
+              "3": -13.977429954037088
+            },
+            "episodes_up": 34,
+            "episodes_down": 86,
+            "episodes_tie": 0,
+            "interpretation": "negative"
+          },
+          "linear_mmd__minus__native_pre": {
+            "gain_pp": -3.5484886695741054,
+            "ci95_pp": [
+              -7.812654028782504,
+              -1.7264505105587091
+            ],
+            "per_fold_gain_pp": {
+              "0": -6.8151503565621105,
+              "1": 3.043075659256231,
+              "2": -3.5442255409339385,
+              "3": -6.684996325687878
+            },
+            "episodes_up": 38,
+            "episodes_down": 82,
+            "episodes_tie": 0,
+            "interpretation": "negative"
+          },
+          "kde_cross_mean__minus__native_pre": {
+            "gain_pp": -0.052977631202644204,
+            "ci95_pp": [
+              -4.101061487406145,
+              2.8294474791262774
+            ],
+            "per_fold_gain_pp": {
+              "0": -1.707523672667751,
+              "1": 6.659595753745703,
+              "2": -0.2973507533444982,
+              "3": -4.798055393886331
+            },
+            "episodes_up": 46,
+            "episodes_down": 74,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "rcg__minus__native_pre": {
+            "gain_pp": 2.5672850423829843,
+            "ci95_pp": [
+              1.1507155734419807,
+              4.1299409592268574
+            ],
+            "per_fold_gain_pp": {
+              "0": 4.183144742760871,
+              "1": 1.3259863131284542,
+              "2": 1.8163903930012508,
+              "3": 2.760227603044836
+            },
+            "episodes_up": 77,
+            "episodes_down": 43,
+            "episodes_tie": 0,
+            "interpretation": "positive"
+          },
+          "foris_native__minus__native_pre": {
+            "gain_pp": 0.8618422541251931,
+            "ci95_pp": [
+              0.3877748895411889,
+              1.186456697953561
+            ],
+            "per_fold_gain_pp": {
+              "0": 1.0182874585640467,
+              "1": 0.7209885440344531,
+              "2": 0.6247384936660846,
+              "3": 1.0462573010975544
+            },
+            "episodes_up": 80,
+            "episodes_down": 40,
+            "episodes_tie": 0,
+            "interpretation": "positive"
+          },
+          "source_contrast_mean_existing__minus__native_pre": {
+            "gain_pp": 1.4840969928580634,
+            "ci95_pp": [
+              -1.9338361025192434,
+              4.152741935439342
+            ],
+            "per_fold_gain_pp": {
+              "0": 0.35407459702432537,
+              "1": 1.1416417041922187,
+              "2": 4.739879700297976,
+              "3": 0.15029713525380703
+            },
+            "episodes_up": 47,
+            "episodes_down": 73,
+            "episodes_tie": 0,
+            "interpretation": "observed_unresolved"
+          },
+          "rbf_mmd__minus__linear_mmd": {
+            "gain_pp": -4.862863977132847,
+            "ci95_pp": [
+              -7.4367016066481835,
+              -0.9947475460411297
+            ],
+            "per_fold_gain_pp": {
+              "0": -4.917874878943881,
+              "1": -3.7184605796813206,
+              "2": -3.3403291406928246,
+              "3": -7.29243362834921
+            },
+            "episodes_up": 6,
+            "episodes_down": 23,
+            "episodes_tie": 91,
+            "interpretation": "negative"
+          },
+          "rbf_mmd__minus__kde_cross_mean": {
+            "gain_pp": -8.358375015504308,
+            "ci95_pp": [
+              -12.232422926630784,
+              -3.9497230450599368
+            ],
+            "per_fold_gain_pp": {
+              "0": -10.02550156283824,
+              "1": -7.334980674170793,
+              "2": -6.587203928282264,
+              "3": -9.179374560150755
+            },
+            "episodes_up": 17,
+            "episodes_down": 52,
+            "episodes_tie": 51,
+            "interpretation": "negative"
+          },
+          "rbf_mmd__minus__foreground_mean_dot": {
+            "gain_pp": -8.227940508232301,
+            "ci95_pp": [
+              -12.137712536555611,
+              -3.862500412077284
+            ],
+            "per_fold_gain_pp": {
+              "0": -10.02550156283824,
+              "1": -7.093091715718435,
+              "2": -6.587203928282264,
+              "3": -8.907198107589917
+            },
+            "episodes_up": 19,
+            "episodes_down": 52,
+            "episodes_tie": 49,
+            "interpretation": "negative"
+          },
+          "rbf_mmd__minus__foreground_mean_cos": {
+            "gain_pp": -8.097174533738176,
+            "ci95_pp": [
+              -11.372462828431745,
+              -4.058223208619567
+            ],
+            "per_fold_gain_pp": {
+              "0": -9.05191461736539,
+              "1": -6.418867578636236,
+              "2": -4.317128500015167,
+              "3": -12.099914959460959
+            },
+            "episodes_up": 8,
+            "episodes_down": 41,
+            "episodes_tie": 71,
+            "interpretation": "negative"
+          },
+          "rbf_mmd__minus__source_contrast_mean_existing": {
+            "gain_pp": -9.895449639565015,
+            "ci95_pp": [
+              -13.921125615072935,
+              -5.920993453958635
+            ],
+            "per_fold_gain_pp": {
+              "0": -12.087099832530317,
+              "1": -1.8170266246173077,
+              "2": -11.62443438192474,
+              "3": -14.127727089290897
+            },
+            "episodes_up": 18,
+            "episodes_down": 57,
+            "episodes_tie": 45,
+            "interpretation": "negative"
+          },
+          "rbf_mmd__minus__insid3_default": {
+            "gain_pp": -9.444920122947337,
+            "ci95_pp": [
+              -13.494813018715467,
+              -5.212079873405032
+            ],
+            "per_fold_gain_pp": {
+              "0": -10.071727977410713,
+              "1": -6.567664025359486,
+              "2": -9.278753916295736,
+              "3": -11.805114556972452
+            },
+            "episodes_up": 17,
+            "episodes_down": 57,
+            "episodes_tie": 46,
+            "interpretation": "negative"
+          },
+          "rbf_mmd__minus__rcg": {
+            "gain_pp": -10.978637689089936,
+            "ci95_pp": [
+              -15.658628116929565,
+              -7.166377899095239
+            ],
+            "per_fold_gain_pp": {
+              "0": -15.916169978266863,
+              "1": -2.0013712335535447,
+              "2": -8.700945074628015,
+              "3": -16.73765755708192
+            },
+            "episodes_up": 31,
+            "episodes_down": 89,
+            "episodes_tie": 0,
+            "interpretation": "negative"
+          }
+        },
+        "omitted_noncommon_arms": [],
+        "bootstrap_represented_classes": {
+          "minimum": 43,
+          "mean": 51.8135,
+          "maximum": 61
+        },
+        "independent_verification": null
+      }
+    }
+  }
+}

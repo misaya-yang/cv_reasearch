@@ -1,52 +1,54 @@
-# Server
+# Server operations
 
-One rented AutoDL instance at a time, shared by every agent session. The current address is in `STATUS.md`;
-instances are recreated often, so do not trust an address written anywhere else.
+This is the only server runbook. It describes the recorded environment, not live availability or authorization.
+Last recorded endpoint (2026-10-05): `ssh -p 48002 root@connect.westd.seetacloud.com`.
+Last recorded mode: no-card. Neither was rechecked during repository cleanup; instances and ports can change.
 
-## Limits
+## One resource policy
 
-- One GPU with 32 GB, time-sliced: N busy processes each get about 1/N of it.
-- No-card mode: 0.5 CPU core, 2 GB of memory. Only light CPU work fits; switching modes restarts the instance
-  and kills background jobs.
-- No access to Google Drive. Hugging Face only through `hf-mirror.com`. SAM3 is public on ModelScope.
+Use the budget and lifecycle approved for the current session. There is no standing “keep on forever” rule
+and no permission to shut down another worker's session. Before an authorized queue, state the bounded total
+GPU time/cost and scientific comparison; unknown price/runtime stays unknown, not an invented estimate.
+Prepare on CPU/no-card, then use a short real-pipeline smoke followed immediately by the authorized stages.
+Run through `scripts/experiment_resource_guard.py`.
 
-## Layout
+The guard waits for foreign GPU jobs. With explicit shutdown authorization it invokes `/usr/bin/shutdown`
+at the end of the finite session, subject to foreign-job checks and the shared KEEP_ON hold.
+A recent `/root/autodl-tmp/KEEP_ON` holds shutdown for 15 minutes; it is not permission to extend paid rental.
+A shutdown request is not billing-stop confirmation. No-card operation does not justify starting a GPU.
 
-| Path | What | Rule |
-|---|---|---|
-| `/root/autodl-tmp/demo9_extent` | FoRIS runner, feature caches and packets every reading uses | read only |
-| `/root/autodl-tmp/demo9_lang` | the session prepared on 2026-10-05 (scripts, CPU readers, banks, guard plans) | Claude's |
-| `/root/autodl-tmp/demo9_transductive_ics` | image-isolated manifests (`results/extent_head_t1_isolated_v1`) | read only |
-| `/root/autodl-tmp/datasets/ics` | COCO-20i, LVIS-92i, PASCAL-Part, PACO-Part, SUIM, lung X-ray | read only |
-| `/root/autodl-tmp/demo4/INSID3` | INSID3 checkout; its dataset loaders build the transfer packs | read only |
-| `/root/autodl-tmp/demo8_local_verification` | FoRIS and CRF sources used by every run | read only |
-| `/root/autodl-tmp/sam3_preparation` | SAM3 checkpoint | read only |
-| `/root/demo4_cache` | shared Python packages, DINOv3 weights, COCO masks | read only; never delete |
-| `/root/autodl-tmp/cvpr_*` | another chat's held experiments | not yours |
+Check `nvidia-smi` before remote compute. Stop only owned PIDs; do not edit a running queue or use broad
+process-name killing. Keep the base Python environment and shared assets unchanged. Use an agreed CPU/memory
+quota; no-card was last recorded as only 0.5 core / 2 GB, unlike the GPU-mode machine.
 
-Python is `/root/miniconda3/bin/python`. Never install into the base environment; use `pip install --target`
-into your own directory. The live line runs with
+## Recorded dependencies
 
-    PYTHONPATH=/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions
+| Path | Role |
+|---|---|
+| `/root/autodl-tmp/demo9_extent` | Shared FoRIS runner, feature packets and evidence; read only unless owned by this task |
+| `/root/autodl-tmp/demo9_lang` | Claude's 2026-10-05 queue and reports |
+| `/root/autodl-tmp/demo9_transductive_ics` | Image-isolated manifests and SAM3 results |
+| `/root/autodl-tmp/datasets/ics` | Shared datasets |
+| `/root/autodl-tmp/demo4/INSID3` | INSID3 code and dataset loaders |
+| `/root/autodl-tmp/demo8_local_verification` | Shared FoRIS/CRF sources and runtime extensions |
+| `/root/autodl-tmp/sam3_preparation` | SAM3 code/checkpoint |
+| `/root/demo4_cache` | Shared Python packages, weights and COCO masks |
+| `/root/autodl-tmp/cvpr_*` | Other chats' held work; not this task's outputs |
 
-## Running jobs
+Recorded Python: `/root/miniconda3/bin/python`; FoRIS runtime search path:
 
-- Start detached: `nohup <cmd> > log 2>&1 < /dev/null &`. A foreground job dies with the connection.
-- Queues run through `scripts/experiment_resource_guard.py`. It returns `DEFER_FOREIGN_GPU` while another
-  job holds the GPU; the queue waits and retries. It issues `/usr/bin/shutdown` at the end.
-- Stop only your own processes, by PID. `pkill -f` and `pgrep -f` match the ssh shell that runs them.
-- Do not edit a bash queue script while it runs.
-- Cap GPU memory (`DEMO4_GPU_FRAC`, 0.3 to 0.45). One GPU job per agent.
+    /root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions
 
-## Pitfalls that cost time
+Availability must be checked for the selected run. Old paths are not permission to download missing assets.
+The user deleted local `demo8_local_verification`. It was not recreated. The remote paths above are
+historical inventory only; this cleanup did not check or modify them. A future run needs an existing
+FoRIS checkout and CRF runtime explicitly configured through its manifest/environment.
 
-- A first run that completes zero cases is almost always a path: run the smoke stage first.
-- Wait loops must not grep for "Error" (a harmless `httpcore` warning contains it). Grep for your own marker
-  or for "Traceback".
-- INSID3's encoder runs in bfloat16: encoding an image alone or in a pair changes its clustering. Cache with
-  the batch composition of the released code and compare masks episode by episode.
-- FoRIS and INSID3 both have top-level modules named `models` and `utils`. Import FoRIS first.
-- Thousands of open `np.load` handles exceed the limit of 1024 open files. Close them.
-- Caches are written in fold order: a prefix of a cache is fold 0 only.
-- Keep at least 5 GB free on each disk. Before deleting anything outside your own directory, grep the other
-  directories for the path.
+## Known execution pitfalls
+
+- A real smoke must check input paths and CRF; synthetic fixtures previously passed before a zero-episode run.
+- bfloat16 separate versus paired encoding can change INSID3 clustering. Preserve the released batch composition.
+- FoRIS and INSID3 share top-level names `models` and `utils`; load FoRIS first in the existing runner.
+- Close `np.load` handles. Cache prefixes may contain only fold 0.
+- Use the owned job's exit status and expected output; a generic “Error” string also matches harmless warnings.
+- An old preflight receipt is tied to its plan, code and state-file path; “prepared” does not mean a real run passed.

@@ -1,0 +1,163 @@
+{
+  "source_report": "cpu_method/mmd_hypotheses120/native_stage_statistics.json",
+  "source_sha256": "3953d62b3f89e6625630d811007ba878127c975e75ab451c30d7c7c19ca00e13",
+  "extracted_utc": "2026-10-05T07:45:00Z",
+  "extraction": "Only large per-episode/per-class arrays, file-hash maps, and raw audit arrays omitted; metric values unchanged.",
+  "report": {
+    "protocol": "Photograph-connected EPISODE components; sample G groups G times with replacement; reaggregate weighted I/U within each represented class, then macro mean. Paired draws across arms.",
+    "missing_class_rule": "Omit classes absent from that replicate. Do not set to zero, retain original score, or resample class groups.",
+    "seed": 0,
+    "bootstrap_draws": 2000,
+    "metric_field": "iu",
+    "script_sha256": "7168b6acffcaabfda8873d9d82487aa02f1144740ac5b602b66fdb67827d3669",
+    "statistics": {
+      "episodes": 120,
+      "classes": 67,
+      "photograph_groups": 120,
+      "point_estimates_pp": {
+        "rbf_mmd": 52.744357836137446,
+        "linear_mmd": 57.60722181327029,
+        "kde_cross_mean": 61.102732851641754,
+        "foreground_mean_dot": 60.97229834436975,
+        "foreground_mean_cos": 60.84153236987562,
+        "native_pre": 61.1557104828444,
+        "foris_native": 62.01755273696959,
+        "rcg": 63.72299552522738
+      },
+      "comparisons": {
+        "rbf_mmd__minus__foris_native": {
+          "gain_pp": -9.273194900832145,
+          "ci95_pp": [
+            -13.622688893128865,
+            -5.713815101627323
+          ],
+          "per_fold_gain_pp": {
+            "0": -12.75131269407004,
+            "1": -1.3963734644595434,
+            "2": -7.509293175292849,
+            "3": -15.023687255134643
+          },
+          "episodes_up": 34,
+          "episodes_down": 86,
+          "episodes_tie": 0,
+          "interpretation": "negative"
+        },
+        "linear_mmd__minus__foris_native": {
+          "gain_pp": -4.4103309236992985,
+          "ci95_pp": [
+            -8.651333621555198,
+            -2.480793332974357
+          ],
+          "per_fold_gain_pp": {
+            "0": -7.8334378151261586,
+            "1": 2.3220871152217772,
+            "2": -4.168964034600022,
+            "3": -7.731253626785434
+          },
+          "episodes_up": 38,
+          "episodes_down": 82,
+          "episodes_tie": 0,
+          "interpretation": "negative"
+        },
+        "kde_cross_mean__minus__foris_native": {
+          "gain_pp": -0.9148198853278373,
+          "ci95_pp": [
+            -4.79298275884029,
+            1.9534436493112481
+          ],
+          "per_fold_gain_pp": {
+            "0": -2.7258111312317976,
+            "1": 5.9386072097112494,
+            "2": -0.9220892470105827,
+            "3": -5.844312694983884
+          },
+          "episodes_up": 44,
+          "episodes_down": 76,
+          "episodes_tie": 0,
+          "interpretation": "observed_unresolved"
+        },
+        "foreground_mean_dot__minus__foris_native": {
+          "gain_pp": -1.045254392599844,
+          "ci95_pp": [
+            -4.936198565661476,
+            1.8511991492447055
+          ],
+          "per_fold_gain_pp": {
+            "0": -2.7258111312317976,
+            "1": 5.6967182512588925,
+            "2": -0.9220892470105827,
+            "3": -6.116489147544723
+          },
+          "episodes_up": 43,
+          "episodes_down": 77,
+          "episodes_tie": 0,
+          "interpretation": "observed_unresolved"
+        },
+        "foreground_mean_cos__minus__foris_native": {
+          "gain_pp": -1.1760203670939688,
+          "ci95_pp": [
+            -4.609360662106894,
+            0.8128024054676464
+          ],
+          "per_fold_gain_pp": {
+            "0": -3.6993980767046475,
+            "1": 5.022494114176694,
+            "2": -3.192164675277682,
+            "3": -2.9237722956736825
+          },
+          "episodes_up": 42,
+          "episodes_down": 78,
+          "episodes_tie": 0,
+          "interpretation": "observed_unresolved"
+        },
+        "native_pre__minus__foris_native": {
+          "gain_pp": -0.8618422541251931,
+          "ci95_pp": [
+            -1.1864566979535611,
+            -0.38777488954118944
+          ],
+          "per_fold_gain_pp": {
+            "0": -1.0182874585640467,
+            "1": -0.7209885440344531,
+            "2": -0.6247384936660846,
+            "3": -1.0462573010975544
+          },
+          "episodes_up": 40,
+          "episodes_down": 80,
+          "episodes_tie": 0,
+          "interpretation": "negative"
+        },
+        "rcg__minus__foris_native": {
+          "gain_pp": 1.7054427882577912,
+          "ci95_pp": [
+            0.47225642175869176,
+            3.194259648370712
+          ],
+          "per_fold_gain_pp": {
+            "0": 3.164857284196825,
+            "1": 0.6049977690940009,
+            "2": 1.1916518993351664,
+            "3": 1.713970301947281
+          },
+          "episodes_up": 69,
+          "episodes_down": 50,
+          "episodes_tie": 1,
+          "interpretation": "positive"
+        }
+      },
+      "omitted_noncommon_arms": [
+        "insid3_default",
+        "query_saliency",
+        "relative_context_cos",
+        "scalar_contrast",
+        "source_contrast_mean_existing"
+      ],
+      "bootstrap_represented_classes": {
+        "minimum": 43,
+        "mean": 51.8135,
+        "maximum": 61
+      },
+      "independent_verification": null
+    }
+  }
+}

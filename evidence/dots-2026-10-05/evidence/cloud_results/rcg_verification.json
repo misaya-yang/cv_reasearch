@@ -1,0 +1,287 @@
+{
+  "N": 120,
+  "classes": 67,
+  "photo_groups": 120,
+  "actual_masks": 120,
+  "integer_IU_exact": 360,
+  "mask_field_pixel_mismatches": 0,
+  "pre_pixel_mismatches": 0,
+  "RandomState_draws_exact": true,
+  "primary": {
+    "FORIS_PRE": {
+      "candidate": "RCG",
+      "control": "FORIS_PRE",
+      "candidate_mIoU": 63.7229955252274,
+      "control_mIoU": 61.155710482844405,
+      "gain_pp": 2.5672850423829914,
+      "ci95_pp": [
+        1.1614266515141258,
+        4.194439967322658
+      ],
+      "per_fold_gain_pp": {
+        "0": 4.183144742760881,
+        "1": 1.3259863131284462,
+        "2": 1.8163903930012424,
+        "3": 2.7602276030448394
+      },
+      "up": 77,
+      "down": 43,
+      "tie": 0
+    },
+    "FORIS_NATIVE": {
+      "candidate": "RCG",
+      "control": "FORIS_NATIVE",
+      "candidate_mIoU": 63.7229955252274,
+      "control_mIoU": 62.017552736969606,
+      "gain_pp": 1.7054427882577912,
+      "ci95_pp": [
+        0.45340506019159205,
+        3.2502559824887376
+      ],
+      "per_fold_gain_pp": {
+        "0": 3.1648572841968345,
+        "1": 0.6049977690939841,
+        "2": 1.191651899335156,
+        "3": 1.7139703019472847
+      },
+      "up": 69,
+      "down": 50,
+      "tie": 1
+    }
+  },
+  "elapsed_seconds": 1.0767745019984432,
+  "state": "MINIMAL_RCG_OUTPUT_AND_SELECTION_NUMERIC_VERIFICATION_COMPLETE",
+  "control_IU_verification": "Controls and237configurations recomputed from supplied I/U only; their masks/fields are not included. RCG andboth baseline I/U independently checked against actual masks and local truth.",
+  "controls": {
+    "CONTROL__MEAN_a0.25_l16": {
+      "control_mIoU": 63.50014878003558,
+      "gain_pp": 0.22284674519181635,
+      "ci95_pp": [
+        -0.5740686818794408,
+        0.7368078353813577
+      ]
+    },
+    "CONTROL__NN_a0.25_l16": {
+      "control_mIoU": 63.22093082036787,
+      "gain_pp": 0.5020647048595279,
+      "ci95_pp": [
+        -0.008252719326229573,
+        0.9965017627212249
+      ]
+    },
+    "CONTROL__NN_a0.5_l16": {
+      "control_mIoU": 62.50641776502631,
+      "gain_pp": 1.2165777602010834,
+      "ci95_pp": [
+        0.5715677085743247,
+        2.2628203629321693
+      ]
+    },
+    "NONLOCAL__MUTUAL_CONF_SCORE_l16": {
+      "control_mIoU": 63.02379413326341,
+      "gain_pp": 0.6992013919639888,
+      "ci95_pp": [
+        0.08496790127291191,
+        1.3918066404809337
+      ]
+    },
+    "LOCAL__CSLS_a0.5_l16": {
+      "control_mIoU": 62.8404845751347,
+      "gain_pp": 0.8825109500926942,
+      "ci95_pp": [
+        0.02054019583343436,
+        1.5963066227472278
+      ]
+    }
+  },
+  "cross_validation": {
+    "RCG_LAMBDA": {
+      "n_candidates": 4,
+      "selected": [
+        "NONLOCAL__MUTUAL_CONF_CSLS_l16",
+        "NONLOCAL__MUTUAL_CONF_CSLS_l16",
+        "NONLOCAL__MUTUAL_CONF_CSLS_l16",
+        "NONLOCAL__MUTUAL_CONF_CSLS_l16"
+      ],
+      "mIoU": 63.7229955252274,
+      "vs": {
+        "FORIS_PRE": {
+          "gain_pp": 2.5672850423829914,
+          "conditional_ci95": [
+            1.1614266515141258,
+            4.194439967322672
+          ],
+          "reselection_ci95": [
+            0.948150524638787,
+            4.127249571621922
+          ]
+        },
+        "FORIS_NATIVE": {
+          "gain_pp": 1.7054427882577912,
+          "conditional_ci95": [
+            0.4534050601915917,
+            3.2502559824887514
+          ],
+          "reselection_ci95": [
+            0.21824004440752082,
+            3.2255552858518657
+          ]
+        }
+      }
+    },
+    "RCG_GRAPH_FAMILY": {
+      "n_candidates": 16,
+      "selected": [
+        "NONLOCAL__MUTUAL_CONF_CSLS_l16",
+        "NONLOCAL__MUTUAL_CONF_CSLS_l16",
+        "NONLOCAL__MUTUAL_CONF_CSLS_l16",
+        "NONLOCAL__MUTUAL_CONF_CSLS_l16"
+      ],
+      "mIoU": 63.7229955252274,
+      "vs": {
+        "FORIS_PRE": {
+          "gain_pp": 2.5672850423829914,
+          "conditional_ci95": [
+            1.1614266515141258,
+            4.194439967322672
+          ],
+          "reselection_ci95": [
+            0.9941939132054002,
+            4.101730547458023
+          ]
+        },
+        "FORIS_NATIVE": {
+          "gain_pp": 1.7054427882577912,
+          "conditional_ci95": [
+            0.4534050601915917,
+            3.2502559824887514
+          ],
+          "reselection_ci95": [
+            0.21895076980747027,
+            3.2060296805582547
+          ]
+        }
+      }
+    },
+    "NN_CONTROL": {
+      "n_candidates": 12,
+      "selected": [
+        "CONTROL__NN_a0.25_l16",
+        "CONTROL__NN_a0.25_l16",
+        "CONTROL__NN_a0.25_l16",
+        "CONTROL__NN_a0.25_l16"
+      ],
+      "mIoU": 63.22093082036787,
+      "vs": {
+        "FORIS_PRE": {
+          "gain_pp": 2.0652203375234635,
+          "conditional_ci95": [
+            0.6680313301144178,
+            3.5639292519889905
+          ],
+          "reselection_ci95": [
+            0.3090931171128739,
+            3.5478879269967516
+          ]
+        },
+        "FORIS_NATIVE": {
+          "gain_pp": 1.2033780833982632,
+          "conditional_ci95": [
+            -0.02528784428407887,
+            2.5885238345312733
+          ],
+          "reselection_ci95": [
+            -0.342178412679333,
+            2.5727823770093634
+          ]
+        }
+      }
+    },
+    "MEAN_CONTROL": {
+      "n_candidates": 12,
+      "selected": [
+        "CONTROL__MEAN_a0.25_l16",
+        "CONTROL__MEAN_a0.25_l16",
+        "CONTROL__MEAN_a0.25_l16",
+        "CONTROL__MEAN_a0.25_l16"
+      ],
+      "mIoU": 63.50014878003558,
+      "vs": {
+        "FORIS_PRE": {
+          "gain_pp": 2.344438297191175,
+          "conditional_ci95": [
+            0.9309151426649382,
+            3.9633638273870666
+          ],
+          "reselection_ci95": [
+            0.3556042904869036,
+            3.9541532417513943
+          ]
+        },
+        "FORIS_NATIVE": {
+          "gain_pp": 1.4825960430659748,
+          "conditional_ci95": [
+            0.2483585656679658,
+            3.0365786326058597
+          ],
+          "reselection_ci95": [
+            -0.23161949595870046,
+            3.0026624766957477
+          ]
+        }
+      }
+    },
+    "ALL_EXPLORATORY": {
+      "n_candidates": 237,
+      "selected": [
+        "NONLOCAL__MUTUAL_CONF_CSLS_l16",
+        "CONTROL__SYMMETRIC_CSLS_a0.5_l16",
+        "NONLOCAL__MUTUAL_CONF_CSLS_l16",
+        "CONTROL__ROW_a0.5_l16"
+      ],
+      "mIoU": 62.99143570469716,
+      "vs": {
+        "FORIS_PRE": {
+          "gain_pp": 1.8357252218527549,
+          "conditional_ci95": [
+            0.3056009464175059,
+            3.3223304393843907
+          ],
+          "reselection_ci95": [
+            0.3885189735481053,
+            3.7544712296722995
+          ]
+        },
+        "FORIS_NATIVE": {
+          "gain_pp": 0.9738829677275547,
+          "conditional_ci95": [
+            -0.37638106932056575,
+            2.4900073238096363
+          ],
+          "reselection_ci95": [
+            -0.42120402567701287,
+            2.872959397595
+          ]
+        }
+      }
+    }
+  },
+  "configuration_count": 237,
+  "bootstrap_generator": "RandomState(0),2000 draws;canonical(fold,e,c)order;photo groups;class-summed I/U;omit unsampled classes",
+  "parameter_provenance": {
+    "final_recipe": "development-selected alpha=.5/lambda16; k20/confidence floor.1 documented fixed before nonlocal pass",
+    "GT_in_predict": "Reviewed predict signature/body usesq/r/cov/score only; no query truth/pre/native",
+    "GT_in_selection": "Allowed labeled other-three-fold configuration selection; crossfold recipe selection and per-bootstrap reselection numerically verified",
+    "search_adaptivity_limit": "These120 were repeatedly inspected while constructing the237-configuration search. Reselection estimates within this specified pool do not establish independent confirmation or remove unrecorded/adaptive method-design choices."
+  },
+  "uploaded_code_executed": false,
+  "PT_or_qr_loaded": false,
+  "new_optimization_or_inference": false,
+  "source_sha256": {
+    "final_report": "6405e2ff4bef997be71f317b70174796d68d34ee22d1f62fec66c4f70b67182a",
+    "research_statistics": "91f5d9c2eba8cd888fc7ed64588da8b275fea3abe4ce93d2d888706b2a1c590a",
+    "predict_script": "865ca65310cd9e1cf87f12e7015d97cd746fdc12eebdc672cb21ee3f5919f1e6",
+    "selection_script": "559c547d22b216e8354224852818acd77a2ed2a773177b7cb0e64f545999d4b4"
+  },
+  "elapsed_seconds_total": 3.8061614129983354
+}

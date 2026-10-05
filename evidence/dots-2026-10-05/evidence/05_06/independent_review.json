@@ -1,0 +1,41 @@
+{
+  "state": "PASS_AFTER_INDEPENDENT_CROSS_REVIEW",
+  "review_time_UTC": "2026-10-05T08:01:50Z",
+  "scope": "Independent review of theory, empirical claim scope, statistics interpretation and source portability. No new prediction or query-GT access.",
+  "files": {
+    "05_theory_and_identifiability.md": {
+      "sha256": "53ff90d0d8ddf81c6c8a1af4f439860b884b4a7f0bce138379603e9f9641a051",
+      "bytes": 20466
+    },
+    "06_core_claims_and_tests.md": {
+      "sha256": "22b014fbc883d6c26a27c0a3b57dda084aef350fa42514ae562f2993c7734ba5",
+      "bytes": 17017
+    },
+    "08_revision_record.md": {
+      "sha256": "9fba354bc20f2427f557c8d92f60f16d4dc666c14ef73466bb17bccafce7124a",
+      "bytes": 2821
+    }
+  },
+  "local_links_checked": 43,
+  "missing_or_outside_bundle_links": 0,
+  "substantive_corrections_verified": [
+    "Latest repository snapshot separated from old checkout; D1/T2 completed experiments no longer called unrun.",
+    "Four input/information layers separated: RGB, frozen representation/internal computation, algorithm relations, additional query GT.",
+    "GT-selected good masks demonstrate candidate availability only; no inference that legal inputs identify them.",
+    "Pixel 0-1 Bayes prior and threshold separated from class-summed IoU objective and predicted-set size.",
+    "RePRI meta-training/batched-query description corrected using the primary paper.",
+    "Cross-episode training distinguished from episode-local fitting; supervised rank probe is not a zero-training result or full-representation capacity bound.",
+    "RCG universal unary ceiling separated from actual all-negative components and bilinear pixel certificates.",
+    "RCG theorem explicitly requires lambda>=0; isolated-node propagation and h=1 undefined LOO are handled.",
+    "Binary mincut and LOO RandomState supplemental CIs identified; original default_rng results preserved.",
+    "Singleton-class multiplicity cancellation explained as correct for class-summed I/U; old episode-mean bootstrap identified as another estimand.",
+    "Postprocessing improvement is effective use of existing evidence, not evidence that the pretrained model acquired new recognition ability.",
+    "Failures constrain tested construction, summaries, decoder and cohort, not RGB or full pretrained representation.",
+    "Current criterion stable >=2 versus final native retained; CI crossing zero alone is not failure."
+  ],
+  "limits": [
+    "This review did not reproduce all historical experiments or inspect unprovided local Opus code.",
+    "The stated class-held-out ranker is supervised on exposed old120; bootstrap holds fitted OOF predictions fixed and excludes model-refitting uncertainty.",
+    "No additional100/121 query labels were opened."
+  ]
+}

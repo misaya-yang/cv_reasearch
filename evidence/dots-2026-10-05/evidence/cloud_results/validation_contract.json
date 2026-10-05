@@ -1,0 +1,184 @@
+{
+  "state": "LOCKED_BEFORE_ADDITIONAL121_QUERY_GT",
+  "criterion_change_source": "User latest criterion 2026-10-05 06:46 UTC",
+  "user_criterion_verbatim": "跨零不是任何问题，稳健的提升才是，当然至少是2分稳定的",
+  "decision_policy": {
+    "primary_target": "At least +2 mIoU percentage points versus stored FoRIS final native at the SAME1024 resolution, with stability across additional121/combined241/folds and not driven by a few cases.",
+    "confidence_intervals": "Report uncertainty; spanning zero alone is NEVER a rejection or success/failure gate.",
+    "stronger_control": "RCG and matched mean-control are mandatory comparisons; do NOT redefine user target as RCG+2 without instruction.",
+    "stability": "Report each cohort/fold/batch and class/episode effect distribution. No newly invented all-fold+2 or CI-sign gate. Judge whether gain repeats and is broadly distributed."
+  },
+  "input_cohorts": {
+    "prior120": {
+      "episodes": 120,
+      "classes": 67,
+      "fold_counts": {
+        "0": 30,
+        "1": 30,
+        "2": 30,
+        "3": 30
+      },
+      "photo_groups": 120,
+      "unique_photos": 240,
+      "connected_multi_episode_groups": []
+    },
+    "additional121": {
+      "episodes": 121,
+      "classes": 60,
+      "fold_counts": {
+        "0": 31,
+        "1": 30,
+        "2": 30,
+        "3": 30
+      },
+      "photo_groups": 121,
+      "unique_photos": 242,
+      "connected_multi_episode_groups": []
+    },
+    "combined241": {
+      "episodes": 241,
+      "classes": 79,
+      "fold_counts": {
+        "0": 61,
+        "1": 60,
+        "2": 60,
+        "3": 60
+      },
+      "photo_groups": 239,
+      "unique_photos": 480,
+      "connected_multi_episode_groups": [
+        [
+          "0_6_60",
+          "0_34_76"
+        ],
+        [
+          "3_18_47",
+          "3_38_47"
+        ]
+      ]
+    },
+    "missing_parts": [
+      1,
+      2,
+      3,
+      4,
+      10,
+      11,
+      12
+    ],
+    "new_episode_overlap_with_prior": 0,
+    "shared_photos_across_cohorts": 2,
+    "exposure": "All are exposed DEV episodes; additional data available for this fixed validation is not CONF."
+  },
+  "arms": [
+    {
+      "name": "native_pre",
+      "role": "intermediate_baseline",
+      "rule": "Stored FoRIS pre,1024; verify normalized score bilinearFalse>.5 parity at scoring"
+    },
+    {
+      "name": "native_cached_CRF",
+      "role": "PRIMARY_TARGET_BASELINE",
+      "rule": "Stored FoRIS final native/CRF,1024; never substitute pre or original-resolution IU"
+    },
+    {
+      "name": "RCG",
+      "role": "strong_readout_control",
+      "rule": "Uploaded fixedpredict: CSLS foreground guide k10,purity.9,alpha.5,mutualquery20NN localtau,mean-degree1,A=(.1+abs(2s-1))/mean,lambda16;CG1e-7/1e-9/300;bilinearFalse>.5;noCRF"
+    },
+    {
+      "name": "MEAN_CONTROL",
+      "role": "strong_simple_readout_control",
+      "rule": "SameRCG W/A/lambda16;g=q@unit(mean r[sourcecov>=.9]),fallback maxcov;rank correctionalpha.25;identicalrenderer;no retuning"
+    },
+    {
+      "name": "insid3_default",
+      "role": "same_complete_hypothesis_default_control",
+      "rule": "Existingcached-space INSID3 sourcecov>=.5,average-linkagecoscut.4,cross*intra*occupancy>.2;noRGB/CRF;not official dualspace reproduction"
+    },
+    {
+      "name": "source_contrast_mean",
+      "role": "PRIMARY_OUR_CANDIDATE",
+      "rule": "Originaleligiblecandcountpositive seed hypotheses,complete .2aggregation; dR=unit(mean r_FG-mean r_onecell4neighborouterring);choose argmax mean(q_H) dot dR;not query-context cosine"
+    },
+    {
+      "name": "scalar_contrast",
+      "role": "PREDECLARED_SECONDARY_OUR_CANDIDATE",
+      "rule": "Samecompletehypotheses;choose argmax (mean q_H-mean q_onecell4neighborouterring) dot dR;no normalization by querycontrastnorm;must not promote to primary based on new121"
+    },
+    {
+      "name": "foreground_mean_cos/foreground_mean_dot/query_saliency/relative_context_cos",
+      "role": "FIXED_EXISTING_DIAGNOSTIC_CONTROLS",
+      "rule": "Existing helper definitions unchanged;all computed choices retained but no new winner selection"
+    }
+  ],
+  "fallback_and_ties": "Preserve existing per-score finite-validity and first argmax order. If no finite score, return original INSID3 default. Missing reference ring does NOT switch to globalBG or RCG. Empty role/bank implementation failures must be recorded before GT, never replaced by a result-based gate.",
+  "prediction_contract": "No query GT inpredict. New121 complete predictions and choices for all required arms must be hashed/frozen before scoring thiscohort. No alpha/lambda/k/fidelity/sourcepurity/cut/ring/tie/area/selector selection on arriving121.",
+  "implementation": "Snapshots lock current mathematical rule. Any purely engineering adaptation must reproduce old120 corresponding frozen outputs/IU before new121 GT; record code hashes and discrepancy, no method parameter change.",
+  "metric_contract": {
+    "resolution": "1024x1024 same working raster;classΣI/ΣU then macro mean",
+    "primary_contrasts": "Each candidate vs native_cached_CRF; separately pre,RCG,MEAN_CONTROL andinsid3_default",
+    "cohorts": "Always separate prior120/additional121;combined241 reaggregate perclass fromIU,never weighted average cohort mIoU",
+    "bootstrap": "2000,np.random.RandomState(0);sortepisodes(fold,e,c);buildconnectedcomponents bysupport/query photobasename;groups orderedbyfirstsortedepisode;sampleGgroupsGtimes;preserve repeated-group weights inI/U;omit unsampledclasses",
+    "stability_outputs": [
+      "per-fold class-macro gain for each cohort",
+      "per-upload-part result with n (part12 n1 never treated as fullbatch)",
+      "episode up/down/tie",
+      "per-class I/U and paired delta",
+      "episode and class delta quantiles",
+      "fixed post-scoring sensitivity omitting largest positive contributor (class andepisode),never changing chosenmethod"
+    ],
+    "uncertainty_not_gate": true
+  },
+  "sources": [
+    {
+      "path": "/workspace/scratch/c4693694c197/rcg_result_0636/CVPR2027/extracted/RCG_release/input_metadata/manifest_dev241_full.json",
+      "sha256": "1d1a5f505f0c926703c471438cda29c73dd44175172a52ccbc1a4ebdbe0ebc03"
+    },
+    {
+      "path": "/workspace/shared/cv_research_workshop_20261005/cpu_method/cohort_inputs/index120.json",
+      "sha256": "804453b8789c4b61ee294888657aa59c154e2b8ced2fd5f837237a4d75607bac"
+    },
+    {
+      "path": "/workspace/scratch/c4693694c197/dev60_new_downloads/DEV241_remaining221_part05_of12/manifest_remaining221.csv",
+      "sha256": "80ada183f8eea28a26d9db1538e22caebdd328a7db7e148aa904fc6191854814"
+    }
+  ],
+  "code_snapshots": [
+    {
+      "source": "/workspace/scratch/c4693694c197/rcg_result_0636/CVPR2027/extracted/RCG_release/rcg_readout.py",
+      "snapshot": "/workspace/shared/cv_research_workshop_20261005/strong_method_controls_20261005/validation121_locked/locked_methods/rcg_readout.py",
+      "sha256": "865ca65310cd9e1cf87f12e7015d97cd746fdc12eebdc672cb21ee3f5919f1e6"
+    },
+    {
+      "source": "/workspace/scratch/c4693694c197/rcg_result_0636/CVPR2027/extracted/RCG_release/research/reciprocal_controls.py",
+      "snapshot": "/workspace/shared/cv_research_workshop_20261005/strong_method_controls_20261005/validation121_locked/locked_methods/rcg_reciprocal_controls_reference.py",
+      "sha256": "1f18b2fc6b9f25f00ca4be77b95ae9bfb83e98d7626f28bd016dd0702408e7dc"
+    },
+    {
+      "source": "/workspace/scratch/c4693694c197/rcg_result_0636/CVPR2027/extracted/RCG_release/research/readout_common.py",
+      "snapshot": "/workspace/shared/cv_research_workshop_20261005/strong_method_controls_20261005/validation121_locked/locked_methods/rcg_readout_common_reference.py",
+      "sha256": "fa037fc8520cc04b1e728b7fa16af474ba524d243aff8488f7a3f5eee0ae059f"
+    },
+    {
+      "source": "/workspace/shared/cv_research_workshop_20261005/hypothesis_source_contrast.py",
+      "snapshot": "/workspace/shared/cv_research_workshop_20261005/strong_method_controls_20261005/validation121_locked/locked_methods/hypothesis_source_contrast.py",
+      "sha256": "4465a7f1f9b4d1ee8a006a0f4ecc40587577549dd05f3ca8428fc61c7501c3b1"
+    },
+    {
+      "source": "/workspace/shared/cv_research_workshop_20261005/cpu_method/insid3_cached_aggregation.py",
+      "snapshot": "/workspace/shared/cv_research_workshop_20261005/strong_method_controls_20261005/validation121_locked/locked_methods/insid3_cached_aggregation.py",
+      "sha256": "978d733f8cf622b04e590a698d16c9b7c7bddd9bcffae25662f973cd5599bd78"
+    },
+    {
+      "source": "/workspace/shared/cv_research_workshop_20261005/cpu_method/run_hypothesis_selector.py",
+      "snapshot": "/workspace/shared/cv_research_workshop_20261005/strong_method_controls_20261005/validation121_locked/locked_methods/run_hypothesis_selector.py",
+      "sha256": "0d5b1db4a0c0069a0f8477517374ba4bde00c41a268e38ddfd17fea44db4f257"
+    }
+  ],
+  "statistics_script": {
+    "path": "/workspace/shared/cv_research_workshop_20261005/strong_method_controls_20261005/validation121_locked/statistics_randomstate.py",
+    "sha256": "c3c81e73913b6f90ec1dac00d3b54ec35f948d2f883cfed67887ade90989aa3c"
+  },
+  "metadata_or_feature_ground_truth_reads": 0
+}

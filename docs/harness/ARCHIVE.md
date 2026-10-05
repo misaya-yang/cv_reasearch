@@ -1,10 +1,10 @@
-# Closed directions
+# Closed directions — historical evidence
 
-Read before proposing an idea. Each entry: the idea, the measured reason it was closed, what is kept, what not
-to retry. The code is in git history at commit `b9efc2b` under the path given; files that were never committed
-are in the local ref `refs/backup/pre-cleanup-20261004`. Do not reopen an entry without new measured evidence
-and the user's agreement. Failed experiments of the live direction are in its own ledger
-(`demo_lists/demo9_transductive_ics/README.md`), not here.
+These are dated decisions about tested constructions, not permanent research prohibitions or a pending plan.
+Current scope and rules are in root AGENTS.md and docs/research/CLAIM.md. Reopening a direction requires a
+current decision; historical authorization does not carry over. Most retired sources are in commit b9efc2b;
+never-committed work was preserved in refs/backup/pre-cleanup-20261004. Cleanup removals are reflected in
+Git history. Local experiment history is in evidence/local/RESULTS.md. All demo paths below are historical.
 
 ## Lessons that recur
 
@@ -24,7 +24,7 @@ and the user's agreement. Failed experiments of the live direction are in its ow
 - Closed 2026-10-01. Fair benchmark: 35.9 ms dense against 33.6 ms (6.5%); under 2% end to end because the
   encoder takes 87 ms. The earlier 1.47x came from an upsampler layout the baseline can also use. Sparse or
   output-sensitive decoding also failed: per-prompt image state deviates 37 to 46% far from the object.
-- Kept: nothing for the paper. Do not retry speed claims on the SAM decoder or quality selectors by distillation.
+- Kept: nothing for the paper. The tested decoder rewrite and quality-selector recipes did not establish a paper contribution.
 
 **demo2_where_what_decoding: segmenter decides where, frozen recogniser decides what.** `demo_lists/demo2_where_what_decoding`
 - Closed 2026-10-02. ADE20K: Mask2Former Swin-T 47.99 to 54.31, but a pixel-level ensemble with a properly
@@ -41,11 +41,11 @@ and the user's agreement. Failed experiments of the live direction are in its ow
   some time steps and degrades at others; no FID or GenEval result exists.
 - Do not resume without the user. The server folder (22 GB) has a `GPU_PAUSED` marker.
 
-**demo4 single-pair selection rules** (`icx/common.py` stays as demo9's library). `demo_lists/demo4_incontext_seg/README.md`
+**demo4 single-pair selection rules** (shared helpers now in `src/ics/data.py`). `demo_lists/demo4_incontext_seg/README.md`
 - INSID3 on COCO-20i: 56.3 reproduced; oracle selection among its clusters 82.1. Fourteen rule families over
   one (reference, query) pair failed (best 55.4 against 56.1 over four folds); supervised scorers reach 58 to
   60. Removing INSID3's coverage factor costs 9.4 points.
-- Do not retry rules that only re-score regions from one labelled pair. This ledger is what led to demo9.
+- The measured rule families did not solve the selection problem. This does not exclude all single-pair inference; the old pivot to an image pool was later closed.
 
 **demo5_resolution_attention: fixed attention correction across input resolutions.** `demo_lists/demo5_resolution_attention`
 - Closed. The correction beats naive high-resolution inference but loses to temperature scaling and to native
@@ -71,7 +71,7 @@ and the user's agreement. Failed experiments of the live direction are in its ow
 - The planning documents (architecture, theorems, numerical self-tests) were generated without a positive
   experiment and were deleted.
 - Kept: FoRIS reproduced at 60.5 (github.com/Xi-Mu-Yu/FoRIS, revision `1aa02a1`; a checkout is on the server
-  and demo9 uses it). The identity J(C) = mu(C) / (|C| + mu(outside C)) and the rule "adding region D raises
+  used by historical demo9 runs; current availability unverified). The identity J(C) = mu(C) / (|C| + mu(outside C)) and the rule "adding region D raises
   IoU iff its foreground share exceeds J / (1 + J)" are correct and free to use. COCO-20i class folds share
   images across folds (`docs/reference/coco20i-image-overlap-audit-2026-10-02.json`); this matters for any
   trained component.
@@ -79,5 +79,5 @@ and the user's agreement. Failed experiments of the live direction are in its ow
 **GIC: correlated-error pose refinement.** `research/gic_validation` (part of it was never committed)
 - Closed 2026-10-02. ScanNet, 1260 pairs from 84 held-out scenes: AUC@5 33.75 native against 30.86, scene-level
   interval [-3.80, -1.98]. MegaDepth 1500 pairs: 69.96 against 67.89. A single update already hurts (-2.12).
-- All numerical checks of the algebra had passed. Do not tune the solver; reopening needs evidence that real
+- All numerical checks of the algebra had passed. The tested solver did not help; a different explanation would need evidence that real
   match residuals have the assumed tangential-normal coupling.

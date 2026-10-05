@@ -1,0 +1,66 @@
+{
+  "state": "COMPLETED",
+  "dataset": "COCO-20i",
+  "split": "exposed DEV241",
+  "episodes": 241,
+  "seed": 0,
+  "resolution": "original annotation resolution",
+  "pipeline": "Reuse unchanged cached complete public FoRIS forward/CRF; replace final refinement with one frozen matte arm.",
+  "source_precision": "Cached q tokens are float16, evaluated in float32; public FoRIS score/masks are unchanged.",
+  "original_native_miou": 59.121839494721954,
+  "matte_vs_native": {
+    "miou": 59.51300495471599,
+    "gain": 0.39116545999403485,
+    "ci95": [
+      -0.09306294078133738,
+      1.096604574828133
+    ],
+    "fold_gain": [
+      0.5904823889624211,
+      0.5727262313082164,
+      0.03750631118988679,
+      0.362514353174646
+    ],
+    "up": 121,
+    "down": 117
+  },
+  "delete_only_vs_native": {
+    "miou": 59.55398734638187,
+    "gain": 0.4321478516599129,
+    "ci95": [
+      0.12004929725087035,
+      0.9169878238656465
+    ],
+    "fold_gain": [
+      0.24923943297764595,
+      0.4604242814636095,
+      0.21672175612727074,
+      0.8216826773558736
+    ],
+    "up": 110,
+    "down": 128
+  },
+  "matte_vs_delete_only": {
+    "miou": 59.51300495471599,
+    "gain": -0.040982391665878026,
+    "ci95": [
+      -0.4897125128462271,
+      0.4512449355439843
+    ],
+    "fold_gain": [
+      0.34124295598477516,
+      0.11230194984460695,
+      -0.17921544493738395,
+      -0.45916832418122766
+    ],
+    "up": 115,
+    "down": 123
+  },
+  "model_native_miou": 59.07482507561252,
+  "model_matte_miou": 59.46508446275581,
+  "photo_groups": 239,
+  "bootstrap_draws": 2000,
+  "threads": 4,
+  "seconds": 35.79804980382323,
+  "unverified": "Fresh forward/cache equality of the proposed refiner, matte followed by identical CRF, CONFIRM600 and finer features."
+}

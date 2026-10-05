@@ -1,0 +1,1369 @@
+{
+  "source_report": "cpu_method/hypothesis_vs_rcg120/report.json",
+  "source_sha256": "487c505717a6ae46e86140bf9a3db7ab7809263f4eeec90d2e3528db6690aef6",
+  "evidence_file": "hypothesis_vs_rcg.json",
+  "report": {
+    "scope": "Fixed RCG masks versus SAME frozen complete eligible-seed masks. GT is diagnostic only. Deep miss is RCG recall<=.10; low overlap is RCG IoU<=.10; substantial supplied candidate is IoU>=.50. Deep recovered TP is >16 work pixels from RCG foreground. Episode-best is an undeployable bank capacity oracle, never a fusion or new selector.",
+    "cohorts": {
+      "new40": {
+        "episodes": 40,
+        "classes": 30,
+        "class_mIoU": {
+          "RCG": 61.48162333277134,
+          "insid3_default": 56.086238514365284,
+          "source_contrast_mean": 56.77744890660929,
+          "foreground_mean_dot": 54.31201546671859,
+          "scalar_contrast": 54.69115762366411,
+          "episode_best": 67.0619575785352
+        },
+        "deep_miss_recall_le_0_10": {
+          "episodes": 1,
+          "available_hypothesis_IoU_ge_0_50": 0,
+          "actual_IoU_ge_0_50": {
+            "RCG": 0,
+            "insid3_default": 0,
+            "source_contrast_mean": 0,
+            "foreground_mean_dot": 0,
+            "scalar_contrast": 0,
+            "episode_best": 0
+          },
+          "macro_IoU": {
+            "RCG": 0.0,
+            "insid3_default": 0.10529886601221218,
+            "source_contrast_mean": 0.16452848149189797,
+            "foreground_mean_dot": 0.12508196721311476,
+            "scalar_contrast": 0.2579280599408333,
+            "episode_best": 0.2579280599408333
+          },
+          "macro_recall": {
+            "RCG": 0.0,
+            "insid3_default": 0.8054437619148486,
+            "source_contrast_mean": 0.8054437619148486,
+            "foreground_mean_dot": 0.8080915060368566,
+            "scalar_contrast": 0.9880321965685236,
+            "episode_best": 0.9880321965685236
+          }
+        },
+        "catastrophic_low_overlap_IoU_le_0_10": {
+          "episodes": 2,
+          "available_hypothesis_IoU_ge_0_50": 0,
+          "actual_IoU_ge_0_50": {
+            "RCG": 0,
+            "insid3_default": 0,
+            "source_contrast_mean": 0,
+            "foreground_mean_dot": 0,
+            "scalar_contrast": 0,
+            "episode_best": 0
+          },
+          "macro_IoU": {
+            "RCG": 0.03704652766525103,
+            "insid3_default": 0.13105924099312494,
+            "source_contrast_mean": 0.1606740487329678,
+            "foreground_mean_dot": 0.1409507915935762,
+            "scalar_contrast": 0.20737383795743547,
+            "episode_best": 0.20737383795743547
+          },
+          "macro_recall": {
+            "RCG": 0.4627223948037278,
+            "insid3_default": 0.8121165905498182,
+            "source_contrast_mean": 0.8121165905498182,
+            "foreground_mean_dot": 0.8134404626108223,
+            "scalar_contrast": 0.9034108078766556,
+            "episode_best": 0.9034108078766556
+          }
+        },
+        "episode_best_minus_RCG": {
+          "macro_pp": 5.466465464277168,
+          "median_pp": 1.163264375341938,
+          "positive": 24,
+          "negative": 16,
+          "tie": 0
+        },
+        "all_cases_spatial": {
+          "episodes": 40,
+          "arms": {
+            "insid3_default": {
+              "added_TP": 225449,
+              "added_FP": 744219,
+              "lost_TP": 565700,
+              "removed_FP": 360950,
+              "deep_new_TP_gt16px": 116918,
+              "new_TP_in_RCG_untouched_GT_components": 17063,
+              "GT_pixels_in_RCG_untouched_components": 34089,
+              "deep_fraction_of_new_TP": 0.5186006591291157,
+              "new_area_precision": 0.23250122722416333,
+              "episodes_with_deep_new_TP": 16
+            },
+            "source_contrast_mean": {
+              "added_TP": 176058,
+              "added_FP": 709343,
+              "lost_TP": 371463,
+              "removed_FP": 453440,
+              "deep_new_TP_gt16px": 83167,
+              "new_TP_in_RCG_untouched_GT_components": 17063,
+              "GT_pixels_in_RCG_untouched_components": 34089,
+              "deep_fraction_of_new_TP": 0.4723841006940894,
+              "new_area_precision": 0.19884549486616798,
+              "episodes_with_deep_new_TP": 16
+            },
+            "foreground_mean_dot": {
+              "added_TP": 175714,
+              "added_FP": 614300,
+              "lost_TP": 738459,
+              "removed_FP": 388395,
+              "deep_new_TP_gt16px": 83192,
+              "new_TP_in_RCG_untouched_GT_components": 17088,
+              "GT_pixels_in_RCG_untouched_components": 34089,
+              "deep_fraction_of_new_TP": 0.4734511763433762,
+              "new_area_precision": 0.22241884321037347,
+              "episodes_with_deep_new_TP": 16
+            },
+            "scalar_contrast": {
+              "added_TP": 182357,
+              "added_FP": 639301,
+              "lost_TP": 305677,
+              "removed_FP": 477087,
+              "deep_new_TP_gt16px": 84891,
+              "new_TP_in_RCG_untouched_GT_components": 18787,
+              "GT_pixels_in_RCG_untouched_components": 34089,
+              "deep_fraction_of_new_TP": 0.4655209287277154,
+              "new_area_precision": 0.22193783788388843,
+              "episodes_with_deep_new_TP": 16
+            },
+            "episode_best": {
+              "added_TP": 700260,
+              "added_FP": 603251,
+              "lost_TP": 169398,
+              "removed_FP": 868021,
+              "deep_new_TP_gt16px": 531738,
+              "new_TP_in_RCG_untouched_GT_components": 18777,
+              "GT_pixels_in_RCG_untouched_components": 34089,
+              "deep_fraction_of_new_TP": 0.7593436723502699,
+              "new_area_precision": 0.5372106564501565,
+              "episodes_with_deep_new_TP": 18
+            }
+          }
+        },
+        "deep_miss_cases_spatial": {
+          "episodes": 1,
+          "arms": {
+            "insid3_default": {
+              "added_TP": 7605,
+              "added_FP": 39770,
+              "lost_TP": 0,
+              "removed_FP": 374,
+              "deep_new_TP_gt16px": 7605,
+              "new_TP_in_RCG_untouched_GT_components": 7605,
+              "GT_pixels_in_RCG_untouched_components": 9442,
+              "deep_fraction_of_new_TP": 1.0,
+              "new_area_precision": 0.16052770448548812,
+              "episodes_with_deep_new_TP": 1
+            },
+            "source_contrast_mean": {
+              "added_TP": 7605,
+              "added_FP": 13770,
+              "lost_TP": 0,
+              "removed_FP": 374,
+              "deep_new_TP_gt16px": 7605,
+              "new_TP_in_RCG_untouched_GT_components": 7605,
+              "GT_pixels_in_RCG_untouched_components": 9442,
+              "deep_fraction_of_new_TP": 1.0,
+              "new_area_precision": 0.35578947368421054,
+              "episodes_with_deep_new_TP": 1
+            },
+            "foreground_mean_dot": {
+              "added_TP": 7630,
+              "added_FP": 28547,
+              "lost_TP": 0,
+              "removed_FP": 374,
+              "deep_new_TP_gt16px": 7630,
+              "new_TP_in_RCG_untouched_GT_components": 7630,
+              "GT_pixels_in_RCG_untouched_components": 9442,
+              "deep_fraction_of_new_TP": 1.0,
+              "new_area_precision": 0.21090748265472536,
+              "episodes_with_deep_new_TP": 1
+            },
+            "scalar_contrast": {
+              "added_TP": 9329,
+              "added_FP": 26727,
+              "lost_TP": 0,
+              "removed_FP": 23385,
+              "deep_new_TP_gt16px": 9329,
+              "new_TP_in_RCG_untouched_GT_components": 9329,
+              "GT_pixels_in_RCG_untouched_components": 9442,
+              "deep_fraction_of_new_TP": 1.0,
+              "new_area_precision": 0.258736410028844,
+              "episodes_with_deep_new_TP": 1
+            },
+            "episode_best": {
+              "added_TP": 9329,
+              "added_FP": 26727,
+              "lost_TP": 0,
+              "removed_FP": 23385,
+              "deep_new_TP_gt16px": 9329,
+              "new_TP_in_RCG_untouched_GT_components": 9329,
+              "GT_pixels_in_RCG_untouched_components": 9442,
+              "deep_fraction_of_new_TP": 1.0,
+              "new_area_precision": 0.258736410028844,
+              "episodes_with_deep_new_TP": 1
+            }
+          }
+        },
+        "low_overlap_cases_spatial": {
+          "episodes": 2,
+          "arms": {
+            "insid3_default": {
+              "added_TP": 7636,
+              "added_FP": 40846,
+              "lost_TP": 2297,
+              "removed_FP": 155889,
+              "deep_new_TP_gt16px": 7605,
+              "new_TP_in_RCG_untouched_GT_components": 7605,
+              "GT_pixels_in_RCG_untouched_components": 9442,
+              "deep_fraction_of_new_TP": 0.9959402828706129,
+              "new_area_precision": 0.15750175322800214,
+              "episodes_with_deep_new_TP": 1
+            },
+            "source_contrast_mean": {
+              "added_TP": 7636,
+              "added_FP": 14846,
+              "lost_TP": 2297,
+              "removed_FP": 155889,
+              "deep_new_TP_gt16px": 7605,
+              "new_TP_in_RCG_untouched_GT_components": 7605,
+              "GT_pixels_in_RCG_untouched_components": 9442,
+              "deep_fraction_of_new_TP": 0.9959402828706129,
+              "new_area_precision": 0.33964949737567834,
+              "episodes_with_deep_new_TP": 1
+            },
+            "foreground_mean_dot": {
+              "added_TP": 7661,
+              "added_FP": 29623,
+              "lost_TP": 2297,
+              "removed_FP": 155889,
+              "deep_new_TP_gt16px": 7630,
+              "new_TP_in_RCG_untouched_GT_components": 7630,
+              "GT_pixels_in_RCG_untouched_components": 9442,
+              "deep_fraction_of_new_TP": 0.9959535308706435,
+              "new_area_precision": 0.20547688016307264,
+              "episodes_with_deep_new_TP": 1
+            },
+            "scalar_contrast": {
+              "added_TP": 9360,
+              "added_FP": 27803,
+              "lost_TP": 2297,
+              "removed_FP": 178900,
+              "deep_new_TP_gt16px": 9329,
+              "new_TP_in_RCG_untouched_GT_components": 9329,
+              "GT_pixels_in_RCG_untouched_components": 9442,
+              "deep_fraction_of_new_TP": 0.9966880341880342,
+              "new_area_precision": 0.251863412533972,
+              "episodes_with_deep_new_TP": 1
+            },
+            "episode_best": {
+              "added_TP": 9360,
+              "added_FP": 27803,
+              "lost_TP": 2297,
+              "removed_FP": 178900,
+              "deep_new_TP_gt16px": 9329,
+              "new_TP_in_RCG_untouched_GT_components": 9329,
+              "GT_pixels_in_RCG_untouched_components": 9442,
+              "deep_fraction_of_new_TP": 0.9966880341880342,
+              "new_area_precision": 0.251863412533972,
+              "episodes_with_deep_new_TP": 1
+            }
+          }
+        },
+        "bank_better_cases_spatial": {
+          "episodes": 24,
+          "arms": {
+            "insid3_default": {
+              "added_TP": 140064,
+              "added_FP": 122572,
+              "lost_TP": 358274,
+              "removed_FP": 279447,
+              "deep_new_TP_gt16px": 78775,
+              "new_TP_in_RCG_untouched_GT_components": 17061,
+              "GT_pixels_in_RCG_untouched_components": 33941,
+              "deep_fraction_of_new_TP": 0.5624214644733836,
+              "new_area_precision": 0.5333008422303112,
+              "episodes_with_deep_new_TP": 14
+            },
+            "source_contrast_mean": {
+              "added_TP": 92235,
+              "added_FP": 93937,
+              "lost_TP": 142751,
+              "removed_FP": 353830,
+              "deep_new_TP_gt16px": 45024,
+              "new_TP_in_RCG_untouched_GT_components": 17061,
+              "GT_pixels_in_RCG_untouched_components": 33941,
+              "deep_fraction_of_new_TP": 0.4881444137258091,
+              "new_area_precision": 0.49542895816771587,
+              "episodes_with_deep_new_TP": 14
+            },
+            "foreground_mean_dot": {
+              "added_TP": 92260,
+              "added_FP": 114136,
+              "lost_TP": 377806,
+              "removed_FP": 289041,
+              "deep_new_TP_gt16px": 45049,
+              "new_TP_in_RCG_untouched_GT_components": 17086,
+              "GT_pixels_in_RCG_untouched_components": 33941,
+              "deep_fraction_of_new_TP": 0.4882831129416865,
+              "new_area_precision": 0.4470047869144751,
+              "episodes_with_deep_new_TP": 14
+            },
+            "scalar_contrast": {
+              "added_TP": 98527,
+              "added_FP": 154478,
+              "lost_TP": 77385,
+              "removed_FP": 377577,
+              "deep_new_TP_gt16px": 46748,
+              "new_TP_in_RCG_untouched_GT_components": 18785,
+              "GT_pixels_in_RCG_untouched_components": 33941,
+              "deep_fraction_of_new_TP": 0.474468927299116,
+              "new_area_precision": 0.389427086421217,
+              "episodes_with_deep_new_TP": 14
+            },
+            "episode_best": {
+              "added_TP": 614464,
+              "added_FP": 117017,
+              "lost_TP": 40313,
+              "removed_FP": 781743,
+              "deep_new_TP_gt16px": 493019,
+              "new_TP_in_RCG_untouched_GT_components": 18775,
+              "GT_pixels_in_RCG_untouched_components": 33941,
+              "deep_fraction_of_new_TP": 0.802356199875013,
+              "new_area_precision": 0.8400272871065687,
+              "episodes_with_deep_new_TP": 15
+            }
+          }
+        }
+      },
+      "new60": {
+        "episodes": 60,
+        "classes": 45,
+        "class_mIoU": {
+          "RCG": 63.089546814937044,
+          "insid3_default": 61.746199171524,
+          "source_contrast_mean": 63.44413712109087,
+          "foreground_mean_dot": 61.2823365119874,
+          "scalar_contrast": 65.10135548916703,
+          "episode_best": 68.76348496589098
+        },
+        "deep_miss_recall_le_0_10": {
+          "episodes": 3,
+          "available_hypothesis_IoU_ge_0_50": 2,
+          "actual_IoU_ge_0_50": {
+            "RCG": 0,
+            "insid3_default": 0,
+            "source_contrast_mean": 1,
+            "foreground_mean_dot": 0,
+            "scalar_contrast": 1,
+            "episode_best": 2
+          },
+          "macro_IoU": {
+            "RCG": 0.0028047145103932904,
+            "insid3_default": 0.16048625206880715,
+            "source_contrast_mean": 0.28672578951972705,
+            "foreground_mean_dot": 0.16048625206880715,
+            "scalar_contrast": 0.28672578951972705,
+            "episode_best": 0.6448659119511714
+          },
+          "macro_recall": {
+            "RCG": 0.0033641956384000654,
+            "insid3_default": 0.27324395356150977,
+            "source_contrast_mean": 0.3215463854313569,
+            "foreground_mean_dot": 0.27324395356150977,
+            "scalar_contrast": 0.3215463854313569,
+            "episode_best": 0.9114324493003036
+          }
+        },
+        "catastrophic_low_overlap_IoU_le_0_10": {
+          "episodes": 3,
+          "available_hypothesis_IoU_ge_0_50": 2,
+          "actual_IoU_ge_0_50": {
+            "RCG": 0,
+            "insid3_default": 0,
+            "source_contrast_mean": 1,
+            "foreground_mean_dot": 0,
+            "scalar_contrast": 1,
+            "episode_best": 2
+          },
+          "macro_IoU": {
+            "RCG": 0.0028047145103932904,
+            "insid3_default": 0.16048625206880715,
+            "source_contrast_mean": 0.28672578951972705,
+            "foreground_mean_dot": 0.16048625206880715,
+            "scalar_contrast": 0.28672578951972705,
+            "episode_best": 0.6448659119511714
+          },
+          "macro_recall": {
+            "RCG": 0.0033641956384000654,
+            "insid3_default": 0.27324395356150977,
+            "source_contrast_mean": 0.3215463854313569,
+            "foreground_mean_dot": 0.27324395356150977,
+            "scalar_contrast": 0.3215463854313569,
+            "episode_best": 0.9114324493003036
+          }
+        },
+        "episode_best_minus_RCG": {
+          "macro_pp": 5.56743842945048,
+          "median_pp": -0.3504252188665645,
+          "positive": 29,
+          "negative": 31,
+          "tie": 0
+        },
+        "all_cases_spatial": {
+          "episodes": 60,
+          "arms": {
+            "insid3_default": {
+              "added_TP": 522030,
+              "added_FP": 642516,
+              "lost_TP": 359344,
+              "removed_FP": 629951,
+              "deep_new_TP_gt16px": 338814,
+              "new_TP_in_RCG_untouched_GT_components": 41578,
+              "GT_pixels_in_RCG_untouched_components": 127708,
+              "deep_fraction_of_new_TP": 0.6490316648468479,
+              "new_area_precision": 0.4482691108809785,
+              "episodes_with_deep_new_TP": 14
+            },
+            "source_contrast_mean": {
+              "added_TP": 632747,
+              "added_FP": 588899,
+              "lost_TP": 258803,
+              "removed_FP": 614663,
+              "deep_new_TP_gt16px": 457843,
+              "new_TP_in_RCG_untouched_GT_components": 25532,
+              "GT_pixels_in_RCG_untouched_components": 127708,
+              "deep_fraction_of_new_TP": 0.7235798826387165,
+              "new_area_precision": 0.517946279036644,
+              "episodes_with_deep_new_TP": 14
+            },
+            "foreground_mean_dot": {
+              "added_TP": 472598,
+              "added_FP": 459482,
+              "lost_TP": 560311,
+              "removed_FP": 639297,
+              "deep_new_TP_gt16px": 302202,
+              "new_TP_in_RCG_untouched_GT_components": 23422,
+              "GT_pixels_in_RCG_untouched_components": 127708,
+              "deep_fraction_of_new_TP": 0.639448326061473,
+              "new_area_precision": 0.5070358767487769,
+              "episodes_with_deep_new_TP": 13
+            },
+            "scalar_contrast": {
+              "added_TP": 825959,
+              "added_FP": 774368,
+              "lost_TP": 152767,
+              "removed_FP": 389710,
+              "deep_new_TP_gt16px": 605103,
+              "new_TP_in_RCG_untouched_GT_components": 19159,
+              "GT_pixels_in_RCG_untouched_components": 127708,
+              "deep_fraction_of_new_TP": 0.7326065821669114,
+              "new_area_precision": 0.516118893201202,
+              "episodes_with_deep_new_TP": 16
+            },
+            "episode_best": {
+              "added_TP": 871802,
+              "added_FP": 453826,
+              "lost_TP": 183357,
+              "removed_FP": 592875,
+              "deep_new_TP_gt16px": 656449,
+              "new_TP_in_RCG_untouched_GT_components": 56200,
+              "GT_pixels_in_RCG_untouched_components": 127708,
+              "deep_fraction_of_new_TP": 0.752979460932643,
+              "new_area_precision": 0.6576520713201592,
+              "episodes_with_deep_new_TP": 18
+            }
+          }
+        },
+        "deep_miss_cases_spatial": {
+          "episodes": 3,
+          "arms": {
+            "insid3_default": {
+              "added_TP": 19600,
+              "added_FP": 9650,
+              "lost_TP": 1646,
+              "removed_FP": 112959,
+              "deep_new_TP_gt16px": 19600,
+              "new_TP_in_RCG_untouched_GT_components": 18887,
+              "GT_pixels_in_RCG_untouched_components": 36030,
+              "deep_fraction_of_new_TP": 1.0,
+              "new_area_precision": 0.67008547008547,
+              "episodes_with_deep_new_TP": 2
+            },
+            "source_contrast_mean": {
+              "added_TP": 156887,
+              "added_FP": 68626,
+              "lost_TP": 1210,
+              "removed_FP": 58767,
+              "deep_new_TP_gt16px": 154272,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 36030,
+              "deep_fraction_of_new_TP": 0.9833319522968761,
+              "new_area_precision": 0.6956893837605814,
+              "episodes_with_deep_new_TP": 1
+            },
+            "foreground_mean_dot": {
+              "added_TP": 19600,
+              "added_FP": 9650,
+              "lost_TP": 1646,
+              "removed_FP": 112959,
+              "deep_new_TP_gt16px": 19600,
+              "new_TP_in_RCG_untouched_GT_components": 18887,
+              "GT_pixels_in_RCG_untouched_components": 36030,
+              "deep_fraction_of_new_TP": 1.0,
+              "new_area_precision": 0.67008547008547,
+              "episodes_with_deep_new_TP": 2
+            },
+            "scalar_contrast": {
+              "added_TP": 156887,
+              "added_FP": 75302,
+              "lost_TP": 1210,
+              "removed_FP": 54435,
+              "deep_new_TP_gt16px": 154272,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 36030,
+              "deep_fraction_of_new_TP": 0.9833319522968761,
+              "new_area_precision": 0.6756866173677478,
+              "episodes_with_deep_new_TP": 1
+            },
+            "episode_best": {
+              "added_TP": 188052,
+              "added_FP": 28060,
+              "lost_TP": 1210,
+              "removed_FP": 111666,
+              "deep_new_TP_gt16px": 185437,
+              "new_TP_in_RCG_untouched_GT_components": 31165,
+              "GT_pixels_in_RCG_untouched_components": 36030,
+              "deep_fraction_of_new_TP": 0.9860942717971625,
+              "new_area_precision": 0.8701599170800326,
+              "episodes_with_deep_new_TP": 3
+            }
+          }
+        },
+        "low_overlap_cases_spatial": {
+          "episodes": 3,
+          "arms": {
+            "insid3_default": {
+              "added_TP": 19600,
+              "added_FP": 9650,
+              "lost_TP": 1646,
+              "removed_FP": 112959,
+              "deep_new_TP_gt16px": 19600,
+              "new_TP_in_RCG_untouched_GT_components": 18887,
+              "GT_pixels_in_RCG_untouched_components": 36030,
+              "deep_fraction_of_new_TP": 1.0,
+              "new_area_precision": 0.67008547008547,
+              "episodes_with_deep_new_TP": 2
+            },
+            "source_contrast_mean": {
+              "added_TP": 156887,
+              "added_FP": 68626,
+              "lost_TP": 1210,
+              "removed_FP": 58767,
+              "deep_new_TP_gt16px": 154272,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 36030,
+              "deep_fraction_of_new_TP": 0.9833319522968761,
+              "new_area_precision": 0.6956893837605814,
+              "episodes_with_deep_new_TP": 1
+            },
+            "foreground_mean_dot": {
+              "added_TP": 19600,
+              "added_FP": 9650,
+              "lost_TP": 1646,
+              "removed_FP": 112959,
+              "deep_new_TP_gt16px": 19600,
+              "new_TP_in_RCG_untouched_GT_components": 18887,
+              "GT_pixels_in_RCG_untouched_components": 36030,
+              "deep_fraction_of_new_TP": 1.0,
+              "new_area_precision": 0.67008547008547,
+              "episodes_with_deep_new_TP": 2
+            },
+            "scalar_contrast": {
+              "added_TP": 156887,
+              "added_FP": 75302,
+              "lost_TP": 1210,
+              "removed_FP": 54435,
+              "deep_new_TP_gt16px": 154272,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 36030,
+              "deep_fraction_of_new_TP": 0.9833319522968761,
+              "new_area_precision": 0.6756866173677478,
+              "episodes_with_deep_new_TP": 1
+            },
+            "episode_best": {
+              "added_TP": 188052,
+              "added_FP": 28060,
+              "lost_TP": 1210,
+              "removed_FP": 111666,
+              "deep_new_TP_gt16px": 185437,
+              "new_TP_in_RCG_untouched_GT_components": 31165,
+              "GT_pixels_in_RCG_untouched_components": 36030,
+              "deep_fraction_of_new_TP": 0.9860942717971625,
+              "new_area_precision": 0.8701599170800326,
+              "episodes_with_deep_new_TP": 3
+            }
+          }
+        },
+        "bank_better_cases_spatial": {
+          "episodes": 29,
+          "arms": {
+            "insid3_default": {
+              "added_TP": 492651,
+              "added_FP": 381809,
+              "lost_TP": 295204,
+              "removed_FP": 586200,
+              "deep_new_TP_gt16px": 335817,
+              "new_TP_in_RCG_untouched_GT_components": 39352,
+              "GT_pixels_in_RCG_untouched_components": 111051,
+              "deep_fraction_of_new_TP": 0.6816529348362228,
+              "new_area_precision": 0.5633773986231503,
+              "episodes_with_deep_new_TP": 10
+            },
+            "source_contrast_mean": {
+              "added_TP": 604526,
+              "added_FP": 329062,
+              "lost_TP": 193363,
+              "removed_FP": 570912,
+              "deep_new_TP_gt16px": 454846,
+              "new_TP_in_RCG_untouched_GT_components": 23306,
+              "GT_pixels_in_RCG_untouched_components": 111051,
+              "deep_fraction_of_new_TP": 0.7524010547106328,
+              "new_area_precision": 0.6475297454551686,
+              "episodes_with_deep_new_TP": 10
+            },
+            "foreground_mean_dot": {
+              "added_TP": 442662,
+              "added_FP": 201862,
+              "lost_TP": 495518,
+              "removed_FP": 595565,
+              "deep_new_TP_gt16px": 299177,
+              "new_TP_in_RCG_untouched_GT_components": 21196,
+              "GT_pixels_in_RCG_untouched_components": 111051,
+              "deep_fraction_of_new_TP": 0.6758587816437824,
+              "new_area_precision": 0.686804525510299,
+              "episodes_with_deep_new_TP": 9
+            },
+            "scalar_contrast": {
+              "added_TP": 791823,
+              "added_FP": 520350,
+              "lost_TP": 90180,
+              "removed_FP": 346750,
+              "deep_new_TP_gt16px": 599734,
+              "new_TP_in_RCG_untouched_GT_components": 14589,
+              "GT_pixels_in_RCG_untouched_components": 111051,
+              "deep_fraction_of_new_TP": 0.757409168463154,
+              "new_area_precision": 0.6034440580624658,
+              "episodes_with_deep_new_TP": 11
+            },
+            "episode_best": {
+              "added_TP": 838364,
+              "added_FP": 217904,
+              "lost_TP": 119864,
+              "removed_FP": 549143,
+              "deep_new_TP_gt16px": 651080,
+              "new_TP_in_RCG_untouched_GT_components": 51630,
+              "GT_pixels_in_RCG_untouched_components": 111051,
+              "deep_fraction_of_new_TP": 0.7766077741887772,
+              "new_area_precision": 0.7937038706085956,
+              "episodes_with_deep_new_TP": 13
+            }
+          }
+        }
+      },
+      "old20": {
+        "episodes": 20,
+        "classes": 20,
+        "class_mIoU": {
+          "RCG": 70.74267319858676,
+          "insid3_default": 65.87337602575094,
+          "source_contrast_mean": 66.48914344698123,
+          "foreground_mean_dot": 64.52586402310942,
+          "scalar_contrast": 69.0356542206484,
+          "episode_best": 74.6931526930879
+        },
+        "deep_miss_recall_le_0_10": {
+          "episodes": 0,
+          "available_hypothesis_IoU_ge_0_50": 0,
+          "actual_IoU_ge_0_50": {
+            "RCG": 0,
+            "insid3_default": 0,
+            "source_contrast_mean": 0,
+            "foreground_mean_dot": 0,
+            "scalar_contrast": 0,
+            "episode_best": 0
+          },
+          "macro_IoU": {
+            "RCG": null,
+            "insid3_default": null,
+            "source_contrast_mean": null,
+            "foreground_mean_dot": null,
+            "scalar_contrast": null,
+            "episode_best": null
+          },
+          "macro_recall": {
+            "RCG": null,
+            "insid3_default": null,
+            "source_contrast_mean": null,
+            "foreground_mean_dot": null,
+            "scalar_contrast": null,
+            "episode_best": null
+          }
+        },
+        "catastrophic_low_overlap_IoU_le_0_10": {
+          "episodes": 0,
+          "available_hypothesis_IoU_ge_0_50": 0,
+          "actual_IoU_ge_0_50": {
+            "RCG": 0,
+            "insid3_default": 0,
+            "source_contrast_mean": 0,
+            "foreground_mean_dot": 0,
+            "scalar_contrast": 0,
+            "episode_best": 0
+          },
+          "macro_IoU": {
+            "RCG": null,
+            "insid3_default": null,
+            "source_contrast_mean": null,
+            "foreground_mean_dot": null,
+            "scalar_contrast": null,
+            "episode_best": null
+          },
+          "macro_recall": {
+            "RCG": null,
+            "insid3_default": null,
+            "source_contrast_mean": null,
+            "foreground_mean_dot": null,
+            "scalar_contrast": null,
+            "episode_best": null
+          }
+        },
+        "episode_best_minus_RCG": {
+          "macro_pp": 3.9504794945011366,
+          "median_pp": -0.9135007276823565,
+          "positive": 8,
+          "negative": 12,
+          "tie": 0
+        },
+        "all_cases_spatial": {
+          "episodes": 20,
+          "arms": {
+            "insid3_default": {
+              "added_TP": 77983,
+              "added_FP": 413741,
+              "lost_TP": 292045,
+              "removed_FP": 180979,
+              "deep_new_TP_gt16px": 22355,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 25269,
+              "deep_fraction_of_new_TP": 0.28666504238103174,
+              "new_area_precision": 0.15859099820224354,
+              "episodes_with_deep_new_TP": 6
+            },
+            "source_contrast_mean": {
+              "added_TP": 66714,
+              "added_FP": 219896,
+              "lost_TP": 480428,
+              "removed_FP": 467544,
+              "deep_new_TP_gt16px": 16057,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 25269,
+              "deep_fraction_of_new_TP": 0.24068411427886202,
+              "new_area_precision": 0.23276926834374237,
+              "episodes_with_deep_new_TP": 5
+            },
+            "foreground_mean_dot": {
+              "added_TP": 67844,
+              "added_FP": 225613,
+              "lost_TP": 479703,
+              "removed_FP": 218420,
+              "deep_new_TP_gt16px": 16057,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 25269,
+              "deep_fraction_of_new_TP": 0.23667531395554509,
+              "new_area_precision": 0.23118889649931676,
+              "episodes_with_deep_new_TP": 5
+            },
+            "scalar_contrast": {
+              "added_TP": 103003,
+              "added_FP": 565704,
+              "lost_TP": 202259,
+              "removed_FP": 417380,
+              "deep_new_TP_gt16px": 34263,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 25269,
+              "deep_fraction_of_new_TP": 0.3326407968699941,
+              "new_area_precision": 0.15403308175329405,
+              "episodes_with_deep_new_TP": 9
+            },
+            "episode_best": {
+              "added_TP": 168612,
+              "added_FP": 166163,
+              "lost_TP": 86916,
+              "removed_FP": 457784,
+              "deep_new_TP_gt16px": 83641,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 25269,
+              "deep_fraction_of_new_TP": 0.49605603397148484,
+              "new_area_precision": 0.5036576805317003,
+              "episodes_with_deep_new_TP": 10
+            }
+          }
+        },
+        "deep_miss_cases_spatial": {
+          "episodes": 0,
+          "arms": {
+            "insid3_default": {
+              "added_TP": 0,
+              "added_FP": 0,
+              "lost_TP": 0,
+              "removed_FP": 0,
+              "deep_new_TP_gt16px": 0,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 0,
+              "deep_fraction_of_new_TP": 0.0,
+              "new_area_precision": 0.0,
+              "episodes_with_deep_new_TP": 0
+            },
+            "source_contrast_mean": {
+              "added_TP": 0,
+              "added_FP": 0,
+              "lost_TP": 0,
+              "removed_FP": 0,
+              "deep_new_TP_gt16px": 0,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 0,
+              "deep_fraction_of_new_TP": 0.0,
+              "new_area_precision": 0.0,
+              "episodes_with_deep_new_TP": 0
+            },
+            "foreground_mean_dot": {
+              "added_TP": 0,
+              "added_FP": 0,
+              "lost_TP": 0,
+              "removed_FP": 0,
+              "deep_new_TP_gt16px": 0,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 0,
+              "deep_fraction_of_new_TP": 0.0,
+              "new_area_precision": 0.0,
+              "episodes_with_deep_new_TP": 0
+            },
+            "scalar_contrast": {
+              "added_TP": 0,
+              "added_FP": 0,
+              "lost_TP": 0,
+              "removed_FP": 0,
+              "deep_new_TP_gt16px": 0,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 0,
+              "deep_fraction_of_new_TP": 0.0,
+              "new_area_precision": 0.0,
+              "episodes_with_deep_new_TP": 0
+            },
+            "episode_best": {
+              "added_TP": 0,
+              "added_FP": 0,
+              "lost_TP": 0,
+              "removed_FP": 0,
+              "deep_new_TP_gt16px": 0,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 0,
+              "deep_fraction_of_new_TP": 0.0,
+              "new_area_precision": 0.0,
+              "episodes_with_deep_new_TP": 0
+            }
+          }
+        },
+        "low_overlap_cases_spatial": {
+          "episodes": 0,
+          "arms": {
+            "insid3_default": {
+              "added_TP": 0,
+              "added_FP": 0,
+              "lost_TP": 0,
+              "removed_FP": 0,
+              "deep_new_TP_gt16px": 0,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 0,
+              "deep_fraction_of_new_TP": 0.0,
+              "new_area_precision": 0.0,
+              "episodes_with_deep_new_TP": 0
+            },
+            "source_contrast_mean": {
+              "added_TP": 0,
+              "added_FP": 0,
+              "lost_TP": 0,
+              "removed_FP": 0,
+              "deep_new_TP_gt16px": 0,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 0,
+              "deep_fraction_of_new_TP": 0.0,
+              "new_area_precision": 0.0,
+              "episodes_with_deep_new_TP": 0
+            },
+            "foreground_mean_dot": {
+              "added_TP": 0,
+              "added_FP": 0,
+              "lost_TP": 0,
+              "removed_FP": 0,
+              "deep_new_TP_gt16px": 0,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 0,
+              "deep_fraction_of_new_TP": 0.0,
+              "new_area_precision": 0.0,
+              "episodes_with_deep_new_TP": 0
+            },
+            "scalar_contrast": {
+              "added_TP": 0,
+              "added_FP": 0,
+              "lost_TP": 0,
+              "removed_FP": 0,
+              "deep_new_TP_gt16px": 0,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 0,
+              "deep_fraction_of_new_TP": 0.0,
+              "new_area_precision": 0.0,
+              "episodes_with_deep_new_TP": 0
+            },
+            "episode_best": {
+              "added_TP": 0,
+              "added_FP": 0,
+              "lost_TP": 0,
+              "removed_FP": 0,
+              "deep_new_TP_gt16px": 0,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 0,
+              "deep_fraction_of_new_TP": 0.0,
+              "new_area_precision": 0.0,
+              "episodes_with_deep_new_TP": 0
+            }
+          }
+        },
+        "bank_better_cases_spatial": {
+          "episodes": 8,
+          "arms": {
+            "insid3_default": {
+              "added_TP": 67067,
+              "added_FP": 161405,
+              "lost_TP": 207795,
+              "removed_FP": 146482,
+              "deep_new_TP_gt16px": 22235,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 0,
+              "deep_fraction_of_new_TP": 0.3315341375042868,
+              "new_area_precision": 0.2935458174305823,
+              "episodes_with_deep_new_TP": 4
+            },
+            "source_contrast_mean": {
+              "added_TP": 56064,
+              "added_FP": 71802,
+              "lost_TP": 306051,
+              "removed_FP": 415352,
+              "deep_new_TP_gt16px": 15937,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 0,
+              "deep_fraction_of_new_TP": 0.2842644121004566,
+              "new_area_precision": 0.43845901177795504,
+              "episodes_with_deep_new_TP": 3
+            },
+            "foreground_mean_dot": {
+              "added_TP": 56064,
+              "added_FP": 139232,
+              "lost_TP": 306051,
+              "removed_FP": 166228,
+              "deep_new_TP_gt16px": 15937,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 0,
+              "deep_fraction_of_new_TP": 0.2842644121004566,
+              "new_area_precision": 0.2870719318368016,
+              "episodes_with_deep_new_TP": 3
+            },
+            "scalar_contrast": {
+              "added_TP": 84365,
+              "added_FP": 237370,
+              "lost_TP": 133688,
+              "removed_FP": 383163,
+              "deep_new_TP_gt16px": 33096,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 0,
+              "deep_fraction_of_new_TP": 0.39229538315652224,
+              "new_area_precision": 0.2622189068643449,
+              "episodes_with_deep_new_TP": 7
+            },
+            "episode_best": {
+              "added_TP": 149697,
+              "added_FP": 73517,
+              "lost_TP": 26649,
+              "removed_FP": 407221,
+              "deep_new_TP_gt16px": 82046,
+              "new_TP_in_RCG_untouched_GT_components": 0,
+              "GT_pixels_in_RCG_untouched_components": 0,
+              "deep_fraction_of_new_TP": 0.5480804558541588,
+              "new_area_precision": 0.6706434184235756,
+              "episodes_with_deep_new_TP": 7
+            }
+          }
+        }
+      }
+    },
+    "supplementary_pooled": {
+      "episodes": 120,
+      "classes": 67,
+      "class_mIoU": {
+        "RCG": 63.7229955252274,
+        "insid3_default": 62.18927795908479,
+        "source_contrast_mean": 62.63980747570247,
+        "foreground_mean_dot": 60.97229834436973,
+        "scalar_contrast": 63.80682035445921,
+        "episode_best": 69.77196677825184
+      },
+      "deep_miss_recall_le_0_10": {
+        "episodes": 4,
+        "available_hypothesis_IoU_ge_0_50": 2,
+        "actual_IoU_ge_0_50": {
+          "RCG": 0,
+          "insid3_default": 0,
+          "source_contrast_mean": 1,
+          "foreground_mean_dot": 0,
+          "scalar_contrast": 1,
+          "episode_best": 2
+        },
+        "macro_IoU": {
+          "RCG": 0.002103535882794968,
+          "insid3_default": 0.14668940555465843,
+          "source_contrast_mean": 0.25617646251276976,
+          "foreground_mean_dot": 0.15163518085488406,
+          "scalar_contrast": 0.2795263571250036,
+          "episode_best": 0.5481314489485869
+        },
+        "macro_recall": {
+          "RCG": 0.002523146728800049,
+          "insid3_default": 0.40629390564984447,
+          "source_contrast_mean": 0.4425207295522298,
+          "foreground_mean_dot": 0.4069558416803465,
+          "scalar_contrast": 0.4881678382156486,
+          "episode_best": 0.9305823861173587
+        }
+      },
+      "catastrophic_low_overlap_IoU_le_0_10": {
+        "episodes": 5,
+        "available_hypothesis_IoU_ge_0_50": 2,
+        "actual_IoU_ge_0_50": {
+          "RCG": 0,
+          "insid3_default": 0,
+          "source_contrast_mean": 1,
+          "foreground_mean_dot": 0,
+          "scalar_contrast": 1,
+          "episode_best": 2
+        },
+        "macro_IoU": {
+          "RCG": 0.01650143977233639,
+          "insid3_default": 0.14871544763853425,
+          "source_contrast_mean": 0.23630509320502338,
+          "foreground_mean_dot": 0.1526720678787148,
+          "scalar_contrast": 0.2549850088948104,
+          "episode_best": 0.469869082353677
+        },
+        "macro_recall": {
+          "RCG": 0.18710747530453115,
+          "insid3_default": 0.48879300835683315,
+          "source_contrast_mean": 0.5177744674787415,
+          "foreground_mean_dot": 0.4893225571812348,
+          "scalar_contrast": 0.5542921544094763,
+          "episode_best": 0.9082237927308444
+        }
+      },
+      "episode_best_minus_RCG": {
+        "macro_pp": 5.26428761856782,
+        "median_pp": 0.0996593966264614,
+        "positive": 61,
+        "negative": 59,
+        "tie": 0
+      },
+      "all_cases_spatial": {
+        "episodes": 120,
+        "arms": {
+          "insid3_default": {
+            "added_TP": 825462,
+            "added_FP": 1800476,
+            "lost_TP": 1217089,
+            "removed_FP": 1171880,
+            "deep_new_TP_gt16px": 478087,
+            "new_TP_in_RCG_untouched_GT_components": 58641,
+            "GT_pixels_in_RCG_untouched_components": 187066,
+            "deep_fraction_of_new_TP": 0.5791750559080854,
+            "new_area_precision": 0.3143493867715079,
+            "episodes_with_deep_new_TP": 36
+          },
+          "source_contrast_mean": {
+            "added_TP": 875519,
+            "added_FP": 1518138,
+            "lost_TP": 1110694,
+            "removed_FP": 1535647,
+            "deep_new_TP_gt16px": 557067,
+            "new_TP_in_RCG_untouched_GT_components": 42595,
+            "GT_pixels_in_RCG_untouched_components": 187066,
+            "deep_fraction_of_new_TP": 0.6362706006380215,
+            "new_area_precision": 0.3657662731126473,
+            "episodes_with_deep_new_TP": 35
+          },
+          "foreground_mean_dot": {
+            "added_TP": 716156,
+            "added_FP": 1299395,
+            "lost_TP": 1778473,
+            "removed_FP": 1246112,
+            "deep_new_TP_gt16px": 401451,
+            "new_TP_in_RCG_untouched_GT_components": 40510,
+            "GT_pixels_in_RCG_untouched_components": 187066,
+            "deep_fraction_of_new_TP": 0.5605636202168243,
+            "new_area_precision": 0.3553152463023759,
+            "episodes_with_deep_new_TP": 34
+          },
+          "scalar_contrast": {
+            "added_TP": 1111319,
+            "added_FP": 1979373,
+            "lost_TP": 660703,
+            "removed_FP": 1284177,
+            "deep_new_TP_gt16px": 724257,
+            "new_TP_in_RCG_untouched_GT_components": 37946,
+            "GT_pixels_in_RCG_untouched_components": 187066,
+            "deep_fraction_of_new_TP": 0.6517093651777752,
+            "new_area_precision": 0.3595696368321399,
+            "episodes_with_deep_new_TP": 41
+          },
+          "episode_best": {
+            "added_TP": 1740674,
+            "added_FP": 1223240,
+            "lost_TP": 439671,
+            "removed_FP": 1918680,
+            "deep_new_TP_gt16px": 1271828,
+            "new_TP_in_RCG_untouched_GT_components": 74977,
+            "GT_pixels_in_RCG_untouched_components": 187066,
+            "deep_fraction_of_new_TP": 0.7306526092766366,
+            "new_area_precision": 0.587288969922879,
+            "episodes_with_deep_new_TP": 46
+          }
+        }
+      },
+      "deep_miss_cases_spatial": {
+        "episodes": 4,
+        "arms": {
+          "insid3_default": {
+            "added_TP": 27205,
+            "added_FP": 49420,
+            "lost_TP": 1646,
+            "removed_FP": 113333,
+            "deep_new_TP_gt16px": 27205,
+            "new_TP_in_RCG_untouched_GT_components": 26492,
+            "GT_pixels_in_RCG_untouched_components": 45472,
+            "deep_fraction_of_new_TP": 1.0,
+            "new_area_precision": 0.35504078303425773,
+            "episodes_with_deep_new_TP": 3
+          },
+          "source_contrast_mean": {
+            "added_TP": 164492,
+            "added_FP": 82396,
+            "lost_TP": 1210,
+            "removed_FP": 59141,
+            "deep_new_TP_gt16px": 161877,
+            "new_TP_in_RCG_untouched_GT_components": 7605,
+            "GT_pixels_in_RCG_untouched_components": 45472,
+            "deep_fraction_of_new_TP": 0.9841025703377672,
+            "new_area_precision": 0.6662616247043194,
+            "episodes_with_deep_new_TP": 2
+          },
+          "foreground_mean_dot": {
+            "added_TP": 27230,
+            "added_FP": 38197,
+            "lost_TP": 1646,
+            "removed_FP": 113333,
+            "deep_new_TP_gt16px": 27230,
+            "new_TP_in_RCG_untouched_GT_components": 26517,
+            "GT_pixels_in_RCG_untouched_components": 45472,
+            "deep_fraction_of_new_TP": 1.0,
+            "new_area_precision": 0.4161890351078301,
+            "episodes_with_deep_new_TP": 3
+          },
+          "scalar_contrast": {
+            "added_TP": 166216,
+            "added_FP": 102029,
+            "lost_TP": 1210,
+            "removed_FP": 77820,
+            "deep_new_TP_gt16px": 163601,
+            "new_TP_in_RCG_untouched_GT_components": 9329,
+            "GT_pixels_in_RCG_untouched_components": 45472,
+            "deep_fraction_of_new_TP": 0.984267459209703,
+            "new_area_precision": 0.6196424910063562,
+            "episodes_with_deep_new_TP": 2
+          },
+          "episode_best": {
+            "added_TP": 197381,
+            "added_FP": 54787,
+            "lost_TP": 1210,
+            "removed_FP": 135051,
+            "deep_new_TP_gt16px": 194766,
+            "new_TP_in_RCG_untouched_GT_components": 40494,
+            "GT_pixels_in_RCG_untouched_components": 45472,
+            "deep_fraction_of_new_TP": 0.98675151103703,
+            "new_area_precision": 0.7827361124329811,
+            "episodes_with_deep_new_TP": 4
+          }
+        }
+      },
+      "low_overlap_cases_spatial": {
+        "episodes": 5,
+        "arms": {
+          "insid3_default": {
+            "added_TP": 27236,
+            "added_FP": 50496,
+            "lost_TP": 3943,
+            "removed_FP": 268848,
+            "deep_new_TP_gt16px": 27205,
+            "new_TP_in_RCG_untouched_GT_components": 26492,
+            "GT_pixels_in_RCG_untouched_components": 45472,
+            "deep_fraction_of_new_TP": 0.9988618005580849,
+            "new_area_precision": 0.3503833684968867,
+            "episodes_with_deep_new_TP": 3
+          },
+          "source_contrast_mean": {
+            "added_TP": 164523,
+            "added_FP": 83472,
+            "lost_TP": 3507,
+            "removed_FP": 214656,
+            "deep_new_TP_gt16px": 161877,
+            "new_TP_in_RCG_untouched_GT_components": 7605,
+            "GT_pixels_in_RCG_untouched_components": 45472,
+            "deep_fraction_of_new_TP": 0.9839171422840576,
+            "new_area_precision": 0.6634125688017903,
+            "episodes_with_deep_new_TP": 2
+          },
+          "foreground_mean_dot": {
+            "added_TP": 27261,
+            "added_FP": 39273,
+            "lost_TP": 3943,
+            "removed_FP": 268848,
+            "deep_new_TP_gt16px": 27230,
+            "new_TP_in_RCG_untouched_GT_components": 26517,
+            "GT_pixels_in_RCG_untouched_components": 45472,
+            "deep_fraction_of_new_TP": 0.9988628443564066,
+            "new_area_precision": 0.4097303634232122,
+            "episodes_with_deep_new_TP": 3
+          },
+          "scalar_contrast": {
+            "added_TP": 166247,
+            "added_FP": 103105,
+            "lost_TP": 3507,
+            "removed_FP": 233335,
+            "deep_new_TP_gt16px": 163601,
+            "new_TP_in_RCG_untouched_GT_components": 9329,
+            "GT_pixels_in_RCG_untouched_components": 45472,
+            "deep_fraction_of_new_TP": 0.984083923318917,
+            "new_area_precision": 0.6172109358757314,
+            "episodes_with_deep_new_TP": 2
+          },
+          "episode_best": {
+            "added_TP": 197412,
+            "added_FP": 55863,
+            "lost_TP": 3507,
+            "removed_FP": 290566,
+            "deep_new_TP_gt16px": 194766,
+            "new_TP_in_RCG_untouched_GT_components": 40494,
+            "GT_pixels_in_RCG_untouched_components": 45472,
+            "deep_fraction_of_new_TP": 0.9865965594796668,
+            "new_area_precision": 0.7794373704471425,
+            "episodes_with_deep_new_TP": 4
+          }
+        }
+      },
+      "bank_better_cases_spatial": {
+        "episodes": 61,
+        "arms": {
+          "insid3_default": {
+            "added_TP": 699782,
+            "added_FP": 665786,
+            "lost_TP": 861273,
+            "removed_FP": 1012129,
+            "deep_new_TP_gt16px": 436827,
+            "new_TP_in_RCG_untouched_GT_components": 56413,
+            "GT_pixels_in_RCG_untouched_components": 144992,
+            "deep_fraction_of_new_TP": 0.6242329754123427,
+            "new_area_precision": 0.5124475676055678,
+            "episodes_with_deep_new_TP": 28
+          },
+          "source_contrast_mean": {
+            "added_TP": 752825,
+            "added_FP": 494801,
+            "lost_TP": 642165,
+            "removed_FP": 1340094,
+            "deep_new_TP_gt16px": 515807,
+            "new_TP_in_RCG_untouched_GT_components": 40367,
+            "GT_pixels_in_RCG_untouched_components": 144992,
+            "deep_fraction_of_new_TP": 0.685161890213529,
+            "new_area_precision": 0.603405988653651,
+            "episodes_with_deep_new_TP": 27
+          },
+          "foreground_mean_dot": {
+            "added_TP": 590986,
+            "added_FP": 455230,
+            "lost_TP": 1179375,
+            "removed_FP": 1050834,
+            "deep_new_TP_gt16px": 360163,
+            "new_TP_in_RCG_untouched_GT_components": 38282,
+            "GT_pixels_in_RCG_untouched_components": 144992,
+            "deep_fraction_of_new_TP": 0.6094272960780797,
+            "new_area_precision": 0.5648795277457045,
+            "episodes_with_deep_new_TP": 26
+          },
+          "scalar_contrast": {
+            "added_TP": 974715,
+            "added_FP": 912198,
+            "lost_TP": 301253,
+            "removed_FP": 1107490,
+            "deep_new_TP_gt16px": 679578,
+            "new_TP_in_RCG_untouched_GT_components": 33374,
+            "GT_pixels_in_RCG_untouched_components": 144992,
+            "deep_fraction_of_new_TP": 0.6972068758560195,
+            "new_area_precision": 0.5165659466016717,
+            "episodes_with_deep_new_TP": 32
+          },
+          "episode_best": {
+            "added_TP": 1602525,
+            "added_FP": 408438,
+            "lost_TP": 186826,
+            "removed_FP": 1738107,
+            "deep_new_TP_gt16px": 1226145,
+            "new_TP_in_RCG_untouched_GT_components": 70405,
+            "GT_pixels_in_RCG_untouched_components": 144992,
+            "deep_fraction_of_new_TP": 0.7651331492488417,
+            "new_area_precision": 0.796894323764286,
+            "episodes_with_deep_new_TP": 35
+          }
+        }
+      }
+    },
+    "exact_class_capacity_comparison": {
+      "new40": {
+        "bank_oracle": 67.08904145845477,
+        "RCG": 61.48162333277134
+      },
+      "new60": {
+        "bank_oracle": 69.2481633872107,
+        "RCG": 63.089546814937044
+      },
+      "old20": {
+        "bank_oracle": 74.6931526930879,
+        "RCG": 70.74267319858676
+      },
+      "pooled120": {
+        "bank_oracle": 70.14055340643638,
+        "RCG": 63.7229955252274
+      }
+    },
+    "elapsed_seconds": 8.347477197647095
+  }
+}

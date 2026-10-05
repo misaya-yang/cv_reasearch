@@ -1,30 +1,41 @@
-# CVPR 2027 研究工作区
+# CVPR 2027 — single-reference segmentation
 
-目标：一篇能在 CVPR 2027（截稿 2026-11-16 AoE）拿到 solid accept 的方法论文。
-当前只有一条在做的方向：**单样本上下文分割**（[demo9](demo_lists/demo9_transductive_ics/README.md)），做到哪了以 STATUS.md 为准。
+**No paper method claim is established yet.** We seek a complete inference method that improves on complete
+FoRIS under the same frozen-DINOv3, single-reference information budget. The supervised-readout and SAM3
+results belong to separate resource settings.
 
-## 从哪里看起
+## Start here
 
-| 想知道什么 | 看哪里 |
+Codex and Claude Code share [AGENTS.md](AGENTS.md) directly. Read [STATUS](docs/harness/STATUS.md), then
+[CLAIM](docs/research/CLAIM.md). [PLAN](docs/research/PLAN.md) is the only pending-work list.
+Project Claude auto memory remains disabled; shared lessons are in [LESSONS](docs/research/LESSONS.md).
+
+## Layout
+
+```
+src/ics/        shared data/encoder, complete FoRIS entry, native basis and paired statistics
+scripts/        run_foris.py and experiment_resource_guard.py
+evidence/       recorded results and reports; no active experiment queues
+  local/        local experiment ledger and retained numeric evidence
+  insid3/       historical INSID3 diagnostics
+  dots-2026-10-05/  supplied research synthesis and portable cloud evidence
+docs/
+  research/     CLAIM, PLAN, LESSONS
+  harness/      STATUS, SERVER, closed-direction history
+```
+
+The former demo4 was an INSID3 exploration; only its shared data/encoder helpers remain in code.
+The former demo9 mixed unrelated experiments; those implementations are retired from the working tree.
+The user deleted local demo8, and it has not been recreated. See [closed-direction history](docs/harness/ARCHIVE.md).
+
+| Need | Entry |
 |---|---|
-| 现在做到哪了、下一步是什么、等你决定什么 | [docs/harness/STATUS.md](docs/harness/STATUS.md) |
-| 已确认的数、失败账本 | [demo9 README](demo_lists/demo9_transductive_ics/README.md) |
-| 方法和理论 | [HANDOFF.md](demo_lists/demo9_transductive_ics/HANDOFF.md) |
-| 还没跑的实验 | [PLAN.md](demo_lists/demo9_transductive_ics/PLAN.md)，Codex 的当日计划在 `docs/codex_plan/` |
-| agent 的工作守则 | [AGENTS.md](AGENTS.md)，全局守则在 `~/.codex/AGENTS.md` |
-| 已经停掉的方向和原因 | [docs/harness/ARCHIVE.md](docs/harness/ARCHIVE.md) |
-| 服务器用法 | [docs/harness/SERVER.md](docs/harness/SERVER.md) |
+| Current claim, controls and evidence limits | [CLAIM](docs/research/CLAIM.md) |
+| Local results and failed constructions | [Local evidence ledger](evidence/local/RESULTS.md) |
+| INSID3 diagnostic history | [INSID3 evidence](evidence/insid3/RESULTS.md) |
+| Dots contribution/theory review | [Imported record](evidence/dots-2026-10-05/IMPORT.md) |
+| What the retained code does | [Code and baseline use](scripts/README.md) |
+| Existing server paths and resource policy | [SERVER](docs/harness/SERVER.md) |
 
-## 目录
-
-```
-AGENTS.md            agent 守则
-docs/harness/        STATUS.md、SERVER.md、ARCHIVE.md
-docs/reference/      文献表、数据核查
-demo_lists/
-  demo9_transductive_ics/   主线
-  demo4_incontext_seg/      主线依赖的工具库（icx/common.py）和 INSID3 误差账本
-```
-
-什么不进仓库只由 `.gitignore` 决定：数据集、权重、特征缓存、第三方源码，以及 `results/` 下文本以外的文件。
-已停方向和失败实验的代码在 git 历史里（提交 `b9efc2b`）。
+Old source is available from Git/history or the recorded local backup, not copied into another active code
+tree. Scientific evidence remains inspectable. A stored result or a historical plan is not authorization to run.

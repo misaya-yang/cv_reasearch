@@ -1,0 +1,65 @@
+{
+  "state": "COMPLETED",
+  "dataset": "COCO-20i",
+  "split": "exposed DEV241",
+  "episodes": 241,
+  "seed": 0,
+  "resolution": "original annotation pixels",
+  "name_source": "dino.txt reference crop; true-name rank uses class label and is diagnostic",
+  "host": "complete cached public FoRIS including CRF",
+  "summary": {
+    "rank1": {
+      "n": 115,
+      "mean_episode_iou": 0.6449792250496857,
+      "poor_iou_below_half": 37,
+      "poor_rate": 0.3217391304347826,
+      "fold_counts": [
+        24,
+        34,
+        31,
+        26
+      ]
+    },
+    "rank2to5": {
+      "n": 77,
+      "mean_episode_iou": 0.630179596109905,
+      "poor_iou_below_half": 20,
+      "poor_rate": 0.2597402597402597,
+      "fold_counts": [
+        23,
+        15,
+        21,
+        18
+      ]
+    },
+    "rank_over5": {
+      "n": 49,
+      "mean_episode_iou": 0.46452280454275063,
+      "poor_iou_below_half": 25,
+      "poor_rate": 0.5102040816326531,
+      "fold_counts": [
+        14,
+        11,
+        8,
+        16
+      ]
+    }
+  },
+  "rank_over5_minus_rank1_mean_iou": {
+    "delta": -0.1804564205069351,
+    "ci95": [
+      -0.27539065341495456,
+      -0.08941338442715277
+    ]
+  },
+  "rank_over5_minus_rank1_poor_rate": {
+    "delta": 0.1884649511978705,
+    "ci95": [
+      0.02985017901689354,
+      0.3482160160575858
+    ]
+  },
+  "photo_groups": 239,
+  "bootstrap_draws": 2000,
+  "interpretation_limit": "Associational grouping uses the true class to define rank; not a test-time selector, not a method mIoU gain."
+}
