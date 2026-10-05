@@ -1,0 +1,69 @@
+{
+  "n": 4000,
+  "arms": [
+    "native",
+    "rcg",
+    "mean.control",
+    "rcg64.control",
+    "fine.rcg16.control",
+    "fine.rcg64"
+  ],
+  "primary": "fine.rcg64",
+  "parameters": {
+    "0": {
+      "arm": "feat[s1.25,t0.07]",
+      "sigma": 1.25,
+      "tau": 0.07
+    },
+    "1": {
+      "arm": "feat[s1.25,t0.15]",
+      "sigma": 1.25,
+      "tau": 0.15
+    },
+    "2": {
+      "arm": "feat[s1.25,t0.15]",
+      "sigma": 1.25,
+      "tau": 0.15
+    },
+    "3": {
+      "arm": "feat[s1.25,t0.07]",
+      "sigma": 1.25,
+      "tau": 0.07
+    }
+  },
+  "exposure": "all4000 original public draws including repeats; benchmark reuse, not fresh confirmation or SOTA",
+  "source_code_sha256": {
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/frozen_subtoken4000_v1/snapshot/scripts/run_frozen_subtoken4000.py": "481bff4abab20e5d2a71976c522b02c9fd9a4f3c90baf6170686ecbb9bc1d3cd",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/frozen_subtoken4000_v1/snapshot/scripts/run_frozen_subtoken1200.py": "e802ea229d50bd83b88784fa0640105e65c79d31469fb5a0b769667d80995a5d",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/frozen_subtoken4000_v1/snapshot/src/ics/experiment.py": "d95459d0b59c7048618661e7a16999248990b02e92cd1269d4629a497f62f843",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/frozen_subtoken4000_v1/snapshot/src/ics/methods/rcg.py": "d9d8e15a69c0b939eb06dc4e41967afb684f29731f9dcb00519e73d944963d98",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/frozen_subtoken4000_v1/snapshot/src/ics/data.py": "7664bfcc0de9a9183296273a3ea57390e00147b82afe626f47bde1bf2383b165",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/frozen_subtoken4000_v1/snapshot/src/ics/native_basis.py": "8ac26ef78d601f3d10318043c6cd73a05fe9dc2ac8d8ea4eabefc6a8289cb80c"
+  },
+  "providers": {
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/claude_official/run0": "e0898ec785afb5ba02de9a4d6a45debc44371ab5584047e7768c9626968c9baa",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/claude_official/run1": "cc5bd6472f3f7776a7f6c717a168c0f72011bd4dbf301d73f9505ed08ed542a3",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/claude_official/run2": "aba4648fdafcdd68ea1370bf729233bf8e225c1634be0d00ff2595c28e866884",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/claude_official/run3": "97c9c75cc1461b98170ad771aa309e49af32275a67b28a1896698c78a3891398",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/claude_official/run4": "676304cd725a6223d85a70c88ee6123a3ca8db1418d5742d7b68f98dfc6a878f",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/claude_official/run5": "9385295ec0be8ea153085010263ff65ce31deb5fbee3ef7d0132d907cd0b8ae7",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/claude_official/run6": "5aab5587fede773f775d220b1f25e747611f290dec44e326bafb02a73205491d"
+  },
+  "reuse1200": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen_subtoken1200_v1",
+  "reuse1200_seal_sha256": "ab70271e626d8fd0ea76bc830401eef030123978e5754dcf81b98a1014df22c8",
+  "smoke_receipt": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/subtoken4000_smoke_v1/parity.json",
+  "smoke_receipt_sha256": "6e2e25d457bf7a77b09c7640e8d6f1f9e3d488ad63ce05895e4ce1443ed1b7cf",
+  "basis": "/root/autodl-tmp/demo9_transductive_ics/results/native_runtime_v1/positional_basis.pt",
+  "basis_sha256": "9b9b20755a796cbda11bb7220d246ee540106e40cb024e249a5f63f884b6a116",
+  "producer_sha256": "14e99f553d93a3234d78551e67727fc3478ca7042b161d9b465dae5cc9769f2b",
+  "host_manifest_sha256": "4dd6078054e91c7fc90df4443120624b763539e83c1c7752cd031bfb4c859d22",
+  "parameter_report_sha256": "9bc0339dd031f727ebbd6f6f68d5ba74a3ecd5e12645b4a0534500cd55b79e58",
+  "lifecycle": "reuse1200 complete outputs; remaining2800 temporary q/r FP16 + fine FP32 in bounded RAM; no archives or deletion",
+  "dtype": "actual source paired FP32, no autocast; exporter q/r half->CPU float32->unit; fine FP32 unchanged",
+  "projection": "actual source gate and explicit (I-U@U.T)@X order preserved by run_foris; noQR/lowrank substitute",
+  "query_gt_in_inference": false,
+  "workers": 6,
+  "writers": 2,
+  "inflight": 6,
+  "chunk": 512
+}

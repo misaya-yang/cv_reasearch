@@ -30,6 +30,7 @@ for name in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS"):
 
 import numpy as np
 from score_frozen_subtoken4000 import ARMS, EDIT_NAMES, ROOT, public_key, same_identity
+from verify_frozen_subtoken1200 import net_terms
 from ics.experiment import metric, photo_groups, sha, summarize
 
 PRIMARY = "fine.rcg64"
@@ -55,6 +56,8 @@ def complete_metadata(run, scored):
         run_files.append("manifest.json")
     if (scored / "manifest.json").is_file():
         scored_files.append("manifest.json")
+    if (scored / "counts.npz").is_file():
+        scored_files.append("counts.npz")
     hashes = {"inference": {name: sha(run / name) for name in run_files},
               "scoring": {name: sha(scored / name) for name in scored_files}}
     receipt = json.loads((scored / "receipt.json").read_text())
@@ -186,6 +189,53 @@ def verify_prior_rows(rows, prior4000, prior1200):
     return {"baseline4000": {"n": 4000, "arms": list(ARMS[:3]), "mismatches": 0}, "earlier1200": {"n": len(used), "arms": list(ARMS), "mismatches": 0}, "sampled_draws": len(rows), "unique_episode_identities": len(set(identities)), "natural_repeated_draws_retained": len(rows) - len(set(identities))}
 
 
+def verify_count_artifact(path, arrays, corrections):
+    if not path.is_file():
+        return "not downloaded; saved episode counts remain the statistical source"
+    with np.load(path, allow_pickle=False) as stored:
+        for arm in ARMS:
+            if not np.array_equal(stored["iu:" + arm], arrays[arm]):
+                raise ValueError("Saved counts.npz I/U differs from episodes: " + arm)
+            if corrections:
+                expected = np.array([[record[name] for name in EDIT_NAMES] for record in corrections[arm]], dtype=np.int64)
+                if not np.array_equal(stored["edits_vs_native:" + arm], expected):
+                    raise ValueError("Saved counts.npz edit records differ from episodes: " + arm)
+    return "all six-arm I/U and available four-way edits match every saved draw"
+
+
+def sideeffects(rows, arrays, corrections, draws):
+    classes = np.array([row["c"] for row in rows])
+    ids, index = np.unique(classes, return_inverse=True)
+    groups = photo_groups(rows)
+    g = int(groups.max()) + 1
+    weights = np.stack([np.bincount(draw, minlength=g) for draw in draws])[:, groups]
+    result = {"net_stage_decompositions": {}}
+    for arm, base in ((PRIMARY, "native"), (PRIMARY, "rcg64.control"), ("fine.rcg16.control", "rcg"), ("rcg64.control", "rcg")):
+        point = net_terms(arrays, arm, base, classes)
+        boot = np.array([net_terms(arrays, arm, base, classes, w) for w in weights])
+        result["net_stage_decompositions"][arm + " minus " + base] = dict(gain_pp=float(point[0]), ci95_pp=np.percentile(boot[:, 0], [2.5, 97.5]).tolist(), net_TP_contribution_pp=float(point[1]), net_TP_ci95_pp=np.percentile(boot[:, 1], [2.5, 97.5]).tolist(), net_FP_contribution_pp=float(point[2]), net_FP_ci95_pp=np.percentile(boot[:, 2], [2.5, 97.5]).tolist(), pooled_net_TP_change=int((arrays[arm][:, 0] - arrays[base][:, 0]).sum()), pooled_net_FP_change=int((arrays[arm][:, 1] - arrays[base][:, 1]).sum()))
+    if corrections:
+        values = np.array([[record[name] for name in EDIT_NAMES] for record in corrections[PRIMARY]])
+        def terms(w):
+            present = np.bincount(index, weights=w, minlength=len(ids)) > 0
+            total = lambda value: np.bincount(index, weights=w * value, minlength=len(ids))
+            j0 = total(arrays["native"][:, 0]) / np.maximum(total(arrays["native"][:, 1]), 1)
+            u1 = np.maximum(total(arrays[PRIMARY][:, 1]), 1)
+            factors = (np.ones(len(ids)), -j0, -np.ones(len(ids)), j0)
+            contribution = np.array([100 * np.mean((total(values[:, k]) * factors[k] / u1)[present]) for k in range(4)])
+            expected = metric(arrays[PRIMARY], classes, w) - metric(arrays["native"], classes, w)
+            if abs(contribution.sum() - expected) > 1e-10:
+                raise ValueError("Four-way class-macro contribution identity failed")
+            return contribution
+        point = terms(np.ones(len(rows)))
+        boot = np.array([terms(w) for w in weights])
+        result["primary_four_way_native_relative"] = {name: {"contribution_pp": float(point[k]), "ci95_pp": np.percentile(boot[:, k], [2.5, 97.5]).tolist(), "pooled_pixel_count": int(values[:, k].sum())} for k, name in enumerate(EDIT_NAMES)}
+    else:
+        result["primary_four_way_native_relative"] = "not saved"
+    result["interpretation"] = "Exact observed-mask accounting with class totals/final candidate union. Only within-pair terms add; pooled totals are diagnostics. No causal or GT-geometry inference."
+    return result
+
+
 def self_test():
     rows = [dict(key=f"public0:{j}", fold=0, e=j, c=0 if j < 2 else 1, batch="test", public_batch=0, query="a.jpg" if j < 2 else f"q{j}.jpg", support="b.jpg" if j < 2 else f"s{j}.jpg") for j in range(4)]
     native = [[1, 2], [1, 2], [10, 20], [30, 40]]
@@ -194,7 +244,9 @@ def self_test():
         row["iu"] = {arm: fine[j] if arm == PRIMARY else native[j] for arm in ARMS}
         row["edits_vs_native"] = {arm: dict(add_TP=row["iu"][arm][0] - native[j][0], add_FP=0, delete_TP=0, delete_FP=0) for arm in ARMS}
     arrays, corrections = arrays_and_edits(rows)
-    source, _ = summarize(rows, arrays, corrections)
+    source, draws = summarize(rows, arrays, corrections)
+    effects = sideeffects(rows, arrays, corrections, draws)
+    assert abs(sum(v["contribution_pp"] for v in effects["primary_four_way_native_relative"].values()) - source["contrasts"][PRIMARY]["native"]["gain"]) < 1e-10
     assert abs(source["scores"]["native"] - 100 * (.5 + 40 / 60) / 2) < 1e-10
     assert len(rows) == 4 and len(set((r["c"], r["query"], r["support"]) for r in rows)) == 3
     assert compare_report(source, copy.deepcopy(source)) == 0
@@ -271,9 +323,11 @@ def main():
         raise ValueError("Require all4000 sampled draws,80 classes,1000/fold")
     parity = verify_prior_rows(rows, read_rows(args.prior4000), read_rows(args.prior1200 / "episodes.jsonl"))
     arrays, corrections = arrays_and_edits(rows)
+    count_artifact = verify_count_artifact(args.scored / "counts.npz", arrays, corrections)
     recomputed, draws = summarize(rows, arrays, corrections)
     max_error = compare_report(recomputed, source)
     subgroup = subgroup_intervals(rows, arrays, draws, recomputed, source)
+    editing = sideeffects(rows, arrays, corrections, draws)
     edit_tables_verified = []
     if corrections:
         for field in ("corrections_vs_native", "corrections_by_class", "corrections_by_batch"):
@@ -284,8 +338,8 @@ def main():
     baseline = recomputed["contrasts"][PRIMARY]["native"]
     controls = ("mean.control", "rcg64.control", "fine.rcg16.control")
     result = {"source": {**provenance, "prior_sha256": prior_hashes, "script_sha256": sha(Path(__file__))},
-              "verification": {"all_source_scores_CIs_fold_batch_max_error_pp": max_error, "global_episode_up_down_tie_match": True, "subgroup_primary_CIs": subgroup, "prior_parity": parity, "frozen_parameters_unchanged": True, "inference_manifest_hash_verified_locally": "manifest.json" in hashes["inference"], "scored_manifest_copy_hash_verified_locally": "manifest.json" in hashes["scoring"], "inference_scoring_receipt_link_verified": True, "native_relative_per_draw_edit_identities": "all six arms passed" if corrections else "not saved", "edit_report_tables_verified": edit_tables_verified},
-              "statistics": recomputed, "fixed_primary_decision": {"primary": PRIMARY, "observed_gain_at_least2_pp": baseline["gain"] >= 2, "ci95_entirely_at_least2_pp": baseline["ci95"][0] >= 2, "mandatory_strong_controls": list(controls), "strong_controls_all_resolved": all(recomputed["contrasts"][PRIMARY][arm]["ci95"][0] > 0 for arm in controls), "interpretation": "Report every fixed contrast. CI crossing zero is unresolved; point wins are not superiority. Existing4000 benchmark reuse is not independent confirmation."},
+              "verification": {"all_source_scores_CIs_fold_batch_max_error_pp": max_error, "global_episode_up_down_tie_match": True, "subgroup_primary_CIs": subgroup, "prior_parity": parity, "frozen_parameters_unchanged": True, "inference_manifest_hash_verified_locally": "manifest.json" in hashes["inference"], "scored_manifest_copy_hash_verified_locally": "manifest.json" in hashes["scoring"], "inference_scoring_receipt_link_verified": True, "saved_counts_artifact": count_artifact, "native_relative_per_draw_edit_identities": "all six arms passed" if corrections else "not saved", "edit_report_tables_verified": edit_tables_verified},
+              "statistics": recomputed, "edit_sideeffects": editing, "fixed_primary_decision": {"primary": PRIMARY, "observed_gain_at_least2_pp": baseline["gain"] >= 2, "ci95_entirely_at_least2_pp": baseline["ci95"][0] >= 2, "mandatory_strong_controls": list(controls), "strong_controls_all_resolved": all(recomputed["contrasts"][PRIMARY][arm]["ci95"][0] > 0 for arm in controls), "interpretation": "Report every fixed contrast. CI crossing zero is unresolved; point wins are not superiority. Existing4000 benchmark reuse is not independent confirmation."},
               "limits": ["No original packet/prediction/field masks were reopened or hashed locally; this verifies statistics from saved I/U and saved edit counts.", "Per-draw edit identities do not independently recount individual four-way categories from masks.", "Raw-DINO complete4000 origin remains unavailable; DEV241 common-origin comparison is separate.", "Native quality, GT-distance and object geometry are not inferred from missing fields.", "Subgroups reuse full-cohort photo multiplicities, exactly as the existing4000 scorer; no alternative RNG or estimand was introduced."]}
     for role, directory in (("inference", args.run), ("scoring", args.scored)):
         for name, expected_hash in hashes[role].items():
@@ -301,6 +355,18 @@ def main():
     for arm in ARMS[:-1]:
         value = recomputed["contrasts"][PRIMARY][arm]
         lines.append(f"| {arm} | {value['gain']:+.6f} [{value['ci95'][0]:+.6f}, {value['ci95'][1]:+.6f}] | {value['up']} / {value['down']} / {value['tie']} |")
+    lines += ["", "| Arm | Class-summed macro mIoU |", "|---|---:|"]
+    lines += [f"| {arm} | {recomputed['scores'][arm]:.6f} |" for arm in ARMS]
+    lines += ["", "| Subgroup | Draws | Fine64 | vs native | vs coarse64 | vs MEAN | vs fine16 |", "|---|---:|---:|---:|---:|---:|---:|"]
+    for table in ("folds", "batchs"):
+        for label, group in recomputed[table].items():
+            contrasts = group["primary_paired_contrasts"]
+            entries = [f"{contrasts[arm]['gain']:+.3f} [{contrasts[arm]['ci95'][0]:+.3f}, {contrasts[arm]['ci95'][1]:+.3f}]" for arm in ("native", "rcg64.control", "mean.control", "fine.rcg16.control")]
+            lines.append(f"| {table}/{label} | {group['n']} | {group['scores'][PRIMARY]:.3f} | " + " | ".join(entries) + " |")
+    if corrections:
+        lines += ["", "| Fine64 signed edit contribution vs native | Class-macro contribution [95% CI], pp | Pooled count |", "|---|---:|---:|"]
+        for name, values in editing["primary_four_way_native_relative"].items():
+            lines.append(f"| {name} | {values['contribution_pp']:+.3f} [{values['ci95_pp'][0]:+.3f}, {values['ci95_pp'][1]:+.3f}] | {values['pooled_pixel_count']} |")
     lines += ["", "Fold/batch primary contrasts are independently recomputed using the same full-cohort connected-photo RandomState(0)2,000 multiplicities; details and source availability are retained in JSON.", "", "Native-relative per-draw edit identities: " + result["verification"]["native_relative_per_draw_edit_identities"] + ". These checks do not replace a mask recount.", "", "Fine64 remains the fixed primary. Evaluate stable>=2 against native and MEAN/coarse64/originalfine16 controls; intervals crossing zero remain unresolved. Full4000 is benchmark/development reuse, not fresh confirmation.", ""]
     (args.out / "verification.md").write_text("\n".join(lines))
     print(json.dumps({"output": str(args.out), "verification": result["verification"], "runtime_seconds": result["runtime_seconds"]}, indent=2))

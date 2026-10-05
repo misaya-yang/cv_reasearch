@@ -46,7 +46,11 @@ Updated 2026-10-05. This file records current state; detailed evidence is linked
   regions,77 paired episodes/296 regions. Reuse all367 old descriptor views; only1033 new
   views are required. All1200 fine64 I/U/source hashes and all original geometry passed.
   Full1200 CLS-vs-NN uses the same77-case subset; legacy raw/projected controls keep their
-  original18-case subset separately. GPU launch is pending in one serial post4000 queue.
+  original18-case subset separately. Serial post4000 supervisor50379/start954432261 is live,
+  waiting for current45702 to release GPU, with no shared-GPU flag. It runs two-pair producer
+  parity/timing, then1033new CLS views, thenCPUscore. Stage contracts and87 benchmark assets
+  passed actual remote validation; CLS1200 identity/reuse/geometry/statistics were independently
+  audited. [Queue receipt](../../evidence/local/research_20261005/pipeline_verified/post4000_followup_v1/root_launch_receipt.json).
   [Cue diagnostic](../../evidence/local/research_20261005/pipeline_verified/region_prototypes_raw241_v2/interpretation.md).
 - Fixed600matchedcoarsecontrolcompleted:coarseguide64.273121,fine64.625380;
   fineadvantage+.352259[.325705,.544086],allsource600I/Uexact. GPUbatch4+CPU6readers/2writers,
