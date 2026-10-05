@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Exact bounded two-operation DEV search on sealed masks, with CUDA bit counts.
 
-This tests the optimization gap of one-step greedy. It is DEV-label-based rule
+This tests the optimization gap of matched-depth greedy. It is DEV-label-based rule
 selection, not query-GT inference or a global theorem for arbitrary-length paths.
 The CPU score phase reads sealed final masks separately. No encoder is loaded.
 """
@@ -62,7 +62,7 @@ def infer(a):
     import torch
     import torch.nn.functional as F
     from ics.experiment import load_rows, packet, photo_groups, sha
-    torch.set_num_threads(2)
+    torch.set_num_threads(1)
     if not torch.cuda.is_available():
         raise RuntimeError("Real CUDA required")
     if a.out.exists():
@@ -130,7 +130,7 @@ def infer(a):
                     origin=origin_name, input_receipts=receipts, resolution=1024, seed=0,
                     additional_encoder_forwards=0, smoke=a.smoke,
                     selection="DEV GT on three folds; photo-connected groups of read fold excluded; no per-query routing",
-                    comparison="same precomputed library: direct complete-mask selection, one step, exact up to two steps",
+                    comparison="same library: complete selection, greedy1, greedy2, exact joint2, robust joint2",
                     resources="cached rawl24/APD and multilayer ingredients; deployment cost depends on selected producers",
                     theorem_scope="global best inside the enumerated <=2-operation family on fitting data only")
     write_json(a.out / "manifest.json", rows); write_json(a.out / "protocol.json", protocol)
@@ -157,9 +157,24 @@ def infer(a):
         if index % 250 == 0:
             print(json.dumps(dict(evaluated=index, total=len(recipes), seconds=round(time.monotonic()-begin, 2))), flush=True)
     complete = np.stack([iu(lib[k]) for k in names])
+    # Retain exact sufficient statistics: subsequent optimizer comparisons need no rerun.
+    np.savez_compressed(a.out / "candidate_counts.npz", recipes=counts, complete=complete)
+    origin_counts = iu(origin)
+    origin_true = popcount(origin & truth).cpu().numpy().astype(np.int64)
+    origin_false = popcount(origin & ~truth).cpu().numpy().astype(np.int64)
+    family_counts = []
+    for name in names:
+        added, removed = lib[name] & ~origin, origin & ~lib[name]
+        family_counts.append(np.stack([popcount(added & truth).cpu().numpy(),
+            popcount(added & ~truth).cpu().numpy(), popcount(removed & truth).cpu().numpy(),
+            popcount(removed & ~truth).cpu().numpy()], 1).astype(np.int64))
+    np.savez_compressed(a.out / "family_counts.npz", counts=np.stack(family_counts),
+                        origin=origin_counts, origin_true=origin_true, origin_false=origin_false)
     classes = np.array([r["c"] for r in rows]); folds = np.array([r["fold"] for r in rows])
     groups = photo_groups(rows)
-    selected = {k: np.empty((n, packed_size), np.uint8) for k in ("select.complete", "select.greedy1", "select.joint2")}
+    selected = {k: np.empty((n, packed_size), np.uint8) for k in
+                ("select.complete", "select.greedy1", "select.greedy2", "select.joint2", "select.robust2")}
+    recipe_index = {tuple(recipe): i for i, recipe in enumerate(recipes)}
     choices = {}
 
     def values(arrays, fit):
@@ -174,14 +189,35 @@ def infer(a):
             raise ValueError("No photo-isolated fitting episodes")
         score = values(counts, fit); direct_score = values(complete, fit)
         direct = int(direct_score.argmax()); greedy = int(score[:len(ops)].argmax()); joint = int(score.argmax())
+        first = recipes[greedy][0]
+        second_candidates = [recipe_index[(first, j)] if first and j else
+                             recipe_index[(first or j, 0)] for j in range(len(ops))]
+        greedy2 = second_candidates[int(score[second_candidates].argmax())]
+        # A joint move must beat the selected complete rule on every fitting fold.
+        # This is a frozen selection policy; read-fold labels never enter it.
+        fitting_folds = sorted(set(folds[fit]))
+        deltas = np.stack([values(counts, fit & (folds == f)) -
+                          values(complete[direct:direct+1], fit & (folds == f))[0]
+                          for f in fitting_folds])
+        worst_gain = deltas.min(0)
+        robust = int(worst_gain.argmax()) if worst_gain.max() > 0 else None
         if score[joint] + 1e-9 < score[greedy]:
             raise ValueError("Exact-family containment failed")
+        if score[joint] + 1e-9 < score[greedy2]:
+            raise ValueError("Matched-depth containment failed")
         choices[str(fold)] = dict(fit_episodes=int(fit.sum()), read_episodes=int(read.sum()),
-            complete=names[direct], greedy=recipes[greedy], joint=recipes[joint],
-            fit_scores=dict(complete=float(direct_score[direct]), greedy1=float(score[greedy]), joint2=float(score[joint])))
+            complete=names[direct], greedy=recipes[greedy], greedy2=recipes[greedy2], joint=recipes[joint],
+            robust2=recipes[robust] if robust is not None else {"complete": names[direct]},
+            robust2_worst_fit_fold_gain=float(worst_gain[robust]) if robust is not None else 0.,
+            fit_scores=dict(complete=float(direct_score[direct]), greedy1=float(score[greedy]),
+                            greedy2=float(score[greedy2]), joint2=float(score[joint]),
+                            robust2=float(score[robust]) if robust is not None else float(direct_score[direct])))
         for label, mask in (("select.complete", lib[names[direct]]),
                             ("select.greedy1", apply(apply(origin, recipes[greedy][0]), recipes[greedy][1])),
-                            ("select.joint2", apply(apply(origin, recipes[joint][0]), recipes[joint][1]))):
+                            ("select.greedy2", apply(apply(origin, recipes[greedy2][0]), recipes[greedy2][1])),
+                            ("select.joint2", apply(apply(origin, recipes[joint][0]), recipes[joint][1])),
+                            ("select.robust2", apply(apply(origin, recipes[robust][0]), recipes[robust][1])
+                             if robust is not None else lib[names[direct]])):
             selected[label][read] = mask.cpu().numpy()[read]
     comparisons = {"native": "native", "origin": origin_name, "rcg": "recheck:RCG",
                    "astra.control": "recheck:external_mean__delete", "mean.control": "recheck:MEAN_CONTROL",
@@ -196,6 +232,8 @@ def infer(a):
     write_json(a.out / "sealed.json", dict(state="ALL_PREDICTIONS_SEALED", n=n,
                manifest_sha256=sha(a.out / "manifest.json"), protocol_sha256=sha(a.out / "protocol.json"),
                choices_sha256=sha(a.out / "choices.json"), predictions=seals,
+               sufficient_statistics={name: sha(a.out / name) for name in
+                                      ("candidate_counts.npz", "family_counts.npz")},
                query_gt_used_for_DEV_fold_fitting=True, per_query_gt_routing=False,
                seconds=time.monotonic()-begin, cuda_peak_bytes=torch.cuda.max_memory_allocated()))
     print(json.dumps(dict(state="ALL_PREDICTIONS_SEALED", n=n, candidates=len(recipes),
@@ -212,6 +250,8 @@ def score(a):
                         ("choices_sha256", "choices.json")):
         check_hash(a.out / name, seal[field])
     protocol = json.loads((a.out / "protocol.json").read_text())
+    for filename, digest in seal["sufficient_statistics"].items():
+        check_hash(a.out / filename, digest)
     for path, digest in protocol["source_code"].items():
         check_hash(Path(path), digest)
     rows = json.loads((a.out / "manifest.json").read_text()); arrays, corrections, details = {}, {}, []
@@ -233,7 +273,19 @@ def score(a):
             corrections.setdefault(name, []).append(dict(key=key, c=row["c"], fold=row["fold"],
                 batch=row.get("batch", "unspecified"), **counts))
         details.append(episode)
-    report, _ = summarize(rows, {k: np.array(v) for k, v in arrays.items()}, corrections)
+    arrays = {k: np.array(v) for k, v in arrays.items()}
+    optimizer_bases = {"complete.control": arrays["select.complete"],
+                       "greedy2.control": arrays["select.greedy2"]}
+    report, _ = summarize(rows, {**arrays, **optimizer_bases}, corrections)
+    report["optimizer_contrasts"] = {name: {base: report["contrasts"][name][base]
+        for base in optimizer_bases if name != base} for name in arrays}
+    # Aliases only establish paired comparisons; retain canonical output arm names.
+    for base in optimizer_bases:
+        report["scores"].pop(base); report["contrasts"].pop(base)
+        for contrasts in report["contrasts"].values(): contrasts.pop(base, None)
+        for section in ("folds", "batchs"):
+            for record in report[section].values():
+                record["scores"].pop(base); record["gain_vs_native"].pop(base)
     report["corrections_vs_origin"] = report.pop("corrections_vs_native")
     report["corrections_vs_origin_by_class"] = report.pop("corrections_by_class")
     report["corrections_vs_origin_by_batch"] = report.pop("corrections_by_batch")
@@ -241,7 +293,55 @@ def score(a):
                   choices=json.loads((a.out / "choices.json").read_text()), prediction_seal_sha256=sha(a.out / "sealed.json"))
     write_json(a.out / "report.json", report)
     (a.out / "episodes.jsonl").write_text("".join(json.dumps(r) + "\n" for r in details))
+    family_report(a.out, protocol, rows)
     print(json.dumps(dict(n=report["n"], scores=report["scores"])), flush=True)
+
+
+def family_report(out, protocol, rows):
+    """GT diagnostics only: standalone edits, overlapping edits and sequential conflicts."""
+    import csv
+    import numpy as np
+    from ics.experiment import metric
+    with np.load(out / "candidate_counts.npz", allow_pickle=False) as z:
+        candidate, complete = z["recipes"].copy(), z["complete"].copy()
+    with np.load(out / "family_counts.npz", allow_pickle=False) as z:
+        edit, origin = z["counts"].copy(), z["origin"].copy()
+    names, ops = protocol["library"], protocol["ops"]
+    indices = {tuple(recipe): i for i, recipe in enumerate(protocol["recipes"])}
+    cls = np.array([r["c"] for r in rows])
+    baseline = metric(origin, cls)
+    table, pair_counts = [], np.empty((len(names), len(names), len(rows), 8), np.int64)
+    for i, name in enumerate(names):
+        ai, di = ops.index(["add", name]), ops.index(["delete", name])
+        tp, fp, dt, df = edit[i].sum(0)
+        table.append(dict(method=name, add_TP=int(tp), add_FP=int(fp), delete_TP=int(dt), delete_FP=int(df),
+            add_purity=float(tp/max(tp+fp, 1)), delete_false_purity=float(df/max(dt+df, 1)),
+            complete_score=metric(complete[i], cls),
+            add_only_gain=metric(candidate[indices[(ai, 0)]], cls)-baseline,
+            delete_only_gain=metric(candidate[indices[(di, 0)]], cls)-baseline,
+            complete_gain=metric(complete[i], cls)-baseline))
+        for j, other in enumerate(names):
+            aj, dj = ops.index(["add", other]), ops.index(["delete", other])
+            aa, dd = candidate[indices[(ai, aj)]], candidate[indices[(di, dj)]]
+            ad, da = candidate[indices[(ai, dj)]], candidate[indices[(dj, ai)]]
+            first_add, first_del = candidate[indices[(ai, 0)]], candidate[indices[(dj, 0)]]
+            pair_counts[i, j, :, 0:2] = edit[i, :, :2] + edit[j, :, :2] - (aa-origin)
+            pair_counts[i, j, :, 2:4] = edit[i, :, 2:] + edit[j, :, 2:] - (origin-dd)
+            pair_counts[i, j, :, 4:6] = first_add-ad-edit[j, :, 2:]
+            pair_counts[i, j, :, 6:8] = da-first_del-edit[i, :, :2]
+    if (pair_counts < 0).any():
+        raise ValueError("Set accounting produced negative overlap/conflict counts")
+    np.savez_compressed(out / "operator_pair_counts.npz", counts=pair_counts)
+    with (out / "family_table.csv").open("w", newline="") as stream:
+        writer = csv.DictWriter(stream, fieldnames=list(table[0])); writer.writeheader(); writer.writerows(table)
+    write_json(out / "family_accounting.json", dict(state="GT_DIAGNOSTIC_NOT_INFERENCE",
+        names=names, origin=protocol["origin"], n=len(rows), origin_score=baseline, table=table,
+        pair_axes=["method_i", "method_j", "manifest_episode", "count_type"],
+        count_types=["add_overlap_true", "add_overlap_false", "delete_overlap_true", "delete_overlap_false",
+            "add_i_then_delete_j_conflict_true", "add_i_then_delete_j_conflict_false",
+            "delete_j_then_add_i_conflict_true", "delete_j_then_add_i_conflict_false"],
+        purity_note="Pooled descriptive purity; class-macro decisions use class-summed I/U",
+        marginal_note="candidate_counts recipes give exact effective second-edit counts by successive I/U differences"))
 
 
 def main():

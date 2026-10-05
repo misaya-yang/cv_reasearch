@@ -98,5 +98,8 @@ Fixed query-mean Astra on allDEV241 reaches62.654343 vs completeFoRIS59.074825:
 +3.579518[1.320378,4.824421]. Its improvement overRCG is+1.634674[-.348770,2.523257],
 so the full claim against strong controls remains unresolved. Last-step GPU replay matches all241
 frozen masks exactly. Source:[verified report](../../evidence/local/research_20261005/pipeline_verified/recheck241/report.json).
-Existing600 evaluation is running; it is previously exposed data. Frozen parameters and600-optimized
-search rows must remain separate. The operational transfer is recorded in[HANDOFF](../../HANDOFF.md).
+Existing600 fixed evaluation is complete:FoRIS60.073377,MEAN_CONTROL61.467653,
+fixedAstra60.673832,+.600455[-.631630,1.872440]vsFoRIS. It does not establish the target.
+All600 are previously exposed; frozen parameters and600-optimized search rows remain separate.
+Source:[fixed600 report](../../evidence/local/research_20261005/pipeline_verified/fixed600/report.json).
+The operational transfer is recorded in[HANDOFF](../../HANDOFF.md).

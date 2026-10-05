@@ -475,6 +475,16 @@ The 600 cohort has now been read for these arms and for the sweep and is no long
 Sources: [600 report](research_20261005/recheck600_v1/report_wide.md), [241 report](research_20261005/recheck241_v1/report_wide.md),
 [greedy](research_20261005/greedy241_v1/report.md); runs on the server `outputs/{recheck241_v1,recheck600_v1,confirm600_root,greedy241_v1}`.
 
+### 2026-10-06: the same fixed arms on a second 600-episode cohort (fresh600, photo-isolated from DEV241 and the first 600)
+
+First 150 kept draws per fold of the prepared `train_episodes.json` (e 60 to 234), seed 0, class mIoU, 2000 photo-group draws;
+FoRIS run fresh through the same host. At 1024: native 61.63; RCG 64.24 = +2.61 [+1.39, +3.23]; C 63.59 = +1.96 [+0.33, +2.79];
+Astra candidate 63.50 = +1.87 [+0.15, +2.92] vs native and -0.74 [-1.89, +0.27] vs RCG; folds of the candidate +0.83 / -1.05 /
++4.11 / +3.59. At the original query resolution (FoRIS finish): native 61.42, RCG +2.61 [+1.38, +3.22], C +1.91, candidate +1.83
+[+0.09, +2.89]. Frozen pairs: `delete_p + add_far` 64.17 (-0.07 vs RCG); `astra + add_far_strict` 63.43. Both 600 cohorts agree:
+RCG is positive (+0.99, +2.61) and the two deletion steps sit below RCG (-0.39, -0.74), unresolved.
+Source: [report](research_20261005/recheck_fresh600_v1/report_wide.md), [original resolution](research_20261005/recheck_fresh600_v1/original.md).
+
 ### 写了但没有跑就撤回的
 
 部分对应（PCF）、不变概念与可移植提示、响应 pair-ratio 编辑器、响应训练路线曾在未取得足够前提证据时撤回。早期 `pair_bank.py` 准备被撤回，不表示后续 layer/joint 队列没有运行（结果见上）。撤回未运行构造不证明输入缺少信息。
@@ -522,3 +532,46 @@ loses42.1%of beneficial additions; protects78.4%of harmful deletions while losin
 of beneficial deletions. Selectivity alone does not preserve enough edits to reach a
 complete gain from rawNN. This limits the fixed thresholded witness construction.
 Source:[report](research_20261005/pipeline_verified/edit_aux241/report.json).
+
+### 2026-10-05: exact bounded two-operation family onDEV241
+
+COCO-20i1-shot,seed0,1024,DEV241/79classes/239photo groups;36sealed source/field masks.
+5257fixed<=2-operation recipes from rawNN;three-fold GT fitting excludes connected
+photos of the held-out fold. This is DEV-label-based method selection,not per-queryGT inference.
+Real2-case GPU byte-popcount check and score passed,then all241final masks sealed/scored.
+GPU inference23.145s,peak1,358,301,696bytes,no encoder forward.
+One-step53.435379,joint2=61.503062,direct complete-mask selection61.993386,Astra62.654343.
+Original scorer:joint2 vsFoRIS+2.428237[.237942,3.899579],vsAstra-1.151281[-1.859609,-.194749].
+Supplementary supplied-RandomState comparison:joint2 vsdirect-.490324[-.823979,-.013517],
+vsone-step+8.067683[6.107601,10.693817]. Intervals retain scorer identity rather than
+being silently substituted; their bootstrap implementations have different draw ordering.
+Training-fold joint improvement over direct is only.27654,.00613,.05003,.00083; the extra
+selection did not transfer. This limits the testedbounded family/selection,not allA*/B* frameworks.
+Sources:[complete report](research_20261005/pipeline_verified/joint241/report.json),
+[explicit pairwise comparison](research_20261005/pipeline_verified/joint241/optimizer_pairwise.json),
+[sealed masks receipt](research_20261005/pipeline_verified/joint241/sealed.json).
+
+### 2026-10-05: cleanup of completed poor existing600 attempt
+
+User explicitly authorized pruning poor600attempts after recording them. Removed10,086,316,508bytes
+from generatedold600featurecache and redundantrecheck prediction/field/count artifacts,after confirming
+no active consumer. Fixed11-arm control predictions,code,complete reports,per-episode I/U and hashes
+remain; new prediction on theold600cohort requires feature reencoding. Models,datasets,DEV241shared
+inputs and the running isolated600queue were preserved. [Receipt](research_20261005/cleanup_existing600_receipt.json).
+
+Correction after the user's clarification: removing10,067,480,435bytes of reusable features exceeded
+the authorized cleanup scope. Only18,836,073bytes were disposable exploratory predictions/fields/counts.
+The deletion is irreversible from the available records; no cache reconstruction was launched.
+The user explicitly redirected priority to A*/B* framework selection. Preserve all remaining reusable features.
+
+### 2026-10-05: matched-depth optimizer and operator-accounting execution
+
+`joint_operator_v3_shared` supervisor15425/start951979446 dispatched at16:28UTC. Adds same-depth
+greedy2 and a fixed joint-selection guard requiring improvement on every fitting fold over the selected
+complete method; full DEV241 efficacy pending. Same36sealed masks/5257recipes, rawNN origin, no new
+encoder, no query-GT routing. One CPU thread, prior measured GPUpeak1.36GB, concurrent with external
+encoder14579/start951953583 (measured2.48GB). The waiting-only supervisor14810 was cancelled before
+launching any scientific child. No peer process/source change.
+Exact four-pixel set accounting passed all65,536truth/origin/two-mask combinations: same-family
+overlap and both orders of add/delete conflict, separated into true/false counts. This checks accounting,
+not efficacy. [Receipt](research_20261005/operator_pair_accounting_check.json).

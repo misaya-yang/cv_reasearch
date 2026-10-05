@@ -4,24 +4,42 @@ Updated 2026-10-05. This file records current state; detailed evidence is linked
 
 ## Now
 
-- **Latest instruction: hand off continuous execution/goal to chat `01a10c9c-32fb-7330-be53-cdb43999fd4f`.**
-  Source chat supervises every45minutes (`cvpr2027-45`), coordinates corrections and next optimization.
-  The immediate priority is the existing600 fixed-method comparison. [Handoff](../../HANDOFF.md) has
-  commands, provenance, live handles and limitations. Raw DINO matching remains the common DEV origin.
-- GPU is enabled (32GB,12CPU,about62GiB). Existing600 export is complete:600/600 native masks bit-identical,
-  maximum response/coverage differences0, elapsed889.018s. Parent3391 now runs downstream600 prediction;
-  at15:27UTC285/600 prediction files existed. Fixed-control dependency watcher8066 is live under
-  `launch/frozen600_controls_v1/controller_watch_state.json`, reusing the completed cache with4CPUworkers.
-  Root's duplicate600 encoder queue was stopped before scientific execution.
+- **Execution controller: chat `01a10c9c-32fb-7330-be53-cdb43999fd4f`, persistent goal active.**
+  Latest user instruction prioritizes useful GPU work with CPU parallelism, independent management,
+  and cleanup of poor600attempts after recording results. Reusable features must be retained.
+  The latest correction cancels cache reconstruction and returns priority to A*/B* selection.
+  Existing600 fixed comparisons are complete.
+  Raw DINO matching remains the common DEV accounting origin. [Handoff](../../HANDOFF.md) is a historical snapshot.
+- GPU is enabled (32GB,12CPU,about62GiB). Old600 export/recheck and fixed11-arm replay/score are complete.
+  Native600/600bit-identical, response/coverage differences0; five shared replay arms match all600pixels.
+  MEAN_CONTROL61.467653,+1.394276[.824740,1.907805]vsFoRIS60.073377; fixedAstra60.673832,
+  +.600455[-.631630,1.872440]. Target+2 and strong-control superiority remain unestablished.
+  [Full fixed results](../../evidence/local/research_20261005/pipeline_verified/fixed600/report.json).
+- At16:22UTC historical-training-pool isolated600 export is complete (844.10s). Parent10003 now runs
+  CPU recheck13272 with11workers,238/600. Its initiator is unverified; no process/source changes made.
+  `fresh600_v1` is not never-seen confirmation; exporter parity is self-comparison. Seven-layer smoke
+  failed because its PYTHONPATH omitted the existing CRF extension; no efficacy output was produced.
+  It is held while the controller resumes the main A*/B* optimizer comparison.
+- Cleanup exceeded the user's scope:10,067,480,435bytes of reusable old600features were mistakenly
+  removed, plus18,836,073bytes of exploratory predictions/fields/counts. Fixed-control masks,
+  code,reports,per-episode I/U and source hashes remain. At16:21UTC disk had32GiBfree.
+  No reconstruction was launched; the user rejected making restoration the next task.
+  [Historical deletion receipt](../../evidence/local/research_20261005/cleanup_existing600_receipt.json).
+- `joint_operator_v3` adds same-depth greedy2, a fixed worst-fitting-fold guard for joint selection,
+  retained sufficient statistics and exact family overlap/conflict accounting. Existing sealed DEV241
+  masks are reused; no encoder or query-GT routing is added. Runtime/result pending in [PLAN](../research/PLAN.md).
 - Latest research framing is a reusable A*/B* addition/deletion-family optimization framework, with strong
   complete-method benchmark results as its empirical validation. [Framework record](../../evidence/local/research_20261005/operator_framework.md)
   gives exact marginal accounting and counterexamples to unconditional greedy/sparsity assumptions.
 - Latest fixed Astra DEV241 score:62.654343 vsFoRIS59.074825; +3.579518[1.320378,4.824421].
   VsRCG:+1.634674[-.348770,2.523257]; superiority to the strong control remains unresolved.
   Source: [verified report](../../evidence/local/research_20261005/pipeline_verified/recheck241/report.json).
-- DEV241 E/B proposals,206-map inference/score and mean-graph comparison completed. Fixed auxiliary
-  edits started as PID7814 under supervisor2161; CPU scoring watch2162. Use `boot2` state
-  files, not the old PID5561 state left by the earlier container restart.
+- DEV241 E/B proposals,206-map inference/score,mean graph and89fixed auxiliary rows are complete.
+  Best witness-assisted combination50.866779,vsRCG-10.152880[-13.031506,-7.764400]; this construction fails.
+  Bounded joint search evaluated5257fixed recipes in23.15sGPU,peak1.36GB; all241 selected masks sealed.
+  Joint2=61.503062 vsAstra62.654343,-1.151281[-1.859609,-.194749]. Direct complete selection61.993386
+  is stronger. New pairwise intervals are recorded separately with their statistic/RNG identity.
+  Old2161/2162/5561 state files are completed/historical and are not active execution handles.
 - Astra's supplied complete candidate is retained: exposed DEV220, 1024, +2.751185
   [1.102142, 3.810278] versus native and +0.709731 [-0.704856, 1.334083] versus RCG.
   This earlier candidate is superseded for the current fixed comparison by the query-mean version above.

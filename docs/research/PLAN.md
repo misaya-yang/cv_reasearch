@@ -1,9 +1,10 @@
 # Pending work
 
-Updated2026-10-05 at operational handoff. The user assigned continuous goal/execution to receiving
-chat `01a10c9c-32fb-7330-be53-cdb43999fd4f`. Source chat performs45-minute supervision, correction and
-optimization follow-ups. Immediate priority: finish existing600 fixed-candidate/control evaluation using
-the already-running exporter. See [HANDOFF](../../HANDOFF.md). Do not duplicate its encoder work.
+Updated2026-10-05. The user assigned continuous execution to chat
+`01a10c9c-32fb-7330-be53-cdb43999fd4f` and requested independent management without messaging Astra.
+Immediate priority is the A*/B* family selector and complete-method comparisons. Existing600 fixed
+evaluation is complete. Reusable features are protected; cache reconstruction is cancelled after the
+user corrected the cleanup/main-task deviation. [HANDOFF](../../HANDOFF.md) is historical evidence.
 
 ## Target and comparison
 
@@ -20,13 +21,13 @@ make net gain negative. Do not silently replace a supplied method with a control
 
 | Work | Owner | Status and authorization |
 |---|---|---|
-| Seven-layer complete edit evidence | Receiving chat | Following completed600 and bounded joint-search results, test whether new layer information changes edit selection. Existing runner `run_aux_evidence.py --forward-layers 4,8,12,16,20,22,24` uses one encoder and one paired forward per episode plus one black-image setup. Real2-case execution check, then DEV241 complete masks versus same-source unfiltered/simple/noise controls,RCG,mean,Astra. Freeze maps/proposals before CPU fold-nested selection/scoring. Shared rawNN origin, existing sealed proposals; no extra natural images. Same-layer/nearest/prototype/grouping simple maps retained. Cost unknown until smoke; no efficacy claim from map count or extra compute. |
-| A*/B* framework and marginal-value solver | Receiving chat; owns new `run_joint_operator.py` only | Existing greedy runs preserved; they do not beatAstra. Next authorized run is an exact bounded<=2-operation search versus one-step and direct complete-mask selection on the same sealed library (stages,RCG/C/Astra,ordinaryE/B/D,mean graph,fields). It addresses the demonstrated greedy joint-move failure; DEV241 with three-fold GT selection/fourth-fold readout excluding shared-photo groups. Freeze candidate recipes/source hashes, save complete selected masks, then independent CPU score. Real2-episode execution/kernel check precedes immediate241. No encoder or extra images; CUDA packed-byte algebra, CPU scoring beside600 controls. Runtime/memory unmeasured until smoke. If it beats direct selection/strong controls, freeze a deployable rule; otherwise identify selection versus attainable-library limitations rather than rename the construction. [Framework](../../evidence/local/research_20261005/operator_framework.md), [prior supervision](../../evidence/local/research_20261005/operator_supervision.md). |
+| Matched-depth / robust A*/B* selector | Receiving chat | `launch/joint_operator_v3_shared`,supervisor15425/start951979446: existing36mask library,5257 <=2-operation recipes. Add greedy2 and a fixed guard requiring improvement on every fitting fold over the selected complete rule. Real2-case check then DEV241 sealed masks and independent CPU score. Save recipe/family sufficient statistics, overlap/conflict table, paired CIs, folds/batches and four edit counts. One model-free GPU process with1CPUthread; old run measured23.15s and1.36GB. Shares GPU with verified encoder14579/start951953583,measured2.48GB; no peer changes. Previous waiting-only supervisor14810 cancelled before any scientific stage. New result unverified. |
+| Existing isolated600 queue | Initiator unverified; receiving controller monitors read-only | Parent10003,CPUinfer13272/11workers,238/600 at16:22UTC; GPU export complete844.10s. Historical training-pool episodes,photo-disjoint fromDEV241/old600; not never-seen confirmation. Native export parity is self-comparison when --stored absent. Fixed DEVpicks exist; wide search stays exploratory. Preserve running files/processes/features. |
+| Seven-layer complete edit evidence | Receiving chat | Held after latest main-task correction. Supervisor10200 terminated with smoke failure: existing CRF path absent from PYTHONPATH. No complete result; no automatic rerun. Original snapshot/output records retained. |
 | Public-protocol evaluation preparation | Receiving chat | Official commit1aa02a11 uses1000/fold,4fold,seed0. Paper says original-resolution; current CLI sets resize_to_orig_size=False and resizesGT to1024 predictions. Bind each grid/original renderer to its version and retain both named readouts; see [protocol audit](../../evidence/local/research_20261005/public_protocol_audit.md). Verify sampling/worker RNG, encoder,CRF and full FoRIS/INSID3 controls before a real smoke/full streaming run. Freeze the final rule first; audit all previously inspected photo overlaps. Current600 is prior-exposed reevaluation, not SOTA proof. |
 | Single-encoder parallel forward/CRF pipeline | Root, implementation by `/root/parallel_forward_sol` | CPU contract checks passed. Actual CUDA IPC, serial parity and throughput remain unverified; no inference launch. |
 | Public native replay on the two known differing cases | Root | Optional diagnostic, held. Existing 25-pixel total drift is reported under both baselines; it does not block analysis of the completed cohort. |
 | Raw-model origin / score-sweep integration and source/statistical checks | Root integrating the user-supplied Opus work | Verify raw l24 provenance, require origin explicitly, preserve FoRIS/INSID3 as comparison methods, fix Astra seal parsing and assess search-size placebo calibration. No new semantic method is selected from preparation. |
-| Raw-model origin producer, INSID3 and FoRIS rebuilt stage by stage on it, and the family containing both (weights, scaling, cut, renderer), with the choice nested over folds | Claude Code | Ran on DEV241 as `outputs/stage241_v1` (sealed; origin arm `model.raw_nn` available to the other runners). Family search does not beat complete FoRIS; see the ledger. Closed |
 
 Astra addition/deletion variants have now been tested onDEV241 in recheck241_v1. Preserve the fixed
 Astra identity and distinguish nested/best-in-sample search. No prepared code or GT oracle is a method result.

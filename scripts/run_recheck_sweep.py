@@ -252,6 +252,85 @@ def sweep(a):
     (a.out / f"report{a.suffix}.md").write_text("\n".join(L) + "\n"); print("\n".join(L[:30]), flush=True)
 
 
+def aggregate(a):
+    """Fixed arms and frozen pairs per batch and cumulatively over batches; no selection on these episodes."""
+    global DEL_BANKS, DEL_WINDOWS, DEL_T, ADD_BANKS, ADD_REACH, ADD_T, ADD_Z
+    from ics.experiment import summarize
+    DEL_BANKS = DEL_BANKS + ("p0.5", "p2", "p4"); DEL_WINDOWS = (0, 5); DEL_T = (-.1, -.05, -.02, 0., .02, .05)
+    ADD_BANKS = ("all", "far", "p", "top0.2"); ADD_REACH = (1, 2, 4, 0); ADD_T = (.1, .15, .2, .25, .3, .35, .4, .5); ADD_Z = (-1., .3, .4, .45, .48)
+    dels = list(itertools.product(DEL_BANKS, DEL_WINDOWS, DEL_T)); adds = list(itertools.product(ADD_BANKS, ADD_REACH, ADD_T, ADD_Z))
+    dname = ["none"] + [f"del[{b},w{w},t{t:g}]" for b, w, t in dels]; aname = ["none"] + [f"add[{b},r{r},t{t:g},z{zm:g}]" for b, r, t, zm in adds]
+    frozen = json.loads(a.frozen.read_text())["picks"] if a.frozen else {}
+    batches = []
+    for run in a.runs:
+        rows = json.loads((run / "manifest.json").read_text())
+        with np.load(run / "sweep_counts_wide.npz") as z:
+            arrays = {"native": z["iu_native"], "rcg": z["iu_rcg"], "c.control": z["iu_c"], "astra.control": z["iu_astra"], "astra_sameK.control": z["iu_astra_sameK"]}
+            for name, (dn, an) in frozen.items():
+                d, j = dname.index(dn), aname.index(an); rem = z["d_rem"][d - 1] if d else 0; add = z["a_add"][j - 1] if j else 0
+                arrays["frozen." + name] = np.stack([z["iu_c"][:, 0] - (rem[:, 0] if d else 0) + (add[:, 0] if j else 0), z["iu_c"][:, 1] - (rem[:, 1] if d else 0) + (add[:, 1] if j else 0)], 1)
+        batches.append((run.name, rows, arrays))
+    def read(parts, tag):
+        rows = [r for _, rs, _ in parts for r in rs]; arrays = {k: np.concatenate([arr[k] for _, _, arr in parts]) for k in parts[0][2]}
+        corr = {k: [dict(key=r["key"], c=r["c"], fold=r["fold"], batch=str(r.get("batch", "unspecified")), add_TP=0, delete_FP=0, delete_TP=0, add_FP=0) for r in rows] for k in arrays}
+        s, _ = summarize(rows, arrays, corr)
+        for k in ("corrections_vs_native", "corrections_by_class", "corrections_by_batch"):
+            s.pop(k, None)
+        s["cohort"] = tag; return s
+    out = dict(frozen=frozen, each=[read([b], b[0]) for b in batches], cumulative=[read(batches[:k], f"first {k} batches") for k in range(1, len(batches) + 1)])
+    a.out.parent.mkdir(parents=True, exist_ok=True); write_json(a.out, out)
+    arms = [k for k in batches[0][2] if k != "native"]
+    L = ["# Fixed arms against complete FoRIS, batch by batch (1024, class mIoU, gain [95% interval])", ""]
+    for title, group in (("Cumulative", out["cumulative"]), ("Each batch alone", out["each"])):
+        L += [f"## {title}", "", "| cohort | n | FoRIS | " + " | ".join(arms) + " |", "|---|---:|---:|" + "---|" * len(arms)]
+        for s in group:
+            f = lambda k: f"{s['scores'][k]:.2f} {s['contrasts'][k]['native']['gain']:+.2f} [{s['contrasts'][k]['native']['ci95'][0]:+.2f}, {s['contrasts'][k]['native']['ci95'][1]:+.2f}]"
+            L.append(f"| {s['cohort']} | {s['n']} | {s['scores']['native']:.2f} | " + " | ".join(f(k) for k in arms) + " |")
+        L.append("")
+    a.out.with_suffix(".md").write_text("\n".join(L) + "\n"); print("\n".join(L), flush=True)
+
+
+def original(a):
+    """The public scoring: every sealed 1024 mask resized to the query's own size exactly as FoRIS finishes
+    (bilinear, align_corners False, > 0.5), against the annotation at that size. Per batch and cumulative."""
+    import torch
+    import torch.nn.functional as F
+    from PIL import Image
+    from ics.experiment import packet, summarize, unpack
+    dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    names = {"rcg": "RCG", "c.control": "RCG_count_matched_delete", "astra.control": "external_mean__delete", "astra_sameK.control": "external_mean_delete_sameK_RCG"}
+    batches = []
+    for run, root in zip(a.runs, a.roots):
+        rows = json.loads((run / "manifest.json").read_text()); arrays = {k: np.zeros((len(rows), 2), np.int64) for k in ["native"] + list(names)}
+        for i, row in enumerate(rows):
+            t = torch.from_numpy((np.asarray(Image.open(a.annotations / Path(row["query"]).with_suffix(".png"))) == row["c"] + 1).copy()).to(dev)
+            with np.load(run / "predictions" / f"{row['key']}.npz", allow_pickle=False) as z:
+                m = {k: unpack(z[v]) for k, v in names.items()}
+            with np.load(packet(root, row), allow_pickle=False) as z:
+                m["native"] = unpack(z["native"])
+            for k, v in m.items():
+                o = F.interpolate(torch.from_numpy(v).to(dev)[None, None].float(), tuple(t.shape), mode="bilinear", align_corners=False)[0, 0] > .5
+                arrays[k][i] = int((o & t).sum()), int((o | t).sum())
+        batches.append((run.name, rows, arrays))
+    def read(parts, tag):
+        rows = [r for _, rs, _ in parts for r in rs]; arrays = {k: np.concatenate([arr[k] for _, _, arr in parts]) for k in parts[0][2]}
+        corr = {k: [dict(key=r["key"], c=r["c"], fold=r["fold"], batch=str(r.get("batch", "unspecified")), add_TP=0, delete_FP=0, delete_TP=0, add_FP=0) for r in rows] for k in arrays}
+        s, _ = summarize(rows, arrays, corr)
+        for k in ("corrections_vs_native", "corrections_by_class", "corrections_by_batch"):
+            s.pop(k, None)
+        s["cohort"] = tag; return s
+    out = dict(scoring="original query resolution, FoRIS finish", each=[read([b], b[0]) for b in batches], cumulative=[read(batches[:k], f"first {k} batches") for k in range(1, len(batches) + 1)])
+    a.out.parent.mkdir(parents=True, exist_ok=True); write_json(a.out, out); arms = list(names)
+    L = ["# Fixed arms against complete FoRIS at the original query resolution (class mIoU, gain [95% interval])", ""]
+    for title, group in (("Cumulative", out["cumulative"]), ("Each batch alone", out["each"])):
+        L += [f"## {title}", "", "| cohort | n | FoRIS | " + " | ".join(arms) + " | FoRIS by fold |", "|---|---:|---:|" + "---|" * (len(arms) + 1)]
+        for s in group:
+            f = lambda k: f"{s['scores'][k]:.2f} {s['contrasts'][k]['native']['gain']:+.2f} [{s['contrasts'][k]['native']['ci95'][0]:+.2f}, {s['contrasts'][k]['native']['ci95'][1]:+.2f}]"
+            L.append(f"| {s['cohort']} | {s['n']} | {s['scores']['native']:.2f} | " + " | ".join(f(k) for k in arms) + " | " + " / ".join(f"{v['scores']['native']:.1f}" for v in s["folds"].values()) + " |")
+        L.append("")
+    a.out.with_suffix(".md").write_text("\n".join(L) + "\n"); print("\n".join(L), flush=True)
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="mode", required=True)
@@ -261,7 +340,10 @@ def main():
     s.add_argument("--workers", type=int, default=11); s.add_argument("--expected", type=int, default=241)
     s = sub.choices["sweep"]; s.add_argument("--subset", type=Path); s.add_argument("--device", default="auto")
     s.add_argument("--grid", choices=("first", "wide"), default="first"); s.add_argument("--suffix", default="")
-    a = p.parse_args(); (infer if a.mode == "infer" else sweep)(a)
+    s = sub.add_parser("aggregate"); s.add_argument("--runs", type=Path, nargs="+", required=True); s.add_argument("--out", type=Path, required=True); s.add_argument("--frozen", type=Path)
+    s = sub.add_parser("original"); s.add_argument("--runs", type=Path, nargs="+", required=True); s.add_argument("--roots", type=Path, nargs="+", required=True)
+    s.add_argument("--out", type=Path, required=True); s.add_argument("--annotations", type=Path, default=Path("/root/autodl-tmp/datasets/ics/COCO2014/annotations"))
+    a = p.parse_args(); dict(infer=infer, sweep=sweep, aggregate=aggregate, original=original)[a.mode](a)
 
 
 if __name__ == "__main__":
