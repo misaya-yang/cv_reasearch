@@ -38,6 +38,15 @@ Updated 2026-10-05. This file records current state; detailed evidence is linked
   All predictions sealed before CPU scoring; no query labels in inference and no extra encoder forwards.
   Cached selection time is not complete producer runtime. Main next work is conditional edit value,
   rather than extending the failed global mask-quality estimators.
+- Conditional effective edits completedDEV241:61.083596,+2.008770[1.079517,2.986098]vsFoRIS,
+  vsRCG+.063926[-.048161,.217392],vssame-countRCG+.009209[-.029547,.107188],vsRCG-value-only
+  -.060566[-.155967,.054365]. Strong-control superiority remains unresolved. User requested1200.
+  Frozen1200queue22006/start952403608 is active;54missing pair encodes complete104.57s,1146cached
+  pair inputs preserved/reused,extra identical encoder released. Method parameters unchanged; GPU
+  selector22209/start952414466 then CPU scoring. [Pending execution](../research/PLAN.md).
+- Existing public-labelled1200fixed delete-p63.958235vsFoRIS61.612802:+2.345433[1.135312,3.360488].
+  VsRCG63.598020:+.360215[-.703107,1.273603],still unresolved; MEAN is being added to the complete
+  comparison. Public chain14506/start951952344 now encodes batch2; no peer queue/source changes.
 - Another queue's4000public-labelled manifests contain allDEV241,old600 and historical isolated600;
   3999unique episode identities and6722photos. Preserve4000sampled draws; do not silently deduplicate.
   This is benchmark reuse,not4000fresh cases; sampling/worker RNG still needs version verification.
