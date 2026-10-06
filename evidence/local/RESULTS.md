@@ -1713,6 +1713,28 @@ same relation to reference object and background) holds on this proxy. With row 
 exceeds one, so object rows only raise and background rows only lower their matched tokens: the term acts as a
 saturating reverse vote, not as competition between query regions. Not measured: a soft B with a mutual filter.
 
+Existing CLS evidence split and natural single-reference diagnostic (2026-10-06; local saved vectors only,
+no model, image, new mask or server). On the unchanged77 paired CLS1200 episodes, foreground-only cosine AUC
+0.525301 [0.424879,0.622634], negative-background cosine0.405535 [0.309959,0.499318], original margin0.433959
+[0.340099,0.527200]; foreground-minus-margin+0.091342 [-0.001179,0.184339]. All old736 region margins and original
+primary statistics reproduce exactly. Dropping background alone has no established positive separation.
+Separately, natural positive query-crop vectors from other same-class, photo-disjoint source groups were used
+one at a time as references; all eligible reference evaluations were averaged, never the scores and never a best
+reference. Comparable71 of77 episodes/35 classes,503 single-reference comparisons: natural cosine0.641561
+[0.562992,0.741924], original foreground-only0.555608 [0.452793,0.687826], original margin0.456547
+[0.363822,0.580121], all on those same71. Natural-minus-foreground+0.085953 [-0.047780,0.209487] remains unresolved;
+natural-minus-margin+0.185014 [0.062510,0.307842]. Four natural-cosine fold points0.533447/0.747955/0.724989/0.556395.
+The new descriptive bootstrap jointly resamples reference/query photo groups and recomputes the single-reference
+expectation, accounting for shared anchors; it is not the old fixed-reference interval. Changing reference image,
+crop and background subtraction prevents attributing the contrast to RGB erasure. Query GT boxes remain privileged,
+the reference pool consists of existing missed objects, natural context may contribute, all data were exposed,
+and no complete segmentation improvement is measured. Only one original-reference natural view could be reused
+with the exact same image/crop; its AUC remains1, providing no repair evidence. The fixed original CLS negative
+result stands; the natural-object result is a conditional representation signal, not a new method or run queue.
+Source: [CLS component and natural-reference report](research_20261006/cls_components_existing_01a1100b/report.md),
+with both scripts, per-episode results and all503 comparisons linked there. Two scoring scripts used0.357332 local
+CPU seconds in total, excluding additional metadata reads; no GPU or remote CPU use.
+
 Error budget on the public 4000 from stored per-level counts (`scripts/score_error_budget.py`; class mIoU at 1024,
 FoRIS score before CRF cut at 0.5 = 60.41; oracle rows use query truth and are diagnostics, not headroom of a method;
 the rows are not additive). Episodes whose best cut stays below IoU 0.5 ("not found"): 696 = 17.4 %; making them
@@ -1738,3 +1760,6 @@ correlates 0.84 with the true log size (held-fold log error sd 0.65) and still y
 field's own extent error, so it points the level the wrong way. Earlier: rerunning FoRIS on each component at its own
 scale -0.05 [-1.40, +0.98]. Not measured: a size estimate that does not come from the reference-similarity evidence
 (colour or edge regions around the peak, query-only grouping).
+Split of the +3.98 (true-size bins, public 4000): applied only to episodes whose best cut reaches IoU 0.5: +1.69; only
+to the others (16.3 %): +2.14. In the second group an estimate taken around the score peak may measure another
+object, so +1.69 is the part that needs a size estimate alone.
