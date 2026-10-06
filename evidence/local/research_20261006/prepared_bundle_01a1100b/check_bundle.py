@@ -99,6 +99,22 @@ def main():
         run(['score','--out',str(seven_output)])
         seven_report=json.loads((seven_output/'score/report.json').read_text())
         assert len(seven_report['primary_methods'])==7 and 'query_recurrence' in seven_report['scores']
+        eight_output=root/'all_eight'
+        eight_infer=list(seven_infer)
+        eight_infer[eight_infer.index(str(seven_output))]=str(eight_output)
+        eight_infer.insert(eight_infer.index('--primary-method'),'reference_prior_shift')
+        run(eight_infer)
+        run(['score','--out',str(eight_output)])
+        eight_report=json.loads((eight_output/'score/report.json').read_text())
+        assert len(eight_report['primary_methods'])==8 and 'reference_prior_shift' in eight_report['scores']
+        nine_output=root/'all_nine'
+        nine_infer=list(eight_infer)
+        nine_infer[nine_infer.index(str(eight_output))]=str(nine_output)
+        nine_infer.insert(nine_infer.index('--primary-method'),'reference_quadratic')
+        run(nine_infer)
+        run(['score','--out',str(nine_output)])
+        nine_report=json.loads((nine_output/'score/report.json').read_text())
+        assert len(nine_report['primary_methods'])==9 and 'reference_quadratic' in nine_report['scores']
         # Same source reused twice is preserved as separate occurrences.
         assert len(list((output/'predictions').glob('*.npz')))==4
         # Poisoned query truth still permits inference; scoring fails when it finally opens truth.
@@ -138,6 +154,8 @@ def main():
                     five_method_shared_infer_and_score_checked=True,
                     six_method_shared_infer_and_score_checked=True,
                     seven_method_shared_infer_and_score_checked=True,
+                    eight_method_shared_infer_and_score_checked=True,
+                    nine_method_shared_infer_and_score_checked=True,
                     all_predictions_sealed_before_scoring=True,real_episodes=0,no_gpu=True,no_server=True)
         Path(__file__).with_name('bundle_check.json').write_text(json.dumps(result,indent=2)+'\n')
         print(json.dumps(result))

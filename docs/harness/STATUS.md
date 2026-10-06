@@ -18,14 +18,18 @@
 仅迹与逐点选择性均保留两区；这是额外协方差量的合成存在证据，真实效果仍未测。
 第七项[查询内重复部件外观](../../evidence/local/research_20261006/recurrence_preparation_01a1100b/method.json)
 已接入共用入口；双worker合成检查通过，但重复错误类别可击败真目标的反例也已记录。
-七项已接入[共用CPU入口](../../evidence/local/research_20261006/prepared_bundle_01a1100b/entry.json)，
+第八项[参考得分密度与查询比例](../../evidence/local/research_20261006/prior_shift_preparation_01a1100b/method.json)
+完成凹似然求解、完整后验和双worker检查；合成正例区分256格点目标/800格点干扰，小目标空输出反例保留。
+第九项[参考监督二次核分类](../../evidence/local/research_20261006/quadratic_preparation_01a1100b/method.json)
+完成独立显式特征核对、密集32锚点和双worker检查；简单子空间对照能解开首例，外观偏移误删64格点的反例保留。
+九项已接入[共用CPU入口](../../evidence/local/research_20261006/prepared_bundle_01a1100b/entry.json)，
 合成数据的共同推断、封存、独立评分与旧默认入口核对通过；此执行入口不增加方法数。
 
 更新：2026-10-06。当前入口只记录现状，历史事件见证据与[整理前快照](../archive/2026-10-06-workflow-snapshot.md)。
 
 ## 当前阶段
 
-当前按用户关机指令只做本地方法准备；七项独立候选及共用CPU入口已完成必要合成检查，
+当前按用户关机指令只做本地方法准备；九项独立候选及共用CPU入口已完成必要合成检查，
 尚无真实分割成绩，数量任务未完成。此前30核以内、60GB及695号实例开机安排是历史授权，
 已被当前资源指令覆盖；本轮没有查询实例、连接SSH或启动实际缓存实验。旧收束方案保留为历史对照。
 论文贡献及数值依据见 [CLAIM](../research/CLAIM.md)，唯一后续清单见 [PLAN](../research/PLAN.md)。

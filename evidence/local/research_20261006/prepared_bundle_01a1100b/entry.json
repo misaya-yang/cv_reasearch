@@ -1,11 +1,11 @@
 {
   "purpose": "One shared CPU execution entry for prepared candidates; not an additional segmentation method",
-  "independent_candidate_count": 7,
+  "independent_candidate_count": 9,
   "empirically_validated_new_methods": 0,
   "resource_state": "User shut down the instance. This preparation starts no server, GPU or actual cohort experiment.",
   "entry": "scripts/run_cpu_feature_candidates.py infer --backend prepared",
-  "methods": ["adjacency", "huber", "color_bottleneck", "constellation", "reference_shape", "reference_covariance", "query_recurrence"],
-  "infer_example": "python scripts/run_cpu_feature_candidates.py infer --backend prepared --prepared-methods adjacency huber color_bottleneck constellation reference_shape reference_covariance query_recurrence --primary-method adjacency --manifest rows.json --root /workspace --out run_prepared_v1 --workers 6 --threads 4 --cpu-budget 30 --memory-gb 60",
+  "methods": ["adjacency", "huber", "color_bottleneck", "constellation", "reference_shape", "reference_covariance", "query_recurrence", "reference_prior_shift", "reference_quadratic"],
+  "infer_example": "python scripts/run_cpu_feature_candidates.py infer --backend prepared --prepared-methods adjacency huber color_bottleneck constellation reference_shape reference_covariance query_recurrence reference_prior_shift reference_quadratic --primary-method adjacency --manifest rows.json --root /workspace --out run_prepared_v1 --workers 6 --threads 4 --cpu-budget 30 --memory-gb 60",
   "score_example": "python scripts/run_cpu_feature_candidates.py score --out run_prepared_v1",
   "example_status": "Example paths must be bound to the actual cohort. These commands were not launched on actual data.",
   "manifest": {
@@ -17,6 +17,8 @@
     "shape_geometry": "For reference_shape provide support_image_hw and query_image_hw as original positive integer [height,width] arrays; never use the canonical64 square as guessed original geometry.",
     "covariance_method": "reference_covariance uses reference foreground component-level mode-response covariance; no original image geometry is required.",
     "recurrence_method": "query_recurrence forms a query appearance prototype from a supported star of high-confidence query components; it uses no additional image or query labels.",
+    "prior_shift_method": "reference_prior_shift fits an unlabeled query foreground proportion from reference foreground/background score densities; active predictions use no base field, extra image or query labels.",
+    "quadratic_method": "reference_quadratic fits a class-balanced kernel classifier on reference foreground/background anchors; active predictions use no base field, extra image or query labels.",
     "existing_mean": "Optional base_field_export/base_field_key is accepted only after numerical consistency with the bound MEAN graph. Current threshold maxabs<=1e-6; this is not a bitwise parity assertion for actual data.",
     "photo_identity": "Provide support_photo_id/query_photo_id for canonical identities where shard filenames repeat; preserve all natural sample occurrences.",
     "additional_complete_baselines": "evaluation_controls can bind existing complete INSID3/FoRIS/other packed1024 output files; they are opened only during score, not used by candidate inference."
@@ -31,8 +33,8 @@
     "Report all requested predeclared candidate rows, class-summed I/U mIoU, 2000 RandomState(0) connected-photo group draws, paired intervals and four types of additions/deletions."
   ],
   "guards": ["Owned CPU worker/thread budget at most30", "Declared memory budget at most60GB and actual cgroup bound", "New output directory required", "Missing RGB binding fails before output creation", "Changed sealed metadata/predictions/fields/packets rejected before scoring", "Query class/fold/photo identifiers removed from the worker input descriptor"],
-  "verification": "bundle_check.json: shared synthetic infer/score checks through seven candidates, including the four-method regression; covariance_preparation_01a1100b/runner_check.json and recurrence_preparation_01a1100b/runner_check.json: per-candidate two-worker inference and sealed masks. All method-specific checks are analytical/synthetic only. Real episodes=0.",
-  "quality_status": "All seven remain empirically unvalidated hypotheses. Common execution and synthetic verification are preparation, not proof of high-quality segmentation or originality.",
+  "verification": "bundle_check.json: shared synthetic infer/score checks through nine candidates, including the four-method regression; prior_shift_preparation_01a1100b/runner_check.json and quadratic_preparation_01a1100b/runner_check.json: active two-worker fitting with unread GT and sealed masks. All method-specific checks are analytical/synthetic only. Real episodes=0.",
+  "quality_status": "All nine remain empirically unvalidated hypotheses. Common execution and synthetic verification are preparation, not proof of high-quality segmentation or originality.",
   "source": "../../../../src/ics/methods/prepared_cpu_bundle.py",
   "runner": "../../../../scripts/run_cpu_feature_candidates.py"
 }

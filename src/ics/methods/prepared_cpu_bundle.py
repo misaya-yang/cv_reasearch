@@ -11,7 +11,7 @@ import time
 import numpy as np
 
 
-METHODS=('adjacency','huber','color_bottleneck','constellation','reference_shape','reference_covariance','query_recurrence')
+METHODS=('adjacency','huber','color_bottleneck','constellation','reference_shape','reference_covariance','query_recurrence','reference_prior_shift','reference_quadratic')
 
 
 def mean_base(inputs,graph_dtype):
@@ -148,6 +148,25 @@ def one_episode(row,run,config):
                               ('recurrence_all_seed.control',result['all_seed_control']),
                               ('recurrence_single_seed.control',result['single_seed_control'])):
                 fields[arm]=value;masks[arm]=render(value)
+            info=result['info']
+        elif name=='reference_prior_shift':
+            from .reference_prior_shift import Config,predict
+            result=predict(np.asarray(q),np.asarray(r),cov,base,Config(**config['method_configs'][name]))
+            for arm,value in (('reference_prior_shift',result['field']),
+                              ('prior_balanced.control',result['balanced_control']),
+                              ('prior_reference_fraction.control',result['reference_prior_control']),
+                              ('prior_margin.control',result['margin_control'])):
+                fields[arm]=value;masks[arm]=render(value)
+            info=result['info']
+        elif name=='reference_quadratic':
+            from .reference_quadratic import Config,predict
+            result=predict(np.asarray(q),np.asarray(r),cov,base,Config(**config['method_configs'][name]))
+            for arm,key in (('reference_quadratic','field'),('quadratic_linear.control','linear_control'),
+                            ('quadratic_homogeneous.control','homogeneous_control'),
+                            ('quadratic_kernel_mean.control','kernel_mean_control'),
+                            ('quadratic_nearest.control','nearest_control'),
+                            ('quadratic_subspace.control','subspace_control')):
+                fields[arm]=result[key];masks[arm]=render(result[key])
             info=result['info']
         else:raise ValueError('Unrecognized prepared method')
         info['candidate_and_controls_seconds']=time.perf_counter()-method_started

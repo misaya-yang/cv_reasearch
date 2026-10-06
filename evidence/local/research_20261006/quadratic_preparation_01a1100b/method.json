@@ -1,0 +1,59 @@
+{
+  "id": "balanced_reference_polynomial_classifier_v1",
+  "independent_method_count": 1,
+  "state": "specified_and_synthetic_checked; real_segmentation_unmeasured",
+  "mechanism": "Train a small balanced kernel regression classifier from reference foreground/background mode anchors and apply it to every query token. The degree-two feature map retains both signed first-order information and pairwise feature products. It compares individual token features, not covariance of complete query components.",
+  "inputs": ["aligned frozen q/r4096x1024", "complete reference coverage64", "existing MEAN field64 for shared control and abstention fallback only"],
+  "data_exposure": "Only the supplied reference mask provides training labels. No query GT, class/fold input, additional reference image or encoder forward is used. This is per-reference fitting with compressed anchors, not independent calibration or a calibrated semantic probability.",
+  "steps": [
+    "Require at least8 pure foreground and8 pure background tokens, using coverage>=0.9 and1-coverage>=0.9. Missing class samples preserve the original base exactly.",
+    "Compress each class to at most16 deterministic spherical modes with5 Lloyd iterations, weighted by reference coverage or its complement. Class weights sum to0.5 each; within each class use the observed mode masses.",
+    "For unit anchors define k(x,a)=((1+cos(x,a))/2)^2, whose self-kernel is1. Explicit features are[1,sqrt(2)*x,vec(x*x^T)]/2, so the kernel is positive semidefinite and retains orientation information.",
+    "Use anchor targets y=+1 for foreground and-1 for background. Minimize sum_j w_j*(g(a_j)-y_j)^2+0.01*norm_H(g)^2. Solve the at-most32-dimensional positive-definite system (K+0.01*diag(1/w))*alpha=y, recording the relative residual and minimum regularized eigenvalue.",
+    "Compute the complete query score g(x)=sum_j alpha_j*k(x,a_j), map to clip(0.5+0.5*g,0,1), bilinear upsample to1024 and threshold>0.5. The active branch does not use or blend the base.",
+    "Save controls on the same anchor bank and readout: linear-kernel ridge with the same class weights and ridge; homogeneous squared-cosine ridge; weighted class mean of the final kernel; best foreground minus best background cosine; foreground versus background subspace projection energy, using SVD relative rank cutoff1e-6.",
+    "Use the shared CPU backend, keeping controls as controls and sealing all predictions before separate query-GT scoring."
+  ],
+  "construction_revision": {
+    "observation": "The initially considered homogeneous kernel cos(x,a)^2 aliases x and-x. A complete antipodal foreground/background fixture gives identical class scores and cannot segment the designated target.",
+    "repair": "Before freezing this card, retain the linear and constant terms through the nonhomogeneous degree-two kernel. Normalize its self-kernel to1 so the nominal ridge has the same kernel scale as the linear and homogeneous controls.",
+    "record": "quadratic_check.json retains the failed homogeneous construction as an ablation. The revision is not an additional method, and no real-data parameter search was performed."
+  },
+  "prediction": {
+    "conditional": "When reference class separation requires nonlinear combinations of multiple modes and transfers to the query, a learned quadratic score can recover evidence lost by centroids or a single best match. It does not guarantee same-class identity or object completeness.",
+    "exact_properties": [
+      "The explicit-feature primal and the kernel solve describe the same weighted ridge objective",
+      "Positive regularization and mode weights make the coefficient system positive definite even when anchor kernels are singular",
+      "The token binary gate is g(x)>0; this is not the gate of the final bilinear1024 mask at every subpixel",
+      "Common orthogonal feature transformations preserve the cosine kernels in exact arithmetic",
+      "An active classifier depends on query/reference features and reference labels, not on the supplied base"
+    ],
+    "not_claimed": ["mIoU improvement", "probability calibration", "unique value over subspace projection", "novelty", "one-minute full-cohort runtime"]
+  },
+  "checks": {
+    "optimization": "quadratic_check.json:24 small problems compare the compressed kernel solution with independent ridge regression in explicit polynomial features; maximum score difference below4e-15. Positive regularized eigenvalues and small linear-system residuals checked.",
+    "complete_first_contrast": "Default complete token output retains64 designated target cells although each target's best foreground cosine0.55 is smaller than its best background cosine about0.628. Linear, nearest and kernel-mean controls miss them. Subspace projection also solves this example, so it does not establish a unique benefit of the kernel learner.",
+    "polarity": "The final kernel separates antipodal foreground/background features; the homogeneous construction cannot. Nearest matching also solves this polarity contrast.",
+    "negative": "When designated true query features shift toward reference background, the final classifier deletes all64 targets retained by a strong base. This complete-output failure remains recorded.",
+    "cost": "Dense synthetic4096x1024 inputs exercise16 foreground plus16 background anchors, including all five controls. Timing excludes common MEAN, I/O,1024 readout and cohort scoring.",
+    "batch": "runner_check.json checks active fitting with two CPU workers, unread query-GT sentinels, packed1024 controls and sealed predictions.",
+    "real_episodes": 0
+  },
+  "counterexamples": [
+    "Query appearance can move toward reference background and erase an otherwise correct base; the64-token shifted-appearance fixture demonstrates this.",
+    "Single-reference background modes can overlap the true class elsewhere, and missing pure background samples force abstention.",
+    "Compressing each class to16 modes can omit rare parts, while spherical means can distort within-mode variation.",
+    "The classifier is pointwise and supplies no object-level connectivity, geometry or repeated-instance evidence; background with foreground-like features can be added.",
+    "Balanced source class weights and a fixed ridge are not calibrated to query prevalence or density. A signed regression score can overfit source anchors.",
+    "A simpler subspace or nearest rule can account for gains in different regimes. Real complete-mask improvements must beat the declared simple controls."
+  ],
+  "cpu_cost": {
+    "bound": "Reference compression O(T*N*K*D), T=5 and at most16 modes per class; anchor kernels and solves O(K_total^2*D+K_total^3), K_total<=32; query projections O(N*K_total*D). Storage O(ND+N*K_total+K_total^2). No extra encoder or feature-graph solve for the active candidate.",
+    "synthetic_benchmark": "quadratic_check.json includes the full32-anchor dense timing path and solver receipts; it is not an actual cohort runtime.",
+    "real_runtime": "unmeasured"
+  },
+  "source": "../../../../src/ics/methods/reference_quadratic.py",
+  "runner": "scripts/run_cpu_feature_candidates.py infer --backend prepared --prepared-methods reference_quadratic --primary-method reference_quadratic",
+  "next_actual_evidence": "Compare complete outputs to same-input MEAN and all five simple controls, including the subspace alternative; report actual class-summed I/U, photo-group paired intervals, four edit types and timings. User shut down the instance; no actual cohort launched.",
+  "novelty": "Unverified; polynomial kernels, ridge regression and source-prototype classification are established methods"
+}

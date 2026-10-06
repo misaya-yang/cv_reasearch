@@ -1,0 +1,53 @@
+{
+  "id": "reference_score_density_query_prior_v1",
+  "independent_method_count": 1,
+  "state": "specified_and_synthetic_checked; real_segmentation_unmeasured",
+  "mechanism": "Estimate a global query foreground pixel prior from foreground/background score densities learned on the reference. Replace a fixed-prior decision with the fitted mixture posterior. This is a conditional prior-shift model, not a calibrated semantic-success probability or an object-count estimator.",
+  "difference_from_preceding_candidates": "Uses reference background as well as foreground to construct a scalar density model, and unlabeled query likelihood to fit class prevalence. It does not compare object geometry/covariance, seek recurring query components, modify the feature graph or use RGB paths.",
+  "inputs": ["aligned frozen q/r4096x1024", "complete reference coverage64", "existing MEAN field64 for shared control and exact abstention fallback only"],
+  "data_exposure": "Reference mask supplies foreground/background samples. No query GT, class/fold input, extra image, encoder or external training set is used. Reference centroids and density calibration reuse the same reference samples; this is resubstitution, not independent calibration.",
+  "steps": [
+    "Require at least8 pure foreground samples (coverage>=0.9) and8 pure background samples (coverage<=0.1). Compute coverage-weighted unit centroids; missing samples or degenerate centroids abstain to the original base.",
+    "Use the same reference-derived direction for all samples: score(x)=cos(x,mu_F)-cos(x,mu_B), clipped to[-2,2] for rounding. Compute reference and query scalar scores without labels from the query.",
+    "Use64 fixed bins on[-2,2]. Normalize class-weighted reference histograms, apply a Gaussian kernel of bandwidth0.1 with each source column normalized, then add1% uniform probability mass and normalize. Interpolate the positive piecewise-linear densities at every query score; endpoint half-bins have constant density.",
+    "Fit pi in[1/N,1-1/N] by maximizing mean log(pi*f(s_i)+(1-pi)*b(s_i)). Derivative is mean((f-b)/(pi*f+(1-pi)*b)); second derivative is nonpositive. Endpoint derivative signs give a boundary optimum; otherwise use at most64 bisections with prior bracket tolerance1e-10.",
+    "When all query likelihoods have f=b within relative tolerance1e-12, pi is unidentifiable and the primary preserves the original base. Otherwise output the posterior pi*f/(pi*f+(1-pi)*b), with no base blending.",
+    "Bilinear upsample the complete posterior field to1024 and threshold>0.5. Save identical-readout controls: balanced pi=0.5, reference foreground coverage mean as pi, and direct signed-centroid score mapped by0.5+0.25*score. Controls and prior values do not count as additional methods.",
+    "Use the common prepared CPU backend. Shared MEAN is computed for fair comparison/fallback, but an active candidate depends only on q/r/reference coverage. Seal all predictions before separate query-GT scoring."
+  ],
+  "prediction": {
+    "conditional": "When the reference foreground/background score densities transfer and query prevalence differs, fitting the prior can improve a threshold over reference prevalence or an arbitrary balanced prior. Identical scores for a true object and a distractor remain indistinguishable.",
+    "exact_properties": [
+      "For fixed positive query f/b, the prior likelihood is concave and strictly concave when any f differs from b; the bisection/endpoint test solves this one-dimensional objective",
+      "Token posterior exceeds0.5 iff f(s)/b(s)>(1-pi)/pi; this token inequality does not directly describe the final bilinear1024 mask",
+      "Common orthogonal feature transformations preserve centroids, scalar scores and predictions in exact arithmetic",
+      "An active candidate has the same prior/posterior regardless of the supplied base field; abstention depends on that fallback"
+    ],
+    "not_claimed": ["true query prevalence accurately estimated", "class-conditional density transfer", "mIoU improvement", "novelty", "one-minute full-cohort runtime"]
+  },
+  "checks": {
+    "optimization": "prior_shift_check.json:32 positive-density cases agree with independent scalar minimization within1.14e-8. Exact expected counts from a three-category mixture recover pi=0.3. Both boundary optima and flat-likelihood abstention checked.",
+    "complete_positive": "Default full4096x1024 synthetic scene retains all256 designated target tokens and rejects800 distractor tokens. Balanced-prior and direct-margin controls retain both; reference-prior control retains neither. Fitted pi=0.08784 versus true synthetic target fraction0.0625, so correct thresholding here is not proof of calibrated prevalence. The target uses a subset of reference foreground appearances, so this example also is not proof of pure prior-shift transfer.",
+    "complete_negative": "With unchanged method and a smaller64-token target, fitted pi is0.00430 and the complete token output is empty. This observed failure is retained, without changing bandwidth or prior bounds.",
+    "batch": "runner_check.json checks active fitting through two-worker inference, unread query-GT sentinels, packed1024 controls and sealed masks. A different supplied source score gives the same fitted candidate prior; shared MEAN is a control/fallback.",
+    "real_episodes": 0
+  },
+  "counterexamples": [
+    "Sparse true targets can be discarded when a low fitted prior and overlapping class densities suppress all posterior values below0.5; the64-token example demonstrates this.",
+    "Query backgrounds or foreground appearances can differ from the reference. A high likelihood within the supplied mixture does not validate transfer or semantic labels.",
+    "The same signed centroid score may describe both a true object and background; no prior separates such pixels.",
+    "Multimodal or cancelling foreground/background centroids can lose useful feature information, and some references have no pure background samples.",
+    "Histograms, fixed bandwidth, uniform mass and finite reference samples can distort density tails that decide small targets.",
+    "Reference resubstitution and spatially correlated tokens make likelihood curvature unsuitable as an independent semantic confidence interval.",
+    "A single global prevalence cannot accommodate different local background distributions or occluded parts."
+  ],
+  "cpu_cost": {
+    "bound": "O(ND+B^2+N*maximum_bisections), B=64; feature normalization/projection plus fixed histograms and scalar fits. Storage O(ND+N+B^2). No encoder, region search or iterative feature-graph solve for the active candidate.",
+    "synthetic_benchmark": "prior_shift_check.json records synthetic inputs already loaded; excludes shared MEAN construction, feature I/O,1024 readout and actual cohort scoring.",
+    "real_runtime": "unmeasured"
+  },
+  "source": "../../../../src/ics/methods/reference_prior_shift.py",
+  "runner": "scripts/run_cpu_feature_candidates.py infer --backend prepared --prepared-methods reference_prior_shift --primary-method reference_prior_shift",
+  "next_actual_evidence": "Compare complete outputs to same-input MEAN and all three simple controls, reporting actual class-summed I/U, photo-group paired intervals, four edit types and timings. Include sparse targets rather than conditioning away the observed failure. User shut down the instance; no actual cohort launched.",
+  "novelty": "Unverified; mixture proportion estimation, prior shift and density calibration are established ideas"
+}
