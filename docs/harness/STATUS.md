@@ -4,6 +4,24 @@ Updated 2026-10-06 UTC. This file records current state; detailed evidence is li
 
 ## Now
 
+- Latest user correction rejects the four inadequately justified experimental
+  groups. Root withdrew its own controllers97704/start957158892 and99277/start957232105
+  plus their verified owned CUDA children97707/start957158908 and99282/start957232119.
+  Both queues are STOPPED_WITHDRAWN; no automatic successor or restart. Remote
+  launch directories contain withdrawal_receipt.json. All features,600-case CPU
+  fields and partial predictions are preserved; no foreign process was touched.
+  GPU remained100% after withdrawal. These groups have no complete measured result.
+  They addressed placement or conditional evidence directions without establishing
+  a deployable estimate of joint-edit marginal value; adding the graph group before
+  its parent result compounded the unsupported expansion. The research goal remains
+  unachieved; task rejection does not constitute successful method validation.
+- Exact general A*/B* family selection and4000 complete-mask scoring finished:
+  optimal newly admitted deletion sets were empty; the union family selected the
+  old canonical recipes globally and in every train-three-fold fit. No new gain
+  was found. [Measured result](../../evidence/local/research_20261005/pipeline_verified/general_repair_family_v1/report.md).
+
+## Earlier records (historical; live state above takes precedence)
+
 - Goal continuation has resumed research. Live inspection found shared GPU100%,
   with peer return-cut workers86534/86535 and ordering producer87376. Root launched
   no additional encoder. Protected fresh600 post-Part1 q/r caches and native packets

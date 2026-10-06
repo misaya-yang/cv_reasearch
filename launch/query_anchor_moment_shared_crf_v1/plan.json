@@ -1,0 +1,76 @@
+{
+  "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+  "required_free_mib": 8704,
+  "env": {
+    "PYTHONPATH": "/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "stages": [
+    {
+      "name": "query_anchor_moment600_crf",
+      "kind": "gpu",
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/query_anchor_moment_shared_crf_v1/snapshot/scripts/run_capped_native_crf.py",
+        "--executor-dir",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/query_anchor_moment_shared_crf_v1/snapshot/scripts",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/query_anchor_moment600_v1",
+        "--profile",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/query_anchor_moment_shared_crf_v1/profile.json",
+        "--memory-gib",
+        "8"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/query_anchor_moment600_v1/sealed.json",
+          "equals": {
+            "state": "ALL_PREFINALS_SEALED"
+          }
+        }
+      ],
+      "checks": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/query_anchor_moment600_v1/sealed.json",
+          "equals": {
+            "state": "ALL_PREDICTIONS_SEALED"
+          }
+        }
+      ]
+    },
+    {
+      "name": "query_anchor_moment600_score",
+      "kind": "cpu",
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/query_anchor_moment_shared_crf_v1/snapshot/scripts/score_part2_evidence.py",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/query_anchor_moment600_v1",
+        "--control-run",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/recheck_fresh600_v1",
+        "--expected",
+        "600"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/query_anchor_moment600_v1/sealed.json",
+          "equals": {
+            "state": "ALL_PREDICTIONS_SEALED"
+          }
+        }
+      ],
+      "checks": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/query_anchor_moment600_v1/report.json",
+          "equals": {
+            "state": "COMPLETE_MASKS_SCORED",
+            "n": 600
+          }
+        }
+      ]
+    }
+  ],
+  "reason": "Frozen query-side moment method, no source background mean or FoRIS mask/score; common native CRF and strongest simple controls; parallel VRAM sharing and5secresource monitoring, no encoder"
+}

@@ -1,0 +1,37 @@
+{
+  "state": "SOURCE_FROZEN",
+  "method": "query_anchor_moment",
+  "sources": {
+    "scripts/run_query_anchor_moment.py": "3c03c879b8e6d16b1f5b490610e88aa3bcf9db1cd37be70b8aff1bcc95b2c7b9",
+    "scripts/run_part2_evidence.py": "075ef5dba0bbbf34bbf8ae15b9a40f1e74478fc837339809fd054fd4805a96a5",
+    "scripts/score_part2_evidence.py": "2e750de3c815958a2ebad6cd185aee2f9868b3121ea9f11e417eab5cf71b6c83",
+    "src/ics/__init__.py": "f5f646ff0c339439f0b2511d0e126bdf1db65eba332621dbd06df47545595d2b",
+    "src/ics/methods/__init__.py": "2df7eedc804f1e3d1feb11bcc696ae526455005d017faa9ca0a76a9648b23b56",
+    "src/ics/methods/query_anchor_moment.py": "3ce46df6a9da888063282a72bfaa3f92f6427478df79e91f12ed7287ddcb091a",
+    "src/ics/methods/query_covariance.py": "91cee951883520db36bbcec9b601dbc553270eef723021e59de833c5f6c67fdb",
+    "src/ics/methods/mean_graph.py": "00581a71854b7e0be161f30085690a0bf0b22862fd2e88dbc4d6d84e5dc33e06",
+    "src/ics/methods/rcg.py": "d9d8e15a69c0b939eb06dc4e41967afb684f29731f9dcb00519e73d944963d98",
+    "src/ics/experiment.py": "d95459d0b59c7048618661e7a16999248990b02e92cd1269d4629a497f62f843",
+    "src/ics/native_basis.py": "8ac26ef78d601f3d10318043c6cd73a05fe9dc2ac8d8ea4eabefc6a8289cb80c"
+  },
+  "arms": [
+    "native.cache.control",
+    "query_anchor_moment",
+    "query_anchor_isotropic.control",
+    "query_anchor_moment.graph"
+  ],
+  "primary": "query_anchor_moment",
+  "smoke_keys": [
+    "0_60_40",
+    "1_60_21",
+    "2_60_54",
+    "3_60_35"
+  ],
+  "workers": 6,
+  "threads_per_worker": 1,
+  "memory_budget_pss_bytes": 4294967296,
+  "source_negative_used": false,
+  "native_score_or_mask_in_method": false,
+  "query_labels_in_inference": false,
+  "GPU_dispatch": "root native CUDA CRF only after CPU seal"
+}

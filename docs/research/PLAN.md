@@ -2,12 +2,25 @@
 
 ## Current design: intermediate evidence and complete pipelines
 
+User rejected the four insufficiently justified fresh600 groups: query covariance
+(3 arms), covariance graph/unary controls (5), middle/end RCG (4), and query anchor
+moments (4). Root withdrew controllers97704 and99277 and their verified owned CUDA
+children; all CPU fields, partial predictions and features remain. No automatic
+restart, successor or new candidate. These groups have no complete measured effect.
+The general joint-edit4000 solver has finished without a new gain. Existing exact
+GT accounting is distinct from a deployable, label-free marginal-value estimator;
+the withdrawn groups did not establish that missing link. Do not extend the mask
+bank by unsupported evidence variants or treat a conditional Fisher-direction
+optimum as a prediction of final mIoU gain.
+
 The latest user correction moves the experimental unit from terminal attachments
 to complete pipelines built from the same frozen features. It supersedes the
 return-cut-first design. The latest goal continuation has resumed Root's research
 work. Existing held queues are not automatically restarted. The shared GPU has three
 other live producers at100% utilization; Root prepares and executes cached CPU work
 without another encoder. No peer source, process or reusable feature is modified.
+The experimental dispatch language in the older table below is historical and
+superseded by the withdrawal above.
 
 | Question | Owner | Complete comparison and decision |
 |---|---|---|
