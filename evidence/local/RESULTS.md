@@ -1723,3 +1723,18 @@ By object share of the query (<0.02 / 0.02-0.1 / 0.1-0.3 / >0.3; n = 1074 / 1543
 2.58 / 0.67 / 0.18 / 0.07; missed over object area 0.16 / 0.16 / 0.17 / 0.27. The extent error changes sign with object
 size: small objects are over-covered, large ones under-covered. RCG field at 0.5 (62.33): not found 16.3 %, made
 perfect +10.75, best cut on found +9.13, found made perfect +21.49, same pattern by size.
+
+Cut level by object size (2026-10-06, stored counts and token record, no model). Public 4000, RCG field (62.33 at
+0.5): best fixed level by true object share <0.02 / 0.02-0.1 / 0.1-0.3 / >0.3 is 0.62 / 0.57 / 0.46 / 0.31 (bin mIoU
+33.6 -> 36.8, 58.1 -> 59.6, 70.9 -> 71.2, 70.1 -> 75.4); one level per true-size bin, fitted on the other folds:
++3.98 (four bins), +4.11 (eight bins). With the true size multiplied by independent log-normal noise of sd 0.5 / 1.0 /
+1.5 (factor 1.6 / 2.7 / 4.5): +3.47 / +2.27 / +1.44. True size is query truth: a diagnostic of what a size estimate
+would be worth. fresh600 token record (`scripts/score_size_threshold.py`, token-level mIoU 64.52 at 0.5): level per
+quartile of the true size +4.72 (levels 0.79 / 0.71 / 0.59 / 0.42); per quartile of stored label-free estimates:
+area of RCG > 0.5 +0.36, > 0.8 -0.14, peak component at 0.5 / 0.7 +0.35 / +0.59, 10-NN vote count -0.63, reverse hits
++0.65, tokens closer to reference object than background -0.60, reference object size -0.06, area of s2 > 0.5 +0.13,
+all nine by held-fold linear fit +0.23 (n = 600, differences of this size are not resolved). Area of RCG > 0.5
+correlates 0.84 with the true log size (held-fold log error sd 0.65) and still yields nothing: its error is the
+field's own extent error, so it points the level the wrong way. Earlier: rerunning FoRIS on each component at its own
+scale -0.05 [-1.40, +0.98]. Not measured: a size estimate that does not come from the reference-similarity evidence
+(colour or edge regions around the peak, query-only grouping).
