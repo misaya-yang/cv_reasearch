@@ -561,6 +561,40 @@ The sealed 64 x 64 RCG field upsampled with a 128 x 128 guide from four shifted 
 (64.50). Errors within 8 px of the true boundary move from 3.20M false / 3.57M missed to 3.11M / 3.33M. The GT ceiling for
 that band was +8.0. Source: [report](research_20261005/subtoken_fresh600/report.md).
 
+### 2026-10-06: the cut level derived as a decision under an unknown object share (public 4000 and fresh600, 1024)
+
+Derivation: with class-conditional distributions f1, f0 of the field value fixed across episodes and the object's share of the
+query pi, the posterior is pi f1 / (pi f1 + (1 - pi) f0) and the set maximising expected IoU is a level set of it; the level of
+the field therefore depends on pi alone. Scored from stored per-level counts; f1, f0 pooled from the other folds without
+shared photographs (base-fold labels). Public 4000, RCG field (62.33 at 0.5): mean field value on the object by true-area bin
+0.69 / 0.73 / 0.72 / 0.64 and on the background 0.158 / 0.156 / 0.156 / 0.170 (the invariance holds approximately); with the
+TRUE share given (GT diagnostic) the derived cut reads 67.40 = +5.07 [+4.27, +5.51], folds +6.45 / +4.70 / +4.63 / +4.50, of
+the 71.24 per-episode best level; FoRIS score 66.46 = +6.05 [+5.28, +6.55]. Share estimated from the field's own histogram
+(mixture EM): 58.25 = -4.08 [-4.79, -3.44] although its rank correlation with the true share is 0.80. Required accuracy
+(independent noise on the log-odds of the true share): sd 0.25 / 0.5 / 0.75 / 1.0 / 1.5 -> +4.97 / +4.40 / +3.92 / +2.21 /
+-0.92. fresh600 (RCG 64.24; true share given 67.79), estimators that do not read the field: reference share, error sd 1.74,
+58.39; reference share times the squared scale from mutual-nearest-neighbour geometry, sd 1.73, 56.75; share of query tokens
+whose nearest reference token is on the object, sd 1.46, 59.93; least-squares combination fitted on the other folds, sd 1.21,
+62.91 = -1.33 [-2.19, -0.21]; mask area at 0.5, sd 0.75 but dependent on the field's errors, 63.65 = -0.58 [-1.37, +0.08].
+No estimator tested reaches the required accuracy. Source: `research_20261005/cut_levels4000/`,
+`research_20261005/reference_cut_fresh600/`, `research_20261005/share_fresh600/`; `scripts/run_share_estimators.py`.
+
+### 2026-10-06: RCG with its measured auxiliaries together, and the object share as a mixture proportion (fresh600, 1024)
+
+Combined run, complete FoRIS 61.63, RCG 64.24; the guide temperature and the level per mask-size bin are chosen on the other
+folds without shared photographs (the size levels use base-fold labels). Against RCG: strength 64 +0.47 [-0.40, +1.01];
+feature-guided sub-token readout +0.39 [+0.33, +0.57]; size-dependent cut +0.49 [-0.33, +1.00]; readout + size cut 65.44 =
++1.20 [+0.33, +1.81], folds +2.61 / +0.48 / +0.44 / +1.29, and +3.81 [+2.23, +4.59] against FoRIS; strength 64 + readout +1.01
+[+0.23, +1.64]; strength 64 + size cut +0.27 [-0.73, +1.02]; all three +0.60 [-0.36, +1.45]. The strength-64 field is re-solved
+with dense operations on the GPU (largest difference from the sealed field when re-solving strength 16: 0.0018).
+Mixture proportion estimate of the object share (reference-object tokens as positives, query tokens as the unlabelled
+mixture, ratio of cosine-ball masses, low quantile over reference tokens; no score field, no query truth): at cosine 0.6 and
+above the median estimate is 0 (most reference-object tokens have no query token that close); at 0.4 the median estimate over
+truth is 1.00 at the 0.25 quantile but the log-odds error sd is 2.92 (rank correlation 0.45); plugged into the derived cut:
+-15.9 to -30.6. Failed link: tokens of the same class in two photographs do not share one distribution in this feature
+space, which the estimator assumes. Source: `research_20261005/rcg2_fresh600/`, `research_20261005/share_fresh600/pu.npz`;
+`scripts/run_rcg2.py`, `scripts/run_share_pu.py`.
+
 ### 写了但没有跑就撤回的
 
 部分对应（PCF）、不变概念与可移植提示、响应 pair-ratio 编辑器、响应训练路线曾在未取得足够前提证据时撤回。早期 `pair_bank.py` 准备被撤回，不表示后续 layer/joint 队列没有运行（结果见上）。撤回未运行构造不证明输入缺少信息。

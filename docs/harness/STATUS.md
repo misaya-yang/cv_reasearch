@@ -4,6 +4,14 @@ Updated 2026-10-05. This file records current state; detailed evidence is linked
 
 ## Now
 
+- Resource scheduling failure: the owned CLS GPU stage ended at2026-10-05 23:39:47UTC;
+  the next owned GPU stage started at2026-10-06 00:09:15UTC, leaving about29m28s without an
+  owned GPU successor. Controller checked missing MEAN continuous inputs too late and spent
+  the gap on analysis/code preparation. Current family-composition supervisor56044/start954745049
+  runs graft4000 child56169/start954755102; fine-MEAN1200 supervisor56334/start954783172 is
+  already validated and waiting for GPU release. CPU reconstruction and mask-only comparison
+  proceed separately. Check successor inputs and runnable stages before the active GPU job ends.
+
 - User authorized parallel agents. Controller owns GPU monitoring/dispatch; three analyses
   completed RCG stage,4000quality/batch andcomplete-native edit attribution. OpusCPUanatomy
   andownstate/verification queues have completed. ExistingGPUboundaryjob37422/start953346485
