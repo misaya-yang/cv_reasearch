@@ -1,0 +1,133 @@
+{
+  "token": {
+    "base": {
+      "TP": 0,
+      "FP": 0,
+      "FN": 192,
+      "IoU": 0.0
+    },
+    "hull": {
+      "TP": 192,
+      "FP": 0,
+      "FN": 0,
+      "IoU": 1.0
+    },
+    "nearest": {
+      "TP": 0,
+      "FP": 0,
+      "FN": 192,
+      "IoU": 0.0
+    },
+    "centroid": {
+      "TP": 0,
+      "FP": 0,
+      "FN": 192,
+      "IoU": 0.0
+    },
+    "linear_span": {
+      "TP": 0,
+      "FP": 0,
+      "FN": 192,
+      "IoU": 0.0
+    },
+    "affine_span": {
+      "TP": 0,
+      "FP": 0,
+      "FN": 192,
+      "IoU": 0.0
+    },
+    "quadratic": {
+      "TP": 128,
+      "FP": 2601,
+      "FN": 64,
+      "IoU": 0.04582885785893305
+    }
+  },
+  "complete1024": {
+    "base": {
+      "TP": 0,
+      "FP": 0,
+      "FN": 49152,
+      "IoU": 0.0
+    },
+    "hull": {
+      "TP": 49152,
+      "FP": 7608,
+      "FN": 0,
+      "IoU": 0.8659619450317124
+    },
+    "nearest": {
+      "TP": 0,
+      "FP": 0,
+      "FN": 49152,
+      "IoU": 0.0
+    },
+    "centroid": {
+      "TP": 0,
+      "FP": 0,
+      "FN": 49152,
+      "IoU": 0.0
+    },
+    "linear_span": {
+      "TP": 0,
+      "FP": 0,
+      "FN": 49152,
+      "IoU": 0.0
+    },
+    "affine_span": {
+      "TP": 0,
+      "FP": 0,
+      "FN": 49152,
+      "IoU": 0.0
+    },
+    "quadratic": {
+      "TP": 0,
+      "FP": 0,
+      "FN": 49152,
+      "IoU": 0.0
+    }
+  },
+  "solver": {
+    "config": {
+      "foreground_modes": 16,
+      "background_modes": 16,
+      "lloyd_steps": 5,
+      "purity": 0.9,
+      "minimum_reference_samples": 8,
+      "maximum_iterations": 256,
+      "gap_tolerance": 1e-08,
+      "decision_guard": 1e-07,
+      "subspace_relative_tolerance": 1e-06
+    },
+    "abstention": false,
+    "query_gt_used": false,
+    "new_encoder_forwards": 0,
+    "real_gain": "unmeasured",
+    "complete_dataset_minutes": "unmeasured",
+    "foreground_modes": 6,
+    "background_modes": 3,
+    "foreground_solver": {
+      "iterations": 256,
+      "maximum_gap": 0.000530764148205326,
+      "unconverged_rows": 4096,
+      "converged": false,
+      "maximum_simplex_sum_error": 6.661338147750939e-16,
+      "minimum_coefficient": 0.0
+    },
+    "background_solver": {
+      "iterations": 1,
+      "maximum_gap": 5.551115123125783e-17,
+      "unconverged_rows": 0,
+      "converged": true,
+      "maximum_simplex_sum_error": 0.0,
+      "minimum_coefficient": 0.0
+    },
+    "resolved_rows": 4096,
+    "fallback_rows": 0,
+    "decision": "signed BG-minus-FG squared-distance interval excludes zero beyond guard",
+    "score_semantics": "clipped .5 + (BG cost - FG cost)/8; not a calibrated probability",
+    "bound_scope": "Frank-Wolfe objective gap in exact arithmetic, with nominal floating guard; not a semantic confidence bound",
+    "wall_seconds": 0.171816333
+  },
+  "total_seconds": 1.311004958
+}

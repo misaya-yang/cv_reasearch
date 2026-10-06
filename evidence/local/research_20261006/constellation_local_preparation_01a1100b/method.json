@@ -1,8 +1,8 @@
 {
   "id": "reference_constellation_local_v2",
   "version": 2,
-  "state": "implemented; synthetic_checks_pending; real_segmentation_unmeasured",
-  "parent": "reference_heldout_landmark_layout_v1; reference_constellation.py retained unchanged",
+  "state": "implemented_and_synthetic_counterexample_and_two_worker_checked; real_segmentation_unmeasured",
+  "parent": "held_out_reference_landmark_consensus_v1; reference_constellation.py retained unchanged",
   "single_change": "Final fusion is limited to the positive support of the union of accepted warped foreground coverage.",
   "formula": "D={i:prior_i>0}; z_i=(1-w)*clip(base_i,0,1)+w*prior_i if i in D, otherwise z_i=base_i. w is the original geometry_weight=0.5.",
   "local_domain": "Union of positive warped reference foreground coverage from retained poses, including fractional bilinear coverage. No bounding-box expansion, dilation, new threshold, or new parameter.",
@@ -15,7 +15,7 @@
   ],
   "controls": ["unchanged global v1", "original MEAN base", "clipped MEAN base", "v1 bag-mode field", "accepted warped prior"],
   "predictions": {
-    "mathematical": "Outside D the base field is preserved value-for-value, including values outside [0,1]. No accepted pose gives D empty and retains the whole base.",
+    "mathematical": "Outside D the token base field is preserved value-for-value, including values outside [0,1]. No accepted pose gives D empty and retains the whole base. Bilinear rendering can spread a local change to adjacent fine pixels, so the guarantee is not a per-fine-pixel claim outside nearest-expanded D.",
     "conditional": "A correct base instance outside accepted warped support is not globally suppressed merely because another pose was accepted.",
     "not_claimed": ["semantic rejection of pose-unsupported distractors", "real mIoU improvement", "real runtime", "geometry transfer across aspect changes", "novelty"]
   },

@@ -9,6 +9,8 @@ import tempfile
 for name in ('OMP_NUM_THREADS', 'OPENBLAS_NUM_THREADS', 'MKL_NUM_THREADS', 'VECLIB_MAXIMUM_THREADS'):
     os.environ[name] = '1'
 import numpy as np
+import torch
+import torch.nn.functional as F
 from check_local import fixture
 
 ROOT = Path(__file__).resolve().parents[4]
@@ -44,6 +46,12 @@ def main():
                 np.testing.assert_array_equal(field[~region], base[~region])
                 assert int((field[unmatched] > .5).sum()) == 16
                 assert int((global_field[unmatched] > .5).sum()) == 0
+                local_mask = np.unpackbits(packet['constellation_local']).reshape(1024, 1024)
+                base_mask = np.unpackbits(packet['mean.control']).reshape(1024, 1024)
+                # The interpolation influence domain exceeds nearest-expanded D.
+                influence = F.interpolate(torch.from_numpy(region.astype(np.float32))[None, None],
+                                          (1024, 1024), mode='bilinear', align_corners=False)[0, 0].numpy() > 0
+                np.testing.assert_array_equal(local_mask[~influence], base_mask[~influence])
                 if first is None:
                     first = packet['constellation_local'].copy()
                 else:
@@ -54,6 +62,7 @@ def main():
                       workers=2, feature_shape=[4096, 1024], repeated_occurrences_preserved=True,
                       query_gt_sentinel_unread=True, all_six_masks_packed1024=True,
                       local_outside_values_preserved=True, global_v1_and_base_bag_controls_saved=True,
+                      rendered_mask_outside_bilinear_influence_equals_base=True,
                       unmatched_component_local_kept=16, unmatched_component_global_kept=0,
                       overwrite_rejected=True, real_episodes=0, no_gpu=True, no_server=True)
         Path(__file__).with_name('runner_check.json').write_text(json.dumps(report, indent=2) + '\n')

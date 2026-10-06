@@ -130,15 +130,11 @@ def infer(args):
         state='ALL_PREDICTIONS_SEALED', n=len(rows),
         **{name + '_sha256': sha(args.out / (name + '.json')) for name in
            ('config', 'inference_manifest', 'evaluation_manifest')},
-        receipts={row['occurrence_id']: sha(args.out / 'receipts' / (row['occurrence_id'] + '.json')) for row in rows_with_ids(evaluation)},
+        receipts={row['occurrence_id']: sha(args.out / 'receipts' / (row['occurrence_id'] + '.json')) for row in evaluation},
         elapsed_seconds=time.perf_counter() - started,
         peak_owned_rss_bytes=maximum_rss * args.workers,
         peak_owned_rss_semantics='maximum_worker_RSS_high_water_times_worker_count; conservative estimate not measured concurrentRSS',
         query_gt_opened=False, encoder_forwards=0))
-
-
-def rows_with_ids(rows):
-    return rows
 
 
 def main():
