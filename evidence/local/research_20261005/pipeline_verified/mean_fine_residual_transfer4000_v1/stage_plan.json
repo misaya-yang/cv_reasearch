@@ -1,0 +1,73 @@
+{
+  "state": "READY_FOR_ROOT_GPU_LAUNCH",
+  "candidate": "mean_fine_residual_transfer_v1",
+  "n": 4000,
+  "script_sha256": "9b14b0982a10c3bf3dea3f1a494e64cdb58eb724b911ff96c26a5715d7c6627e",
+  "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+  "environment": {
+    "PYTHONPATH": "/root/demo4_cache/env",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "stages": [
+    {
+      "stage": "prepare",
+      "status": "COMPLETE",
+      "seconds": 12.941668432205915
+    },
+    {
+      "stage": "infer",
+      "owner": "root",
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/mean_fine_residual_transfer4000_v1/snapshot/scripts/run_mean_fine_residual_transfer4000.py",
+        "infer",
+        "--out",
+        "outputs/mean_fine_residual_transfer4000_v1",
+        "--workers",
+        "6",
+        "--inflight",
+        "6",
+        "--writers",
+        "2",
+        "--batch",
+        "16"
+      ],
+      "requires": [
+        "ALL4000_SOURCE_PREPARED",
+        "ALL1200_ORIGINAL_MEAN_FIELDS_PARITY_SEALED"
+      ],
+      "expected_state": "ALL_PREDICTIONS_SEALED",
+      "estimated_seconds": "~1425 encoder seconds from two-pair prefix0.51s/pair; whole stage unmeasured and includes CPU/I/O/render",
+      "query_truth_opened": false
+    },
+    {
+      "stage": "score",
+      "owner": "root or child after root GPU completes",
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/mean_fine_residual_transfer4000_v1/snapshot/scripts/run_mean_fine_residual_transfer4000.py",
+        "score",
+        "--out",
+        "outputs/mean_fine_residual_transfer4000_v1",
+        "--check-workers",
+        "4"
+      ],
+      "requires": [
+        "ALL_PREDICTIONS_SEALED n4000"
+      ],
+      "expected_state": "CPU_GT_SCORE_COMPLETE",
+      "query_GT": "evaluation only after all source/output hashes pass"
+    }
+  ],
+  "retained": "all4000 G64/C128 scalar fields and packed masks; no q/r/fine archives",
+  "raw_origin": "full4000 unavailable; native and named controls edit tables reported",
+  "fixed_formula": "bilinear(G,128)+(Y-bilinear(F,128)),FP32 align_corners=False,coefficient1,no clip; CUDA bilinear1024>.5",
+  "notes": [
+    "Consumes shared1200 G without duplicate MEAN solve; old1200 exactlambda16 audits inherited and hash/field/mask identities verified",
+    "Remaining2800 Part1-only does not return native or score; stored complete native and original continuous score/cov remain independent inputs",
+    "Not directP(G) and not a replacement for historical fine64 primary; fixed new combination",
+    "All4000 old six-arm I/U must match at score; natural repeated draw retained; benchmark is exposed DEV"
+  ]
+}

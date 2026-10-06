@@ -1,0 +1,7 @@
+# Frozen masked-reference object-crop CLS1200: no semantic recovery support
+
+Independent verification of all332 sealed descriptor files/1400 compact vectors passes. FP32 margins reproduce exactly; direct FP64 cosine differs by less than1e-6. Region-pair AUROC, all2000 RandomState(0) draws on1046 connected-photo groups, paired confidence intervals, folds and pooled summaries reproduce with maximum statistical error0. The copied config text mentioning source241 bootstrap groups is historical metadata; the actual full1200 statistic uses1046 groups.
+
+On77 paired episodes/296 regions, masked-reference CLS AUROC0.433959 [0.340099,0.527200]. Versus existing NN region mean: +0.190674 [0.090203,0.300785]. Better than this failing control does not establish useful positive separation; three folds are below0.5. Stop this fixed construction and do not extend to4000, reverse the margin or select a favorable subset. The result limits this tested construction, not every CLS representation or legal proposal family. GT boxes remain privileged and no complete segmentation method was measured.
+
+One specific causal ablation is justified by the code: positive reference input erased all non-FG RGB, whereas query crops retain natural RGB. Keep all736 query and332 BG descriptors,77 paired episodes,boxes,model,transform,FP32,batch4 and margin orientation fixed; only encode the332 positive-reference crops with original RGB, removing that one erasure. This tests that reference-input prior; it is not a new component or a claim that a classifier already works.

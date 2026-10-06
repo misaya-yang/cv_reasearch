@@ -1,0 +1,93 @@
+{
+  "n": 4000,
+  "candidate": "mean_fine_residual_transfer_v1",
+  "arms": [
+    "native",
+    "rcg",
+    "mean.control",
+    "rcg64.control",
+    "fine.rcg16.control",
+    "fine.rcg64",
+    "mean_fine_residual_transfer_v1"
+  ],
+  "original_primary_unchanged": "fine.rcg64",
+  "constructor": "C128=bilinear(G64,128)+(Y128-bilinear(F64,128)); FP32 align_corners=False coefficient1; no clip",
+  "renderer": "CUDA bilinear128->1024 align_corners=False strict>0.5",
+  "parameter_updates": false,
+  "direct_mean_fine": "separate strong control P(G); C is not P(G)",
+  "query_gt_in_inference": false,
+  "query_truth_opened": false,
+  "exposure": "same exposed public4000 benchmark/development draws; not independent confirmation",
+  "source_code_sha256": {
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/mean_fine_residual_transfer4000_v1/snapshot/scripts/run_mean_fine_residual_transfer4000.py": "9b14b0982a10c3bf3dea3f1a494e64cdb58eb724b911ff96c26a5715d7c6627e",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/mean_fine_residual_transfer4000_v1/snapshot/src/ics/experiment.py": "d95459d0b59c7048618661e7a16999248990b02e92cd1269d4629a497f62f843",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/mean_fine_residual_transfer4000_v1/snapshot/src/ics/methods/rcg.py": "d9d8e15a69c0b939eb06dc4e41967afb684f29731f9dcb00519e73d944963d98",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/part1_producer_two_pair_v1/snapshot/scripts/benchmark_part1_producer.py": "e99b1c205054fe27555abfec74ecea86786f1ce2f0b6c7d262445c6b00236df3",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/part1_producer_two_pair_v1/snapshot/scripts/run_frozen_subtoken4000.py": "481bff4abab20e5d2a71976c522b02c9fd9a4f3c90baf6170686ecbb9bc1d3cd",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/part1_producer_two_pair_v1/snapshot/scripts/run_frozen_subtoken1200.py": "e802ea229d50bd83b88784fa0640105e65c79d31469fb5a0b769667d80995a5d",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/part1_producer_two_pair_v1/snapshot/src/ics/methods/rcg.py": "d9d8e15a69c0b939eb06dc4e41967afb684f29731f9dcb00519e73d944963d98",
+    "/root/autodl-tmp/demo8_local_verification/foris_source/models/foris.py": "982cf4aa91ac90370151c353efb37240d7d4d5c35a0dfe9cc9509cd554c85fa9",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/external/astra_emd/external_mean_delete600_modules/components.py": "5c7c7e9e7e55e63cb4e7c9842d09ee7e4e0f6071c102bbaf1e9fbd0ceef76c23",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/external/astra_emd/external_mean_delete600_modules/rcg_readout.py": "865ca65310cd9e1cf87f12e7015d97cd746fdc12eebdc672cb21ee3f5919f1e6",
+    "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/external/astra_emd/external_mean_delete600_modules/hypothesis_source_contrast.py": "4465a7f1f9b4d1ee8a006a0f4ecc40587577549dd05f3ca8428fc61c7501c3b1"
+  },
+  "base": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen_subtoken4000_v1",
+  "base_seal_sha256": "a1f892c08a938936e97dfed67b47b08130263ff8e37edca47ebd83b423f10fd2",
+  "base_config_sha256": "12ebd209820910d5d3b02357750cc58856279c8051a9760b1776697357479c07",
+  "scored": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen_subtoken4000_scored_v1",
+  "scored_counts_sha256": "252155db34a7a386e3436f90710a3ea2c4bc861d1d4f86257c7cf1b28a72225b",
+  "scored_episodes_sha256": "c190bb031c1787692bfff9cc0bbbb1fa09d4ea9e1f551c877c4aff2eed4d9549",
+  "scored_report_sha256": "dc185d1b93cc5da068b69f9b40469c029e16bd8876a3ce2bf055b21f2eb3379f",
+  "scored_state_sha256": "726baa4e837acbb20164e67d4bdb0deb7e270058e3fa0ee4975059399066c11d",
+  "mean1200": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/fine_mean1200_prepared_v1",
+  "mean_field_key": "mean.control",
+  "prefix_snapshot": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/part1_producer_two_pair_v1/snapshot",
+  "benchmark": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/part1_producer_two_pair_v1",
+  "benchmark_report_sha256": "9001f78f84dcb098f4968cda4a6696764eab982d70102e0fc0aad2358a1196f9",
+  "benchmark_evidence_sha256": "86969326f05237186efc4aeaf0472dcd04cc7ec80af037734211e4acfabf00d8",
+  "benchmark_config_sha256": "5085785cac2ef773282298f89b64cc6fe180a1bbf12b8faf5df45da7644d74da",
+  "basis": "/root/autodl-tmp/demo9_transductive_ics/results/native_runtime_v1/positional_basis.pt",
+  "basis_sha256": "9b9b20755a796cbda11bb7220d246ee540106e40cb024e249a5f63f884b6a116",
+  "host_manifest": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/claude_official/batch0.json",
+  "host_manifest_sha256": "4dd6078054e91c7fc90df4443120624b763539e83c1c7752cd031bfb4c859d22",
+  "host_builder_sha256": "14e99f553d93a3234d78551e67727fc3478ca7042b161d9b465dae5cc9769f2b",
+  "source": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/external/astra_emd/external_mean_delete600_modules",
+  "inherited1200": {
+    "fine1200": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen_subtoken1200_v1",
+    "fine1200_seal_sha256": "ab70271e626d8fd0ea76bc830401eef030123978e5754dcf81b98a1014df22c8",
+    "rcg1200_prepared": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/subtoken1200_rcg64_prepared_v1",
+    "rcg1200_prepared_seal_sha256": "0d715b0d30156b37e426ab9461230fe32355bd8fd3acef5efe8f156e471bbcc0",
+    "rcg1200_audits_sha256": "70199cfe52c5116b363f27c398241e19dfadf16928315dc47bf23e05dfe12d48",
+    "n": 1200,
+    "inherited_exact_replay": true
+  },
+  "saved_source_parameters": {
+    "0": {
+      "arm": "feat[s1.25,t0.07]",
+      "sigma": 1.25,
+      "tau": 0.07
+    },
+    "1": {
+      "arm": "feat[s1.25,t0.15]",
+      "sigma": 1.25,
+      "tau": 0.15
+    },
+    "2": {
+      "arm": "feat[s1.25,t0.15]",
+      "sigma": 1.25,
+      "tau": 0.15
+    },
+    "3": {
+      "arm": "feat[s1.25,t0.07]",
+      "sigma": 1.25,
+      "tau": 0.07
+    }
+  },
+  "encoder_replay": "remaining2800 actual Part1 paired FP32 -> original channel normalization/gate/projection -> FP16 q/r in RAM only; existing sealed score/cov reused",
+  "native": "independent original sealed complete native; Part1 returns no native; no new native recomputation claim",
+  "retained": "G64 and fixedC128 scalar fields plus all4000 packed candidate masks; no q/r or fine-feature archive",
+  "workers": 6,
+  "preflight_workers": 4,
+  "inflight": 6,
+  "render_batch": 16
+}
