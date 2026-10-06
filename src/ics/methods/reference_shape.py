@@ -134,12 +134,12 @@ def proposal_masks(children,features,unary,bank,cfg):
     return masks
 
 
-def optimize(base,features,children,bank,cfg):
+def optimize(base,features,children,bank,cfg,*,proposal_function=proposal_masks,energy_function=evaluate):
     shape=base.shape;unary=(base-.5).ravel()
     mask=base>.5
-    candidates=proposal_masks(children,features,unary,bank,cfg)
+    candidates=proposal_function(children,features,unary,bank,cfg)
     history=[];evaluations=0
-    current,labels,component_energy,_=evaluate(mask,unary,features,bank,cfg);evaluations+=1
+    current,labels,component_energy,_=energy_function(mask,unary,features,bank,cfg);evaluations+=1
     initial=current
     for iteration in range(cfg.maximum_rounds):
         changed=False
@@ -148,7 +148,7 @@ def optimize(base,features,children,bank,cfg):
         negative[0]=False
         if negative.any():
             previous=current;mask=mask&~negative[labels]
-            current,labels,component_energy,_=evaluate(mask,unary,features,bank,cfg);evaluations+=1
+            current,labels,component_energy,_=energy_function(mask,unary,features,bank,cfg);evaluations+=1
             if current+cfg.improvement_tolerance<previous:raise RuntimeError('Nonmonotone component deletion')
             history.append(dict(round=iteration,move='delete_negative_components',before=previous,after=current))
             changed=True
@@ -160,12 +160,12 @@ def optimize(base,features,children,bank,cfg):
             for name,proposed in (('add_region',flat|region),('remove_region',flat&~region),
                                   ('replace_touched_components',(flat&~affected)|region)):
                 if np.array_equal(proposed,flat):continue
-                value,_,_,_=evaluate(proposed.reshape(shape),unary,features,bank,cfg);evaluations+=1
+                value,_,_,_=energy_function(proposed.reshape(shape),unary,features,bank,cfg);evaluations+=1
                 if value>best+cfg.improvement_tolerance:
                     best=value;winner=proposed.copy();winner_name=name
         if winner is not None:
             previous=current;mask=winner.reshape(shape)
-            current,labels,component_energy,_=evaluate(mask,unary,features,bank,cfg);evaluations+=1
+            current,labels,component_energy,_=energy_function(mask,unary,features,bank,cfg);evaluations+=1
             history.append(dict(round=iteration,move=winner_name,before=previous,after=current))
             changed=True
         if not changed:break
