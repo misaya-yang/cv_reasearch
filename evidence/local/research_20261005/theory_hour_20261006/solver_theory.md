@@ -124,6 +124,8 @@ Let inference steps form a fixed DAG. First cut dependency traversal at availabl
 
 This counts a shared encoder or graph construction once, even when several outputs use it. Compound producers retain all their actual upstream dependencies. The number of named output rows is not the number of atomic computations. An additive work cost is also not a measured parallel wall time; optimizing makespan requires a separate scheduling model.
 
+The selected-producer closure is the complete accounting only for a recipe frozen before inference. An adaptive per-query selector also consumes its decision evidence. If it must compute all proposal masks or fields before choosing three, the unselected proposal producers have already incurred cost. Include the selector and every producer needed for its decision evidence in the required DAG closure; counting only the three final masks would understate inference cost. Cached evidence is handled by the same explicitly declared cache boundary, not assumed to be free at deployment.
+
 For each DAG vertex define its requester mask \(R_v=\{i:v\in D_i\}\). Thus
 
 \[
@@ -161,7 +163,11 @@ The numerator and denominator extremes need not be achievable together; their in
 
 Exhausting all unpruned leaves gives an exact optimum certificate. Pruning can be substantial but has no unconditional polynomial bound. With independent unit costs, no deletion, and all additions contained in GT, budgeted IoU maximization is maximum coverage; minimum cost achieving IoU one is set cover. Those special cases already preclude a general polynomial exact guarantee unless P=NP.
 
-Safe state dominance is classwise TP greater-or-equal and FP smaller-or-equal, together with dependency-closure inclusion. Comparing only standalone scalar costs is unsafe under sharing: action X costs one unit for dependency u, action Y costs two for v, but a partner already requiring v makes X+partner cost three and Y+partner cost two. Preserve closure signatures or compare complete recipes.
+Aggregate TP/FP dominance is unsafe for partial states that can still receive further moves, even with equal dependency closures. Let the origin be empty, GT be \(\{t_1,t_2,t_3\}\), and addition masks be A=\(\{t_1,t_3,f_1\}\), B=\(\{t_2,f_2\}\), C=\(\{t_1,t_3,f_2\}\). Suppose the masks are cached, so their remaining required closures and costs are equal. Partial A has TP=2/FP=1 while partial B has TP=1/FP=1. Yet the same continuation C gives \(J(A\cup C)=2/5\) and \(J(B\cup C)=3/4\). Pruning B from its current aggregate counts would discard the better completed recipe: the continuation overlaps A's TPs but supplies B's missing TPs, and overlaps B's FP but adds a new FP to A.
+
+Complete-recipe Pareto dominance is safe: classwise TP greater-or-equal, FP smaller-or-equal, and no higher complete cost imply no lower score and no worse budget feasibility. Partial-state pruning instead requires a continuation-safe proof. A sufficient condition is that both states admit the same remaining moves and, for every feasible continuation Z, the proposed dominating state has classwise no lower TP, no higher FP, and no higher full cost after Z. Full membership/edit signatures can establish such a condition; current aggregate TP/FP counts plus current closure inclusion cannot. The optimistic TP-max/FP-min bounds above remain valid and require no dominance assumption.
+
+Comparing only standalone scalar costs is also unsafe under sharing: action X costs one unit for dependency u, action Y costs two for v, but a partner already requiring v makes X+partner cost three and Y+partner cost two. Preserve dependency signatures and include their interaction with the continuation when proving a partial-state cost comparison, or restrict Pareto comparisons to complete recipes.
 
 The atom counts are integers, so the score is a rational number. Floating-point equality alone is not a mathematical exactness certificate. A practical certified comparison can enclose each ratio using \(b\)-bit dyadic floor/ceiling bounds, refine overlapping intervals, and compare exact rationals for ties. Bounds and pruning must compare upper versus lower enclosures. Fix a tie rule, such as smallest true DAG cost and then lexical recipe. Assume \(g_c>0\), or explicitly specify the empty-class convention before optimization.
 

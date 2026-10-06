@@ -796,7 +796,12 @@ calibration of the graph field.
    add/delete sets are empty, or it changes no final mask on any allowed input,
    it cannot change any mask metric. The fixed-operator margin certificate in
    section 4.2 is one such condition. If removing it does not increase shared
-   inference cost, the redundant component is weakly dominated.
+   inference cost, the redundant component is weakly dominated. A particularly
+   concrete pipeline instance is a strictly increasing scalar transformation
+   of the reference guide *before its rank operation*, with score, graph,
+   anchors and coefficient unchanged: its ranks, unary, solved field and final
+   mask are all identical in exact arithmetic. This does not cover changing
+   the cross-image similarities before guide construction or changing alpha.
 2. **Exact same-budget selection invariance, independent of GT.** An auxiliary
    score that is a strictly increasing transform of `g`, with the same eligible
    domain, count, unit and tie handling, selects exactly the same top-k pixels.

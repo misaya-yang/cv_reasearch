@@ -10,8 +10,12 @@ Updated 2026-10-06 UTC. This file records current state; detailed evidence is li
   plus CPU consumer77731. All reusable features and partial outputs are retained;
   foreign GPU process79813 was untouched. The old live-queue statements below are historical.
   Hold receipt: remote `launch/theory_hour_20261006/hold_receipt.json`.
-  Root and three existing children derive selection, interaction and identifiability results
-  without data evaluation or model calls. No automatic experiment restart is authorized.
+  Theory synthesis is complete after parallel derivation and three GPT-6.1-sol/max
+  assignments, including an independent adversarial review. No data evaluation or model
+  calls were run. [Five-question synthesis](../../evidence/local/research_20261005/theory_hour_20261006/five_questions.md)
+  separates finite-family optimality, conditional sparsity, anchored graph estimation,
+  occupancy identification, and empirical capacity bounds. No automatic experiment restart
+  is authorized. The experiment goal remains paused at the user's request.
 
 - Historical scheduling failure left29m28s without an owned GPU successor after CLS ended.
   Those stages are terminal and their results are retained below. Current uniformtau15

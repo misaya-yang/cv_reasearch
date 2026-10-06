@@ -42,6 +42,14 @@ Each source S_i is included by taking L=D={i}; O itself is included by taking bo
 Thus a *true-score* exact maximum of this finite family weakly dominates every included
 complete source on the same data. Strict superiority requires a better attainable mask.
 
+Include O and every allowed alternative origin in the complete-source bank. If every
+member assigns the same bit to a pixel, every canonical composition
+preserves that bit. Only producer-disagreement pixels can change. With class GT mass
+G_c, unanimous-negative FN mass N_c and unanimous-positive FP mass F_c, even a relaxed
+oracle correcting every disagreement pixel has IoU (G_c-N_c)/(G_c+F_c). Therefore this
+is an upper bound on the complete-source family. Its remaining capacity loss is not
+proof of missing information in the frozen encoder, only of unavailable edits in that bank.
+
 Canonical addition and deletion domains are disjoint. Cross-side pixel conflicts do not
 exist in this representation; overlap within each side and IoU denominators still create
 interactions. A deletion that removes a pixel introduced by a previous addition is a
@@ -323,8 +331,9 @@ not automatically the ceiling of the threshold family under class-summed mIoU.
 
 Known F1,F0 identify pi from G=(1-pi)F0+pi F1 whenever F1 differs from F0. In total
 variation, TV(G_pi,G_pi')=|pi-pi'| TV(F1,F0). Small foreground/background separation
-makes the inverse ill conditioned. If all admissible mixture/model fits lie within
-epsilon of G, their pi identified-set diameter is at most 2epsilon/TV(F1,F0).
+makes the inverse ill conditioned. If all admissible mixture fits share the same fixed
+F1,F0 and lie within epsilon of G, their pi identified-set diameter is at most
+2epsilon/TV(F1,F0). Varying component laws require an explicit additional drift allowance.
 
 Approximate distribution invariance is useful for a small pi only if its uncertainty
 is small compared with pi*TV(F1,F0). A globally small distribution error can still

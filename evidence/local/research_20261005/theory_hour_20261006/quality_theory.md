@@ -3,6 +3,8 @@
 Owner: rcg_quality_analysis. Pure theoretical derivations for the theory hour.
 No experiment, dataset evaluation, GPU action, remote computation, or parameter scan
 was performed for this document. Supplied observations are distinguished from assumptions.
+Equations use fractional IoU units; reported observations use percentage points.
+Gain, noise standard deviation and target effect must be converted together.
 
 ## Core conclusions
 
@@ -70,7 +72,7 @@ With several classes the exact benchmark change is
 \Delta {\rm mIoU}
 =\frac1K\sum_c
 \frac{a_{TP,c}-d_{TP,c}
-J_{0,c}(d_{FP,c}-a_{FP,c})}{U_{1,c}}.
++J_{0,c}(d_{FP,c}-a_{FP,c})}{U_{1,c}}.
 \tag{3}
 \]
 
@@ -144,15 +146,15 @@ the method's unconditional population gain.
 ### Proposition 2: a concrete finite-sample mixture
 
 Assume \(\widehat\Delta=\Delta+\epsilon\), with
-\(\epsilon\sim N(0,\sigma^2/n_{\rm eff})\), and accept iff
+\(\epsilon\sim N(0,\sigma_{\rm proxy}^2/n_{\rm eff})\), and accept iff
 \(\widehat\Delta>0\). The noise is unbiased, its distribution is the same in both
 types, and it is independent of future outcomes conditional on type.
 Then
 
 \[
 G(n_{\rm eff})
-=r a\,\Phi(a\sqrt{n_{\rm eff}}/\sigma)
--(1-r)b\,\Phi(-b\sqrt{n_{\rm eff}}/\sigma).
+=r a\,\Phi(a\sqrt{n_{\rm eff}}/\sigma_{\rm proxy})
+-(1-r)b\,\Phi(-b\sqrt{n_{\rm eff}}/\sigma_{\rm proxy}).
 \tag{7}
 \]
 
@@ -212,7 +214,7 @@ Consider k enabled optional producers. Producer j has a fixed-context true gain
 Gaussian noisy gain estimate is positive. Assume:
 
 1. \(0<r<1/2\), the same for each producer;
-2. estimation noise has standard deviation sigma/sqrt(n_eff);
+2. estimation noise has standard deviation sigma_proxy/sqrt(n_eff);
 3. the true marginal gain laws do not change when other gates accept or reject;
 4. benchmark gains are additive across these producers, or an explicit independent
    utility model is being optimised;
@@ -225,7 +227,7 @@ actual IoU must carry its approximation error.
 Under these assumptions,
 
 \[
-g_j=a_j\left[\Phi(a_j\sqrt{n_{\rm eff}}/\sigma)-(1-r)\right].
+g_j=a_j\left[\Phi(a_j\sqrt{n_{\rm eff}}/\sigma_{\rm proxy})-(1-r)\right].
 \tag{10}
 \]
 
@@ -233,7 +235,7 @@ Therefore
 
 \[
 g_j>0\iff
-a_j>\frac{\sigma z_{1-r}}{\sqrt{n_{\rm eff}}}.
+a_j>\frac{\sigma_{\rm proxy} z_{1-r}}{\sqrt{n_{\rm eff}}}.
 \tag{11}
 \]
 
@@ -241,7 +243,7 @@ The exact accuracy-optimal enabled prefix is
 
 \[
 k^*=\max\{k\le M:A k^{-\nu}>
-\sigma z_{1-r}/\sqrt{n_{\rm eff}}\},
+\sigma_{\rm proxy} z_{1-r}/\sqrt{n_{\rm eff}}\},
 \tag{12}
 \]
 
@@ -249,7 +251,7 @@ with k*=0 if the set is empty; equality ties go to the shorter prefix.
 It scales as \(n_{\rm eff}^{1/(2\nu)}\) before saturation at M.
 
 **Proof.** In the helpful state, acceptance probability is Phi(a_j/s);
-in the harmful state it is Phi(-a_j/s), where s=sigma/sqrt(n_eff).
+in the harmful state it is Phi(-a_j/s), where s=sigma_proxy/sqrt(n_eff).
 Equation (4) reduces to (10). Phi is strictly increasing and a_j decreases,
 so the signs have one positive-to-negative crossing. Additivity makes expected
 prefix gain a partial sum, maximised at that crossing.
@@ -282,6 +284,9 @@ For benchmark differences, an independent-photograph-group model is appropriate
 only if its independence/transport assumptions hold. Pixel count is not this n.
 Evaluation sample size narrows uncertainty about a frozen method; it does not
 causally change that method's fixed population performance.
+The proxy-noise variance in (7)--(12) is not automatically the paired evaluation
+variance below. A single reference has not supplied n independent photographs,
+and its spatial patch count needs a different, justified dependence model.
 
 For independent groups and a locally regular class-summed metric, the paired
 influence contribution is
@@ -295,28 +300,29 @@ influence contribution is
 \]
 
 Here mu U is the population mean group union, and
-sigma^2=Var(psi_g), in the same units as the benchmark effect. This accounts for
+sigma_pair^2=Var(psi_g), in the same units as the benchmark effect. This accounts for
 pairing, group sizes and class-denominator weights; it is not the variance of
 unweighted episode IoUs.
 
 With a normal approximation, fixed positive target effect delta_gain, known or
-defensibly piloted sigma, two-sided type-I error alpha and target power
+defensibly piloted sigma_pair, two-sided type-I error alpha and target power
 1-beta_power, conventional planning gives
 
 \[
 n_{\rm eff}\ \gtrsim\
-\frac{\sigma^2
+\frac{\sigma_{\rm pair}^2
 [z_{1-\alpha/2}+z_{1-\beta_{\rm power}}]^2}
 {\delta_{\rm gain}^2}.
 \tag{14}
 \]
 
-For an exactly normal estimator with known sigma this is a conservative sufficient
+For an exactly normal estimator with known sigma_pair this is a conservative sufficient
 two-sided planning value: the upper rejection tail has power 1-beta_power and the
 opposite tail adds a nonnegative amount. It is not the exact minimum two-sided n.
 Unknown variance, group dependence, rare-class denominators, multiplicity and
-distribution shift require further qualifications. Without sigma and a target
-effect in benchmark units, (14) cannot yield a numerical n.
+distribution shift require further qualifications. Without sigma_pair and a target
+effect in benchmark units, (14) cannot yield a numerical n. Planning variance from
+older labelled outputs does not fit a new query-GT inference posterior.
 
 Testing gain above a target gamma_0 uses excess effect delta_gain-gamma_0, not the
 full gain. Detecting a purity margin uses its own variance or the slope in (1).
@@ -341,6 +347,15 @@ Equation (15) must not be applied to reference pixels as if independently sample
 from query edits, or to an unweighted episode-IoU mean as if it were class-summed
 mIoU. Ratio estimates need count concentration or an appropriate paired influence
 analysis.
+
+If k producers generate an exponentially large combination family,
+log(M_k)=O(k), a hypothetical uniformly valid error scale is
+e_(n,k)=C sigma_proxy sqrt(k/n_eff). Together with decreasing margins
+a_k=A k^(-nu), the requirement a_k>2e_(n,k) gives a *uniform detection-resolution*
+scale \(k=O(n_{\rm eff}^{1/(2\nu+1)})\). This differs from (12) because it is a
+different guarantee and policy. It is neither a negative-gain theorem nor a
+universal accuracy-optimal k. Duplicate recipes, dependent estimates and
+class-union lower bounds change the constants and applicability.
 
 ## 5. Optional family size versus all-on depth
 
@@ -445,10 +460,23 @@ This does not require label independence. It differs from E[I/U]. Exactly,
 
 Thus neither quantity uniformly upper-bounds the other. Deterministic U for
 each candidate is a sufficient equality condition.
+Proof: E[I]=E[JU]=E[J]E[U]+Cov(J,U). The same identity applies separately to
+class-aggregated I_c,U_c before averaging classes.
 
-**Three-pixel ranking reversal.** Let T={a} with probability2/5 and
-T={b,c} with probability3/5. For M={a}, expected IoU is2/5 but expected-count
-ratio is2/11. For M={b}, both are3/10. The two objectives choose different masks.
+**Two-pixel ranking reversal.** Pixel a is always true; pixel b is true with
+probability9/20, independently of the deterministic a. For M={a}, expected IoU
+is31/40 and the expected-count ratio is20/29. For M={a,b}, both are29/40.
+Expected IoU prefers {a}; the expected-count ratio prefers {a,b}. Targets and
+unions are always nonempty. Under that nonempty-target restriction, one pixel
+cannot realise this reversal.
+
+**Do not average the edit numerator before division.** Let P={a}, M={a,b}.
+T={a,b,c} with probability11/20 and T={a} otherwise. The realised gain numerator
+N=I_M-J_P U_M is respectively +1 and -1, so E[N]=1/10>0.
+The actual gains are +1/3 and -1/2, giving E[N/U_M]=-1/24<0.
+A positive mean posterior/marginal numerator is therefore not an expected-IoU
+gain certificate. For expected counts the correct expression uses
+E[I_M]-(E[I_P]/E[U_P])E[U_M], a different quantity.
 
 **Four-pixel class-macro reversal.** Two classes have truth sizes1 and3.
 Candidate A correctly predicts the single first-class pixel and nothing in the
@@ -478,6 +506,21 @@ For unrestricted pixels and (17), the inner objective has pixel weight
 w_x(q)=(1+q)p_x-q. Hence the optimal rule is
 p_x>q*/(1+q*), with arbitrary equality ties. Family constraints, budgets,
 coupled producer costs and class ratios remove the independent-pixel conclusion.
+
+Expected IoU has a different restricted result: with independent Bernoulli target
+indicators, for every fixed nonzero mask size k, selecting the k largest p_x
+maximises expected IoU. To prove it, swap an included a and excluded b. Conditional
+on all other labels, let i be the remaining included true count and d=k plus
+the remaining outside true count. The difference between the old and swapped
+IoU on events (T_a,T_b)=(1,0) and (0,1) is respectively
++D and -D, where
+\(D=(i+1)/d-i/(d+1)>0\). Independence makes its expectation
+\((p_a-p_b)E[D]\), so exchanging a smaller p_a for larger p_b cannot hurt.
+One must still optimise k using the expected-IoU objective. The threshold
+q*/(1+q*) from (17) is not justified for it, as the two-pixel counterexample shows.
+Correlated target labels remove this exchange proof: a pixel that is true only
+with a large co-occurring target set can have higher p but lower expected singleton
+IoU than a less frequent isolated true pixel.
 
 Class macro can reduce to one ratio under the special condition
 U_c(S)=w_c D(S), with fixed w_c>0 common to all candidates. Then its numerator
