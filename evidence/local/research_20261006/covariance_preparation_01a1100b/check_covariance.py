@@ -35,6 +35,11 @@ def main():
               trace=np.array([np.trace(reference)]),mode='full')
     debts=covariance_debts(np.stack([covariance(true),covariance(wrong)]),np.ones(2,dtype=bool),bank)
     assert wrong.max(1).mean()>true.max(1).mean() and debts[0]<debts[1]
+    centered_wrong=wrong-wrong.mean(0)+true.mean(0)
+    np.testing.assert_allclose(centered_wrong.mean(0),true.mean(0),atol=1e-14)
+    np.testing.assert_array_equal(np.bincount(centered_wrong.argmax(1),minlength=2),
+                                  np.bincount(true.argmax(1),minlength=2))
+    np.testing.assert_allclose(covariance(centered_wrong),covariance(wrong),atol=1e-14)
     # Equal occupancy of both reference modes does not establish their response covariance.
     transport=[]
     for value in (true[:2],wrong[:2]):
@@ -48,6 +53,17 @@ def main():
     full=float(covariance_debts(swapped[None],np.array([True]),second_bank)[0])
     scalar=float(covariance_debts(swapped[None],np.array([True]),dict(second_bank,mode='trace'))[0])
     assert full>.5 and scalar==0
+    # Fixed-affinity-bank statistic witness: same means, occupied modes, total
+    # variance and distribution of best/second-best evidence, different covariance.
+    common=np.array([.4,.4]);a=np.sqrt(.08);b=np.sqrt(.02)
+    first=common+np.array([[a,0],[-a,0],[0,b],[0,-b]])
+    second=common+np.array([[b,0],[-b,0],[0,a],[0,-a]])
+    np.testing.assert_allclose(covariance(first),anisotropic,atol=1e-14)
+    np.testing.assert_allclose(covariance(second),swapped,atol=1e-14)
+    np.testing.assert_allclose(first.mean(0),second.mean(0),atol=1e-14)
+    np.testing.assert_array_equal(np.bincount(first.argmax(1),minlength=2),np.bincount(second.argmax(1),minlength=2))
+    np.testing.assert_allclose(np.sort(first.max(1)),np.sort(second.max(1)),atol=1e-14)
+    np.testing.assert_allclose(np.sort(np.abs(first[:,0]-first[:,1])),np.sort(np.abs(second[:,0]-second[:,1])),atol=1e-14)
     perm=np.array([1,0])
     perm_bank=dict(second_bank,matrices=anisotropic[perm][:,perm][None])
     permutation=float(covariance_debts(swapped[perm][:,perm][None],np.array([True]),perm_bank)[0])
@@ -68,6 +84,10 @@ def main():
     result=predict(q,r,cov,base)
     assert result['token_mask'][12:20,2:10].all()
     assert not result['token_mask'][12:20,20:28].any()
+    # This first contrast alone also favors a simple mode-selectivity margin;
+    # it cannot be offered as unique evidence for the complex covariance model.
+    assert (result['mode_margin_field'][12:20,2:10]>.5).all()
+    assert (result['mode_margin_field'][12:20,20:28]<.5).all()
     for item in result['info']['search']['moves']:assert item['after']>=item['before']-1e-10
     zero=predict(q,r,cov,base,Config(strength=0))
     np.testing.assert_array_equal(zero['token_mask'],base>.5)
@@ -94,7 +114,9 @@ def main():
                 pixel_similarity_order=dict(true=float(true.max(1).mean()),wrong=float(wrong.max(1).mean())),
                 covariance_debts=dict(true=float(debts[0]),wrong=float(debts[1])),
                 balanced_occupancy_debts=transport,equal_trace_witness=dict(full=full,trace_only=scalar),
+                fixed_affinity_statistic_same_mean_occupancy_trace_max_margin_checked=True,
                 controlled_scene=result['info'],zero_strength_exact=True,
+                first_contrast_also_solved_by_mode_margin_control=True,
                 homogeneous_reference_instances_abstain=True,synthetic_full_dimensions=benchmark['info'],
                 real_gain='unmeasured',real_runtime='unmeasured',no_gpu=True,no_server=True)
     Path(__file__).with_name('covariance_check.json').write_text(json.dumps(report,indent=2)+'\n')

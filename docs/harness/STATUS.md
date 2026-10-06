@@ -10,20 +10,24 @@
 第四项[参考部位整体布局](../../evidence/local/research_20261006/constellation_preparation_01a1100b/method.json)
 已完成留出部位验证、整体轮廓转移和双worker合成检查。
 第五项[参考连通区域形状](../../evidence/local/research_20261006/shape_preparation_01a1100b/method.json)
-已完成物理矩积分、实际连通区域代价、单调局部搜索及双worker合成核对；累计准备5项，真实增益未测。
-第六项[参考模式响应协方差](../../src/ics/methods/reference_covariance.py)现已接入共用入口，
-合成完整维度与双worker预测封存核对通过；真实增益与运行成本未测。
-六项已接入[共用CPU入口](../../evidence/local/research_20261006/prepared_bundle_01a1100b/entry.json)，
+已完成物理矩积分、实际连通区域代价、单调局部搜索及双worker合成核对。
+第六项[参考模式响应协方差](../../evidence/local/research_20261006/covariance_preparation_01a1100b/method.json)现已接入共用入口，
+正向证据预算、仅迹/逐点选择性对照及双worker核对完成；累计6项候选，真实增益与成本未测。
+新增[可实现单位特征检查](../../evidence/local/research_20261006/covariance_preparation_01a1100b/reachable_witness.json)
+通过默认完整算法：廉价量相同的两区中保留64个指定目标格点、移除64个干扰格点，
+仅迹与逐点选择性均保留两区；这是额外协方差量的合成存在证据，真实效果仍未测。
+第七项[查询内重复部件外观](../../evidence/local/research_20261006/recurrence_preparation_01a1100b/method.json)
+已接入共用入口；双worker合成检查通过，但重复错误类别可击败真目标的反例也已记录。
+七项已接入[共用CPU入口](../../evidence/local/research_20261006/prepared_bundle_01a1100b/entry.json)，
 合成数据的共同推断、封存、独立评分与旧默认入口核对通过；此执行入口不增加方法数。
 
 更新：2026-10-06。当前入口只记录现状，历史事件见证据与[整理前快照](../archive/2026-10-06-workflow-snapshot.md)。
 
 ## 当前阶段
 
-用户已重新明确核心缺口是原创完整方法，并提供30核以内、60GB的CPU资源用于已有特征运算，
-明确授权代码完成后启动695号CPU实例、开展实验并持续跟进。首个区域参考模式占用候选及CPU入口已写出，
-已通过本地算法性质和合成全流程检查，尚无真实分割成绩。当前网页核实实例为32 vCPU/60GB、已关机，
-尚未连接新SSH；不得沿用旧GPU实例的地址或运行句柄。旧收束方案作为已有对照保留。
+当前按用户关机指令只做本地方法准备；七项独立候选及共用CPU入口已完成必要合成检查，
+尚无真实分割成绩，数量任务未完成。此前30核以内、60GB及695号实例开机安排是历史授权，
+已被当前资源指令覆盖；本轮没有查询实例、连接SSH或启动实际缓存实验。旧收束方案保留为历史对照。
 论文贡献及数值依据见 [CLAIM](../research/CLAIM.md)，唯一后续清单见 [PLAN](../research/PLAN.md)。
 
 ## 已完成与未完成

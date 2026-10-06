@@ -44,7 +44,8 @@ def main():
             assert info['reference_templates']==1
             for move in info['search']['moves']:assert move['after']>=move['before']-1e-10
         with np.load(output/'predictions/000000.npz',allow_pickle=False) as packet:
-            for key in ('reference_covariance','covariance_trace.control','covariance_bilinear.control','mean_nearest.control'):
+            for key in ('reference_covariance','covariance_trace.control','covariance_mode_margin.control',
+                        'covariance_bilinear.control','mean_nearest.control'):
                 assert packet[key].shape==(131072,)
         report=dict(synthetic_occurrences=2,workers=2,active_covariance_search=True,
                     no_original_image_geometry_needed=True,query_GT_sentinels_unread=True,

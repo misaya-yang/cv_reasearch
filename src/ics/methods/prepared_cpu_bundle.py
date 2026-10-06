@@ -11,7 +11,7 @@ import time
 import numpy as np
 
 
-METHODS=('adjacency','huber','color_bottleneck','constellation','reference_shape','reference_covariance')
+METHODS=('adjacency','huber','color_bottleneck','constellation','reference_shape','reference_covariance','query_recurrence')
 
 
 def mean_base(inputs,graph_dtype):
@@ -135,8 +135,19 @@ def one_episode(row,run,config):
             fields['covariance_trace.control']=scalar
             masks['covariance_trace.control']=F.interpolate(torch.from_numpy(scalar)[None,None],(1024,1024),mode='nearest')[0,0].numpy()>.5
             fields['covariance_bilinear.control']=mask;masks['covariance_bilinear.control']=render(mask)
+            fields['covariance_mode_margin.control']=result['mode_margin_field']
+            masks['covariance_mode_margin.control']=F.interpolate(torch.from_numpy((result['mode_margin_field']>.5).astype(np.float32))[None,None],
+                                                                 (1024,1024),mode='nearest')[0,0].numpy()>.5
             masks['mean_nearest.control']=F.interpolate(torch.from_numpy((base>.5).astype(np.float32))[None,None],
                                                         (1024,1024),mode='nearest')[0,0].numpy()>.5
+            info=result['info']
+        elif name=='query_recurrence':
+            from .query_recurrence import Config,predict
+            result=predict(np.asarray(q),np.asarray(r),cov,base,Config(**config['method_configs'][name]))
+            for arm,value in (('query_recurrence',result['field']),
+                              ('recurrence_all_seed.control',result['all_seed_control']),
+                              ('recurrence_single_seed.control',result['single_seed_control'])):
+                fields[arm]=value;masks[arm]=render(value)
             info=result['info']
         else:raise ValueError('Unrecognized prepared method')
         info['candidate_and_controls_seconds']=time.perf_counter()-method_started

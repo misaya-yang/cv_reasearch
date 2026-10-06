@@ -130,24 +130,33 @@ def predict(q,r,coverage,base,cfg=Config()):
     centers,_,_=cluster(r[pure],cfg.reference_modes,cfg.lloyd_steps,cov.ravel()[pure])
     k=len(centers)
     reference_response=np.einsum('nd,kd->nk',r,centers,optimize=False).astype(np.float64)
+    margin_field=base.copy()
+    reference_margin=None
+    response=None
+    if k>=2:
+        ordered=np.sort(reference_response[pure],axis=1)
+        reference_margin=float(np.average(ordered[:,-1]-ordered[:,-2],weights=cov.ravel()[pure]))
+        response=np.einsum('nd,kd->nk',q,centers,optimize=False).astype(np.float64)
+        ordered_query=np.sort(response,axis=1)
+        margin_field=np.clip((ordered_query[:,-1]-ordered_query[:,-2])/max(reference_margin,1e-6),0,1).reshape(base.shape)
     labels,_=ndimage.label(cov>.5,structure=STRUCTURE)
     bank=make_bank(reference_response,labels,pure,cov,cfg) if k>=2 else None
     mask=base>.5
     if bank is None or cfg.strength==0 or base.max()<=.5:
-        return dict(token_mask=mask,trace_control=mask.copy(),
+        return dict(token_mask=mask,trace_control=mask.copy(),mode_margin_field=margin_field,
                     info=dict(config=asdict(cfg),modes=k,reference_templates=0 if bank is None else len(bank['matrices']),
                               abstention=True,wall_seconds=time.perf_counter()-started,
                               query_gt_used=False,new_encoder_forwards=0))
-    response=np.einsum('nd,kd->nk',q,centers,optimize=False).astype(np.float64)
     features=response_features(response)
     children=spatial_tree(q,base.shape)
     mask,search=optimize(base,features,children,bank,cfg,proposal_function=proposal_masks,energy_function=evaluate)
     trace_bank=dict(bank,mode='trace')
     trace,control_search=optimize(base,features,children,trace_bank,cfg,
                                   proposal_function=proposal_masks,energy_function=evaluate)
-    return dict(token_mask=mask,trace_control=trace,
+    return dict(token_mask=mask,trace_control=trace,mode_margin_field=margin_field,
                 info=dict(config=asdict(cfg),modes=k,reference_templates=len(bank['matrices']),
                           reference_covariances=bank['matrices'].tolist(),reference_trace=bank['trace'].tolist(),
+                          reference_mode_margin=reference_margin,
                           search=search,trace_control_search=control_search,abstention=False,
                           added_tokens=int((mask&~(base>.5)).sum()),deleted_tokens=int((~mask&(base>.5)).sum()),
                           wall_seconds=time.perf_counter()-started,query_gt_used=False,new_encoder_forwards=0,

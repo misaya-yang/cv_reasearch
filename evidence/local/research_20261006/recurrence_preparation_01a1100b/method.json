@@ -1,0 +1,49 @@
+{
+  "id": "query_recurrent_component_appearance_v1",
+  "independent_method_count": 1,
+  "state": "specified_and_synthetic_checked; real_segmentation_unmeasured",
+  "mechanism": "Adapt the reference foreground appearance using a supported star of spatially separate high-confidence query components. Equal component weighting prevents one large seed from dominating. Recurrent query appearance is additional inference evidence; it is not a statistically independent confirmation or a semantic identity guarantee.",
+  "difference_from_preceding_candidates": "Uses recurrence between separate components of the current query to construct an appearance prototype. It does not compare reference adjacency, geometry, moments or covariance, and does not alter the feature graph solver or use RGB paths.",
+  "inputs": ["aligned frozen q/r4096x1024", "complete reference coverage64", "same existing MEAN field64"],
+  "data_exposure": "No query GT, class/fold input, additional image, encoder forward or training example",
+  "steps": [
+    "Normalize cached features. Form a coverage-weighted reference foreground centroid from coverage>=0.9 (maximum-coverage fallback). Degenerate centroid abstains.",
+    "Label four-connected query components where base>=0.75; require8 cells. Rank scalar component statistics by descending mean base confidence, then size, then label index, and keep at most32 before descriptor computation. Skip degenerate unit mean-feature descriptors without refilling the pool.",
+    "A seed is reference eligible when its descriptor cosine to the reference centroid is at least0.5. For each eligible root collect eligible descriptors at cosine>=0.9 to that root. Require at least2 seeds, including the root.",
+    "Select the largest star. Break equal-count ties by mean reference cosine, then mean seed confidence, then root index. This is a bounded star rule, not a maximum clique or a calibrated probability test. Members need not all be at cosine>=0.9 to each other.",
+    "Normalize the equally weighted mean of selected component descriptors to obtain query prototype m. Let r be the reference centroid. Correct the complete base field as z=clip(base+0.5*(q dot m-q dot r),0,1). This is a heuristic differential cue; the base is not assumed to contain exactly one q dot r term.",
+    "When no supported star exists or correction weight is zero, preserve the original base exactly. Bilinear upsample to1024 and threshold>0.5; retain all instances and do not select a largest output component.",
+    "Save controls with the same correction formula and readout: all reference-eligible seed descriptors averaged equally, and the single seed with highest reference cosine. Original/clipped MEAN are shared controls. Control rows and parameter choices do not increase method count.",
+    "Use the shared prepared CPU backend, sealing all predictions before separate query-GT scoring."
+  ],
+  "prediction": {
+    "conditional": "If repeated high-confidence target components share query-specific appearance and an isolated distractor passes the reference gate, recurrence can choose the target appearance, recover a weak matching instance and suppress the isolated distractor.",
+    "exact_gate": "For a selected nondegenerate prototype and default weight, token i is foreground iff base_i+0.5*(cos(q_i,m)-cos(q_i,r))>0.5. The unclipped expression gives the same binary gate as clipping to[0,1]. This is exact for the token field, not a guarantee on the bilinear1024 mask.",
+    "not_claimed": ["mIoU improvement", "true object count known", "component equals instance", "novelty", "one-minute full-cohort runtime"]
+  },
+  "checks": {
+    "core": "recurrence_check.json: full4096x1024 synthetic features, complete token output preserves192 designated target cells, recovers64 previously weak cells and deletes64 isolated distractor cells. All-seed mean still retains the distractor; reference-best single seed fails the weak target.",
+    "negative": "Three recurrent wrong seeds beat two true seeds. The same unchanged predictor then retains the wrong region and fails to recover the weak target. This observed synthetic failure remains part of the evidence.",
+    "properties": "Single eligible instance and all-weak query abstain; zero correction weight preserves base exactly; common feature sign flip preserves outputs.",
+    "batch": "runner_check.json: two workers, active recurrence after actual shared MEAN reconstruction from supplied source score, unread query-GT object sentinels, packed1024 masks and sealed predictions. This source-score test does not assert identity to the manually constructed core-test base.",
+    "real_episodes": 0
+  },
+  "counterexamples": [
+    "A repeated wrong category can outnumber correct seeds and win the star, propagating wrong appearance.",
+    "Only one strong target or no strong target gives no recurrence support; the method cannot recover an entirely weak query from recurrence alone.",
+    "A true category with strongly differing instance appearances can split into stars, so one view suppresses another.",
+    "Touching instances merge, one object can split into seed components, and repeated fragments can falsely appear to be repeated instances.",
+    "A single reference centroid can cancel or average incompatible parts. The permissive reference gate can admit unrelated categories.",
+    "The32-seed cap and spatial index tie breaks can omit useful seeds or favor one equal-evidence star.",
+    "Differential correction is not calibrated to the graph-produced base; it can double count appearance or erase correct predictions."
+  ],
+  "cpu_cost": {
+    "bound": "For N tokens, D dimensions, L<=N seed components and C<=32 retained candidates: feature normalization/projection O(ND), scalar labeling/ranking O(N+L*log(L)), descriptor accumulation O(ND+C*N), star comparison O(C^2*D), storage O(ND+C*D+C^2+N). No encoder or iterative per-token optimization.",
+    "synthetic_benchmark": "recurrence_check.json records the primary and two controls on synthetic64x64x1024 inputs already loaded. Excludes common MEAN, feature I/O,1024 readout and cohort scoring.",
+    "real_runtime": "unmeasured"
+  },
+  "source": "../../../../src/ics/methods/query_recurrence.py",
+  "runner": "scripts/run_cpu_feature_candidates.py infer --backend prepared --prepared-methods query_recurrence --primary-method query_recurrence",
+  "next_actual_evidence": "Compare complete outputs to same-input MEAN and both seed controls, stratifying naturally single/multiple seed episodes without fitting class-specific rules; report class-summed I/U, paired photo-group intervals, four edit types and actual costs. User shut down the instance; no actual cohort launched.",
+  "novelty": "Unverified; pseudo-label adaptation and prototype recurrence are established general ideas"
+}

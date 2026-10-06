@@ -1,0 +1,66 @@
+{
+  "id": "component_reference_mode_covariance_v1",
+  "independent_method_count": 1,
+  "state": "specified_and_descriptor_checked; real_segmentation_unmeasured",
+  "mechanism": "Match the within-component covariance of affinities to reference foreground modes. Similar per-pixel matches or balanced mode occupancy do not determine this covariance. The comparison is an object-level reference-consistency cue; cached feature vectors stay in their original space.",
+  "inputs": ["aligned frozen q/r4096x1024", "complete reference coverage64", "same existing MEAN field64"],
+  "data_exposure": "No query GT, class/fold input, extra encoder or additional training examples",
+  "steps": [
+    "Learn at most8 deterministic spherical foreground modes from pure reference pixels (coverage>=0.9, maximum-coverage fallback), using the provided reference mask only.",
+    "Project reference/query unit features onto those modes to obtain affinity rows. Accumulate population first and second moments in float64.",
+    "For each four-connected reference foreground component require8 pure samples and covariance Frobenius norm>1e-6. Store a separate covariance template; individually homogeneous reference instances do not create a spurious within-instance template through inter-instance color differences.",
+    "For each actual query foreground component with at least8 pixels compute its mode-affinity covariance S. Compare with each reference template S_ref using D=norm_F(S-S_ref)^2/norm_F(S_ref)^2; take the smallest D and define debt=D/(1+D).",
+    "Use positive evidence P=sum_{i in component} max(base_i-0.5,0) as a semantic-penalty budget. Component energy is sum(base_i-0.5)-3*P*debt, at fixed strength1.",
+    "Select48 spatial-feature-tree proposals by their inference-only standalone energy/sqrt(size). Run up to4 rounds of actual-component deletion and add/remove/replace moves, accepting only strict energy improvements.",
+    "Memoize exactly evaluated masks within each search to avoid duplicate objective calculations; the cache contains no approximation or label information.",
+    "Nearest-neighbor expand the final token mask to1024. Save same-readout base and bilinear-binary-mask controls; seal all predictions before query-GT scoring.",
+    "Run the same search comparing only covariance traces as a scalar-variance control. Also save a pointwise mode-selectivity control: (best cosine-second-best cosine)/mean pure-reference selectivity, clipped to [0,1], thresholded at0.5 with the same nearest readout. Controls do not count as methods."
+  ],
+  "construction_revision": {
+    "record": "area_cost_counterexample.json",
+    "observation": "An initial area-weighted covariance penalty recovered only56/64 illustrative target cells because residual covariance mismatch was charged again for each added weak pixel.",
+    "repair": "The final object-consistency penalty discounts existing positive evidence rather than charging every proposed foreground pixel. The nominal factor3 is fixed before any real-data evaluation, not a calibrated success probability.",
+    "scope": "One pre-freeze construction repair; no real-data parameter sweep, no extra method count."
+  },
+  "prediction": {
+    "conditional": "When correct objects preserve the reference's mode-response variation more reliably than visually close distractors, this descriptor can distinguish them even when every distractor point has higher maximum similarity.",
+    "exact_gate": "An all-positive component has positive energy at default settings iff debt<1/3, equivalently D<0.5. A component containing negative unary evidence must additionally pay for that negative evidence.",
+    "exact_properties": [
+      "Population affinity covariance is unchanged by a common additive affinity offset, permutation of its rows or uniform duplication of rows",
+      "Simultaneous reference/query mode-index permutation preserves Frobenius and trace comparisons",
+      "Equal mode occupancy does not imply equal covariance",
+      "Equal covariance trace does not imply equal full covariance",
+      "Each accepted complete-mask edit increases the specified objective; global optimality is not claimed",
+      "No positive unary evidence anywhere implies no foreground creation"
+    ],
+    "invariance_limit": "Affinity-offset invariance is a descriptor statement, not proof that arbitrary RGB/context changes leave normalized DINO features or the full predictor unchanged.",
+    "not_claimed": ["mIoU improvement", "semantic identity guaranteed by covariance", "one-minute full-cohort runtime", "novelty"]
+  },
+  "counterexamples": [
+    "A true partial or occluded object may lack modes present in the reference and be rejected despite a strong baseline score.",
+    "View, scale, texture and part proportions can change covariance within the same class; a single reference may not cover that variation.",
+    "A wrong category or a mixture with background can match the same covariance, and the objective can favor a semantically wrong mask.",
+    "Reference connected components can be parts or touching multiple instances rather than actual individual objects.",
+    "Tiny query components below8 pixels receive no covariance penalty, allowing fragmentation to bypass the descriptor.",
+    "The48 proposal pool and4-round local search can miss the useful mask change.",
+    "The first synthetic contrast is also solved by the mode-margin control; it does not establish unique value of the full covariance model. Scalar trace may also explain a real gain."
+  ],
+  "cpu_cost": {
+    "projection_and_statistics": "O(N*K*D+N*K^2), K<=8; no extra encoder",
+    "regional_search": "Bounded48-proposal/4-round search, actual four-connected component statistics, exact mask-value cache",
+    "synthetic_benchmark": "covariance_check.json: synthetic64x64x1024 case, including scalar-variance control; excludes actual feature I/O, common baseline construction and real cohort scoring",
+    "real_runtime": "unmeasured"
+  },
+  "checks": "covariance_check.json and runner_check.json: covariance arithmetic/invariances, point-similarity and occupancy contrast, equal-trace matrix contrast, controlled complete-mask changes, homogeneous-instance abstention, two workers, unread GT sentinels and packed1024 outputs. reachable_witness.json additionally tests learned modes and complete masks from physically realizable unit feature vectors, with unchanged default configuration. Real episodes=0.",
+  "reachable_witness": {
+    "record": "reachable_witness.json",
+    "construction": "Eight unit reference modes with Gram matrix I+0.5*paired_adjacency; two query regions have affinity matrices t*G and t*G*P, t=sqrt(3/5). A null-space coordinate restores query unit norms. Reference modes are learned by the actual default predictor, not injected.",
+    "matched": "Equal column means, mode occupancy, covariance trace and pointwise sorted cosine rows (therefore identical best similarity and top-two margin). Uniform-mass occupancy transport extra costs also agree.",
+    "observed": "Default complete token predictor retains all64 designated target tokens and deletes all64 designated distractor tokens. Same-search trace and pointwise margin controls retain both regions. Full covariance debts are about0.138 and0.439, on opposite sides of the fixed1/3 gate.",
+    "scope": "Synthetic existence witness for an additional usable cue, not evidence that actual DINO features encounter this case or that covariance transfers across real instances. This adds no independent method and changes no method parameter."
+  },
+  "next_actual_evidence": "Bind the actual q/r/cov/MEAN cohort. Compare complete masks against same-nearest MEAN, scalar trace and mode-margin controls; report class-summed I/U, photo-group paired intervals, four edit types and actual timings. User shut down the instance; no actual cohort experiment launched.",
+  "source": "../../../../src/ics/methods/reference_covariance.py",
+  "runner": "scripts/run_cpu_feature_candidates.py infer --backend prepared --prepared-methods reference_covariance --primary-method reference_covariance",
+  "novelty": "unverified; covariance descriptors, template comparison and region proposals are established tools"
+}

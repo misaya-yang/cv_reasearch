@@ -258,16 +258,18 @@ def infer(args):
         from ics.methods.reference_constellation import Config as ConstellationConfig
         from ics.methods.reference_shape import Config as ShapeConfig
         from ics.methods.reference_covariance import Config as CovarianceConfig
+        from ics.methods.query_recurrence import Config as RecurrenceConfig
         config.update(backend=backend,prepared_methods=prepared_methods,primary=args.primary_method,
                       primary_methods=prepared_methods,independent_methods=len(prepared_methods),
                       method=None,strengths=None,
                       method_configs={name:asdict(cls()) for name,cls in (
                           ('adjacency',AdjacencyConfig),('huber',HuberConfig),
                           ('color_bottleneck',ColorConfig),('constellation',ConstellationConfig),
-                          ('reference_shape',ShapeConfig),('reference_covariance',CovarianceConfig))
+                          ('reference_shape',ShapeConfig),('reference_covariance',CovarianceConfig),
+                          ('query_recurrence',RecurrenceConfig))
                           if name in prepared_methods})
         for name in ('prepared_cpu_bundle','reference_adjacency','huber_graph','color_bottleneck','reference_constellation',
-                     'reference_shape','reference_covariance'):
+                     'reference_shape','reference_covariance','query_recurrence'):
             path=REPO/'src/ics/methods'/f'{name}.py'
             config['code_sha256'][str(path.relative_to(REPO))]=sha(path)
     write(args.out / 'config.json', config)
@@ -442,10 +444,10 @@ def main():
     inf.add_argument('--base', choices=['mean', 'rcg'], default='mean')
     inf.add_argument('--backend', choices=['occupancy','prepared'], default='occupancy')
     inf.add_argument('--prepared-methods', nargs='+', choices=['adjacency','huber','color_bottleneck','constellation',
-                                                            'reference_shape','reference_covariance'],
+                                                            'reference_shape','reference_covariance','query_recurrence'],
                      default=['adjacency','huber','color_bottleneck','constellation'])
     inf.add_argument('--primary-method', choices=['adjacency','huber','color_bottleneck','constellation',
-                                                 'reference_shape','reference_covariance'])
+                                                 'reference_shape','reference_covariance','query_recurrence'])
     inf.add_argument('--base-key', default='mean.control')
     inf.add_argument('--strengths', nargs='+', type=float, default=[1.0])
     inf.add_argument('--primary-strength', type=float, default=1.0)
