@@ -49,6 +49,16 @@ Some reports are server-only or point outside the repository; those runs were no
 4. 用标签量出的差距（10 到 20 点）不等于可用信号：先量信号，再造机制。
 5. 没有先跑一个真实样例的准备会白费：QK 第一次运行完成 0 例（缺 CRF 路径）；构造样本训练的全部样本类别号是 0。
 
+已关闭的线（2026-10-06，详细数字在本文件末尾对应条目）：
+
+- 逐图切分水平：真值可选出 +8.91，但用其他折标注训练的灵活模型从打分图读出的是 −0.67 [−1.19, −0.20]，
+  六档面积规则 +0.29。打分图本身不含"该切在哪"的信息。
+- 选错的图靠参考证据改判：fresh600 里 89 张选错，84 张可比；真目标比错圈的那块更像参考的只有 34 张（均值余弦）、
+  32 张（FoRIS 对比分）、24 张（近邻投票），平均余弦差 −0.02，即打平。层、尺度、反向匹配、整块全局特征、
+  查询图自身的物体性同样分不开。参考物体占比对查询目标占比也无预测力（对数几率误差标准差 1.74）。
+- 打平时两块都留：现有输出在这些图里已经是两块都圈，改成不硬挑不会去掉错的那块，推理即可否定，未运行。
+- 不加标注、每批数据都重复的收益只有结构平滑（+1.40）和亚格点读出（+0.35）；账本中 +3 以上的结果都加了类别信息。
+
 ### 图池路线（2026-10-02，用户于 10-03 关闭：加条件不是贡献）
 
 | 试了什么 | 结果 | 样本 | 教训 |
@@ -1680,3 +1690,13 @@ quartile), 32 by the FoRIS contrast score, 24 by the 10-nearest-reference vote; 
 the failing episodes the wrong region is, more often than not, the better match under every reference comparison
 stored, episode by episode and not only on average. Earlier statement corrected: this is not mainly an ambiguous
 reference (C is 6 of 48).
+
+Reliability of small staged cohorts, simulated from stored per-episode counts (public 4000, RCG against the FoRIS
+pre-CRF mask at 1024, true gain +1.92; 1500 random draws without replacement; a weaker and a null effect made by
+swapping the two methods in 25 % / 50 % of the episodes; local numpy, no model). Standard deviation of the class-mIoU
+gain: one fold x 50 episodes 1.45; four folds x 50 0.72; four folds x 200 0.35. Probability of reading more than +2 /
++1 for true gain +1.9, about +1, 0: one fold x 50: 0.49 / 0.78, 0.22 / 0.48, 0.08 / 0.23; four folds x 50: 0.52 / 0.94,
+0.09 / 0.52, 0.00 / 0.09; four folds x 200: 0.52 / 1.00, 0.00 / 0.50, 0.00 / 0.00. A "+2 or stop" gate at every stage
+keeps a true +1.9 method with probability about 0.13; a gate of +1 at 200 and at 800 episodes keeps it with about 0.94
+and rejects a null method with about 0.91 at the first stage. Effects of +0.3 to +0.5 are not readable below about 4000
+episodes (sd 0.15 by the same scaling). This effect is a smoothing step with low variance; other methods can be noisier.
