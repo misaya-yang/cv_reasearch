@@ -70,9 +70,9 @@ def get_host(device="cpu"):
     for name, relative in (("agglomerative_clustering", "utils/clustering.py"),
                            ("compute_cluster_prototypes", "utils/clustering.py"),
                            ("downsample_mask", "utils/data.py"), ("crf_refine", "utils/refinement.py")):
-        if Path(inspect.getsourcefile(inspect.unwrap(getattr(native, name)))).resolve() != (Path(config["foris_root"]) / relative).resolve():
+        if Path(inspect.getsourcefile(getattr(native, name))).resolve() != (Path(config["foris_root"]) / relative).resolve():
             raise RuntimeError(f"Imported the wrong native utility: {name}")
-    if config.get("cpu_phase") == "cached_native_tail" or config.get("native_host_class"):
+    if config.get("cpu_phase") == "cached_native_tail":
         cls = native.FoRIS
     else:
         from ics.methods.part2_evidence import intervention_class

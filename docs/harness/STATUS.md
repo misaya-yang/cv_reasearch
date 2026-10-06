@@ -9,9 +9,13 @@ Updated 2026-10-06 UTC. This file records current state; detailed evidence is li
   no additional encoder. Protected fresh600 post-Part1 q/r caches and native packets
   exist; raw multilayer241 cache is absent. Old stage-bank replay has worst final
   score drift~.25, so it is not a native implementation substitute. A direct source
-  CPU replay execution check is underway, and one coherent Part2 multi-background
-  readout versus native and same-evidence max control is being implemented. Results
-  remain unmeasured; old held queues are not automatically restarted.
+  CPU replay execution check completed on four folds: s2 drift<5e-5; downstream
+  score drift reached~.194 and pre pixel drift was0/2/16/1. Native CRF is CUDA-only.
+  The latest user correction withdrew the speculative multi-background experiment;
+  its code is retained unlaunched. Root now prepares only the supplied analysis's
+  complete middle-versus-end RCG comparison, preserving cached native tail evidence,
+  with a fixed MEAN control and identical native finalizer. Results remain unmeasured;
+  old held queues are not automatically restarted.
 
 - Latest user correction makes intermediate evidence generation and complete
   pipelines the main experimental unit. Root withdrew the return-cut-first design

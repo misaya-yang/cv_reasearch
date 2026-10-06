@@ -1,0 +1,256 @@
+{
+  "stages": [
+    {
+      "name": "cpu_smoke4",
+      "kind": "cpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions",
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/middle_rcg600_v1/snapshot/scripts/run_middle_rcg.py",
+        "infer",
+        "--manifest",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/fresh600_v1/episodes.json",
+        "--root",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/fresh600_root",
+        "--end-run",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/recheck_fresh600_v1",
+        "--workers",
+        "2",
+        "--threads",
+        "1",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/middle_rcg4_smoke_v1",
+        "--keys",
+        "0_60_40,1_60_21,2_60_54,3_60_35",
+        "--expected",
+        "4"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/fresh600_v1/episodes.json"
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/middle_rcg4_smoke_v1/prefinal_sealed.json",
+          "json_equals": {
+            "state": "ALL_PREFINALS_SEALED"
+          }
+        }
+      ],
+      "success_checks": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/middle_rcg4_smoke_v1/audit.json",
+          "json_equals": {
+            "native_pre_changed_pixels": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "cpu_full600",
+      "kind": "cpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions",
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/middle_rcg600_v1/snapshot/scripts/run_middle_rcg.py",
+        "infer",
+        "--manifest",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/fresh600_v1/episodes.json",
+        "--root",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/fresh600_root",
+        "--end-run",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/recheck_fresh600_v1",
+        "--workers",
+        "2",
+        "--threads",
+        "1",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/middle_rcg600_v1",
+        "--expected",
+        "600"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/middle_rcg4_smoke_v1/prefinal_sealed.json",
+          "json_equals": {
+            "state": "ALL_PREFINALS_SEALED"
+          }
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/middle_rcg600_v1/prefinal_sealed.json",
+          "json_equals": {
+            "state": "ALL_PREFINALS_SEALED"
+          }
+        }
+      ],
+      "success_checks": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/middle_rcg600_v1/audit.json",
+          "json_equals": {
+            "native_pre_changed_pixels": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "native_crf_smoke4",
+      "kind": "gpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions",
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/middle_rcg600_v1/snapshot/scripts/run_middle_rcg.py",
+        "finalize",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/middle_rcg4_smoke_v1",
+        "--threads",
+        "1"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/middle_rcg4_smoke_v1/prefinal_sealed.json",
+          "json_equals": {
+            "state": "ALL_PREFINALS_SEALED"
+          }
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/middle_rcg4_smoke_v1/sealed.json",
+          "json_equals": {
+            "state": "ALL_PREDICTIONS_SEALED"
+          }
+        }
+      ],
+      "success_checks": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/middle_rcg4_smoke_v1/finalize_audit.json",
+          "json_equals": {
+            "native_changed_pixels": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "native_crf_full600",
+      "kind": "gpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions",
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/middle_rcg600_v1/snapshot/scripts/run_middle_rcg.py",
+        "finalize",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/middle_rcg600_v1",
+        "--threads",
+        "1"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/middle_rcg4_smoke_v1/finalize_audit.json",
+          "json_equals": {
+            "native_changed_pixels": 0
+          }
+        },
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/middle_rcg600_v1/prefinal_sealed.json",
+          "json_equals": {
+            "state": "ALL_PREFINALS_SEALED"
+          }
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/middle_rcg600_v1/sealed.json",
+          "json_equals": {
+            "state": "ALL_PREDICTIONS_SEALED"
+          }
+        }
+      ],
+      "success_checks": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/middle_rcg600_v1/finalize_audit.json",
+          "json_equals": {
+            "native_changed_pixels": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "complete_mask_score600",
+      "kind": "cpu",
+      "cwd": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9",
+      "env": {
+        "PYTHONPATH": "/root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions",
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1"
+      },
+      "argv": [
+        "/root/miniconda3/bin/python",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/middle_rcg600_v1/snapshot/scripts/score_part2_evidence.py",
+        "--out",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/middle_rcg600_v1",
+        "--control-run",
+        "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/recheck_fresh600_v1",
+        "--expected",
+        "600"
+      ],
+      "requires": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/middle_rcg600_v1/sealed.json",
+          "json_equals": {
+            "state": "ALL_PREDICTIONS_SEALED"
+          }
+        }
+      ],
+      "produces": [
+        {
+          "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/middle_rcg600_v1/report.json",
+          "json_equals": {
+            "state": "COMPLETE_MASKS_SCORED",
+            "n": 600
+          }
+        }
+      ],
+      "success_checks": []
+    }
+  ],
+  "authorization": "Active user goal continuation and supplied whole-pipeline placement question; no encoding/download/deletion/shutdown. GPU stages wait for all other producers.",
+  "primary": "rcg.middle",
+  "arms": [
+    "native.cache.control",
+    "rcg.middle",
+    "rcg.end.control",
+    "mean.middle.control"
+  ],
+  "exposure": "Reused fresh600 DEV, not independent confirmation",
+  "scientific_question": "Does Part2 RCG followed by unchanged complete native tail beat end placement under the same finalizer and strong simple controls?",
+  "formula": "g_cached+(min(s2)+max(span(s2),1e-6)*RCG(s2)-s2)",
+  "cost": "CPU2 workers x1 thread for graph readout; measured smoke runtime pending. Native CUDA CRF only, no DINO calls. No rental or new disk archive of features."
+}

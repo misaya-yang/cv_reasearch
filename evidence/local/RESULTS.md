@@ -1515,3 +1515,20 @@ offset per pack; original resolution): FoRIS 44.27; RCG +0.31 [-0.65, +0.93], fo
 folds +1.35/+2.34/+2.55/+3.28 (vs RCG +2.18 [+1.30, +2.44]). LVIS uses COCO photographs, so this is a
 class transfer, not an image-domain transfer. GT diagnostic, fine field at 1024: fixed 0.5 45.09, best single
 level 45.82, best level per episode 54.98. Source: `research_20261005/rcg2_group_lvis{,_f0..3}/`.
+
+Role accounting (GT diagnostic, not a method). COCO-20i fresh600 (draws 0-149 per fold, seed 0, DEV), token level
+(64 x 64, soft truth), class mIoU; `scripts/run_order_tokens.py` + `scripts/score_order_tokens.py`, run on the server.
+Ordering score = mIoU under the best cut of each episode; ordering loss = 100 - that. Nearest-reference vote 55.52;
+FoRIS reference-contrast score (s2) 67.97; after its query clustering (s3) 69.48; FoRIS final score 69.88; RCG 72.00.
+At the half-range cut the same fields give 21.68/50.92/56.22/59.53/55.34. So with FoRIS about 30 points are lost in
+ordering and about 10 in the cut, and FoRIS parts 3-4 add 1.9 and RCG 2.1 to the ordering score.
+What the best cut of the FoRIS final score still gets wrong: false area 86.9k tokens vs missed 22.3k; setting all false
+right +19.86, all missed right +7.50. False area: 15 % in boundary tokens (+3.33), 22 % in separate regions holding no
+object (+3.48), 63 % attached to a detected object (+9.04); 79 % of it has most of its 20 feature neighbours detected
+too and 82 % has mostly background neighbours, i.e. whole background feature clusters are scored high. Nearest reference
+token of false tokens: object 40 %, background 45 %. 34 of 600 episodes with best-cut IoU < 0.2 hold 40 % of the error
+area; 88 below 0.5 hold 54 %. RCG field: same structure (false 71.9k, missed 22.3k).
+FoRIS source read (`foris_source/models/foris.py`): part 2 = cosine to clustered reference object prototypes minus one
+orthogonalised hard-background direction; part 3 = nearest-reference vote + hard clustering of the query with one seed
+cluster; part 4 = disagreement penalty and per-cluster reweighting; fixed additive weights; min-max then 0.5.
+Source: [order report](research_20261005/order_fresh600/report.md).
