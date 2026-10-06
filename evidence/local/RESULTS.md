@@ -1619,3 +1619,27 @@ Process: to free the GPU I stopped the return test on COCO group B at 400 of 600
 so nothing was kept) and the role accounting on SUIM / PASCAL-Part / PACO-Part fold 3 / LVIS (PACO-Part folds 0-2
 finished, unscored). The return test therefore remains unverified.
 Sources: [candidates](research_20261005/candidates_fresh600/report.md), [prior](research_20261005/prior_fresh600/report.md).
+
+Stored-data checks made while the server was in no-card mode (0.5 CPU, no GPU; no new run). (a) Reverse matching,
+fresh600 token record: density of nearest-query hits from reference object tokens on true object tokens against the
+tokens RCG wrongly keeps, RCG best-cut IoU < 0.2 (n=33): 0.073 vs 0.075, higher on the object in 42 % of episodes;
+0.2-0.5 (n=41): 0.128 vs 0.108, 56 %. No information, in agreement with the earlier reverse check (AUC 0.709 against
+0.776 forward) already in this ledger. (b) Geometry of the input: per-episode mean IoU of RCG at 0.5 by orientation
+of reference / query: landscape-landscape 0.650 (n=327), portrait-portrait 0.674 (43), landscape-portrait 0.650
+(90), portrait-landscape 0.658 (76); by reference object share <0.01 / 0.01-0.03 / 0.03-0.1 / 0.1-0.3 / >0.3:
+0.640 / 0.624 / 0.656 / 0.664 / 0.643. Neither the square resize nor the reference size is a defect. A class-pooled
+reading of the orientation groups showed a 4-point difference that the per-episode means do not; it was class mix.
+(c) Break-even law on the public 4000 (`rcg_anatomy4000/counts.npz`, 80 classes, RCG against the FoRIS pre-CRF mask
+at 1024). The six edit types reproduce RCG exactly (identity check 0). With the share of true pixels per edit type
+taken from the other three folds (disjoint classes) and the edit volumes and FoRIS I/U of the class itself, the
+predicted class gain has the sign of the actual gain in 72 of 80 classes, Pearson 0.39, mean absolute error 1.17
+points; by fold predicted +1.94/+1.47/+1.62/+1.80 against actual +1.83/+1.78/+1.73/+2.35; overall +1.71 against
++1.92. The prediction uses the class's FoRIS I/U, i.e. labels, so it is a retrospective check of the accounting, not
+a deployable forecast. Choosing edit types per class by the break-even at that class's J gives +1.67 and a set that
+clears break-even for every J in 0.3-0.75 gives +1.36, both below applying all edits (+1.92); classes with FoRIS
+IoU < 0.45 gain +1.79. So type-level purities are not constant enough across classes for type selection to pay, and a
+low operating point does not by itself explain the null RCG results on PACO-Part and LVIS.
+Process: the earlier ledger sections (failure ledger, 2026-10-02 to 10-05) already hold results I re-derived today
+(reverse check, region-level evidence, scale matching, zoomed rerun, 64 % of false area attached to the target) and
+one that contradicts my reading of the worst episodes as reference ambiguity: swapping in three other references of
+the class rescues only 17-29 % of failed episodes; the difficulty is in the query.

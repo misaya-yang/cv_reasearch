@@ -2,6 +2,18 @@
 
 ## Scoped execution owned by chat 01a1100b (2026-10-06)
 
+Latest instruction for this chat: user reports the server powered off and provides
+no further server GPU/CPU resources. Work is independent reasoning from existing
+theory and measured records only; no SSH, experiment, statistical recomputation or
+automatic restart is scheduled. The latest desired result includes a universal
+pre-experiment win/no-win forecast with small error and acceptable latency.
+[Current derivation](../../evidence/local/research_20261006/no_compute_joint_solution.md)
+formalizes that request, proves the limits of an unconditional forecast, and
+separates those limits from conditional statistical guarantees. It also corrects
+this chat's overly strong prerequisite that every complete solution must first
+estimate a calibrated per-query posterior. The full method objective remains
+unachieved; this theoretical boundary is not a substitute for it.
+
 The user corrected this chat for repeating boundary joint optimization and questioned
 its relevance to the main task. The criticism is accepted: the reference-conditioned
 boundary cut did not establish a substantively new answer to the main evidence/inference

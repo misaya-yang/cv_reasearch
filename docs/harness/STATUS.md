@@ -4,6 +4,13 @@ Updated 2026-10-06 UTC. This file records current state; detailed evidence is li
 
 ## Now
 
+- Chat01a1100b follows the user's new no-server-compute instruction: independent
+  work from existing theory/results only, no SSH or new experiments. User reports
+  the server powered off; no remote power/process state was independently checked.
+  Its [current derivation](../../evidence/local/research_20261006/no_compute_joint_solution.md)
+  defines pre-experiment prediction and its unconditional/conditional boundaries.
+  No new effective full method or usable universal prediction certificate exists.
+  This chat's rejected boundary run is terminal, with no successor.
 - User supplied a query-only hierarchical-region candidate direction and reports
   its600-case oracle run ongoing. Root has not inspected or duplicated that run.
   Root completed an exact laminar-tree joint oracle for the actual class-summed
