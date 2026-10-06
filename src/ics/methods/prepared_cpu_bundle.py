@@ -11,7 +11,7 @@ import time
 import numpy as np
 
 
-METHODS=('adjacency','huber','color_bottleneck','constellation','reference_shape')
+METHODS=('adjacency','huber','color_bottleneck','constellation','reference_shape','reference_covariance')
 
 
 def mean_base(inputs,graph_dtype):
@@ -122,6 +122,19 @@ def one_episode(row,run,config):
             fields['shape_generic_square.control']=generic
             masks['shape_generic_square.control']=F.interpolate(torch.from_numpy(generic)[None,None],(1024,1024),mode='nearest')[0,0].numpy()>.5
             fields['shape_bilinear.control']=mask;masks['shape_bilinear.control']=render(mask)
+            masks['mean_nearest.control']=F.interpolate(torch.from_numpy((base>.5).astype(np.float32))[None,None],
+                                                        (1024,1024),mode='nearest')[0,0].numpy()>.5
+            info=result['info']
+        elif name=='reference_covariance':
+            from .reference_covariance import Config,predict
+            result=predict(np.asarray(q),np.asarray(r),cov,base,Config(**config['method_configs'][name]))
+            mask=result['token_mask'].astype(np.float32)
+            scalar=result['trace_control'].astype(np.float32)
+            fields['reference_covariance']=mask
+            masks['reference_covariance']=F.interpolate(torch.from_numpy(mask)[None,None],(1024,1024),mode='nearest')[0,0].numpy()>.5
+            fields['covariance_trace.control']=scalar
+            masks['covariance_trace.control']=F.interpolate(torch.from_numpy(scalar)[None,None],(1024,1024),mode='nearest')[0,0].numpy()>.5
+            fields['covariance_bilinear.control']=mask;masks['covariance_bilinear.control']=render(mask)
             masks['mean_nearest.control']=F.interpolate(torch.from_numpy((base>.5).astype(np.float32))[None,None],
                                                         (1024,1024),mode='nearest')[0,0].numpy()>.5
             info=result['info']

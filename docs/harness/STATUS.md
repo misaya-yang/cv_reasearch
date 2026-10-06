@@ -11,7 +11,9 @@
 已完成留出部位验证、整体轮廓转移和双worker合成检查。
 第五项[参考连通区域形状](../../evidence/local/research_20261006/shape_preparation_01a1100b/method.json)
 已完成物理矩积分、实际连通区域代价、单调局部搜索及双worker合成核对；累计准备5项，真实增益未测。
-各项已接入[共用CPU入口](../../evidence/local/research_20261006/prepared_bundle_01a1100b/entry.json)，
+第六项[参考模式响应协方差](../../src/ics/methods/reference_covariance.py)现已接入共用入口，
+合成完整维度与双worker预测封存核对通过；真实增益与运行成本未测。
+六项已接入[共用CPU入口](../../evidence/local/research_20261006/prepared_bundle_01a1100b/entry.json)，
 合成数据的共同推断、封存、独立评分与旧默认入口核对通过；此执行入口不增加方法数。
 
 更新：2026-10-06。当前入口只记录现状，历史事件见证据与[整理前快照](../archive/2026-10-06-workflow-snapshot.md)。
