@@ -1,0 +1,17 @@
+{
+  "name": "reference_boundary_joint_v1",
+  "unary": "minmax native Part2 reference foreground/background contrast",
+  "edges": "four-connected query grid",
+  "edge_statistic": "cosine distance / geometric mean incident distance",
+  "reference_density": "16 reference-quantile bins, add-one counts, equal boundary/same priors",
+  "pairwise": "max(0, log density_same/density_cut)/4",
+  "solver": "integer s-t minimum cut, scale 16384",
+  "finalizer": "bilinear binary-token field to 1024, threshold 0.5",
+  "query_labels_in_inference": false,
+  "extra_encoder_calls": 0,
+  "workers": 4,
+  "source_sha256": "2f2f06ccae9da25954d25b962de945d0856d47e8fe74255d2bd76bce6ed5e824",
+  "method_sha256": "a175c7f06ae0bd6af17cfde3deeaf3e9549b3d7a3cda2ea081095c7601e760c2",
+  "exposure": "reused DEV241; no independent confirmation",
+  "smoke": false
+}

@@ -1,5 +1,69 @@
 # Pending work
 
+## Scoped execution owned by chat 01a1100b (2026-10-06)
+
+The user corrected this chat for repeating boundary joint optimization and questioned
+its relevance to the main task. The criticism is accepted: the reference-conditioned
+boundary cut did not establish a substantively new answer to the main evidence/inference
+gap and should not have been launched on that justification. It finished DEV241 at
+51.882497 versus native59.074825; its gain over the same-mass affinity control is
+.066890[-.032783,.240805]. This is a rejected construction and an execution deviation,
+not a main-line research achievement. No successor or boundary parameter sweep exists.
+New files and all outputs are retained. Four CPU workers were used; no GPU/model call.
+Report: `evidence/local/research_20261006/reference_boundary_01a1100b/report.json`.
+The subsequently discussed feature-changing/component proposals are also withdrawn
+before implementation or inference. The task remains complete evidence construction
+and joint inference; an explicit usable selection rule and its justified relation to
+task value are missing. Merely giving a surrogate objective an exact solver does not
+fill that gap. This chat must not launch another local component in place of it.
+
+## Supplied direction: query-only hierarchical candidates
+
+Question: does a query-only region hierarchy preserve better target geometry than
+the same cases' score-level candidate family, and can the reference select it?
+The user reports600-case best1–3 oracle measurement running. No duplicate encoding
+or peer-run changes are planned. Candidate-only oracle is GT-assisted capacity.
+Compare exact class-summed O_1/O_2/O_3, same-case score-threshold oracle and complete
+native baseline; O_unlimited separates tree capacity from the three-node cap.
+Required additional inputs are existing node TP/FP, topology, eligibility and entire
+GT area at the same evaluation resolution. Root's exact solver and independent
+proofs are [available](../../evidence/local/research_20261006/hierarchy_joint/derivation.md).
+If capacity improves, reference selectability is the next unresolved step. If only
+the unlimited cap improves, revise the cap rather than dismiss the encoder. A low
+unlimited bound limits this hierarchy construction. Timing depends on the supplied
+run; count-only tree DP requires no new model call and costs O(N*K^2) per ratio.
+
+## Current main line: evidence construction and joint inference
+
+The user rejects Root's narrowing of the task to selection among existing complete
+masks. The task is to derive and solve a complete inference process from one
+labeled reference and frozen DINOv3 features: identify the target in the query and
+recover its extent while accounting for gains, overlap, conflict and side effects.
+A*/B* describes and organizes those inference operators; it does not restrict
+the method to the thirteen existing terminal outputs or make FoRIS obligatory.
+
+The user-supplied600-case attribution points to reference-to-query evidence giving
+entire background regions high scores. Its query-only linear-separation signal was
+preliminary in eight cases and is not an established deployable solution. The
+method must address intermediate evidence construction, query-internal propagation
+and the final decision within one stated objective. Raw DINO matching remains the
+common accounting origin; any native Part1 processing is an explicit prior, not
+raw features. A query-GT optimum or surrogate direction optimum is insufficient.
+
+The next deliverable is one concrete complete inference objective, its solution,
+its testable assumptions and a frozen full-pipeline comparison against native
+FoRIS and the strongest simple same-information alternative. Evidence and control
+must be specified before running. Existing masks/caches are reusable comparisons,
+not a substitute for constructing the method. Neither a guessed component nor an
+unspecified posterior is a derivation. No new complete method is established yet.
+
+The four withdrawn queues remain withdrawn. Their partial outputs and all reusable
+features remain intact. Root owns the full method and experimental decision;
+do not launch a batch of variants, fit selection using query annotations and call
+it label-free, or start another4000 export without an effective frozen method.
+
+## Withdrawn and historical designs
+
 ## Current design: intermediate evidence and complete pipelines
 
 User rejected the four insufficiently justified fresh600 groups: query covariance

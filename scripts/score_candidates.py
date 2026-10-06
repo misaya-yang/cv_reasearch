@@ -8,6 +8,10 @@ import os
 import sys
 
 import numpy as np
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+from ics.experiment import photo_groups
 
 rows, T = [], {}
 for j, d in enumerate(sys.argv[1:]):
@@ -57,3 +61,44 @@ for l in [k[5:] for k in T if k.startswith("node:")]:
     for name, col in (("reference cosine", 2), ("RCG field", 3)):       # truth-free: the node that best splits the field (largest between-class variance)
         s = S[:, :, col]; tot_s = s[:, -1:]; inside = s / size; outside = (tot_s - s) / np.maximum(4096 - size, 1); bcv = size * (4096 - size) * (inside - outside) ** 2 * (inside > outside); c = bcv.argmax(1)
         print("| nodes of the %s hierarchy | node that best splits the %s (no truth) | %.2f |" % (l, name, miou(tr[n, c], tot + size[n, c] - tr[n, c])))
+
+# truth-free selection: the field is read as a per-token probability and the candidate that maximises the expected IoU
+# with it is taken; unions are limited to a few disjoint nodes (without the limit this is the level set again)
+grp = photo_groups(rows); fold = np.array([r["fold"] for r in rows]); C = np.unique(cls); oh = np.zeros((N, len(C))); oh[np.arange(N), np.searchsorted(C, cls)] = 1; gid = np.unique(grp, return_inverse=True)[1]; G = gid.max() + 1
+
+
+def boot(a, b):
+    rs = np.random.RandomState(0); out = []; X, Y = (np.zeros((G, len(C), 2)) for _ in range(2))
+    np.add.at(X, gid, oh[:, :, None] * np.stack(a, 1)[:, None, :]); np.add.at(Y, gid, oh[:, :, None] * np.stack(b, 1)[:, None, :])
+    for _ in range(2000):
+        s = rs.randint(0, G, G); x, y = X[s].sum(0), Y[s].sum(0); ok = y[:, 1] > 0; out.append((np.mean(x[ok, 0] / np.maximum(x[ok, 1], 1e-9)) - np.mean(y[ok, 0] / y[ok, 1])) * 100)
+    return miou(*a) - miou(*b), np.percentile(out, [2.5, 97.5])
+
+
+base = level(T["rcg"], .5); p = (T["rcg"] > .5).astype(np.float64) if os.environ.get("HARD", "1") == "1" else np.clip(T["rcg"].astype(np.float64), 0, 1); P = p.sum(1)   # the field is not calibrated (background near 0.25): the soft reading picks the whole image
+print("\n## truth-free: snap the RCG field to the query's own regions (expected IoU with the field), against the level set at 0.5")
+print("| candidates | mIoU | vs RCG at 0.5 | folds |"); print("|---|---:|---|---|")
+line = lambda name, r: print("| %s | %.2f | %+.2f [%+.2f, %+.2f] | %s |" % (name, miou(*r), boot(r, base)[0], *boot(r, base)[1], " / ".join("%+.2f" % (float(np.mean([r[0][(fold == f) & (cls == c)].sum() / max(r[1][(fold == f) & (cls == c)].sum(), 1e-9) for c in np.unique(cls[fold == f])]) - np.mean([base[0][(fold == f) & (cls == c)].sum() / max(base[1][(fold == f) & (cls == c)].sum(), 1e-9) for c in np.unique(cls[fold == f])])) * 100) for f in np.unique(fold))))
+line("level set of the RCG field at 0.5 (control)", base)
+for l in [k[5:] for k in T if k.startswith("node:")]:
+    S = T["node:" + l].astype(np.float64); kids = T["kids:" + l].astype(np.int64); size, tr = S[:, :, 0], S[:, :, 1]; n = np.arange(N)
+    ps = np.zeros((N, 8191)); ps[:, :4096] = p
+    for j in range(4095):
+        ps[:, 4096 + j] = ps[n, kids[:, j, 0]] + ps[n, kids[:, j, 1]]
+    anc = np.zeros((N, 8191), np.int64)
+    for i in range(N):
+        anc[i, kids[i][:, 0]] = np.arange(4096, 8191); anc[i, kids[i][:, 1]] = np.arange(4096, 8191); anc[i, -1] = -1
+    Ps, Fs, I, Fa = np.zeros(N), np.zeros(N), np.zeros(N), np.zeros(N); banned = np.zeros((N, 8191), bool)
+    for m in (1, 2, 3, 5, 8):
+        for i in range(N):
+            cand = (Ps[i] + ps[i]) / (P[i] + Fs[i] + size[i] - ps[i]); cand[banned[i]] = -1; k = int(cand.argmax())
+            if m == 1 or cand[k] > Ps[i] / max(P[i] + Fs[i], 1e-9):
+                Ps[i] += ps[i, k]; Fs[i] += size[i, k] - ps[i, k]; I[i] += tr[i, k]; Fa[i] += size[i, k] - tr[i, k]; j = k
+                while j >= 0:
+                    banned[i, j] = True; j = anc[i, j]
+                stack = [k]
+                while stack:
+                    j = stack.pop(); banned[i, j] = True
+                    if j >= 4096:
+                        stack += list(kids[i][j - 4096])
+        line("%s hierarchy, up to %d node%s" % (l, m, "" if m == 1 else "s"), (I.copy(), tot + Fa))

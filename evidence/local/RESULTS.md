@@ -1597,3 +1597,25 @@ Sources: [region report](research_20261005/region_fresh600/report.md),
 Process note: the background waiter for the return-test groups reached its two-hour limit and was stopped; it was
 not restarted. Lane c (PACO-Part, LVIS) of that test was stopped by me to free the GPU; lanes a (COCO group B) and
 b (SUIM, then PASCAL-Part) continue.
+
+Two predictions written before their runs, both on fresh600, token level (64 x 64), class mIoU; both failed.
+(1) Prior term (`scripts/run_prior.py`): a query-only objecthood should separate true object tokens from the tokens
+RCG wrongly keeps where reference evidence does not. AUC for RCG best-cut IoU < 0.2 / 0.2-0.5 (n=33 / 41):
+boundary-connectivity 0.58 / 0.57, cosine to the class token 0.54 / 0.50, normalised-cut eigenvector 0.57 / 0.52
+(reference cosine 0.48 / 0.59, RCG field 0.14 / 0.30). Fold-nested component deletion with each objecthood added to
+the field statistics: +0.73 [+0.02, +1.22], -0.15 [-1.50, +0.84], +0.63 [-0.20, +1.17], all three -0.00
+[-1.66, +1.04], against +0.83 [+0.15, +1.27] without objecthood (same-information control). No gain.
+(2) Candidates from the query alone (`scripts/run_candidates.py`, `scripts/score_candidates.py`): all nodes of a
+complete spatially-connected agglomerative hierarchy of the query tokens. GT ceilings: best single node 73.63 (Ward) /
+69.10 (average linkage); greedy union of up to 2 disjoint nodes 79.54 / 76.04; up to 3: 80.95 / 78.45; against the
+best level per episode of the FoRIS score 69.88 and of the RCG field 72.00, and the fixed 0.5 level 59.54 / 63.03.
+Truth-free selection: the node that best splits the reference cosine 37.68 / 38.14, the RCG field 43.55 / 45.05;
+expected IoU with the clipped RCG field 28.92 / 25.36 (the field is not calibrated, background near 0.25); nodes
+closest to the RCG mask, up to 1 / 2 / 3 / 8 nodes, Ward 58.22 / 61.10 / 61.31 / 61.36 = -4.81 [-6.22, -3.58] to
+-1.67 [-2.31, -0.78] against the RCG mask (control 63.03), average linkage -6.95 to -2.46. The hierarchy holds
+better regions than any level set, and no tested rule selects them; the ceilings are selections by truth among 8191
+nodes and are not comparable to a method.
+Process: to free the GPU I stopped the return test on COCO group B at 400 of 600 (counts are written only at the end,
+so nothing was kept) and the role accounting on SUIM / PASCAL-Part / PACO-Part fold 3 / LVIS (PACO-Part folds 0-2
+finished, unscored). The return test therefore remains unverified.
+Sources: [candidates](research_20261005/candidates_fresh600/report.md), [prior](research_20261005/prior_fresh600/report.md).

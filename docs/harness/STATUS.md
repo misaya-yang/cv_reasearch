@@ -4,6 +4,19 @@ Updated 2026-10-06 UTC. This file records current state; detailed evidence is li
 
 ## Now
 
+- User supplied a query-only hierarchical-region candidate direction and reports
+  its600-case oracle run ongoing. Root has not inspected or duplicated that run.
+  Root completed an exact laminar-tree joint oracle for the actual class-summed
+  IoU metric: antichain DP plus exact integer fractional residual, K=1/2/3 or
+  unlimited.400 small-tree exhaustive comparisons pass; two GPT-6.1-sol/max
+  mathematical audits completed. No real hierarchy performance or label-free
+  selector has been validated. [Derivation and scope](../../evidence/local/research_20261006/hierarchy_joint/derivation.md).
+- Latest user correction rejects narrowing the main line to an existing-mask
+  selector. The task is complete evidence construction and joint inference from
+  one labeled reference and frozen DINOv3: target identity, extent, gains and side
+  effects in one stated objective. A*/B* organizes inference operators; the thirteen
+  old outputs are controls. FoRIS is an optional prior. See [PLAN](../research/PLAN.md).
+  No new complete method is established. The withdrawn four queues remain withdrawn.
 - Latest user correction rejects the four inadequately justified experimental
   groups. Root withdrew its own controllers97704/start957158892 and99277/start957232105
   plus their verified owned CUDA children97707/start957158908 and99282/start957232119.
