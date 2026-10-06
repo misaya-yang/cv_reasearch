@@ -25,7 +25,7 @@ NEIGHBOR_CACHE={}
 
 
 def read(p):return json.loads(Path(p).read_text())
-def write(p,v):Path(p).write_text(json.dumps(v,indent=2,allow_nan=False,default=lambda x:x.item() if isinstance(x,np.generic) else None)+"\n")
+def write(p,v):Path(p).write_text(json.dumps(v,indent=2,allow_nan=False)+"\n")
 def checked(p,h):
     if sha(p)!=h:raise ValueError("Changed sealed file: "+str(p))
 def packed(v):
@@ -118,32 +118,10 @@ def oracle_one(job):
         total_FN=int((truth&~mask).sum()),total_FP=int((mask&~truth).sum()),band_sha256=sha(bp),**stats)
 
 
-def recover_completed_validation(job):
-    """Recover receipt aggregates only; never repeat P/identity/field-bound checks."""
-    fullrow,oldrow,base,graft,mean,bs,gs,ms,out=job
-    from scipy.ndimage import maximum_filter,minimum_filter
-    r,g,y,c=grids((fullrow,base,graft,bs,gs));delta=g.astype(np.float64)-r.astype(np.float64)
-    local=maximum_filter(delta,size=5,mode="nearest")-minimum_filter(delta,size=5,mode="nearest")
-    tolerance=GAMMA128*(1.+max(float(np.abs(v).max()) for v in (r,g,y,c))*4)
-    render_tolerance=GAMMA16*(1.+float(np.abs(c).max())+float(np.abs(g).max()))
-    path=Path(out)/"bands"/(fullrow["key"]+".npz")
-    with np.load(path,allow_pickle=False) as z:band=np.unpackbits(packed(z["band"])).reshape(1024,1024).astype(bool)
-    pp=Path(mean)/"predictions"/(oldrow["key"]+".npz");cp=Path(graft)/"predictions"/(fullrow["key"]+".npz")
-    checked(pp,ms["predictions"][oldrow["key"]]);checked(cp,gs["predictions"][fullrow["key"]])
-    with np.load(pp,allow_pickle=False) as z:m=packed(z[DIRECT])
-    with np.load(cp,allow_pickle=False) as z:cm=packed(z[GRAFT])
-    xor=np.unpackbits(m^cm).reshape(1024,1024).astype(bool)
-    return dict(key=fullrow["key"],identity_max_error=None,field_bound_violations=0,source_P_mass_max_error=None,
-        identity_error_certified_upper_bound=float(tolerance),source_P_mass_error_certified_upper_bound=8*float(EPS),
-        numeric_maxima_not_retained="First validation completed; JSON write then failed. Completed band artifacts and failure traceback retained; P/identity not rerun.",
-        actual_XOR_pixels=int(xor.sum()),XOR_outside_band=int((xor&~band).sum()),band_sha256=sha(path),band_pixels=int(band.sum()),
-        mean_local_range=float(local.mean()),max_local_range=float(local.max()),FP32_field_tolerance=tolerance,FP32_render_tolerance=render_tolerance)
-
-
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument("--base",type=Path,default=Path("outputs/frozen_subtoken4000_v1"));p.add_argument("--graft",type=Path,default=Path("outputs/mean_fine_residual_transfer4000_v1"));p.add_argument("--mean",type=Path,default=Path("outputs/fine_mean1200_v1"));p.add_argument("--out",type=Path,default=Path("outputs/direct_mean_graft_identity_bound_v1"));p.add_argument("--workers",type=int,default=2);p.add_argument("--completed-validation-log",type=Path);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument("--base",type=Path,default=Path("outputs/frozen_subtoken4000_v1"));p.add_argument("--graft",type=Path,default=Path("outputs/mean_fine_residual_transfer4000_v1"));p.add_argument("--mean",type=Path,default=Path("outputs/fine_mean1200_v1"));p.add_argument("--out",type=Path,default=Path("outputs/direct_mean_graft_identity_bound_v1"));p.add_argument("--workers",type=int,default=2);a=p.parse_args()
     if not 1<=a.workers<=2:raise ValueError("This diagnostic is limited to at most2 CPU workers")
-    if a.out.exists() and a.completed_validation_log is None:raise FileExistsError("Fresh bounded diagnostic output required")
+    if a.out.exists():raise FileExistsError("Fresh bounded diagnostic output required")
     start=time.monotonic();bs,gs,ms=[read(p/"sealed.json") for p in (a.base,a.graft,a.mean)]
     if bs["n"]!=4000 or gs["n"]!=4000 or ms["n"]!=1200 or ms["state"]!="ALL_PREDICTIONS_AND_KERNELS_SEALED":raise ValueError("Complete sealed4000/1200 sources required")
     for path,seal in ((a.base,bs),(a.graft,gs),(a.mean,ms)):
@@ -164,7 +142,7 @@ def main():
     cosine_guard=4096*EPS/(1-4096*EPS)
     lower=float(spatial.min()*np.exp((-2-cosine_guard)/min(taus)))
     if lower<=1e-12:raise ValueError("Cannot certify non-clamped stochastic P for all4000")
-    a.out.mkdir(parents=True,exist_ok=a.completed_validation_log is not None);(a.out/"bands").mkdir(exist_ok=a.completed_validation_log is not None)
+    a.out.mkdir(parents=True);(a.out/"bands").mkdir()
     jobs=[]
     for r in old:
         public="public%d:%s"%(r["public_batch"],r.get("source_key",r["key"]));fr=lookup[public]
@@ -172,20 +150,10 @@ def main():
         perbs={"fields":{public:bs["fields"][public]}};pergs={"fields":{public:gs["fields"][public]},"predictions":{public:gs["predictions"][public]}}
         perms={k:{r["key"]:ms[k][r["key"]]} for k in ("fields","kernels","predictions")}
         jobs.append((fr,r,str(a.base),str(a.graft),str(a.mean),perbs,pergs,perms,str(a.out)))
-    recovered=a.completed_validation_log is not None
-    if recovered:
-        trace=a.completed_validation_log.read_text()
-        if "validation1200.json" not in trace or "Object of type float32 is not JSON serializable" not in trace:raise ValueError("Explicit completed-validation JSON-write failure checkpoint required")
-        if {f.stem for f in (a.out/"bands").glob("*.npz")}!={job[0]["key"] for job in jobs}:raise ValueError("Exactly all1200 completed validation-band artifacts required")
-    with ProcessPoolExecutor(a.workers,mp_context=mp.get_context("spawn")) as pool:validation=list(pool.map(recover_completed_validation if recovered else validate_one,jobs,chunksize=1))
-    if any(r["XOR_outside_band"] for r in validation):raise ValueError("Recovered band evidence corrupted")
-    identity_max=None if recovered else max(r["identity_max_error"] for r in validation)
-    mass_max=None if recovered else max(r["source_P_mass_max_error"] for r in validation)
+    with ProcessPoolExecutor(a.workers,mp_context=mp.get_context("spawn")) as pool:validation=list(pool.map(validate_one,jobs,chunksize=1))
     val={r["key"]:r for r in validation};write(a.out/"validation1200.json",dict(state="ALL1200_IDENTITY_FIELD_BOUND_AND_MASK_XOR_VALIDATED",rows=validation,
         local_constant_delta="Pdelta=Idelta when delta is constant on shared support, modulo declared FP32 rounding",static_min_P_denominator_with_F32_cosine_guard=lower,
-        source_P_normalization_max_error=mass_max,identity_max_error=identity_max,
-        identity_error_certified_upper_bound=max(float(r["FP32_field_tolerance"]) for r in validation),normalization_error_certified_upper_bound=8*float(EPS),
-        recovery_after_receipt_write_failure=recovered,completed_validation_log_sha256=sha(a.completed_validation_log) if recovered else None,
+        source_P_normalization_max_error=max(r["source_P_mass_max_error"] for r in validation),identity_max_error=max(r["identity_max_error"] for r in validation),
         actual_XOR_pixels=sum(r["actual_XOR_pixels"] for r in validation),XOR_outside_band=sum(r["XOR_outside_band"] for r in validation),query_GT_opened=False))
     # This proceeds only after the entire real1200 identity/XOR validation passed.
     ojobs=[]
@@ -200,9 +168,8 @@ def main():
         identity="P(G)-[P(R)+I(G-R)] = (P-I)(G-R), evaluated against actual ordered FP32 graft with conservative operation-count rounding",
         bound="abs(field_difference128)<=valid5x5_localrange(G-R)+FP32_tolerance; mask changes lie within abs(graft_up-.5)<=I128to1024(localrange+tol)+render_tol",
         rounding=dict(FP32_epsilon=float(EPS),gamma128=float(GAMMA128),gamma16=float(GAMMA16),field_scale="1+4*maxabs(R,G,P(R),graft)",renderer="CPU float64 evaluation of unchanged bilinear coordinates; declared FP32 renderer allowance"),
-        validation1200=dict(identity_max_error=identity_max,identity_error_certified_upper_bound=max(float(r["FP32_field_tolerance"]) for r in validation),field_bound_violations=0,actual_XOR_pixels=sum(r["actual_XOR_pixels"] for r in validation),XOR_outside_band=0,
-            total_band_pixels=sum(r["band_pixels"] for r in validation),stochastic_P_mass_max_error=mass_max,normalization_error_certified_upper_bound=8*float(EPS),static_min_denominator=lower,cosine_rounding_guard=float(cosine_guard),
-            recovery_after_JSON_write_failure=recovered,numeric_maxima_not_retained=recovered,no_P_or_identity_validation_rerun=recovered),
+        validation1200=dict(identity_max_error=max(r["identity_max_error"] for r in validation),field_bound_violations=0,actual_XOR_pixels=sum(r["actual_XOR_pixels"] for r in validation),XOR_outside_band=0,
+            total_band_pixels=sum(r["band_pixels"] for r in validation),stochastic_P_mass_max_error=max(r["source_P_mass_max_error"] for r in validation),static_min_denominator=lower,cosine_rounding_guard=float(cosine_guard)),
         unlabelled_band4000=dict(total_pixels=int(bands.sum()),fraction_of_all_pixels=float(bands.sum()/(4000*1024**2)),episode_fraction_percentiles=np.percentile(bands/(1024**2),[0,25,50,75,90,100]).tolist()),
         GT_informed_ceiling4000=dict(graft_class_miou=metric(iu,cls),arbitrary_band_correction_upper_miou=metric(upper,cls),upper_gain_pp=metric(upper,cls)-metric(iu,cls),
             GT_FN_inside_band=sum(r["GT_FN_inside_band"] for r in oracle),GT_FP_inside_band=sum(r["GT_FP_inside_band"] for r in oracle),
@@ -212,10 +179,8 @@ def main():
         workers=a.workers,new_encoder=False,new_inference_cue=False,script_sha256=sha(Path(__file__)),seconds=time.monotonic()-start)
     write(a.out/"report.json",report);np.savez_compressed(a.out/"oracle_counts.npz",graft_IU=iu,GT_band_oracle_IU=upper)
     write(a.out/"band_manifest.json",dict(rows=rows,bands={r["key"]:r["band_sha256"] for r in oracle},construction_query_GT_free=True,GT_used_only_for_ceiling_after_validation=True))
-    identity_note=f"identity error <= declared FP32 bound {report['validation1200']['identity_error_certified_upper_bound']:.9g}"
-    if not recovered:identity_note=f"max identity error {identity_max:.9g}"
-    (a.out/"report.md").write_text("# DirectMEAN/graft identity and change envelope\n\n"+f"Real1200: {identity_note}; all field bounds pass and all {report['validation1200']['actual_XOR_pixels']:,} changed pixels lie inside the label-free envelope.\n\n"+f"The4000 envelope occupies {100*report['unlabelled_band4000']['fraction_of_all_pixels']:.3f}% of pixels. Graft mIoU {report['GT_informed_ceiling4000']['graft_class_miou']:.6f}; arbitrary GT-corrected band ceiling {report['GT_informed_ceiling4000']['arbitrary_band_correction_upper_miou']:.6f}. This ceiling is not a method result or expected gain.\n\n"+("The first1200 validation passed but its aggregate JSON write failed on a NumPy float. Exact numeric maxima were not retained; the original bands/log/snapshot are retained and no P/identity check was rerun. Receipt recovery recomputes mask aggregates only.\n\n" if recovered else "")+"Local-constant delta predicts equality. The field-derived envelope gives an a priori flip domain and capacity bound; it gives no probability or direction. Full4000 DirectMEAN comparison is still required. No new encoder, cue, parameter or source mutation.\n")
-    print(json.dumps(report,default=lambda x:x.item() if isinstance(x,np.generic) else None),flush=True)
+    (a.out/"report.md").write_text("# DirectMEAN/graft identity and change envelope\n\n"+f"Real1200: max identity error {report['validation1200']['identity_max_error']:.9g}; all field bounds pass and all {report['validation1200']['actual_XOR_pixels']:,} changed pixels lie inside the label-free envelope.\n\n"+f"The4000 envelope occupies {100*report['unlabelled_band4000']['fraction_of_all_pixels']:.3f}% of pixels. Graft mIoU {report['GT_informed_ceiling4000']['graft_class_miou']:.6f}; arbitrary GT-corrected band ceiling {report['GT_informed_ceiling4000']['arbitrary_band_correction_upper_miou']:.6f}. This ceiling is not a method result or expected gain.\n\nLocal-constant delta predicts equality. The field-derived envelope gives an a priori flip domain and capacity bound; it gives no probability or direction. Full4000 DirectMEAN comparison is still required. No new encoder, cue, parameter or source mutation.\n")
+    print(json.dumps(report),flush=True)
 
 
 if __name__=="__main__":main()

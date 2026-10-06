@@ -1439,3 +1439,38 @@ missing2000 usecached600 plus1400 validatedPart1-only prefix pairs. Keep~3.28GB 
 cosine affinities. PeerC71178 is explicitly read-only by process identity, not adopted/owned
 or signaled. Frozen primary settings and all600 label-fitting scope preserved. No reusable
 feature deletion. Complete uniformtau15 primary4000 score remains pending.
+
+
+### 2026-10-06 UTC: one fixed gain forecaster and new confirmation cohort
+
+Fixed η(target|12 existing binary-mask memberships) from photo-disjoint train3 folds,
+Beta(1,1) smoothing and pooled train foreground fallback; no variants/hyperparameter sweep.
+Predict E[I]/E[U] and conditional edit value on held unlabeled mask frequencies before heldGT
+evaluation,37.448s CPU2. Training rows2676/2674/2750/2633 with zero connected-photo overlap.
+PUBLIC4000 pairwise ranking correct96.15/94.87/79.49/82.05percent; best among12 producers
+plus globallyDEV-selectedC12 correctly picked3/4 folds, fourth regret.198086point. Absolute
+score MAE .585659/3.938149/6.187559/.257006 points. C12-minus-graft predicted+.175811
+andactual+.220281 on aggregate; fourfold signs agree, magnitude remains inaccurate.
+New DirectMEAN1200 already had scored output before prediction, therefore retrospective:
+vs graft predicted-.026030,actual+.003205, fourfold signs all wrong. This tiny effect is not
+proof of reliable fine-gain forecasting. Labelled calibration and globallyselected candidate
+exposure remain explicit; this research forecast is not a single-reference deployment posterior
+or a new segmentation component. Class-macro predicted edit closure error2.69e-14.
+[Forecast report](research_20261005/pipeline_verified/membership_gain_predictor_v1/report.md).
+
+New frozen confirmation sampling used existingCOCO metadata only, officialseed0 continuation
+after1000draws/fold and photograph exclusion against actual episode/role exposure. A previous
+conservative scanner incorrectly treated wholeclass image_pool references as exposure and yielded
+n0; it is retained and not interpreted as pool exhaustion. Correct role/episode provenance
+combined17741 exposed photographs. Actual1200=300/fold,2249unique photos, overlap0;
+12170 post1000draws/10970 rejections preserved in sequential audit, no episode deduplication
+or class rebalancing. Official first4000 RNG replay exact. Covers74classes, missing
+32,35,68,70,78,79; classes70/78 have no legitimate unexposed pool, other4 are absent naturally
+from the first300 accepted/fold despite some legitimate pairs. This is an independent-photo
+confirmation cohort, not the official80class1000/fold leaderboard. NoRGB/queryGTpixels read.
+Frozen C12 recipe and8 complete strongcontrols configSHA5fec4eca... remain unchanged.
+ManifestSHA21475d39973d448a81140b87db875dc70a47c4f60a53d436ccea8bc8432d3ff6;
+receiptSHA028e378c2c9eaa519c052395cbcaeccd4a2328b520a5f14276fc572520ec64f9.
+[Sampling evidence](research_20261005/pipeline_verified/photo_disjoint_confirm1200_v1/README.md).
+No confirmation GPU run has started; immutable complete-method/strongcontrol producer
+preparation is assigned to the bounded worker frozen_family_confirm.

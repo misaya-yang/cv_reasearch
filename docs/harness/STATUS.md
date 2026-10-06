@@ -4,13 +4,11 @@ Updated 2026-10-06 UTC. This file records current state; detailed evidence is li
 
 ## Now
 
-- Resource scheduling failure: the owned CLS GPU stage ended at2026-10-05 23:39:47UTC;
-  the next owned GPU stage started at2026-10-06 00:09:15UTC, leaving about29m28s without an
-  owned GPU successor. Controller checked missing MEAN continuous inputs too late and spent
-  the gap on analysis/code preparation. Current family-composition supervisor56044/start954745049
-  runs graft4000 child56169/start954755102; fine-MEAN1200 supervisor56334/start954783172 is
-  already validated and waiting for GPU release. CPU reconstruction and mask-only comparison
-  proceed separately. Check successor inputs and runnable stages before the active GPU job ends.
+- Historical scheduling failure left29m28s without an owned GPU successor after CLS ended.
+  Those stages are terminal and their results are retained below. Current uniformtau15
+  supervisor75010 runs GPU child77374; complete DirectMEAN4000 successor77680 is live
+  waiting on its cosine seal. Both source/contract checks passed before launch; no reusable
+  feature deletion or changes to active snapshots. Prepare runnable successors before release.
 
 - User authorized parallel agents. Controller owns GPU monitoring/dispatch; three analyses
   completed RCG stage,4000quality/batch andcomplete-native edit attribution. OpusCPUanatomy
@@ -81,11 +79,17 @@ Updated 2026-10-06 UTC. This file records current state; detailed evidence is li
   retain additional2.294GB FP32 cosine affinities. Full priors use actualG64 `mean.control`
   from the sealed scalar-graft source, not graftC128. Old/source4000 fine16 field/mask and
   all6baseline I/U parity are mandatory. Both active snapshots remain unchanged.
-- Current user asks for theoretical experiment prediction. Exact observed-library optimization
-  is an oracle benchmark, not a validated no-query-GT forecaster. CPU-only historical train3/
-  held1 calibration diagnostics are being frozen separately; they do not replace the method.
-  Linear readout identity `(P-I)(G-R)` and local-support mask-change bounds are being tested
-  as mechanism predictions for the strong DirectMEAN control, without new encoder calls.
+- One fixed conditional-value forecast backtest completed37.45s CPU2. Train3/held1 with
+  photo exclusion selected the best prespecified candidate in3/4 folds, pairwise ranking88.14percent;
+  absolute score errors .586/3.938/6.188/.257 points. DirectMEAN-vs-graft tiny gain direction
+  was wrong4/4 folds. Calibrated η, globalDEV candidate exposure and label usage remain explicit;
+  no reliable fine-gain predictor is established and no deployment method was changed.
+- Photo-disjoint frozen confirmation manifest completed1200=300/fold,2249unique photos,
+  overlap0 with17741 registered exposed photos. Covers74classes, not the full80-class public
+  protocol; missing32,35,68,70,78,79. Official first4000 RNG replay and all12170 sequential
+  post1000 acceptance/rejection records passed. Frozen C12 and8controls remain unchanged.
+  `/root/frozen_family_confirm` prepares an immutable shared-forward complete comparison,
+  with no GPU launch yet. [Cohort](../../evidence/local/research_20261005/pipeline_verified/photo_disjoint_confirm1200_v1/README.md).
 - DEV241 fixed rawNN-origin shared subset reached62.773896 globally, but heldfold61.284097
   is unresolved versus native and fine16. This14-method subset is not the full187-method
   library; public4000 rawNN is absent, so the frozen raw-dependent recipe is not substituted.
