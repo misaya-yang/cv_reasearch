@@ -2,6 +2,20 @@
 
 ## Scoped execution owned by chat 01a1100b (2026-10-06)
 
+Execution audit after the user's progress challenge: this chat is at an impasse.
+The repeated gap across the last three goal turns is unchanged: no justified
+pre-experiment win forecast and no new complete output establishing the required
+method gain. The existing counts describe already-run programs; they do not
+provide the result of a new program. New inference/experiments remain excluded.
+The final read of the current candidate/transfer/failure reports supplies no
+verified replacement: hierarchy capacity is truth-assisted, and its measured
+truth-free selectors lose to the control. No further diagnostic extension,
+speculative candidate implementation or automatic run is scheduled by this chat.
+This is incomplete work and a limitation of this execution, not a proof that
+the research problem or all future constructions are impossible. The original
+method and forecasting objectives remain intact. Reopening requires a concrete
+new basis for resolving this gap, not a restatement of the same planned analysis.
+
 Latest instruction for this chat: user reports the server powered off and provides
 no further server GPU/CPU resources. Work is independent reasoning from existing
 theory and measured records only; no SSH, model/inference experiment or automatic
@@ -18,9 +32,13 @@ with four shared mask-membership atoms removes all invalid counts, but predicts
 only2/4 target-dataset point directions correctly. SUIM+0.677predicted vs−0.501actual;
 LVIS−1.518vs+1.579. The same frozen size bins do not preserve edit correctness.
 See the [transfer analysis](../../evidence/local/research_20261006/edit_forecast_transfer_existing_counts/report.md).
-Next must address justified error control for complete-method forecasts, not more
-size bins, type selectors or mask combinations. A robust gain formula without a
-justified error range is not a working predictor. Full-method work remains required.
+This count-forecast branch is now closed after the user's progress challenge:
+it supplied useful falsification, but neither a working pre-experiment predictor
+nor a better complete segmentation method. Do not continue it with interval
+derivations, more bins or selector variants merely because those are computable.
+The proposed interval extension was not implemented or run. A robust gain formula
+without a justified error range is not a working predictor. Full-method work remains
+required; no new candidate or resource use is authorized by closing this branch.
 No parameter search, new segmentation pixels, or server CPU/GPU work. This is
 retrospective analysis of existing results, not independent validation.
 The desired result remains pre-experiment prediction and an effective complete method.

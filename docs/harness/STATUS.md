@@ -17,6 +17,11 @@ Updated 2026-10-06 UTC. This file records current state; detailed evidence is li
   [Transfer result](../../evidence/local/research_20261006/edit_forecast_transfer_existing_counts/report.md).
   No new segmentation inference or server work; no new effective full method or
   usable universal prediction certificate.
+  After the user's progress challenge, this chat closed the count-forecast branch
+  and withdrew the unimplemented interval extension. Its completion audit remains
+  blocked by the same missing method/forecast evidence across consecutive goal
+  turns. Existing hierarchy/transfer records do not supply a verified replacement;
+  no further automatic diagnostic branch or experiment is scheduled by this chat.
   This chat's rejected boundary run is terminal, with no successor.
 - User supplied a query-only hierarchical-region candidate direction and reports
   its600-case oracle run ongoing. Root has not inspected or duplicated that run.

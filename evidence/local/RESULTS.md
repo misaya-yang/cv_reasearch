@@ -1664,3 +1664,19 @@ level of highest predicted value is itself biased towards noisy extremes, so thi
 route, not a proof of an upper bound. Together with Otsu / isodata / Kittler / stability / area-curve ridge / share
 estimators already in this ledger, the cut level of this field is closed as a source of more than about +0.3 to +0.5.
 Source: `research_20261005/cut_levels4000/predictability_rcg.md`.
+
+What the failing episodes are, counted (fresh600, token record, no model; `scripts/render_failures.py`, sheets in
+`research_20261005/failures_fresh600/`). 89 of 600 episodes have best-cut IoU of the RCG field below 0.5. I read 48 of
+them by eye (the 36 worst and numbers 48-59); a single reading, categories are mine: (A) a neighbouring category taken
+instead of or together with the object (sofa for chair, suitcase for handbag, plate / pan for bowl, bottle for cup,
+other food, jeep with boats) 21; (B) an unrelated region taken while the object covers at most about 1.5 % of the
+image 10; (C) reference not usable as a description (dining table = frame-filling cloth, sink mask including the
+counter, object barely visible) 6; (D) truth questionable (cake shaped as a fire engine marked on a small part, only
+the mirror image of a teddy bear marked, crowd excluded) 4; (E) object found only in part or mask much smaller than
+the object 6; unclear 1. 40 of the 48 objects cover less than 6 % of the query.
+Per episode, from the stored fields (84 episodes with at least 3 object tokens and 3 wrongly kept tokens): the object
+is closer to the reference than the wrongly kept area in 34 by mean cosine to the reference object mean (37 by upper
+quartile), 32 by the FoRIS contrast score, 24 by the 10-nearest-reference vote; in category A 9 of 21 (cosine). So in
+the failing episodes the wrong region is, more often than not, the better match under every reference comparison
+stored, episode by episode and not only on average. Earlier statement corrected: this is not mainly an ambiguous
+reference (C is 6 of 48).
