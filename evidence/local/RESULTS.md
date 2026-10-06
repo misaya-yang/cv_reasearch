@@ -1712,3 +1712,14 @@ tokens; 0.2 to 0.5 (n=47): 30 of 47. The candidate's own rejection condition (ob
 same relation to reference object and background) holds on this proxy. With row sums of one and z in [0, 1], Bz never
 exceeds one, so object rows only raise and background rows only lower their matched tokens: the term acts as a
 saturating reverse vote, not as competition between query regions. Not measured: a soft B with a mutual filter.
+
+Error budget on the public 4000 from stored per-level counts (`scripts/score_error_budget.py`; class mIoU at 1024,
+FoRIS score before CRF cut at 0.5 = 60.41; oracle rows use query truth and are diagnostics, not headroom of a method;
+the rows are not additive). Episodes whose best cut stays below IoU 0.5 ("not found"): 696 = 17.4 %; making them
+perfect +11.19; they carry 48.6 % of all false-positive pixels (false-positive area 2.0 times the object). Found
+episodes: best cut +9.32, made perfect +21.98; at 0.5 false-positive area 0.15 and missed area 0.19 of the object.
+By object share of the query (<0.02 / 0.02-0.1 / 0.1-0.3 / >0.3; n = 1074 / 1543 / 936 / 447): not found 33 / 17 / 7 /
+3 %; IoU at 0.5 0.475 / 0.629 / 0.729 / 0.711; best cut 0.587 / 0.712 / 0.802 / 0.842; false-positive over object area
+2.58 / 0.67 / 0.18 / 0.07; missed over object area 0.16 / 0.16 / 0.17 / 0.27. The extent error changes sign with object
+size: small objects are over-covered, large ones under-covered. RCG field at 0.5 (62.33): not found 16.3 %, made
+perfect +10.75, best cut on found +9.13, found made perfect +21.49, same pattern by size.
