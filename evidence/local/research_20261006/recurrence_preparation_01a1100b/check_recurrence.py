@@ -60,6 +60,21 @@ def main():
     desc = np.array([[1., 0], [1., 0], [0., 1], [0., 1], [0., 1]])
     _, members, _ = choose_star(desc, np.full(5, .6), np.full(5, .8), Config())
     np.testing.assert_array_equal(members, [2, 3, 4])
+    # Fragmentation cannot create more than32 feature descriptors. The same
+    # query prototype is invariant to duplication of identical seed descriptors.
+    fragmented_base = np.full_like(base, .1)
+    fragmented_q = q.copy()
+    for row in range(0, 64, 8):
+        for col in range(0, 64, 8):
+            fragmented_base[row:row+2, col:col+4] = .8
+            block = fragmented_q.reshape(64, 64, 1024)[row:row+2, col:col+4]
+            block[:] = 0
+            block[..., 0] = .6
+            block[..., 1] = .8
+    capped = predict(fragmented_q, r, cov, fragmented_base)
+    assert capped['info']['available_seed_components'] == 64
+    assert capped['info']['seed_components'] == 32
+    assert len(capped['info']['selected_seed_labels']) == 32
     # Actual negative complete example: a repeated wrong category wins the
     # majority gate. Its reference cosine is even higher than the true category.
     bad_q, bad_base = q.copy(), base.copy()
@@ -81,6 +96,7 @@ def main():
         reference_best_single_seed_fails_weak_target=True,
         single_instance_abstention=True, all_weak_abstention=True, zero_weight_exact=True,
         common_feature_sign_invariance=True,
+        fragmented_query_64_components_capped_at_32=True,
         repeated_wrong_category_counterexample=dict(selected_wrong_seeds=3, weak_target_recovered=False,
                                                     wrong_region_deleted=False),
         dimensions=[4096, 1024], candidate_and_controls_seconds=result['info']['wall_seconds'],

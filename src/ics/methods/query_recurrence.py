@@ -36,6 +36,7 @@ def choose_star(descriptors, reference_cosines, confidence, cfg):
     """Largest reference-gated cosine star; no maximum-clique/optimality claim."""
     eligible = reference_cosines >= cfg.reference_gate
     similarity = np.einsum('id,jd->ij', descriptors, descriptors, optimize=False)
+    np.fill_diagonal(similarity, 1.0)
     stars = []
     for root in np.flatnonzero(eligible):
         members = np.flatnonzero(eligible & (similarity[root] >= cfg.peer_cosine))
