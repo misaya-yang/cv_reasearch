@@ -1277,3 +1277,66 @@ At the fixed CLS>0 rule, primary false positives are3/4 GT-containing and17/27 G
 confounding exists but does not explain most false positives. No crops, threshold, subgroup AUC
 or method were selected from this diagnostic.
 [Context audit](research_20261005/pipeline_verified/object_cls_dev241_v1/crop_context_audit.md).
+
+
+### 2026-10-06: complete frozen fine4000 and fixed A/B transfer control
+
+COCO2014/public4000 sampled draws, seed0,1000/fold,80classes,2742 connected-photo groups,
+1024 working resolution; reused development benchmark, not independent confirmation. Same frozen
+DINO and one fully masked reference; extra four query shifts for fine readout. All sampled repeats
+retained. Complete native60.931741, RCG62.333671, MEAN62.512972, coarse64=62.297937,
+fine16=62.709100, primary fine64=62.651617. Primary-native +1.719876[1.256073,2.113693];
+primary-RCG +.317946[.039376,.562082]; primary-MEAN +.138645[-.184598,.422923];
+primary-coarse64 +.353680[.321971,.396545]; primary-fine16 -.057483[-.352600,.178003].
+Fold native gains1.683,1.546,1.067,2.584; last two batch gains+.430,-.646. All4000 baseline
+and prior1200 six-arm I/U, prediction-before-GT seals and independent statistics passed.
+This full result does not meet stable>=2 or strong-MEAN superiority.
+[Full report](research_20261005/pipeline_verified/frozen_subtoken4000_scored_v1/report.json),
+[independent verification](research_20261005/pipeline_verified/frozen_subtoken4000_verification_v1/verification.md).
+
+Fixed cheapest mask-edit transfer uses R=RCG,M=MEAN,V=fine16 and
+C=(M | (V & ~R)) & ~(R & ~V); no new encoder, scalar fitting or parameter sweep.
+Complete4000 score62.744357: native +1.812616[1.524273,2.098950], MEAN
++.231385[.202166,.266264], fine16 +.035257[-.145128,.218718], fine64
++.092740[-.176077,.421751]. All four folds and seven batches positive relative to MEAN.
+MEAN-relative addTP3,323,910/addFP3,739,944/deleteTP2,035,282/deleteFP3,487,708.
+CPU4 inference2.95s/scoring28.98s; upstream producer cost excluded. All4000 original six-arm
+I/U and independent score/CI checks exact. This control is an actual complete A/B composition,
+not the separate continuous residual transfer and not a replacement of the original primary.
+[Report](research_20261005/pipeline_verified/mean_fine_bit_transfer4000_v1/report.md).
+
+### 2026-10-06: CLS construction1200 does not establish discrimination
+
+Unchanged fixed diagnostic:332 encoded episodes/736 eligible regions,77 paired episodes/296
+regions,1200 reused DEV draws;1400 descriptors(367 reused,1033 new), FP32 final CLS.
+Primary AUROC .433959[.340099,.527200], NN .243285[.162874,.332928];
+CLS-minus-NN +.190674[.090203,.300785]. The failed control comparison does not establish
+useful discrimination. Crop geometry uses query GT and is not legal method inference. All
+descriptor hashes and independent statistics passed. Stop this construction, retain features.
+Natural-RGB reference-FG intervention retains all other views, cohort and direction:332 newviews,
+88.09s, AUROC .494905[.400891,.585473], masked-to-natural +.060946[-.032513,.150309],
+unresolved. No further CLS variants are queued.
+[CLS1200 report](research_20261005/pipeline_verified/object_cls_dev1200_v1/report.md).
+
+Latest user instruction prioritizes exact optimization over existing complete A*/B* families,
+including the supplied fine-readout plus size-cut method. Its reported cross-fold fresh60065.44
+and the separate all600-fitted frozen65.86 are distinct versions. No new semantic cue probe
+was launched after that correction.
+
+
+### 2026-10-06: fixed scalar fine residual transfer4000 completed
+
+Same4000 public/reused DEV draws,seed0,1000/fold,80classes/2742 connected-photo groups,1024.
+F=coarseRCG16,G=coarseMEAN16,Y=fineRCG16; fixed C128=bilinear(G,128)+Y-bilinear(F,128),
+FP32 coefficient1/no clipping, CUDA1024 bilinear and cut>.5. It is not direct fine readout ofG.
+Complete62.844537: native+1.912796[1.618404,2.210338], RCG+.510866[.332586,.716025],
+MEAN+.331565[.303193,.372805], fine16+.135437[-.048326,.334529], fine64
++.192920[-.078619,.522409]. Fixed mask-level transfer comparison+.100180[.079995,.128147],
+2652/1254/94 episode up/down/tie. All four MEAN-relative fold gains positive(.326,.363,.323,.314).
+Target>=2 and fine16/fine64 superiority remain unproved. Query GT not read during inference; all
+4000 predictions sealed before scoring. Reuse1200 scalar fields; remaining2800 CPU6 exact graph
+reconstruction uses verified feature-only encoder producer. Existing reusable features are retained.
+Original6baseline4000I/U, per-episode four-edit closure, all stored score/CI/fold/batch statistics
+independently reproduced exactly in3.70s. Sampling repeats retained; benchmark reuse not confirmation.
+[Report](research_20261005/pipeline_verified/mean_fine_residual_transfer4000_v1/report.md),
+[Independent reconstruction](research_20261005/pipeline_verified/mean_fine_residual_transfer4000_v1/verification.json).

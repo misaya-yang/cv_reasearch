@@ -1,6 +1,6 @@
 # Status
 
-Updated 2026-10-05. This file records current state; detailed evidence is linked, not duplicated.
+Updated 2026-10-06. This file records current state; detailed evidence is linked, not duplicated.
 
 ## Now
 
@@ -24,15 +24,44 @@ Updated 2026-10-05. This file records current state; detailed evidence is linked
   vsRCG+.453846[-.059653,.905474],MEAN+.470274[-.104917,1.001042],fine16+.036551
   [-.520387,.457837]. Completeobjective remainsunproved. All1200baselineI/Uparityandindependent
   score/CI/foldreconstructionpassed;netTPdamage persists. [Result](../../evidence/local/research_20261005/pipeline_verified/frozen_subtoken1200_v1/report.md).
-- Full4000streamisnowlive45702/start953851020,supervisor45693/start953850989.
-  Two-pairactualexporterFP16q/r/gate/native/λ16paritypassed. All1200completeoutputsreused;
-  onlyremaining2800newpairsencodeinboundedRAM;no featurearchives/deletion. A40s/21-point audit
-  measured meanGPU71.8percent (instantaneous100percent was not sustained),~2.448s/newpair.
-  CPU6CG/2writersparallel; no solver/backlog or write-I/O bottleneck observed. Frontend serial
-  production/synchronization is implicated; exact stage timings remain unmeasured.
-  All4000draws/naturalrepeatpreserved;
-  CPUscoreautoqueuedafterfullsealwithallold4000baselineand1200sixarmparityrequirements.
-  Benchmarkreuse,notindependentconfirmation;nofull4000candidateeffectyet.
+- Frozen full4000 six-arm readout is complete: native60.931741, RCG62.333671,
+  MEAN62.512972, coarse64=62.297937, fine16=62.709100, primary fine64=62.651617.
+  Primary-native +1.719876[1.256073,2.113693], primary-MEAN +.138645[-.184598,.422923],
+  primary-coarse64 +.353680[.321971,.396545]. The >=2 target and strong-control superiority
+  are not established. All4000 baseline and1200 six-arm I/U checks and independent statistics
+  passed. [Result](../../evidence/local/research_20261005/pipeline_verified/frozen_subtoken4000_scored_v1/report.json).
+- Fixed mask-level MEAN/fine16 A/B transfer completed4000 at62.744357: native
+  +1.812616[1.524273,2.098950], MEAN +.231385[.202166,.266264], fine16
+  +.035257[-.145128,.218718]. Formula `(M | (V & ~R)) & ~(R & ~V)`; complete masks
+  sealed before scoring, no encoder or parameter search. This is a strong composition control.
+  [Result](../../evidence/local/research_20261005/pipeline_verified/mean_fine_bit_transfer4000_v1/report.md).
+- Latest user correction directs exact selection among existing complete A*/B* families.
+  `/root/rcg_ablation_audit` builds aligned libraries; `/root/rcg_quality_analysis` solves all
+  allowed add/delete subsets and reports actual complete recipes, scores and cost Pareto rows.
+  No new background-SNR or CLS variants are running. GT selection on reused data is development,
+  distinct from frozen inference and confirmation. `/root/region_cue_feasibility` integrates the
+  supplied Opus fine-readout + size-cut method without silently changing its settings.
+- The supplied fresh600 cross-fold combination65.44 uses other-fold labels for size thresholds.
+  The separate `rcg2_frozen.json` uses all fresh600 to fit six thresholds and reports in-sample65.86;
+  its fixed readout uses tau=.15 in every fold. Existing own4000 fields use tau=.07 on folds0/3,
+  so exact full4000 reuse requires resolving that source difference. These versions remain separate.
+- Fixed scalar residual-transfer4000 completed at62.844537: native
+  +1.912796[1.618404,2.210338], MEAN +.331565[.303193,.372805], fine16
+  +.135437[-.048326,.334529]. All original six-arm I/U and independent score/CI/fold/batch reconstruction passed
+  exactly; relative to fixed bit transfer +.100180[.079995,.128147]. Formula `upsample(MEAN)+fine16-upsamp(RCG)`, coefficient1/no clipping.
+  All4000 masks were sealed before score. Target>=2 and fine16 superiority remain unproved.
+- Read-only complete-mask library construction completed107.861s CPU6:4000 has13 source
+  arms/11 distinct ordered mask sequences; DEV241 has415 source arms/185 distinct sequences.
+  Exact4000 A*/B* selection runs before the much larger DEV library. Original rawNN4000 and
+  count-only delete-p4000 masks are absent and are not fabricated. Label-fitted supplied methods
+  are included in a separately marked extended setting.
+- Fixed direct-MEAN fine1200 is validated and waiting for GPU availability. Its retained kernels
+  permit later scalar-family reuse. The supplied uniform-tau15 size-cut method requires2000
+  missing fields; a fused producer successor is being prepared to avoid repeated four-shift
+  encoding. A separately named control applies the fixed fresh600 thresholds to all existing
+  fold-temperature fine16 fields, preserving their source tau; it is not the supplied primary.
+  Existing peer Opus stream evaluates fixed fresh600-trained settings on groupsB/C,600 draws
+  each; its queue is read-only and must not be duplicated or changed.
 - Original DEV241 raw-origin accounting completed without new inference. Frozen fine64=60.515912,
   native=59.074825, raw NN=42.903888 and complete INSID3 CRF=55.006020. Fine64-native
   +1.441087[-.754819,3.052193]; fine64-coarse64 +.387231[.095634,.753852]. RCG/MEAN/fine16
@@ -50,16 +79,15 @@ Updated 2026-10-05. This file records current state; detailed evidence is linked
   Concurrent GPU mean rose71.8->95.8percent while main slowed2.448->4.002s/newpair; no free
   throughput gain is claimed. Short fixed test ended; main recovered~2.39s/newpair.
   [Resource audit](../../evidence/local/research_20261005/pipeline_verified/stream4000_resource_audit_v1/report.md).
-  Same-construction1200 CPU preparation completed47.52s:332 encoded episodes/736 eligible
-  regions,77 paired episodes/296 regions. Reuse all367 old descriptor views; only1033 new
-  views are required. All1200 fine64 I/U/source hashes and all original geometry passed.
-  Full1200 CLS-vs-NN uses the same77-case subset; legacy raw/projected controls keep their
-  original18-case subset separately. Serial post4000 supervisor50379/start954432261 is live,
-  waiting for current45702 to release GPU, with no shared-GPU flag. It runs two-pair producer
-  parity/timing, then1033new CLS views, thenCPUscore. Stage contracts and87 benchmark assets
-  passed actual remote validation; CLS1200 identity/reuse/geometry/statistics were independently
-  audited. [Queue receipt](../../evidence/local/research_20261005/pipeline_verified/post4000_followup_v1/root_launch_receipt.json).
-  [Cue diagnostic](../../evidence/local/research_20261005/pipeline_verified/region_prototypes_raw241_v2/interpretation.md).
+  The unchanged1200 CLS diagnostic is complete:77 paired episodes/296 regions,
+  AUROC .433959[.340099,.527200], versus NN +.190674[.090203,.300785]. This does not
+  establish useful target discrimination; stop this construction. All1400 descriptors and
+  source/statistical checks passed. Natural-RGB reference-FG intervention completed: AUROC
+  .494905[.400891,.585473], delta+.060946[-.032513,.150309], unresolved. No further CLS
+  variants or expansion are queued. [CLS1200](../../evidence/local/research_20261005/pipeline_verified/object_cls_dev1200_v1/report.md).
+  Part1-only producer operational parity/timing completed on two pairs:~62-64percent saved
+  for the feature-only producer. Complete cold RCG still needs its host score; this is not an
+  end-to-end method speedup. [Audit](../../evidence/local/research_20261005/pipeline_verified/part1_producer_two_pair_audit_v1/interpretation.md).
 - Fixed600matchedcoarsecontrolcompleted:coarseguide64.273121,fine64.625380;
   fineadvantage+.352259[.325705,.544086],allsource600I/Uexact. GPUbatch4+CPU6readers/2writers,
   19.92sinference/4.16sGPUcompute/10.87sCPUscore. Sourcelegacysealinput-keyfailureinfirstattempt

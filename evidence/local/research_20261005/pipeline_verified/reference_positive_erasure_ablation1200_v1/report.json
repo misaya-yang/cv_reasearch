@@ -1,0 +1,210 @@
+{
+  "state": "REFERENCE_POSITIVE_ERASURE_ABLATION_SCORED",
+  "config": {
+    "source": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/object_cls_dev1200_v1",
+    "model_dir": "/root/demo4_cache/models/dinov3-vitl16-timm",
+    "host_root": "/root/autodl-tmp/demo8_local_verification/foris_source",
+    "dependency_sha256": {
+      "model_config": {
+        "path": "/root/demo4_cache/models/dinov3-vitl16-timm/config.json",
+        "sha256": "a71f705b0074e173540d0bdbd3aa940fa8d7d3c6c7f020a683004c46ca605b24"
+      },
+      "model_weights": {
+        "path": "/root/demo4_cache/models/dinov3-vitl16-timm/model.safetensors",
+        "sha256": "45172f209c9583c40538afc26b60a07033e6fcc2e8c30228338e6b2e932e7941"
+      },
+      "timm_eva": {
+        "path": "/root/demo4_cache/env/timm/models/eva.py",
+        "sha256": "a8c9807ef5e8dabc725c1e2a89439760a900d6af6cdafefea18fc121173643a2"
+      },
+      "host_transform": {
+        "path": "/root/autodl-tmp/demo8_local_verification/foris_source/utils/data.py",
+        "sha256": "37211b2f55391694023cad806cdc9ec210944d32346ac1de0f9502df39731b53"
+      },
+      "entry": {
+        "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/reference_positive_erasure_ablation1200_v1/snapshot/scripts/diagnose_reference_positive_erasure1200.py",
+        "sha256": "814584033e79f5952b3a52e1af752b621a87d98c00f0b650c00cd36691b03e64"
+      },
+      "frozen_stats": {
+        "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/reference_positive_erasure_ablation1200_v1/snapshot/scripts/diagnose_object_cls_dev1200.py",
+        "sha256": "cf0783275a7ab2f7a0a762d72a13d8fc76d1e556a03cfd9d0659c39a41e24c1d"
+      },
+      "frozen_CLS": {
+        "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/reference_positive_erasure_ablation1200_v1/snapshot/scripts/diagnose_object_cls_dev241.py",
+        "sha256": "ecdf7d23e996701a343b150c4f4ded64cb5ef0c3b1bbf1b5a43ace0da9a7eb8a"
+      },
+      "wrapper": {
+        "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/reference_positive_erasure_ablation1200_v1/snapshot/src/ics/data.py",
+        "sha256": "7664bfcc0de9a9183296273a3ea57390e00147b82afe626f47bde1bf2383b165"
+      },
+      "package_init": {
+        "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/launch/reference_positive_erasure_ablation1200_v1/snapshot/src/ics/__init__.py",
+        "sha256": "f5f646ff0c339439f0b2511d0e126bdf1db65eba332621dbd06df47545595d2b"
+      }
+    },
+    "intervention": "reference positive: same square+10percent-context box, original natural RGB instead of erasing pixels outside FG",
+    "fixed": "all736 q and332 BG CLS,332 source boxes,77 paired episodes,NN scores,weights/transform/FP32/batch4/sign",
+    "changed_reference_views": 332,
+    "encoder_calls": 83,
+    "GT_geometry_privileged": true,
+    "no_fit_flip_grid_or_BG_change": true,
+    "bootstrap": {
+      "draws": 2000,
+      "rng": "RandomState(0)",
+      "unit": "all1200 connected photographs,1046 groups"
+    },
+    "source_code_sha256": "814584033e79f5952b3a52e1af752b621a87d98c00f0b650c00cd36691b03e64",
+    "source_descriptor_seal_sha256": "669c839c74567c01a4164b7dd910e3b08869da43c3762f5b6daaa1dc8c2333a3",
+    "source_prepared_sha256": "e2d6c9f5d890d0b965652d4673ece1dbf9c79bcdf793127172328e7bd2ce8558",
+    "source_crops_sha256": "cb784106bb599d28e22734448305758c2416bc664040ad60863f2f851be5d6eb",
+    "source_labels_sha256": "b6ea67bea75e530669dc532adba877087d4b10c746c85de6dd520260d0a66a60",
+    "source_report_sha256": "4e14668aacf7cbdb472e09f8889a4b91ef44033598f03400141d5fe3973dff03"
+  },
+  "source_n": 1200,
+  "photo_groups": 1046,
+  "paired_episodes": 77,
+  "primary": {
+    "naturalFG": {
+      "mean": 0.4949051741908885,
+      "ci95": [
+        0.4008913502109705,
+        0.5854733013088276
+      ],
+      "eligible_episodes": 77
+    },
+    "maskedFG": {
+      "mean": 0.4339589775304062,
+      "ci95": [
+        0.34009941957263384,
+        0.5272003345373445
+      ],
+      "eligible_episodes": 77
+    },
+    "NN": {
+      "mean": 0.24328488971346113,
+      "ci95": [
+        0.1628736808706688,
+        0.33292770245114167
+      ],
+      "eligible_episodes": 77
+    }
+  },
+  "natural_minus_masked": {
+    "mean": 0.06094619666048238,
+    "ci95": [
+      -0.03251262315270936,
+      0.15030946913133322
+    ],
+    "eligible_episodes": 77
+  },
+  "natural_vs_NN_and_chance": {
+    "CLS_minus_NN": {
+      "mean": 0.25162028447742735,
+      "ci95": [
+        0.1476864111498258,
+        0.3557145165945164
+      ],
+      "eligible_episodes": 77
+    },
+    "CLS_minus_chance": {
+      "mean": -0.005094825809111522,
+      "ci95": [
+        -0.09910864978902953,
+        0.08547330130882762
+      ],
+      "eligible_episodes": 77
+    }
+  },
+  "natural_folds": {
+    "0": {
+      "eligible_episodes": 19,
+      "episode_auc": {
+        "object_cls": 0.4307017543859649,
+        "stored_nn_mean": 0.17293233082706766
+      },
+      "CLS_minus_NN": 0.2577694235588972
+    },
+    "1": {
+      "eligible_episodes": 19,
+      "episode_auc": {
+        "object_cls": 0.5684210526315789,
+        "stored_nn_mean": 0.19035087719298244
+      },
+      "CLS_minus_NN": 0.3780701754385965
+    },
+    "2": {
+      "eligible_episodes": 21,
+      "episode_auc": {
+        "object_cls": 0.515899470899471,
+        "stored_nn_mean": 0.36494708994708996
+      },
+      "CLS_minus_NN": 0.15095238095238095
+    },
+    "3": {
+      "eligible_episodes": 18,
+      "episode_auc": {
+        "object_cls": 0.46058201058201054,
+        "stored_nn_mean": 0.23148148148148145
+      },
+      "CLS_minus_NN": 0.22910052910052908
+    }
+  },
+  "masked_folds": {
+    "0": {
+      "eligible_episodes": 19,
+      "episode_auc": {
+        "object_cls": 0.40313283208020045,
+        "stored_nn_mean": 0.17293233082706766
+      },
+      "CLS_minus_NN": 0.23020050125313282
+    },
+    "1": {
+      "eligible_episodes": 19,
+      "episode_auc": {
+        "object_cls": 0.5833333333333333,
+        "stored_nn_mean": 0.19035087719298244
+      },
+      "CLS_minus_NN": 0.3929824561403509
+    },
+    "2": {
+      "eligible_episodes": 21,
+      "episode_auc": {
+        "object_cls": 0.40955026455026455,
+        "stored_nn_mean": 0.36494708994708996
+      },
+      "CLS_minus_NN": 0.044603174603174596
+    },
+    "3": {
+      "eligible_episodes": 18,
+      "episode_auc": {
+        "object_cls": 0.33730158730158727,
+        "stored_nn_mean": 0.23148148148148145
+      },
+      "CLS_minus_NN": 0.10582010582010581
+    }
+  },
+  "natural_supplement": {
+    "object_cls": {
+      "region_pooled_auc": 0.5244376459460258,
+      "pixel_mass_weighted_auc": 0.473111141115044,
+      "positive_regions": 378,
+      "negative_regions": 358,
+      "fixed_zero_margin_TP": 251,
+      "fixed_zero_margin_FP": 225
+    },
+    "stored_nn_mean": {
+      "region_pooled_auc": 0.3590420028967515,
+      "pixel_mass_weighted_auc": 0.1889570790884121,
+      "positive_regions": 378,
+      "negative_regions": 358,
+      "fixed_zero_margin_TP": 191,
+      "fixed_zero_margin_FP": 256
+    }
+  },
+  "all736_q_and332_BG_fixed_source_hashes_verified": true,
+  "all736_maskedFG_margin_and77_AUC_CI_exact": true,
+  "new_reference_views": 332,
+  "GT_geometry_privileged": true,
+  "complete_method_result": false,
+  "result_boundary": "one reference-positive-erasure intervention only; no sign flip,cohort selection,BG change,fit or grid"
+}
