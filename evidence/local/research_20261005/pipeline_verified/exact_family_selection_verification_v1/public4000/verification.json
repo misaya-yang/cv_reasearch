@@ -1,0 +1,301 @@
+{
+  "state": "EXACT_FAMILY_MAIN_RECIPE_INDEPENDENTLY_VERIFIED",
+  "n": 4000,
+  "K": 11,
+  "recipes_evaluated": 11534336,
+  "recipe": {
+    "origin": 8,
+    "a": 32,
+    "b": 16,
+    "cost": 3,
+    "score": 63.06230456717831,
+    "origin_method": "claude_official_4000_existing_masks::conservative_delete",
+    "add_methods": [
+      "frozen_subtoken4000_v1::fine.rcg64"
+    ],
+    "delete_methods": [
+      "frozen_subtoken4000_v1::fine.rcg16.control"
+    ]
+  },
+  "outer_complete_mask_producer_count_proxy": 3,
+  "cost_definition": "1+popcount(a|b): distinct complete-mask producer count proxy; not measured seconds or a sparsity theorem",
+  "main_arm": "recipe3",
+  "scores": {
+    "frozen_subtoken4000_v1::native": 60.93174091837449,
+    "frozen_subtoken4000_v1::rcg": 62.33367132610439,
+    "frozen_subtoken4000_v1::mean.control": 62.51297197709237,
+    "frozen_subtoken4000_v1::rcg64.control": 62.29793711712783,
+    "frozen_subtoken4000_v1::fine.rcg16.control": 62.709099800552,
+    "frozen_subtoken4000_v1::fine.rcg64": 62.65161728378793,
+    "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control": 62.744357299397045,
+    "claude_official_4000_existing_masks::RCG_count_matched_delete": 62.17388785426425,
+    "claude_official_4000_existing_masks::conservative_delete": 60.879277977221626,
+    "claude_official_4000_existing_masks::external_mean__delete": 61.85325102842445,
+    "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG": 61.940505505697004,
+    "selected": 63.06230456717831
+  },
+  "contrasts": {
+    "frozen_subtoken4000_v1::native": {
+      "gain": 2.1305636488038218,
+      "ci95": [
+        1.7483997720411166,
+        2.4926892306411035
+      ],
+      "up": 2349,
+      "down": 1609,
+      "tie": 42
+    },
+    "frozen_subtoken4000_v1::rcg": {
+      "gain": 0.728633241073922,
+      "ci95": [
+        0.5753390673944745,
+        0.890289175083984
+      ],
+      "up": 2640,
+      "down": 1267,
+      "tie": 93
+    },
+    "frozen_subtoken4000_v1::mean.control": {
+      "gain": 0.5493325900859389,
+      "ci95": [
+        0.29868145900030874,
+        0.7673271713179387
+      ],
+      "up": 2512,
+      "down": 1391,
+      "tie": 97
+    },
+    "frozen_subtoken4000_v1::rcg64.control": {
+      "gain": 0.7643674500504787,
+      "ci95": [
+        0.6014256069067313,
+        0.9813387864137748
+      ],
+      "up": 2707,
+      "down": 1159,
+      "tie": 134
+    },
+    "frozen_subtoken4000_v1::fine.rcg16.control": {
+      "gain": 0.3532047666263054,
+      "ci95": [
+        0.18997607429078922,
+        0.5013151398294685
+      ],
+      "up": 1917,
+      "down": 1984,
+      "tie": 99
+    },
+    "frozen_subtoken4000_v1::fine.rcg64": {
+      "gain": 0.41068728339038074,
+      "ci95": [
+        0.24240033915524464,
+        0.620334260074414
+      ],
+      "up": 1978,
+      "down": 1782,
+      "tie": 240
+    },
+    "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control": {
+      "gain": 0.31794726778126403,
+      "ci95": [
+        0.07168975597138658,
+        0.5274974428798102
+      ],
+      "up": 2139,
+      "down": 1766,
+      "tie": 95
+    },
+    "claude_official_4000_existing_masks::RCG_count_matched_delete": {
+      "gain": 0.8884167129140579,
+      "ci95": [
+        0.5637984242716261,
+        1.2565873311677407
+      ],
+      "up": 2653,
+      "down": 1240,
+      "tie": 107
+    },
+    "claude_official_4000_existing_masks::conservative_delete": {
+      "gain": 2.1830265899566825,
+      "ci95": [
+        1.5017920053911484,
+        2.9212923393081303
+      ],
+      "up": 2878,
+      "down": 987,
+      "tie": 135
+    },
+    "claude_official_4000_existing_masks::external_mean__delete": {
+      "gain": 1.2090535387538566,
+      "ci95": [
+        0.7065213105582684,
+        1.7392362986571779
+      ],
+      "up": 2661,
+      "down": 1226,
+      "tie": 113
+    },
+    "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG": {
+      "gain": 1.1217990614813047,
+      "ci95": [
+        0.6621743611738251,
+        1.630371354220791
+      ],
+      "up": 2680,
+      "down": 1210,
+      "tie": 110
+    }
+  },
+  "folds": {
+    "0": {
+      "n": 1000,
+      "scores": {
+        "frozen_subtoken4000_v1::native": 58.84097827414557,
+        "frozen_subtoken4000_v1::rcg": 60.10543467010901,
+        "frozen_subtoken4000_v1::mean.control": 60.40256815419303,
+        "frozen_subtoken4000_v1::rcg64.control": 60.10812139866647,
+        "frozen_subtoken4000_v1::fine.rcg16.control": 60.4622923176685,
+        "frozen_subtoken4000_v1::fine.rcg64": 60.5238223809789,
+        "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control": 60.61024525763358,
+        "claude_official_4000_existing_masks::RCG_count_matched_delete": 59.851081916491154,
+        "claude_official_4000_existing_masks::conservative_delete": 58.5975819333636,
+        "claude_official_4000_existing_masks::external_mean__delete": 59.74483730061911,
+        "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG": 59.843362915933795,
+        "selected": 60.93351818616257
+      },
+      "gain_vs_producers": {
+        "frozen_subtoken4000_v1::native": 2.0925399120170027,
+        "frozen_subtoken4000_v1::rcg": 0.8280835160535602,
+        "frozen_subtoken4000_v1::mean.control": 0.5309500319695459,
+        "frozen_subtoken4000_v1::rcg64.control": 0.8253967874961035,
+        "frozen_subtoken4000_v1::fine.rcg16.control": 0.47122586849407355,
+        "frozen_subtoken4000_v1::fine.rcg64": 0.40969580518367366,
+        "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control": 0.3232729285289935,
+        "claude_official_4000_existing_masks::RCG_count_matched_delete": 1.082436269671419,
+        "claude_official_4000_existing_masks::conservative_delete": 2.335936252798973,
+        "claude_official_4000_existing_masks::external_mean__delete": 1.1886808855434623,
+        "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG": 1.0901552702287773
+      }
+    },
+    "1": {
+      "n": 1000,
+      "scores": {
+        "frozen_subtoken4000_v1::native": 63.507420964866604,
+        "frozen_subtoken4000_v1::rcg": 64.66534004584965,
+        "frozen_subtoken4000_v1::mean.control": 65.19887600622639,
+        "frozen_subtoken4000_v1::rcg64.control": 64.74755038498492,
+        "frozen_subtoken4000_v1::fine.rcg16.control": 65.07354678202333,
+        "frozen_subtoken4000_v1::fine.rcg64": 65.05351886748014,
+        "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control": 65.41083986367092,
+        "claude_official_4000_existing_masks::RCG_count_matched_delete": 64.46570189546247,
+        "claude_official_4000_existing_masks::conservative_delete": 63.06104681416828,
+        "claude_official_4000_existing_masks::external_mean__delete": 63.83738103686368,
+        "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG": 64.0535677499303,
+        "selected": 65.67709611308479
+      },
+      "gain_vs_producers": {
+        "frozen_subtoken4000_v1::native": 2.1696751482181824,
+        "frozen_subtoken4000_v1::rcg": 1.0117560672351402,
+        "frozen_subtoken4000_v1::mean.control": 0.47822010685840155,
+        "frozen_subtoken4000_v1::rcg64.control": 0.9295457280998676,
+        "frozen_subtoken4000_v1::fine.rcg16.control": 0.6035493310614584,
+        "frozen_subtoken4000_v1::fine.rcg64": 0.6235772456046504,
+        "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control": 0.26625624941387116,
+        "claude_official_4000_existing_masks::RCG_count_matched_delete": 1.2113942176223134,
+        "claude_official_4000_existing_masks::conservative_delete": 2.616049298916508,
+        "claude_official_4000_existing_masks::external_mean__delete": 1.839715076221104,
+        "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG": 1.6235283631544917
+      }
+    },
+    "2": {
+      "n": 1000,
+      "scores": {
+        "frozen_subtoken4000_v1::native": 61.2243800982742,
+        "frozen_subtoken4000_v1::rcg": 62.600858654424954,
+        "frozen_subtoken4000_v1::mean.control": 62.59601926842382,
+        "frozen_subtoken4000_v1::rcg64.control": 61.978363346145414,
+        "frozen_subtoken4000_v1::fine.rcg16.control": 62.99528744730007,
+        "frozen_subtoken4000_v1::fine.rcg64": 62.29140413925367,
+        "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control": 62.84680722815632,
+        "claude_official_4000_existing_masks::RCG_count_matched_delete": 62.807909051882085,
+        "claude_official_4000_existing_masks::conservative_delete": 61.813988753043326,
+        "claude_official_4000_existing_masks::external_mean__delete": 62.773032821675365,
+        "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG": 62.77343211914872,
+        "selected": 62.92777672807458
+      },
+      "gain_vs_producers": {
+        "frozen_subtoken4000_v1::native": 1.7033966298003804,
+        "frozen_subtoken4000_v1::rcg": 0.32691807364962955,
+        "frozen_subtoken4000_v1::mean.control": 0.33175745965076686,
+        "frozen_subtoken4000_v1::rcg64.control": 0.949413381929169,
+        "frozen_subtoken4000_v1::fine.rcg16.control": -0.06751071922548846,
+        "frozen_subtoken4000_v1::fine.rcg64": 0.6363725888209117,
+        "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control": 0.08096949991826108,
+        "claude_official_4000_existing_masks::RCG_count_matched_delete": 0.1198676761924986,
+        "claude_official_4000_existing_masks::conservative_delete": 1.1137879750312578,
+        "claude_official_4000_existing_masks::external_mean__delete": 0.15474390639921864,
+        "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG": 0.15434460892586088
+      }
+    },
+    "3": {
+      "n": 1000,
+      "scores": {
+        "frozen_subtoken4000_v1::native": 60.15418433621163,
+        "frozen_subtoken4000_v1::rcg": 61.96305193403392,
+        "frozen_subtoken4000_v1::mean.control": 61.85442447952624,
+        "frozen_subtoken4000_v1::rcg64.control": 62.35771333871452,
+        "frozen_subtoken4000_v1::fine.rcg16.control": 62.30527265521608,
+        "frozen_subtoken4000_v1::fine.rcg64": 62.73772374743899,
+        "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control": 62.10953684812737,
+        "claude_official_4000_existing_masks::RCG_count_matched_delete": 61.570858553221264,
+        "claude_official_4000_existing_masks::conservative_delete": 60.04449440831129,
+        "claude_official_4000_existing_masks::external_mean__delete": 61.05775295453961,
+        "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG": 61.09165923777522,
+        "selected": 62.71082724139131
+      },
+      "gain_vs_producers": {
+        "frozen_subtoken4000_v1::native": 2.556642905179679,
+        "frozen_subtoken4000_v1::rcg": 0.7477753073573865,
+        "frozen_subtoken4000_v1::mean.control": 0.8564027618650698,
+        "frozen_subtoken4000_v1::rcg64.control": 0.3531139026767889,
+        "frozen_subtoken4000_v1::fine.rcg16.control": 0.4055545861752279,
+        "frozen_subtoken4000_v1::fine.rcg64": -0.026896506047684454,
+        "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control": 0.6012903932639375,
+        "claude_official_4000_existing_masks::RCG_count_matched_delete": 1.1399686881700433,
+        "claude_official_4000_existing_masks::conservative_delete": 2.66633283308002,
+        "claude_official_4000_existing_masks::external_mean__delete": 1.653074286851698,
+        "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG": 1.619168003616089
+      }
+    }
+  },
+  "photo_groups": 2742,
+  "all_selected_full_masks_replayed_and_sealed_bit_exact": true,
+  "all_membership_selected_IU_exact": true,
+  "all_selected_class_IU_exact": true,
+  "all_original_single_producer_IU_exact": true,
+  "main_score_CI_fold_max_error_pp": 0.0,
+  "source_files_sha256": {
+    "manifest.json": "da18850902e7500411bd599690b606041268278f19765139422ef7d277aec503",
+    "arms.json": "33d47c12e8a6f0c4890807d2e22ef0a71f540c172061c20dfa4d58f9ee2dae14",
+    "optimization.json": "dee05c31a4763d182da9117bb79f343625eb5af5a57b41b7447220b82e5cc390",
+    "histogram_complete.json": "8a8c2a06f50ae82645364bde6b5d22470aad00c9f8ba588d8403ecc26ce8d6a5",
+    "patterns.npy": "6a91e1297ef4b60fc2567091582ca42ec2f49729824469c6443ed60453dd4377",
+    "class_patterns.npy": "c58361e0ff8e3f17aacc33b726f4a45cadee5de54d16509a2c4921edb4ef2612",
+    "baseline_counts.npz": "f7e8d17071af5ba419172341e6d97b26d7e8ecfeffd61ee5618b5c076a8a23bc",
+    "report.json": "32b1b346d1bec60c7326dfbaa0664409500a2ef944c15a8695dc74ae34a4b378",
+    "final_counts.npz": "28e6e9cea5588093a303d6e4a996b167e780bad3b56d04ec2825f94a24597bc1",
+    "final_recipes.json": "6f0e75d3b378f71ea7f031e6fac3573a877d91c00a0517026306fede23cd7d11",
+    "finalists_sealed.json": "2760c7a51f7f4b163474580b7e172c45d8cc9741d58f62f636024b416f435743"
+  },
+  "verifier_sha256": "27588d9f1dfa16c30d606046adc71effac6c9c7e81eca8aecc401d8abc903283",
+  "bootstrap": {
+    "draws": 2000,
+    "rng": "RandomState(0)",
+    "unit": "connected support/query photographs"
+  },
+  "selection_boundary": "Fixed recipe selected with GT-labelled DEV; paired intervals condition on this selected recipe and are not selection-adjusted or fresh confirmation",
+  "query_GT_role": "independent score of only the already selected main recipe and original complete producers",
+  "new_search": false,
+  "new_encoder": false,
+  "seconds": 22.77430401928723
+}

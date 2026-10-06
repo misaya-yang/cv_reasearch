@@ -1,0 +1,54 @@
+{
+  "recipes": [
+    {
+      "origin": 6,
+      "a": 0,
+      "b": 0,
+      "cost": 1,
+      "score": 62.744357299397066,
+      "origin_method": "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control",
+      "add_methods": [],
+      "delete_methods": []
+    },
+    {
+      "origin": 5,
+      "a": 128,
+      "b": 0,
+      "cost": 2,
+      "score": 62.99009474528157,
+      "origin_method": "frozen_subtoken4000_v1::fine.rcg64",
+      "add_methods": [
+        "claude_official_4000_existing_masks::conservative_delete"
+      ],
+      "delete_methods": []
+    },
+    {
+      "origin": 8,
+      "a": 32,
+      "b": 0,
+      "cost": 2,
+      "score": 62.99009474528157,
+      "origin_method": "claude_official_4000_existing_masks::conservative_delete",
+      "add_methods": [
+        "frozen_subtoken4000_v1::fine.rcg64"
+      ],
+      "delete_methods": []
+    },
+    {
+      "origin": 8,
+      "a": 32,
+      "b": 16,
+      "cost": 3,
+      "score": 63.06230456717831,
+      "origin_method": "claude_official_4000_existing_masks::conservative_delete",
+      "add_methods": [
+        "frozen_subtoken4000_v1::fine.rcg64"
+      ],
+      "delete_methods": [
+        "frozen_subtoken4000_v1::fine.rcg16.control"
+      ]
+    }
+  ],
+  "selection": "all Pareto best-score ties at each nondominated cost; globally selected by exact score then cost",
+  "GT_selection": "global DEV"
+}

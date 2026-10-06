@@ -1,0 +1,59 @@
+{
+  "recipes": [
+    {
+      "origin": 12,
+      "a": 0,
+      "b": 0,
+      "cost": 1,
+      "score": 42.903887752574335,
+      "origin_method": "frozen_fine_raw_dev241_v1::model.raw_nn",
+      "add_methods": [],
+      "delete_methods": []
+    },
+    {
+      "origin": 12,
+      "a": 512,
+      "b": 512,
+      "cost": 2,
+      "score": 62.654343093573864,
+      "origin_method": "frozen_fine_raw_dev241_v1::model.raw_nn",
+      "add_methods": [
+        "claude_official_4000_existing_masks::external_mean__delete"
+      ],
+      "delete_methods": [
+        "claude_official_4000_existing_masks::external_mean__delete"
+      ]
+    },
+    {
+      "origin": 12,
+      "a": 256,
+      "b": 512,
+      "cost": 3,
+      "score": 62.75019102527839,
+      "origin_method": "frozen_fine_raw_dev241_v1::model.raw_nn",
+      "add_methods": [
+        "claude_official_4000_existing_masks::conservative_delete"
+      ],
+      "delete_methods": [
+        "claude_official_4000_existing_masks::external_mean__delete"
+      ]
+    },
+    {
+      "origin": 12,
+      "a": 256,
+      "b": 528,
+      "cost": 4,
+      "score": 62.77389639649697,
+      "origin_method": "frozen_fine_raw_dev241_v1::model.raw_nn",
+      "add_methods": [
+        "claude_official_4000_existing_masks::conservative_delete"
+      ],
+      "delete_methods": [
+        "frozen_subtoken4000_v1::fine.rcg16.control",
+        "claude_official_4000_existing_masks::external_mean__delete"
+      ]
+    }
+  ],
+  "selection": "all Pareto best-score ties at each nondominated cost; globally selected by exact score then cost",
+  "GT_selection": "global DEV"
+}

@@ -1,0 +1,54 @@
+{
+  "recipes": [
+    {
+      "origin": 12,
+      "a": 0,
+      "b": 0,
+      "cost": 1,
+      "score": 63.14920090565707,
+      "origin_method": "size_cut_composition_cached4000_v2::fixed_size_cut_on_foldtemp_fine16.control",
+      "add_methods": [],
+      "delete_methods": []
+    },
+    {
+      "origin": 8,
+      "a": 2048,
+      "b": 0,
+      "cost": 2,
+      "score": 63.16323739629836,
+      "origin_method": "claude_official_4000_existing_masks::conservative_delete",
+      "add_methods": [
+        "size_cut_composition_cached4000_v2::fixed_size_cut_on_foldtemp_fine16.control"
+      ],
+      "delete_methods": []
+    },
+    {
+      "origin": 12,
+      "a": 256,
+      "b": 0,
+      "cost": 2,
+      "score": 63.16323739629836,
+      "origin_method": "size_cut_composition_cached4000_v2::fixed_size_cut_on_foldtemp_fine16.control",
+      "add_methods": [
+        "claude_official_4000_existing_masks::conservative_delete"
+      ],
+      "delete_methods": []
+    },
+    {
+      "origin": 8,
+      "a": 2048,
+      "b": 16,
+      "cost": 3,
+      "score": 63.23854065934532,
+      "origin_method": "claude_official_4000_existing_masks::conservative_delete",
+      "add_methods": [
+        "size_cut_composition_cached4000_v2::fixed_size_cut_on_foldtemp_fine16.control"
+      ],
+      "delete_methods": [
+        "frozen_subtoken4000_v1::fine.rcg16.control"
+      ]
+    }
+  ],
+  "selection": "all Pareto best-score ties at each nondominated cost; globally selected by exact score then cost",
+  "GT_selection": "global DEV"
+}

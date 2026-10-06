@@ -1,6 +1,6 @@
 # Status
 
-Updated 2026-10-06. This file records current state; detailed evidence is linked, not duplicated.
+Updated 2026-10-06 UTC. This file records current state; detailed evidence is linked, not duplicated.
 
 ## Now
 
@@ -55,13 +55,31 @@ Updated 2026-10-06. This file records current state; detailed evidence is linked
   Exact4000 A*/B* selection runs before the much larger DEV library. Original rawNN4000 and
   count-only delete-p4000 masks are absent and are not fabricated. Label-fitted supplied methods
   are included in a separately marked extended setting.
-- Fixed direct-MEAN fine1200 is validated and waiting for GPU availability. Its retained kernels
-  permit later scalar-family reuse. The supplied uniform-tau15 size-cut method requires2000
-  missing fields; a fused producer successor is being prepared to avoid repeated four-shift
-  encoding. A separately named control applies the fixed fresh600 thresholds to all existing
-  fold-temperature fine16 fields, preserving their source tau; it is not the supplied primary.
-  Existing peer Opus stream evaluates fixed fresh600-trained settings on groupsB/C,600 draws
-  each; its queue is read-only and must not be duplicated or changed.
+- Exact13-method extended4000 search completed218,103,808 recipes: highest63.238541,
+  native+2.306800[1.886799,2.768258], MEAN+.725569[.400378,1.094699], but strongest
+  complete sizecut+.089340[-.086422,.299029] is unresolved. Global recipe
+  `C=(conservative_delete & fine16) | (~conservative_delete & sizecut_foldtemp)`.
+  All masks and independent statistics passed. Six size cuts use allfresh600 labels,
+  including examples/folds contained here; this extended result is not uniformtau15 primary.
+  [Result](../../evidence/local/research_20261005/pipeline_verified/exact_family_selection_v1/public4000_v4_extended/report.md).
+- Strict12-method three-fold recipe selection/held-fold readout completed62.964699,
+  native+2.032958[1.657151,2.387729], MEAN+.451727[.233044,.659919], fine16
+  +.255599[.094337,.399785]. Global strict12 optimum63.064818; scalar graft adds only
+  .002513 to the previous11-library optimum, despite its standalone MEAN gain. Strict vs
+  label-fitted extended settings and globalDEV vs heldfold recipe selection remain separate.
+- Complete cached size-cut control4000=63.149201, native+2.217460[1.724180,2.760573],
+  MEAN+.636229[.248187,1.063334], fine16+.440101[.088318,.831264]. Original fold temps
+  retained, no encoder; all4000 source masks and old6baseline I/U exact. Frozen uniformtau15
+  primary matches only2000 currently and must be completed without changing tau.
+- Direct-MEAN1200 child71246/start955120027 is active; original healthy queue56334 preserved.
+  A28.113s/15-point co-run window measuredGPU100percent throughout and~6.1GB/32GB.
+  Uniformtau15 complete4000 successor75010/start955212709 is already launched and waits
+  on its seal:3case parity ->reuse2000/encode missing2000 ->CPU4000 six-baseline score.
+  Keep~3.28GB FP32 cosine affinities. No duplicateMEAN run, reusable feature deletion,
+  or changes/signals to the read-only peerC71178. Source plan validation passed before launch.
+- DEV241 fixed rawNN-origin shared subset reached62.773896 globally, but heldfold61.284097
+  is unresolved versus native and fine16. This14-method subset is not the full187-method
+  library; public4000 rawNN is absent, so the frozen raw-dependent recipe is not substituted.
 - Original DEV241 raw-origin accounting completed without new inference. Frozen fine64=60.515912,
   native=59.074825, raw NN=42.903888 and complete INSID3 CRF=55.006020. Fine64-native
   +1.441087[-.754819,3.052193]; fine64-coarse64 +.387231[.095634,.753852]. RCG/MEAN/fine16

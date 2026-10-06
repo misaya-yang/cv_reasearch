@@ -1340,3 +1340,87 @@ Original6baseline4000I/U, per-episode four-edit closure, all stored score/CI/fol
 independently reproduced exactly in3.70s. Sampling repeats retained; benchmark reuse not confirmation.
 [Report](research_20261005/pipeline_verified/mean_fine_residual_transfer4000_v1/report.md),
 [Independent reconstruction](research_20261005/pipeline_verified/mean_fine_residual_transfer4000_v1/verification.json).
+
+
+### 2026-10-06 UTC: exact complete-mask A*/B* library selection
+
+Public4000 preserved draws,seed0,1024,80classes/2742connected-photo groups; all benchmark
+reuse,not independent confirmation. For each allowed complete prior P0 and complete library
+mask Si, Ai=Si\P0, Bi=P0\Si. Enumerate every allowed union of Ai and Bi with
+C=(P0 union selectedAi) minus selectedBi. Membership-by-class integer histograms and subset/
+superset zeta sums compute actual class-summed I/U for each recipe; no pooled purity surrogate.
+Single producers are included exactly. Global fitting uses GT; inference uses one frozen global
+Boolean recipe without per-query GT routing. Reported global CIs are conditional on selected
+DEV recipes and do not adjust for search. Outer complete-mask producer count is a complexity
+proxy, not atomic-component count or measured total runtime.
+
+11-source-distinct library:11,534,336 recipes,CPU4 histogram34.54s/search3.404s.
+Best63.062305: native+2.130564[1.748400,2.492689], MEAN+.549333[.298681,.767327],
+fine16+.353205[.189976,.501315]. Lowest-count highest recipe3 uses
+C=(conservative_delete & fine16) | (~conservative_delete & fine64). Outer-count1/2/3
+Pareto scores62.744357/62.990095/63.062305. Root independent full enumeration6.025s
+returns the same highest recipe/score. All finalist masks/I/U and independent selected-recipe
+score/CI/fold reconstruction exact.
+[Report](research_20261005/pipeline_verified/exact_family_selection_v1/public4000/report.md),
+[Independent verification](research_20261005/pipeline_verified/exact_family_selection_verification_v1/public4000/verification.md).
+
+12-source-distinct strict library adds scalar residual transfer:50,331,648 recipes,11.837s.
+Global best63.064818, only+.002513 over the previous optimum despite the scalar component's
+standalone MEAN-relative+.331565. New recipe C=(fine16 & scalar_graft) | (~fine16 & fine64).
+Global-native+2.133077[1.772388,2.463718]; MEAN+.551846[.394417,.710822].
+Three-fold recipe selection/held-fold readout with photo exclusion gives actual complete
+62.964699, native+2.032958[1.657151,2.387729], MEAN+.451727[.233044,.659919],
+fine16+.255599[.094337,.399785]. This is fold-held recipe evaluation, not new-data confirmation.
+
+13-source-distinct extended library adds fixed size-cut on original fold-temperature fine16:
+218,103,808 recipes,94.118s. Best63.238541, C=(conservative_delete & fine16) |
+(~conservative_delete & sizecut_foldtemp). Native+2.306800[1.886799,2.768258],
+MEAN+.725569[.400378,1.094699], fine16+.529441[.270524,.830262], but best complete
+sizecut+.089340[-.086422,.299029] remains unresolved. Native fold gains2.483,2.297,2.064,2.384.
+The six size cuts were fitted on all fresh600, which are included in these4000; this is an
+explicit label-fitted extended setting, not the supplied uniformtau15 primary. Extended
+train3/held1 recipe evaluation63.102199, native+2.170458[1.730749,2.628629],
+sizecut-.047002[-.248330,.149315]; producer calibration already includes held-fold labels.
+All finalist masks and source13 I/U independently exact, score/CI/fold differences<=7.1e-15.
+[Extended report](research_20261005/pipeline_verified/exact_family_selection_v1/public4000_v4_extended/report.md),
+[Verification](research_20261005/pipeline_verified/exact_family_selection_verification_v1/public4000_v4_extended/verification.md).
+
+Class-macro four-way edit accounting of global12: addTP+2.345785/deleteTP-2.063222/
+deleteFP+3.223777/addFP-1.373264 points; global13:+2.877314/-2.034636/+3.361189/
+-1.897067. Each uses native classJ and final classU and closes exactly to the measured gain;
+these terms describe pixel changes, not independent causal effects.
+
+OriginalDEV241 common rawNN remains an accounting origin: shared public13 methods plusrawO
+are a declared14-method subset, not a full187-library search. FixedrawO global strict/extended
+16,777,216/67,108,864 recipes reach62.773896; strictheldfold61.284097, native
++2.209272[-.023515,3.778239], fine16-.216565[-2.276171,.993915], unresolved. Its recipe
+requires actual rawO on3953 public draws/34,591,588 potentially changed pixels; rawO4000 is
+missing and no alternative origin is substituted.
+
+### 2026-10-06 UTC: frozen size-cut cache replay and continuous GPU successor
+
+Fixed allfresh600 six-level recipe applied to original fold-temperature fine16 gives full4000
+63.149201: native+2.217460[1.724180,2.760573], MEAN+.636229[.248187,1.063334],
+fine16+.440101[.088318,.831264], fine64+.497584[.213799,.849593]. PureCUDA finalizer
+18.687s/peak135,266,816bytes,no encoder; all original>.5 masks pixel-exact and all6baseline
+I/U exact. Independent score/2000-photo-bootstrap arithmetic exact. A first launcher failed
+with a quoting SyntaxError before any inference; immutable failure log retained and v2 fixed.
+Uniformtau15 matching2000(primary on folds1/2 only)=64.304037; not a complete4000 result.
+Original crossfold60065.44 is distinct from global60065.86; exact offline fitting policy of
+the crossfold report is missing, and it was not silently reconstructed by new fitting.
+
+Original DirectMEAN1200 was automatically started by prepared supervisor56334 at peerB-to-C
+GPU release; root's attempt to supersede only a waiting supervisor was rejected by the
+identity/state guard once it was active. No signals sent. Preserve healthy child71246 and
+original arm/kernel cache. Real28.113s/15-point co-run sample measured100percent every point
+and6049..6277MiB/32760MiB; MEAN20-case interval1.518s/draw, no observed write-I/O bottleneck.
+This is a measured window, not a claim of always100percent or free parallel speedup.
+[Resource audit](research_20261005/pipeline_verified/co_run_resource_audit_v1/report.md).
+
+Validated successor supervisor75010/start955212709,launch/uniform_tau15_sizecut4000_v2:
+CPUwait originalMEAN1200 seal ->3case producer parity ->reuse matching2000 plus encode
+missing2000 uniformtau15 ->CPU4000 exact6baseline comparison. No duplicateMEAN1200 run;
+missing2000 usecached600 plus1400 validatedPart1-only prefix pairs. Keep~3.28GB FP32
+cosine affinities. PeerC71178 is explicitly read-only by process identity, not adopted/owned
+or signaled. Frozen primary settings and all600 label-fitting scope preserved. No reusable
+feature deletion. Complete uniformtau15 primary4000 score remains pending.
