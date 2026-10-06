@@ -1,0 +1,35 @@
+{
+  "id": "reference_constellation_local_v2",
+  "version": 2,
+  "state": "implemented; synthetic_checks_pending; real_segmentation_unmeasured",
+  "parent": "reference_heldout_landmark_layout_v1; reference_constellation.py retained unchanged",
+  "single_change": "Final fusion is limited to the positive support of the union of accepted warped foreground coverage.",
+  "formula": "D={i:prior_i>0}; z_i=(1-w)*clip(base_i,0,1)+w*prior_i if i in D, otherwise z_i=base_i. w is the original geometry_weight=0.5.",
+  "local_domain": "Union of positive warped reference foreground coverage from retained poses, including fractional bilinear coverage. No bounding-box expansion, dilation, new threshold, or new parameter.",
+  "preserved": [
+    "v1 reference clustering, foreground purity, landmark selection and weighting",
+    "v1 part responses, peaks, pose proposals, held-out validation and NMS",
+    "all v1 Config values and token-grid geometry; no original-aspect-ratio restoration",
+    "v1 exact final arithmetic inside the local domain",
+    "bilinear1024 align_corners=False then strict >0.5 readout"
+  ],
+  "controls": ["unchanged global v1", "original MEAN base", "clipped MEAN base", "v1 bag-mode field", "accepted warped prior"],
+  "predictions": {
+    "mathematical": "Outside D the base field is preserved value-for-value, including values outside [0,1]. No accepted pose gives D empty and retains the whole base.",
+    "conditional": "A correct base instance outside accepted warped support is not globally suppressed merely because another pose was accepted.",
+    "not_claimed": ["semantic rejection of pose-unsupported distractors", "real mIoU improvement", "real runtime", "geometry transfer across aspect changes", "novelty"]
+  },
+  "counterexamples": [
+    "Pose-unsupported false targets present in the base are now preserved as well.",
+    "An accepted wrong pose can still add false foreground within its warped silhouette.",
+    "Partial coverage can still reduce the base inside D and delete a correct boundary.",
+    "Reference/query aspect mismatch, articulation and multi-instance reference landmark issues are inherited unchanged."
+  ],
+  "inputs": ["aligned frozen cached q/r", "complete reference coverage", "same episode MEAN continuous base"],
+  "input_exposure": "No query GT/class/fold/extra encoder invocation",
+  "extra_cpu_cost": "One reused v1 prediction plus O(N) masking/copy; controls reuse that same pose calculation. Actual complete cost remains unmeasured.",
+  "checks": ["check_local.py/local_check.json", "check_runner.py/runner_check.json"],
+  "source": "../../../../src/ics/methods/reference_constellation_local.py",
+  "runner": "../../../../scripts/run_reference_constellation_local.py",
+  "planned_comparison": "Primary agent will bind to the same authorized real 600 episodes and compare v2 with fixed global v1, same-rendering base and bag controls. No real run performed by this local worker."
+}

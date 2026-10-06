@@ -1,0 +1,60 @@
+{
+  "id": "pro_m2_reference_relations_cached_v0",
+  "state": "implemented_and_small_math_checked; real_segmentation_unmeasured",
+  "independent_method_count": 1,
+  "pro_definition": "User-provided Pro M2 report, lines 388-519; source document is not bundled in this repository.",
+  "input_contract": [
+    "cached normalized q/r features with caller-bound producer",
+    "complete reference coverage",
+    "caller-bound raw pre-CRF source score; default minmax floor1e-6"
+  ],
+  "not_claimed": [
+    "full RGB Pro method reproduced",
+    "historical quantized cache equals new FP32 encoding",
+    "real segmentation gain",
+    "real runtime or minute budget"
+  ],
+  "fixed_recipe": {
+    "roles": 32,
+    "kmeans_maxiter": 20,
+    "role_topk": 2,
+    "role_tau": 0.07,
+    "feature_neighbors": 20,
+    "product_mix": 0.1,
+    "zero_tolerance": 1e-10,
+    "raw_clip": 2.0,
+    "interaction_lambda": 0.9,
+    "fixed_point_maxiter": 250,
+    "fixed_point_atol": 1e-06,
+    "reference_block_width": 8,
+    "affinity_batch": 256
+  },
+  "arms": [
+    "signed",
+    "zero",
+    "positive",
+    "absolute",
+    "pair_independent",
+    "block"
+  ],
+  "output_keys": [
+    "field",
+    "zero_control",
+    "positive_control",
+    "absolute_control",
+    "pair_independent_control",
+    "block_control",
+    "info"
+  ],
+  "zero_arm": "J=0; t=s exactly, never sigmoid field or clamped field",
+  "solver": "synchronous z=sigmoid(s-.5+1.8*J@(2*z-1)); t=s+1.8*J@(2*z-1)",
+  "certificate": "max fixedpoint residual /(1-lambda*maximum absolute row sum)",
+  "renderer": "FP32 bilinear64->1024 >.5, binary bilinear->original >.5; align_corners=False",
+  "cpu_cost": "dictionary O(20*(Nr+Nq)*32*D); exact mutual20 O((Nr^2+Nq^2)*D), blockwise memory; no new encoder",
+  "implementation_convention": "farthest-point first seed combined R/Q token0; unspecified in supplied prose, disclosed",
+  "source": "src/ics/methods/pro_reference_relations.py",
+  "source_sha256": "46903c790c8b29ca34fde3b1af5bdba3a33b6d19d1d7dfd8d6567643513e0baf",
+  "checks": "check_math.py and math_check.json; only small CPU synthetic checks",
+  "real_episodes": 0,
+  "next_actual_evidence": "root binds cache score/feature producer and geometry, deploys six same-information fields with predictions sealed before separate GT scoring"
+}
