@@ -209,7 +209,7 @@ def infer(args):
         row['occurrence_id'] = f'{index:06d}'
         row.setdefault('key', f"{row['fold']}_{row.get('e', index)}_{row['c']}")
         path_keys = ('feature_export','packet_export','base_field_export')
-        if backend == 'prepared' and 'color_bottleneck' in prepared_methods:
+        if backend == 'prepared' and any(name in prepared_methods for name in ('color_bottleneck','mean_rgb_potts')):
             path_keys += ('query_rgb_export','query_image_export')
         for key in path_keys:
             if row.get(key):
@@ -217,9 +217,17 @@ def infer(args):
                 if not Path(row[key]).is_file():
                     raise FileNotFoundError(row[key])
         row.setdefault('base_field_key', args.base_key)
-        if backend == 'prepared' and 'color_bottleneck' in prepared_methods:
+        if backend == 'prepared' and any(name in prepared_methods for name in ('color_bottleneck','mean_rgb_potts')):
             if not row.get('query_rgb_export') and not row.get('query_image_export'):
                 raise ValueError('Color method requires bound query_rgb_export or query_image_export for every row')
+        if backend == 'prepared' and 'mean_rgb_potts' in prepared_methods:
+            if not row.get('query_rgb_export'):
+                raise ValueError('RGB Potts control requires an already bound RGB128 query_rgb_export packet')
+            value=row.get('query_image_hw')
+            if (not isinstance(value,(list,tuple)) or len(value)!=2
+                    or any(not isinstance(v,(int,float)) or not math.isfinite(v) or v<=0 or int(v)!=v for v in value)):
+                raise ValueError('RGB Potts control requires original positive integer query H/W metadata')
+            row['query_image_hw']=[int(v) for v in value]
         if backend == 'prepared' and 'reference_shape' in prepared_methods:
             for key in ('support_image_hw','query_image_hw'):
                 value=row.get(key)
@@ -267,6 +275,7 @@ def infer(args):
         from ics.methods.reference_triplet_relations import Config as TripletConfig
         from ics.methods.reference_absorption import Config as AbsorptionConfig
         from ics.methods.reference_gaussian_density import Config as GaussianDensityConfig
+        from ics.methods.mean_rgb_potts import Config as MeanRGBPottsConfig
         from ics.methods.prepared_cpu_bundle import INDEPENDENT_METHOD_INCREMENT,METHOD_METADATA
         config.update(backend=backend,prepared_methods=prepared_methods,primary=args.primary_method,
                       primary_methods=prepared_methods,
@@ -285,7 +294,7 @@ def infer(args):
                           ('reference_quadratic',QuadraticConfig),('pro_reference_relations',ProRelationsConfig),
                           ('reference_hull',HullConfig),('constellation_local',ConstellationLocalConfig),
                           ('reference_triplet_relations',TripletConfig),('reference_absorption',AbsorptionConfig),
-                          ('reference_gaussian_density',GaussianDensityConfig))
+                          ('reference_gaussian_density',GaussianDensityConfig),('mean_rgb_potts',MeanRGBPottsConfig))
                           if name in prepared_methods})
         for name in ('prepared_cpu_bundle','reference_adjacency','huber_graph','color_bottleneck','reference_constellation',
                      'reference_shape','reference_covariance','query_recurrence','reference_prior_shift','reference_quadratic'):
@@ -297,7 +306,9 @@ def infer(args):
                               ('reference_triplet_relations','reference_triplet_relations'),
                               ('reference_triplet_relations','pro_reference_relations'),
                               ('reference_absorption','reference_absorption'),
-                              ('reference_gaussian_density','reference_gaussian_density')):
+                              ('reference_gaussian_density','reference_gaussian_density'),
+                              ('mean_rgb_potts','mean_rgb_potts'),
+                              ('mean_rgb_potts','pro_paired_environment')):
             if method in prepared_methods:
                 path=REPO/'src/ics/methods'/f'{module}.py'
                 config['code_sha256'][str(path.relative_to(REPO))]=sha(path)
@@ -478,11 +489,11 @@ def main():
     inf.add_argument('--backend', choices=['occupancy','prepared'], default='occupancy')
     inf.add_argument('--prepared-methods', nargs='+', choices=['adjacency','huber','color_bottleneck','constellation',
                                                             'reference_shape','reference_covariance','query_recurrence','reference_prior_shift','reference_quadratic',
-                                                            'pro_reference_relations','reference_hull','constellation_local','reference_triplet_relations','reference_absorption','reference_gaussian_density'],
+                                                            'pro_reference_relations','reference_hull','constellation_local','reference_triplet_relations','reference_absorption','reference_gaussian_density','mean_rgb_potts'],
                      default=['adjacency','huber','color_bottleneck','constellation'])
     inf.add_argument('--primary-method', choices=['adjacency','huber','color_bottleneck','constellation',
                                                  'reference_shape','reference_covariance','query_recurrence','reference_prior_shift','reference_quadratic',
-                                                 'pro_reference_relations','reference_hull','constellation_local','reference_triplet_relations','reference_absorption','reference_gaussian_density'])
+                                                 'pro_reference_relations','reference_hull','constellation_local','reference_triplet_relations','reference_absorption','reference_gaussian_density','mean_rgb_potts'])
     inf.add_argument('--base-key', default='mean.control')
     inf.add_argument('--strengths', nargs='+', type=float, default=[1.0])
     inf.add_argument('--primary-strength', type=float, default=1.0)

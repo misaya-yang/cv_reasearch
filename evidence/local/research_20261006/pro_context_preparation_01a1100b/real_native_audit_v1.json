@@ -1,0 +1,64 @@
+{
+  "state": "REAL_NATIVE_AUDIT_PASSED",
+  "phase": "audit",
+  "threads": 4,
+  "RSS_limit_bytes": 8589934592,
+  "RSS_peak_bytes": 2777894912,
+  "ru_maxrss_linux_kib": 3055880,
+  "wall_seconds": 64.36776957660913,
+  "model_load_seconds": 6.768471397459507,
+  "results": [
+    {
+      "key": "0_0_72",
+      "reference": "val2014/COCO_val2014_000000486122.jpg",
+      "query": "val2014/COCO_val2014_000000507081.jpg",
+      "capture_seconds": 47.177144438028336,
+      "native_audit_suffix_seconds": 8.861704654991627,
+      "audit": {
+        "native_self_maxabs": 0.0,
+        "atol": 1e-05,
+        "rtol": 0.0001,
+        "memory_unchanged": true,
+        "local_and_prefix_exclusion": false,
+        "level": "actual_runtime_encoder; toy only if supplied model is toy"
+      },
+      "source": {
+        "model_class": "timm.models.eva.Eva",
+        "block_class": "timm.models.eva.EvaBlock",
+        "source_sha256": {
+          "/root/demo4_cache/env/timm/models/eva.py": "a8c9807ef5e8dabc725c1e2a89439760a900d6af6cdafefea18fc121173643a2"
+        },
+        "adapter": "actual_block_forward_and_actual_SDPA_QKV"
+      },
+      "actual_shapes": {
+        "raw_H20": [
+          2,
+          4101,
+          1024
+        ],
+        "query_KV": [
+          1,
+          16,
+          4101,
+          64
+        ]
+      },
+      "raw_H20_origin": "actual_block21_pre_hook",
+      "cache_final_bytes": 33595392,
+      "query_GT_read": false,
+      "RSS_peak_bytes": 2777894912,
+      "episode_wall_seconds": 56.13146800547838
+    }
+  ],
+  "query_GT_read": false,
+  "weights_sha256": "45172f209c9583c40538afc26b60a07033e6fcc2e8c30228338e6b2e932e7941",
+  "model_config_sha256": "a71f705b0074e173540d0bdbd3aa940fa8d7d3c6c7f020a683004c46ca605b24",
+  "rows_sha256": "e192420eb01c89c456ca4516b34863f36bc38b47f3c515bd3ed4f821fe812d7f",
+  "source_sha256": {
+    "module": "0150904d669fc613d9ed37f05e583e552149ff1697e2d5858c4cf54ee8fcece4",
+    "runner": "e0ea1827eacf488a394c140ae3c33eedf985c0aeeb880a2243e9c7ff265582a8"
+  },
+  "hostname": "autodl-container-5a5e438f59-b729688e",
+  "cuda_used": false,
+  "actual_encoder": "timm Eva"
+}

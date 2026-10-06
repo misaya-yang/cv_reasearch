@@ -1,0 +1,93 @@
+{
+  "id": "pro_m4_paired_environment_v1",
+  "state": "actual_RGB_inference_implemented; four_real17-forward_six-arm_episodes_sealed_and_scored; negative_smoke",
+  "source_report": "/Users/yang/Downloads/CVPR2027_five_original_segmentation_methods_20261006.md:666-775",
+  "algorithm": "Pro M4 without changing its fixed conditions, environmental covariance, class-LDA control, regularization or nonnegative Potts energy",
+  "inputs": ["one original uint8 reference RGB", "its complete binary mask", "one original uint8 query RGB", "explicitly injected frozen final-LN encoder", "pre-bound full FoRIS native fallback"],
+  "query_gt_in_inference": false,
+  "numeric_contract": "raw encoder features FP32; bilinear point sampling, unit normalization, statistics, thin-SVD and cut capacities FP64; renderer FP32",
+  "geometry": {
+    "work_size": [1024, 1024],
+    "RGB_resize": "PIL bilinear",
+    "mask_resize": "PIL nearest",
+    "positive": "minimum full-foreground bounding rectangle; natural RGB and local background preserved",
+    "negative": "largest all-background rectangle; ties top,left,bottom,right; half-open corners; either side below32 triggers native fallback",
+    "conditions": [[128, [256, 256]], [128, [768, 768]], [256, [256, 256]], [256, [768, 768]]],
+    "positive_aspect": "longest edge exact; other edge Python round of scaled original crop dimension, at least1",
+    "negative_geometry": "negative RGB crop stretched to exactly the corresponding positive rectangle",
+    "canonical_points": "4 to32 same reference-FG points across all conditions/signs; smallest-scale16x16 FG coverage>=0.9; seam margin16; farthest-point first/ties row-major",
+    "discrete_point_convention": "candidates are smallest resized crop pixel centers;16-window [row-8:row+8,col-8:col+8]; both resized center and corresponding original-mask pixel are FG; Euclidean farthest distances use original crop pixel geometry",
+    "paired_sampling": "same normalized crop coordinate for positive and negative; canvas coordinate maps to patch grid x/16-0.5,y/16-0.5, bilinear raw final-LN then unit norm"
+  },
+  "statistics": {
+    "environment": "U columns are (a_y,t,j - mean_t a_y,t,j)/sqrt(2*T*m), T=4; C_env=U U^T",
+    "part_scatter": "V columns are (mean_t a_y,t,j - mu_y)/sqrt(2*m)",
+    "ridge": "max(sum(U**2)/D,1e-6)",
+    "paired_direction": "thin-SVD inverse of U U^T + ridge I applied to mu_positive-mu_negative",
+    "class_lda": "thin-SVD inverse of U U^T+V V^T+same paired numeric ridge I",
+    "mean": "w=mu_positive-mu_negative, identical midpoint/separation/Potts/renderer",
+    "CE_direction": "same labeled intervention points; FP64 average class-balanced softplus of -y*(w dot a+b) plus norm(w)^2/(2D); unpenalized fitted intercept; zero-init L-BFGS-B at most100 steps, gradient infinity target1e-8, convergence recorded",
+    "CE_readout": "discard fitted intercept for direction control; use main two-class mean midpoint/separation and identical Potts/renderer",
+    "CE_self_readout": "raw fitted w dot unit-query+b logits, identical Potts/renderer",
+    "CE_definition_detail_for_primary_review": "Pro767 requests CE own bias but writes no explicit intercept loss or self-readout scale; unpenalized intercept and unscaled logistic own-bias readout are disclosed implementation conventions, not claimed uniquely specified by the text",
+    "ref_canvas": "same four paired interventions on original reference canvas, its own environmental covariance/ridge, infer on unchanged original query features",
+    "normalization": "ell=2*(q*w - 0.5*w*(mu_positive+mu_negative))/(w*(mu_positive-mu_negative)); separation<=1e-8 or nonfinite triggers bound native",
+    "probability_claim": "none; intervention means map to+1/-1, natural query logits not calibrated"
+  },
+  "readout": {
+    "edges": "four spatial neighbors only",
+    "distance": "max(0,1-unit_query_cosine), nonnegative clipping only for floating roundoff",
+    "sigma": "max(median(edge distance),1e-4)",
+    "weight": "exp(-distance/sigma)/max(mean weighted degree,1e-8)",
+    "energy": "sum z*softplus(-ell)+(1-z)*softplus(ell) + 0.25*sum edge_weight*abs(z_i-z_j)",
+    "solver": "floating-capacity Dinic exact s-t cut with cut energy/maxflow certificate; no integer quantization",
+    "renderer": "FP32 binary64 -> bilinear1024 align_corners=False -> strict>0.5 -> binary1024 -> bilinear original H/W -> strict>0.5",
+    "no_area_or_instance_constraints": true
+  },
+  "cost": {
+    "active_primary": "one original Q + eight edited Q encodings =9",
+    "four_core_arms": "primary9 + eight edited reference-canvas encodings =17; mean/LDA reuse the main eight",
+    "geometric_fallback": "zero M4 encodings; full native callback may use up to2",
+    "statistical_fallback": "callback must reuse already encoded original Q, up to1 additional R encoding; primary at most10",
+    "CLI_fallback": "requires presealed native work/original masks with hash; reads only mask_work/mask_original, zero fresh fallback encoding; original native deployment cost not remeasured",
+    "interventions": "stream images/maps, retain sampled points only",
+    "linear_solver": "thin SVD at most256 environmental columns; never materialize a general DxD covariance",
+    "real_first_all_six_arm_method_seconds": 404.89531118422747,
+    "real_first_all17_encoder_seconds": 401.42839623242617,
+    "real_first_primary9_encoder_seconds": 209.1269033998251,
+    "real_first_complete_process_seconds": 417.3391838595271,
+    "real_first_process_peak_rss_bytes": 3129184256,
+    "timing_scope": "actual reused public0 first episode on endpoint46466,4CPU threads; method includes17 encodings/all six readouts, process includes load/init/output; cached native has no new encoder cost",
+    "real_complete_primary_deployment_seconds": "nine encoder sum measured; primary-only full process and full native deployment not separately timed"
+  },
+  "source": "src/ics/methods/pro_paired_environment.py",
+  "runner": "scripts/run_pro_paired_environment.py",
+  "checks": "check.json; deterministic non-DINO RGB encoder, exhaustive rectangle and small-cut checks, thin-SVD/direct solve, paired pixel geometry, unchanged Q, legal labels and actual file-backed CLI seal",
+  "real_episodes_with_complete_sealed_predictions": 4,
+  "real_episodes_with_scores": 4,
+  "real_result": {
+    "report": "real_smoke4_46466/report.json",
+    "exposure": "fixed first four reused public0 episodes 0_0_72,1_0_73,2_0_74,3_0_75; smoke, not independent confirmation",
+    "original_class_summed_mIoU": {"paired": 22.14237346534411, "mean": 21.002939245048065, "class_lda": 25.75649079071784, "ce": 21.312526035741122, "ce_self": 21.99739683318645, "ref_canvas": 31.26036562203098, "native_cache_renderer_variant": 36.36080378343377, "stored_mean_cache_renderer_variant": 35.69521297731527},
+    "matched1024_class_summed_mIoU": {"paired": 22.15910279235776, "native_cache_variant": 36.31653601244855},
+    "primary_original_edits_vs_native": {"add_TP": 3837, "add_FP": 82091, "delete_TP": 69, "delete_FP": 51472},
+    "all_active_no_fallback": true,
+    "all_points_per_condition": 32,
+    "all_CE_gradient_targets_reached": true,
+    "interpretation": "On these four complete outputs, paired environment suppression does not beat class-LDA or reference canvas, nor cached complete comparators; false additions outweigh useful component edits. This is not a general impossibility result.",
+    "GT_protocol": "actual original annotation for primary original metric; exact prebound source packet.truth after all four prediction seals for same historical1024 metric; separate original-nearest-GT diagnostic preserved"
+  },
+  "deployment": {
+    "model_interface": "FrozenTimmRGBEncoder accepts the existing ics.data.TimmDINOv3 local model; raw final norm=True64x64x1024; FP32, frozen, no autocast/TF32",
+    "server_assets_reported_by_primary_not_read_here": {
+      "checkpoint_path": "/root/demo4_cache/models/dinov3-vitl16-timm/model.safetensors",
+      "checkpoint_sha256": "45172f209c9583c40538afc26b60a07033e6fcc2e8c30228338e6b2e932e7941",
+      "timm": "1.0.30; Eva318 keys matching, per primary agent",
+      "server_resources": "CPU only,32 cores/60GiB, per primary agent"
+    },
+    "bindings_completed": ["local model config SHA/checkpoint SHA and producer identity", "exact original RGB and full binary-reference-mask manifest", "native recipe SHA and explicitly reconstructed cached work/original predictions", "exposed public0 identity, actual query HW, original annotation and stored1024 GT, immutable source and complete comparison seals"],
+    "remaining_limits": ["four exposed smoke episodes are not generalization confirmation", "cached native/MEAN/RCG/fine original outputs are explicit renderer variants, not freshly reproduced original producers", "pure primary complete deployment and native deployment costs not separately measured", "official DINO versus actual timm numerical equivalence unverified", "CE-self intercept/scale conventions remain explicit for primary review"],
+    "DINO_validation": "new authorized endpoint46466: all four complete17-forward/six-arm outputs sealed and scored; first180s screen stopped with7forwards and preserved; after clarification full first completed417.34s; parallel tail avoided duplicate case3. No GPU/downloads, all owned encoder processes finished.",
+    "CE_control": "CE direction and CE-self implemented and deterministically checked; no additional encoder forwards; successful runs now save sealed query feature/intervention-bank sufficient statistics"
+  }
+}

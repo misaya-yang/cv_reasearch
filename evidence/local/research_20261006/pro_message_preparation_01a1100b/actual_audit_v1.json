@@ -1,0 +1,205 @@
+{
+  "attempt1": {
+    "remote_path": "/root/autodl-tmp/cvpr_prepared9_20261006_01a1100b/runs/pro_message_audit_v1/outputs/state.json",
+    "sha256": "16402101fa15a5479864d4801b6beeb32a0333482afc425cd49536bf33cafef8",
+    "data": {
+      "state": "FAILED",
+      "pid": 3021,
+      "threads": 4,
+      "RSS_limit_bytes": 8589934592,
+      "started_UTC": "2026-10-06T23:07:42Z",
+      "episodes": [],
+      "peak_RSS_bytes": 3051626496,
+      "elapsed_seconds": 59.38497219234705,
+      "fixed_first_gate": true,
+      "model_load_seconds": 10.538626983761787,
+      "case": 0,
+      "key": "0_0_72",
+      "projection_enabled": true,
+      "capture_seconds": 47.17906554788351,
+      "error_type": "RuntimeError",
+      "error": "beta1 actual native replay failed at block22: maxabs=0.0001430511474609375",
+      "traceback": "Traceback (most recent call last):\n  File \"/root/autodl-tmp/cvpr_prepared9_20261006_01a1100b/runs/pro_message_audit_v1/audit_worker.py\", line 148, in main\n    _,audits[label]=method.replay_region(cache,probe,1.,audit_native=True)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/miniconda3/lib/python3.12/site-packages/torch/utils/_contextlib.py\", line 124, in decorate_context\n    return func(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/autodl-tmp/cvpr_prepared9_20261006_01a1100b/runs/pro_message_audit_v1/code_e1affd2f964b/src/ics/methods/pro_message_extrapolation.py\", line 569, in replay_region\n    raise RuntimeError(f'beta1 actual native replay failed at block{21+layer}: maxabs={error}')\nRuntimeError: beta1 actual native replay failed at block22: maxabs=0.0001430511474609375\n"
+    }
+  },
+  "attempt2": {
+    "remote_path": "/root/autodl-tmp/cvpr_prepared9_20261006_01a1100b/runs/pro_message_audit_v1/outputs_v2/state.json",
+    "sha256": "fef2358fb252a529bc1813d6c0eca07052ae72a5c346d9abb4acd80da44ce019",
+    "data": {
+      "state": "FAILED",
+      "pid": 3977,
+      "threads": 4,
+      "RSS_limit_bytes": 8589934592,
+      "started_UTC": "2026-10-06T23:17:28Z",
+      "episodes": [],
+      "peak_RSS_bytes": 3012284416,
+      "elapsed_seconds": 98.64658756554127,
+      "fixed_first_gate": true,
+      "model_load_seconds": 10.744010798633099,
+      "case": 0,
+      "key": "0_0_72",
+      "projection_enabled": true,
+      "capture_seconds": 52.76251685619354,
+      "native_probe_audits": {
+        "reference": {
+          "beta": 1,
+          "native_maximum_error": 0,
+          "native_layer_errors": [
+            {
+              "block": 21,
+              "maximum_absolute_error": 0,
+              "passed": true
+            },
+            {
+              "block": 22,
+              "maximum_absolute_error": 0,
+              "passed": true
+            },
+            {
+              "block": 23,
+              "maximum_absolute_error": 0,
+              "passed": true
+            },
+            {
+              "block": 24,
+              "maximum_absolute_error": 0,
+              "passed": true
+            }
+          ],
+          "wall_seconds": 0.08457670360803604,
+          "mean_outside_mass": 0.9798419326543808,
+          "region_tokens": 4,
+          "processed_suffix_token_layers": 16,
+          "qk_source": "frozen_native_post_norm_post_rope",
+          "redistribute": true
+        },
+        "query": {
+          "beta": 1,
+          "native_maximum_error": 0,
+          "native_layer_errors": [
+            {
+              "block": 21,
+              "maximum_absolute_error": 0,
+              "passed": true
+            },
+            {
+              "block": 22,
+              "maximum_absolute_error": 0,
+              "passed": true
+            },
+            {
+              "block": 23,
+              "maximum_absolute_error": 0,
+              "passed": true
+            },
+            {
+              "block": 24,
+              "maximum_absolute_error": 0,
+              "passed": true
+            }
+          ],
+          "wall_seconds": 0.0803234875202179,
+          "mean_outside_mass": 0.986463725566864,
+          "region_tokens": 4,
+          "processed_suffix_token_layers": 16,
+          "qk_source": "frozen_native_post_norm_post_rope",
+          "redistribute": true
+        }
+      },
+      "completed_region_triplets": 5,
+      "prediction_elapsed_seconds": 31.223335087299347,
+      "error_type": "RuntimeError",
+      "error": "beta1 actual native replay failed at block22: maxabs=0.000244140625",
+      "traceback": "Traceback (most recent call last):\n  File \"/root/autodl-tmp/cvpr_prepared9_20261006_01a1100b/runs/pro_message_audit_v1/audit_worker_v2.py\", line 169, in main\n    result=method.predict(q_cache,r_cache,q_cache.projected_native.cpu().numpy(),\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/miniconda3/lib/python3.12/site-packages/torch/utils/_contextlib.py\", line 124, in decorate_context\n    return func(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/autodl-tmp/cvpr_prepared9_20261006_01a1100b/runs/pro_message_audit_v1/code_48e506444426/src/ics/methods/pro_message_extrapolation.py\", line 693, in predict\n    reference_rows, reference_audits = region_bank(reference_cache, reference_regions, cfg)\n                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/miniconda3/lib/python3.12/site-packages/torch/utils/_contextlib.py\", line 124, in decorate_context\n    return func(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/autodl-tmp/cvpr_prepared9_20261006_01a1100b/runs/pro_message_audit_v1/code_48e506444426/src/ics/methods/pro_message_extrapolation.py\", line 630, in region_bank\n    beta1, audit = replay_region(cache, region, 1., cfg, audit_native=True)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/autodl-tmp/cvpr_prepared9_20261006_01a1100b/runs/pro_message_audit_v1/audit_worker_v2.py\", line 162, in logged_replay\n    answer=original_replay(*a,**k);replay_counter['n']+=1\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/miniconda3/lib/python3.12/site-packages/torch/utils/_contextlib.py\", line 124, in decorate_context\n    return func(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/autodl-tmp/cvpr_prepared9_20261006_01a1100b/runs/pro_message_audit_v1/code_48e506444426/src/ics/methods/pro_message_extrapolation.py\", line 599, in replay_region\n    raise RuntimeError(f'beta1 actual native replay failed at block{21+layer}: maxabs={error}')\nRuntimeError: beta1 actual native replay failed at block22: maxabs=0.000244140625\n"
+    }
+  },
+  "capture2": {
+    "remote_path": "/root/autodl-tmp/cvpr_prepared9_20261006_01a1100b/runs/pro_message_audit_v1/outputs_v2/episode_00_0_0_72/capture.json",
+    "sha256": "da17f65f283f0d6fed9e93ed226f0f94b5b5c2abfe909f9899bab0209f572eda",
+    "data": {
+      "actual_encoder_forwards": 1,
+      "actual_encoded_images": 2,
+      "paired_capture_seconds": 52.76251685619354,
+      "model_class": "timm.models.eva.Eva",
+      "native_source_sha256": "a8c9807ef5e8dabc725c1e2a89439760a900d6af6cdafefea18fc121173643a2",
+      "qkv": "actual_native_SDPA_inputs",
+      "new_real_performance_claim": false
+    }
+  },
+  "binding2": {
+    "remote_path": "/root/autodl-tmp/cvpr_prepared9_20261006_01a1100b/runs/pro_message_audit_v1/outputs_v2/episode_00_0_0_72/binding.json",
+    "sha256": "8e86f3f1374eea79224112986f4094ceddafb3a22481786d8e077d64d0428981",
+    "data": {
+      "row": {
+        "fold": 0,
+        "e": 0,
+        "c": 72,
+        "query": "val2014/COCO_val2014_000000507081.jpg",
+        "support": "val2014/COCO_val2014_000000486122.jpg",
+        "batch": "public0",
+        "key": "0_0_72",
+        "public_batch": 0,
+        "packet_export": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/claude_official/root0/results/extent_v1/run/packets/0_0_72.npz",
+        "recheck_run": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/claude_official/run0",
+        "feature_export": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/confirm1200_conditional_v1/inputs/reused_features/0_0_72.pt",
+        "evaluation_controls": {
+          "stored_mean.control": {
+            "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen_subtoken1200_v1/predictions/0_0_72.npz",
+            "key": "mean.control"
+          },
+          "rcg.control": {
+            "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen_subtoken1200_v1/predictions/0_0_72.npz",
+            "key": "rcg"
+          },
+          "fine16.control": {
+            "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen_subtoken1200_v1/predictions/0_0_72.npz",
+            "key": "fine.rcg16.control"
+          },
+          "fine64.control": {
+            "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen_subtoken1200_v1/predictions/0_0_72.npz",
+            "key": "fine.rcg64"
+          }
+        },
+        "support_photo_id": "coco2014:000000486122",
+        "support_image_hw": [
+          640,
+          425
+        ],
+        "query_photo_id": "coco2014:000000507081",
+        "query_image_hw": [
+          640,
+          640
+        ],
+        "query_rgb_export": "/root/autodl-tmp/cvpr_prepared9_20261006_01a1100b/bound600_v1/rgb128/000000507081.npz"
+      },
+      "producer": {
+        "native_source_sha256": "a8c9807ef5e8dabc725c1e2a89439760a900d6af6cdafefea18fc121173643a2",
+        "weights_sha256": "45172f209c9583c40538afc26b60a07033e6fcc2e8c30228338e6b2e932e7941",
+        "H20": "actual_after_block20",
+        "dtype": "float32",
+        "projection_gate": true,
+        "gate_source": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/confirm1200_conditional_v1/inputs/reused_features/0_0_72.pt",
+        "gate_feature_SHA256": "8702d9bcec69979d3fbdf8bea33611b8ce2061a0888ad0ec44f3f9583eda972b",
+        "input_key": "0_0_72",
+        "host_variant": "existing_FP16_conditional_cache_MEAN_graph_float64",
+        "host_field_sha256": "f0babdb9424fa8d62aef11cc645cd450a8a082352903c015873b38ede77fd1c3",
+        "old_cache_dtype": "torch.float16",
+        "projection_gate_recomputed": false
+      },
+      "image_transform": "PIL_RGB_bilinear1024_ImageNet_FP32",
+      "reference_HW": [
+        640,
+        425
+      ],
+      "query_HW": [
+        640,
+        640
+      ],
+      "reference_sha256": "3b0a0c12814b68c5fcdacff5db54fb0edaf9d5472547330953033a9ba934ba5a",
+      "query_sha256": "b8e13828ed5a8b34552854684bd8fb1f2b4f621a0a8729fa5693a20e4d166dde",
+      "reference_annotation_sha256": "3d034e5bc34ce4c1e7a520502673468f08161dd4de92e89e4c00d86d95423aca",
+      "coverage_max_difference_from_old_packet": 0.08203125,
+      "query_GT_opened": false
+    }
+  }
+}

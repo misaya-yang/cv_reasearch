@@ -12,7 +12,7 @@ import numpy as np
 
 
 METHODS=('adjacency','huber','color_bottleneck','constellation','reference_shape','reference_covariance','query_recurrence','reference_prior_shift','reference_quadratic')
-AVAILABLE_METHODS=METHODS+('pro_reference_relations','reference_hull','constellation_local','reference_triplet_relations','reference_absorption','reference_gaussian_density')
+AVAILABLE_METHODS=METHODS+('pro_reference_relations','reference_hull','constellation_local','reference_triplet_relations','reference_absorption','reference_gaussian_density','mean_rgb_potts')
 METHOD_METADATA={name:dict(kind='independent_candidate',independent_method_increment=1)
                  for name in AVAILABLE_METHODS}
 METHOD_METADATA.update(
@@ -21,7 +21,9 @@ METHOD_METADATA.update(
                              independent_method_increment=0),
     reference_gaussian_density=dict(kind='revision',version_id='reference_density_full_feature_bounded_v2',
                                    revised_family='reference_score_density_query_prior_v1',
-                                   independent_method_increment=0))
+                                   independent_method_increment=0),
+    mean_rgb_potts=dict(kind='strong_simple_control',version_id='locked_MEAN_RGB128_boundary_Potts_control_v1',
+                       independent_method_increment=0))
 INDEPENDENT_METHOD_INCREMENT={name:metadata['independent_method_increment']
                               for name,metadata in METHOD_METADATA.items()}
 
@@ -234,6 +236,19 @@ def one_episode(row,run,config):
                             ('absorption_full_harmonic.control','full_harmonic_control')):
                 fields[arm]=result[key];masks[arm]=render(result[key])
             info=result['info']
+        elif name=='mean_rgb_potts':
+            from .mean_rgb_potts import Config,predict
+            rgb,rgb_info=load_rgb(row)
+            result=predict(np.asarray(q),np.asarray(r),cov,base,rgb,
+                           original_shape=row['query_image_hw'],
+                           cfg=Config(**config['method_configs'][name]))
+            # Keep the binary 128-grid cut: no 128->64 compression or second
+            # continuous interpretation. These masks use the Pro renderer.
+            fields['mean_rgb_potts']=result['field']
+            masks['mean_rgb_potts']=result['mask_work']
+            fields['mean_rgb_unary.control']=result['unary_control']
+            masks['mean_rgb_unary.control']=result['unary_mask_work']
+            info=result['info'];info['rgb_producer']=rgb_info
         elif name=='reference_gaussian_density':
             from .reference_gaussian_density import Config,predict
             result=predict(np.asarray(q),np.asarray(r),cov,base,Config(**config['method_configs'][name]))

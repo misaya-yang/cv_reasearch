@@ -34,10 +34,18 @@ CONFIG = dict(method='locked_MEAN_RGB128_boundary_Potts_control_v1',
               extra_encoder_calls=0, query_labels_in_inference=False)
 
 
+def _fixed(cfg):
+    # Accept the identical RGB shape after JSON converts its tuple to a list.
+    default = Config()
+    if (tuple(cfg.rgb_grid) != default.rgb_grid or
+            any(getattr(cfg, key) != getattr(default, key) for key in asdict(default)
+                if key != 'rgb_grid')):
+        raise ValueError('Fixed control recipe; parameter search is not supported')
+
+
 def rgb_edge_capacities(rgb, cfg=Config()):
     """All horizontal/vertical edges, with no edge pruning or seed restrictions."""
-    if cfg != Config():
-        raise ValueError('Fixed control recipe; parameter search is not supported')
+    _fixed(cfg)
     colors = np.asarray(rgb)
     if colors.ndim != 3 or colors.shape[2] != 3 or min(colors.shape[:2]) < 1:
         raise ValueError('Nonempty HxWx3 RGB required')
@@ -83,8 +91,7 @@ def predict(q, r, cov, base, rgb, *, original_shape=(1024, 1024), cfg=Config()):
     readout. Original shape is optional size metadata, never labels/class/fold.
     """
     started = time.perf_counter()
-    if cfg != Config():
-        raise ValueError('Fixed control recipe; parameter search is not supported')
+    _fixed(cfg)
     q, r, cov, base, rgb = map(np.asarray, (q, r, cov, base, rgb))
     if (q.ndim != 2 or r.shape != q.shape or q.shape[0] != base.size
             or base.shape != (64, 64) or cov.shape != base.shape

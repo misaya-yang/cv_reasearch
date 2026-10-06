@@ -15,17 +15,21 @@
   推断304.025秒、峰值4,595,490,816 bytes、额外编码0。
   [完整收据](../../evidence/local/research_20261006/server_prepared_01a1100b/nine_public600_v2/score/report.json)保留所有对照、照片组配对区间及四类增删。
   这些是复用开发集结果，不能称独立确认；MEAN当前重算与当前直接代码一致，历史producer有微小数值差，单列对照。
-- 新凸包机制、ProM2四状态关系、布局局部修正版已上传新代码快照，4例完整路径通过；
-  600例固定队列正在运行，全部预测封存后才评分；首4不是完整结论。
-- ProM1/M3/M4/M5已分别实现并通过必要小核对，现分配独立代理作真实DINO/4096活动分支及成本核对。
-  M1/M5须重新捕获raw H20/QKV；M4须真实完整参考mask和17次编码（含ref-canvas对照）。
-  缓存变体与Pro原RGB/原尺寸定义的差别逐项记录，不能冒称全部原版已测。
+- 新凸包机制、ProM2四状态关系、三体关系和布局局部修正版的固定600例批次已完成封存与评分：分别48.915345、60.632462、60.778988、62.308618；MEAN=62.931546，native=61.335314。除布局局部修正高于native约0.973pp外，其余均低于native；四项都低于MEAN。数据为复用公开开发集，非独立确认。完整配对区间、错误增删和执行成本见[报告](../../evidence/local/research_20261006/server_prepared_01a1100b/extensions_public600_v2/score/report.json)。
+- 后续固定600例批次已完成：参考锚点吸收37.821542，Gaussian密度修订61.949185，MEAN+RGB Potts对照62.903951；MEAN=62.931546、native=61.335314。Potts对MEAN差−0.027595，配对95%区间[−0.160435,0.032420]；Gaussian修订低于MEAN，吸收明显低于两基线。复用开发数据，非独立确认。见[报告](../../evidence/local/research_20261006/server_prepared_01a1100b/next_candidates_public600_v1/score/report.json)。
+- ProM2只改计算累加的四例优化核对中，六臂全场及两级掩码逐值一致，平均单例14.889秒降至2.938秒（5.067倍）；这是实现成本结果，不是质量增益，详见[记录](../../evidence/local/research_20261006/parallel_review_01a1100b/pro_relations_profile_v1/README.md)。
+- ProM1首4个已暴露例的四臂1024活动筛查为负：ctx=25.112759，native=36.316536、uniform=35.135329；仅是活动检查，不外推总体质量。见[评分报告](../../evidence/local/research_20261006/pro_context_preparation_01a1100b/score4_v1/report.json)；固定24是否值得运行尚未决定。
+- ProM3固定600例缓存适配版完整结果为负：heldout=59.563526，低于native=61.335314、stored MEAN=62.931530和同树zero=60.878311；这是复用缓存、1024工作空间结果，不含新编码或原尺寸第二段渲染。当前固定版本的质量主张收束，不自动开变体，见[报告](../../evidence/local/research_20261006/pro_roles_preparation_01a1100b/public600_result_46466.md)。
+- ProM4首4个暴露RGB例的六臂完整分支已评分：原尺寸paired=22.142373、class_lda=25.756491、ref_canvas=31.260366，缓存native变体=36.360804；每例17次编码、约363–405秒、峰值RSS约3.13GB。仅为小样本成本/活动检查，不是确认结果，见[报告](../../evidence/local/research_20261006/pro_environment_preparation_01a1100b/real_smoke4_46466/report.json)。
+- ProM5实际原生接口审核在完整预测封存前失败：第6个参考区域block22的beta=1 maxabs=0.000244140625；未打开GT、未评分，部分执行已超过60秒门槛。不得将toy核对视为实际方法结果，详见[审核记录](../../evidence/local/research_20261006/pro_message_preparation_01a1100b/actual_audit_v1.md)。
+  上述M1/M3/M4/M5均保留与原始Pro定义、缓存适配和样本暴露相符的边界，不冒称已完成统一协议验证。
+- 原9、凸包、三体、吸收及所给Pro五项共17候选，修正版/控制不计。以上三类新增候选已在同一复用600批次完成，结果未显示稳定超越MEAN的收益；不得把公开开发集复用结果称作确认。
 - 继续开发新的实质机制，先固定方法/强简单对照和同合同CPU核对，再接入该复用600队列。
   保留失败完整输出和有效组件；改进版本与独立新机制分开计数，不通过组合枚举凑数。
 
 资源：实际32 CPU、60GiB，无可见GPU；当前合计线程上限30，运行守卫受cgroup限制。
 本轮先完成以上已启动完整结果，再据真实得失迭代；详见[并行审查](../../evidence/local/research_20261006/parallel_review_01a1100b/)。
-唯一待办清单仍为本文件，旧授权/队列不自动恢复；不提交或推送Git。
+唯一待办清单仍为本文件，旧授权/队列不自动恢复。本次用户明确要求提交并推送代码与工作区；该授权仅适用于本次操作。
 
 ## 原九项准备记录（保留源码与当时边界）
 

@@ -5,15 +5,17 @@
 [完整结果与配对区间](../../evidence/local/research_20261006/server_prepared_01a1100b/nine_public600_v2/score/report.json)。
 这是复用公开开发集，非独立确认；合成区分例没有转化为稳定真实收益。
 
-新凸包、ProM2四状态关系和布局局部修正版已上传并通过4例完整路径，固定600例正在运行；
-Pro其余四项由独立代理做真实骨干/完整活动分支与成本核对。方法1000项和高质量目标尚未完成。
+凸包、ProM2四状态关系、三体关系和布局局部修正版的固定600例已封存并评分：分别为48.915345、60.632462、60.778988、62.308618，均低于同批MEAN 62.931546；布局局部修正版高于native 61.335314。参考锚点吸收、Gaussian密度修订和RGB Potts控制的另一固定600例批次也已完成：分别为37.821542、61.949185、62.903951；RGB Potts对MEAN差−0.027595，配对95%区间[−0.160435, 0.032420]，未显示超越MEAN。两批均复用开发数据，完整配对区间见[扩展结果](../../evidence/local/research_20261006/server_prepared_01a1100b/extensions_public600_v2/score/report.json)和[后续候选结果](../../evidence/local/research_20261006/server_prepared_01a1100b/next_candidates_public600_v1/score/report.json)。
+ProM2计算优化的四例六臂全场及两级mask逐值一致，平均单例14.889秒降至2.938秒（5.067倍），详见[记录](../../evidence/local/research_20261006/parallel_review_01a1100b/pro_relations_profile_v1/README.md)。
+17项候选已准备（12本轮自主+5所给Pro），1000项和高质量目标尚未完成；对照不计独立候选数。
+Pro真实检查还包括：M1首4例负向活动筛查；M3固定600例低于native/MEAN；M4首4例、17次编码的完整分支低于缓存native；M5精确性审核在第6个参考区域失败且未产生完整mask。来源分别见[M1](../../evidence/local/research_20261006/pro_context_preparation_01a1100b/score4_v1/report.json)、[M3](../../evidence/local/research_20261006/pro_roles_preparation_01a1100b/public600_result_46466.md)、[M4](../../evidence/local/research_20261006/pro_environment_preparation_01a1100b/real_smoke4_46466/report.json)和[M5](../../evidence/local/research_20261006/pro_message_preparation_01a1100b/actual_audit_v1.md)。这些子集/适配版结果不等于独立确认或完整统一协议结论。
 新机制与改进版本分别记数，对照/参数不记数；首4例不能代替600例结论。
 
 ## 当前阶段
 
 当前按最新用户指令并行开发、审查、实际CPU验证和迭代。服务器32CPU/60GiB、无可见GPU；
 所有任务合计不超过30线程，使用现存缓存、RGB、标注和权重，不下载、不启动新实例。
-目前原九项推断304.025秒、峰值4.60GB、编码0；Pro真实重编码成本待测。
+目前原九项推断304.025秒、峰值4.60GB、编码0。最新两批600例推断耗时916.4秒/峰值4.76GiB与478.6秒/峰值3.10GiB，均无额外编码；M4四例实测每例17次编码、约363–405秒、峰值约2.91GiB。这些成本只适用于各自报告的执行合同。
 已上传两个不可变源码快照，预测先封存再评分；历史MEAN producer单独作评价对照。
 唯一后续清单见 [PLAN](../research/PLAN.md)，当前资产及哈希见 [SERVER](SERVER.md)。
 

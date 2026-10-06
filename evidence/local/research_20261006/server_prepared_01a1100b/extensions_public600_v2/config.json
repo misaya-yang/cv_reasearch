@@ -1,0 +1,110 @@
+{
+  "root": "/root",
+  "base": "mean",
+  "method": null,
+  "strengths": null,
+  "workers": 6,
+  "threads": 2,
+  "cpu_budget": 12,
+  "memory_budget_bytes": 12000000000,
+  "exposure": "reused public600 development data; no independent confirmation; ProM2 cached seed variant, local constellation correction version",
+  "source_manifest_sha256": "a5eff6154ff7cd6f334bda1519f0f2f2435c3b385ef7ecad7c0d809463e60bee",
+  "primary": "pro_reference_relations",
+  "complete_mask_size": [
+    1024,
+    1024
+  ],
+  "encoder_forwards": 0,
+  "code_sha256": {
+    "scripts/run_cpu_feature_candidates.py": "b9d53fbd3e6e10075aef0922a2a55c773c67c6cf9cf22f3ee365816cb00a2a15",
+    "src/ics/methods/reference_occupancy.py": "b9e2daddeaeb730a8822dcef6a7ec503fd9b6f4c1572a797a1759a84dd195d9f",
+    "src/ics/methods/mean_graph.py": "00581a71854b7e0be161f30085690a0bf0b22862fd2e88dbc4d6d84e5dc33e06",
+    "src/ics/methods/rcg.py": "d9d8e15a69c0b939eb06dc4e41967afb684f29731f9dcb00519e73d944963d98",
+    "src/ics/experiment.py": "d95459d0b59c7048618661e7a16999248990b02e92cd1269d4629a497f62f843",
+    "src/ics/methods/prepared_cpu_bundle.py": "81cdbe65c8264500cd136bd5bdda48f32376168ecf13f0f8f2ee072bcba20586",
+    "src/ics/methods/reference_adjacency.py": "c4add33980992ea4aeefca3d714fce86d32f40cfcb51039c1a822043c63e989b",
+    "src/ics/methods/huber_graph.py": "d9c0a3298cab8990c6ebb550989cf5f0f491f50239865c7fe900fe443122d7c9",
+    "src/ics/methods/color_bottleneck.py": "7f5b644ffd8a0a3df36438c217eded2b40b47d866ccd3182a12a812f86a196ad",
+    "src/ics/methods/reference_constellation.py": "93e3fe70bad2dcfb80542822626cb94484d653a2097561645f015b4ec5edeb36",
+    "src/ics/methods/reference_shape.py": "9789ac14e24f319a6465f98fa062239ae77681da8e00c9529373d1c20ff0544d",
+    "src/ics/methods/reference_covariance.py": "97a449af59e10f01de06f3bb1649789ea9e83bc65d9a9a2b354692d423d747f6",
+    "src/ics/methods/query_recurrence.py": "d9951558395346a476022d2926541e999f3477f7e0630a5832062957e8c929d8",
+    "src/ics/methods/reference_prior_shift.py": "1edbe760124f26b8f790b2991f2bd3896f14ef0f99573dd981171cfd2a567fd2",
+    "src/ics/methods/reference_quadratic.py": "88ef47cb8950eb55ed16024c5addb5991f464885d9a9e703c3c629546d282361",
+    "src/ics/methods/pro_reference_relations.py": "27c867bd814a986e178696b07a6fe1733aa7f479b47ded83b747db5b81be7c74",
+    "src/ics/methods/reference_hull.py": "77fd572766a6caa4f0d92df89a9dd5ef91da23374fc3702ffba54dc0e3e9c0bb",
+    "src/ics/methods/reference_constellation_local.py": "8daf5e89215067bcad69e87da938de310d8f7d0c7e995ecc0a3aaa72a28904a3",
+    "src/ics/methods/reference_triplet_relations.py": "122db24b1e03e4e24e3b48a97d9f33f83b58cc1fb2d860e7769ec8196bf88a7b"
+  },
+  "backend": "prepared",
+  "prepared_methods": [
+    "pro_reference_relations",
+    "reference_hull",
+    "constellation_local",
+    "reference_triplet_relations"
+  ],
+  "primary_methods": [
+    "pro_reference_relations",
+    "reference_hull",
+    "constellation_local",
+    "reference_triplet_relations"
+  ],
+  "independent_methods": 4,
+  "method_configs": {
+    "pro_reference_relations": {
+      "roles": 32,
+      "kmeans_maxiter": 20,
+      "role_topk": 2,
+      "role_tau": 0.07,
+      "feature_neighbors": 20,
+      "product_mix": 0.1,
+      "zero_tolerance": 1e-10,
+      "raw_clip": 2.0,
+      "interaction_lambda": 0.9,
+      "fixed_point_maxiter": 250,
+      "fixed_point_atol": 1e-06,
+      "reference_block_width": 8,
+      "affinity_batch": 256
+    },
+    "reference_hull": {
+      "foreground_modes": 16,
+      "background_modes": 16,
+      "lloyd_steps": 5,
+      "purity": 0.9,
+      "minimum_reference_samples": 8,
+      "maximum_iterations": 256,
+      "gap_tolerance": 1e-08,
+      "decision_guard": 1e-07,
+      "subspace_relative_tolerance": 1e-06
+    },
+    "constellation_local": {
+      "reference_modes": 8,
+      "lloyd_steps": 5,
+      "purity": 0.9,
+      "peaks_per_mode": 8,
+      "peak_separation": 3.0,
+      "minimum_anchor_separation": 1.0,
+      "scale_min": 0.125,
+      "scale_max": 8.0,
+      "standardized_support": 1.5,
+      "support_fraction": 0.75,
+      "median_deviation_floor": 0.01,
+      "pose_nms_iou": 0.5,
+      "geometry_weight": 0.5
+    },
+    "reference_triplet_relations": {
+      "product_mix": 0.1,
+      "raw_clip": 2.0,
+      "zero_tolerance": 1e-10,
+      "interaction_lambda": 0.9,
+      "incident_mass_limit": 0.5,
+      "fixed_point_maxiter": 250,
+      "fixed_point_atol": 1e-07,
+      "distances": [
+        1,
+        2,
+        4
+      ]
+    }
+  }
+}

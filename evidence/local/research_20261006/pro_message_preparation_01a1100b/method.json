@@ -1,10 +1,12 @@
 {
   "method_id": "Pro_M5_fixed_native_QK_message_extrapolation_v0",
   "independent_methods": 1,
-  "state": "deployable_CPU_entry_and_toy_checked_actual_native_binding_pending",
-  "actual_DINO_episodes": 0,
+  "state": "ACTUAL_NATIVE_AUDIT_FAILED_NO_COMPLETE_MASK_CURRENT_SOURCE_UNVERIFIED",
+  "actual_DINO_episodes": 1,
+  "complete_predictions_sealed": 0,
+  "complete_episodes_scored": 0,
   "real_segmentation_benefit": "unmeasured",
-  "real_runtime": "unmeasured",
+  "real_runtime": "partial one-episode attempt; actual capture plus partial replay lower bound 83.99 seconds; full prediction not sealed",
   "reference": "user_supplied_Pro_report_lines779_914",
   "parameters": {
     "partition_counts": [
@@ -32,16 +34,17 @@
   "actual_eva_interface": "capture actual native SDPA QKV; actual LN1/V no-bias projection; actual gamma/output norm/projection/MLP/residual; each ROI beta1 audit mandatory",
   "shared_interface": "pro_common_context._SDPA_LOCK only; file not modified",
   "paths": {
-    "src/ics/methods/pro_message_extrapolation.py": "ead5aec2c9f9c2a835c07d93774e8ae39b86be16938f674c9b91fffdcd956d63",
+    "src/ics/methods/pro_message_extrapolation.py": "b9da3fd3b42c08a27c3634d86251b36e75269ff5414105d8408566dabe4c1653",
     "scripts/run_pro_message_extrapolation.py": "0f3409dce01adb565d08fe674d16738b3acc9fefc4310e1591a2a683d9cc2e18"
   },
+  "last_audited_module_sha256": "ead5aec2c9f9c2a835c07d93774e8ae39b86be16938f674c9b91fffdcd956d63",
+  "actual_audit": "actual_audit_v1.md; block22 beta1 mismatch 0.000244140625 at the sixth reference region; no complete mask or GT score; current module revision differs and remains unverified",
   "checks": "toy_check.json",
   "assets_template": "assets.template.json",
   "resource_gaps": [
-    "bind original episode projection_enabled and identity",
-    "actual FP32 native paired images or H20/QKV packet",
-    "bind complete MEAN host field producer and original H/W",
-    "actual native beta1 and CPU cost audit"
+    "re-audit the current module revision if the user reopens this candidate",
+    "complete and seal a full prediction before any quality score",
+    "record the full CPU cost; the prior partial attempt exceeded the 60-second continuation threshold"
   ],
   "not_claimed": [
     "actual DINO validation",
@@ -49,7 +52,7 @@
     "novelty",
     "one-minute cohort runtime"
   ],
-  "no_SSH": true,
+  "no_SSH": false,
   "no_GPU": true,
   "no_download": true,
   "no_large_experiment": true

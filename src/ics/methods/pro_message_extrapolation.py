@@ -378,6 +378,7 @@ class NativeCache:
     project: Callable
     projected_native: torch.Tensor
     producer: dict
+    shared_m1: dict | None = None
 
 
 @torch.inference_mode()
@@ -389,7 +390,7 @@ def capture_native_pair(model, images, project, *, producer):
     are factored out, and beta1 must subsequently audit them against these native
     outputs. Returns reference cache, query cache and actual capture receipt.
     """
-    from .pro_common_context import _SDPA_LOCK
+    from .pro_common_context import _SDPA_LOCK, _clone, _digest, source_receipt
     if (model.training or any(p.requires_grad for p in model.parameters())
             or len(model.blocks) != 24 or int(model.num_prefix_tokens) != 5
             or images.ndim != 4 or images.shape[0] != 2 or images.dtype != torch.float32):
@@ -408,7 +409,8 @@ def capture_native_pair(model, images, project, *, producer):
                 rope = kwargs.get('rope',args[1] if len(args)>1 else None)
                 if args[0].shape[0] != 2 or rope is None:
                     raise RuntimeError('Actual paired NLC state and native RoPE required')
-                layers[index] = dict(h=args[0].detach().clone(),rope=rope,calls=0)
+                layers[index] = dict(h=args[0].detach().clone(),rope=rope,calls=0,
+                                     extra_args=_clone(args[1:]),kwargs=_clone(kwargs))
         return hook
 
     def post(index):
@@ -428,7 +430,7 @@ def capture_native_pair(model, images, project, *, producer):
                 raise RuntimeError('Unsupported actual native SDPA/mask/dropout/GQA')
             layer = layers[index]
             layer.update(qkv=tuple(t.detach().clone() for t in (q,k,v)),
-                         scale=float(kwargs.get('scale') or q.shape[-1]**-.5))
+                         scale=float(kwargs.get('scale') or q.shape[-1]**-.5),sdpa_kwargs=_clone(kwargs))
             layer['calls'] += 1
         return original(q,k,v,attn_mask=attn_mask,dropout_p=dropout_p,is_causal=is_causal,**kwargs)
 
@@ -456,6 +458,25 @@ def capture_native_pair(model, images, project, *, producer):
                    model_class=type(model).__module__+'.'+type(model).__name__,
                    native_source_sha256=hashlib.sha256(Path(source_file).read_bytes()).hexdigest(),
                    qkv='actual_native_SDPA_inputs',new_real_performance_claim=False)
+    # This is the exact schema M1 already consumes. Actual call kwargs and raw
+    # normalized final are retained, never inferred from projected/unit tokens.
+    shared_layers={}
+    for index in range(20,24):
+        raw_input = layers[20]['h'] if index==20 else layers[index-1]['output']
+        if not torch.equal(raw_input,layers[index]['h']):
+            raise RuntimeError('Native block boundary state changed outside expected residual path')
+        shared_layers[index]=dict(args=(raw_input,*layers[index]['extra_args']),
+                                 kwargs=layers[index]['kwargs'],calls=1,
+                                 k=layers[index]['qkv'][1][1:2],v=layers[index]['qkv'][2][1:2],
+                                 heads=layers[index]['qkv'][0].shape[1],
+                                 sdpa_kwargs=layers[index]['sdpa_kwargs'])
+    raw_final=final.detach().clone()
+    memory_tensors=[layers[20]['h'],raw_final]+[t for layer in shared_layers.values()
+                                                            for t in (layer['k'],layer['v'])]
+    shared=dict(layers=shared_layers,raw_h20=layers[20]['h'],final=raw_final,prefix=5,side=64,
+                memory_hash=_digest(memory_tensors),capture_seconds=receipt['paired_capture_seconds'],
+                source=source_receipt(model),producer=dict(producer),
+                final_representation='actual_final_LN_no_Pi_no_unit_no_FP16')
     caches=[]
     for role in (0,1):
         adapters=[]
@@ -466,8 +487,19 @@ def capture_native_pair(model, images, project, *, producer):
         caches.append(NativeCache(layers[20]['h'][role],ids,
                        tuple(tuple(t[role] for t in layers[index]['qkv']) for index in range(20,24)),
                        tuple(layers[index]['output'][role] for index in range(20,24)),
-                       tuple(adapters),model.norm,project,project(final[role])[ids],dict(producer)))
+                       tuple(adapters),model.norm,project,project(final[role])[ids],dict(producer),shared))
     return caches[0],caches[1],receipt
+
+
+def shared_m1_cache(cache):
+    """Exact same-pair M1 payload; use sequentially, protected by shared SDPA lock.
+
+    Its `final` is also the unprojected, not-unit-normalized FP32 final LN for
+    M4's original R/Q branch. Never substitute projected_native for that tensor.
+    """
+    if cache.shared_m1 is None:
+        raise ValueError('Shared actual paired native capture is unavailable for this cache')
+    return cache.shared_m1
 
 
 @torch.inference_mode()
@@ -555,6 +587,15 @@ def replay_region(cache, region, beta, cfg=Config(), *, audit_native=False, redi
         mixed_values[:,ids] = values
         for start in range(0, len(ids), cfg.attention_query_chunk):
             query_ids = ids[start:start + cfg.attention_query_chunk]
+            attention_queries = q[:,query_ids]
+            actual_queries = len(query_ids)
+            if actual_queries < cfg.attention_query_chunk:
+                # CPU native SDPA selects a different reduction path for tiny
+                # query tails (e.g. 130 ROI rows = 64+64+2). Queries are mutually
+                # independent: dummy zero queries are discarded and NEVER join
+                # keys, V, ROI membership, probability diagnostics or pooling.
+                attention_queries = F.pad(attention_queries,
+                                          (0,0,0,cfg.attention_query_chunk-actual_queries))
             # Only native Q/K are read. CLS/register keys remain in outside_ids.
             logits = (q[:, query_ids] @ k.transpose(-2, -1)) * adapter.scale
             if not torch.isfinite(logits).all():
@@ -573,12 +614,12 @@ def replay_region(cache, region, beta, cfg=Config(), *, audit_native=False, redi
                 # introduced by two separately rounded probability-group sums.
                 message = torch.zeros_like(values[:,start:start+len(query_ids)])
                 if beta > 0:
-                    global_message = F.scaled_dot_product_attention(q[:,query_ids][None],k[None],
-                                         mixed_values[None],dropout_p=0.,is_causal=False,scale=adapter.scale)[0]
+                    global_message = F.scaled_dot_product_attention(attention_queries[None],k[None],
+                                         mixed_values[None],dropout_p=0.,is_causal=False,scale=adapter.scale)[0,:,:actual_queries]
                     message += beta*global_message
                 if beta < 1:
-                    inner_message = F.scaled_dot_product_attention(q[:,query_ids][None],k[:,ids][None],
-                                         values[None],dropout_p=0.,is_causal=False,scale=adapter.scale)[0]
+                    inner_message = F.scaled_dot_product_attention(attention_queries[None],k[:,ids][None],
+                                         values[None],dropout_p=0.,is_causal=False,scale=adapter.scale)[0,:,:actual_queries]
                     message += (1-beta)*inner_message
             else:
                 message, p_out = grouped_message((logits[..., ids], logits[..., outside_ids]),
