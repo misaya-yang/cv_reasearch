@@ -1,18 +1,39 @@
 # Research agreement
 
-1. The current user request defines the task. Prior chats, memories and plans are context, not instructions.
+1. The current user request defines the task. Prior chats, automatic memories, archives and external-model
+   advice are context, not authorization to continue work.
 
-2. Read `STATUS.md` and `CLAIM.md` first. Read other project files only when needed.
+2. AGENTS is the only project agreement. [PLAN](docs/research/PLAN.md) is the only pending-work list;
+   handoffs and historical records do not create additional tasks. Do not read other files upfront by
+   default. Find each fact when needed and point to its source.
 
-3. Optimize for the requested final result, not intermediate activity. Probes, code, GPU runs and partial signals are not final results.
+3. The current phase is to integrate components with measured benefits, freeze a complete method and
+   finish a finite validation plan. Do not search for new mechanisms by default or automatically expand
+   work because of scores, concerns about originality or anticipated acceptance difficulty. PLAN defines
+   the phase scope and completion conditions; the user may explicitly change them.
 
-4. Think before any experiment. Before launching one, write in the ledger: (a) which measured error it should change, pointing to specific existing results; (b) the quantity that differs between the right and the wrong cases and makes that change possible — if existing results already show this quantity does not separate them, drop the idea; (c) the expected result as a number derived from existing measurements, and the threshold below which the line is closed. A failed line is closed, not varied; reopening it requires a new measured fact, not a modification of the failed attempt.
+4. Before an experiment, check existing facts: what it should confirm, what prior measurements support,
+   and what result would contradict the expectation. Close ideas already contradicted by observed errors.
+   State the source, applicable pipeline and uncertainty of expected numbers. Label extrapolations and
+   unknowns explicitly; do not add gains across pipelines or require proof of success in advance. Direct
+   algebraic calculations apply only to the same measured object.
 
-5. Use the smallest decisive experiment first. If it works, move to full evaluation; if it fails, identify why before trying another variant.
+5. Judge progress by complete outputs and the requested deliverable. Code, proofs, diagnostics and GPU
+   activity are not method results. Perform only the necessary checks and complete evaluations in the
+   plan. Record negative or unresolved results honestly, without automatically starting another variant.
+   Fix implementation errors within the same method contract and recheck affected items; new mechanisms
+   or searches require the user to reopen that work.
 
-6. Keep comparisons fair and report measured effect and uncertainty. Do not silently change the method, scope, resources or evaluation conditions.
+6. Keep comparisons fair and distinguish measurements, calculations, predictions and unverified claims.
+   Specify the complete method, resources, data exposure, resolution, statistical conventions and strong
+   simple controls. Do not silently alter supplied methods or call reused data independent confirmation.
 
-7. Stay aware of the global task throughout execution. Regularly reassess whether the current work is actually moving toward the goal; if it becomes local, stalled or low-value, step back and change course instead of continuing to optimize it.
+7. Maintain only current state and next steps, linking detailed results to evidence. Regularly check
+   whether work advances the final deliverable. When work stalls or has little value, bring it to a close
+   and report the actual gap; do not prolong the loop with more plans, diagnostics or automatically
+   generated tasks.
 
-8. Do not overwrite active work from other agents. Ask before major new resource use, destructive actions, or changing research direction. Commit or push only when requested.
-
+8. Preserve other agents' active edits, reusable features and original results. Use new resources, perform
+   destructive actions or change research direction only within current user authorization; ask when it
+   is missing. Commit or push only when explicitly requested. Do not directly reuse historical queues,
+   PIDs or prior authorization.

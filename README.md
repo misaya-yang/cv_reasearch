@@ -1,45 +1,29 @@
 # CVPR 2027 — single-reference segmentation
 
-**No paper method claim is established yet.** We seek a complete inference method that improves on complete
-FoRIS under the same frozen-DINOv3, single-reference information budget. The supervised-readout and SAM3
-results belong to separate resource settings.
+当前工作方式：**整合已有有效部件，冻结完整流程，完成有限验证，再据实组织论文。**
+新完整流程尚未验证；约 60.1 是工作预测。当前不再自动寻找新机制，也不把原创技巧作为继续交付的前提。
 
-## Start here
+## 入口与职责
 
-Codex and Claude Code share [AGENTS.md](AGENTS.md) directly. Read [STATUS](docs/harness/STATUS.md), then
-[CLAIM](docs/research/CLAIM.md). [PLAN](docs/research/PLAN.md) is the only pending-work list.
-Current operational handoff: [HANDOFF](HANDOFF.md); execution map: [REPO_MAP](REPO_MAP.md).
-Project Claude auto memory remains disabled; shared lessons are in [LESSONS](docs/research/LESSONS.md).
+Codex 和 Claude Code 共用 [AGENTS.md](AGENTS.md)。先读 STATUS、CLAIM，需要行动再读 PLAN。
 
-## Layout
-
-```
-src/ics/        shared data/encoder, complete FoRIS entry, native basis and paired statistics
-scripts/        run_foris.py and experiment_resource_guard.py
-evidence/       recorded results and reports; no active experiment queues
-  local/        local evidence; research_20261005 holds the prepared six-mechanism batch
-  insid3/       historical INSID3 diagnostics
-  dots-2026-10-05/  supplied research synthesis and portable cloud evidence
-docs/
-  research/     CLAIM, PLAN, LESSONS
-  harness/      STATUS, SERVER, closed-direction history
-```
-
-The former demo4 was an INSID3 exploration; only its shared data/encoder helpers remain in code.
-The former demo9 mixed unrelated experiments; those implementations are retired from the working tree.
-The user deleted local demo8, and it has not been recreated. See [closed-direction history](docs/harness/ARCHIVE.md).
-
-| Need | Entry |
+| 文件 | 唯一职责 |
 |---|---|
-| Current claim, controls and evidence limits | [CLAIM](docs/research/CLAIM.md) |
-| Local results and failed constructions | [Local evidence ledger](evidence/local/RESULTS.md) |
-| INSID3 diagnostic history | [INSID3 evidence](evidence/insid3/RESULTS.md) |
-| Dots contribution/theory review | [Imported record](evidence/dots-2026-10-05/IMPORT.md) |
-| What the retained code does | [Code and baseline use](scripts/README.md) |
-| Existing server paths and resource policy | [SERVER](docs/harness/SERVER.md) |
+| [STATUS](docs/harness/STATUS.md) | 当前阶段、已完成事项和仍缺的事实 |
+| [CLAIM](docs/research/CLAIM.md) | 论文目标、已有数值及可以支持的结论 |
+| [PLAN](docs/research/PLAN.md) | 唯一待办清单、有限验证及结束条件 |
+| [HANDOFF](HANDOFF.md) | 接续入口、已有工作保护和本次变更范围 |
+| [SERVER](docs/harness/SERVER.md) | 需要远程执行时查阅的环境记录与操作说明 |
 
-Old source is available from Git/history or the recorded local backup, not copied into another active code
-tree. Scientific evidence remains inspectable. A stored result or a historical plan is not authorization to run.
+## 代码与证据
 
-The existing600 cohort is being evaluated on the enabled GPU. Current ownership, completedDEV241 evidence
-and pending fixed-control comparisons are in [PLAN](docs/research/PLAN.md) and [HANDOFF](HANDOFF.md).
+- `src/ics/`、`scripts/`：共享数据、编码器、基线、推理与统计实现；[代码导航](scripts/README.md)。
+  目录中存在脚本不等于它属于当前方法或待执行清单。
+- [本地结果账本](evidence/local/RESULTS.md)：完整结果及失败记录；正文结论绑定各自报告。
+- `evidence/local/research_20261005/`、`research_20261006/`：现有实验、理论、预测和实现来源。
+- [INSID3 历史](evidence/insid3/RESULTS.md)、[导入研究记录](evidence/dots-2026-10-05/IMPORT.md)：按需查证。
+- [历史教训](docs/research/LESSONS.md)、[关闭方向](docs/harness/ARCHIVE.md)：历史背景，不产生待办。
+
+旧状态、旧计划、旧交接和重复导航已收进一个
+[整理前快照](docs/archive/2026-10-06-workflow-snapshot.md)，包括整理前未提交的文档修改。
+当前入口不再宣称旧 GPU 队列仍在运行。项目 Claude 自动记忆保持关闭；没有另建 CLAUDE.md 或第二套规则。

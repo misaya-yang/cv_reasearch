@@ -1,4 +1,7 @@
-# Baseline entry and resource guard
+# Code navigation and historical runners
+
+当前待执行项只见 [PLAN](../docs/research/PLAN.md)。下文的 prepared、not run、
+资源与进度描述是 2026-10-05 的开发快照，不代表当前状态或运行授权。旧脚本保留用于复用和追溯。
 
 The retained baseline programs are:
 
@@ -35,9 +38,9 @@ Git history.
 
 ## Prepared six-mechanism batch, 2026-10-05
 
-See [the preparation record](../evidence/local/research_20261005/README.md) for exact inputs, controls,
-resource accounting and launch commands. The user has stopped CPU experiments and will enable the GPU.
-No prepared command is an instruction to rent hardware or resume a historical queue.
+The [historical preparation record](../evidence/local/research_20261005/README.md) retains inputs, controls,
+resource accounting and launch commands. Its six-mechanism batch is retired from the current plan;
+no prepared command is an instruction to rent hardware or resume a historical queue.
 
 - `inventory_existing_assets.py`: stdlib-only read-only asset/manifest/quota inventory.
 - `run_mechanisms.py`: finite cache inference, including RCG, with isolated sealed-prediction scoring.

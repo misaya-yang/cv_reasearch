@@ -1,0 +1,251 @@
+{
+  "id": "s3_rcg16_fine15_definition_v1",
+  "date": "2026-10-06",
+  "state": "ALGORITHM_DEFINITION_ONLY_NOT_EXECUTED",
+  "scope": "A fixed composition of existing operators under the current PLAN. Not a new mechanism, new measured method, or new task queue.",
+  "working_tree_base_commit": "c14e75316911f187d11f9920f5c7d0229cd8ad29",
+  "executable_entry": null,
+  "inputs": [
+    "one RGB reference image",
+    "complete binary reference mask",
+    "one RGB query image",
+    "existing frozen DINOv3-L weights and their configuration",
+    "existing native normalized-black positional basis"
+  ],
+  "forbidden_inference_inputs": [
+    "query truth",
+    "query class name or ID",
+    "query fold ID",
+    "FoRIS output mask",
+    "FoRIS final score",
+    "target dataset labels for fitting"
+  ],
+  "asset_identities_from_existing_receipts": {
+    "weights_sha256": "45172f209c9583c40538afc26b60a07033e6fcc2e8c30228338e6b2e932e7941",
+    "encoder_config_sha256": "a71f705b0074e173540d0bdbd3aa940fa8d7d3c6c7f020a683004c46ca605b24",
+    "native_basis_sha256": "9b9b20755a796cbda11bb7220d246ee540106e40cb024e249a5f63f884b6a116",
+    "provenance": [
+      "evidence/local/research_20261005/pipeline_verified/insid3_complete241_v2/protocol.json",
+      "evidence/local/research_20261005/runs/outputs/gpu_multilayer_dev241_v1/protocol.json"
+    ],
+    "asset_contents_rehashed_this_turn": false
+  },
+  "encoder": {
+    "resolution": 1024,
+    "patch_grid": [
+      64,
+      64
+    ],
+    "channels": 1024,
+    "layer_one_based": 24,
+    "adapter": "ics.data.TimmDINOv3",
+    "weights_frozen": true,
+    "paired_order": [
+      "reference",
+      "query"
+    ],
+    "norm_true": true,
+    "image_transform": "PIL RGB -> Resize((1024,1024), bilinear) -> ToTensor -> ImageNet mean/std",
+    "reference_mask_resize": "nearest to 1024",
+    "dtype_contract": "FP32 model and input; autocast disabled; TF32 disabled",
+    "historical_dtype_parity": "not established; preserve old reported scores as old results"
+  },
+  "evidence_and_region_prior": {
+    "definition": "stage_bank.foris(mode=source), response(upto=prior); do not use penalty or delta in the resulting field",
+    "tau_cluster": 0.6,
+    "linkage": "average on 1-cosine; distance threshold 0.4",
+    "foreground_tokens": "stage_bank.down_bilinear, including nearest and centroid fallbacks",
+    "debias_gate": "source semantic cosine < 0.8; nearest reference token mask; empty nearest foreground applies projection",
+    "positional_rank": 500,
+    "projection_order_for_score": "stage_bank.debias: normalize(x-(x@U)@U.T)",
+    "foreground_score": "0.07*logsumexp(query @ normalized foreground cluster prototypes /0.07)",
+    "background": "mean of hardest 20 percent reference background tokens, orthogonalized to reference foreground mean, normalized",
+    "background_weight": 0.55,
+    "vote": "nearest reference-token label with reference features normalized over HEIGHT, preserving stage_bank behavior",
+    "vote_weight": 0.2,
+    "query_region_descriptor": "normalize(concat(query,0.35*unit(RGB),0.20*unit(xy)))",
+    "candidate": "vote OR regular step-2 token grid",
+    "seed": "argmax(region mean query/foreground cosine * candidate fraction); regions with no candidate excluded",
+    "prior": "cross * nonnegative seed/region prototype cosine * candidate fraction; seed boosted to maximum; region minmax broadcast to tokens",
+    "single_region_prior": "candidate indicator",
+    "prior_weight": 0.25,
+    "field": "fg -0.55*bg +0.20*(vote-0.5)+0.25*(prior-0.5)"
+  },
+  "graph_features": {
+    "definition": "same encoder pair; source conditional native projection in FP32 via (I-U@U.T)@X then channel normalization; round retained descriptors through FP16, convert to FP32 and normalize per token",
+    "note": "This is a separate numeric branch from the stage_bank score projection, as the old host experiment used rebuilt score fields and native cached graph tokens. Independent reconstruction parity remains unverified."
+  },
+  "rcg": {
+    "reference_coverage": "area resize of the supplied 1024 reference mask to 64",
+    "source_purity": 0.9,
+    "purity_fallback": "all maximal-coverage tokens",
+    "cross_image_k": 10,
+    "guide": "max_F(2*cosine - reference top10 mean)-query top10 mean",
+    "alpha": 0.5,
+    "rank": "average rank minus 0.5, divided by 4096",
+    "score_scaling": "per-image minmax with span denominator floor 1e-6",
+    "constant_score_span_below": 1e-09,
+    "constant_score_behavior": "empty output as in run_rcg_hosts",
+    "query_k": 20,
+    "graph": "reciprocal cosine nearest neighbors; geometric mean of adaptive exponential edge weights; normalize mean weighted degree",
+    "spatial_neighbor_restriction": false,
+    "confidence": "(0.1+abs(2*s-1))/mean(0.1+abs(2*s-1))",
+    "lambda": 16,
+    "system": "(A+16L)z=A*(s+0.5*(rank(g)-rank(s)))",
+    "cg_rtol": 1e-07,
+    "cg_atol": 1e-09,
+    "cg_maxiter": 300,
+    "output_dtype": "FP32",
+    "post_solve_minmax": false
+  },
+  "fine_readout": {
+    "shifts": [
+      [
+        -4,
+        -4
+      ],
+      [
+        -4,
+        4
+      ],
+      [
+        4,
+        -4
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "padding": "reflect4 after image normalization",
+    "grid": [
+      128,
+      128
+    ],
+    "space": "channel-normalized shifted last-layer features, same native projection decision as coarse graph features, renormalize and retain FP32",
+    "coarse_guide": "normalize FP32-converted FP16 native query descriptors",
+    "sigma": 1.25,
+    "tau": 0.15,
+    "window": 2,
+    "weight": "exp(-token_center_distance_squared/(2*sigma^2))*exp((cosine-1)/tau), normalized over valid 5x5 neighbors",
+    "fine_interleaving": "negative shifts populate even rows/columns; positive shifts odd",
+    "renderer": "bilinear128->1024, align_corners=False, >0.5",
+    "CRF": false,
+    "size_cut": false,
+    "parameter_source": "fixed global readout from rcg2_frozen.json; inherited source600 selection, no new fitting; deliberately not the old fold-specific 0.07/0.15 selector",
+    "parameter_source_path": "evidence/local/research_20261005/rcg2_frozen.json",
+    "parameter_source_sha256": "38956334d5e11a0199ea25f659aae0f550aa677f5a7459fa3ed8cf990867c499"
+  },
+  "parameter_provenance": "Existing development-selected RCG constants and source600-selected global fine parameters. No added label fitting; never claim no historical use of labels for selection.",
+  "exact_optimization_description": "min_{z,f} 0.5*(z-y)^T A*(z-y)+8*z^T L*z subject to f=B*z; mask=f>0.5. A,L,y and B are computed by the fixed preceding operators. This does not optimize the prototypes, seed, ranking, or readout weights jointly.",
+  "expected_cost": {
+    "encoder_image_evaluations_per_nondegenerate_episode": 6,
+    "paired_base_call": 1,
+    "extra_shifted_query_calls": 4,
+    "basis_recomputed_per_episode": false,
+    "measured_end_to_end_seconds": null,
+    "measured_peak_memory": null,
+    "no_claim_of_equal_compute_to_two_image_baselines": true
+  },
+  "comparisons_fixed": [
+    "primary: S3 + RCG16 + global fine15",
+    "same S3 + RCG16 + bilinear coarse readout: fine increment",
+    "same S3 + historical MEAN_a0.25_l16 + same global fine15: simple reference-guide control",
+    "complete FoRIS native",
+    "released INSID3 complete with 640 CRF, explicit existing implementation/dtype caveat",
+    "complete FoRIS final score + RCG16 coarse: existing strong complete baseline",
+    "complete FoRIS final score + MEAN_a0.25_l16 coarse: existing strong complete baseline",
+    "complete FoRIS final score + RCG16 + same global fine15: same readout/encoder-budget control"
+  ],
+  "mean_control_definition": "Retains the same reciprocal query graph, confidence weighting and lambda16 solve; guide is query cosine to normalized mean of reference pure foreground tokens and alpha=0.25. It is NOT a graph-free spatial averaging control.",
+  "cohorts": [
+    {
+      "name": "DEV241",
+      "path": "evidence/local/research_20261005/pipeline_verified/frozen_fine_raw_dev241_v1/manifest.json",
+      "sha256": "21313223baa70b7ea573ef2952651d793f0a29bac4db9499e1228ed93b949286",
+      "rows": 241,
+      "stored_classes": 79,
+      "exposure": "reused development",
+      "preserve_all_rows_and_order": true
+    },
+    {
+      "name": "CONFIRM1200",
+      "path": "evidence/local/research_20261005/pipeline_verified/photo_disjoint_confirm1200_v1/manifest.json",
+      "sha256": "21475d39973d448a81140b87db875dc70a47c4f60a53d436ccea8bc8432d3ff6",
+      "rows": 1200,
+      "stored_classes": 74,
+      "exposure": "previously registered as photo disjoint; current exposure recheck pending",
+      "preserve_all_rows_and_order": true
+    },
+    {
+      "name": "SUIM",
+      "path": "evidence/local/research_20261005/rcg2_group_suim/rows.json",
+      "sha256": "db45b4657e446262e1d14fd15454284a355586c2b0f27804eb4ec4c06b64e279",
+      "rows": 582,
+      "stored_classes": 7,
+      "exposure": "reused cross-dataset episodes",
+      "preserve_all_rows_and_order": true
+    },
+    {
+      "name": "PASCAL-Part",
+      "path": "evidence/local/research_20261005/rcg2_grouppascal_part/rows.json",
+      "sha256": "bef18da197dc1cf4fe63ccc59035cdbdc47216a5a83a832444819307c15dfb33",
+      "rows": 598,
+      "stored_classes": 56,
+      "exposure": "reused cross-dataset episodes",
+      "preserve_all_rows_and_order": true
+    },
+    {
+      "name": "PACO-Part",
+      "path": "evidence/local/research_20261005/rcg2_group_paco_part/rows.json",
+      "sha256": "b804f3a5f1905d4bbd28728e6e49671ac2b1c9bad70bb746359cfa3d4cb4b899",
+      "rows": 599,
+      "stored_classes": 264,
+      "exposure": "reused cross-dataset episodes",
+      "preserve_all_rows_and_order": true
+    },
+    {
+      "name": "LVIS",
+      "path": "evidence/local/research_20261005/rcg2_group_lvis/rows.json",
+      "sha256": "0db27b8bbf56fb904260755dc6045c513ba0d5af4111299ef24785f3aafd4576",
+      "rows": 599,
+      "stored_classes": 367,
+      "exposure": "reused cross-dataset episodes; images may overlap COCO",
+      "preserve_all_rows_and_order": true
+    }
+  ],
+  "cross_dataset_binding_limits": "The saved row order is fixed. SUIM/PASCAL-Part exported image roots and binary-mask binding still need metadata binding. PACO-Part/LVIS rows have shard-local image paths and remapped stored c values; the key prefix identifies the source shard. Original class mapping and photo IDs must be bound before evaluation; never treat numeric e/fold or exported basenames as unique original photo identities.",
+  "evaluation": {
+    "resolution": 1024,
+    "metric": "mean over classes of summed intersection / summed union",
+    "paired_bootstrap": "2000 RandomState(0) connected support/query photo-group draws; absent classes omitted in each replicate",
+    "preserve_duplicate_draws": true,
+    "uncertainty": "CI crossing zero remains unresolved",
+    "outputs_sealed_before_query_truth": true
+  },
+  "known_old_scores_not_new_predictions": {
+    "S3_RCG16_DEV241": 59.692048984458026,
+    "native_DEV241": 59.07482507561252,
+    "fine64_minus_coarse64_other_pipeline": 0.387231,
+    "supplied_60_1": "unverified external extrapolation; not derived from these operators"
+  },
+  "remaining_execution_gaps": [
+    "independent image-to-mask entry not assembled or exercised",
+    "numeric parity between new producer and retained components not checked",
+    "current CONFIRM1200 exposure not rechecked",
+    "cross-dataset asset/class/photo identity binding incomplete",
+    "no full-method result or measured runtime"
+  ],
+  "resource_status": "No SSH, encoder run, new segmentation mask, CPU/GPU experiment, or model/data download in this freeze.",
+  "source_sha256": {
+    "src/ics/methods/stage_bank.py": "05d4e20ca812ea86fede93f46741c32416cd7a9bc66c4bebc6d76ad284383456",
+    "src/ics/methods/rcg.py": "d9d8e15a69c0b939eb06dc4e41967afb684f29731f9dcb00519e73d944963d98",
+    "src/ics/data.py": "7664bfcc0de9a9183296273a3ea57390e00147b82afe626f47bde1bf2383b165",
+    "src/ics/native_basis.py": "8ac26ef78d601f3d10318043c6cd73a05fe9dc2ac8d8ea4eabefc6a8289cb80c",
+    "scripts/run_stage_bank.py": "326e4984a12b346fe52ca6bbd9a620168e9e7446a05758a0f73b210645ec4811",
+    "scripts/run_rcg_hosts.py": "489afa89abfa89deb1ad942ce77c0fc154b74f58eea2bc2e4587ead959b249a8",
+    "scripts/run_subtoken.py": "3265c001a1d5f7fbad611afc1f5fb6bcbfa85070b17436501a5d4fc9615961be",
+    "scripts/run_frozen_subtoken1200.py": "e802ea229d50bd83b88784fa0640105e65c79d31469fb5a0b769667d80995a5d",
+    "evidence/local/research_20261005/astra_portable/components.py": "5c7c7e9e7e55e63cb4e7c9842d09ee7e4e0f6071c102bbaf1e9fbd0ceef76c23"
+  }
+}

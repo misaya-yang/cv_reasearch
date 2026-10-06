@@ -1,263 +1,150 @@
-# Pending work
+# 当前计划：整合与有限验证
 
-## Scoped execution owned by chat 01a1100b (2026-10-06)
+更新：2026-10-06。本文件是唯一待办清单，替代旧持续研究、候选扩展和自动接班计划。
+本次请求是修正工作方式；下列科研步骤尚未启动，也不由本次文档修改获得远程资源授权。
 
-Current theory response follows the supplied seed-uncertainty mechanism. The
-[specified complete rule](../../evidence/local/research_20261006/seed_uncertainty_01a1100b/design.md)
-keeps ambiguous seed identities, propagates lower/upper prior bounds through a
-common positive graph operator, and preserves seed-free decisions wherever the
-pixel-level envelope disagrees. A conditional whole-IoU guarantee is proved; the
-three-pixel rational example and3,840 exhaustive Boolean cases check it without
-any image/model run. No score forecast. The simple alternative is disabling the
-prior on ambiguous queries; uniform seed averaging is another necessary control.
-The next empirical question is whether this rule retains useful seed edits while
-removing hard-seed damage in the complete method. Old local reports lack the
-alternative-seed outputs and actual selection margins needed to answer it. No new
-experiment, replay or resource request is scheduled. This is a concrete design and
-proof, not fulfillment of the method-performance or universal-forecast objective.
+## 唯一下一步
 
-Previous theory response, retained as context:
-Latest human input supplies a concrete standalone-method direction and supersedes
-the impasse as the plan for this theory-only response. The
-[complete theory draft](../../evidence/local/research_20261006/standalone_region_objective.md)
-is written: build evidence from the reference and frozen features, couple query
-token and region responses, represent seed-region semantics as regional anchors,
-then solve one positive-definite system and render a full mask. Region variables
-eliminate exactly; the direct-anchor version is the required simpler alternative.
-The user's subsequent originality challenge exposes that this draft still commits
-to one seed by argmax. It is now a control design, not an original main candidate.
-Its59.7/60.1 score extrapolations are withdrawn; the existing56.17/58.44/59.69
-measurements remain valid only for their original constructions. The user supplied
-Opus's alternative of carrying ambiguous seed hypotheses to the final decision;
-that is a supplied, unvalidated direction, not this chat's original idea. There is
-no new measured mask, implementation run or GPU/CPU experiment. Neither direction
-has a run queued, and the control-design comparison is no longer the proposed main
-experiment.
-Count-forecast and boundary branches remain closed. The original complete-method
-objective has not been declared achieved.
+**算法定义已固定；完整入口、数值一致性和完整实测仍未完成。**
+2026-10-06，chat01a1100b 依据现有代码与报告完成下列算子核对，并固定一份
+[机器可读约定](../../evidence/local/research_20261006/complete_method_contract_01a1100b.json)。
+这是清单第1项的定义准备，不是一个已运行的方法；本聊天仍遵守无服务器、无新推理的资源限制。
+独立入口及必要实现检查属于同一清单项，不生成新的研究分支。
 
-Earlier execution audit after the user's progress challenge:
-The repeated gap across the last three goal turns is unchanged: no justified
-pre-experiment win forecast and no new complete output establishing the required
-method gain. The existing counts describe already-run programs; they do not
-provide the result of a new program. New inference/experiments remain excluded.
-The final read of the current candidate/transfer/failure reports supplies no
-verified replacement: hierarchy capacity is truth-assisted, and its measured
-truth-free selectors lose to the control. No further diagnostic extension,
-speculative candidate implementation or automatic run is scheduled by this chat.
-This is incomplete work and a limitation of this execution, not a proof that
-the research problem or all future constructions are impossible. The original
-method and forecasting objectives remain intact. Reopening requires a concrete
-new basis for resolving this gap, not a restatement of the same planned analysis.
+冻结结果直接填入本页，详细来源链接原报告，不再创建另一份计划或待办索引：
 
-Latest instruction for this chat: user reports the server powered off and provides
-no further server GPU/CPU resources. Work is independent reasoning from existing
-theory and measured records only; no SSH, model/inference experiment or automatic
-restart is scheduled. The user's new4000-case purity forecast is the current
-starting point. A small local arithmetic check on existing compact counters has
-replaced held-class baseline I/U with historical, mask-area-scaled estimates,
-keeping every segmentation mask fixed. Original and label-removed forecasts
-both predict all80classes positive, while72actually improve. Label-removed class
-MAE1.385 is worse than historical-mean-control1.330. See the current derivation.
-That error audit is complete: the eight negative classes' correct-edit share was
-overestimated by8.8–18.7percentage points. A fixed cross-dataset check on existing
-size-cut outputs is also complete. Repairing incoherent baseline/edit estimates
-with four shared mask-membership atoms removes all invalid counts, but predicts
-only2/4 target-dataset point directions correctly. SUIM+0.677predicted vs−0.501actual;
-LVIS−1.518vs+1.579. The same frozen size bins do not preserve edit correctness.
-See the [transfer analysis](../../evidence/local/research_20261006/edit_forecast_transfer_existing_counts/report.md).
-This count-forecast branch is now closed after the user's progress challenge:
-it supplied useful falsification, but neither a working pre-experiment predictor
-nor a better complete segmentation method. Do not continue it with interval
-derivations, more bins or selector variants merely because those are computable.
-The proposed interval extension was not implemented or run. A robust gain formula
-without a justified error range is not a working predictor. Full-method work remains
-required; no new candidate or resource use is authorized by closing this branch.
-No parameter search, new segmentation pixels, or server CPU/GPU work. This is
-retrospective analysis of existing results, not independent validation.
-The desired result remains pre-experiment prediction and an effective complete method.
-[Current derivation](../../evidence/local/research_20261006/no_compute_joint_solution.md)
-now centers on the edit-correctness sufficient statistic and this backtest;
-the unconditional-forecast boundary is background, not the main deliverable. It also corrects
-this chat's overly strong prerequisite that every complete solution must first
-estimate a calibrated per-query posterior. The full method objective remains
-unachieved; this theoretical boundary is not a substitute for it.
+| 冻结字段 | 当前状态 |
+|---|---|
+| 独立入口、算子顺序、代码版本和全部参数 | 算子定义及9个本地来源文件的 SHA 已固定；独立图像到掩码入口尚未组装、运行或验证 |
+| 统一解释与实际计算的对应关系 | 见下方固定能量与读出约束；只解释既有图求解，不将原型、种子、排序改成联合优化 |
+| DEV241 与完整 FoRIS、INSID3、相关简单强对照 | 固定原241例及8个比较行，见下文；旧分数与新组合的分数分开 |
+| 确认 1200 的 manifest 与暴露状态 | 固定现有1200元数据身份；新方法运行绑定与截至运行前的暴露复核仍缺 |
+| 其他数据集、样本清单及必要比较行 | 固定下方4个既有跨数据集清单；原始图像、类别映射和掩码绑定仍缺，不据此开跑 |
+| 预期、证据来源、成本及否定预期的结果 | 约60.1仍仅为外推；通常需2张基础编码加4次移位查询编码，完整秒数/峰值内存未知 |
 
-The user corrected this chat for repeating boundary joint optimization and questioned
-its relevance to the main task. The criticism is accepted: the reference-conditioned
-boundary cut did not establish a substantively new answer to the main evidence/inference
-gap and should not have been launched on that justification. It finished DEV241 at
-51.882497 versus native59.074825; its gain over the same-mass affinity control is
-.066890[-.032783,.240805]. This is a rejected construction and an execution deviation,
-not a main-line research achievement. No successor or boundary parameter sweep exists.
-New files and all outputs are retained. Four CPU workers were used; no GPU/model call.
-Report: `evidence/local/research_20261006/reference_boundary_01a1100b/report.json`.
-The subsequently discussed feature-changing/component proposals are also withdrawn
-before implementation or inference. The task remains complete evidence construction
-and joint inference; an explicit usable selection rule and its justified relation to
-task value are missing. Merely giving a surrogate objective an exact solver does not
-fill that gap. This chat must not launch another local component in place of it.
+缺项应具体报告并在本地现有材料可支持的范围内补齐；不能用新机制、诊断网格或更多理论任务替代冻结。
 
-## Supplied direction: query-only hierarchical candidates
+### 已固定的完整算法定义
 
-Question: does a query-only region hierarchy preserve better target geometry than
-the same cases' score-level candidate family, and can the reference select it?
-The user reports600-case best1–3 oracle measurement running. No duplicate encoding
-or peer-run changes are planned. Candidate-only oracle is GT-assisted capacity.
-Compare exact class-summed O_1/O_2/O_3, same-case score-threshold oracle and complete
-native baseline; O_unlimited separates tree capacity from the three-node cap.
-Required additional inputs are existing node TP/FP, topology, eligibility and entire
-GT area at the same evaluation resolution. Root's exact solver and independent
-proofs are [available](../../evidence/local/research_20261006/hierarchy_joint/derivation.md).
-If capacity improves, reference selectability is the next unresolved step. If only
-the unlimited cap improves, revise the cap rather than dismiss the encoder. A low
-unlimited bound limits this hierarchy construction. Timing depends on the supplied
-run; count-only tree DP requires no new model call and costs O(N*K^2) per ratio.
+输入是一张参考图及完整目标掩码、查询图和既有冻结 DINOv3-L。基础图像使用既有
+PIL 双线性缩放到1024、ToTensor、ImageNet归一化；参考掩码最近邻缩放到1024。
+编码顺序为 `[reference, query]`，最后一层64×64×1024，`norm=True`；本定义明确使用
+FP32且关闭autocast与TF32。旧来源的历史数值一致性尚未成立，不能把新入口称为旧缓存复现。
+权重、模型配置及原生黑图位置基的既有收据 SHA 已记入约定；本次未重新读取这些远端资产。
 
-## Current main line: evidence construction and joint inference
+执行次序是 **参考证据与投票 → 区域种子先验 → 参考排序校正与查询特征图求解 → 亚格点读出**。
+四个角色不是可任意交换的四个步骤。具体保留：
 
-The user rejects Root's narrowing of the task to selection among existing complete
-masks. The task is to derive and solve a complete inference process from one
-labeled reference and frozen DINOv3 features: identify the target in the query and
-recover its extent while accounting for gains, overlap, conflict and side effects.
-A*/B* describes and organizes those inference operators; it does not restrict
-the method to the thirteen existing terminal outputs or make FoRIS obligatory.
+1. 使用 [stage_bank](../../src/ics/methods/stage_bank.py) 的 `foris(mode="source")` 与
+   `response(upto="prior")` 定义分数。聚类阈值0.6、前景LSE温度0.07、最难背景比例0.2、
+   背景权重0.55、投票权重0.20、种子先验权重0.25，查询区域RGB/位置权重0.35/0.20。
+   参考投票保留原实现沿**高度维**归一化；候选为投票与步长2网格的并集。
+   分数不含 `penalty/delta`；这只是所提供阶段链的固定选择，不宣称删项必然涨分。
+2. 保留源条件位置投影、原生rank500基及数值运算顺序。阶段重建的
+   `x-(x@U)@U.T` 与旧图特征的 `(I-U@U.T)@X` 是两个数值分支；旧host比较本来就使用
+   重建阶段分数与原生FP16缓存图特征。新入口必须显式实现、记录并检查这一点，不能默认为相同。
+   图特征按原生条件投影、归一化、FP16量化、转FP32再归一化；细读出使用对应特征空间。
+3. 使用 [RCG](../../src/ics/methods/rcg.py) 的固定定义：覆盖≥0.9的参考token，
+   cross-image k=10、校正系数0.5、互为20近邻的查询余弦图、平均度归一化、置信下限0.1、
+   λ=16，CG容差 `rtol=1e-7/atol=1e-9/maxiter=300`。图边**不限制空间距离**。
+   分数的min-max只在求解前进行，求解后不再次缩放；沿旧host规则将跨度<1e-9的常数分数输出为空。
+4. 使用已有四个 `(±4,±4)` 像素反射移位查询编码，交错为128×128特征；5×5有效近邻读出，
+   固定 σ=1.25、τ=0.15，双线性到1024后 `>0.5`，不加CRF或面积切分。
+   这里采用 [rcg2_frozen](../../evidence/local/research_20261005/rcg2_frozen.json) 的全局读出常数，
+   不接受fold/class ID作方法输入，也不使用旧fine64的按折0.07/0.15选择器。
+   这些常数和RCG常数有历史开发集选择过程；**本次不再拟合不等于从未用标注选参数**。
 
-The user-supplied600-case attribution points to reference-to-query evidence giving
-entire background regions high scores. Its query-only linear-separation signal was
-preliminary in eight cases and is not an established deployable solution. The
-method must address intermediate evidence construction, query-internal propagation
-and the final decision within one stated objective. Raw DINO matching remains the
-common accounting origin; any native Part1 processing is an explicit prior, not
-raw features. A query-GT optimum or surrogate direction optimum is insufficient.
+以上定义不接受 FoRIS 最终分数或掩码作推断输入，但复用了它的已知证据构造。
+独立入口尚未实现，故既不能声称已脱离外部运行依赖，也不能搬用59.69作新方法成绩。
 
-The next deliverable is one concrete complete inference objective, its solution,
-its testable assumptions and a frozen full-pipeline comparison against native
-FoRIS and the strongest simple same-information alternative. Evidence and control
-must be specified before running. Existing masks/caches are reusable comparisons,
-not a substitute for constructing the method. Neither a guessed component nor an
-unspecified posterior is a derivation. No new complete method is established yet.
+### 与计算一致的统一写法
 
-The four withdrawn queues remain withdrawn. Their partial outputs and all reusable
-features remain intact. Root owns the full method and experimental decision;
-do not launch a batch of variants, fit selection using query annotations and call
-it label-free, or start another4000 export without an effective frozen method.
+由上述证据和区域先验得到 $s=\operatorname{minmax}(s_{\rm fg}-.55s_{\rm bg}+.20(v-.5)+.25(p-.5))$，
+令 $y=s+.5(R(g)-R(s))$。
+令 $A=\operatorname{diag}(a)$、$a_i=(.1+|2s_i-1|)/\operatorname{mean}(.1+|2s-1|)$，
+$L$ 为固定互邻图Laplacian，$B$ 为固定细特征加权插值与最终双线性读出的复合算子。
+非退化分支可准确写成：
 
-## Withdrawn and historical designs
+\[
+ \min_{z,f}\ \tfrac12(z-y)^T A(z-y)+8z^T Lz,
+ \qquad f=Bz,\qquad M=\{f>0.5\}.
+\]
 
-## Current design: intermediate evidence and complete pipelines
+对应线性系统恰为 `(A+16L)z=Ay`。$A,L,y,B$ 均由前面的固定计算产生；这没有把
+原型、种子身份、秩或读出权重改成联合优化变量。该等价式不保证IoU，也不证明方法原创性。
+常数分数的空输出例外按上面的既有规则处理。
 
-User rejected the four insufficiently justified fresh600 groups: query covariance
-(3 arms), covariance graph/unary controls (5), middle/end RCG (4), and query anchor
-moments (4). Root withdrew controllers97704 and99277 and their verified owned CUDA
-children; all CPU fields, partial predictions and features remain. No automatic
-restart, successor or new candidate. These groups have no complete measured effect.
-The general joint-edit4000 solver has finished without a new gain. Existing exact
-GT accounting is distinct from a deployable, label-free marginal-value estimator;
-the withdrawn groups did not establish that missing link. Do not extend the mask
-bank by unsupported evidence variants or treat a conditional Fisher-direction
-optimum as a prediction of final mIoU gain.
+### 固定比较行及解释
 
-The latest user correction moves the experimental unit from terminal attachments
-to complete pipelines built from the same frozen features. It supersedes the
-return-cut-first design. The latest goal continuation has resumed Root's research
-work. Existing held queues are not automatically restarted. The shared GPU has three
-other live producers at100% utilization; Root prepares and executes cached CPU work
-without another encoder. No peer source, process or reusable feature is modified.
-The experimental dispatch language in the older table below is historical and
-superseded by the withdrawal above.
+各清单项使用相同方法定义，比较行一次固定，不按结果替换主方法：
 
-| Question | Owner | Complete comparison and decision |
+| 行 | 用途 |
+|---|---|
+| S3 + RCG16 + 全局fine15 | 当前完整主定义，尚无实测 |
+| 同一S3 + RCG16 + 粗双线性读出 | 隔离细读出的净效果；旧host记录59.692049只属于旧生产路径 |
+| 同一S3 + MEAN_a0.25_l16 + 同一fine15 | 简单参考引导强对照，仍保留同一查询图和λ16求解 |
+| 完整FoRIS native | 完整基线，保留原CRF及成本 |
+| 完整INSID3、640 CRF | 保留现有实现/精度说明，hub数值等价未验证 |
+| 完整FoRIS最终分数 + RCG16粗读出 | 已有强完整对照；DEV241旧结果61.019669 |
+| 完整FoRIS最终分数 + MEAN_a0.25_l16粗读出 | 已有简单强完整对照；DEV241旧结果60.680117 |
+| 完整FoRIS最终分数 + RCG16 + 同一fine15 | 同读出和编码预算对照，检查替换前缀的实际价值 |
+
+`MEAN` 的名字不能解释成去掉图平滑。它使用参考纯前景均值作引导、α=0.25，而RCG使用
+校正最大匹配引导、α=0.5；两者保留相同图与求解器。因此两者接近只支持复杂引导尚未胜出，
+不支持“图没有贡献”。源码见 [mean_control](../../evidence/local/research_20261005/astra_portable/components.py)。
+旧600例固定消融的纯平滑增益为+2.637889 [1.792333,3.268409]，有图后排序校正再增
++0.655420 [0.056436,1.061844]；其证据与数值检查边界仍按
+[原审计](../../evidence/local/research_20261005/pipeline_verified/rcg_ablation_audit_v1/audit.md)报告，不能移植给当前S3组合。
+
+### 固定样本身份与尚缺的绑定
+
+完整本地路径、文件SHA、行数和顺序已记入机器可读约定，不删除自然重复样本：
+
+| 清单 | 例数 | 已存类别数 | 定位 |
+|---|---:|---:|---|
+| 原DEV241 | 241 | 79 | `pipeline_verified/frozen_fine_raw_dev241_v1/manifest.json` |
+| photo_disjoint_confirm1200_v1 | 1200 | 74 | 已有隔离候选，仍须复核当前暴露 |
+| SUIM | 582 | 7 | `rcg2_group_suim/rows.json` |
+| PASCAL-Part | 598 | 56 | `rcg2_grouppascal_part/rows.json` |
+| PACO-Part | 599 | 264 | `rcg2_group_paco_part/rows.json` |
+| LVIS | 599 | 367 | `rcg2_group_lvis/rows.json` |
+
+表内相对路径均从 `evidence/local/research_20261005/` 起算。4个跨数据集清单已被使用，
+是固定泛化复测，不是新盲测；LVIS等可能共享COCO图像。PACO/LVIS导出文件名在分片之间重复，
+类别编号也经过分片重映射；必须绑定原始类别、照片身份、图像根目录及对应二值掩码，
+不能直接用 `fold` 或 `ref/00000.png` 合并统计。当前本地行表不足以完成这项运行绑定。
+
+## 有限评测清单
+
+冻结后，在用户授权资源范围内执行。每项以同一冻结完整方法为主，必要基线和简单对照一次列全；
+实现 smoke 属于该项的运行检查，不单独生成研究分支。
+
+| 项目 | 要交付的结果 | 结束条件 |
 |---|---|---|
-| Does query-graph propagation help more before FoRIS's remaining evidence aggregation? | Root execution; `/root/part2_evidence_runner` runner | This is the one next comparison explicitly identified by the supplied Opus analysis. Compare complete original FoRIS, locked end-RCG, RCG-middle/native-tail, RCG-end, and MEAN-middle. Middle/end placement arms use the same native binarizer/CRF; existing locked RCG and MEAN keep their original finalizers as additional complete controls. Use original cached s2/score/cov plus protected q/r, with unchanged native tail correction maps. CPU computes middle graphs; CUDA later applies only native CRF, with no encoder and no overlap with current peer GPU producers. Restore RCG/MEAN normalized output to native Part2 contrast units using its original min/span, then raw final g'=g+(s2'-s2). This is score refinement, not a claimed evidence-generation replacement. Freeze formulas/settings before query scoring; no threshold grid. |
-| Does replacing a compressed background direction improve the complete pipeline? | Held after latest user correction | BG prototype LSE/MAX code remains reusable but no experiment is queued. Suspected information loss alone does not justify making this new candidate the main line. No BG predictions or efficacy claims have been produced. |
-| What is the actual Part2 evidence construction, and which compression is consequential? | Root and graph-estimator agent: code derivation; no evaluation | Current source uses foreground prototype LSE and an orthogonalized hard-background mean. The positive per-token gate is bypassed for default raw scoring/clustering and canceled by downstream feature normalization, in exact arithmetic. Confirm identity in the eventual execution smoke, then distinguish positional debias, foreground readout and background contrast rather than attributing the raw-to-Part2 gain entirely to the gate. Any true replacement must provide coherent score/sf/sbn/mu_fg/features, and complete masks must beat the native and simple same-information controls. Part3 rereads features, so Part2 scalar compression alone does not prove irreversible loss throughout the pipeline. |
-| When is early propagation genuinely redundant with the native tail? | Root: prespecified interpretation | Similar intermediate IoUs do not establish redundancy. The primary decision is paired complete-mask gain for middle versus end placement under matched finalization. A targeted tail-ablation interaction is secondary if the first result leaves the mechanism unresolved; retain any auxiliary maps that Part4 still consumes and call removal of score boosts aggregation replacement, not removal of the whole stage. Measure correct/wrong additions and deletions as attribution, not as inference-time GT routing. |
+| 1. DEV241 完整流程一次 | 自己的完整入口到最终掩码，与完整 FoRIS、INSID3、相关简单强对照同口径比较；报告与约 60.1 预测的差异 | 完整输出、比较和差异解释齐全，不按实测最优行更换方法 |
+| 2. 隔离 1200 确认一次 | 方法/参数不变；使用经暴露复核的确切清单，完整报告配对结果 | 得到有效确认结论；复用或已看过的数据如实改标，不能沿用“未打开”称谓 |
+| 3. 固定的其他数据集各一次 | 同一方法及预先声明的协议适配，完整比较与泛化结果 | 冻结清单逐项完成；不按结果新增数据集、拟合阈值或延伸变体 |
 
-Changing only Part2's score does not change the native tail's evidence maps in the
-inspected default path. Early RCG is therefore a placement control, not a substitute
-for an evidence-generation method. The old stage-bank archive has worst final-field
-drift~.25 and cannot establish native replay parity. Its raw multilayer241 inputs are
-currently absent; the protected fresh600 post-Part1 caches exist.
-Direct native CPU prefix replay on one case per fold produced s2 drift<5e-5,
-one downstream score drift~.194, and0/2/16/1 changed pre pixels. This confirms that
-FP16 feature replay cannot be assumed identical to the original native output.
-The placement comparison instead preserves the original cached native stages/tail,
-and checks its zero-delta pre/native identity. The released CRF requires CUDA;
-CPU pre masks cannot be reported as complete-method results.
+候选确认清单：
+[photo_disjoint_confirm1200_v1](../../evidence/local/research_20261005/pipeline_verified/photo_disjoint_confirm1200_v1/README.md)，
+manifest SHA256 `21475d39973d448a81140b87db875dc70a47c4f60a53d436ccea8bc8432d3ff6`。
+其旧收据记录 74 类、2249 张照片、与当时登记暴露集重叠 0；采样与公开 1000/折协议不同。
+清单最初绑定旧 strict12 方法，不能直接拿旧 freeze 或 launch 计划运行当前方法。
+`confirm1200_conditional_v1` 含复用 DEV/历史样本，与此隔离清单不同。
 
-Start the real comparison on the existing DEV cohort; use enough episodes to resolve
-the paired effect, and freeze before an actually unused1200 confirmation. Do not
-launch another4000 encoding as the first step. Existing stage taps and the cached
-stage-bank rebuild are reusable; their non-CRF diagnostic outputs do not substitute
-for complete pipeline scores. No broad weight/threshold search is scheduled.
-Runtime differences of up to3 seconds are immaterial under the user's latest rule;
-several-fold slowdowns must be reported. All reusable features remain protected.
+## 判断与收束
 
-A*/B* describes the final edits relative to the common origin; it does not require
-post-output implementation. A member of the candidate family can be an entire
-pipeline whose intermediate evidence, aggregation and final decision differ.
-The return-cut and threshold-oracle proposals are no longer the main research line.
+- 预测用于提前说明依据和偏差，不要求每个新组合的分数都能从旧分数精确推出。
+  明显与已有错误事实矛盾的构想不进入清单；“两块都留”的候选已关闭。
+- 正常得到负结果或区间跨零，也是一项完成的验证。若 DEV 已否定继续确认的前提，
+  记录原因并收束剩余项，不自动寻找替代机制；否则按已冻结清单完成，不中途扩大研究范围。
+- 实现错误只修复同一方法约定内的错误，并重验受影响项；若需改变方法或研究方向，由用户另行决定。
+- 清单结束后整理完整方法说明、必要消融/已有证据、比较表、误差与成本分析、理论假设及局限，进入写作。
+  “还差 +2”“没有新技巧”“可能不够录用”都不自动产生新任务。不得把本次文档整理宣称为研究已完成。
 
-Historical hold, 2026-10-06 02:46 UTC: one hour of theory only. The old owned experiment
-queues below remain held, including the previously launched confirmation supervisor81658.
-The latest continuation resumes new work declared above, not these old queues. Root's five-question
-theory synthesis and parallel proof/review notes are complete under
-`evidence/local/research_20261005/theory_hour_20261006/`. The proposed minimal falsification
-measurements in those notes are unexecuted designs, not authorized queues. Partial predictions,
-affinities and reusable features remain intact. Historical pending rows do not authorize resumption.
+## 共同评测口径
 
-Updated2026-10-06 UTC. The user assigned continuous execution to chat
-`01a10c9c-32fb-7330-be53-cdb43999fd4f` and requested independent management without messaging Astra.
-Immediate priority is the A*/B* family selector and complete-method comparisons. Existing600 fixed
-evaluation is complete. Reusable features are protected; cache reconstruction is cancelled after the
-user corrected the cleanup/main-task deviation. [HANDOFF](../../HANDOFF.md) is historical evidence.
-
-## Target and comparison
-
-One fully masked reference and the same frozen DINOv3 should recover missed true targets and remove
-false targets. The primary edit origin is raw final-layer cosine nearest-reference-token label transfer;
-raw foreground-minus-background mean matching is a second explicitly named definition. FoRIS, INSID3,
-RCG and all other mechanisms are comparison rows, not mandatory foundations. Improve the complete
-score as far as the evidence supports, retaining the working target of stable >=2 class-summed mIoU
-points over complete same-protocol FoRIS at 1024 and improvement over INSID3 and strong controls. Any number of components, iterations
-or feedback stages is allowed. A useful proposal is not discarded because its standalone side effects
-make net gain negative. Do not silently replace a supplied method with a control or a gating variant.
-
-## Pending ownership
-
-| Work | Owner | Status and authorization |
-|---|---|---|
-| Exact complete A*/B* family optimization | `/root/rcg_quality_analysis`; aligned library by `/root/rcg_ablation_audit` | Public strict12/extended13 global and fold-held recipe evaluation completed; extended global63.238541 does not resolve superiority to strongest sizecut. DEV241 shared14-mask subset global and fold-held evaluation also completed; full187 not searched. Add newly sealed uniformtau15 primary4000 after current GPU successor completes. Enumerate all allowed addition/deletion subsets using membership histograms; maximize class-summed mIoU exactly, include all single producers and minimal-producer tie breaking. Report fixed global recipes, cost Pareto, full4000 development optimum and fold-held selection separately. No per-query GT routing. Add newly sealed complete candidates without replacing supplied methods. |
-| Direct-MEAN fine4000 complete strong control | Root monitor; `/root/boundary_probe_implementation` | Original1200 control completed63.959782, fine16 difference unresolved. New validated successor77680/start955320342 waits uniform75010 cosine seal, then3case parity,1400 new pairs/four shifts plus1200/1400 reused fields/cosines, complete4000 seal and six-baseline CPU score. ActualG64 mean.control retained. No new method parameters, active snapshot mutation or feature deletion. |
-| Matched1200 selected composition and strong control | `/root/rcg_anatomy_audit` | CPU-only exact draw mapping/recount of existing global and heldfold complete recipes vs new sealedDirectMEAN1200; one paired comparison, not a replacement for full4000 control. |
-| Frozen confirmation preparation | `/root/rcg_quality_analysis`; Root GPU launch later | Freeze config unchanged; actual1200(300/fold) photo-disjoint manifest completed with74classes/2249photos and overlap0. `/root/frozen_family_confirm` prepares full shared paired/four-shift inference plus8strongcontrols as successor afterDirectMEAN4000; no GPU launch yet. Missing6classes and class/pool selection boundary explicit; no query-mask pixel inspection during preparation or new download. Sampling changes/rejections and counts explicit; not official public1000/fold SOTA protocol. No GPU launch during preparation. |
-| Theory-based research forecast | `/root/rcg_quality_analysis`; readout identity check by `/root/rcg_anatomy_audit` | Current user asks whether best combinations can be predicted theoretically. Test fixed train3/held1 conditional-value forecasts on existing strict12 outputs, with photo exclusion and prediction-before-held-score receipts. Retrospective diagnostic and any label usage explicit; no new deployment component or GPU experiment. Test exact linear identity P(G)-graft=(P-I)(G-R) and localδ-range mask-change bound once on completed1200. Do not treat optimality algebra as validated predictive evidence. |
-| Supplied Opus fine-readout + size-cut method | `/root/region_cue_feasibility`; Root integration | Read precise cross-fold600 versus all600-fitted frozen policies separately. Reuse matching sealed fields for complete-mask replay; do not replace uniform tau=.15 with the own fold-specific tau. Existing peerC stream is read-only and must not be duplicated. Cached fold-temperature size-cut control completed4000 at63.149201; it is distinct from the supplied uniformtau15 primary. Root launched validated successor75010/start955212709:CPUwait originalMEAN seal,3case parity,missing2000-query-only infer/reuse2000,CPU six-baseline parity+score; preserve its arm and avoid duplicate1200 reconstruction. Other-fold/all600 threshold-label usage remains explicit. Feed sealed masks into exact family selection. |
-| Raw-DINO graph construction | Receiving chat | Held after user's RCG-attribution correction. Waiting own supervisor37718/start953352399terminatedwithidentitycheckbeforeanyinference; holdreceipt retained. CPUvariant preparedbutnotlaunched. No predictions,featuresoroutputs deleted. |
-| Seven-layer complete edit evidence | Receiving chat | Held after latest main-task correction. Supervisor10200 terminated with smoke failure: existing CRF path absent from PYTHONPATH. No complete result; no automatic rerun. Original snapshot/output records retained. |
-| Public-protocol evaluation preparation | Receiving chat | Official commit1aa02a11 uses1000/fold,4fold,seed0. Paper/CLI resolution difference remains version-bound in [protocol audit](../../evidence/local/research_20261005/public_protocol_audit.md). Another queue's4000manifests contain all previously used241/600/600 and one repeated episode identity; retain sampled repeats and use connected-photo statistics. They are benchmark reuse,not fresh confirmation. Verify sampling/worker RNG,encoder,CRF and fullFoRIS/INSID3/MEAN controls; freeze an effective rule before independent confirmation. Preserve reusable features; any own4000evaluation must stream bounded feature lifetimes rather than accumulate another64GBcache. |
-| Single-encoder parallel forward/CRF pipeline | Root, implementation by `/root/parallel_forward_sol` | CPU contract checks passed. Actual CUDA IPC, serial parity and throughput remain unverified; no inference launch. |
-| Public native replay on the two known differing cases | Root | Optional diagnostic, held. Existing 25-pixel total drift is reported under both baselines; it does not block analysis of the completed cohort. |
-| Raw-model origin / score-sweep integration and source/statistical checks | Root integrating the user-supplied Opus work | Verify raw l24 provenance, require origin explicitly, preserve FoRIS/INSID3 as comparison methods, fix Astra seal parsing and assess search-size placebo calibration. No new semantic method is selected from preparation. |
-
-Astra addition/deletion variants have now been tested onDEV241 in recheck241_v1. Preserve the fixed
-Astra identity and distinguish nested/best-in-sample search. No prepared code or GT oracle is a method result.
-
-## Evaluation contract
-
-Use existing DEV241 for efficacy; 20/50-case sets are execution checks and cannot reliably select +2.
-All 220 exposed cases and all reused 241 remain DEV, not independent confirmation. Freeze all requested
-predictions before scoring. Parameters are fixed or selected on three folds with the fourth read out;
-query GT is only for scoring/labeled diagnostics, never per-example selection. Report class-summed I/U,
-paired 95% intervals from 2,000 RandomState(0) photo-connected draws, folds, batches, episode up/down/tie,
-add TP/FP and delete TP/FP. Four GT error categories are diagnostic only. A pooled 38%/62% purity
-threshold is not a class-macro decision rule. CI crossing zero means unresolved, not automatic rejection.
-
-## Execution preparation
-
-Prepare follow-on work before an authorized run. Use CPU evaluation and model-free algebra alongside
-one shared DINO encoder when appropriate; do not keep a GPU active for CPU-only replay. Full241 Astra
-runtime is unmeasured, so do not extrapolate a promise from its supplied five-case smoke. New agents
-explicitly requested for research use GPT-6.1-sol/xhigh. No downloads, rental, extension, commit, push
-or shutdown are authorized. Follow current [SERVER](../harness/SERVER.md) before any resumed remote work.
+一张完整标注参考、冻结 DINOv3，查询真值仅用于评分和明确标注的诊断；先固定并封存预测再评分。
+主结果用 class-summed I/U 的 mIoU、同批次配对 95% 区间，保留照片关联分组和报告绑定的 RNG/抽样约定。
+报告折/类别差异、正确与错误增删及完整成本；同分辨率完整基线，额外资源结果分开。
+优先复用有效且版本匹配的缓存和已有比较，不为了保持显卡忙碌而造任务。

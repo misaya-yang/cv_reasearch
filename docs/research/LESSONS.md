@@ -1,5 +1,8 @@
 # Lessons from the two core Codex chats
 
+历史案例，按需阅读。2026-10-06 起当前阶段以 [PLAN](PLAN.md) 的有限验证为准；
+下文关于下一轮机制或实验的讨论不产生待办。
+
 This is project memory, not another instruction list. Read a relevant case when making a similar decision.
 The operational agreement is [AGENTS.md](../../AGENTS.md). These are observed execution errors and bounded
 scientific lessons; they are not a general ranking of models or evidence that future research must fail.

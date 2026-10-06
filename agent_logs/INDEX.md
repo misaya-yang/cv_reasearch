@@ -1,1 +1,0 @@
-- 2026-10-05_agent01.md — Operational handoff,600 queue adoption and45-minute supervision.
