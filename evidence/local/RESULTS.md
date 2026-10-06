@@ -1700,3 +1700,15 @@ gain: one fold x 50 episodes 1.45; four folds x 50 0.72; four folds x 200 0.35. 
 keeps a true +1.9 method with probability about 0.13; a gate of +1 at 200 and at 800 episodes keeps it with about 0.94
 and rejects a null method with about 0.91 at the first stage. Effects of +0.3 to +0.5 are not readable below about 4000
 episodes (sd 0.15 by the same scaling). This effect is a smoothing step with low variance; other methods can be noisier.
+
+Reverse reconstruction of the reference labels (candidate proposed 2026-10-06: add (Bz - r)'W(Bz - r) to the query
+solve, B a row-stochastic reference-to-query correspondence), checked on stored data before any run
+(`scripts/score_reverse_landing.py`, fresh600 token record, hard nearest-token landing as proxy for B; 0.5 CPU, no
+model). Episodes with best RCG cut below IoU 0.5 at token level: 82, comparable 81. Share of tokens hit by a reference
+background token: true object 0.134, wrongly kept tokens 0.138, remaining background 0.109; wrongly kept tokens have
+more background hits than the object in 41 of 81. Net (object hits minus background hits) is higher on the object in
+39 of 81; best cut below 0.2 (n=34): 9 of 34, background hits 0.150 on the object against 0.106 on the wrongly kept
+tokens; 0.2 to 0.5 (n=47): 30 of 47. The candidate's own rejection condition (object and wrong region stand in the
+same relation to reference object and background) holds on this proxy. With row sums of one and z in [0, 1], Bz never
+exceeds one, so object rows only raise and background rows only lower their matched tokens: the term acts as a
+saturating reverse vote, not as competition between query regions. Not measured: a soft B with a mutual filter.
