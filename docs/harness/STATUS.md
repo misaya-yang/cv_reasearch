@@ -6,7 +6,11 @@
 第二项[Huber图方法](../../evidence/local/research_20261006/huber_preparation_01a1100b/method.json)已准备，
 同一前图输入的重建、独立优化对照及CPU入口完成合成核对；真实效果仍未测。
 第三项[查询颜色瓶颈路径](../../evidence/local/research_20261006/color_bottleneck_preparation_01a1100b/method.json)
-已完成路径算法与双worker合成验证；累计新增准备3项候选，均未声称真实分割增益。
+已完成路径算法与双worker合成验证。
+第四项[参考部位整体布局](../../evidence/local/research_20261006/constellation_preparation_01a1100b/method.json)
+已完成留出部位验证、整体轮廓转移和双worker合成检查；累计新增准备4项候选，真实增益均未测。
+四项已接入[共用CPU入口](../../evidence/local/research_20261006/prepared_bundle_01a1100b/entry.json)，
+合成数据的共同推断、封存、独立评分与旧默认入口核对通过；此执行入口不增加方法数。
 
 更新：2026-10-06。当前入口只记录现状，历史事件见证据与[整理前快照](../archive/2026-10-06-workflow-snapshot.md)。
 

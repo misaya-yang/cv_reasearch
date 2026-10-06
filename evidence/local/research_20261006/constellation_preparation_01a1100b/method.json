@@ -1,0 +1,56 @@
+{
+  "id": "held_out_reference_landmark_consensus_v1",
+  "independent_method_count": 1,
+  "state": "specified_and_geometry_checked; real_segmentation_unmeasured",
+  "mechanism": "Test whether query appearance parts support one shared translation/rotation/isotropic-scale transform, optionally mirrored, of the reference object. Two landmarks propose a pose; other landmarks validate it. Accepted poses transfer the entire reference mask into a complete query prior.",
+  "inputs": ["aligned frozen DINO q/r 4096x1024", "complete reference foreground coverage64", "same existing frozen MEAN continuous field64"],
+  "input_exposure": "No query GT, class/fold IDs, extra model or encoder invocation; actual cohort bindings not yet made",
+  "steps": [
+    "Compress pure-reference foreground features into up to eight deterministic spherical modes, and define each landmark by its coverage-weighted spatial centroid.",
+    "Require at least four modes; fewer modes do not support held-out geometric validation and retain the base.",
+    "Compute each query token's cosine to every mode. The mode-specific response is cosine-to-this-mode minus the strongest competing-mode cosine; common equal responses to all modes supply no part arrangement evidence.",
+    "Per mode center these margins by the query median, divide by max(1.4826*MAD,0.01), clip to [-3,3]; keep eight spatially separated mode-response peaks with radius3 tokens.",
+    "Enumerate poses from every landmark pair and their query peak pairs, with direct and mirrored reference coordinates; keep scale in [0.125,8] and reference pair distance>=1 token.",
+    "Bilinearly sample all mode-specific standardized responses at predicted query landmark positions. Both generating landmarks must score>=1.5. At least ceil(0.75*(K-2)) held-out landmarks must also score>=1.5, and both held-out mean and whole mean must reach1.5.",
+    "Sort by held-out consensus, remove duplicate poses and masks overlapping earlier accepted masks at IoU>=0.5, with no explicit cap on retained instances. Inverse-warp the full reference coverage; take the pointwise maximum of all accepted mask priors.",
+    "If no pose passes, keep the base. Otherwise output 0.5*clipped-base+0.5*aligned-mask-prior for every query token, then bilinear1024 and threshold>0.5.",
+    "Save original/clipped base, same-mode bag-response fusion without pose geometry, and aligned-prior-only controls. Controls and internal poses do not count as additional methods. Seal predictions before query-GT scoring."
+  ],
+  "prediction": {
+    "conditional": "If same-class objects preserve the relative positions of distinguishable reference appearance parts more consistently than confusing regions, held-out pose agreement can distinguish them even when individual part-match strengths are equal.",
+    "proved_or_structurally_checked": [
+      "Equal per-part similarity does not imply equal spatial-pose consensus",
+      "Fitting two peaks alone cannot pass the held-out-landmark criterion",
+      "Uniform equal cosine responses to all reference modes do not constitute distinct part evidence",
+      "Repeated identical poses do not change the prior",
+      "Inverse similarity-transform mask transfer matches the specified translation/rotation mapping",
+      "Reference-mode count below four and absence of a valid pose retain the base"
+    ],
+    "not_claimed": ["statistical independence of held-out landmarks", "semantic identity guaranteed by a rigid pose", "mIoU improvement", "one-minute complete-dataset runtime", "novelty"]
+  },
+  "counterexamples": [
+    "Articulation, viewpoint changes and nonrigid deformation may destroy the single-similarity-transform model for the true class.",
+    "A wrong category can share the same distinguishable part layout and pass consensus.",
+    "Reference feature modes can have unstable or colocated centroids rather than genuine anatomical/object parts.",
+    "Query parts absent from the top-eight spatial peak lists cannot propose their true pose; this can miss additional same-class instances.",
+    "Too few pure foreground tokens/modes or occluded parts can cause abstention.",
+    "Transferred reference silhouette can differ from the true query shape; globally blending the union prior may delete unmatched correct instances or add warped background.",
+    "The finite pose search selects among many dependent hypotheses; the consensus threshold is not a calibrated probability or a statistical significance claim."
+  ],
+  "cpu_cost": {
+    "response": "O(N*K*D), K<=8, no new encoder",
+    "peak_selection": "O(N*K*M), M=8",
+    "maximum_pose_proposals": 3584,
+    "pose_validation": "O(P*K), vectorized across poses",
+    "warping": "O(A*N) for accepted poses",
+    "mask_nms": "Worst case O(A^2*N); accepted-pose count and actual time must be reported, no complete-cohort minute guarantee",
+    "synthetic_benchmark": "geometry_check.json: aligned64x64x1024 features and eight separated reference modes; candidate-only time, no real I/O/readout/scoring",
+    "real_runtime": "unmeasured"
+  },
+  "checks": "geometry_check.json and runner_check.json; both synthetic/analytical, real episodes=0",
+  "simple_alternative": "Use the same mode-specific response bank in a bag fusion without geometric constraints; the pose method must add value beyond that same-information control.",
+  "next_actual_evidence": "Bind actual same-producer q/r/cov/MEAN packets. Compare complete outputs against original/clipped MEAN and same-mode bag fusion; report class-summed I/U, photo-group paired uncertainty, four types of additions/deletions, abstention and pose counts. User shut down the instance; no real experiment launched.",
+  "source": "../../../../src/ics/methods/reference_constellation.py",
+  "runner": "../../../../scripts/run_reference_constellation.py",
+  "novelty": "unverified; landmark consensus, similarity transforms and exemplar mask transfer are established tools"
+}

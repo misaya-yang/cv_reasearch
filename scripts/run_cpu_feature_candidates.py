@@ -139,12 +139,16 @@ def worker(jobs, results, run, config):
     import torch
     torch.set_num_threads(config['threads'])
     torch.set_num_interop_threads(1)
+    if config.get('backend','occupancy') == 'prepared':
+        from ics.methods.prepared_cpu_bundle import one_episode as run_episode
+    else:
+        run_episode = one_episode
     while True:
         row = jobs.get()
         if row is None:
             return
         try:
-            receipt = one_episode(row, Path(run), config)
+            receipt = run_episode(row, Path(run), config)
             results.put(dict(ok=True, occurrence_id=row['occurrence_id'],
                              wall_seconds=receipt['wall_seconds'],
                              peak_rss_bytes=receipt['process_peak_rss_bytes']))
@@ -158,6 +162,17 @@ def infer(args):
     from ics.experiment import sha
     from ics.methods.reference_occupancy import Config
     from dataclasses import asdict
+    backend = getattr(args,'backend','occupancy')
+    prepared_methods = list(getattr(args,'prepared_methods',[]))
+    if backend == 'prepared':
+        from ics.methods.prepared_cpu_bundle import METHODS
+        if (not prepared_methods or len(set(prepared_methods)) != len(prepared_methods)
+                or any(name not in METHODS for name in prepared_methods)):
+            raise ValueError('Distinct recognized prepared methods required')
+        if args.base != 'mean' or args.strengths != [1.0] or args.primary_strength != 1.0:
+            raise ValueError('Prepared contracts use locked MEAN and their fixed parameters, not occupancy strengths')
+        if args.primary_method not in prepared_methods:
+            raise ValueError('Predeclare --primary-method among the requested prepared methods')
     if min(args.workers, args.threads, args.cpu_budget) < 1:
         raise ValueError('Positive CPU and worker counts required')
     if args.workers * args.threads > min(args.cpu_budget, 30):
@@ -193,18 +208,25 @@ def infer(args):
         row['c'], row['fold'] = int(row['c']), int(row['fold'])
         row['occurrence_id'] = f'{index:06d}'
         row.setdefault('key', f"{row['fold']}_{row.get('e', index)}_{row['c']}")
-        for key in ('feature_export', 'packet_export', 'base_field_export'):
+        path_keys = ('feature_export','packet_export','base_field_export')
+        if backend == 'prepared' and 'color_bottleneck' in prepared_methods:
+            path_keys += ('query_rgb_export','query_image_export')
+        for key in path_keys:
             if row.get(key):
                 row[key] = str(resolve(args.root, row[key]))
                 if not Path(row[key]).is_file():
                     raise FileNotFoundError(row[key])
         row.setdefault('base_field_key', args.base_key)
+        if backend == 'prepared' and 'color_bottleneck' in prepared_methods:
+            if not row.get('query_rgb_export') and not row.get('query_image_export'):
+                raise ValueError('Color method requires bound query_rgb_export or query_image_export for every row')
         for spec in row.get('evaluation_controls', {}).values():
             spec['path'] = str(resolve(args.root, spec['path']))
             spec['sha256'] = sha(spec['path'])
         evaluation.append(row)
         inference.append({key: row[key] for key in ('occurrence_id', 'key', 'feature_export',
-                          'packet_export', 'base_field_export', 'base_field_key') if key in row})
+                          'packet_export', 'base_field_export', 'base_field_key',
+                          'query_rgb_export', 'query_image_export') if key in row})
     if any(not math.isfinite(s) or s < 0 for s in args.strengths) or len(set(args.strengths)) != len(args.strengths):
         raise ValueError('Distinct nonnegative strengths required')
     if args.primary_strength not in args.strengths:
@@ -222,6 +244,21 @@ def infer(args):
                       Path(__file__), REPO / 'src/ics/methods/reference_occupancy.py',
                       REPO / 'src/ics/methods/mean_graph.py', REPO / 'src/ics/methods/rcg.py',
                       REPO / 'src/ics/experiment.py')})
+    if backend == 'prepared':
+        from ics.methods.reference_adjacency import Config as AdjacencyConfig
+        from ics.methods.huber_graph import Config as HuberConfig
+        from ics.methods.color_bottleneck import Config as ColorConfig
+        from ics.methods.reference_constellation import Config as ConstellationConfig
+        config.update(backend=backend,prepared_methods=prepared_methods,primary=args.primary_method,
+                      primary_methods=prepared_methods,independent_methods=len(prepared_methods),
+                      method=None,strengths=None,
+                      method_configs={name:asdict(cls()) for name,cls in (
+                          ('adjacency',AdjacencyConfig),('huber',HuberConfig),
+                          ('color_bottleneck',ColorConfig),('constellation',ConstellationConfig))
+                          if name in prepared_methods})
+        for name in ('prepared_cpu_bundle','reference_adjacency','huber_graph','color_bottleneck','reference_constellation'):
+            path=REPO/'src/ics/methods'/f'{name}.py'
+            config['code_sha256'][str(path.relative_to(REPO))]=sha(path)
     write(args.out / 'config.json', config)
     write(args.out / 'inference_manifest.json', inference)
     write(args.out / 'evaluation_manifest.json', evaluation)
@@ -356,6 +393,9 @@ def score(args):
                   inference_peak_owned_rss_bytes=seal['peak_owned_rss_bytes'],
                   independent_confirmation=False,
                   interpretation='Candidate efficacy and originality are unestablished until these comparisons are assessed.')
+    if config.get('backend') == 'prepared':
+        report.update(primary_methods=config['primary_methods'],independent_methods=config['independent_methods'],
+                      execution_backend='shared prepared-candidate inference; not another method')
     output = run / 'score'
     output.mkdir(exist_ok=False)
     write(output / 'report.json', report)
@@ -368,6 +408,11 @@ def score(args):
               '| Primary versus | Gain, pp | Paired 95% CI |', '|---|---:|---|']
     for base, item in report['contrasts'][config['primary']].items():
         lines.append(f'| {base} | {item["gain"]:+.6f} | {item["ci95"]} |')
+    if config.get('backend') == 'prepared':
+        lines += ['', '| Predeclared candidate | Comparison | Gain, pp | Paired 95% CI |', '|---|---|---:|---|']
+        for arm in config['primary_methods']:
+            for base,item in report['contrasts'][arm].items():
+                lines.append(f'| {arm} | {base} | {item["gain"]:+.6f} | {item["ci95"]} |')
     (output / 'report.md').write_text('\n'.join(lines) + '\n')
     print(json.dumps(dict(scores=report['scores'], primary=report['contrasts'][config['primary']])), flush=True)
 
@@ -384,6 +429,10 @@ def main():
     inf.add_argument('--cpu-budget', type=int, default=30)
     inf.add_argument('--memory-gb', type=float, default=60)
     inf.add_argument('--base', choices=['mean', 'rcg'], default='mean')
+    inf.add_argument('--backend', choices=['occupancy','prepared'], default='occupancy')
+    inf.add_argument('--prepared-methods', nargs='+', choices=['adjacency','huber','color_bottleneck','constellation'],
+                     default=['adjacency','huber','color_bottleneck','constellation'])
+    inf.add_argument('--primary-method', choices=['adjacency','huber','color_bottleneck','constellation'])
     inf.add_argument('--base-key', default='mean.control')
     inf.add_argument('--strengths', nargs='+', type=float, default=[1.0])
     inf.add_argument('--primary-strength', type=float, default=1.0)

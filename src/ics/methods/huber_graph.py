@@ -62,6 +62,7 @@ def make_mean_inputs(q, r, coverage, score):
             upper.col.astype(np.int64),upper.data.astype(np.float64))
     return inputs,dict(source='locked_MEAN_a0.25_l16_pregraph_reconstruction_cpu',
                        edges=int(upper.nnz),query_gt_used=False,new_encoder_forwards=0,
+                       graph_storage_dtype=str(upper.data.dtype),
                        pregraph_build_seconds=time.perf_counter()-started)
 
 
