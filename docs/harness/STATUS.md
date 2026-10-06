@@ -71,12 +71,21 @@ Updated 2026-10-06 UTC. This file records current state; detailed evidence is li
   MEAN+.636229[.248187,1.063334], fine16+.440101[.088318,.831264]. Original fold temps
   retained, no encoder; all4000 source masks and old6baseline I/U exact. Frozen uniformtau15
   primary matches only2000 currently and must be completed without changing tau.
-- Direct-MEAN1200 child71246/start955120027 is active; original healthy queue56334 preserved.
-  A28.113s/15-point co-run window measuredGPU100percent throughout and~6.1GB/32GB.
-  Uniformtau15 complete4000 successor75010/start955212709 is already launched and waits
-  on its seal:3case parity ->reuse2000/encode missing2000 ->CPU4000 six-baseline score.
-  Keep~3.28GB FP32 cosine affinities. No duplicateMEAN run, reusable feature deletion,
-  or changes/signals to the read-only peerC71178. Source plan validation passed before launch.
+- Direct-MEAN fine1200 completed63.959782: native+2.346981[1.798845,2.912927],
+  originalMEAN+.378191[.332250,.484083], fine16-.055533[-.347439,.211367]. All original
+  masks and kernels sealed before CPU score. This1200 result is not a complete4000 control.
+  Uniformtau15 full4000 automatically started child77374/start955311421 after3case parity,
+  supervisor75010/start955212709; reuse2000/encode missing2000, then CPU score.
+- Complete DirectMEAN fine4000 control is already queued as successor77680/start955320342:
+  reuse old1200 plus1400 existingcos→tau07 readout; only1400 new fold1/2 pairs/four shifts,
+  retain additional2.294GB FP32 cosine affinities. Full priors use actualG64 `mean.control`
+  from the sealed scalar-graft source, not graftC128. Old/source4000 fine16 field/mask and
+  all6baseline I/U parity are mandatory. Both active snapshots remain unchanged.
+- Current user asks for theoretical experiment prediction. Exact observed-library optimization
+  is an oracle benchmark, not a validated no-query-GT forecaster. CPU-only historical train3/
+  held1 calibration diagnostics are being frozen separately; they do not replace the method.
+  Linear readout identity `(P-I)(G-R)` and local-support mask-change bounds are being tested
+  as mechanism predictions for the strong DirectMEAN control, without new encoder calls.
 - DEV241 fixed rawNN-origin shared subset reached62.773896 globally, but heldfold61.284097
   is unresolved versus native and fine16. This14-method subset is not the full187-method
   library; public4000 rawNN is absent, so the frozen raw-dependent recipe is not substituted.

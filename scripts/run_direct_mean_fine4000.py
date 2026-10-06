@@ -39,6 +39,7 @@ def identity(row):return row['c'],row['fold'],str(row['support']),str(row['query
 def metadata(a,dependencies=True):
     rows,bc,bs=sealed(a.base4000,'ALL_PREDICTIONS_SEALED',4000)
     r12,c12,s12=base_metadata(a.base1200);old={'public%d:%s'%(r['public_batch'],r.get('source_key',r['key'])):r for r in r12}
+    if {f:(p['sigma'],p['tau']) for f,p in c12['parameters'].items()}!={str(f):(1.25,.07 if f in (0,3) else .15) for f in range(4)}:raise ValueError('Recorded original per-fold sigma/tau changed')
     if len(old)!=1200 or len(set(old)&{r['key'] for r in rows})!=1200:raise ValueError('Original1200 draw mapping changed')
     grow,gc,gs=sealed(a.graft_run,'ALL_PREDICTIONS_SEALED',4000)
     if sha(a.graft_run/'sealed.json')!=GSEAL:raise ValueError('Original all4000 G provider changed')

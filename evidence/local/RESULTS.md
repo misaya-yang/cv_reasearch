@@ -595,6 +595,21 @@ truth is 1.00 at the 0.25 quantile but the log-odds error sd is 2.92 (rank corre
 space, which the estimator assumes. Source: `research_20261005/rcg2_fresh600/`, `research_20261005/share_fresh600/pu.npz`;
 `scripts/run_rcg2.py`, `scripts/run_share_pu.py`.
 
+### 2026-10-06: frozen combined version on two further groups of 600 (COCO-20i, seed 0, photograph-isolated list)
+
+Settings frozen on fresh600 before these groups were opened ([frozen file](research_20261005/rcg2_frozen.json): RCG unchanged;
+feature-guided readout sigma 1.25, tau 0.15; cut level by mask area at 0.5: 0.50 / 0.5625 / 0.5875 / 0.5625 / 0.45 / 0.375).
+Groups B and C are draws 150-299 and 300-449 per fold of `train_episodes.json` (fresh600 is 0-149); FoRIS is run fresh,
+features are not kept. Class mIoU at the original resolution, 2000 photo-group draws. The re-solved RCG field differs from
+the sealed one by up to 0.024 on eight fresh600 episodes (FoRIS rerun float differences).
+B: FoRIS 60.22; RCG +1.29 [+0.54, +2.26]; RCG + readout +1.75 [+1.02, +2.78]; full 61.80 = +1.59 [+0.34, +2.98], against RCG
++0.30 [-0.53, +1.22]. C: FoRIS 58.27; RCG +1.81 [+0.87, +2.62]; + readout +2.25 [+1.32, +3.15]; full 61.65 = +3.38 [+1.85,
++4.61], against RCG +1.57 [+0.45, +2.56]. B+C (1200): FoRIS 59.67; RCG 61.19 = +1.52 [+0.91, +2.20]; + readout 61.61 = +1.93
+[+1.32, +2.67], against RCG +0.42 [+0.35, +0.51]; full 62.17 = +2.49 [+1.47, +3.47], folds +2.14 / +2.55 / +2.20 / +3.08,
+against RCG +0.98 [+0.13, +1.63]. The readout gain repeats in every group (+0.39, +0.46, +0.44); the size cut adds -0.17 in B
+and +1.13 in C over the readout. Source: `research_20261005/rcg2_groupB/`, `research_20261005/rcg2_groupC/`;
+`scripts/run_rcg2_stream.py`; server `outputs/claude_rcg2_group{B,C}`.
+
 ### 写了但没有跑就撤回的
 
 部分对应（PCF）、不变概念与可移植提示、响应 pair-ratio 编辑器、响应训练路线曾在未取得足够前提证据时撤回。早期 `pair_bank.py` 准备被撤回，不表示后续 layer/joint 队列没有运行（结果见上）。撤回未运行构造不证明输入缺少信息。

@@ -1,0 +1,746 @@
+{
+  "state": "STRICT_HELDFOLD_MAIN_INDEPENDENTLY_VERIFIED",
+  "n": 4000,
+  "K": 12,
+  "per_fold_recipes": {
+    "0": {
+      "origin": 10,
+      "a": 32,
+      "b": 16,
+      "cost": 3,
+      "score": 63.82764526966741,
+      "origin_method": "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG",
+      "add_methods": [
+        "frozen_subtoken4000_v1::fine.rcg64"
+      ],
+      "delete_methods": [
+        "frozen_subtoken4000_v1::fine.rcg16.control"
+      ]
+    },
+    "1": {
+      "origin": 10,
+      "a": 32,
+      "b": 1024,
+      "cost": 3,
+      "score": 62.19557400157537,
+      "origin_method": "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG",
+      "add_methods": [
+        "frozen_subtoken4000_v1::fine.rcg64"
+      ],
+      "delete_methods": [
+        "mean_fine_residual_transfer4000_v1::mean_fine_residual_transfer_v1"
+      ]
+    },
+    "2": {
+      "origin": 8,
+      "a": 32,
+      "b": 16,
+      "cost": 3,
+      "score": 63.10714718021288,
+      "origin_method": "claude_official_4000_existing_masks::conservative_delete",
+      "add_methods": [
+        "frozen_subtoken4000_v1::fine.rcg64"
+      ],
+      "delete_methods": [
+        "frozen_subtoken4000_v1::fine.rcg16.control"
+      ]
+    },
+    "3": {
+      "origin": 4,
+      "a": 16,
+      "b": 1024,
+      "cost": 3,
+      "score": 63.239877740454055,
+      "origin_method": "frozen_subtoken4000_v1::fine.rcg16.control",
+      "add_methods": [
+        "frozen_subtoken4000_v1::fine.rcg64"
+      ],
+      "delete_methods": [
+        "mean_fine_residual_transfer4000_v1::mean_fine_residual_transfer_v1"
+      ]
+    }
+  },
+  "distinct_recipe_tuples": 4,
+  "scores": {
+    "frozen_subtoken4000_v1::native": 60.93174091837449,
+    "frozen_subtoken4000_v1::rcg": 62.33367132610439,
+    "frozen_subtoken4000_v1::mean.control": 62.51297197709237,
+    "frozen_subtoken4000_v1::rcg64.control": 62.29793711712783,
+    "frozen_subtoken4000_v1::fine.rcg16.control": 62.709099800552,
+    "frozen_subtoken4000_v1::fine.rcg64": 62.65161728378793,
+    "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control": 62.744357299397045,
+    "claude_official_4000_existing_masks::RCG_count_matched_delete": 62.17388785426425,
+    "claude_official_4000_existing_masks::conservative_delete": 60.879277977221626,
+    "claude_official_4000_existing_masks::external_mean__delete": 61.85325102842445,
+    "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG": 61.940505505697004,
+    "mean_fine_residual_transfer4000_v1::mean_fine_residual_transfer_v1": 62.84453709002177,
+    "selected": 62.96469877334337
+  },
+  "contrasts": {
+    "frozen_subtoken4000_v1::native": {
+      "gain": 2.0329578549688847,
+      "ci95": [
+        1.6571506199622197,
+        2.387728823992901
+      ],
+      "up": 2388,
+      "down": 1570,
+      "tie": 42
+    },
+    "frozen_subtoken4000_v1::rcg": {
+      "gain": 0.631027447238985,
+      "ci95": [
+        0.4759664688568,
+        0.7905701127773419
+      ],
+      "up": 2661,
+      "down": 1246,
+      "tie": 93
+    },
+    "frozen_subtoken4000_v1::mean.control": {
+      "gain": 0.45172679625100187,
+      "ci95": [
+        0.23304351722922423,
+        0.6599191527965628
+      ],
+      "up": 2548,
+      "down": 1355,
+      "tie": 97
+    },
+    "frozen_subtoken4000_v1::rcg64.control": {
+      "gain": 0.6667616562155416,
+      "ci95": [
+        0.4744673116096223,
+        0.896735193076436
+      ],
+      "up": 2658,
+      "down": 1222,
+      "tie": 120
+    },
+    "frozen_subtoken4000_v1::fine.rcg16.control": {
+      "gain": 0.25559897279136834,
+      "ci95": [
+        0.09433670982719419,
+        0.3997849589060251
+      ],
+      "up": 1896,
+      "down": 1968,
+      "tie": 136
+    },
+    "frozen_subtoken4000_v1::fine.rcg64": {
+      "gain": 0.3130814895554437,
+      "ci95": [
+        0.11771000556475571,
+        0.5382949772746352
+      ],
+      "up": 2011,
+      "down": 1773,
+      "tie": 216
+    },
+    "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control": {
+      "gain": 0.22034147394632697,
+      "ci95": [
+        0.009009883720580274,
+        0.41594741369100346
+      ],
+      "up": 2233,
+      "down": 1671,
+      "tie": 96
+    },
+    "claude_official_4000_existing_masks::RCG_count_matched_delete": {
+      "gain": 0.7908109190791208,
+      "ci95": [
+        0.4578921665894766,
+        1.158167617184743
+      ],
+      "up": 2699,
+      "down": 1194,
+      "tie": 107
+    },
+    "claude_official_4000_existing_masks::conservative_delete": {
+      "gain": 2.0854207961217455,
+      "ci95": [
+        1.3783194612722887,
+        2.7948370245326313
+      ],
+      "up": 2857,
+      "down": 1025,
+      "tie": 118
+    },
+    "claude_official_4000_existing_masks::external_mean__delete": {
+      "gain": 1.1114477449189195,
+      "ci95": [
+        0.6006770417699248,
+        1.6321093412438132
+      ],
+      "up": 2702,
+      "down": 1189,
+      "tie": 109
+    },
+    "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG": {
+      "gain": 1.0241932676463676,
+      "ci95": [
+        0.5645467601919977,
+        1.5243331394009567
+      ],
+      "up": 2726,
+      "down": 1163,
+      "tie": 111
+    },
+    "mean_fine_residual_transfer4000_v1::mean_fine_residual_transfer_v1": {
+      "gain": 0.12016168332160504,
+      "ci95": [
+        -0.10303527307944726,
+        0.31982209539376916
+      ],
+      "up": 1855,
+      "down": 2012,
+      "tie": 133
+    }
+  },
+  "folds": {
+    "0": {
+      "n": 1000,
+      "recipe": {
+        "origin": 10,
+        "a": 32,
+        "b": 16,
+        "cost": 3,
+        "score": 63.82764526966741,
+        "origin_method": "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG",
+        "add_methods": [
+          "frozen_subtoken4000_v1::fine.rcg64"
+        ],
+        "delete_methods": [
+          "frozen_subtoken4000_v1::fine.rcg16.control"
+        ]
+      },
+      "scores": {
+        "frozen_subtoken4000_v1::native": 58.84097827414557,
+        "frozen_subtoken4000_v1::rcg": 60.10543467010901,
+        "frozen_subtoken4000_v1::mean.control": 60.40256815419303,
+        "frozen_subtoken4000_v1::rcg64.control": 60.10812139866647,
+        "frozen_subtoken4000_v1::fine.rcg16.control": 60.4622923176685,
+        "frozen_subtoken4000_v1::fine.rcg64": 60.5238223809789,
+        "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control": 60.61024525763358,
+        "claude_official_4000_existing_masks::RCG_count_matched_delete": 59.851081916491154,
+        "claude_official_4000_existing_masks::conservative_delete": 58.5975819333636,
+        "claude_official_4000_existing_masks::external_mean__delete": 59.74483730061911,
+        "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG": 59.843362915933795,
+        "mean_fine_residual_transfer4000_v1::mean_fine_residual_transfer_v1": 60.728508617399804,
+        "selected": 60.76344614058926
+      },
+      "gain_vs_producers": {
+        "frozen_subtoken4000_v1::native": 1.9224678664436894,
+        "frozen_subtoken4000_v1::rcg": 0.6580114704802469,
+        "frozen_subtoken4000_v1::mean.control": 0.3608779863962326,
+        "frozen_subtoken4000_v1::rcg64.control": 0.6553247419227901,
+        "frozen_subtoken4000_v1::fine.rcg16.control": 0.3011538229207602,
+        "frozen_subtoken4000_v1::fine.rcg64": 0.2396237596103603,
+        "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control": 0.15320088295568013,
+        "claude_official_4000_existing_masks::RCG_count_matched_delete": 0.9123642240981056,
+        "claude_official_4000_existing_masks::conservative_delete": 2.1658642072256598,
+        "claude_official_4000_existing_masks::external_mean__delete": 1.018608839970149,
+        "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG": 0.920083224655464,
+        "mean_fine_residual_transfer4000_v1::mean_fine_residual_transfer_v1": 0.03493752318945553
+      }
+    },
+    "1": {
+      "n": 1000,
+      "recipe": {
+        "origin": 10,
+        "a": 32,
+        "b": 1024,
+        "cost": 3,
+        "score": 62.19557400157537,
+        "origin_method": "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG",
+        "add_methods": [
+          "frozen_subtoken4000_v1::fine.rcg64"
+        ],
+        "delete_methods": [
+          "mean_fine_residual_transfer4000_v1::mean_fine_residual_transfer_v1"
+        ]
+      },
+      "scores": {
+        "frozen_subtoken4000_v1::native": 63.507420964866604,
+        "frozen_subtoken4000_v1::rcg": 64.66534004584965,
+        "frozen_subtoken4000_v1::mean.control": 65.19887600622639,
+        "frozen_subtoken4000_v1::rcg64.control": 64.74755038498492,
+        "frozen_subtoken4000_v1::fine.rcg16.control": 65.07354678202333,
+        "frozen_subtoken4000_v1::fine.rcg64": 65.05351886748014,
+        "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control": 65.41083986367092,
+        "claude_official_4000_existing_masks::RCG_count_matched_delete": 64.46570189546247,
+        "claude_official_4000_existing_masks::conservative_delete": 63.06104681416828,
+        "claude_official_4000_existing_masks::external_mean__delete": 63.83738103686368,
+        "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG": 64.0535677499303,
+        "mean_fine_residual_transfer4000_v1::mean_fine_residual_transfer_v1": 65.56180401736029,
+        "selected": 65.6279345033389
+      },
+      "gain_vs_producers": {
+        "frozen_subtoken4000_v1::native": 2.120513538472302,
+        "frozen_subtoken4000_v1::rcg": 0.96259445748926,
+        "frozen_subtoken4000_v1::mean.control": 0.4290584971125213,
+        "frozen_subtoken4000_v1::rcg64.control": 0.8803841183539873,
+        "frozen_subtoken4000_v1::fine.rcg16.control": 0.5543877213155781,
+        "frozen_subtoken4000_v1::fine.rcg64": 0.5744156358587702,
+        "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control": 0.21709463966799092,
+        "claude_official_4000_existing_masks::RCG_count_matched_delete": 1.1622326078764331,
+        "claude_official_4000_existing_masks::conservative_delete": 2.5668876891706276,
+        "claude_official_4000_existing_masks::external_mean__delete": 1.7905534664752238,
+        "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG": 1.5743667534086114,
+        "mean_fine_residual_transfer4000_v1::mean_fine_residual_transfer_v1": 0.06613048597861848
+      }
+    },
+    "2": {
+      "n": 1000,
+      "recipe": {
+        "origin": 8,
+        "a": 32,
+        "b": 16,
+        "cost": 3,
+        "score": 63.10714718021288,
+        "origin_method": "claude_official_4000_existing_masks::conservative_delete",
+        "add_methods": [
+          "frozen_subtoken4000_v1::fine.rcg64"
+        ],
+        "delete_methods": [
+          "frozen_subtoken4000_v1::fine.rcg16.control"
+        ]
+      },
+      "scores": {
+        "frozen_subtoken4000_v1::native": 61.2243800982742,
+        "frozen_subtoken4000_v1::rcg": 62.600858654424954,
+        "frozen_subtoken4000_v1::mean.control": 62.59601926842382,
+        "frozen_subtoken4000_v1::rcg64.control": 61.978363346145414,
+        "frozen_subtoken4000_v1::fine.rcg16.control": 62.99528744730007,
+        "frozen_subtoken4000_v1::fine.rcg64": 62.29140413925367,
+        "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control": 62.84680722815632,
+        "claude_official_4000_existing_masks::RCG_count_matched_delete": 62.807909051882085,
+        "claude_official_4000_existing_masks::conservative_delete": 61.813988753043326,
+        "claude_official_4000_existing_masks::external_mean__delete": 62.773032821675365,
+        "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG": 62.77343211914872,
+        "mean_fine_residual_transfer4000_v1::mean_fine_residual_transfer_v1": 62.91918090668509,
+        "selected": 62.92777672807458
+      },
+      "gain_vs_producers": {
+        "frozen_subtoken4000_v1::native": 1.7033966298003804,
+        "frozen_subtoken4000_v1::rcg": 0.32691807364962955,
+        "frozen_subtoken4000_v1::mean.control": 0.33175745965076686,
+        "frozen_subtoken4000_v1::rcg64.control": 0.949413381929169,
+        "frozen_subtoken4000_v1::fine.rcg16.control": -0.06751071922548846,
+        "frozen_subtoken4000_v1::fine.rcg64": 0.6363725888209117,
+        "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control": 0.08096949991826108,
+        "claude_official_4000_existing_masks::RCG_count_matched_delete": 0.1198676761924986,
+        "claude_official_4000_existing_masks::conservative_delete": 1.1137879750312578,
+        "claude_official_4000_existing_masks::external_mean__delete": 0.15474390639921864,
+        "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG": 0.15434460892586088,
+        "mean_fine_residual_transfer4000_v1::mean_fine_residual_transfer_v1": 0.00859582138949122
+      }
+    },
+    "3": {
+      "n": 1000,
+      "recipe": {
+        "origin": 4,
+        "a": 16,
+        "b": 1024,
+        "cost": 3,
+        "score": 63.239877740454055,
+        "origin_method": "frozen_subtoken4000_v1::fine.rcg16.control",
+        "add_methods": [
+          "frozen_subtoken4000_v1::fine.rcg64"
+        ],
+        "delete_methods": [
+          "mean_fine_residual_transfer4000_v1::mean_fine_residual_transfer_v1"
+        ]
+      },
+      "scores": {
+        "frozen_subtoken4000_v1::native": 60.15418433621163,
+        "frozen_subtoken4000_v1::rcg": 61.96305193403392,
+        "frozen_subtoken4000_v1::mean.control": 61.85442447952624,
+        "frozen_subtoken4000_v1::rcg64.control": 62.35771333871452,
+        "frozen_subtoken4000_v1::fine.rcg16.control": 62.30527265521608,
+        "frozen_subtoken4000_v1::fine.rcg64": 62.73772374743899,
+        "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control": 62.10953684812737,
+        "claude_official_4000_existing_masks::RCG_count_matched_delete": 61.570858553221264,
+        "claude_official_4000_existing_masks::conservative_delete": 60.04449440831129,
+        "claude_official_4000_existing_masks::external_mean__delete": 61.05775295453961,
+        "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG": 61.09165923777522,
+        "mean_fine_residual_transfer4000_v1::mean_fine_residual_transfer_v1": 62.16865481864192,
+        "selected": 62.539637721370745
+      },
+      "gain_vs_producers": {
+        "frozen_subtoken4000_v1::native": 2.385453385159117,
+        "frozen_subtoken4000_v1::rcg": 0.5765857873368248,
+        "frozen_subtoken4000_v1::mean.control": 0.685213241844508,
+        "frozen_subtoken4000_v1::rcg64.control": 0.18192438265622712,
+        "frozen_subtoken4000_v1::fine.rcg16.control": 0.23436506615466612,
+        "frozen_subtoken4000_v1::fine.rcg64": -0.1980860260682462,
+        "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control": 0.43010087324337576,
+        "claude_official_4000_existing_masks::RCG_count_matched_delete": 0.9687791681494815,
+        "claude_official_4000_existing_masks::conservative_delete": 2.495143313059458,
+        "claude_official_4000_existing_masks::external_mean__delete": 1.4818847668311363,
+        "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG": 1.4479784835955272,
+        "mean_fine_residual_transfer4000_v1::mean_fine_residual_transfer_v1": 0.3709829027288265
+      }
+    }
+  },
+  "class_IU": {
+    "0": [
+      7238979,
+      10799756
+    ],
+    "4": [
+      5556683,
+      7631702
+    ],
+    "8": [
+      3867150,
+      7645788
+    ],
+    "12": [
+      10550019,
+      12309321
+    ],
+    "16": [
+      4220970,
+      5440219
+    ],
+    "20": [
+      14850424,
+      17375061
+    ],
+    "24": [
+      1283394,
+      3386757
+    ],
+    "28": [
+      7981852,
+      14559097
+    ],
+    "32": [
+      1609959,
+      1904748
+    ],
+    "36": [
+      1176777,
+      2980388
+    ],
+    "40": [
+      1772237,
+      2692326
+    ],
+    "44": [
+      1526338,
+      2944668
+    ],
+    "48": [
+      6494159,
+      10168798
+    ],
+    "52": [
+      4635398,
+      8562031
+    ],
+    "56": [
+      1959819,
+      5874715
+    ],
+    "60": [
+      6808603,
+      21080211
+    ],
+    "64": [
+      1621782,
+      2339975
+    ],
+    "68": [
+      4797965,
+      6814835
+    ],
+    "72": [
+      5966396,
+      10390911
+    ],
+    "76": [
+      3552616,
+      5832898
+    ],
+    "1": [
+      3092941,
+      5772290
+    ],
+    "5": [
+      12837511,
+      16812779
+    ],
+    "9": [
+      2451177,
+      3245011
+    ],
+    "13": [
+      3229868,
+      6949130
+    ],
+    "17": [
+      8002432,
+      10619895
+    ],
+    "21": [
+      9631012,
+      10975324
+    ],
+    "25": [
+      4490341,
+      6004596
+    ],
+    "29": [
+      2256129,
+      2827852
+    ],
+    "33": [
+      1289094,
+      2165913
+    ],
+    "37": [
+      2302786,
+      2785986
+    ],
+    "41": [
+      2393099,
+      4606580
+    ],
+    "45": [
+      3187931,
+      9025467
+    ],
+    "49": [
+      6712426,
+      9030483
+    ],
+    "53": [
+      15099167,
+      18934497
+    ],
+    "57": [
+      9141685,
+      14213972
+    ],
+    "61": [
+      4994324,
+      6437522
+    ],
+    "65": [
+      2685238,
+      4268527
+    ],
+    "69": [
+      4927080,
+      11102571
+    ],
+    "73": [
+      1583828,
+      4612458
+    ],
+    "77": [
+      9523862,
+      12548466
+    ],
+    "2": [
+      3320928,
+      6431264
+    ],
+    "6": [
+      14174024,
+      18357480
+    ],
+    "10": [
+      5541268,
+      6192944
+    ],
+    "14": [
+      3992159,
+      5303151
+    ],
+    "18": [
+      5787899,
+      7422107
+    ],
+    "22": [
+      10376280,
+      11898237
+    ],
+    "26": [
+      1003955,
+      3176361
+    ],
+    "30": [
+      716615,
+      2139908
+    ],
+    "34": [
+      980324,
+      1521010
+    ],
+    "38": [
+      1836353,
+      2340303
+    ],
+    "42": [
+      1080487,
+      2150337
+    ],
+    "46": [
+      6632811,
+      9668204
+    ],
+    "50": [
+      7080162,
+      11334199
+    ],
+    "54": [
+      5139930,
+      7015486
+    ],
+    "58": [
+      1896088,
+      4392445
+    ],
+    "62": [
+      4153405,
+      9591608
+    ],
+    "66": [
+      4729957,
+      7468720
+    ],
+    "70": [
+      1649876,
+      2555262
+    ],
+    "74": [
+      2981160,
+      5764236
+    ],
+    "78": [
+      2193668,
+      3086346
+    ],
+    "3": [
+      8493758,
+      11388971
+    ],
+    "7": [
+      4462208,
+      10828370
+    ],
+    "11": [
+      4744443,
+      5369918
+    ],
+    "15": [
+      10294266,
+      12729275
+    ],
+    "19": [
+      6806987,
+      8434055
+    ],
+    "23": [
+      8344648,
+      10101387
+    ],
+    "27": [
+      3000596,
+      6803807
+    ],
+    "31": [
+      2683603,
+      3922268
+    ],
+    "35": [
+      1197028,
+      1654918
+    ],
+    "39": [
+      1443191,
+      3070156
+    ],
+    "43": [
+      1087153,
+      1970756
+    ],
+    "47": [
+      4578659,
+      7013200
+    ],
+    "51": [
+      4713900,
+      10272738
+    ],
+    "55": [
+      6511915,
+      10796534
+    ],
+    "59": [
+      8903985,
+      16522692
+    ],
+    "63": [
+      3110829,
+      5820103
+    ],
+    "67": [
+      4098683,
+      6860994
+    ],
+    "71": [
+      2777756,
+      5346589
+    ],
+    "75": [
+      5066420,
+      8886645
+    ],
+    "79": [
+      2558072,
+      3766928
+    ]
+  },
+  "all4000_fold_specific_masks_replayed_and_sealed_bit_exact": true,
+  "all4000_selected_membership_IU_exact": true,
+  "all80_class_IU_exact": true,
+  "all_original12_producer_IU_exact": true,
+  "score_CI_fold_max_error_pp": 0.0,
+  "photo_groups": 2742,
+  "source": {
+    "run": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/exact_family_selection_v1/public4000_v3_crossfold",
+    "membership_source": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/exact_family_selection_v1/public4000_v3",
+    "held_files": {
+      "manifest.json": "86ae4180cd661a1b56c17ec94161340f578cbaf2f1193bc33942a90854d2dc65",
+      "arms.json": "d7378ce6ecd4aa2b3eab4fb29fe28fccff06b3b2d07b60f607a46c3174bf3008",
+      "selection.json": "a6cc4f4015ab480a012e062164fe2609f236d2f7e2686241f617a1646579a8dd",
+      "sealed.json": "74ccba5388a146c37b4b0cf6b5ed301308cb1c14562088aabcfc3343c300ab7c",
+      "report.json": "17e3b7d7b16fc3e51679fa8874d5923aa7da0ac0007796eb60c0fb6bcf5d91ff",
+      "counts.npz": "3e0e81af24ef2837ab132b6d0bb208ac48b8a623c495af7bf7c3bc7c8152ffa2",
+      "state.json": "84f1c96baf5db83c2f065ff1440cb7b72f8880db116330eff5007174f1f83018"
+    },
+    "parent_files": {
+      "manifest.json": "86ae4180cd661a1b56c17ec94161340f578cbaf2f1193bc33942a90854d2dc65",
+      "arms.json": "d7378ce6ecd4aa2b3eab4fb29fe28fccff06b3b2d07b60f607a46c3174bf3008",
+      "patterns.npy": "47a657653c6e069d10919fa5a9cec1d79490cf9c5adad4507b0450aaf1ad2008",
+      "baseline_counts.npz": "dbe01255e9ebdb4c4f340b7653872def82118f4c4c7bf71deaaef7fe23c0fe72",
+      "histogram_complete.json": "a34a6b1937ea9f37eae28164038168dc807df1baba48259ab20e894ce0fc1aae"
+    }
+  },
+  "bootstrap": {
+    "draws": 2000,
+    "rng": "RandomState(0)",
+    "unit": "connected support/query photographs"
+  },
+  "selection_boundary": "Each fold's already selected fixed recipe uses three other folds' GT. Source-producer exposure is unchanged; paired CIs do not repeat selection; development reuse is not fresh confirmation.",
+  "resource_boundary": "Outer producer count proxy3 per fold is not atomic upstream cost or measured seconds.",
+  "new_search": false,
+  "new_encoder": false,
+  "verifier_sha256": "9a7cca26f673763cdc3bfba84d649bd462c76058e3efb4e6582f01961c0ca1d3",
+  "seconds": 24.30100916326046
+}
