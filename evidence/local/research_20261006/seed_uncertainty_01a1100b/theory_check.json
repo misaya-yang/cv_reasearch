@@ -1,0 +1,73 @@
+{
+  "scope": "exact arithmetic on a synthetic three-pixel example and finite Boolean proof checks",
+  "real_segmentation_runs": 0,
+  "four_pixel_coverage_cases_checked": 3840,
+  "rational_example": {
+    "baseline_field": [
+      "467/850",
+      "417/850",
+      "3/5"
+    ],
+    "branch_fields": [
+      [
+        "286/425",
+        "397/850",
+        "19/40"
+      ],
+      [
+        "447/850",
+        "261/425",
+        "19/40"
+      ]
+    ],
+    "lower_field": [
+      "1783/3400",
+      "1583/3400",
+      "19/40"
+    ],
+    "upper_field": [
+      "2293/3400",
+      "2093/3400",
+      "19/40"
+    ],
+    "chosen_field": [
+      "467/850",
+      "417/850",
+      "19/40"
+    ],
+    "masks_as_bitsets": {
+      "baseline": 5,
+      "hard_second_seed": 3,
+      "uniform_seed_average": 3,
+      "delayed_decision": 1,
+      "truth": 1
+    },
+    "IoU": {
+      "baseline": "1/2",
+      "hard_second_seed": "1/2",
+      "uniform_seed_average": "1/2",
+      "delayed_decision": "1"
+    }
+  },
+  "existing_stage_record": {
+    "step": "foris.s3_vote -> foris.s3",
+    "miou_from": 52.20144470800354,
+    "miou_to": 56.35504761373345,
+    "add_TP": 1221895,
+    "add_FP": 1563428,
+    "delete_FP": 3760692,
+    "delete_TP": 447618,
+    "correct_edits": 4982587,
+    "wrong_edits": 2011046
+  },
+  "source": "evidence/local/research_20261005/stage241_v1/report.json",
+  "source_sha256": "b28b3481942f2be73ff163b77cd759b22972e38f5c7c680353ae130d83da3047",
+  "script_sha256": "175f523ada9e9344c644705ce649ebc275eddad1a7a1acea5672764e24a54966",
+  "local_process_cpu_seconds": 0.009098999999999996,
+  "limitations": [
+    "synthetic arithmetic is not evidence of segmentation accuracy",
+    "coverage by the new seed envelope has not been measured",
+    "the old record has no alternative-seed outputs or top-two seed margins",
+    "old stage counts do not establish that near ties caused the wrong edits"
+  ]
+}

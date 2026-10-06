@@ -2,7 +2,41 @@
 
 ## Scoped execution owned by chat 01a1100b (2026-10-06)
 
-Execution audit after the user's progress challenge: this chat is at an impasse.
+Current theory response follows the supplied seed-uncertainty mechanism. The
+[specified complete rule](../../evidence/local/research_20261006/seed_uncertainty_01a1100b/design.md)
+keeps ambiguous seed identities, propagates lower/upper prior bounds through a
+common positive graph operator, and preserves seed-free decisions wherever the
+pixel-level envelope disagrees. A conditional whole-IoU guarantee is proved; the
+three-pixel rational example and3,840 exhaustive Boolean cases check it without
+any image/model run. No score forecast. The simple alternative is disabling the
+prior on ambiguous queries; uniform seed averaging is another necessary control.
+The next empirical question is whether this rule retains useful seed edits while
+removing hard-seed damage in the complete method. Old local reports lack the
+alternative-seed outputs and actual selection margins needed to answer it. No new
+experiment, replay or resource request is scheduled. This is a concrete design and
+proof, not fulfillment of the method-performance or universal-forecast objective.
+
+Previous theory response, retained as context:
+Latest human input supplies a concrete standalone-method direction and supersedes
+the impasse as the plan for this theory-only response. The
+[complete theory draft](../../evidence/local/research_20261006/standalone_region_objective.md)
+is written: build evidence from the reference and frozen features, couple query
+token and region responses, represent seed-region semantics as regional anchors,
+then solve one positive-definite system and render a full mask. Region variables
+eliminate exactly; the direct-anchor version is the required simpler alternative.
+The user's subsequent originality challenge exposes that this draft still commits
+to one seed by argmax. It is now a control design, not an original main candidate.
+Its59.7/60.1 score extrapolations are withdrawn; the existing56.17/58.44/59.69
+measurements remain valid only for their original constructions. The user supplied
+Opus's alternative of carrying ambiguous seed hypotheses to the final decision;
+that is a supplied, unvalidated direction, not this chat's original idea. There is
+no new measured mask, implementation run or GPU/CPU experiment. Neither direction
+has a run queued, and the control-design comparison is no longer the proposed main
+experiment.
+Count-forecast and boundary branches remain closed. The original complete-method
+objective has not been declared achieved.
+
+Earlier execution audit after the user's progress challenge:
 The repeated gap across the last three goal turns is unchanged: no justified
 pre-experiment win forecast and no new complete output establishing the required
 method gain. The existing counts describe already-run programs; they do not

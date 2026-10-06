@@ -4,10 +4,40 @@ Updated 2026-10-06 UTC. This file records current state; detailed evidence is li
 
 ## Now
 
-- Chat01a1100b follows the user's new no-server-compute instruction: independent
+- Chat01a1100b has now formalized the supplied seed-uncertainty direction into
+  [one complete decision rule](../../evidence/local/research_20261006/seed_uncertainty_01a1100b/design.md):
+  retain competing seed priors, propagate a conservative lower/upper envelope with
+  one shared positive graph operator, and constrain their effect only after pixel
+  readout. It needs three same-matrix solves including the seed-free result, not a
+  full run per seed. A conditional whole-IoU non-decrease proof and3,840 exact finite
+  checks pass; a rational toy distinguishes the rule from averaging and disabling
+  the prior. These are mathematical results, not new segmentation scores. Existing
+  DEV241 stage counts show4,982,587 correct and2,011,046 wrong seed-prior edits;
+  local reports contain no alternative-seed outputs/top-two margins to establish
+  near-tie causation or actual envelope coverage. No inference, server work or
+  measured method gain. General consensus/uncertainty propagation has prior art;
+  originality and practical value remain unestablished.
+- Latest human input to chat01a1100b supplies a constructive standalone-pipeline
+  direction: retain measured evidence/structure gains, integrate the seed-region
+  prior into one inference objective, and write predictions before any experiment.
+  The [theory draft, now a control design](../../evidence/local/research_20261006/standalone_region_objective.md)
+  now specifies token and region variables, a convex quadratic objective, its exact
+  positive-definite linear solve, a same-information direct-anchor control, and a
+  complete raw-input-to-mask interface. Following the user's originality challenge,
+  it is demoted: it retains hard seed argmax and does not address the proposed
+  premature-commitment mechanism. The59.7/60.1 extrapolations are withdrawn; they
+  belong to prior results, not this construction. The old56.17→59.69 gap includes vote+2.27
+  and seed-prior+1.25 in that order. No experiment, implementation run or resource
+  request followed. The full method goal remains unachieved; the count-forecast
+  branch and boundary branch stay closed.
+  The user supplied Opus's hypothesis of retaining ambiguous seed alternatives
+  until the final decision. This is an unvalidated supplied direction, not an
+  original idea or measured method produced by this chat. No implementation or
+  experiment has been initiated for it.
+- Earlier audit for chat01a1100b under the no-server-compute instruction: independent
   work from existing theory/results only, no SSH or new experiments. User reports
   the server powered off; no remote power/process state was independently checked.
-  Its [current derivation](../../evidence/local/research_20261006/no_compute_joint_solution.md)
+  Its [earlier derivation](../../evidence/local/research_20261006/no_compute_joint_solution.md)
   follows the user's edit-purity backtest. Small local old-count arithmetic found
   all80classes predicted positive, while72actually improve:72/80matches the
   always-positive control. Removing held baseline I/U gives+2.024 vsactual+1.923,
@@ -18,7 +48,7 @@ Updated 2026-10-06 UTC. This file records current state; detailed evidence is li
   No new segmentation inference or server work; no new effective full method or
   usable universal prediction certificate.
   After the user's progress challenge, this chat closed the count-forecast branch
-  and withdrew the unimplemented interval extension. Its completion audit remains
+  and withdrew the unimplemented interval extension. Its then-current goal audit was
   blocked by the same missing method/forecast evidence across consecutive goal
   turns. Existing hierarchy/transfer records do not supply a verified replacement;
   no further automatic diagnostic branch or experiment is scheduled by this chat.
