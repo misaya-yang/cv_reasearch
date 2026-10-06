@@ -1,0 +1,29 @@
+{
+  "question": "Does the old edit-purity forecast retain value without held-class baseline I/U?",
+  "sampling": "same old PUBLIC4000, 80 classes; train three class folds, hold one",
+  "method": "RCG versus FoRIS pre-CRF at 1024; masks unchanged",
+  "purity": "pooled correct pixel fraction per six observable edit types in other three folds",
+  "baseline_estimator": "I_hat=M*sum_train(I)/sum_train(M); U_hat=M*sum_train(U)/sum_train(M)",
+  "controls": [
+    "always predict a gain",
+    "other-three-fold mean class gain",
+    "actual held baseline I/U diagnostic"
+  ],
+  "held_observables": [
+    "six edit volumes",
+    "baseline predicted mask area",
+    "class/fold metadata"
+  ],
+  "held_labels_in_primary_prediction": false,
+  "history_labels_used_for_forecaster": true,
+  "exposure": "retrospective, reused development data; not prospective validation",
+  "no_segmentation_inference": true,
+  "no_parameter_search": true,
+  "no_server_or_gpu_compute": true,
+  "local_work": "small arithmetic on existing compact count arrays only",
+  "sources": {
+    "evidence/local/research_20261005/rcg_anatomy4000/counts.npz": "31a0228b594da6ad02cd68eb898f3c2b88b5b488e2982fcd1f74d59f689c400d",
+    "evidence/local/research_20261005/pipeline_verified/rcg_native_states4000_v1/states.npz": "01e403f78df6b4f3b852c684312e0da8ba4f1ea5728ee705a3910921105bafd3",
+    "evidence/local/research_20261005/pipeline_verified/rcg_native_states4000_v1/manifest.json": "eeb3105e0a271acd5385c0ebd1d9813ea9818062bc9c7d600f474b1e04883069"
+  }
+}

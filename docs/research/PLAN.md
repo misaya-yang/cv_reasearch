@@ -4,12 +4,21 @@
 
 Latest instruction for this chat: user reports the server powered off and provides
 no further server GPU/CPU resources. Work is independent reasoning from existing
-theory and measured records only; no SSH, experiment, statistical recomputation or
-automatic restart is scheduled. The latest desired result includes a universal
-pre-experiment win/no-win forecast with small error and acceptable latency.
+theory and measured records only; no SSH, model/inference experiment or automatic
+restart is scheduled. The user's new4000-case purity forecast is the current
+starting point. A small local arithmetic check on existing compact counters has
+replaced held-class baseline I/U with historical, mask-area-scaled estimates,
+keeping every segmentation mask fixed. Original and label-removed forecasts
+both predict all80classes positive, while72actually improve. Label-removed class
+MAE1.385 is worse than historical-mean-control1.330. See the current derivation.
+Next: explain conditional correct-edit-mass error and its implication for full-method
+prediction; do not turn the current forecaster into another edit-type selector.
+No parameter search, new segmentation pixels, or server CPU/GPU work. This is
+retrospective analysis of existing results, not independent validation.
+The desired result remains pre-experiment prediction and an effective complete method.
 [Current derivation](../../evidence/local/research_20261006/no_compute_joint_solution.md)
-formalizes that request, proves the limits of an unconditional forecast, and
-separates those limits from conditional statistical guarantees. It also corrects
+now centers on the edit-correctness sufficient statistic and this backtest;
+the unconditional-forecast boundary is background, not the main deliverable. It also corrects
 this chat's overly strong prerequisite that every complete solution must first
 estimate a calibrated per-query posterior. The full method objective remains
 unachieved; this theoretical boundary is not a substitute for it.

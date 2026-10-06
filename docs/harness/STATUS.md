@@ -8,8 +8,11 @@ Updated 2026-10-06 UTC. This file records current state; detailed evidence is li
   work from existing theory/results only, no SSH or new experiments. User reports
   the server powered off; no remote power/process state was independently checked.
   Its [current derivation](../../evidence/local/research_20261006/no_compute_joint_solution.md)
-  defines pre-experiment prediction and its unconditional/conditional boundaries.
-  No new effective full method or usable universal prediction certificate exists.
+  follows the user's edit-purity backtest. Small local old-count arithmetic found
+  all80classes predicted positive, while72actually improve:72/80matches the
+  always-positive control. Removing held baseline I/U gives+2.024 vsactual+1.923,
+  butclassMAE1.385 vsconstant-control1.330. No new segmentation inference or server
+  work; no new effective full method or usable universal prediction certificate.
   This chat's rejected boundary run is terminal, with no successor.
 - User supplied a query-only hierarchical-region candidate direction and reports
   its600-case oracle run ongoing. Root has not inspected or duplicated that run.

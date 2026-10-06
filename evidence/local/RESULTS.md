@@ -1643,3 +1643,14 @@ Process: the earlier ledger sections (failure ledger, 2026-10-02 to 10-05) alrea
 (reverse check, region-level evidence, scale matching, zoomed rerun, 64 % of false area attached to the target) and
 one that contradicts my reading of the worst episodes as reference ambiguity: swapping in three other references of
 the class rescues only 17-29 % of failed episodes; the difficulty is in the query.
+
+Bound of the cut-level route, prediction written before the result (public 4000, RCG field, stored per-level counts,
+server CPU in no-card mode, no GPU; `scripts/score_cut_predictability.py`). Question: the best level per episode is
+worth +8.91 with truth and the pool is present on every dataset, while every label-free rule tried so far gives at
+most about +0.5 and six fitted area bins +0.38. Is the best level readable from the field at all? Test: boosted trees
+fitted on the other folds (no shared photographs, base-fold labels) from label-free descriptors of the level sets
+(histogram: area curve, stability, moments; spatial: components, peak component, perimeter, edge gradient) to the value
+I - J U of each level; the held fold takes the level of highest predicted value. This bounds label-free rules on these
+descriptors from above; it is not a method. Prediction: at most +1.0 over the fixed 0.5 level (expected +0.4 to +0.9).
+If it reads +2.5 or more the information is in the field and a rule is worth deriving; if it stays under +1 the cut
+level is closed as a source of gain for fitted and label-free rules alike.
