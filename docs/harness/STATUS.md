@@ -4,6 +4,25 @@ Updated 2026-10-06 UTC. This file records current state; detailed evidence is li
 
 ## Now
 
+- Goal continuation has resumed research. Live inspection found shared GPU100%,
+  with peer return-cut workers86534/86535 and ordering producer87376. Root launched
+  no additional encoder. Protected fresh600 post-Part1 q/r caches and native packets
+  exist; raw multilayer241 cache is absent. Old stage-bank replay has worst final
+  score drift~.25, so it is not a native implementation substitute. A direct source
+  CPU replay execution check is underway, and one coherent Part2 multi-background
+  readout versus native and same-evidence max control is being implemented. Results
+  remain unmeasured; old held queues are not automatically restarted.
+
+- Latest user correction makes intermediate evidence generation and complete
+  pipelines the main experimental unit. Root withdrew the return-cut-first design
+  and recorded a matched-finalizer comparison of middle versus end RCG placement
+  in [PLAN](../research/PLAN.md). Existing stage taps/rebuilds are reusable. Source
+  inspection identifies foreground prototype LSE and hard-background contrast as
+  the active Part2 readout; positive scalar gating is canceled in the default path
+  in exact arithmetic. No placement result or complete-mask parity has been measured
+  in the previous design turn. Root's old queues remain held; no duplicate encoder or peer
+  experiment was launched.
+
 - User requested comparison with the supplied Chinese joint-edit derivation. The
   comparison and bounded GPT-6.1-sol/max mathematical reviews are complete, with
   no experiments, data evaluation, remote operations or source-document changes.

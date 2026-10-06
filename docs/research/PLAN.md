@@ -1,8 +1,43 @@
 # Pending work
 
-Latest instruction, 2026-10-06 02:46 UTC: one hour of theory only. All owned experiment
-queues below are held, including the previously launched confirmation supervisor81658.
-No new GPU or CPU evaluation, and no automatic restart after the hour. Root's five-question
+## Current design: intermediate evidence and complete pipelines
+
+The latest user correction moves the experimental unit from terminal attachments
+to complete pipelines built from the same frozen features. It supersedes the
+return-cut-first design. The latest goal continuation has resumed Root's research
+work. Existing held queues are not automatically restarted. The shared GPU has three
+other live producers at100% utilization; Root prepares and executes cached CPU work
+without another encoder. No peer source, process or reusable feature is modified.
+
+| Question | Owner | Complete comparison and decision |
+|---|---|---|
+| Does replacing a compressed background direction improve the complete pipeline? | Root execution; `/root/part2_evidence_runner` implementation | Reuse the600 post-Part1 q/r caches, and call the actual native Part2/3/4/finalizer on CPU. Compare same-cache native, one fixed multiple-hard-background-prototype LSE readout, and the max-over-the-same-prototypes control. Foreground LSE/anchor, top20% hard-background pool, native tau=.6, temperature=.07, bg weight=.55 and finalizer stay fixed. Orthogonalize each background prototype against the same foreground anchor; recompute score and sbn coherently before the native tail. This tests loss from averaging distinct background directions, not an extra terminal deletion. No parameter grid, area rule or query-GT routing. Record score/pre/native drift against the original cached native output; never call a drifted replay exact. Cache-to-native parity and CPU CRF support are execution checks; complete class-summed gain/95% CI and TP damage decide efficacy. |
+| Does query-graph propagation help more before FoRIS's remaining evidence aggregation? | Root: source/interface design; execution held | Compare unchanged complete FoRIS, the unchanged locked end-RCG method, end-RCG with the same fixed native finalizer used below, and Part2 -> fixed RCG -> native Part3 -> native Part4 -> that same finalizer. Include the existing simple MEAN graph control at the middle position. Preserve the Part2 auxiliary outputs sf, sbn, mu_fg and target features; this changes the score aggregation and is not a full Part2 replacement. Declare and freeze the conversion between native contrast-score scale and the RCG field scale before scoring. Reuse one prefix and existing features; no duplicate encoder launch. |
+| What is the actual Part2 evidence construction, and which compression is consequential? | Root and graph-estimator agent: code derivation; no evaluation | Current source uses foreground prototype LSE and an orthogonalized hard-background mean. The positive per-token gate is bypassed for default raw scoring/clustering and canceled by downstream feature normalization, in exact arithmetic. Confirm identity in the eventual execution smoke, then distinguish positional debias, foreground readout and background contrast rather than attributing the raw-to-Part2 gain entirely to the gate. Any true replacement must provide coherent score/sf/sbn/mu_fg/features, and complete masks must beat the native and simple same-information controls. Part3 rereads features, so Part2 scalar compression alone does not prove irreversible loss throughout the pipeline. |
+| When is early propagation genuinely redundant with the native tail? | Root: prespecified interpretation | Similar intermediate IoUs do not establish redundancy. The primary decision is paired complete-mask gain for middle versus end placement under matched finalization. A targeted tail-ablation interaction is secondary if the first result leaves the mechanism unresolved; retain any auxiliary maps that Part4 still consumes and call removal of score boosts aggregation replacement, not removal of the whole stage. Measure correct/wrong additions and deletions as attribution, not as inference-time GT routing. |
+
+Changing only Part2's score does not change the native tail's evidence maps in the
+inspected default path. Early RCG is therefore a placement control, not a substitute
+for an evidence-generation method. The old stage-bank archive has worst final-field
+drift~.25 and cannot establish native replay parity. Its raw multilayer241 inputs are
+currently absent; the protected fresh600 post-Part1 caches exist.
+
+Start the real comparison on the existing DEV cohort; use enough episodes to resolve
+the paired effect, and freeze before an actually unused1200 confirmation. Do not
+launch another4000 encoding as the first step. Existing stage taps and the cached
+stage-bank rebuild are reusable; their non-CRF diagnostic outputs do not substitute
+for complete pipeline scores. No broad weight/threshold search is scheduled.
+Runtime differences of up to3 seconds are immaterial under the user's latest rule;
+several-fold slowdowns must be reported. All reusable features remain protected.
+
+A*/B* describes the final edits relative to the common origin; it does not require
+post-output implementation. A member of the candidate family can be an entire
+pipeline whose intermediate evidence, aggregation and final decision differ.
+The return-cut and threshold-oracle proposals are no longer the main research line.
+
+Historical hold, 2026-10-06 02:46 UTC: one hour of theory only. The old owned experiment
+queues below remain held, including the previously launched confirmation supervisor81658.
+The latest continuation resumes new work declared above, not these old queues. Root's five-question
 theory synthesis and parallel proof/review notes are complete under
 `evidence/local/research_20261005/theory_hour_20261006/`. The proposed minimal falsification
 measurements in those notes are unexecuted designs, not authorized queues. Partial predictions,
