@@ -36,8 +36,10 @@ def main():
             raise RuntimeError(result.stderr)
         seal = json.loads((output / 'sealed.json').read_text())
         assert seal['n'] == 2 and not seal['query_gt_opened']
+        worker_pids = set()
         for path in (output / 'receipts').glob('*.json'):
             receipt = json.loads(path.read_text())
+            worker_pids.add(receipt['pid'])
             info = receipt['methods']['query_recurrence']
             assert not info['abstention'], info
             assert len(info['selected_seed_labels']) >= 2
@@ -45,7 +47,7 @@ def main():
         with np.load(output / 'predictions/000000.npz', allow_pickle=False) as packet:
             for key in ('query_recurrence', 'recurrence_all_seed.control', 'recurrence_single_seed.control', 'mean.control'):
                 assert packet[key].shape == (131072,)
-        report = dict(synthetic_occurrences=2, workers=2, active_recurrence=True,
+        report = dict(synthetic_occurrences=2, workers=2, observed_worker_count=len(worker_pids), active_recurrence=True,
                       query_GT_sentinels_unread=True, masks_1024=True, predictions_sealed=True,
                       base_recomputed_from_supplied_source_score=True, no_extra_geometry_or_RGB=True,
                       real_episodes=0, no_gpu=True, no_server=True)

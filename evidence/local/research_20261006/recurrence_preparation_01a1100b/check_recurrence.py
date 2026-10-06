@@ -60,8 +60,7 @@ def main():
     desc = np.array([[1., 0], [1., 0], [0., 1], [0., 1], [0., 1]])
     _, members, _ = choose_star(desc, np.full(5, .6), np.full(5, .8), Config())
     np.testing.assert_array_equal(members, [2, 3, 4])
-    # Fragmentation cannot create more than32 feature descriptors. The same
-    # query prototype is invariant to duplication of identical seed descriptors.
+    # Fragmentation cannot create more than32 feature descriptors.
     fragmented_base = np.full_like(base, .1)
     fragmented_q = q.copy()
     for row in range(0, 64, 8):
