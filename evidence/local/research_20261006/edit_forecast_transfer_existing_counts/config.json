@@ -1,0 +1,47 @@
+{
+  "scope": "retrospective existing-count arithmetic; no new masks or inference",
+  "comparison": "unchanged frozen RCG2 vs unchanged RCG fine at level 0.5",
+  "resolution": 1024,
+  "training": "COCO groups B+C+D, 1800 old draws",
+  "model": "pixel-pooled correct-edit share in each of the six already frozen size bins",
+  "baseline": "historical pooled I/mask-area and U/mask-area; same estimator as prior check",
+  "target_observables": [
+    "baseline mask area",
+    "net edit volume in each frozen size bin"
+  ],
+  "target_label_use": "only algebraic reconstruction of GT-invariant areas, then saved-forecast scoring",
+  "controls": [
+    "source mean gain",
+    "target true baseline I/U diagnostic"
+  ],
+  "coco_readout": "train other class folds, excluding photo components touching held fold",
+  "caveats": [
+    "all records previously exposed",
+    "LVIS shares COCO imagery",
+    "PACO/LVIS preserve existing merged fold-class ids",
+    "sensitivity radii are not confidence intervals",
+    "only 1024 counts are compared"
+  ],
+  "frozen_size_cuts": {
+    "mask_area_at_half_edges": [
+      0,
+      0.01,
+      0.03,
+      0.08,
+      0.2,
+      0.4,
+      1.01
+    ],
+    "levels": [
+      0.5,
+      0.5625,
+      0.5875,
+      0.5625,
+      0.45,
+      0.375
+    ]
+  },
+  "no_parameter_search": true,
+  "no_server": true,
+  "no_images_or_feature_arrays": true
+}

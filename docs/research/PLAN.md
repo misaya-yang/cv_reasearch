@@ -11,8 +11,16 @@ replaced held-class baseline I/U with historical, mask-area-scaled estimates,
 keeping every segmentation mask fixed. Original and label-removed forecasts
 both predict all80classes positive, while72actually improve. Label-removed class
 MAE1.385 is worse than historical-mean-control1.330. See the current derivation.
-Next: explain conditional correct-edit-mass error and its implication for full-method
-prediction; do not turn the current forecaster into another edit-type selector.
+That error audit is complete: the eight negative classes' correct-edit share was
+overestimated by8.8–18.7percentage points. A fixed cross-dataset check on existing
+size-cut outputs is also complete. Repairing incoherent baseline/edit estimates
+with four shared mask-membership atoms removes all invalid counts, but predicts
+only2/4 target-dataset point directions correctly. SUIM+0.677predicted vs−0.501actual;
+LVIS−1.518vs+1.579. The same frozen size bins do not preserve edit correctness.
+See the [transfer analysis](../../evidence/local/research_20261006/edit_forecast_transfer_existing_counts/report.md).
+Next must address justified error control for complete-method forecasts, not more
+size bins, type selectors or mask combinations. A robust gain formula without a
+justified error range is not a working predictor. Full-method work remains required.
 No parameter search, new segmentation pixels, or server CPU/GPU work. This is
 retrospective analysis of existing results, not independent validation.
 The desired result remains pre-experiment prediction and an effective complete method.

@@ -11,8 +11,12 @@ Updated 2026-10-06 UTC. This file records current state; detailed evidence is li
   follows the user's edit-purity backtest. Small local old-count arithmetic found
   all80classes predicted positive, while72actually improve:72/80matches the
   always-positive control. Removing held baseline I/U gives+2.024 vsactual+1.923,
-  butclassMAE1.385 vsconstant-control1.330. No new segmentation inference or server
-  work; no new effective full method or usable universal prediction certificate.
+  butclassMAE1.385 vsconstant-control1.330. A subsequent existing-count transfer check
+  repaired baseline/edit count consistency, but still mispredicts SUIM and LVIS
+  for the same frozen size-cut rule (2/4 dataset point directions correct).
+  [Transfer result](../../evidence/local/research_20261006/edit_forecast_transfer_existing_counts/report.md).
+  No new segmentation inference or server work; no new effective full method or
+  usable universal prediction certificate.
   This chat's rejected boundary run is terminal, with no successor.
 - User supplied a query-only hierarchical-region candidate direction and reports
   its600-case oracle run ongoing. Root has not inspected or duplicated that run.

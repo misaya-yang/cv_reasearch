@@ -1654,3 +1654,13 @@ I - J U of each level; the held fold takes the level of highest predicted value.
 descriptors from above; it is not a method. Prediction: at most +1.0 over the fixed 0.5 level (expected +0.4 to +0.9).
 If it reads +2.5 or more the information is in the field and a rule is worth deriving; if it stays under +1 the cut
 level is closed as a source of gain for fitted and label-free rules alike.
+Result (4000 episodes, 80 classes, 2000 photograph-group draws; fixed 0.5 = 62.33): six fitted area bins +0.29
+[+0.04, +0.53], folds +0.22/+0.42/+0.28/+0.24; boosted trees on histogram descriptors -0.76 [-1.31, -0.29]; on histogram
+and spatial descriptors -0.67 [-1.19, -0.20], folds -0.37/-0.64/-0.36/-1.31, by true object share <2% / 2-10% / 10-30% /
+>30%: +0.20 / -1.54 / -1.78 / +1.10. Truth rows: best IoU level per episode 71.24 (+8.91); class-optimal level per
+episode (each episode maximising I - qU at its class ratio) 77.10 (+14.77). The prediction (at most +1.0) held. A
+flexible fit with base-fold labels does not read the best level from the field and its level-set geometry; taking the
+level of highest predicted value is itself biased towards noisy extremes, so this is strong evidence against the
+route, not a proof of an upper bound. Together with Otsu / isodata / Kittler / stability / area-curve ridge / share
+estimators already in this ledger, the cut level of this field is closed as a source of more than about +0.3 to +0.5.
+Source: `research_20261005/cut_levels4000/predictability_rcg.md`.
