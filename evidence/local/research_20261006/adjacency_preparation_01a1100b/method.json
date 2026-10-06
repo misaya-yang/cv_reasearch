@@ -1,0 +1,50 @@
+{
+  "id": "reference_internal_adjacency_v1",
+  "independent_method_count": 1,
+  "state": "specified_and_structurally_checked; real_segmentation_unmeasured",
+  "user_requested_total": 100000000000000,
+  "requested_total_achieved": false,
+  "quality_status": "mechanism_and_exact_decoder_checked; empirical_quality_unknown",
+  "inputs": ["frozen cached reference features r", "complete reference foreground coverage", "frozen cached query features q", "existing frozen MEAN continuous field"],
+  "input_contract": "same feature producer and rectangular token grid for reference/query; no query GT/class/fold as inference input",
+  "mechanism": "Measure spatial adjacency of reference appearance modes after removing the expected adjacency due only to mode counts. A query region gets a signed reward for preserving those relations. Jointly decode all foreground regions on the query spatial tree.",
+  "steps": [
+    "Cluster pure-reference-FG unit features into at most 8 modes with fixed deterministic spherical Lloyd compression.",
+    "Assign reference and query tokens to their nearest reference mode; use spatial four-neighbor edges.",
+    "From reference foreground edges estimate unordered mode-pair probability P; estimate permutation-null probability P0 from reference mode counts.",
+    "Set mode-pair potential t_ab=clip(log(P_ab/P0_ab),-2,2), with one null-distributed prior edge; impossible null pairs contribute zero.",
+    "Build the query cosine single-linkage spatial tree; assign every spatial edge to the lowest tree node containing both endpoints, then accumulate exact internal-edge histograms.",
+    "For each region R compute d_R=mean_internal_edges(t)-E_permutation_with_R_counts[t]; use d_R=0 if there are no internal edges.",
+    "Set signed region reward w_R=0.25*|R|*d_R. Maximize sum_i(base_i-0.5)*z_i plus rewards of the maximal all-FG subtrees of z.",
+    "Use exact two-state tree dynamic programming and MAP traceback. Nearest-neighbor expand the token MAP to 1024 for the primary mask.",
+    "Save same-rendering base, original bilinear base, and bilinear max-marginal controls; these are controls of one method, not additional methods. Seal predictions before any query-GT scoring."
+  ],
+  "prediction": {
+    "conditional": "If true query objects preserve reference appearance adjacency more than distractors with the same appearance proportions, their centered structural reward is larger.",
+    "proved": ["Any given region has zero expected centered score under uniform permutation of its fixed labels", "Equal mode counts do not force equal adjacency reward", "Exact MAP is obtainable in linear time once regional rewards are known", "When reward is zero, the token solution equals thresholding the base at 0.5 with background preferred at equality"],
+    "not_predicted_numerically": ["mIoU gain", "number of repaired real episodes", "probability of success", "one-minute complete-dataset wall time"]
+  },
+  "counterexamples": [
+    "A distractor preserving the same appearance adjacency receives no semantic rejection from this term.",
+    "Changing viewpoint, articulation or token-scale texture can change adjacency within the true class and penalize a correct object.",
+    "Single-mode reference foreground or no internal foreground edges gives a neutral structural term.",
+    "No-edge small regions have neutral rewards; fragmenting a wrong region may avoid a negative structural term when the tree permits a background gap.",
+    "A region absent from the spatial tree cannot receive its intended intact-region reward; the hierarchy is a restriction, not an objectness guarantee."
+  ],
+  "cpu_cost": {
+    "feature_assignment": "O((Nq+Nr)*K*D), K<=8",
+    "spatial_tree": "O(Eq log Eq)",
+    "edge_ownership": "O((Nq+Eq) log Nq) worst-case binary lifting",
+    "histograms_and_rewards": "O(Nq*K^2), unordered K(K+1)/2 bins",
+    "decoder": "O(Nq)",
+    "extra_encoder_forwards": 0,
+    "transport_iterations": 0,
+    "benchmark": "structural_check.json: synthetic 64x64x1024 candidate only, not feature loading/rendering or real evaluation",
+    "real_runtime": "unmeasured"
+  },
+  "simple_controls": ["Same continuous base with nearest readout", "Original base with bilinear readout", "Same candidate max-marginals with bilinear readout", "Token-proportion-only comparison on equal-count witnesses", "Query-label permutation preserving region counts for the structural term"],
+  "next_actual_evidence": "On the same bound cache cohort, compare complete predictions against same-rendering base and original base; report class-summed I/U, paired photo-group uncertainty and true/false additions/deletions. No cohort bound or real inference executed in this preparation.",
+  "source": "../../../../src/ics/methods/reference_adjacency.py",
+  "runner": "../../../../scripts/run_reference_adjacency.py",
+  "novelty": "unverified; adjacency histograms, permutation nulls and tree DP are established tools"
+}
