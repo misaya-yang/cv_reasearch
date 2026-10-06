@@ -1,0 +1,54 @@
+{
+  "id": "query_color_bottleneck_basins_v1",
+  "independent_method_count": 1,
+  "state": "specified_and_structurally_checked; real_segmentation_unmeasured",
+  "inputs": {
+    "rgb": "128x128 unit RGB or uint8, PIL-bilinear resized from the same canonical query RGB before ImageNet normalization",
+    "base": "Existing fixed MEAN continuous 64x64 field from the same episode",
+    "exposure": "No query GT, class/fold ID, pretrained additional model or new encoder call"
+  },
+  "mechanism": "Add a query-photometric cue: classify every grid location by the minimum largest local RGB edge needed to reach existing confident foreground versus background seeds. This is local edge bottleneck distance, not cumulative geodesic distance or the total RGB range along a path.",
+  "steps": [
+    "Half-pixel bilinear resize the base field to RGB128, retain the unclipped intermediate for a control, then clip to [0,1].",
+    "Use base>=0.75 as foreground seeds and base<=0.25 as background seeds. If either seed set is absent, retain the base; do not invent an extremal seed.",
+    "Construct the four-neighbor RGB grid. Edge cost is Euclidean RGB difference divided by sqrt(3), in unit RGB coordinates.",
+    "Run two multi-source min/max Dijkstra passes: d_F(v)=min_{path to an FG seed} max_edge_cost(path), and likewise d_B.",
+    "Set g(v)=d_B/(d_F+d_B). Where both distances are exactly zero, use the base value because color has no preference.",
+    "Produce z=0.5*base+0.5*g for all grid locations. Every same-class instance can be included if evidence supports it; no largest-component constraint is used.",
+    "Bilinear upsample z to 1024 and threshold strictly above 0.5; save and seal all predictions before GT scoring.",
+    "Save original-base, same-resize base, same-resize clipped base and color-only controls. These are controls of one method, not distinct method counts."
+  ],
+  "prediction": {
+    "conditional": "When an actual object has a confident foreground seed and internally low RGB edge barriers, while reaching confident background seeds requires a stronger barrier, its color cue is foreground-directed even where the base has dropped below 0.5.",
+    "proved": [
+      "d_seed(v)<=t exactly when v is connected to a seed using only edges of cost<=t",
+      "A longer path can beat a shorter path if its largest edge is smaller",
+      "A uniform-color connected image gives d_F=d_B=0 and preserves the base exactly",
+      "Missing either confident seed set preserves the base",
+      "Swapping foreground/background evidence and complementing a nondegenerate base complements the output under the symmetric fixed thresholds",
+      "The fused field is above 0.5 exactly when 0.5*base+0.5*g>0.5; bottleneck separation alone does not override every possible base value"
+    ],
+    "not_claimed": ["semantic identity recovered from color alone", "mIoU improvement", "one-minute complete-dataset runtime", "novelty"]
+  },
+  "counterexamples": [
+    "An incorrect confident foreground seed can spread its error across a color basin; existing confident foreground seeds are never deleted by this cue.",
+    "A confident background seed inside the target can block completion of that basin.",
+    "Camouflage or contact with equally colored background may provide no useful boundary barrier.",
+    "Gradual RGB drift can connect distant colors through uniformly small local edge contrasts; minimum bottleneck is not a global color-range test.",
+    "A striped or multi-color object can have a stronger internal barrier than its external background boundary.",
+    "Extra RGB resolution and clipping/resizing can change output independently of the color rule; the explicit controls must separate these effects."
+  ],
+  "cpu_cost": {
+    "graph_vertices": 16384,
+    "graph_edges": 32512,
+    "path_cost": "Two O((N+E)*log N) heap passes; sparse storage O(N+E)",
+    "new_encoder_forwards": 0,
+    "synthetic_benchmark": "path_check.json: RGB128 with a random synthetic 64x64 base; candidate-only time excludes real image/feature I/O and cohort scoring",
+    "real_runtime": "unmeasured"
+  },
+  "checks": "path_check.json: 24 independent min/max closure cases, interpolation parity, complement symmetry, zero-color neutrality, absent-seed abstention and gradient limitation. runner_check.json: repeated occurrences, two CPU workers, unread GT sentinel and packed1024 outputs.",
+  "next_actual_evidence": "Bind canonical query RGB and existing MEAN field from the same actual cohort. Compare complete predictions against the original and same-resize/clipped controls and the existing RGB CRF baseline at matched resources. Report class-summed I/U, photo-group paired intervals and true/false additions/deletions. No actual cohort run launched because the user shut down the instance.",
+  "source": "../../../../src/ics/methods/color_bottleneck.py",
+  "runner": "../../../../scripts/run_color_bottleneck.py",
+  "novelty": "unverified; seeded watershed/geodesic and bottleneck-path tools are established"
+}

@@ -1,0 +1,55 @@
+{
+  "id": "bounded_edge_influence_huber_graph_v1",
+  "independent_method_count": 1,
+  "state": "specified_and_solver_checked; real_segmentation_unmeasured",
+  "mechanism": "Replace the quadratic query-graph edge objective with Huber edge energy. Small contrasts retain quadratic curvature; large contrasts exert bounded forces, limiting the pull of strong nonlocal connections across a foreground/background contrast.",
+  "input_contract": {
+    "y": "Frozen MEAN pre-graph target s+0.25*(rank(unit(reference-FG-mean) cosine)-rank(s)), not the already-smoothed MEAN output",
+    "a": "Same fixed normalized fidelity (0.1+abs(2*s-1))/mean(0.1+abs(2*s-1))",
+    "graph": "Same frozen reciprocal 20-NN query cosine graph, unique undirected edges and mean weighted degree normalization",
+    "constant_source_exception": "A constant original score follows the existing empty-output contract upstream; do not synthesize ranked reference corrections for that exception",
+    "resource": "Existing frozen DINO caches, no new encoder forward, no query GT/class/fold inference input",
+    "binding_status": "Both pre-graph NPZ and raw q/r/cov/score reconstruction supported. Synthetic reconstructed quadratic control agrees with existing MEAN within 2.98e-8; actual cohort binding and numerical check not yet performed."
+  },
+  "objective": "min_{0<=z<=1} 0.5*sum_i a_i*(z_i-y_i)^2 + 16*sum_{i<j} w_ij*h_0.05(z_i-z_j)",
+  "huber_definition": "h_r(d)=0.5*d^2 for abs(d)<=r; otherwise r*(abs(d)-0.5*r)",
+  "steps": [
+    "Read the frozen pre-graph target/fidelity and canonical undirected query graph from a CPU NPZ packet; open only y,a,edge_i,edge_j,edge_w. Alternatively open only q,r,cov,score and reconstruct the locked MEAN pre-graph inputs on CPU.",
+    "Solve the boxed convex problem with an incidence-operator primal-dual iteration. The dual proximal operation divides by 1+sigma/(16*w), then clips to +/-16*w*0.05.",
+    "Use tau=sigma=0.99/sqrt(2*maximum_unweighted_degree), a conservative incidence-norm bound.",
+    "Compute a feasible dual lower bound and primal upper bound every 25 iterations. Stop at gap/token<=1e-8; reject uncertified output at 20000 iterations.",
+    "Bilinear upsample the resulting field to 1024 and threshold strictly above 0.5; no new min-max or CRF.",
+    "Save same-input/same-readout boxed quadratic, original unboxed quadratic and pre-graph controls. These are controls of this one method, not additional method counts.",
+    "Seal prediction completion before any query-GT scoring; retain repeated occurrences and record input/source/prediction hashes."
+  ],
+  "prediction": {
+    "conditional": "If incorrect propagation is caused by strong graph connections across a real object/background contrast, force saturation can preserve the contrast while smoothing smaller within-object variations.",
+    "proved": [
+      "A single edge contributes at most 16*w*0.05 in magnitude to either endpoint's gradient",
+      "If every optimized edge contrast stays at most 0.05, the Huber objective coincides with the same boxed quadratic objective",
+      "Strictly positive fidelity makes the boxed objective strongly convex with a unique minimizer",
+      "Feasible primal-dual gap bounds coordinate error by sqrt(2*gap/a_i); threshold signs outside this margin are certified",
+      "The conservative incidence-norm step bound satisfies the required strict primal-dual step inequality"
+    ],
+    "not_claimed": ["new semantic identity information", "mIoU improvement", "all boundaries preserved", "one-minute complete-dataset runtime", "novelty"]
+  },
+  "counterexamples": [
+    "A wrong object whose source score is already high can retain that high score more strongly; saturation can protect an error.",
+    "Useful recovery sometimes requires smoothing across a large score contrast; Huber may block it.",
+    "Many misleading edges can exert a large aggregate force even though each edge is bounded.",
+    "An isolated or badly connected object cannot obtain new supporting information from this objective.",
+    "Reference misidentification present in y is not resolved by this optimizer alone."
+  ],
+  "cpu_cost": {
+    "per_iteration": "O(N+E) time and O(N+E) storage using bincount divergence; no dense graph matrix in the new solver",
+    "graph_build": "Reuse existing graph; if rebuilt, its cost is additional and must be included",
+    "new_encoder_forwards": 0,
+    "synthetic_benchmark": "solver_check.json: 4096 nodes and 40960 degree-20 synthetic edges; solver-only elapsed time, not real I/O/readout/scoring",
+    "real_runtime": "unmeasured"
+  },
+  "checks": "solver_check.json, runner_check.json and raw_input_check.json; all synthetic or analytical, real episodes=0",
+  "next_actual_evidence": "Bind actual frozen MEAN pre-graph packets and verify original quadratic control matches the existing MEAN producer. Then compare complete class-summed I/U against original and boxed quadratic controls, reporting paired photo-group intervals and four types of additions/deletions. User has shut down the instance; no real run launched.",
+  "source": "../../../../src/ics/methods/huber_graph.py",
+  "runner": "../../../../scripts/run_huber_graph.py",
+  "novelty": "unverified; Huber penalties and convex primal-dual optimization are established tools"
+}
