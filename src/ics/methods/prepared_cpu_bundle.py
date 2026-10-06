@@ -1,7 +1,7 @@
-"""Execute the four prepared candidates on shared cached inputs, without GT.
+"""Execute prepared candidates on shared cached inputs, without GT.
 
 This module is an inference backend of run_cpu_feature_candidates.py, not a
-fifth segmentation method. All individual candidate contracts remain fixed.
+additional segmentation method. All individual candidate contracts remain fixed.
 """
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ import time
 import numpy as np
 
 
-METHODS=('adjacency','huber','color_bottleneck','constellation')
+METHODS=('adjacency','huber','color_bottleneck','constellation','reference_shape')
 
 
 def mean_base(inputs,graph_dtype):
@@ -110,6 +110,20 @@ def one_episode(row,run,config):
             for arm,value in (('constellation',result['field']),('constellation_bag.control',result['bag_field']),
                               ('constellation_prior.control',result['prior'])):
                 fields[arm]=value;masks[arm]=render(value)
+            info=result['info']
+        elif name=='reference_shape':
+            from .reference_shape import Config,predict
+            result=predict(np.asarray(q),cov,base,Config(**config['method_configs'][name]),
+                           reference_hw=row['support_image_hw'],query_hw=row['query_image_hw'])
+            mask=result['token_mask'].astype(np.float32)
+            generic=result['compactness_control'].astype(np.float32)
+            fields['reference_shape']=mask
+            masks['reference_shape']=F.interpolate(torch.from_numpy(mask)[None,None],(1024,1024),mode='nearest')[0,0].numpy()>.5
+            fields['shape_generic_square.control']=generic
+            masks['shape_generic_square.control']=F.interpolate(torch.from_numpy(generic)[None,None],(1024,1024),mode='nearest')[0,0].numpy()>.5
+            fields['shape_bilinear.control']=mask;masks['shape_bilinear.control']=render(mask)
+            masks['mean_nearest.control']=F.interpolate(torch.from_numpy((base>.5).astype(np.float32))[None,None],
+                                                        (1024,1024),mode='nearest')[0,0].numpy()>.5
             info=result['info']
         else:raise ValueError('Unrecognized prepared method')
         info['candidate_and_controls_seconds']=time.perf_counter()-method_started

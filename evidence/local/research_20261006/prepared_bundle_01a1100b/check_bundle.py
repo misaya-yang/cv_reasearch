@@ -45,7 +45,7 @@ def main():
             rows.append(dict(c=group+1,fold=0,support=f'support_{group}',query=f'query_{group}',
                              support_photo_id=f'support-{group}',query_photo_id=f'query-{group}',
                              key='shared_source',feature_export='features.npz',packet_export='packet.npz',
-                             query_rgb_export='rgb.npz'))
+                             query_rgb_export='rgb.npz',support_image_hw=[64,64],query_image_hw=[64,64]))
         manifest=root/'manifest.json';manifest.write_text(json.dumps(rows))
         output=root/'bundle'
         infer=['infer','--manifest',str(manifest),'--root',str(root),'--out',str(output),
@@ -72,6 +72,17 @@ def main():
         assert report['n']==4 and report['classes']==2 and report['photo_groups']==2
         assert report['predictions_sealed_before_scoring']
         assert report['primary_methods']==['adjacency','huber','color_bottleneck','constellation']
+        # Newly prepared shape method coexists with all original four arms.
+        all_output=root/'all_five'
+        all_infer=list(infer)
+        all_infer[all_infer.index(str(output))]=str(all_output)
+        insert=all_infer.index('--primary-method')
+        all_infer[insert:insert]=['--prepared-methods','adjacency','huber','color_bottleneck',
+                                 'constellation','reference_shape']
+        run(all_infer)
+        run(['score','--out',str(all_output)])
+        five_report=json.loads((all_output/'score/report.json').read_text())
+        assert len(five_report['primary_methods'])==5 and 'reference_shape' in five_report['scores']
         # Same source reused twice is preserved as separate occurrences.
         assert len(list((output/'predictions').glob('*.npz')))==4
         # Poisoned query truth still permits inference; scoring fails when it finally opens truth.
@@ -108,6 +119,7 @@ def main():
                     feature_and_RGB_GT_sentinels_unread=True,packet_GT_deferred_until_score=True,
                     metadata_tampering_rejected=True,default_occupancy_backend_checked=True,
                     mean_control_maximum_field_difference=difference,
+                    five_method_shared_infer_and_score_checked=True,
                     all_predictions_sealed_before_scoring=True,real_episodes=0,no_gpu=True,no_server=True)
         Path(__file__).with_name('bundle_check.json').write_text(json.dumps(result,indent=2)+'\n')
         print(json.dumps(result))

@@ -1,0 +1,61 @@
+{
+  "id": "physical_component_reference_silhouette_v1",
+  "independent_method_count": 1,
+  "state": "specified_and_shape_checked; real_segmentation_unmeasured",
+  "mechanism": "Use the reference foreground silhouette as a view of class shape. Penalize actual query foreground components whose translation/scale/rotation/reflection-invariant moment descriptors differ from reliable reference components. Optimize complete masks by whole-component deletion and bounded region add/remove/replace moves.",
+  "inputs": ["frozen query features q4096x1024 for spatial proposals", "complete reference coverage64", "same existing MEAN field64", "original support/query image height and width"],
+  "exposure": "No query GT, class/fold IDs, additional trained model or encoder invocation. Original image dimensions are observed geometry, not fitted parameters.",
+  "shape_descriptor": {
+    "coordinates": "Map canonical grid cells back to normalized original-image coordinates to undo known nonuniform square resizing.",
+    "moments": "Accumulate degree-four raw complex moments for occupied rectangular pixel cells. Three-point tensor-product Gauss quadrature integrates these polynomial cell moments exactly.",
+    "descriptor": "[abs(central20)/central11, log1p(abs(central30)/central11^1.5), log(central22/central11^2)]",
+    "invariance_scope": "Exact similarity/reflection invariance of ideal continuous moments; rasterization, occlusion, perspective and nonrigid deformation can change the observed descriptor.",
+    "gallery": "All four-connected reference foreground components (coverage>0.5) with at least8 cells. No gallery: retain the base.",
+    "difference": "Squared Euclidean distance to the nearest reference signature, converted to bounded debt D/(1+D). Query components below8 cells receive no shape debt because this descriptor is treated as unreliable there."
+  },
+  "objective": "maximize E(M)=sum_i(base_i-0.5)*M_i - sum_C |C|*shape_debt(C), where C are actual four-connected foreground components of M; strength1.0",
+  "steps": [
+    "Validate aligned query/reference grids and explicitly bound original-image dimensions. Missing geometry retains the base in the core API and is rejected by the batch entry before output creation.",
+    "Construct the query spatial feature tree; use its nodes only to supply candidate region moves. Compute moment descriptors and unary sums for all nodes once.",
+    "Keep48 eligible region proposals ranked by (unary_sum-area*shape_debt)/sqrt(area), using only inference inputs.",
+    "Start from base>0.5. In each of at most4 rounds, remove whole actual foreground components whose component energy is negative; this exactly increases the stated objective.",
+    "For each candidate consider adding it, removing it, or replacing touched foreground components with it. Recompute the complete mask's actual connected-component energy, choose one strictly improving move, and repeat within the fixed round budget.",
+    "Record every accepted energy change. This finite search is monotone but neither globally optimal nor guaranteed to improve IoU.",
+    "Nearest-neighbor expand the final token mask to1024. Save same-nearest base, original bilinear base and bilinear-binary-mask controls.",
+    "Run the same search with an ideal generic square silhouette as a strong query-only compactness control. This is a control of one method, not another method count. Seal all predictions before GT scoring."
+  ],
+  "prediction": {
+    "conditional": "If the reference's global silhouette transfers across same-class instances more reliably than to confusing query regions, the objective can reject a wrongly scored object or accept missing pieces that complete the reference-like shape.",
+    "exact_energy_condition": "A proposed complete-mask edit is accepted only if its unary change exceeds its increase in physical-component shape cost; shape-cost reduction can compensate a negative unary change.",
+    "proved_or_checked": [
+      "Continuous descriptor is invariant under translation, rotation, positive uniform scale and reflection",
+      "Pixel-cell integration plus original image geometry restores the same ideal square across an anisotropic canonical resize",
+      "Removing one pixel without disconnecting a wrong elongated component does not erase its physical shape penalty",
+      "Whole negative-energy component deletion and each accepted proposal move increase the stated objective",
+      "Zero shape strength preserves the base token threshold exactly",
+      "All base values<=0.5 imply an empty solution: nonnegative shape penalties cannot create foreground from entirely nonpositive unary evidence"
+    ],
+    "not_claimed": ["global optimum", "semantic category identity from shape alone", "mIoU improvement", "one-minute complete-cohort runtime", "novelty"]
+  },
+  "counterexamples": [
+    "Viewpoint, articulation, occlusion or contact between multiple instances can alter the true silhouette more than a near-class distractor's silhouette.",
+    "Different categories can share these few moment descriptors; matching moments do not establish identity.",
+    "Reference connected components can be parts of an object rather than complete instances after coarse rasterization.",
+    "Sub-eight-cell query components receive no shape penalty; physically fragmenting an object into tiny components can still evade the prior.",
+    "The48 proposal pool and4-round local search can miss the useful edit or get stuck; a true region may also be absent from the feature tree.",
+    "There is no recovery when all target-region unary evidence remains negative and the rest of the proposed component cannot pay for it.",
+    "Generic compactness may account for an observed improvement; reference-specific value must beat the same-search generic-square control."
+  ],
+  "cpu_cost": {
+    "moment_and_proposal_preparation": "O(N*11) moment accumulation plus the existing spatial tree; no dense new feature correspondence matrix",
+    "search": "At most4 rounds of48 regions x3 moves, each full component/moment evaluation O(N*11) plus small gallery comparisons",
+    "model_resources": "Existing cached frozen DINO query features and reference mask only; no new encoder",
+    "synthetic_benchmark": "shape_check.json: candidate plus generic-control search on a synthetic64x64x1024 case; excludes actual I/O, graph baseline construction and cohort scoring",
+    "real_runtime": "unmeasured"
+  },
+  "checks": "shape_check.json: invariant moments, aspect restoration, physical component counterexample, illustrative completion/deletion, monotone energy and zero-strength/no-positive-cue behavior. runner_check.json: two CPU workers, active search, unread GT sentinel and packed1024 outputs.",
+  "next_actual_evidence": "Bind actual original image H/W and same-producer q/cov/MEAN packets. Compare complete masks against same-readout base and the generic-square search; report class-summed I/U, photo-group paired intervals, true/false additions/deletions and actual timings. User shut down the instance, so no actual cohort run launched.",
+  "source": "../../../../src/ics/methods/reference_shape.py",
+  "runner": "scripts/run_cpu_feature_candidates.py infer --backend prepared --prepared-methods reference_shape --primary-method reference_shape",
+  "novelty": "unverified; invariant moments, shape priors and local proposal search are established tools"
+}

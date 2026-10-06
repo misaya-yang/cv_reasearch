@@ -1,11 +1,11 @@
 {
-  "purpose": "One shared CPU execution entry for the four prepared candidates; not an additional segmentation method",
-  "independent_candidate_count": 4,
+  "purpose": "One shared CPU execution entry for prepared candidates; not an additional segmentation method",
+  "independent_candidate_count": 5,
   "empirically_validated_new_methods": 0,
   "resource_state": "User shut down the instance. This preparation starts no server, GPU or actual cohort experiment.",
   "entry": "scripts/run_cpu_feature_candidates.py infer --backend prepared",
-  "methods": ["adjacency", "huber", "color_bottleneck", "constellation"],
-  "infer_example": "python scripts/run_cpu_feature_candidates.py infer --backend prepared --prepared-methods adjacency huber color_bottleneck constellation --primary-method adjacency --manifest rows.json --root /workspace --out run_prepared_v1 --workers 6 --threads 4 --cpu-budget 30 --memory-gb 60",
+  "methods": ["adjacency", "huber", "color_bottleneck", "constellation", "reference_shape"],
+  "infer_example": "python scripts/run_cpu_feature_candidates.py infer --backend prepared --prepared-methods adjacency huber color_bottleneck constellation reference_shape --primary-method adjacency --manifest rows.json --root /workspace --out run_prepared_v1 --workers 6 --threads 4 --cpu-budget 30 --memory-gb 60",
   "score_example": "python scripts/run_cpu_feature_candidates.py score --out run_prepared_v1",
   "example_status": "Example paths must be bound to the actual cohort. These commands were not launched on actual data.",
   "manifest": {
@@ -14,6 +14,7 @@
     "feature_export": "NPZ q/r or existing CPU-loadable Torch q/r cache, aligned4096x1024; query GT is not consumed",
     "packet_export": "Existing inference cov/score and separately scored truth/native arrays. Inference opens only cov/score; score opens truth/native after sealing.",
     "color_binding": "For the color method provide query_rgb_export with an RGB128 NPZ rgb array, or query_image_export pointing to the actual query image. No image root is guessed.",
+    "shape_geometry": "For reference_shape provide support_image_hw and query_image_hw as original positive integer [height,width] arrays; never use the canonical64 square as guessed original geometry.",
     "existing_mean": "Optional base_field_export/base_field_key is accepted only after numerical consistency with the bound MEAN graph. Current threshold maxabs<=1e-6; this is not a bitwise parity assertion for actual data.",
     "photo_identity": "Provide support_photo_id/query_photo_id for canonical identities where shard filenames repeat; preserve all natural sample occurrences.",
     "additional_complete_baselines": "evaluation_controls can bind existing complete INSID3/FoRIS/other packed1024 output files; they are opened only during score, not used by candidate inference."
@@ -25,11 +26,11 @@
     "Record shared preprocessing time separately from each candidate-plus-controls time and complete occurrence time; shared execution does not demonstrate any complete-dataset minute budget.",
     "Keep all occurrences even when their source cache/key is reused.",
     "Seal metadata, receipts, fields and predictions before the separate scoring command. No automatic best-method selection or parameter fitting.",
-    "Report all four predeclared candidate rows, class-summed I/U mIoU, 2000 RandomState(0) connected-photo group draws, paired intervals and four types of additions/deletions."
+    "Report all requested predeclared candidate rows, class-summed I/U mIoU, 2000 RandomState(0) connected-photo group draws, paired intervals and four types of additions/deletions."
   ],
   "guards": ["Owned CPU worker/thread budget at most30", "Declared memory budget at most60GB and actual cgroup bound", "New output directory required", "Missing RGB binding fails before output creation", "Changed sealed metadata/predictions/fields/packets rejected before scoring", "Query class/fold/photo identifiers removed from the worker input descriptor"],
   "verification": "bundle_check.json: four synthetic occurrences/two workers, all four candidates plus controls, repeated source preservation, two canonical photo groups, GT sentinels unread until score, metadata-tamper rejection, default occupancy backend regression and original MEAN field maxdifference0 on the synthetic fixture. Real episodes=0.",
-  "quality_status": "All four remain empirically unvalidated hypotheses. Common execution and synthetic verification are preparation, not proof of high-quality segmentation or originality.",
+  "quality_status": "All five remain empirically unvalidated hypotheses. Common execution and synthetic verification are preparation, not proof of high-quality segmentation or originality.",
   "source": "../../../../src/ics/methods/prepared_cpu_bundle.py",
   "runner": "../../../../scripts/run_cpu_feature_candidates.py"
 }

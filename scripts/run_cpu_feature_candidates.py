@@ -220,13 +220,20 @@ def infer(args):
         if backend == 'prepared' and 'color_bottleneck' in prepared_methods:
             if not row.get('query_rgb_export') and not row.get('query_image_export'):
                 raise ValueError('Color method requires bound query_rgb_export or query_image_export for every row')
+        if backend == 'prepared' and 'reference_shape' in prepared_methods:
+            for key in ('support_image_hw','query_image_hw'):
+                value=row.get(key)
+                if (not isinstance(value,(list,tuple)) or len(value)!=2
+                        or any(not isinstance(v,(int,float)) or not math.isfinite(v) or v<=0 or int(v)!=v for v in value)):
+                    raise ValueError('Shape method requires original positive integer H/W metadata: '+key)
+                row[key]=[int(v) for v in value]
         for spec in row.get('evaluation_controls', {}).values():
             spec['path'] = str(resolve(args.root, spec['path']))
             spec['sha256'] = sha(spec['path'])
         evaluation.append(row)
         inference.append({key: row[key] for key in ('occurrence_id', 'key', 'feature_export',
                           'packet_export', 'base_field_export', 'base_field_key',
-                          'query_rgb_export', 'query_image_export') if key in row})
+                          'query_rgb_export', 'query_image_export','support_image_hw','query_image_hw') if key in row})
     if any(not math.isfinite(s) or s < 0 for s in args.strengths) or len(set(args.strengths)) != len(args.strengths):
         raise ValueError('Distinct nonnegative strengths required')
     if args.primary_strength not in args.strengths:
@@ -249,14 +256,15 @@ def infer(args):
         from ics.methods.huber_graph import Config as HuberConfig
         from ics.methods.color_bottleneck import Config as ColorConfig
         from ics.methods.reference_constellation import Config as ConstellationConfig
+        from ics.methods.reference_shape import Config as ShapeConfig
         config.update(backend=backend,prepared_methods=prepared_methods,primary=args.primary_method,
                       primary_methods=prepared_methods,independent_methods=len(prepared_methods),
                       method=None,strengths=None,
                       method_configs={name:asdict(cls()) for name,cls in (
                           ('adjacency',AdjacencyConfig),('huber',HuberConfig),
-                          ('color_bottleneck',ColorConfig),('constellation',ConstellationConfig))
+                          ('color_bottleneck',ColorConfig),('constellation',ConstellationConfig),('reference_shape',ShapeConfig))
                           if name in prepared_methods})
-        for name in ('prepared_cpu_bundle','reference_adjacency','huber_graph','color_bottleneck','reference_constellation'):
+        for name in ('prepared_cpu_bundle','reference_adjacency','huber_graph','color_bottleneck','reference_constellation','reference_shape'):
             path=REPO/'src/ics/methods'/f'{name}.py'
             config['code_sha256'][str(path.relative_to(REPO))]=sha(path)
     write(args.out / 'config.json', config)
@@ -430,9 +438,9 @@ def main():
     inf.add_argument('--memory-gb', type=float, default=60)
     inf.add_argument('--base', choices=['mean', 'rcg'], default='mean')
     inf.add_argument('--backend', choices=['occupancy','prepared'], default='occupancy')
-    inf.add_argument('--prepared-methods', nargs='+', choices=['adjacency','huber','color_bottleneck','constellation'],
+    inf.add_argument('--prepared-methods', nargs='+', choices=['adjacency','huber','color_bottleneck','constellation','reference_shape'],
                      default=['adjacency','huber','color_bottleneck','constellation'])
-    inf.add_argument('--primary-method', choices=['adjacency','huber','color_bottleneck','constellation'])
+    inf.add_argument('--primary-method', choices=['adjacency','huber','color_bottleneck','constellation','reference_shape'])
     inf.add_argument('--base-key', default='mean.control')
     inf.add_argument('--strengths', nargs='+', type=float, default=[1.0])
     inf.add_argument('--primary-strength', type=float, default=1.0)
