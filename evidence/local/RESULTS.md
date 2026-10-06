@@ -1483,3 +1483,28 @@ receiptSHA028e378c2c9eaa519c052395cbcaeccd4a2328b520a5f14276fc572520ec64f9.
 [Sampling evidence](research_20261005/pipeline_verified/photo_disjoint_confirm1200_v1/README.md).
 No confirmation GPU run has started; immutable complete-method/strongcontrol producer
 preparation is assigned to the bounded worker frozen_family_confirm.
+
+Frozen RCG2 (`research_20261005/rcg2_frozen.json`, declared before groups B/C; no refit) on further
+episode sets, seed 0, streamed with `scripts/run_rcg2_stream.py`, class mIoU at original resolution,
+paired bootstrap 2000 draws over photograph groups. Arms: complete FoRIS (control), RCG, RCG + sub-token
+readout, full (readout + size-dependent cut).
+COCO-20i group D (draws 450-599 per fold, 600 episodes): FoRIS 62.41; RCG +1.13 [+0.48, +1.81], folds
++1.06/+0.97/+0.67/+1.80; +readout +1.55 [+0.91, +2.29] (vs RCG +0.43 [+0.32, +0.58]); full +1.24
+[+0.22, +2.48] (vs RCG +0.12 [-0.63, +1.05]).
+COCO groups B+C+D (1800): FoRIS 60.52; RCG 61.80 = +1.28 [+0.86, +1.77], folds +1.22/+0.78/+1.39/+1.74;
++readout 62.18 = +1.66 [+1.24, +2.19] (vs RCG +0.38 [+0.33, +0.46]); full 62.38 = +1.86 [+1.13, +2.63],
+folds +1.48/+1.89/+1.41/+2.67 (vs RCG +0.58 [+0.04, +1.15]).
+SUIM (582 episodes, pack `decision_transfer_pack.py --dataset suim`): FoRIS 60.95; RCG -0.08
+[-1.01, +0.82], folds -0.45/-1.07/+1.03/+0.47; +readout +0.30 [-0.66, +1.23] (vs RCG +0.38
+[+0.30, +0.47]); full -0.34 [-1.80, +1.14]. Unresolved: no gain over FoRIS.
+PACO-Part (599 episodes = 4 per-fold packs of 150, 264 fold-classes, class ids offset per pack):
+FoRIS 41.45; RCG +0.30 [-0.19, +0.75], folds +0.80/+0.05/+0.61/+0.04; +readout +0.25 [-0.29, +0.70]
+(vs RCG -0.05 [-0.17, +0.03]); full +0.05 [-0.79, +0.96]. Unresolved: no gain over FoRIS.
+Together with PASCAL-Part (RCG +1.46 [+0.67, +2.40]): RCG is positive on COCO and PASCAL-Part and
+unresolved on SUIM and PACO-Part; the size-dependent cut fitted on COCO base folds helps only on COCO;
+the readout is +0.4 vs RCG on COCO and SUIM and null on both part datasets.
+GT diagnostic (not a method), fine field at 1024, fixed 0.5 / best single level / best level per episode:
+COCO B 61.98/61.99/69.86; C 60.48/60.48/69.52; D 63.99/64.04/71.13; PASCAL-Part 53.63/53.63/61.95;
+SUIM 61.67/62.16/69.80; PACO-Part 42.16/43.38/54.46. The per-episode cut-level pool (+8 to +12) is
+present on every dataset tested. Sources: `research_20261005/rcg2_group_{groupD,suim,paco_part,paco_part_f0..3}/`.
+LVIS per-fold packs still running.

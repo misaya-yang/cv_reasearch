@@ -4,6 +4,16 @@ Updated 2026-10-06 UTC. This file records current state; detailed evidence is li
 
 ## Now
 
+- User requested comparison with the supplied Chinese joint-edit derivation. The
+  comparison and bounded GPT-6.1-sol/max mathematical reviews are complete, with
+  no experiments, data evaluation, remote operations or source-document changes.
+  [Integrated theory](../../evidence/local/research_20261005/theory_hour_20261006/integrated_theory.md)
+  retains separate general-static, origin-local and state-dependent families;
+  adds quadratic selection-noise loss, class-ratio concentration, complete-mask
+  information-value bounds, and partial prevalence identification. Additional
+  30/200-case results in the supplied document remain reported, not newly verified.
+  Experiment queues and the experiment goal remain paused.
+
 - Latest user instruction (2026-10-06 02:46 UTC): spend one hour on theory; do not run
   experiments or compete with Claude for compute. Root stopped only verified owned
   supervisors75010/77680/81658, GPU worker77374 and their owned waiting/child processes,
