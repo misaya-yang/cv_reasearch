@@ -1508,3 +1508,10 @@ COCO B 61.98/61.99/69.86; C 60.48/60.48/69.52; D 63.99/64.04/71.13; PASCAL-Part 
 SUIM 61.67/62.16/69.80; PACO-Part 42.16/43.38/54.46. The per-episode cut-level pool (+8 to +12) is
 present on every dataset tested. Sources: `research_20261005/rcg2_group_{groupD,suim,paco_part,paco_part_f0..3}/`.
 LVIS per-fold packs still running.
+
+LVIS-92i, same frozen RCG2 and protocol (599 episodes = 4 per-fold packs of 150, 367 fold-classes, class ids
+offset per pack; original resolution): FoRIS 44.27; RCG +0.31 [-0.65, +0.93], folds +0.39/+0.49/+0.05/+0.78
+(unresolved); +readout +0.90 [-0.16, +1.60] (vs RCG +0.59 [+0.28, +0.88]); full 46.77 = +2.50 [+0.91, +3.07],
+folds +1.35/+2.34/+2.55/+3.28 (vs RCG +2.18 [+1.30, +2.44]). LVIS uses COCO photographs, so this is a
+class transfer, not an image-domain transfer. GT diagnostic, fine field at 1024: fixed 0.5 45.09, best single
+level 45.82, best level per episode 54.98. Source: `research_20261005/rcg2_group_lvis{,_f0..3}/`.
