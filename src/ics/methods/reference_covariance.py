@@ -23,6 +23,7 @@ class Config:
     purity:float=.9
     covariance_norm_floor:float=1e-6
     strength:float=1.0
+    evidence_penalty_scale:float=3.0
     minimum_component_pixels:int=8
     proposals:int=48
     maximum_rounds:int=4
@@ -84,7 +85,10 @@ def evaluate(mask,unary,features,bank,cfg):
     valid=totals[:,0]>=cfg.minimum_component_pixels;valid[0]=False
     debt=covariance_debts(covariances(totals,bank['k']),valid,bank)
     fit=np.bincount(labels.ravel(),weights=unary,minlength=len(totals));fit[0]=0
-    energies=fit-cfg.strength*totals[:,0]*debt;energies[0]=0
+    positive=np.bincount(labels.ravel(),weights=np.maximum(unary,0),minlength=len(totals));positive[0]=0
+    # Identity consistency discounts existing positive evidence. Adding a weak
+    # pixel does not introduce an extra area-proportional mismatch charge.
+    energies=fit-cfg.strength*cfg.evidence_penalty_scale*positive*debt;energies[0]=0
     return float(energies.sum()),labels,energies,debt
 
 
@@ -94,7 +98,8 @@ def proposal_masks(children,features,unary,bank,cfg):
     valid=totals[:,0]>=cfg.minimum_component_pixels
     debt=covariance_debts(covariances(totals,bank['k']),valid,bank)
     fit=aggregate_tree(unary,children)
-    score=(fit-cfg.strength*totals[:,0]*debt)/np.sqrt(np.maximum(totals[:,0],1))
+    positive=aggregate_tree(np.maximum(unary,0),children)
+    score=(fit-cfg.strength*cfg.evidence_penalty_scale*positive*debt)/np.sqrt(np.maximum(totals[:,0],1))
     eligible=np.flatnonzero(valid)
     order=eligible[np.argsort(-score[eligible],kind='stable')[:cfg.proposals]]
     candidates=[]
@@ -111,7 +116,7 @@ def proposal_masks(children,features,unary,bank,cfg):
 def predict(q,r,coverage,base,cfg=Config()):
     started=time.perf_counter()
     if (cfg.reference_modes<2 or cfg.lloyd_steps<1 or not 0<cfg.purity<=1
-            or cfg.covariance_norm_floor<=0 or cfg.strength<0 or cfg.minimum_component_pixels<2
+            or cfg.covariance_norm_floor<=0 or cfg.strength<0 or cfg.evidence_penalty_scale<=0 or cfg.minimum_component_pixels<2
             or cfg.proposals<1 or cfg.maximum_rounds<1 or cfg.improvement_tolerance<=0):
         raise ValueError('Invalid covariance configuration')
     q,r=unit(q),unit(r)

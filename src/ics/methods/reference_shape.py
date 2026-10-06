@@ -140,6 +140,7 @@ def optimize(base,features,children,bank,cfg,*,proposal_function=proposal_masks,
     candidates=proposal_function(children,features,unary,bank,cfg)
     history=[];evaluations=0
     current,labels,component_energy,_=energy_function(mask,unary,features,bank,cfg);evaluations+=1
+    energy_cache={np.packbits(mask.ravel()).tobytes():current}
     initial=current
     for iteration in range(cfg.maximum_rounds):
         changed=False
@@ -149,6 +150,7 @@ def optimize(base,features,children,bank,cfg,*,proposal_function=proposal_masks,
         if negative.any():
             previous=current;mask=mask&~negative[labels]
             current,labels,component_energy,_=energy_function(mask,unary,features,bank,cfg);evaluations+=1
+            energy_cache[np.packbits(mask.ravel()).tobytes()]=current
             if current+cfg.improvement_tolerance<previous:raise RuntimeError('Nonmonotone component deletion')
             history.append(dict(round=iteration,move='delete_negative_components',before=previous,after=current))
             changed=True
@@ -160,12 +162,17 @@ def optimize(base,features,children,bank,cfg,*,proposal_function=proposal_masks,
             for name,proposed in (('add_region',flat|region),('remove_region',flat&~region),
                                   ('replace_touched_components',(flat&~affected)|region)):
                 if np.array_equal(proposed,flat):continue
-                value,_,_,_=energy_function(proposed.reshape(shape),unary,features,bank,cfg);evaluations+=1
+                identity=np.packbits(proposed).tobytes()
+                if identity not in energy_cache:
+                    value,_,_,_=energy_function(proposed.reshape(shape),unary,features,bank,cfg);evaluations+=1
+                    energy_cache[identity]=value
+                value=energy_cache[identity]
                 if value>best+cfg.improvement_tolerance:
                     best=value;winner=proposed.copy();winner_name=name
         if winner is not None:
             previous=current;mask=winner.reshape(shape)
             current,labels,component_energy,_=energy_function(mask,unary,features,bank,cfg);evaluations+=1
+            energy_cache[np.packbits(mask.ravel()).tobytes()]=current
             history.append(dict(round=iteration,move=winner_name,before=previous,after=current))
             changed=True
         if not changed:break
