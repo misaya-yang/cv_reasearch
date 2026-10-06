@@ -1,0 +1,38 @@
+{
+  "state": "SOURCE_FROZEN",
+  "method": "query_covariance",
+  "sources": {
+    "scripts/run_query_covariance.py": "2677ecb0529b289614f3b9126d7aeee0be598c52ce5075d874e36fb5abbfc35c",
+    "scripts/run_part2_evidence.py": "075ef5dba0bbbf34bbf8ae15b9a40f1e74478fc837339809fd054fd4805a96a5",
+    "scripts/score_part2_evidence.py": "3b78df4082edddd673bce028b23f659892fd9befa0d646d03fa91339f55eb15e",
+    "src/ics/__init__.py": "f5f646ff0c339439f0b2511d0e126bdf1db65eba332621dbd06df47545595d2b",
+    "src/ics/methods/__init__.py": "2df7eedc804f1e3d1feb11bcc696ae526455005d017faa9ca0a76a9648b23b56",
+    "src/ics/methods/query_covariance.py": "91cee951883520db36bbcec9b601dbc553270eef723021e59de833c5f6c67fdb",
+    "src/ics/experiment.py": "d95459d0b59c7048618661e7a16999248990b02e92cd1269d4629a497f62f843",
+    "src/ics/native_basis.py": "8ac26ef78d601f3d10318043c6cd73a05fe9dc2ac8d8ea4eabefc6a8289cb80c"
+  },
+  "arms": [
+    "native.cache.control",
+    "query_covariance",
+    "query_isotropic.control"
+  ],
+  "smoke_keys": [
+    "0_60_40",
+    "1_60_21",
+    "2_60_54",
+    "3_60_35"
+  ],
+  "workers": 4,
+  "threads_per_worker": 1,
+  "previous_failure": "original smoke failed pre-inference due torch.no_grad wrapper source validation; preserved",
+  "v2_changes": "unwrap source check; lazy torch import in parent; explicit population versus shrunk covariance interpretation; inference math unchanged",
+  "gpu_dispatch": "primary agent only; identical native CUDA CRF required before scoring",
+  "query_labels_in_inference": false,
+  "smoke_provider": "outputs/query_covariance600_v1_smoke_v2",
+  "v3_changes": "Resource interface only: workers 1..8 accepted; approved memory budget recorded; method math unchanged",
+  "memory_budget_gib": 6,
+  "resource_choice": "4 workers selected: four-fold smoke summed worker peak RSS 5919944704 bytes; conservative eight-worker bound exceeds 6GiB",
+  "v4_changes": "Remove incorrect debiased=True assertion: source Part1 optionally debiases and otherwise returns normalized features; preserve actual native flag per episode; method math unchanged",
+  "preserved_failed_full": "outputs/query_covariance600_v1",
+  "out": "outputs/query_covariance600_v2"
+}

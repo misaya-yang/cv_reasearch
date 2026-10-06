@@ -44,9 +44,9 @@ def infer_episode(row):
     q, r = cache["q"], cache["r"]
     if any(tuple(value.shape) != (4096, 1024) or not torch.isfinite(value).all() for value in (q, r)):
         raise ValueError("Require finite retained [4096,1024] q/r tokens")
-    # Source Part1 conditionally skips positional debiasing. Its retained output
-    # is still the correct post-Part1 input; preserve and report that decision.
-    cache_receipt = dict(q_dtype=str(q.dtype), r_dtype=str(r.dtype), debiased=bool(cache["debiased"]),
+    if not bool(cache["debiased"]):
+        raise ValueError("Require post-Part1 debiased features")
+    cache_receipt = dict(q_dtype=str(q.dtype), r_dtype=str(r.dtype), debiased=True,
                          conversion="FP32 cast only; no token renormalization or encoder/Part1 replay")
     fmaps = torch.stack((r.float().T.reshape(1024, 64, 64),
                          q.float().T.reshape(1024, 64, 64)))[None].contiguous()
@@ -116,7 +116,7 @@ def infer(args):
                   primary_baseline=method.ARMS[0], official_baseline="native",
                   cpu_phase="query_covariance_native_tail", native_host_class=True,
                   gpu_phase="native_CUDA_CRF_only", decoder_mode="native",
-                  feature_space="retained normalized post-Part1 q/r; native conditional debias decision preserved per episode; FP16 may drift from original native",
+                  feature_space="retained post-Part1 normalized/debiased q/r; FP16 may drift from original native",
                   parameter_provenance="closed-form query-only covariance; no tuned shrinkage, labels or fitting",
                   source_prior="unchanged raw Part3 geometry, original normalized foreground anchor and gated Part4 geometry",
                   finalizer="source FoRIS Part3/Part4/binarizer followed by identical native CUDA CRF",
@@ -166,8 +166,6 @@ def infer(args):
                        parity_max_abs=worst, native_pre_changed_pixels=drift_pixels,
                        covariance_fallback_episodes=sum(value["native_fallback"] for value in cov_receipts),
                        numerical_floor_episodes=sum(value.get("numerical_floor_applied", False) for value in cov_receipts),
-                       debiased_episodes=sum(value["cache"]["debiased"] for value in audit.values()),
-                       native_no_debias_episodes=sum(not value["cache"]["debiased"] for value in audit.values()),
                        query_labels_opened=False, encoder_forwards=0, complete_method_result=False,
                        interpretation="Compare paired same-cache native and isotropic full pipeline after shared CUDA CRF; original native remains separate")
         shared.write_json(args.out / "audit.json", summary)

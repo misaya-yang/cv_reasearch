@@ -29,6 +29,13 @@ print("| field | all | " + " | ".join("object share %g-%g (n=%d)" % (lo, hi, ((s
 for k in order:
     I, U = B[k]; print("| %s | %.2f | " % (k, miou(I, U)) + " | ".join("%.2f" % miou(I, U, (share >= lo) & (share < hi)) for lo, hi in bins) + " | %d |" % int((I / np.maximum(U, 1e-9) < .2).sum()))
 e = lambda k: B[k][0] / np.maximum(B[k][1], 1e-9)
+if stat.shape[1] == 8:
+    print("\n## geometry of the move of the object signature, by FoRIS best-cut IoU")
+    for lo, hi in ((0, .2), (.2, .5), (.5, .8), (.8, 1.01)):
+        ix = (e("score") >= lo) & (e("score") < hi)
+        print("FoRIS %g-%g: n=%d; cos(ref, query signature) %.2f; after centring each image %.2f; cos(move, offset of image means) %.2f; length of move %.2f, of image-mean offset %.2f; share of the move inside the query's 10 main directions %.2f; best-cut IoU cos %.2f, cos_c %.2f, ms[0.1] %.2f, cos_oracle %.2f"
+              % (lo, hi, ix.sum(), stat[ix, 1].mean(), stat[ix, 2].mean(), stat[ix, 3].mean(), stat[ix, 4].mean(), stat[ix, 5].mean(), stat[ix, 6].mean(), e("cos")[ix].mean(), e("cos_c")[ix].mean(), e("ms[0.1]")[ix].mean(), e("cos_oracle")[ix].mean()))
+    sys.exit()
 print("\n## per episode: FoRIS final score against the ceilings")
 for lo, hi in ((0, .2), (.2, .5), (.5, .8), (.8, 1.01)):
     ix = (e("score") >= lo) & (e("score") < hi)

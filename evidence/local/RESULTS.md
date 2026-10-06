@@ -1532,3 +1532,41 @@ FoRIS source read (`foris_source/models/foris.py`): part 2 = cosine to clustered
 orthogonalised hard-background direction; part 3 = nearest-reference vote + hard clustering of the query with one seed
 cluster; part 4 = disagreement penalty and per-cluster reweighting; fixed additive weights; min-max then 0.5.
 Source: [order report](research_20261005/order_fresh600/report.md).
+
+Ordering loss split into resolution, representation and transfer of the object signature (GT diagnostic, not a
+method). Same fresh600, token level, ordering score = class mIoU under the best cut of each episode;
+`scripts/run_transfer.py` + `scripts/score_transfer.py` on the server. Ladder: cosine to the reference object mean
+66.09 -> FoRIS reference-contrast score 67.97 -> FoRIS final score 69.88 -> RCG 72.00 -> cosine to the query's own
+object mean (truth) 83.08 -> one linear direction fitted on truth, cross-fitted over 8 x 8 blocks 87.31 -> token
+ceiling 91.70. So 17.0 points lie between the reference signature and the query's own signature under the same
+cosine readout; all of FoRIS after the prototype recovers 3.8 of them and RCG 2.1 more; 11.1 remain, against 4.2 for
+a better readout than cosine, 4.4 for more than one direction and 8.3 for token resolution.
+By object share of the query (<0.02 / 0.02-0.1 / 0.1-0.3 / >0.3; n 140/260/143/57): reference cosine
+49.94/62.25/74.82/83.94; RCG 55.20/67.52/81.58/87.19; own-signature cosine 71.55/79.94/84.24/90.94.
+In the 34 episodes where FoRIS has best-cut IoU < 0.2 the reference object mean is as close to the query background
+mean (cos 0.46) as to the query object mean (0.47); own-signature cosine reaches 0.64 mean IoU there, FoRIS 0.12.
+Derived detector tested and rejected: the matched filter in the query's metric with the reference signature
+(`mf_ref`, shrinkage 0.1/1/10 of the mean eigenvalue) orders at 19.98/28.34/47.84, below plain cosine; with the
+query's own signature it reaches 53.44/75.12/85.45. The filter is sound when the signature is right and amplifies
+the move of the signature when it is not (8-episode complete-mask smoke agreed; not run at 600).
+One self-training step (ridge refit on the FoRIS score or the RCG field) 69.48/70.68: no gain over its input.
+Source: [transfer report](research_20261005/transfer_fresh600/report.md).
+
+How the object signature moves between reference and query, and two derived estimators (same fresh600, token level,
+ordering score under the best cut per episode; `scripts/run_signature.py`; GT only in the ceilings and the geometry).
+Stated before the run: an image-wide offset would be removed by centring each image; an instance difference only by the
+query's own structure. Result: centring each image by its token mean 68.07 against 66.09 uncentred (ceiling with the
+query's own signature 83.81 centred, 83.08 uncentred), so the image-offset model accounts for 2 of the 17 points;
+second-moment alignment (CORAL) 34.65 uncentred / 62.41 centred, worse than plain cosine; matched filter with the
+centred reference signature 27.70 / 47.34; mean shift from the reference signature on the query tokens 58.69 (t=0.03),
+20.67 (t=0.1), centred 65.93 / 55.35: it leaves the object for the dominant mode. All rejected.
+Geometry: cos(reference, query signature) 0.47 / 0.57 / 0.65 / 0.71 for FoRIS best-cut IoU <0.2 / 0.2-0.5 / 0.5-0.8 /
+>=0.8; cos(move, offset of image means) 0.41 in every group; 19-27 % of the move lies in the query's ten main
+directions. Scale: Spearman of |log linear size ratio| with signature cosine -0.22, with the ordering gap +0.11; the gap
+is 0.11 at matched size (235 episodes) and 0.16 / 0.24 when the reference object is 2-4x / >4x larger (78 / 27).
+Concentration: replacing only the episodes with RCG best-cut IoU < 0.2 (35) by the own-signature result lifts the
+ordering score from 72.00 to 78.49; < 0.5 (83) to 81.26; the full ceiling is 83.08. In those episodes no stored
+reference evidence ranks true object tokens above the tokens RCG wrongly keeps: AUC for IoU < 0.2 / 0.2-0.5:
+nearest-reference contrast 0.32 / 0.44, 10-NN vote 0.36 / 0.37, reference cosine 0.48 / 0.59, FoRIS s2 0.41 / 0.55,
+FoRIS final 0.28 / 0.41; the wrongly kept area is 12.2x / 1.6x the object (medians).
+Source: [signature report](research_20261005/signature_fresh600/report.md).
