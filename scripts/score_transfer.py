@@ -4,13 +4,14 @@
   python scripts/score_transfer.py outputs/claude_transfer_a outputs/claude_transfer_b
 """
 import json
+import os
 import sys
 
 import numpy as np
 
 rows, T = [], {}
-for d in sys.argv[1:]:
-    rows += json.load(open(d + "/rows.json")); Z = np.load(d + "/tokens.npz")
+for j, d in enumerate(sys.argv[1:]):
+    rows += [dict(r, c=r["c"] + 1000 * j * int(os.environ.get("SEPARATE", "0")), key="%d/%s" % (j, r["key"])) for r in json.load(open(d + "/rows.json"))]; Z = np.load(d + "/tokens.npz")
     for k in Z.files:
         T.setdefault(k, []).append(Z[k].astype(np.float32))
 T = {k: np.concatenate(v) for k, v in T.items()}; N = len(rows); cls = np.array([r["c"] for r in rows]); t = T.pop("truth"); stat = T.pop("stat")

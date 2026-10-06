@@ -1570,3 +1570,30 @@ reference evidence ranks true object tokens above the tokens RCG wrongly keeps: 
 nearest-reference contrast 0.32 / 0.44, 10-NN vote 0.36 / 0.37, reference cosine 0.48 / 0.59, FoRIS s2 0.41 / 0.55,
 FoRIS final 0.28 / 0.41; the wrongly kept area is 12.2x / 1.6x the object (medians).
 Source: [signature report](research_20261005/signature_fresh600/report.md).
+
+Where evidence against a wrongly chosen region could still be: layer, scale, or nowhere (GT diagnostics; same
+fresh600; `scripts/run_region.py`, `scripts/score_region.py`). Ordering score of the cosine to the reference object
+mean by encoder layer 11 / 15 / 19 / 23: 18.95 / 20.89 / 27.70 / 61.83 (debiased last layer 66.10). AUC of true object
+tokens against the tokens RCG wrongly keeps, episodes with RCG best-cut IoU < 0.2 (n=33): 0.44 / 0.44 / 0.42 / 0.44
+by layer, 0.48 debiased; 0.2-0.5 (n=41): 0.53 / 0.55 / 0.59 / 0.62, 0.59. Scale: the window around the true object
+enlarged to the reference object's size and re-encoded; inside the same window the reference cosine orders at 68.19
+with enlarged tokens against 68.28 with native tokens (600), 40.79 against 42.15 where the window is under 0.75 of the
+image and RCG IoU < 0.5 (35); cos(reference signature, object signature) 0.47 -> 0.48 in the worst group. Neither layer
+nor scale holds the missing evidence. Contact sheets of the 24 worst episodes
+(`research_20261005/region_fresh600/worst_1.jpg`, `worst_2.jpg`; read by eye, not counted): reference masks that are
+a frame-filling surface (dining table = red cloth), reference objects of a few tokens, near-class confusions
+(handbag/suitcase, cup/bowl), and queries where truth marks one of several same-class instances.
+Reliability role (`scripts/score_components.py`, token level, RCG at 0.5 = 63.03, break-even precision 0.39): emptying
+the 85 masks below break-even 68.51; deleting every connected component below break-even (truth) 71.85 =
++8.82 [+6.08, +9.56], i.e. as much as the best cut per episode (72.00). 747 of 1811 components are below break-even
+and hold 61 % of the false area. Count-level AUC good vs bad component: mean RCG field 0.81, mean FoRIS score 0.77,
+share of mask 0.76, mean reference cosine 0.68; episode level at most 0.75. Fold-nested deployable rules (threshold or
+logistic fitted on the other folds): best single threshold (component max relative to the image max) +0.71
+[-0.38, +1.56]; logistic on field statistics and size +0.83 [+0.15, +1.27], folds +0.85/+0.35/+0.28/+1.84; with
+reference-cosine statistics added -0.29 [-1.76, +0.89]; keep-largest control -4.11. The false area sits in large,
+confidently scored components, so count-level separability does not turn into area.
+Sources: [region report](research_20261005/region_fresh600/report.md),
+[component rules](research_20261005/region_fresh600/components.md).
+Process note: the background waiter for the return-test groups reached its two-hour limit and was stopped; it was
+not restarted. Lane c (PACO-Part, LVIS) of that test was stopped by me to free the GPU; lanes a (COCO group B) and
+b (SUIM, then PASCAL-Part) continue.
