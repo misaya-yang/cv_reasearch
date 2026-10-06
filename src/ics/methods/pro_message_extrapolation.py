@@ -11,6 +11,10 @@ from dataclasses import asdict, dataclass
 import heapq
 import time
 from typing import Callable, Protocol
+import inspect
+import hashlib
+import json
+from pathlib import Path
 
 import numpy as np
 import torch
@@ -42,11 +46,62 @@ def _config(cfg):
         raise ValueError('Positive attention query chunk required')
 
 
+def load_local_eva_pipeline(assets, device):
+    """Deployable offline factory for the audited actual timm Eva producer.
+
+    Only local config/safetensors are loaded, pretrained=False. Pi is fixed by
+    the original episode's bound projection_enabled flag; no gate is evaluated
+    on a new branch. It is a linear projection, with no per-token normalization.
+    """
+    import timm
+    from safetensors.torch import load_file
+
+    def bound_file(label):
+        path = Path(assets[label+'_path']).resolve(strict=True)
+        actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        if actual != assets[label+'_sha256']:
+            raise ValueError('Local asset SHA mismatch: '+label)
+        return path
+
+    if device.type != 'cpu':
+        raise ValueError('This preparation factory is CPU-only')
+    weights_path,source_path,config_path = (bound_file(x) for x in ('weights','source','model_config'))
+    config = json.loads(config_path.read_text())
+    if config.get('architecture') != 'vit_large_patch16_dinov3':
+        raise ValueError('Audited actual DINOv3-L Eva architecture required')
+    model = timm.create_model(config['architecture'],pretrained=False,num_classes=0)
+    actual_source = Path(inspect.getsourcefile(type(model))).resolve()
+    if actual_source != source_path:
+        raise ValueError('Loaded timm Eva source differs from bound path')
+    state = load_file(str(weights_path),device='cpu')
+    model.load_state_dict(state,strict=True)
+    del state
+    model = model.to(device=device,dtype=torch.float32).eval().requires_grad_(False)
+    if type(assets.get('projection_enabled')) is not bool:
+        raise ValueError('Original episode fixed projection_enabled bool required; no gate guessing')
+    if assets['projection_enabled']:
+        basis_path = bound_file('basis')
+        stored = torch.load(basis_path,map_location=device,weights_only=True)
+        basis = stored['basis'] if isinstance(stored,dict) else stored
+        if basis.shape != (1024,500) or basis.dtype != torch.float32 or not torch.isfinite(basis).all():
+            raise ValueError('Bound native FP32 rank500 basis required')
+        project = lambda x: x-(x@basis)@basis.T
+    else:
+        project = lambda x: x
+    receipt = dict(weights_sha256=assets['weights_sha256'],source_sha256=assets['source_sha256'],
+                   model_config_sha256=assets['model_config_sha256'],timm_version=timm.__version__,
+                   torch_version=torch.__version__,pretrained=False,weights_strictly_loaded=True,
+                   projection_enabled=assets['projection_enabled'],gate_reopened=False,
+                   projection_order='final_LN_then_linear_Pi_then_region_mean_then_unit',
+                   official_DINO_equivalence='unverified',actual_native_audit='required_during_M5')
+    return dict(model=model,project=project,asset_receipt=receipt)
+
+
 def unit(x):
     """Zero-norm vectors stay zero, as specified by the common Pro contract."""
     x = np.asarray(x, dtype=np.float64)
     norm = np.linalg.norm(x, axis=-1, keepdims=True)
-    return np.divide(x, norm, out=np.zeros_like(x), where=norm >= 1e-8)
+    return np.divide(x, norm, out=np.zeros_like(x), where=norm > 0)
 
 
 def ward_partitions(features, shape, counts, active=None):
@@ -206,12 +261,17 @@ class StandardPreNormBlockAdapter:
 
     def values(self, hidden):
         block = self.block
-        projected = block.attn.qkv(block.norm1(hidden.unsqueeze(0)))
-        _, tokens, tripled = projected.shape
+        qkv = block.attn.qkv
+        if not isinstance(qkv, torch.nn.Linear) or qkv.out_features % 3:
+            raise ValueError('Use FunctionalBlockAdapter for non-Linear combined qkv')
+        width = qkv.out_features // 3
+        bias = None if qkv.bias is None else qkv.bias[2*width:]
+        projected = F.linear(block.norm1(hidden.unsqueeze(0)),qkv.weight[2*width:],bias)
+        _, tokens, width = projected.shape
         heads = int(block.attn.num_heads)
-        if tripled % (3 * heads):
+        if width % heads:
             raise ValueError('Invalid native qkv dimensions')
-        v = projected.reshape(1, tokens, 3, heads, tripled // (3 * heads)).permute(2, 0, 3, 1, 4)[2]
+        v = projected.reshape(1,tokens,heads,width//heads).permute(0,2,1,3)
         if hasattr(block.attn, 'v_norm'):
             v = block.attn.v_norm(v)
         return v[0]
@@ -220,6 +280,8 @@ class StandardPreNormBlockAdapter:
         block = self.block
         residual = hidden.unsqueeze(0)
         message = message.transpose(0, 1).reshape(1, len(hidden), -1)
+        if hasattr(block.attn, 'norm'):
+            message = block.attn.norm(message)
         projected = block.attn.proj(message)
         if hasattr(block.attn, 'proj_drop'):
             projected = block.attn.proj_drop(projected)
@@ -233,6 +295,78 @@ class StandardPreNormBlockAdapter:
         return (residual + update)[0]
 
 
+class EvaBlockAdapter:
+    """Current timm Eva DINOv3 no-qkv-bias/gamma residual adapter.
+
+    Bind the EXACT native rope tensor and native apply-RoPE callable. The latter
+    must include rotate_half=True for this producer. No reconstructed frequencies
+    or synthetic positions are accepted as a substitute. Full block forward is
+    called independently by the cache builder and beta1 audit checks each layer.
+    """
+    def __init__(self, block, *, rope, apply_rope=None, num_prefix_tokens=5, captured_only=False):
+        required = ('norm1','attn','norm2','mlp','gamma_1','gamma_2','drop_path1','drop_path2')
+        if any(not hasattr(block,name) for name in required) or any(m.training for m in block.modules()):
+            raise ValueError('Actual timm Eva eval block/gamma layout required')
+        attn = block.attn
+        if (not hasattr(attn,'qkv') or attn.qkv.bias is not None
+                or getattr(attn,'q_bias',None) is not None or getattr(attn,'v_bias',None) is not None):
+            raise ValueError('Bound DINOv3 Eva no-qkv-bias producer required')
+        if any(not hasattr(attn,name) for name in ('num_heads','scale','q_norm','k_norm','norm','proj','proj_drop')):
+            raise ValueError('Native Eva attention interface mismatch')
+        if rope is None or (not captured_only and not callable(apply_rope)) or num_prefix_tokens < 0:
+            raise ValueError('Actual native patch RoPE tensor/callable/prefix count required')
+        self.block,self.rope,self.apply_rope = block,rope,apply_rope
+        self.captured_only = bool(captured_only)
+        self.num_prefix_tokens,self.scale = int(num_prefix_tokens),float(attn.scale)
+
+    def _qkv(self, hidden):
+        projected = self.block.attn.qkv(self.block.norm1(hidden.unsqueeze(0)))
+        _,tokens,tripled = projected.shape
+        heads = int(self.block.attn.num_heads)
+        return projected.reshape(1,tokens,3,heads,tripled//(3*heads)).permute(2,0,3,1,4)
+
+    def native_qkv(self, hidden):
+        if self.captured_only:
+            raise RuntimeError('Use captured native SDPA QKV; no synthetic RoPE reconstruction')
+        q,k,v = self._qkv(hidden)
+        q,k = self.block.attn.q_norm(q),self.block.attn.k_norm(k)
+        prefix = self.num_prefix_tokens
+        q = torch.cat((q[:,:,:prefix],self.apply_rope(q[:,:,prefix:],self.rope)),dim=2)
+        k = torch.cat((k[:,:,:prefix],self.apply_rope(k[:,:,prefix:],self.rope)),dim=2)
+        return q[0],k[0],v[0]
+
+    def native_forward(self, hidden):
+        if self.captured_only:
+            raise RuntimeError('Native paired full forward was already captured')
+        return self.block(hidden.unsqueeze(0),rope=self.rope)[0]
+
+    def values(self, hidden):
+        # Pad only pointwise operations, never attention keys or ROI membership.
+        # Small CPU GEMM/GEMV dispatch can change FP32 accumulation substantially
+        # relative to native full-token combined qkv. Use the actual combined
+        # module/layout, discarding its unused Q/K projection outputs completely.
+        rows = len(hidden)
+        if rows < 64:
+            hidden = F.pad(hidden,(0,0,0,64-rows))
+        return self._qkv(hidden)[2,0,:,:rows]
+
+    def finish(self, hidden, message):
+        block,attn = self.block,self.block.attn
+        rows = len(hidden)
+        if rows < 64:
+            hidden = F.pad(hidden,(0,0,0,64-rows))
+            message = F.pad(message,(0,0,0,64-rows))
+        message = message.transpose(0,1).reshape(1,len(hidden),-1)
+        message = attn.proj_drop(attn.proj(attn.norm(message)))
+        if block.gamma_1 is not None:
+            message = block.gamma_1 * message
+        residual = hidden.unsqueeze(0) + block.drop_path1(message)
+        update = block.mlp(block.norm2(residual))
+        if block.gamma_2 is not None:
+            update = block.gamma_2 * update
+        return (residual + block.drop_path2(update))[0,:rows]
+
+
 @dataclass
 class NativeCache:
     h20: torch.Tensor
@@ -244,6 +378,96 @@ class NativeCache:
     project: Callable
     projected_native: torch.Tensor
     producer: dict
+
+
+@torch.inference_mode()
+def capture_native_pair(model, images, project, *, producer):
+    """Real paired RGB/native SDPA capture compatible with Pro M1's lock.
+
+    Captures actual Q/K/V AFTER actual QKnorm/RoPE and actual residual outputs.
+    No manual RoPE is needed. Only the branch LN/V and residual/MLP Eva adapter
+    are factored out, and beta1 must subsequently audit them against these native
+    outputs. Returns reference cache, query cache and actual capture receipt.
+    """
+    from .pro_common_context import _SDPA_LOCK
+    if (model.training or any(p.requires_grad for p in model.parameters())
+            or len(model.blocks) != 24 or int(model.num_prefix_tokens) != 5
+            or images.ndim != 4 or images.shape[0] != 2 or images.dtype != torch.float32):
+        raise ValueError('Frozen actual 24-block/5-prefix paired FP32 Eva model/images required')
+    if not all(getattr(b.attn,'fused_attn',False) for b in model.blocks[20:]):
+        raise ValueError('Actual native fused SDPA interface required')
+    if not _SDPA_LOCK.acquire(blocking=False):
+        raise RuntimeError('Concurrent native SDPA capture/replay prohibited')
+    original = F.scaled_dot_product_attention
+    layers,handles,current = {},[],{'index':None}
+
+    def pre(index):
+        def hook(module,args,kwargs):
+            current['index'] = index
+            if index >= 20:
+                rope = kwargs.get('rope',args[1] if len(args)>1 else None)
+                if args[0].shape[0] != 2 or rope is None:
+                    raise RuntimeError('Actual paired NLC state and native RoPE required')
+                layers[index] = dict(h=args[0].detach().clone(),rope=rope,calls=0)
+        return hook
+
+    def post(index):
+        def hook(module,args,output):
+            if index >= 20:
+                if not torch.is_tensor(output) or output.shape != layers[index]['h'].shape:
+                    raise RuntimeError('Actual Eva block output layout changed')
+                layers[index]['output'] = output.detach().clone()
+        return hook
+
+    def sdpa(q,k,v,attn_mask=None,dropout_p=0.,is_causal=False,**kwargs):
+        index = current['index']
+        if index in layers:
+            if (q.ndim != 4 or q.shape != k.shape or q.shape != v.shape or q.shape[0] != 2
+                    or attn_mask is not None or dropout_p != 0 or is_causal
+                    or kwargs.get('enable_gqa',False)):
+                raise RuntimeError('Unsupported actual native SDPA/mask/dropout/GQA')
+            layer = layers[index]
+            layer.update(qkv=tuple(t.detach().clone() for t in (q,k,v)),
+                         scale=float(kwargs.get('scale') or q.shape[-1]**-.5))
+            layer['calls'] += 1
+        return original(q,k,v,attn_mask=attn_mask,dropout_p=dropout_p,is_causal=is_causal,**kwargs)
+
+    started = time.perf_counter()
+    try:
+        for index,block in enumerate(model.blocks):
+            handles.append(block.register_forward_pre_hook(pre(index),with_kwargs=True))
+            handles.append(block.register_forward_hook(post(index)))
+        F.scaled_dot_product_attention = sdpa
+        final = model.forward_features(images)
+    finally:
+        F.scaled_dot_product_attention = original
+        for handle in handles:
+            handle.remove()
+        _SDPA_LOCK.release()
+    if (not torch.is_tensor(final) or final.ndim != 3 or final.shape[0] != 2
+            or set(layers) != set(range(20,24)) or any(x['calls'] != 1 for x in layers.values())):
+        raise RuntimeError('Expected four native paired SDPA calls and normalized NLC output')
+    ids = torch.arange(5,final.shape[1],device=final.device)
+    if len(ids) != 4096 or final.shape[-1] != 1024:
+        raise ValueError('Actual 1024-work DINOv3-L patch shape required')
+    source_file = inspect.getsourcefile(type(model))
+    receipt = dict(actual_encoder_forwards=1,actual_encoded_images=2,
+                   paired_capture_seconds=time.perf_counter()-started,
+                   model_class=type(model).__module__+'.'+type(model).__name__,
+                   native_source_sha256=hashlib.sha256(Path(source_file).read_bytes()).hexdigest(),
+                   qkv='actual_native_SDPA_inputs',new_real_performance_claim=False)
+    caches=[]
+    for role in (0,1):
+        adapters=[]
+        for index in range(20,24):
+            adapter = EvaBlockAdapter(model.blocks[index],rope=layers[index]['rope'],captured_only=True)
+            adapter.scale = layers[index]['scale']
+            adapters.append(adapter)
+        caches.append(NativeCache(layers[20]['h'][role],ids,
+                       tuple(tuple(t[role] for t in layers[index]['qkv']) for index in range(20,24)),
+                       tuple(layers[index]['output'][role] for index in range(20,24)),
+                       tuple(adapters),model.norm,project,project(final[role])[ids],dict(producer)))
+    return caches[0],caches[1],receipt
 
 
 @torch.inference_mode()
@@ -310,6 +534,7 @@ def grouped_message(logits, inside_values, outside_values, beta, *, redistribute
 @torch.inference_mode()
 def replay_region(cache, region, beta, cfg=Config(), *, audit_native=False, redistribute=True):
     _config(cfg)
+    started = time.perf_counter()
     region = torch.as_tensor(region, dtype=torch.long, device=cache.h20.device)
     if region.ndim != 1 or not len(region) or len(torch.unique(region)) != len(region):
         raise ValueError('A nonempty unique patch ROI is required')
@@ -320,18 +545,44 @@ def replay_region(cache, region, beta, cfg=Config(), *, audit_native=False, redi
     outside_ids = all_ids[outside]
     hidden = cache.h20[ids].clone()
     maximum_error, mass_sum, mass_count = 0., 0., 0
+    layer_errors = []
     for layer, (adapter, (q, k, native_v)) in enumerate(zip(cache.adapters, cache.qkv)):
         values = adapter.values(hidden)
         if values.shape != native_v[:, ids].shape or not torch.isfinite(values).all():
             raise ValueError('Actual branch LN1/V output shape invalid')
         messages = []
+        mixed_values = native_v.clone()
+        mixed_values[:,ids] = values
         for start in range(0, len(ids), cfg.attention_query_chunk):
             query_ids = ids[start:start + cfg.attention_query_chunk]
             # Only native Q/K are read. CLS/register keys remain in outside_ids.
             logits = (q[:, query_ids] @ k.transpose(-2, -1)) * adapter.scale
-            message, p_out = grouped_message((logits[..., ids], logits[..., outside_ids]),
-                                            values, native_v[:, outside_ids], beta,
-                                            redistribute=redistribute)
+            if not torch.isfinite(logits).all():
+                raise FloatingPointError('Nonfinite native attention logits')
+            if redistribute:
+                inner_lse = torch.logsumexp(logits[...,ids],dim=-1)
+                if len(outside_ids):
+                    outer_lse = torch.logsumexp(logits[...,outside_ids],dim=-1)
+                    p_out = torch.exp(outer_lse-torch.logaddexp(inner_lse,outer_lse))
+                else:
+                    p_out = torch.zeros_like(inner_lse)
+                # Algebraically identical grouped-mass path, evaluated with the
+                # actual native SDPA contraction. beta*A_native V_mixed +
+                # (1-beta)*A_inside V_inside has coefficients
+                # p_in+(1-beta)*p_out and beta*p_out. This avoids beta1 drift
+                # introduced by two separately rounded probability-group sums.
+                message = torch.zeros_like(values[:,start:start+len(query_ids)])
+                if beta > 0:
+                    global_message = F.scaled_dot_product_attention(q[:,query_ids][None],k[None],
+                                         mixed_values[None],dropout_p=0.,is_causal=False,scale=adapter.scale)[0]
+                    message += beta*global_message
+                if beta < 1:
+                    inner_message = F.scaled_dot_product_attention(q[:,query_ids][None],k[:,ids][None],
+                                         values[None],dropout_p=0.,is_causal=False,scale=adapter.scale)[0]
+                    message += (1-beta)*inner_message
+            else:
+                message, p_out = grouped_message((logits[..., ids], logits[..., outside_ids]),
+                                                values, native_v[:, outside_ids], beta,redistribute=False)
             messages.append(message)
             mass_sum += float(p_out.sum().cpu()); mass_count += p_out.numel()
         hidden = adapter.finish(hidden, torch.cat(messages, dim=1))
@@ -341,6 +592,9 @@ def replay_region(cache, region, beta, cfg=Config(), *, audit_native=False, redi
             expected = cache.native_states[layer][ids]
             error = float((hidden - expected).abs().max().cpu())
             maximum_error = max(maximum_error, error)
+            layer_errors.append(dict(block=21+layer,maximum_absolute_error=error,
+                                      passed=bool(torch.allclose(hidden,expected,
+                                                  atol=cfg.native_atol,rtol=cfg.native_rtol))))
             if not torch.allclose(hidden, expected, atol=cfg.native_atol, rtol=cfg.native_rtol):
                 raise RuntimeError(f'beta1 actual native replay failed at block{21+layer}: maxabs={error}')
     projected = cache.project(cache.final_norm(hidden))
@@ -348,6 +602,7 @@ def replay_region(cache, region, beta, cfg=Config(), *, audit_native=False, redi
         raise FloatingPointError('Nonfinite final LN/projected region state')
     mean = projected.mean(0).cpu().numpy().astype(np.float64)
     return mean, dict(beta=float(beta),native_maximum_error=maximum_error,
+                      native_layer_errors=layer_errors,wall_seconds=time.perf_counter()-started,
                       mean_outside_mass=mass_sum / max(mass_count, 1), region_tokens=len(ids),
                       processed_suffix_token_layers=4 * len(ids),
                       qk_source='frozen_native_post_norm_post_rope',redistribute=redistribute)
@@ -431,7 +686,7 @@ def predict(query_cache, reference_cache, query_features, reference_features, co
                     info=dict(empty_reference=True,real_segmentation_benefit='unmeasured'))
     foreground = coverage.ravel() >= .5
     if not foreground.any():
-        foreground = coverage.ravel() == coverage.max()
+        foreground[np.argmax(coverage)] = True
     partitions, query_ward = ward_partitions(query_features, base.shape, cfg.partition_counts)
     bg, reference_ward = ward_partitions(reference_features, base.shape, (cfg.reference_bg_regions,), ~foreground)
     reference_regions = [np.flatnonzero(foreground)] + bg[cfg.reference_bg_regions]
@@ -452,7 +707,8 @@ def predict(query_cache, reference_cache, query_features, reference_features, co
                 deltas[arm][region] += correction / len(cfg.partition_counts)
             deltas['native_region'][region] += old / len(cfg.partition_counts)
             deltas['response_objectness'][region] += -cfg.margin_tau * row['relative_response'] / len(cfg.partition_counts)
-            deltas['mass_objectness'][region] += -cfg.margin_tau * row['mean_outside_mass'] / len(cfg.partition_counts)
+            if not row['zero_native']:
+                deltas['mass_objectness'][region] += -cfg.margin_tau * row['mean_outside_mass'] / len(cfg.partition_counts)
     fields = {arm: fuse(base, delta.reshape(base.shape), cfg) for arm, delta in deltas.items()}
     outputs = {arm: render(field, original_hw) for arm, field in fields.items()}
     return dict(fields=fields,deltas={arm:delta.reshape(base.shape) for arm,delta in deltas.items()},
@@ -462,7 +718,8 @@ def predict(query_cache, reference_cache, query_features, reference_features, co
                           query_processed_area=sum(sum(len(r) for r in p) for p in partitions.values()),
                           reference_processed_area=sum(map(len,reference_regions)),
                           primary_additional_suffix_token_layers=4*(4*base.size+base.size),
-                          executed_replay_multiplier=3,native_cache_build_token_layers=8*len(query_cache.h20),
+                          executed_replay_multiplier=3,
+                          native_cache_build_token_layers=4*(len(query_cache.h20)+len(reference_cache.h20)),
                           cache_producers=dict(query=query_cache.producer,reference=reference_cache.producer),
                           wall_seconds=time.perf_counter()-started,query_gt_used=False,
                           real_segmentation_benefit='unmeasured',native_asset_validation='adapter_audit_only'))

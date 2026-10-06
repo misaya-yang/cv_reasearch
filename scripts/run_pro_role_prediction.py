@@ -91,6 +91,7 @@ def infer(args):
             if key not in row:
                 raise ValueError('Missing manifest field: ' + key)
         row['occurrence_id'] = f'{i:06d}'
+        row['key'] = row['occurrence_id']
         row['c'], row['fold'] = int(row['c']), int(row['fold'])
         for key in ('feature_export', 'packet_export'):
             path = Path(row[key])
@@ -101,7 +102,7 @@ def infer(args):
             spec['sha256'] = sha(spec['path'])
         evaluation.append(row)
         # Query truth/class/fold/photos never enter the worker descriptor.
-        inference.append({key: row[key] for key in ('occurrence_id', 'feature_export', 'packet_export')})
+        inference.append({key: row[key] for key in ('occurrence_id', 'key', 'feature_export', 'packet_export')})
     args.out.mkdir(parents=True, exist_ok=False)
     for subdir in ('predictions', 'fields', 'receipts'):
         (args.out / subdir).mkdir()

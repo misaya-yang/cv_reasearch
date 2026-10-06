@@ -165,7 +165,7 @@ def infer(args):
     backend = getattr(args,'backend','occupancy')
     prepared_methods = list(getattr(args,'prepared_methods',[]))
     if backend == 'prepared':
-        from ics.methods.prepared_cpu_bundle import METHODS
+        from ics.methods.prepared_cpu_bundle import AVAILABLE_METHODS as METHODS
         if (not prepared_methods or len(set(prepared_methods)) != len(prepared_methods)
                 or any(name not in METHODS for name in prepared_methods)):
             raise ValueError('Distinct recognized prepared methods required')
@@ -261,20 +261,46 @@ def infer(args):
         from ics.methods.query_recurrence import Config as RecurrenceConfig
         from ics.methods.reference_prior_shift import Config as PriorShiftConfig
         from ics.methods.reference_quadratic import Config as QuadraticConfig
+        from ics.methods.pro_reference_relations import Config as ProRelationsConfig
+        from ics.methods.reference_hull import Config as HullConfig
+        from ics.methods.reference_constellation_local import Config as ConstellationLocalConfig
+        from ics.methods.reference_triplet_relations import Config as TripletConfig
+        from ics.methods.reference_absorption import Config as AbsorptionConfig
+        from ics.methods.reference_gaussian_density import Config as GaussianDensityConfig
+        from ics.methods.prepared_cpu_bundle import INDEPENDENT_METHOD_INCREMENT,METHOD_METADATA
         config.update(backend=backend,prepared_methods=prepared_methods,primary=args.primary_method,
-                      primary_methods=prepared_methods,independent_methods=len(prepared_methods),
+                      primary_methods=prepared_methods,
+                      independent_methods=sum(INDEPENDENT_METHOD_INCREMENT.get(name,1) for name in prepared_methods),
+                      candidate_versions=len(prepared_methods),
+                      selected_algorithm_rows=len(prepared_methods),
+                      method_metadata={name:METHOD_METADATA[name] for name in prepared_methods},
+                      method_revisions={name:METHOD_METADATA[name] for name in prepared_methods
+                                        if METHOD_METADATA[name]['kind']=='revision'},
                       method=None,strengths=None,
                       method_configs={name:asdict(cls()) for name,cls in (
                           ('adjacency',AdjacencyConfig),('huber',HuberConfig),
                           ('color_bottleneck',ColorConfig),('constellation',ConstellationConfig),
                           ('reference_shape',ShapeConfig),('reference_covariance',CovarianceConfig),
                           ('query_recurrence',RecurrenceConfig),('reference_prior_shift',PriorShiftConfig),
-                          ('reference_quadratic',QuadraticConfig))
+                          ('reference_quadratic',QuadraticConfig),('pro_reference_relations',ProRelationsConfig),
+                          ('reference_hull',HullConfig),('constellation_local',ConstellationLocalConfig),
+                          ('reference_triplet_relations',TripletConfig),('reference_absorption',AbsorptionConfig),
+                          ('reference_gaussian_density',GaussianDensityConfig))
                           if name in prepared_methods})
         for name in ('prepared_cpu_bundle','reference_adjacency','huber_graph','color_bottleneck','reference_constellation',
                      'reference_shape','reference_covariance','query_recurrence','reference_prior_shift','reference_quadratic'):
             path=REPO/'src/ics/methods'/f'{name}.py'
             config['code_sha256'][str(path.relative_to(REPO))]=sha(path)
+        for method,module in (('pro_reference_relations','pro_reference_relations'),
+                              ('reference_hull','reference_hull'),
+                              ('constellation_local','reference_constellation_local'),
+                              ('reference_triplet_relations','reference_triplet_relations'),
+                              ('reference_triplet_relations','pro_reference_relations'),
+                              ('reference_absorption','reference_absorption'),
+                              ('reference_gaussian_density','reference_gaussian_density')):
+            if method in prepared_methods:
+                path=REPO/'src/ics/methods'/f'{module}.py'
+                config['code_sha256'][str(path.relative_to(REPO))]=sha(path)
     write(args.out / 'config.json', config)
     write(args.out / 'inference_manifest.json', inference)
     write(args.out / 'evaluation_manifest.json', evaluation)
@@ -411,6 +437,10 @@ def score(args):
                   interpretation='Candidate efficacy and originality are unestablished until these comparisons are assessed.')
     if config.get('backend') == 'prepared':
         report.update(primary_methods=config['primary_methods'],independent_methods=config['independent_methods'],
+                      candidate_versions=config.get('candidate_versions',len(config['primary_methods'])),
+                      selected_algorithm_rows=config.get('selected_algorithm_rows',len(config['primary_methods'])),
+                      method_metadata=config.get('method_metadata',{}),
+                      method_revisions=config.get('method_revisions',{}),
                       execution_backend='shared prepared-candidate inference; not another method')
     output = run / 'score'
     output.mkdir(exist_ok=False)
@@ -447,10 +477,12 @@ def main():
     inf.add_argument('--base', choices=['mean', 'rcg'], default='mean')
     inf.add_argument('--backend', choices=['occupancy','prepared'], default='occupancy')
     inf.add_argument('--prepared-methods', nargs='+', choices=['adjacency','huber','color_bottleneck','constellation',
-                                                            'reference_shape','reference_covariance','query_recurrence','reference_prior_shift','reference_quadratic'],
+                                                            'reference_shape','reference_covariance','query_recurrence','reference_prior_shift','reference_quadratic',
+                                                            'pro_reference_relations','reference_hull','constellation_local','reference_triplet_relations','reference_absorption','reference_gaussian_density'],
                      default=['adjacency','huber','color_bottleneck','constellation'])
     inf.add_argument('--primary-method', choices=['adjacency','huber','color_bottleneck','constellation',
-                                                 'reference_shape','reference_covariance','query_recurrence','reference_prior_shift','reference_quadratic'])
+                                                 'reference_shape','reference_covariance','query_recurrence','reference_prior_shift','reference_quadratic',
+                                                 'pro_reference_relations','reference_hull','constellation_local','reference_triplet_relations','reference_absorption','reference_gaussian_density'])
     inf.add_argument('--base-key', default='mean.control')
     inf.add_argument('--strengths', nargs='+', type=float, default=[1.0])
     inf.add_argument('--primary-strength', type=float, default=1.0)

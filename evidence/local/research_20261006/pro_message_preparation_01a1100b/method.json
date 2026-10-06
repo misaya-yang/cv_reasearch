@@ -1,0 +1,56 @@
+{
+  "method_id": "Pro_M5_fixed_native_QK_message_extrapolation_v0",
+  "independent_methods": 1,
+  "state": "deployable_CPU_entry_and_toy_checked_actual_native_binding_pending",
+  "actual_DINO_episodes": 0,
+  "real_segmentation_benefit": "unmeasured",
+  "real_runtime": "unmeasured",
+  "reference": "user_supplied_Pro_report_lines779_914",
+  "parameters": {
+    "partition_counts": [
+      4,
+      8,
+      16,
+      32
+    ],
+    "reference_bg_regions": 8,
+    "beta": 0.75,
+    "difference_scale": 4.0,
+    "descriptor_norm_cap": 0.5,
+    "margin_tau": 0.07,
+    "native_atol": 5e-05,
+    "native_rtol": 5e-05
+  },
+  "controls": [
+    "endpoint",
+    "hard_channel",
+    "native_region",
+    "zero",
+    "response_objectness",
+    "mass_objectness"
+  ],
+  "actual_eva_interface": "capture actual native SDPA QKV; actual LN1/V no-bias projection; actual gamma/output norm/projection/MLP/residual; each ROI beta1 audit mandatory",
+  "shared_interface": "pro_common_context._SDPA_LOCK only; file not modified",
+  "paths": {
+    "src/ics/methods/pro_message_extrapolation.py": "ead5aec2c9f9c2a835c07d93774e8ae39b86be16938f674c9b91fffdcd956d63",
+    "scripts/run_pro_message_extrapolation.py": "0f3409dce01adb565d08fe674d16738b3acc9fefc4310e1591a2a683d9cc2e18"
+  },
+  "checks": "toy_check.json",
+  "assets_template": "assets.template.json",
+  "resource_gaps": [
+    "bind original episode projection_enabled and identity",
+    "actual FP32 native paired images or H20/QKV packet",
+    "bind complete MEAN host field producer and original H/W",
+    "actual native beta1 and CPU cost audit"
+  ],
+  "not_claimed": [
+    "actual DINO validation",
+    "segmentation improvement",
+    "novelty",
+    "one-minute cohort runtime"
+  ],
+  "no_SSH": true,
+  "no_GPU": true,
+  "no_download": true,
+  "no_large_experiment": true
+}

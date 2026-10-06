@@ -1,0 +1,70 @@
+{
+  "id": "reference_anchor_absorption_residual_v1",
+  "independent_method_count": 1,
+  "state": "implemented_and_small_synthetic_and_dense32anchor_two_worker_checked; real_segmentation_unmeasured",
+  "new_observable": "Probability that an unlabeled query appearance mode reaches a pure-FG reference anchor before a pure-BG reference anchor through the entire query-feature graph, relative to direct anchor-kernel evidence.",
+  "identity_hypothesis": "A correctly class-connected query manifold can provide distal class evidence even when the focal query feature is equally close to reference FG/BG and every immediate neighbor has neutral direct evidence.",
+  "difference_from_existing": {
+    "MEAN_and_Huber": "No base fidelity in the auxiliary graph solve; reference FG/BG anchors are absorbing endpoints, not a prior query guide. Only its residual relative to direct reference evidence corrects base.",
+    "Pro_M2": "No learned FF/FB/BF/BB pair-label cross-ratio, signed interaction, or transfer of a reference pair-potential. The graph is the observed unlabeled query appearance geometry with labeled reference endpoints.",
+    "old_reference_distributions": "No required mode occupancy, covariance, silhouette or prevalence for query foreground; query graph connects all appearances without assigning a global reference distribution.",
+    "hull_and_quadratic": "Neither pointwise distance to reference hulls nor an anchor polynomial kernel. The fixed focal query can change output when other unlabeled query appearances change.",
+    "triplet": "No third-order reference interaction or matching of three appearance modes."
+  },
+  "inputs": ["frozen cached q/r", "complete reference foreground coverage", "existing MEAN continuous base"],
+  "steps": [
+    "Normalize features; require at least 8 pure FG and BG reference tokens (coverage>=0.9 and <=0.1). Otherwise retain base.",
+    "Deterministically compress each reference class to <=16 spherical modes using 5 Lloyd steps. Compress all unlabeled query tokens to <=64 spherical modes using 3 steps. Preserve hard nearest-mode query assignment.",
+    "On <=96 nodes form a mutual-8-neighbor cosine-distance graph. Edge weight is exp(-d_ij/sqrt(sigma_i*sigma_j)), with sigma_i=max(8th-neighbor distance,1e-6). No label or base value chooses graph edges.",
+    "Set every reference FG anchor to 1 and BG anchor to 0. For each component containing both classes solve L_UU*h_U = W_UB*label_B in FP64. A component missing either class abstains.",
+    "For each query mode compute class-balanced direct reference-kernel value d: mass-weighted exp(cosine/0.07) FG evidence divided by FG+BG evidence.",
+    "For active token i with query-mode assignment a_i output field_i = base_i + h[a_i] - d[a_i]. Abstained token keeps its exact base. Do not clamp or rescale final field.",
+    "Bilinear64-to1024 align_corners=False, strict >0.5; seal complete masks before query GT evaluation. All controls use the same query compression and readout."
+  ],
+  "strong_simple_controls": {
+    "base": "Exact zero context correction.",
+    "nearest_control": "0.5+0.5*(max FG cosine-max BG cosine), clipped; direct complete classifier on same query modes.",
+    "kernel_control": "Direct class-balanced kernel d, complete classifier on same modes.",
+    "one_hop_control": "base + reference-neighbor fraction - d; no query-query transmission, .5 for no anchor neighbors.",
+    "one_step_control": "base + one weighted graph averaging step initialized with d and fixed reference labels - d. Strong cheap same-graph local-transmission control.",
+    "component_control": "base + fraction of FG anchors in the connected component - d; reachability without conductance/path lengths.",
+    "full_harmonic_control": "Pure h complete classifier, to expose the risk of replacing MEAN globally."
+  },
+  "control_support": "All returned controls use the same full-graph active-token map; abstained tokens retain base. Thus gain over them is not attributable to changing the abstention footprint.",
+  "mathematical": [
+    "On a finite connected component with a boundary the Dirichlet matrix is positive definite; solve is unique. Requiring both boundary classes is an explicit conservative abstention rule, not a uniqueness requirement.",
+    "Harmonic values lie in [0,1] and equal the random-walk probability of hitting FG before BG under these fixed graph boundary labels. Semantic probability calibration is unverified.",
+    "Each active correction h-d lies in [-1,1]; if h=d, final field equals base exactly. Missing both-class graph support preserves base."
+  ],
+  "finite_evidence": {
+    "independent_solver": "Six-node path analytic h=[1,.8,.6,.4,.2,0] agrees with independently iterated absorbing Markov transitions.",
+    "context_witness": "Complete default algorithm on a neutral stem: fixed focal q and reference anchors give .7105316 versus .2894684 after reflecting the distant branch; nearest/kernel/one-hop/one-step/component controls all .5 there.",
+    "weaker_first_witness_retained": "The first asymmetric arc example is also distinguished by one-step (.7077924/.2922076); it does not prove multistep necessity.",
+    "negative": "Declare the same 64 focal tokens background in the foreground-connected context: the unchanged algorithm adds all 64 false foreground tokens. Incorrect class bridges can reverse the apparent benefit.",
+    "real_episodes": 0
+  },
+  "failure_conditions": [
+    "Semantically different appearances can form a feature bridge; hitting a foreground anchor does not guarantee the target class.",
+    "64-mode compression can merge a tiny real target or fragment its path; anchors compress label-discriminative details.",
+    "Reference context-dependent feature anchors may attach to the wrong query manifold.",
+    "No component with both anchor classes can lead to extensive abstention; actual frequency is unmeasured.",
+    "Adding a graph-context residual can still damage correct base predictions; no success or protected high-confidence guarantee is asserted."
+  ],
+  "measured_reason_for_residual": "The newly observed reused-public600 v2 report has MEAN62.9315 versus covariance12.3432, prior_shift37.8833 and quadratic51.6070. Those other algorithms' failures do not refute absorption, but motivate keeping MEAN and separately reporting pure h rather than promising a global reference classifier.",
+  "source_of_existing_measurement": "../server_prepared_01a1100b/nine_public600_v2/score/report.json; reused development data, not independent confirmation",
+  "cpu_cost": {
+    "reference_anchors_maximum": 32,
+    "query_modes_maximum": 64,
+    "graph_nodes_maximum": 96,
+    "compression": "O(Nr*32*D*5 + Nq*64*D*3), plus deterministic farthest-point initialization and feature normalization; no NxN query affinity.",
+    "graph": "O(96^2*D) cosine work and O(96^2) storage; solve unknown blocks of <=64 modes.",
+    "encoder_forwards": 0,
+    "synthetic_candidate_seconds": "check.json holds one 4096x1024 synthetic call; excludes real cache/image I/O and scoring.",
+    "real_complete_cost": "unmeasured"
+  },
+  "novelty": "Unverified. Absorbing random walks, harmonic label propagation and spherical compression are established ideas; this is one distinct candidate mechanism for the current cached task, not a claim of original graph mathematics.",
+  "source": "../../../../src/ics/methods/reference_absorption.py",
+  "runner": "../../../../scripts/run_reference_absorption.py",
+  "checks": ["check_absorption.py/check.json", "check_runner.py/runner_check.json"],
+  "next_finite_comparison": "Root can bind to the same real 600 cohort. Compare residual with MEAN and same-graph one-step/one-hop/component controls; report active/abstained tokens and true/false additions/deletions. If one-step matches or residual harms complete quality, close this fixed candidate rather than parameter-searching."
+}

@@ -13,7 +13,7 @@ import numpy as np
 from PIL import Image
 
 
-ARMS = ('paired', 'mean', 'class_lda', 'ref_canvas')
+ARMS = ('paired', 'mean', 'class_lda', 'ref_canvas', 'ce', 'ce_self')
 
 
 @dataclass(frozen=True)
@@ -234,9 +234,13 @@ def inverse_direction(factor, delta, ridge):
     if not np.isfinite(factor).all() or not np.isfinite(delta).all():
         raise ValueError('Finite statistics required')
     vectors, singular, _ = np.linalg.svd(factor, full_matrices=False)
-    projection = vectors.T@delta
-    direction = (delta-vectors@projection)/ridge + vectors@(projection/(singular**2+ridge))
-    residual = np.linalg.norm(ridge*direction+factor@(factor.T@direction)-delta) / max(np.linalg.norm(delta), 1e-15)
+    projection = np.einsum('ij,i->j', vectors, delta, optimize=False)
+    parallel = np.einsum('ij,j->i', vectors, projection, optimize=False)
+    direction = (delta-parallel)/ridge + np.einsum(
+        'ij,j->i', vectors, projection/(singular**2+ridge), optimize=False)
+    projected = np.einsum('ij,i->j', factor, direction, optimize=False)
+    reconstructed = ridge*direction+np.einsum('ij,j->i', factor, projected, optimize=False)
+    residual = np.linalg.norm(reconstructed-delta) / max(np.linalg.norm(delta), 1e-15)
     if not np.isfinite(direction).all() or residual > 1e-6:
         raise RuntimeError(f'Closed-form covariance solve failed: relative residual {residual}')
     return direction, dict(relative_residual=float(residual), factor_columns=factor.shape[1],
@@ -245,15 +249,56 @@ def inverse_direction(factor, delta, ridge):
 
 def normalized_logits(query, direction, means, cfg=Config()):
     delta = means[0]-means[1]
-    separation = float(direction@delta)
+    separation = float(np.sum(direction*delta))
     if not np.isfinite(separation) or separation <= cfg.minimum_separation:
         return None, dict(reason='nonfinite_or_small_class_separation', separation=separation)
-    bias = float(.5*direction@(means[0]+means[1]))
-    logits = 2*(query@direction-bias)/separation
+    bias = float(.5*np.sum(direction*(means[0]+means[1])))
+    logits = 2*(np.einsum('ij,j->i', query, direction, optimize=False)-bias)/separation
     if not np.isfinite(logits).all():
         return None, dict(reason='nonfinite_query_logits', separation=separation)
     return logits, dict(separation=separation, midpoint=bias,
-                        intervention_mean_logits=(2*(means@direction-bias)/separation).tolist())
+                        intervention_mean_logits=(2*(np.einsum('ij,j->i', means, direction, optimize=False)-bias)/separation).tolist())
+
+
+def fit_ce_direction(bank):
+    """Balanced linear CE(w,b)+||w||^2/(2D), FP64 zero-init L-BFGS<=100.
+
+    The report requests CE's own bias but does not write its intercept loss
+    explicitly: this implementation fits an unpenalized scalar intercept;
+    ce_self uses the raw fitted w.q+b logit with the same Potts renderer.
+    """
+    from scipy.optimize import minimize
+    from scipy.special import expit
+    bank = np.asarray(bank, np.float64)
+    if bank.ndim != 4 or bank.shape[0] != 2 or not np.isfinite(bank).all():
+        raise ValueError('Finite paired legal reference-point banks required')
+    features = bank.reshape(-1, bank.shape[-1])
+    dimension = features.shape[1]
+    count = len(features)//2
+    labels = np.r_[np.ones(count), -np.ones(count)]
+
+    def objective(parameter):
+        direction, bias = parameter[:-1], parameter[-1]
+        signed = labels*(np.einsum('ij,j->i', features, direction, optimize=False)+bias)
+        loss = float(np.logaddexp(0, -signed).mean()+np.sum(direction**2)/(2*dimension))
+        multiplier = -labels*expit(-signed)/len(labels)
+        gradient = np.r_[np.einsum('ij,i->j', features, multiplier, optimize=False)+direction/dimension,
+                         multiplier.sum()]
+        return loss, gradient
+
+    solution = minimize(objective, np.zeros(dimension+1, np.float64), jac=True, method='L-BFGS-B',
+                        options=dict(maxiter=100, gtol=1e-8, ftol=0.))
+    loss, gradient = objective(solution.x)
+    if not np.isfinite(solution.x).all() or not np.isfinite(loss) or not np.isfinite(gradient).all():
+        raise RuntimeError('Nonfinite CE optimization output')
+    return solution.x[:-1], float(solution.x[-1]), dict(
+        objective=loss, gradient_infinity_norm=float(np.abs(gradient).max()),
+        reached_gradient_target=bool(np.abs(gradient).max() <= 1e-8), iterations=int(solution.nit),
+        scipy_success=bool(solution.success), stopping_message=str(solution.message),
+        class_weights=[.5, .5], training_points_per_class=count,
+        dtype='float64', initialization='zero', solver='L-BFGS-B', maximum_steps=100,
+        gradient_target=1e-8, ridge_coefficient=1/dimension, intercept_penalized=False,
+        own_bias_readout='raw w dot unit-query + fitted intercept; no midpoint or separation rescaling')
 
 
 def spatial_edges(query, shape, cfg=Config()):
@@ -367,12 +412,13 @@ def render(coarse, original_shape):
 
 def _native_binding(binding):
     if (not isinstance(binding, dict) or binding.get('method') != 'full_foris_native' or
-            not isinstance(binding.get('recipe_sha256'), str) or len(binding['recipe_sha256']) != 64):
+            not isinstance(binding.get('recipe_sha256'), str) or len(binding['recipe_sha256']) != 64 or
+            any(character not in '0123456789abcdef' for character in binding['recipe_sha256'])):
         raise ValueError('Bind the complete FoRIS native recipe before inference; no default baseline')
 
 
 def predict(reference_rgb, reference_mask, query_rgb, encoder, native_fallback, *,
-            native_binding, encoder_binding, include_ref_canvas=True, cfg=Config()):
+            native_binding, encoder_binding, include_ref_canvas=True, progress=None, cfg=Config()):
     """Actual RGB -> complete work/original masks, with explicit lazy native fallback.
 
     encoder(RGB_uint8_1024) returns raw final-LN HxWxD. native_fallback receives
@@ -388,14 +434,18 @@ def predict(reference_rgb, reference_mask, query_rgb, encoder, native_fallback, 
     r, mask, q = canonical_inputs(reference_rgb, reference_mask, query_rgb, cfg)
     original_shape = np.asarray(query_rgb).shape[:2]
     calls, native, original_query = [], None, None
-    arms = ARMS if include_ref_canvas else ARMS[:3]
+    arms = tuple(arm for arm in ARMS if include_ref_canvas or arm != 'ref_canvas')
 
     def encode(image, role):
         tick = time.perf_counter()
+        if progress is not None:
+            progress(dict(state='ENCODING', role=role, completed_encoder_forwards=len(calls)))
         features = np.asarray(encoder(image), dtype=np.float32)
         if features.ndim != 3 or features.shape[:2] != (64, 64) or not np.isfinite(features).all():
             raise ValueError('Encoder must return finite raw final-LN 64x64xD features')
         calls.append(dict(role=role, seconds=time.perf_counter()-tick, shape=list(features.shape)))
+        if progress is not None:
+            progress(dict(state='ENCODED', **calls[-1], completed_encoder_forwards=len(calls)))
         return features
 
     def fallback(reason, category):
@@ -406,7 +456,9 @@ def predict(reference_rgb, reference_mask, query_rgb, encoder, native_fallback, 
                     np.asarray(native['mask_original']).shape != original_shape or
                     not np.isin(native['mask_work'], (0, 1)).all() or
                     not np.isin(native['mask_original'], (0, 1)).all() or
-                    not isinstance(native.get('info'), dict) or 'encoder_forwards' not in native['info']):
+                    not isinstance(native.get('info'), dict) or
+                    not isinstance(native['info'].get('encoder_forwards'), int) or
+                    not 0 <= native['info']['encoder_forwards'] <= (2 if original_query is None else 1)):
                 raise ValueError('Bound native fallback must return both binary masks and actual encoder cost')
         return dict(mask_work=np.asarray(native['mask_work'], bool).copy(),
                     mask_original=np.asarray(native['mask_original'], bool).copy(),
@@ -419,6 +471,10 @@ def predict(reference_rgb, reference_mask, query_rgb, encoder, native_fallback, 
         output = {arm: fallback(str(error), 'geometry') for arm in arms}
         return dict(arms=output, info=dict(config=asdict(cfg), encoder_binding=encoder_binding,
                     encoder_calls=calls, encoder_forwards=0, query_gt_used=False,
+                    primary_encoder_forwards=native['info']['encoder_forwards'],
+                    additional_ref_canvas_forwards=0,
+                    native_fallback_encoder_forwards=native['info']['encoder_forwards'],
+                    total_encoder_forwards=native['info']['encoder_forwards'],
                     wall_seconds=time.perf_counter()-started, real_segmentation_validation=False))
     original_query = encode(q, 'original_query')
     query = unit(original_query).reshape(-1, original_query.shape[-1])
@@ -428,9 +484,11 @@ def predict(reference_rgb, reference_mask, query_rgb, encoder, native_fallback, 
     edges, capacity, graph_info = spatial_edges(query, (64, 64), cfg)
     output, statistics = {}, {}
 
-    def finish(arm, class_means, factor, regularization, mean_only=False):
+    def finish(arm, class_means, factor, regularization, mean_only=False, supplied_direction=None, supplied_solve=None):
         difference = class_means[0]-class_means[1]
-        if mean_only:
+        if supplied_direction is not None:
+            direction, solve = supplied_direction, supplied_solve
+        elif mean_only:
             direction, solve = difference, dict(solver='mean_direction', reused_main_ridge=ridge)
         else:
             direction, solve = inverse_direction(factor, difference, regularization)
@@ -449,6 +507,16 @@ def predict(reference_rgb, reference_mask, query_rgb, encoder, native_fallback, 
     finish('paired', means, env, ridge)
     finish('mean', means, env, ridge, mean_only=True)
     finish('class_lda', means, np.concatenate((env, parts), axis=1), ridge)
+    ce_direction, ce_bias, ce_receipt = fit_ce_direction(bank)
+    finish('ce', means, env, 1/query.shape[1], supplied_direction=ce_direction, supplied_solve=ce_receipt)
+    ce_logits = np.einsum('ij,j->i', query, ce_direction, optimize=False)+ce_bias
+    ce_coarse, ce_cut = exact_potts_cut(ce_logits, edges, capacity)
+    ce_work, ce_original = render(ce_coarse.reshape(64, 64), original_shape)
+    output['ce_self'] = dict(field=ce_coarse.reshape(64, 64).astype(np.float32),
+                             mask_work=ce_work, mask_original=ce_original,
+                             info=dict(fallback=False, cut=ce_cut, fitted_intercept=ce_bias))
+    statistics['ce_self'] = dict(solver=ce_receipt, intercept=ce_bias, normalization='raw fitted logistic logit')
+    ref_bank = None
     if include_ref_canvas:
         ref_bank, ref_log = collect_interventions(r, geometry, encode, 'reference_canvas')
         ref_means, ref_env, _, ref_ridge = covariance_factors(ref_bank)
@@ -460,14 +528,19 @@ def predict(reference_rgb, reference_mask, query_rgb, encoder, native_fallback, 
                 minimum_scale_coverage=geometry['minimum_scale_coverage'].tolist(),
                 conditions=geometry['conditions'], interventions=intervention_log,
                 statistics=statistics, graph=graph_info, encoder_calls=calls,
-                encoder_forwards=len(calls), primary_encoder_forwards=9,
+                encoder_forwards=len(calls), primary_encoder_forwards=9+(
+                    native['info']['encoder_forwards'] if output['paired']['info']['fallback'] else 0),
                 additional_ref_canvas_forwards=8 if include_ref_canvas else 0,
                 native_fallback_encoder_forwards=0 if native is None else native['info']['encoder_forwards'],
+                total_encoder_forwards=len(calls)+(0 if native is None else native['info']['encoder_forwards']),
                 query_gt_used=False, untouched_query_pixels_labeled=0,
                 covariance_object='same_canonical_content_cross_condition_residuals',
                 ridge_shared_between_paired_and_class_lda=True,
                 wall_seconds=time.perf_counter()-started, real_segmentation_validation=False)
-    return dict(arms=output, info=info)
+    cache = dict(query_final_ln=original_query, query_canvas_bank=bank)
+    if ref_bank is not None:
+        cache['reference_canvas_bank'] = ref_bank
+    return dict(arms=output, info=info, sufficient_statistics=cache)
 
 
 class FrozenTimmRGBEncoder:

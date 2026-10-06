@@ -1,0 +1,50 @@
+{
+  "state": "TOY_CONTRACT_CHECK_PASSED",
+  "real_DINO_parity_verified": false,
+  "real_segmentation_episodes": 0,
+  "config": {
+    "start_block": 2,
+    "suffix_blocks": 3,
+    "probes_per_role": 4,
+    "temperature": 0.07,
+    "chunk_size": 7,
+    "graph_lambda": 16.0,
+    "audit_atol": 1e-05,
+    "audit_rtol": 0.0001
+  },
+  "native_self": {
+    "native_self_maxabs": 4.76837158203125e-07,
+    "atol": 1e-05,
+    "rtol": 0.0001,
+    "memory_unchanged": true,
+    "local_and_prefix_exclusion": false,
+    "level": "actual_runtime_encoder; toy only if supplied model is toy"
+  },
+  "chunk_maxabs": 4.76837158203125e-07,
+  "memory_unchanged": true,
+  "corrupted_KV_rejected": true,
+  "complete_controls": [
+    "plain",
+    "mean-unit",
+    "ctx",
+    "uniform"
+  ],
+  "graph": {
+    "rho": 1.0,
+    "graph_lambda": 16.0,
+    "residuals": {
+      "plain": 6.046203382425613e-08,
+      "mean-unit": 4.306933136135605e-08,
+      "ctx": 4.9879355381108826e-08,
+      "uniform": 5.761507532155955e-08
+    },
+    "graph_storage_dtype": "float64",
+    "historical_MEAN_score_reused": false
+  },
+  "missing_actual_local_assets": [
+    "timm package/Eva source",
+    "DINO weights",
+    "native host episode assets"
+  ],
+  "actual_CPU_time_is_toy_only": true
+}

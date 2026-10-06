@@ -215,6 +215,7 @@ def heldout_value(reference_distance, query_distance, cross_cosine, bg_cosine, c
     values = []
     for fit_ids, held_ids in ((np.arange(0, k, 2), np.arange(1, k, 2)),
                              (np.arange(1, k, 2), np.arange(0, k, 2))):
+        counter['directions_total'] += 1
         fit = fit_roles(1 - cross_cosine[fit_ids], reference_distance[np.ix_(fit_ids, fit_ids)],
                         query_distance, cfg, counter)
         match, residual = predict_remaining(reference_distance, query_distance, fit_ids, held_ids, fit, cfg, counter)
@@ -236,6 +237,8 @@ def heldout_value(reference_distance, query_distance, cross_cosine, bg_cosine, c
 def all_role_value(reference_distance, query_distance, cross_cosine, bg_cosine, cfg, counter):
     match = fit_roles(1 - cross_cosine, reference_distance, query_distance, cfg, counter)
     real = np.flatnonzero(match >= 0)
+    counter['all_role_total'] += len(match)
+    counter['all_role_dummy'] += int((match < 0).sum())
     if len(real) < 2:
         return cfg.dummy_validation
     values = np.full(len(match), cfg.dummy_validation)
@@ -279,9 +282,10 @@ def predict(q, r, cov, score, cfg=Config(), *, native_fallback=None):
     if not all(np.isfinite(a).all() for a in (q, r, cov, score)) or np.any((cov < 0) | (cov > 1)):
         raise ValueError('Nonfinite inputs or invalid coverage')
     info = dict(config=asdict(cfg), query_gt_used=False, new_encoder_forwards=0,
-                first_cluster_seed='smallest token ID', bg_definition='coverage<0.5',
+                first_cluster_seed='smallest token ID', bg_definition='complement of effective coarse FG',
                 real_runtime='unmeasured', hungarian_calls=0, predicted_roles=0,
-                dummy_roles=0, degenerate_directions=0, template_count=0)
+                dummy_roles=0, degenerate_directions=0, directions_total=0,
+                all_role_total=0, all_role_dummy=0, template_count=0)
     if not np.any(cov > 0):
         return {'fields': {a: np.zeros_like(cov, dtype=np.float32) for a in ARMS},
                 'info': dict(info, fallback='empty_reference')}
@@ -307,6 +311,8 @@ def predict(q, r, cov, score, cfg=Config(), *, native_fallback=None):
             nearest = np.maximum(nearest, centers @ centers[nxt])
         candidates = [candidates[i] for i in selected]
     info['template_count'] = len(candidates)
+    info['template_role_counts'] = [len(t[1]) for t in candidates]
+    info['reference_components'] = component_count
     if not candidates:
         if native_fallback is None:
             raise ValueError('No structural template: full FoRIS native fallback mask required; score thresholding is not equivalent')
@@ -338,7 +344,8 @@ def predict(q, r, cov, score, cfg=Config(), *, native_fallback=None):
     validation['mean'][:n] = 0
     cosine_banks = [roles @ means.T for _, roles, _ in candidates]
     distance_banks = [1 - roles @ roles.T for _, roles, _ in candidates]
-    raw_validation = {'heldout': np.zeros(2 * n - 1), 'all': np.zeros(2 * n - 1)}
+    raw_validation = {'heldout': np.zeros(2 * n - 1), 'all': np.zeros(2 * n - 1),
+                      'evaluated': np.zeros(2 * n - 1, dtype=bool)}
     skipped = 0
     matching_start = time.perf_counter()
     kappa = math.log1p(n)
@@ -347,7 +354,8 @@ def predict(q, r, cov, score, cfg=Config(), *, native_fallback=None):
             skipped += 1
             continue
         parts = node_subregions(v, children, sizes, minimum, cfg.subregions_max)
-        query_distance = 1 - means[parts].astype(np.float64) @ means[parts].astype(np.float64).T
+        part_means = means[parts].astype(np.float64)
+        query_distance = 1 - np.einsum('id,jd->ij', part_means, part_means, optimize=False)
         heldout, all_roles = [], []
         for bank, reference_distance in zip(cosine_banks, distance_banks):
             cosine = bank[:, parts]
@@ -355,6 +363,7 @@ def predict(q, r, cov, score, cfg=Config(), *, native_fallback=None):
             all_roles.append(all_role_value(reference_distance, query_distance, cosine, bg_cosine[parts], cfg, info))
         raw_validation['heldout'][v] = max(heldout)
         raw_validation['all'][v] = max(all_roles)
+        raw_validation['evaluated'][v] = True
         validation['heldout'][v] = np.clip(raw_validation['heldout'][v], -4, 4)
         validation['all'][v] = np.clip(raw_validation['all'][v], -4, 4)
     info.update(matching_seconds=time.perf_counter() - matching_start,
@@ -368,5 +377,7 @@ def predict(q, r, cov, score, cfg=Config(), *, native_fallback=None):
         fields[arm] = mask.reshape(cov.shape).astype(np.float32)
         objectives[arm] = value
     info.update(seconds=time.perf_counter() - started, objectives=objectives,
-                dummy_rate=info['dummy_roles'] / max(info['predicted_roles'], 1))
+                dummy_rate=info['dummy_roles'] / max(info['predicted_roles'], 1),
+                degenerate_direction_rate=info['degenerate_directions'] / max(info['directions_total'], 1),
+                all_role_dummy_rate=info['all_role_dummy'] / max(info['all_role_total'], 1))
     return {'fields': fields, 'info': info, 'diagnostics': raw_validation}

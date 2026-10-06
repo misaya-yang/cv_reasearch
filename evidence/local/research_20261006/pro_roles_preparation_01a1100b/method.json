@@ -1,0 +1,41 @@
+{
+  "method_id": "Pro_M3_v0_cached_work1024_adapter",
+  "state": "implemented; small_CPU_contract_checks; natural_query_quality_and_cost_unmeasured",
+  "source_pro_report": "User-provided Pro M3 report, lines 523-666; source document is not bundled in this repository.",
+  "source": "src/ics/methods/pro_role_prediction.py",
+  "runner": "scripts/run_pro_role_prediction.py",
+  "arms": ["pro_m3_heldout", "pro_m3_all_role.control", "pro_m3_mean.control", "pro_m3_zero.control"],
+  "inputs": ["q", "r", "cov", "raw_full_FoRIS_preCRF_score", "lazy_full_FoRIS_native1024_mask_if_no_structural_template"],
+  "inference_exclusions": ["query_GT", "class_ID", "fold", "target_count", "target_area"],
+  "contract": {
+    "q_r": "Aligned unit-compatible4096x1024 cached end features; position-projection and producer must be bound externally",
+    "foreground_components": "four-neighbor coverage>=0.5; nonempty coverage but no such token uses maximum-coverage tokens",
+    "roles": "at_most8 spherical roles per component, min4 surviving roles, at_most8 usable templates, at_most16 BG roles",
+    "initialization_resolution": "Pro does not specify the first farthest-point seed. This implementation chooses minimum original token ID, then farthest-point with minimum-ID ties. First selected template is minimum component token ID.",
+    "background_resolution": "Coverage<0.5 complement of effective coarse foreground; this resolves Pro's same-rule BG wording",
+    "ward": "True adjacency-constrained Ward with dynamic cluster means/costs; ties use ordered minimum leaf IDs",
+    "subregions": "Split greatest-area splittable descendant until16 parts or leaves; ties minimum leafID",
+    "heldout": "Fit even roles, predict odd roles using Gram-only residual on unoccupied parts, then reveal cross-image margin; reverse directions and average predicted roles",
+    "dummy": "One private dummy per role, cost1; validation-2; fewer than2 real fit anchors scores direction-2",
+    "refinement": "initial Hungarian plus_at_most5 fixed linearized updates; preserve best original objective, stop repeat/non-improvement",
+    "validation": "contrast_tau0.07, residual_scale0.1, clip[-4,4]; max over templates",
+    "decoder": "whole_gain=sum(logit(clip(minmax(raw_score),sigmoid(-4),sigmoid(4))))+0.5*area*V-log(1+N); exact treeDP; BG then children then whole tie priority",
+    "tiny_object": "LeafV=0; original kappa retained; isolated single4096-grid-token cannot be selected",
+    "pruning": "Only skip whole-node validation when unary_sum+2*area-kappa<=0; every descendant still processed",
+    "fallback": "Empty reference outputs empty. No usable structural template requires caller-bound full-native bool1024 mask; missing fallback raises instead of fabricating preCRF proxy",
+    "renderer": "All active token binary fields convertFP32, bilinear_to1024 align_cornersFalse, strict>0.5",
+    "endpoint_limit": "This deployable cache adapter emits/scores1024 work masks. Pro's second interpolation to originalH/W is not silently claimed. Parent can explicitly add original-size output at evaluation boundary with bound image dimensions."
+  },
+  "cost": {
+    "new_encoder_forwards": 0,
+    "matching_upper_bound_heldout": "8*8191*2*7=917392 Hungarian calls before degeneracy/early-stop/proved-node-skip",
+    "matching_controls": "all-role adds its own calls, mean/zero share tree but no matching",
+    "actual_hungarian_calls": "recorded_per_episode",
+    "actual_ward_and_matching_seconds": "recorded_per_episode",
+    "actual_cohort_time_and_memory": "unmeasured; no finite-minute promise",
+    "runner_rss": "process high-water per episode; global scorer-compatible RSS bound labeled as estimate, not measured concurrency peak"
+  },
+  "checks": "checks.json: adjacentWard naive replay, extreme tie, enumeratedtreeDP, dummy-only, insufficientanchors, heldout API separation, native fallback, active small-field integration",
+  "rejection_conditions": ["heldout_not_better_than_all-role_or_mean", "tiny-object_or_occlusion_loss_exceeds_identity_repair", "candidate_tree_cannot_cover_complete_extent", "matching_scheduler_cost_unacceptable"],
+  "real_episodes_executed": 0
+}

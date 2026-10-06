@@ -79,6 +79,13 @@ def role_dictionary(features, cfg=Config()):
         chosen[nxt] = True
         nearest = np.maximum(nearest, _cosine(x, x[nxt:nxt+1]).ravel())
     centers = x[seeds].copy()
+    # CSR rows are clusters, with ascending token columns. Its dot product
+    # accumulates the same FP64 token values in the same per-cluster order as
+    # np.add.at, without NumPy's unbuffered scalar scatter over every channel.
+    # Convert once; the incidence matrix has exactly one nonzero per token.
+    x64 = x.astype(np.float64)
+    token_ids = np.arange(len(x))
+    incidence_values = np.ones(len(x), dtype=np.float64)
     previous = None
     iterations = 0
     for iterations in range(1, cfg.kmeans_maxiter + 1):
@@ -87,8 +94,9 @@ def role_dictionary(features, cfg=Config()):
             break
         mass = np.bincount(labels, minlength=len(centers))
         valid = mass > 0
-        sums = np.zeros((len(centers), x.shape[1]), dtype=np.float64)
-        np.add.at(sums, labels, x)
+        incidence = sparse.csr_matrix((incidence_values, (labels, token_ids)),
+                                      shape=(len(centers), len(x)))
+        sums = incidence @ x64
         centers = _unit(sums[valid])
         previous = (np.cumsum(valid) - 1)[labels]
     labels = _cosine(x, centers).argmax(1)

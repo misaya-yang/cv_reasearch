@@ -13,7 +13,9 @@ import json
 import os
 from pathlib import Path
 import re
+import resource
 import sys
+import time
 
 
 REPO = Path(__file__).resolve().parents[1]
@@ -41,7 +43,7 @@ def main():
     group.add_argument('--encoder-factory', help='Existing module:function returning an RGB encoder')
     parser.add_argument('--encoder-binding', type=Path, required=True)
     parser.add_argument('--native-binding', type=Path, required=True)
-    parser.add_argument('--device', default='cpu')
+    parser.add_argument('--device', choices=('cpu', 'cuda'), default='cpu')
     parser.add_argument('--threads', type=int, default=4)
     parser.add_argument('--expected', type=int, required=True)
     parser.add_argument('--without-ref-canvas', action='store_true', help='Explicit three-arm smoke only')
@@ -97,6 +99,7 @@ def main():
     args.out.mkdir(parents=True)
     (args.out/'predictions').mkdir()
     (args.out/'receipts').mkdir()
+    (args.out/'statistics').mkdir()
     dump(args.out/'inference_manifest.json', rows)
     config = dict(method=method.Config().__dict__, encoder_binding=encoder_binding,
                   native_binding=native_binding, device=args.device, threads=args.threads,
@@ -106,9 +109,11 @@ def main():
                   source_manifest_sha256=sha(args.manifest), query_gt_used=False,
                   cost_scope='cached native fallback; its original encoding/readout cost is not remeasured')
     dump(args.out/'config.json', config)
-    seal = dict(state='INFERRING', prediction_sha256={}, receipt_sha256={}, query_gt_used=False,
+    seal = dict(state='INFERRING', prediction_sha256={}, receipt_sha256={}, statistics_sha256={}, query_gt_used=False,
                 config_sha256=sha(args.out/'config.json'), manifest_sha256=sha(args.out/'inference_manifest.json'))
+    run_started = time.perf_counter()
     for row in rows:
+        input_hashes = {key: sha(row[key]) for key in ('reference_rgb', 'reference_mask', 'query_rgb')}
         with Image.open(row['reference_rgb']) as image:
             reference = np.asarray(image.convert('RGB')).copy()
         with Image.open(row['reference_mask']) as image:
@@ -130,7 +135,10 @@ def main():
 
         result = method.predict(reference, reference_mask, query, encoder, native_fallback,
                                 native_binding=native_binding, encoder_binding=encoder_binding,
+                                progress=lambda event: print(json.dumps(dict(occurrence=row['id'], **event)), flush=True),
                                 include_ref_canvas=not args.without_ref_canvas)
+        if any(sha(row[key]) != digest for key, digest in input_hashes.items()):
+            raise ValueError('RGB or reference mask changed during inference')
         predictions, fields = {}, {}
         for arm, output in result['arms'].items():
             predictions[arm+'_work'] = output['mask_work'].astype(np.uint8)
@@ -140,15 +148,22 @@ def main():
         prediction_path = args.out/'predictions'/(row['id']+'.npz')
         np.savez_compressed(prediction_path, **predictions, **fields)
         receipt = dict(info=result['info'], arms={name: output['info'] for name, output in result['arms'].items()},
-                       input_sha256={key: sha(row[key]) for key in ('reference_rgb', 'reference_mask', 'query_rgb')},
+                       input_sha256=input_hashes,
+                       process_peak_rss_bytes=int(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss *
+                                                  (1 if sys.platform == 'darwin' else 1024)),
                        native_prediction_sha256=row['native_sha256'])
         receipt_path = args.out/'receipts'/(row['id']+'.json')
         dump(receipt_path, receipt)
+        if 'sufficient_statistics' in result:
+            statistic_path = args.out/'statistics'/(row['id']+'.npz')
+            np.savez_compressed(statistic_path, **result['sufficient_statistics'])
+            seal['statistics_sha256'][row['id']] = sha(statistic_path)
         seal['prediction_sha256'][row['id']] = sha(prediction_path)
         seal['receipt_sha256'][row['id']] = sha(receipt_path)
         print(json.dumps(dict(occurrence=row['id'], sealed=len(seal['prediction_sha256']),
                               encoder_forwards=result['info']['encoder_forwards'])), flush=True)
-    seal.update(state='ALL_PREDICTIONS_SEALED', n=len(rows))
+    seal.update(state='ALL_PREDICTIONS_SEALED', n=len(rows),
+                run_seconds_excluding_model_loading=time.perf_counter()-run_started)
     dump(args.out/'sealed.json', seal)
 
 

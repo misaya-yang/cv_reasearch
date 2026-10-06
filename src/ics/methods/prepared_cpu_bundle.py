@@ -12,6 +12,18 @@ import numpy as np
 
 
 METHODS=('adjacency','huber','color_bottleneck','constellation','reference_shape','reference_covariance','query_recurrence','reference_prior_shift','reference_quadratic')
+AVAILABLE_METHODS=METHODS+('pro_reference_relations','reference_hull','constellation_local','reference_triplet_relations','reference_absorption','reference_gaussian_density')
+METHOD_METADATA={name:dict(kind='independent_candidate',independent_method_increment=1)
+                 for name in AVAILABLE_METHODS}
+METHOD_METADATA.update(
+    constellation_local=dict(kind='revision',version_id='reference_constellation_local_v2',
+                             revised_family='held_out_reference_landmark_consensus_v1',
+                             independent_method_increment=0),
+    reference_gaussian_density=dict(kind='revision',version_id='reference_density_full_feature_bounded_v2',
+                                   revised_family='reference_score_density_query_prior_v1',
+                                   independent_method_increment=0))
+INDEPENDENT_METHOD_INCREMENT={name:metadata['independent_method_increment']
+                              for name,metadata in METHOD_METADATA.items()}
 
 
 def mean_base(inputs,graph_dtype):
@@ -168,6 +180,72 @@ def one_episode(row,run,config):
                             ('quadratic_subspace.control','subspace_control')):
                 fields[arm]=result[key];masks[arm]=render(result[key])
             info=result['info']
+        elif name=='pro_reference_relations':
+            from .pro_reference_relations import Config,predict
+            # Pro M2's unary is the original packet score, never the MEAN field.
+            result=predict(np.asarray(q),np.asarray(r),cov,score,Config(**config['method_configs'][name]))
+            for arm,key in (('pro_reference_relations','field'),
+                            ('pro_relations_zero.control','zero_control'),
+                            ('pro_relations_positive.control','positive_control'),
+                            ('pro_relations_absolute.control','absolute_control'),
+                            ('pro_relations_pair_independent.control','pair_independent_control'),
+                            ('pro_relations_block.control','block_control')):
+                fields[arm]=result[key];masks[arm]=render(result[key])
+            info=result['info']
+        elif name=='reference_triplet_relations':
+            from .reference_triplet_relations import Config,predict
+            # Triplet's unary is the original packet score, never the MEAN field.
+            result=predict(np.asarray(q),np.asarray(r),cov,score,Config(**config['method_configs'][name]),
+                           include_pair_control=True)
+            for arm,key in (('reference_triplet_relations','field'),
+                            ('triplet_zero.control','zero_control'),
+                            ('triplet_absolute.control','absolute_control'),
+                            ('triplet_no_third.control','no_third_control'),
+                            ('triplet_pro_m2.control','pair_m2_control')):
+                fields[arm]=result[key];masks[arm]=render(result[key])
+            info=result['info']
+        elif name=='reference_hull':
+            from .reference_hull import Config,predict
+            result=predict(np.asarray(q),np.asarray(r),cov,base,Config(**config['method_configs'][name]))
+            for arm,key in (('reference_hull','field'),('hull_nearest.control','nearest_control'),
+                            ('hull_centroid.control','centroid_control'),('hull_subspace.control','subspace_control'),
+                            ('hull_affine.control','affine_control')):
+                fields[arm]=result[key];masks[arm]=render(result[key])
+            # Bounds are full arrays; only the predictor's scalar info enters JSON.
+            info=result['info']
+        elif name=='constellation_local':
+            from .reference_constellation_local import Config,predict
+            result=predict(np.asarray(q),np.asarray(r),cov,base,Config(**config['method_configs'][name]))
+            for arm,key in (('constellation_local','field'),
+                            ('constellation_local_global_v1.control','global_field'),
+                            ('constellation_local_bag.control','bag_field'),
+                            ('constellation_local_prior.control','prior')):
+                fields[arm]=result[key];masks[arm]=render(result[key])
+            info=result['info']
+        elif name=='reference_absorption':
+            from .reference_absorption import Config,predict
+            result=predict(np.asarray(q),np.asarray(r),cov,base,Config(**config['method_configs'][name]))
+            for arm,key in (('reference_absorption','field'),
+                            ('absorption_nearest.control','nearest_control'),
+                            ('absorption_kernel.control','kernel_control'),
+                            ('absorption_one_hop.control','one_hop_control'),
+                            ('absorption_one_step.control','one_step_control'),
+                            ('absorption_component.control','component_control'),
+                            ('absorption_full_harmonic.control','full_harmonic_control')):
+                fields[arm]=result[key];masks[arm]=render(result[key])
+            info=result['info']
+        elif name=='reference_gaussian_density':
+            from .reference_gaussian_density import Config,predict
+            result=predict(np.asarray(q),np.asarray(r),cov,base,Config(**config['method_configs'][name]))
+            for arm,key in (('reference_gaussian_density','field'),
+                            ('gaussian_density_polynomial.control','polynomial_control'),
+                            ('gaussian_density_quadratic_ridge.control','quadratic_ridge_control'),
+                            ('gaussian_density_uniform.control','uniform_control'),
+                            ('gaussian_density_nearest.control','nearest_control'),
+                            ('gaussian_density_centroid.control','centroid_control'),
+                            ('gaussian_density_standalone.control','standalone_control')):
+                fields[arm]=result[key];masks[arm]=render(result[key])
+            info=result['info']
         else:raise ValueError('Unrecognized prepared method')
         info['candidate_and_controls_seconds']=time.perf_counter()-method_started
         audits[name]=info
@@ -186,7 +264,10 @@ def one_episode(row,run,config):
                  wall_seconds=time.perf_counter()-started,cpu_seconds=time.process_time()-cpu_started,
                  process_peak_rss_bytes=int(rss if sys.platform=='darwin' else rss*1024),
                  query_gt_opened=False,new_encoder_forwards=0,pid=__import__('os').getpid(),
-                 independent_candidate_methods=len(config['prepared_methods']),
+                 independent_candidate_methods=sum(INDEPENDENT_METHOD_INCREMENT.get(name,1) for name in config['prepared_methods']),
+                 candidate_versions=len(config['prepared_methods']),
+                 selected_algorithm_rows=len(config['prepared_methods']),
+                 method_metadata={name:METHOD_METADATA[name] for name in config['prepared_methods']},
                  note='shared execution backend; not another segmentation method')
     (run/'receipts'/f'{occurrence}.json').write_text(json.dumps(receipt,indent=2,allow_nan=False)+'\n')
     return receipt

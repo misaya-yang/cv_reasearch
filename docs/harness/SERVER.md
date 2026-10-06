@@ -2,7 +2,15 @@
 
 这里只保存环境知识，不保存待办、当前进程或持续运行授权。当前阶段与资源状态见
 [STATUS](STATUS.md)，唯一工作清单见 [PLAN](../research/PLAN.md)。
-2026-10-06 文档整理没有访问服务器；之前用户报告已关机，现状未核实。
+2026-10-06 当前授权与操作以STATUS/PLAN为准。新入口已经用户明确授权并验证：
+`ssh -p 46466 root@connect.westb.seetacloud.com`，32 CPU、cgroup 60GiB、无可见GPU。
+当前命名空间 `/root/autodl-tmp/cvpr_prepared9_20261006_01a1100b`；
+旧缓存只作输入资产，不恢复旧PID/队列。
+
+当前Python `/root/miniconda3/bin/python`，`PYTHONPATH=/root/demo4_cache/env`；
+现存timm DINOv3权重、源码/位置基底及数据路径已核实，
+[详细资产与哈希](../../evidence/local/research_20261006/parallel_review_01a1100b/server_assets.md)。
+本轮不下载、不GPU、不新实例；合计线程不超过30且服从实际cgroup内存限制。
 
 ## 历史环境
 
@@ -28,7 +36,7 @@
 /root/demo4_cache/env:/root/autodl-tmp/demo8_local_verification/crf_source/src:/root/autodl-tmp/demo8_local_verification/runtime/extensions
 ```
 
-这些路径当前是否存在未核实；缺失不授权下载、重建缓存或恢复已删除的本地目录。
+上表保留历史导航；本轮实际复核范围及路径见当前资产报告，缺失不授权下载或恢复旧队列。
 
 ## 授权运行时
 
