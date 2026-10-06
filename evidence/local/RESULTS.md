@@ -610,6 +610,15 @@ against RCG +0.98 [+0.13, +1.63]. The readout gain repeats in every group (+0.39
 and +1.13 in C over the readout. Source: `research_20261005/rcg2_groupB/`, `research_20261005/rcg2_groupC/`;
 `scripts/run_rcg2_stream.py`; server `outputs/claude_rcg2_group{B,C}`.
 
+### 2026-10-06: frozen combined version on PASCAL-Part without refitting (598 episodes, 1 shot)
+
+Pack of INSID3's own loader (150 per benchmark fold, seed 0, 56 dense classes; not INSID3's exact evaluation list; `fold` in
+the table is the pack index modulo 4). Same frozen file as on COCO; FoRIS run fresh. Original resolution: FoRIS 53.87; RCG
+55.33 = +1.46 [+0.67, +2.40]; RCG + feature-guided readout 55.35, against RCG +0.02 [-0.09, +0.10]; full version 54.83 =
++0.96 [-0.06, +2.50], against RCG -0.50 [-1.24, +0.57]. At 1024: FoRIS 52.03, RCG +1.60 [+0.92, +2.45], readout -0.01, full
+-0.13 [-0.82, +0.76] against RCG. RCG transfers; neither auxiliary does. Source: `research_20261005/rcg2_grouppascal_part/`;
+server `outputs/claude_rcg2_pascal_part`, pack `outputs/claude_packs/pascal_part`.
+
 ### 写了但没有跑就撤回的
 
 部分对应（PCF）、不变概念与可移植提示、响应 pair-ratio 编辑器、响应训练路线曾在未取得足够前提证据时撤回。早期 `pair_bank.py` 准备被撤回，不表示后续 layer/joint 队列没有运行（结果见上）。撤回未运行构造不证明输入缺少信息。

@@ -4,6 +4,15 @@ Updated 2026-10-06 UTC. This file records current state; detailed evidence is li
 
 ## Now
 
+- Latest user instruction (2026-10-06 02:46 UTC): spend one hour on theory; do not run
+  experiments or compete with Claude for compute. Root stopped only verified owned
+  supervisors75010/77680/81658, GPU worker77374 and their owned waiting/child processes,
+  plus CPU consumer77731. All reusable features and partial outputs are retained;
+  foreign GPU process79813 was untouched. The old live-queue statements below are historical.
+  Hold receipt: remote `launch/theory_hour_20261006/hold_receipt.json`.
+  Root and three existing children derive selection, interaction and identifiability results
+  without data evaluation or model calls. No automatic experiment restart is authorized.
+
 - Historical scheduling failure left29m28s without an owned GPU successor after CLS ended.
   Those stages are terminal and their results are retained below. Current uniformtau15
   supervisor75010 runs GPU child77374; complete DirectMEAN4000 successor77680 is live

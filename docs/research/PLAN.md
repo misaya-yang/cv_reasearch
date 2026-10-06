@@ -1,5 +1,12 @@
 # Pending work
 
+Latest instruction, 2026-10-06 02:46 UTC: one hour of theory only. All owned experiment
+queues below are held, including the previously launched confirmation supervisor81658.
+No new GPU or CPU evaluation, and no automatic restart after the hour. Root synthesizes
+exact joint-value and finite-family optimization; existing children own pure-theory notes
+under `evidence/local/research_20261005/theory_hour_20261006/`. Partial predictions,
+affinities and reusable features remain intact. Historical pending rows do not authorize resumption.
+
 Updated2026-10-06 UTC. The user assigned continuous execution to chat
 `01a10c9c-32fb-7330-be53-cdb43999fd4f` and requested independent management without messaging Astra.
 Immediate priority is the A*/B* family selector and complete-method comparisons. Existing600 fixed

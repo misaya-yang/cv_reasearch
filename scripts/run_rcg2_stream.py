@@ -10,6 +10,7 @@ is read from the frozen file declared before this group was opened. Truth is rea
 import argparse
 import itertools
 import json
+import os
 import sys
 import time
 from pathlib import Path
@@ -46,7 +47,7 @@ def main():
     ks = torch.exp(-(dist[:, None, :, None] ** 2 + dist[None, :, None, :] ** 2).reshape(-1, K * K) / (2 * sigma ** 2)) * (ok1[:, None, :, None] & ok1[None, :, None, :]).reshape(-1, K * K)
     begin = time.monotonic()
     with torch.inference_mode():
-        host = build_host(SimpleNamespace(fixture=None, foris_root=None, demo4_root=a.demo4_root), man, "cuda"); torch.set_num_threads(8)
+        host = build_host(SimpleNamespace(fixture=None, foris_root=None, demo4_root=a.demo4_root), man, "cuda"); torch.set_num_threads(int(os.environ.get("RCG_THREADS", "8")))
         for n, row in enumerate(rows):
             sp, qp = (Image.open(data / row[k]).convert("RGB") for k in ("support", "query"))
             gold = torch.from_numpy((np.asarray(Image.open(ann / Path(row["support"]).with_suffix(".png"))) == row["c"] + 1).copy())
