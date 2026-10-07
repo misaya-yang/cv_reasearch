@@ -28,6 +28,7 @@ import ast
 import concurrent.futures
 import hashlib
 import inspect
+import importlib.metadata
 import json
 import multiprocessing
 import os
@@ -411,6 +412,14 @@ def input_hashes(args):
                 input_manifest_sha256=sha(args.input_manifest))
 
 
+def versions():
+    result={}
+    for name in ('numpy','torch','scipy','scikit-learn','Pillow'):
+        try:result[name]=importlib.metadata.version(name)
+        except importlib.metadata.PackageNotFoundError:result[name]='distribution metadata unavailable'
+    return result
+
+
 def assert_recipe():
     from ics.methods import stage_bank,rcg
     for key,value in dict(tau=.6,lse_temperature=.07,bg_weight=.55,hard_bg=.2).items():
@@ -725,6 +734,7 @@ def run(args):
                 above2='Stop; no parameter adjustment'),
             native_part2_constants=dict(tau=.6,FG_LSE_temperature=.07,BG_weight=.55,hard_BG_token_fraction=.2,orthogonal_norm_floor=1e-8),
             workers=args.workers,threads=args.threads,phase=args.phase,query_GT_used_for_evidence=False,new_encoder_forwards=0,
+            dependency_versions=versions(),
             native_part2=stage_bank.CONFIG,RCG_config=rcg.CONFIG,no_APD=NO_APD)
         write(args.out/'config.json',base);write(args.out/'ordered_rows.json',fresh)
         reports,provider=acceptance1_provider(args,fresh,joined,saved,classes,source_hashes)
