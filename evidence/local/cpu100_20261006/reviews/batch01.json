@@ -1,0 +1,77 @@
+{
+  "schema": "CPU100_REVIEW_BATCH_V1",
+  "reviewer": "summary_reviewer",
+  "scope": "cards and selected source read-only review; no reviewer experiments",
+  "accept_semantics": "accept_for_probe is permission to run the fixed CPU candidate and matched controls, not evidence of quality or originality",
+  "quality_status": "natural segmentation gains unknown; known fixed negative claims remain closed",
+  "accepted_method_ids": [
+    "cross_image_csls_hubness",
+    "cross_image_background_anchor_shift",
+    "cross_image_free_column_gram_matching",
+    "RGB01", "RGB02", "RGB03", "RGB04", "RGB05",
+    "local_001",
+    "DR01", "DR02", "DR03", "DR04", "DR05", "DR06", "DR07", "DR08",
+    "inv_adversarial_channel_support",
+    "inv_reference_mad_winsor",
+    "inv_multiscale_feature_consensus",
+    "inv_spatial_geomedian",
+    "inv_local_affine_reconstruction",
+    "inv_local_lowrank_reconstruction",
+    "inv_huber_reference_readout",
+    "ref_ordinal_copula", "ref_local_support_radius", "ref_joint_channel_code",
+    "QP01", "QP02"
+  ],
+  "accepted_card_count": 29,
+  "needs_revision": [
+    {
+      "method_id": "RGB06",
+      "decision": "needs_revision",
+      "count_delta": 0,
+      "minimum_action": "same signed unary, edges, quantization, renderer and pairwise mass; joint dependency witness with identical one-modality marginals before approval",
+      "unverified_claims": "natural benefit and joint necessity unknown"
+    }
+  ],
+  "rejected_duplicates": [
+    {
+      "method_id": "ref_affine_tangent_support",
+      "decision": "reject_duplicate",
+      "count_delta": 0,
+      "reason": "Existing reference_hull.py span_distance affine_control already makes role-specific affine nullspace distance; fixed rank/pole is a family revision",
+      "prior_evidence": "src/ics/methods/reference_hull.py:96-102,153-156",
+      "minimum_action": "keep closure as a control/revision; do not implement as another counted method"
+    },
+    {
+      "method_id": "QP03",
+      "decision": "reject_duplicate",
+      "count_delta": 0,
+      "reason": "Mean third-moment tensor squared distance difference is exactly pooled pointwise cubic score; region mean does not produce a new joint decision",
+      "prior_evidence": "dB-dF=2 mean(phi(q)) dot(muF-muB)+norm(muB)^2-norm(muF)^2",
+      "minimum_action": "retain algebraic closure; no counted implementation"
+    }
+  ],
+  "fixed_quality_claim_closed": [
+    {
+      "method_id": "cross_image_free_column_gram_matching",
+      "reason": "Intended rotation witness failed; appearance ties it and cheap sorted profiles succeed; optimized objective is below true mapping objective",
+      "allowed_status": "runnable negative-result method with explicit failure reflection; not a positive candidate for expansion unless current plan independently justifies the measurement",
+      "count_warning": "readily runnable count and quality-positive count must remain separate"
+    }
+  ],
+  "global_requirements": [
+    "complete signed native margin and common physical renderer",
+    "ignore zero-valid padding in statistics, dictionaries and graph edges; partial coverage explicitly fixed",
+    "native FP32 final-LN or explicit float64 unit export with source hash provenance; processed FoRIS cache not substituted",
+    "RGB requires actual hash-bound images, complete reference mask and matching physical geometry; missing images explicitly unavailable",
+    "empty reference roles and zero ties have explicit deterministic behavior",
+    "same-input same-readout strong controls and documented counterexamples",
+    "seal complete predictions before separate query-GT scorer",
+    "four exposed episodes are activity/cost or descriptive score only, never population confirmation",
+    "200 screening exposures and winner selection logged; all failures retain applicable pipeline and root cause",
+    "CPU thread/memory/disk bounds supervised by root on the latest authorized host only"
+  ],
+  "details": "evidence/local/cpu100_20261006/reviews/batch01.md",
+  "implementation_count_delta": "not assigned by cards; requires fixed source and complete runnable output receipts",
+  "stable_positive_quality_count": 0,
+  "target_count": 100,
+  "target_complete": false
+}

@@ -1,0 +1,139 @@
+{
+  "scope": "four further fixed decisions, not parameter variants; review before implementation",
+  "source_summary": "user-provided Opus session summary (local-only source, not included in repository)",
+  "prior_batch_reflection": "Natural background anchors inactive4/4; fused Gram failed even its rotation witness and was beaten by cheap profile. Neither fact closes all cross-image inference. Nyström linear spectral readout excluded because it expands to same-kernel spectral regression; local tangent excluded as existing affine-control family.",
+  "cards": [
+    {
+      "id": "cross_image_joint_sparse_role_removal",
+      "title": "联合参考稀疏解释的角色去除代价",
+      "gap": "单个query token可能同时包含目标和背景方向；分别按FG/BG整体凸包或最近点解释，会忽略二者在同一重构中的竞争。全凸包也可用很多跨部位原子解释一个干扰。",
+      "history_evidence": "旧hull public60048.915、quadratic51.607均负；旧hull是各role分开simplex最近集，而非联合FG/BG稀疏解和角色删除效应。稀疏预算不能仅作为hull调参计方法，因此只计联合解释/角色去除一个决策，不计OMP budget或单role稀疏控制。",
+      "available_information": "单位DINO R/Q、完整MR面积权重和valid；不host、不QGT、不额外编码。R FG/BG各最多32 atoms，覆盖比例决定atoms role。",
+      "new_observation_or_argument": "先用混合字典共同解释q，再去掉FG或BG贡献，两个残差衡量同一个解释对各role的依赖；不是两个class各自随意换解释。混合可以使一个单role最近点胜利变为另一个role解释占主导，但系数竞争是否对应语义尚未知。",
+      "algorithm": [
+        "验证输入；覆盖加权的确定性FG/BG mode压缩各最多32，q_valid=0不推断；缺role回common prototype。",
+        "每个完整Q token非负OMP最多3步：选择未用atom与当前残差dot最大且>0者。",
+        "每步对选中<=3 atoms精确枚举非负active subsets作最小二乘，保留最小残差；tie按atom ID。",
+        "得到唯一固定greedy joint coefficients alpha，按soft role拆f=sum alpha*coverage*atom、b=sum alpha*(1-coverage)*atom。",
+        "e_removeFG=||q-b||²，e_removeBG=||q-f||²；margin=e_removeFG-e_removeBG。",
+        "公共renderer完整mask；独立class OMP3、dense class-cone、旧class convex hull和直接nearest为同信息控制。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "action": "若目标贡献必须与背景联合解释才能显现，恢复目标；若干扰只能借多类字典拼接，可由角色去除改变身份",
+        "numeric_gain": "unknown"
+      },
+      "simplest_control": "相同atoms下独立FG/BG非负OMP3残差；same OMP coefficient summed-role vote；class cone/full convex hull；prototype和nearest。同signed margin common render。",
+      "why_not_duplicate": "决策对象是一次共同混合解释的角色去除代价，不是class convex support距离或原子余弦vote。稀疏阶数/solver/预算只算本family修订，若joint role removal代数退化为coefficient vote须报告而不另计。",
+      "counterexample": "字典高度相干时alpha不唯一，贪婪选错先手；真实目标需>3原子，或背景原子替代FG导致误删。重构好不保证语义对。",
+      "first_evidence": "构造单位token混合，joint role removal与same-budget independent class fit给不同完整判决；与dense/hull控制比较，若简单control也解开就如实记复杂度不必要。通过<=3 NNLS和SciPy nnls核对；相干字典和>3贡献负例。native4活动后1024质量交root。",
+      "cpu_cost": "NumPy/SciPy CPU1，query-reference cross products逐256；至多3步每token枚举<=8小active set，O(Nqd64 + Nq*3*8*3³)，不大矩阵反演；4096预计512MiB预算，真实时间未知。",
+      "limitations": "不施加Q-to-R列容量或target面积；OMP非全局l0最优，固定budget是复杂度先验。跨图style仍可令整个字典错误。",
+      "failure_learning": "分别记录残差下降与role判决；若residual降低但语义错，关掉重构→身份假设，不把优化数值成功当收益；若与independent class/hull同判，就无joint独有收益。",
+      "implementation": "src/ics/cpu100/cross_image_matching_batch2.py::METHODS[cross_image_joint_sparse_role_removal]",
+      "evidence_report": "evidence/local/cpu100_20261006/reports/cross_image_matching_batch2/report.json",
+      "post_probe_status": "specific synthetic joint effect; hull/coefficient control also solves; semantic exact-background-atom negative; native128 activity3/fallback1; natural mIoU unknown",
+      "actual_empirical_gain": "unknown; root native1024 producer/protocol separately scored",
+      "api": "Episode -> Result(signed complete native margin,info); padding zero margin; common physical renderer; no probability claim"
+    },
+    {
+      "id": "cross_image_exemplar_facility_cover",
+      "title": "全查询共享参考解释的设施选择",
+      "gap": "逐token匹配允许每个偶发干扰打开独立FG原子；一个同时解释许多弱同类token的R原子，与只解释一个离群干扰的原子，在逐点成本中没有区别。",
+      "history_evidence": "旧reference_occupancy强迫参考mode边际导致public60018.877；CSLS惩罚hub可误删重复真目标。这里不设参考容量/比例，改成打开atom付一次成本的global cover。它会鼓励复用，与CSLS方向相反，可能奖励错误hub，须明确复杂度/面积先验。",
+      "available_information": "单位R/Q、合法MR和valid；R FG/BG各最多32 atoms；完整Q features。只使用已有特征，不查询Qlabels。",
+      "new_observation_or_argument": "联合总代价sum_i w_i min_open(1-q_i dot r_a)+0.05*number_open，使低支持的偶发原子不值得单独打开，而多个相似query能共付解释成本。绝非新语义证据，依赖重复解释比孤立误匹配更可信的条件。total valid query mass归一化，因此数量增加代表面积影响。",
+      "algorithm": [
+        "确定性参考角色字典各最多32；完整Q valid权重normalize成sum1，padding0。",
+        "Cia=1-q_i dot atom_a；每atom开放费固定0.05。",
+        "先开放weighted sum C最小的atom，tie按atom ID。",
+        "逐步选择降低total unary成本最多的新atom；只有节省>0.05才开放，最多64次；无负gain时停止。",
+        "将每Q分给当前open atoms中cost最低者，tie按atom ID；margin=2*该atom覆盖比例-1。",
+        "公共renderer完整mask；控制全部atoms开放、随机同数open、按全Q成本排序同数open（控制不算方法）。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "action": "关闭只服务孤立错误query的FG解释，同时允许同类多实例共同打开参考解释",
+        "numeric_gain": "unknown"
+      },
+      "simplest_control": "same dictionary全部开放nearest；相同开放个数的global unary排序和随机/固定ID选择；same source prototype。完整joint objective值只是求解账，不能当质量。",
+      "why_not_duplicate": "不固定参考mode边际，不要求reference占用，不限制Q映射次数。不同于CSLS，每个atom一个global activation变量与共享解释成本；所有facility费/solver/压缩值只算一项。",
+      "counterexample": "正确目标很小只需一个独特原子，正好被开放费删除；重复错误区域成为便宜FGhub，会被保护；source多个target外观需要很多open atoms而BG简单。",
+      "first_evidence": "单位角度例：足够多弱同类Q共付一个FGatom，而孤立false匹配无法支付；反例tiny真目标被删除、large错误hub复用。与同数unary排序control同信息对比，若只靠少选atoms解释增益则声明。",
+      "cpu_cost": "CPU1 NumPy；完整Q-to-max64R cost O(Nqd64)，greedy最多64轮O(Nq64²)，cost4096x64约2MiB；不形成NxN，输入和renderer预算512MiB。",
+      "limitations": "明确复杂度先验、对Q面积组成敏感；不是大小估计、不声称π正确。greedy非全局facility optimum，小case穷举open subsets审算。",
+      "failure_learning": "记录每open atom服务mass、舍弃atom的gain和true-small反例。若反复舍小真目标，假设失败；若same-count control等效，不将activation优化归功为新身份量。",
+      "implementation": "src/ics/cpu100/cross_image_matching_batch2.py::METHODS[cross_image_exemplar_facility_cover]",
+      "evidence_report": "evidence/local/cpu100_20261006/reports/cross_image_matching_batch2/report.json",
+      "post_probe_status": "specific synthetic FP removal beyond same-count unary; genuine tiny-target deletion negative; native128 activity3/fallback1; natural mIoU unknown",
+      "actual_empirical_gain": "unknown; root native1024 producer/protocol separately scored",
+      "api": "Episode -> Result(signed complete native margin,info); padding zero margin; common physical renderer; no probability claim"
+    },
+    {
+      "id": "cross_image_nonreturn_path_consensus",
+      "title": "跨图无立即回退路径的角色共识",
+      "gap": "一个q-r互相最近邻的边可以在普通3-hop walk中反复返回q/r，把同一对应多次计为支持。回程成功本身也可能只意味着该hub互为最近。",
+      "history_evidence": "总结roundtrip/seed paradox失败；旧reference_absorption是union query/reference feature graph的first-hit harmonic值加base residual，public60037.822。这里不把old harmonic改成3步计新；新增假设是排除立即返回同一Q/同一R后，剩余支持来自另一个合法参考原子，经另一个query桥接。",
+      "available_information": "已有unitR/Q和MR，valid；R角色atoms各最多16、Q64；跨图bipartite affinity，无Qseed或host field。",
+      "new_observation_or_argument": "输出3-hop Q_i→R_a→Q_j→R_b的末端role平均，只保留j≠i、b≠a。这是directed edge-history状态而非token harmonic固定点；禁返回可使单个互为NN不再凭自循环获得共识。但高连边错误背景仍可提供多条独立路径，须负例。",
+      "algorithm": [
+        "覆盖加权参考FG/BG各16 atoms、Q64 modes，忽略0valid，partial weight影响mode位置。",
+        "S=Q R^T；每行/列分别保留topmin(4,n)构成边支持并取union，W=exp((S-rowmax)/0.1)在支持上，未支持0。",
+        "对每个Q_i，枚举a,j,b的3-hop paths，j≠i且b≠a，weight=Wia*Wja*Wjb。",
+        "margin_i=sum_path weight*(2*MR_b-1)/sum_path weight；没有path时回same1-hop kernel margin。",
+        "完整Q按nearest mode赋margin，公共renderer完整mask。",
+        "controls same W普通3-hop含回退、1-hop、仅禁Q返回、仅禁R返回；控制不多计。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "action": "抑制互为NN单边回声，把身份依据转到不重复的参考原子支持",
+        "numeric_gain": "unknown"
+      },
+      "simplest_control": "same dictionary、sameW、same3hop长度但允许回退的ordinary walk；1-hop source kernel；wrong high-connectivity background桥接负例。不能与成本/输入不同的old base score仅比总分。",
+      "why_not_duplicate": "状态包括上一条边，禁止同query和同reference原子的即时重复，而非harmonic solve截断迭代；不是roundtrip pass/fail或成品分数修补。若枚举展开等价一层reweighted kernel，应直接展开并报告这一决策（只有1项，不另计walk/kernel实现）。",
+      "counterexample": "错误类别在Q内部高连接并匹配多个FGatoms，则禁返回仍强化错误身份；单实例/少Rmode没有independent path会fallback；真实唯一part对应可能被排除。",
+      "first_evidence": "小合法bipartite unit-feature例：mutualFGhub self-echo使普通walk错，nonreturn由其它BGanchors改判；direct enumerator与矩阵公式核对。复制高连错误FG桥负例；native4活动/cost不总体claim。",
+      "cpu_cost": "CPU1、最多64Qx32R模式，3-hop用R×R交叉统计及逐i扣除self项，O(nQ²*nR+nQ*nR²)或小模式直接枚举；逐Q回fulltokensO(Nqd64)，512MiB预算。",
+      "limitations": "not calibrated probability；多路径不是独立统计样本，不能声称方差按路径数下降。错误seed问题仍在source-to-query mapping中。",
+      "failure_learning": "记录onehop、ordinary、nonreturn差异及有效末端atom数；若错误多桥共识增强，则反驳独立路径=正确身份；若与onehop相同，无新作用。",
+      "implementation": "src/ics/cpu100/cross_image_matching_batch2.py::METHODS[cross_image_nonreturn_path_consensus]",
+      "evidence_report": "evidence/local/cpu100_20261006/reports/cross_image_matching_batch2/report.json",
+      "post_probe_status": "specified hub deletion and BG-bridge false addition cancel in complete fixture; no net benefit; native128 activity3/fallback1; natural mIoU unknown",
+      "actual_empirical_gain": "unknown; root native1024 producer/protocol separately scored",
+      "api": "Episode -> Result(signed complete native margin,info); padding zero margin; common physical renderer; no probability claim"
+    },
+    {
+      "id": "cross_image_source_opponent_matching",
+      "title": "参考角色全局对手匹配的中位判决",
+      "gap": "每FGatom独立选最近BG对手会让一个BGhub重复主导多条比较；反过来，全role均值会把所有FG-BG配对信息完全抵消成一个向量，无法表示多个局部决策方向。",
+      "history_evidence": "旧paired_contrast V2/V3通过各role各自最近opponents做linear contrast，困难组仍失败；summary source use≈mean不等于一切reference comparison都等价。若pair raw margin做mean，配对确实代数取消，不能计新。",
+      "available_information": "unit R/Q、MR valid；只R已知FG/BG构造对手，Q不限次数复用这些对手，不假定多实例一对一。",
+      "new_observation_or_argument": "在R内作最小成本FG/BG一对一匹配，再对每pair的unit difference方向取query margins中位数。normalization和非线性中位读出使不同配对改变决策；必须用all-pairs和independent-nearest opponent同中位控制判断global matching增量。R端均匀mode投票是先验，不能称semantic保证。",
+      "algorithm": [
+        "角色mode各最多32；取K=min(nFG,nBG)并同FPS压缩到K，缺role回prototype；allselected原子权重相同。",
+        "reference-only costCab=1-fa dot bb，SciPy linear_sum_assignment取总cost最小匹配，tie deterministic固定原子顺序。",
+        "pair方向d_k=(f_k-b_match(k))/||f_k-b_match(k)||；零差pair丢弃，allzero回prototype。",
+        "每完整Q token margin=median_k(q dot d_k)，qvalid0置0，公共renderer完整mask。",
+        "控制独立nearest-BG同unit directions中位、allCartesian FG/BG unit方向中位、same matching raw direction mean。",
+        "披露raw mean q dot mean(F-B)与配对无关的代数恒等式，不能计新方法。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "action": "避免单个参考BG对手被无限复用支配比较，在多局部决策方向存在时改变身份",
+        "numeric_gain": "unknown"
+      },
+      "simplest_control": "相同K字典的独立nearest-opponent median/allCartesian median/unit-globalmean；costmatching只在R上，Qrender和信息完全一样。matched randompermutation median为控制，非多方法。",
+      "why_not_duplicate": "局部最近opponent改为全R竞争分配只是support选择，配合median方向ensemble构成一项；不是把Hungarian/Sinkhorn实现名算方法。source pair容量不约束Q，允许所有同类实例使用同一组pair directions。若控制说明增量来自中位而非matching，计数和归因需收缩。",
+      "counterexample": "独特BGatom被迫配给无关FG，产生不代表真实边界的方向；target参考模态数量少会K=1退化；unit小差方向放大source noise；多数局部pair本身错会中位失效。",
+      "first_evidence": "至少3FG/3BG单位向量构造，matched median与nearest/allpairs判决不同，不能只与raw mean比较；小K穷举assignment核对minimumcost。贴近重合pair噪声和全部错误opponents负例，native4运行记录K/活动。",
+      "cpu_cost": "NumPy+SciPy CPU1；K<=32 Hungarian O(K³)、完整query投影O(NqdK)，不query容量，不大Gram；512MiB预算，cost未测。",
+      "limitations": "不创造语义信息，source模式与对手可跨图失配。pairmedian不是概率。少参考FGtokens真实可能退化到K1，应明确活动情况。",
+      "failure_learning": "分开matching代价、方向分散与输出改判；若allpairs简单control相同或更好，global分配没有必要；若K1仅prototype改权，不说多方向收益。",
+      "implementation": "src/ics/cpu100/cross_image_matching_batch2.py::METHODS[cross_image_source_opponent_matching]",
+      "evidence_report": "evidence/local/cpu100_20261006/reports/cross_image_matching_batch2/report.json",
+      "post_probe_status": "one FG recovered but another deleted; random/allpairs controls expose missing matching necessity; native128 activity3/fallback1; natural mIoU unknown",
+      "actual_empirical_gain": "unknown; root native1024 producer/protocol separately scored",
+      "api": "Episode -> Result(signed complete native margin,info); padding zero margin; common physical renderer; no probability claim"
+    }
+  ]
+}

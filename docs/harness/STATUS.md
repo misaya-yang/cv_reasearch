@@ -1,8 +1,12 @@
 # 当前状态
 
-用户最新纠正：直接用冻结DINOv3特征处理。独立DINO-only输入/完整掩码入口已实现，本地四例真实RGB128输出已封存，不用FoRIS分数/Part1/旧MEAN；只作输入路线与算子核对，未评分、不代替RGB1024/600目标。服务器保持关闭，完整1024直接特征/Q GT在本次本地项目检查中未就绪，extract/600未运行。详见[记录](../../evidence/local/research_20261006/direct_dino_input_01a1100b/README.md)。
+## CPU100首批运行记录（2026-10-07）
 
-2026-10-06 最新：用户已关机；本轮远端工作已停止，停止SSH/SCP重试和部署，不启动实例/替换端点/自动恢复旧队列。灰度first4已完成，随后full600及fresh parity未启动；纹理实际smoke4未运行，600资产导出完成状态未核实。19个候选定义不等于1000项或高质量结果，本轮目标未交付。
+reviewer首批审查为29张卡 `accept_for_probe`、1张需修订、2项重复关闭；放行不代表有效。随后30个完整方法臂及全部对照在4个复用开发样本上完成native FP32 DINO1024推断，并由独立scorer读取QGT评分，所有请求臂完整。该结果是描述性四例活动探针，不是独立确认或总体结论；最高方法分数`inv_huber_reference_readout=40.4669`，其声明的Huber-ridge对照为`40.5636`。其他臂在这4例上有正负差异，未建立稳定正收益；100方法目标仍未完成。见[四例汇总](../../evidence/local/cpu100_20261006/server/probe29_native4_v2/methods_summary.md)、[完整配对报告](../../evidence/local/cpu100_20261006/server/probe29_native4_v2/methods29_native4_v2/score/report.json)和[审查记录](../../evidence/local/cpu100_20261006/reviews/batch01.md)。
+
+此前本地直接DINO输入记录（2026-10-06）：独立DINO-only入口已完成四例RGB128 prototype输出，不用FoRIS分数/Part1/旧MEAN；该本地活动记录未评分，不代替RGB1024/600目标。之后CPU100四例1024结果见本页上方。详见[本地输入记录](../../evidence/local/research_20261006/direct_dino_input_01a1100b/README.md)。
+
+旧46466端点于2026-10-06关闭；其连接、部署、重试及旧队列停止。之后的CPU100任务使用单独授权的新端点，见[服务器说明](SERVER.md)；不从旧launch恢复工作。灰度first4已完成，随后full600及fresh parity未启动；纹理实际smoke4未运行，600资产导出完成状态未核实。旧19个候选定义不等于1000项或高质量结果。
 
 - 灰度first4报告：[结果与比较](../../evidence/local/research_20261006/grayscaled_dino_preparation_01a1100b/actual_result.md)。
 - 纹理候选仅有本地实现和合成RGB检查，未做真实smoke：[README](../../evidence/local/research_20261006/reference_texture_01a1100b/README.md)。
@@ -12,7 +16,7 @@
 
 Pro原文不是五个纯DINO-only方案：其3.2明确允许FoRIS宿主连续证据，M1/M5固定位置gate，M2角色字典明确用末层去位置特征；同时3.1要求真实FP32编码。加工DINO缓存的存在不自动解释质量失败，旧FP16适配结果也不证明五个严格原合同均已失败。
 
-以下保留关机前已完成事实和当时授权；当前资源状态以上文与PLAN最新段为准。
+以下内容保留旧46466端点关闭前的结果与历史授权；新CPU100状态见页首和PLAN。
 
 2026-10-06：用户要求 **1000种方法、继续实验和多代理并行迭代**，并已明确授权在新46466 CPU服务器上传和运行，覆盖此前关机/本地准备限制。
 原九项600例完整实测已完成：native **61.335314**，当前MEAN **62.931546**；九项均未超过同批MEAN。

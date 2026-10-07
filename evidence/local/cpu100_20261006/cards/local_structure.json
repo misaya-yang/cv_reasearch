@@ -1,0 +1,230 @@
+{
+  "family": "local_structure",
+  "proposal_count": 5,
+  "count_limit": 15,
+  "reason_not_filled": "Five constructions have precise or reviewed definitions; only accepted methods are implemented, controls and repairs countzero. Further structural candidates need a distinct full decision, not contour/scale/descriptor renaming.",
+  "cards": [
+    {
+      "id": "local_001",
+      "title": "Centered local DINO Gram signature classification",
+      "gap": "The direct DINO foreground/background mean or nearest-feature margin may tie or reverse when reference and query have different shared scene components, although local organization of feature variation is preserved. The target error is identity sorting from the model origin; this is not a patch to FoRIS output.",
+      "history_evidence": [
+        "Desktop summary sections 3.10 and 3.11 report cross-image feature mismatch and that query-internal information remains useful. They do not establish that local Gram signatures transfer across real DINO instances.",
+        "Current nine_public600_v2/score/report.json reports adjacency 18.8774, shape 57.1310 and constellation 61.7126 on the processed legacy DINO host; directed_topology_closure decision closes structural templates. Those results are not direct-native measurements of this signature classifier.",
+        "Triplet field versus its own zero term gains only 0.00536 with an interval crossing zero. Therefore changing a role-label interaction order is not the claimed improvement here."
+      ],
+      "available_information": "Frozen q/r unit-compatible DINO patch vectors, full reference foreground coverage wf, physical-valid patch weights wvalid/q_valid and rectangular patch geometry. No query labels, seed mask, class names, text, new encoder calls, FoRIS score or cache-produced segmentation is used.",
+      "new_observation_or_argument": "For a token neighborhood, weighted centering and trace-normalized Gram formation cancel a common additive component, common nonzero scale and orthogonal coordinate change of the vectors supplied to the Gram step. Because the algorithm first unit-normalizes DINO inputs, arbitrary pre-normalization additive shifts do NOT enjoy this invariance. One exact legal unit-vector construction is y_i=s O x_i+b with b orthogonal to every O x_i and s^2+||b||^2=1: the signature is unchanged. The eigenspectrum and sorted center-to-neighbor Gram row can differ when absolute class means and scalar local trace tie. These are algebraic facts under explicit conditions, not an assertion that real DINO scene shifts meet them.",
+      "algorithm": [
+        "Normalize nonzero input vectors; use the fixed stencil center, four axis neighbors at one patch and four at two patches, with no wrap and physical-valid weights.",
+        "At every token form weighted local mean mu and C_a=sqrt(valid_a)*(x_a-mu); padded or invalid positions have C_a=0.",
+        "Form G=C C^T / trace(C C^T), or G=0 when trace is zero. Descriptor is nine descending eigenvalues concatenated with the nine sorted entries of the center row (18 numbers).",
+        "Compute a fixed data scale h from the median, over valid reference descriptors, of their nearest strictly distinct reference descriptor distance. No label or query truth is used for h.",
+        "For each query descriptor compute exp(-distance^2/h^2) to every valid reference descriptor, in bounded chunks.",
+        "Use coverage-weighted FG and BG class-average kernels A_F and A_B; return signed margin (A_F-A_B)/(A_F+A_B), with zero if both underflow or h is degenerate.",
+        "Empty reference foreground produces all-negative output; reference with no background produces all-positive output. Invalid query support produces negative output.",
+        "Return the complete query-grid signed field; common physical renderer and strict margin>0 produce the complete mask, with zero ties assigned background."
+      ],
+      "expected_benefit": {
+        "level": "algebraic_and_hypothesized",
+        "statement": "If target local relational variation transfers while the absolute feature direction changes, the classifier can change a raw-DINO tie or misordering. No numerical natural-image gain, stable benefit or originality is established."
+      },
+      "simplest_control": [
+        "Same input and same renderer: complete weighted foreground/background mean cosine margin.",
+        "Same reference kernel classifier using only normalized local trace and sorted per-row diagonal variances; checks whether cheap local variation rather than higher joint structure suffices.",
+        "Same signature kernel classifier with Gram replaced by its diagonal; no change to labels, bandwidth rule, reference weights or renderer.",
+        "Label-permuted reference weights as a dependency check; not a new method."
+      ],
+      "why_not_duplicate": "No reference silhouette, spatial shape transform, query-region tree, role dictionary, mode-pair/triple label table, cross-image correspondence, occupancy quota or propagation seed is constructed. Each token is classified from its observable local self-similarity structure. Sorting/permutation invariance deliberately discards reference part order; the old adjacency and layout terms imposed order. The fixed descriptor and controls are one method, not 18 or multiple scales.",
+      "counterexample": [
+        "A distractor with the same local Gram signatures as the target receives the same evidence, even when its absolute DINO direction would distinguish it.",
+        "A truly uniform target and uniform background have zero descriptors and are not identifiable by this method.",
+        "Changed articulation, patch sampling or local material pattern may change the target signature and cause deletion; this is a local structure transfer assumption, not a universal invariant.",
+        "A reference that labels only one visible local pattern cannot cover unseen patterns or very small target interiors; multiple query instances are all classified independently, without identity propagation.",
+        "No wrong-seed escape claim: the method has no query seed, but a mislabeled/corrupted reference pattern can confidently misclassify repeated query distractors."
+      ],
+      "first_evidence": "After reviewer acceptance, run the complete NumPy algorithm on a unit-vector tiled-region witness in which both reference class means and local trace controls tie, but centered Gram rank differs; apply a common query feature rotation plus an orthogonal shared component, and score the full output against the sealed synthetic labels. Also run copied-signature distractor and changed-pattern target negative witnesses. On existing four real native RGB DINO episodes, record complete output activity and single-thread time/memory only; their query truth is not locally available, so natural quality remains unmeasured.",
+      "cpu_cost": "One CPU thread, no new forwards. Signature O((Nr+Nq)*9^2*D), 9x9 symmetric eigensolves per token; exact reference/query kernel and bandwidth O((Nr^2+Nr*Nq)*18), chunked at 64 descriptor rows. Additional working arrays bounded by the chunk size rather than NxNxD. Practical 4096-patch time and memory unmeasured until a bounded native-shape probe.",
+      "limitations": "This is deliberately one independent candidate, not a promise of a real DINO gain. If the witness is also solved by the diagonal/trace control, the asserted joint-structure necessity is withdrawn. If natural activity is empty/saturated, inspect descriptor degeneracy and reference separation before claiming transfer failure. Failure reflection distinguishes lack of reference discrimination, copied-signature identity ambiguity, target-pattern mismatch and computational cost; it does not prescribe hyperparameter search."
+    },
+    {
+      "id": "local_002",
+      "title": "Dense reference-index correspondence with bounded local deformation",
+      "gap": "Nearest DINO matches may independently use incompatible reference patches, giving a patchwork distractor the same unary evidence as an articulated true object. Rigid constellation cannot follow local articulation; whole-reference silhouette transfer can delete other query instances.",
+      "history_evidence": [
+        "Current constellation 61.7126 and local v2 62.3086 are below MEAN 62.9315 on legacy public600; v2 acts in accepted warped support but retains rigid pose and partial-coverage loss. directed_topology_closure records these limits, not a universal impossibility of dense correspondence.",
+        "Old adjacency uses appearance-mode pair histograms on a spatial region tree and is very negative. This candidate must beat a unary+label-Potts control and cannot claim graph coherence proves identity."
+      ],
+      "available_information": "Native q/r DINO, full MR fractional coverage and physical coordinates/validity. No FoRIS field, query seed, predicted object count/area or query label.",
+      "new_observation_or_argument": "A joint per-token reference coordinate assignment carries compatibility information discarded by independent cosine matching and by a bag of mode-pair counts. Bounded spatial changes in the inferred correspondence field allow articulation; no single accepted pose transfers a reference mask. This information helps only if appearance correspondences are sufficiently correct and compatible, and a coherent false match remains possible.",
+      "algorithm": [
+        "Pool reference features and FG/valid coverage into a fixed at-most16x16 physical grid; normalize pooled vectors. This pool is shared by controls.",
+        "For every valid query token retain its top4 foreground and top4 background reference anchors by cosine, with overlap removed; class is anchor FGfraction>0.5. Missing class has no candidates.",
+        "Unary cost is 1-cos(q_i,r_j). A candidate displacement is its reference physical coordinate minus the query coordinate, both in their own letterboxed unit square.",
+        "Use four-neighbor query edges with weight max(cos(q_i,q_k),0). Edge cost is 0.1*weight*min(||displacement_i-displacement_k||^2/(2/query_max_side)^2,1).",
+        "Run exactly six forward/backward ICM passes from three starts: best unary, best FG anchor and best BG anchor. Decompose only on exactly zero-weight original query graph edges; independently choose each component's lowest original local energy among these same three solutions. This assembly cannot increase the original additive MRF energy; deterministic ties first start then lowest reference ID.",
+        "The three starts and passes are one fixed inference algorithm, not methods or searched variants. No global size quota, seed or warp support is introduced.",
+        "Output the matched anchor signed fractional-label margin 2*FGfraction-1 for every query token; invalid tokens are negative.",
+        "No FG reference yields negative everywhere; no BG reference positive everywhere. The common renderer produces a complete query mask."
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "statement": "When a true object has locally smooth but globally nonrigid reference correspondences and an equally similar distractor requires incompatible matches, dense coherence can improve sorting and preserve separately matching instances. No real numeric gain is established."
+      },
+      "simplest_control": [
+        "Same pooled anchors and binary/fractional-label readout with per-token best cosine match.",
+        "Same candidates and ICM optimizer with only FG/BG Potts compatibility rather than correspondence-coordinate compatibility.",
+        "Same graph coherence with all reference coordinates permuted; a mechanism dependency control, not a method."
+      ],
+      "why_not_duplicate": "Old constellation fits one similarity transform and then warps the full MR; this maps every query patch independently under a locally regularized multi-label assignment, permits multiple displacement discontinuities and never globally suppresses unsupported pixels. Old mode adjacency loses which particular reference patch each query patch matched. Parameters/starts/controls count zero.",
+      "counterexample": [
+        "A wrong initial unary correspondence can be a local optimum; three starts do not guarantee global MAP.",
+        "A copied patchwork with coherent coordinates is indistinguishable; coherent matching is not semantic identity.",
+        "Large viewpoint, scale change or articulation gradient can exceed the bounded strain and be penalized.",
+        "Similar adjacent true instances can be coupled by the graph and lose one correspondence field.",
+        "Reference pooling may remove a tiny target; this loss must be matched in the anchor control and reported."
+      ],
+      "first_evidence": "Reviewer acceptance then complete unit-feature deformable-assembly witness whose rigid transform cannot fit all parts, with equal unary strength for a scrambled distractor. Add wrong-unary/coherent-distractor and nearby-multi-instance negatives. Compare same readout unary and label-Potts controls; if only Potts fixes it, withdraw reference-coordinate attribution. Existing native4 only verifies activity/cost, not natural quality.",
+      "cpu_cost": "One CPU thread. Nr<=256 pooled anchors, at most8 labels/token. O(Nq*Nr*D) similarities, six sweeps*two directions*three starts*four neighbors*eight labels; O(Nq*8+Nr*D) additional storage. No new encoder forwards. Native4096x1024 runtime unmeasured.",
+      "limitations": "Local ICM is approximate and can preserve wrong matches. Unit-square correspondence assumes local scale coherence and can fail under global scale. A synthetic articulation gain is not a real DINO gain. Failure reports separate candidate exclusion, local optimizer failure, class identity ambiguity, pooling loss and inconsistent real geometric correspondence; no default parameter search. Revision0 selected a single global start and missed an independently better component combination. Reviewer approved revision1 componentwise assembly as a solver repair of the same separable energy, count zero. Revision0 source and measured outputs are retained."
+    },
+    {
+      "id": "local_003",
+      "title": "Foreground/background regularized convex patch reconstruction",
+      "gap": "A single patch or bag of modes ignores which feature variations coexist in a small neighborhood; a true query local composition may be absent as one reference patch but expressible as a convex combination of target neighborhoods. Old part histograms impose discrete counts and cannot express this continuous patch mixture.",
+      "history_evidence": [
+        "Summary 3.11 reports cross-image absolute mismatch; this method retains ordered feature directions and therefore must explicitly fail under arbitrary feature-coordinate rotation. It does not borrow local001 invariance claims.",
+        "Legacy covariance (12.3432) and adjacency (18.8774) failed badly; therefore covariance/cooccurrence alone is not assumed useful. The required controls test whether sparse patch reconstruction adds anything beyond ordinary patch similarity."
+      ],
+      "available_information": "Native q/r DINO, full MR fractional center labels, physical valid support and local rectangular neighborhoods. No host field, query seeds, labels, external model or imagery.",
+      "new_observation_or_argument": "The ordered nine-patch centered DINO tensor is an available continuous joint observation. Independent-token matching or Gram invariants discard its coordinate directions and ordering. A constrained convex mixture of reference tensors can represent intermediate target local patterns without requiring one nearest template or transferring an entire silhouette. This changes the decision, but whether its reference target span is sufficiently distinctive is unknown. The L2 objective does not guarantee sparse coefficients; it is called regularized convex patch reconstruction. Different ordered patch evidence, rather than the penalty, is the proposed counting distinction from central reference_hull.",
+      "algorithm": [
+        "For each token form the same fixed nine-patch cross stencil as local001, weighted-center local DINO vectors, concatenate in stencil order and normalize the tensor; invalid entries are zero.",
+        "Select the same actual K=min(16, eligible_FG_count, eligible_BG_count) anchors per FG/BG class by deterministic farthest-point selection of ordered patch tensors. Eligible centers have fraction>=0.9/<=0.1; a class with no pure center uses its maximum-fraction centers. Equal actual K prevents an L2 gain due solely to class atom count.",
+        "For each query tensor and each class solve min_a ||x-D_c a||^2+0.05||a||^2 with a>=0 and sum(a)<=1.",
+        "Use projected gradient with step 1/(lambda_max(D_c^T D_c)+0.05), exactly80 iterations; projection is onto the nonnegative l1 ball. Record projected-gradient residual, without claiming convergence if tolerance not reached.",
+        "Signed margin is (background objective-foreground objective)/(both objectives+1e-12); both zero yields zero.",
+        "Output all query tokens through the common renderer, ties background. Empty MR/no reference BG give the corresponding constant full field."
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "statement": "The normalized mixture of distinct unit target patch tensors lies outside their convex hull in general, but can still have a smaller nonzero regularized reconstruction residual than the background hull while being farther from every individual target tensor. Ordered raw patch observation is the proposed extra information; L2/cap are not claimed sparse, independently new, or a real gain."
+      },
+      "simplest_control": [
+        "Same nine-patch tensors, dictionaries and renderer: nearest individual-template reconstruction error per class.",
+        "Same constrained convex reconstruction on central DINO token only (old central-feature hull-type control).",
+        "Complete local001 Gram classifier on same legal inputs/renderer, keeping its distinct invariance limitation.",
+        "Same class tensors with spatial stencil order shuffled independently in reference; bag contents remain but organization is removed."
+      ],
+      "why_not_duplicate": "The local001 classifier compares coordinate-invariant Gram signatures and cannot recover orientation/direction. This retains ordered raw-feature variations and solves a convex convex reconstruction per class. Old covariance/adjacency measure statistics of appearance-mode assignments over candidate regions; no mode histogram, shape term, tree, occupancy constraint or seed is present. Kernel/regularization variants count zero.",
+      "counterexample": [
+        "If FG and BG patch cones overlap, reconstruction cannot determine identity.",
+        "Large dictionaries can reconstruct both classes and erase discriminative residual; the fixed cap is not a proof of separability.",
+        "Viewpoint or feature-coordinate changes can move true target patches outside the reference cone.",
+        "Convex mixtures may create nonphysical local composites and accept a distractor.",
+        "A center near target boundary uses surrounding reference BG; altered query context can cause target deletion."
+      ],
+      "first_evidence": "After reviewer acceptance, construct a full legal-unit-feature query whose ordered patch tensor is a normalized mixture of two reference target patterns. Require its nonzero target convex-hull residual to be below background hull residual, despite nearest individual template preferring background. Same-readout central-token convex reconstruction and local001 Gram controls must not already explain the benefit. Keep overlap/nonphysical-mixture and changed-boundary-context negatives. Native4 only activity/cost, no query quality.",
+      "cpu_cost": "One thread; dictionaries <=16/class, tensor length9D, features gathered in64-token chunks. Dot products O(Nq*32*9D); optimization O(Nq*80*16^2), anchor selection O(Nr*32*9D), extra storage bounded by local chunks and dictionaries. No new encoding. Actual cost unknown.",
+      "limitations": "The 80-step convex solver is a defined finite approximation, not a certified exact optimum. If nearest-patch or central convex control matches the benefit, report no evidence for the asserted joint-mixture necessity. Natural transfer and reference span specificity remain unmeasured; failure can distinguish insufficient anchor coverage, cone overlap, contextual mismatch, numerical residual and cost."
+    },
+    {
+      "id": "local_004",
+      "title": "Intrinsic feature merge-tree edit classification with full tree decoding",
+      "gap": "A region can contain the same appearance modes and local edge counts as a target but arrange those modes into different nested feature groups. Rigid geometry and reference silhouette do not transfer reliably, while a feature hierarchy can be invariant to some spatial deformations.",
+      "history_evidence": [
+        "Role-tree M3 cached adapter59.5635 and triplet60.7790 are below MEAN62.9315; M3 uses a query candidate tree but its reference representation is a flat role set and heldout role assignment, not a reference feature merge hierarchy. No hierarchy gain is established by those failures.",
+        "Directed-topology closure rejected replacing shape moments with holes/contour order. This compares feature merge relations and does not compare boundary orientation, hole count, mask moment, absolute part location, area or target cardinality."
+      ],
+      "available_information": "Frozen native DINO, complete MR and four-neighbor physical geometry. All query region candidates come from query features only, no query seed or GT.",
+      "new_observation_or_argument": "A reference/query feature merge dendrogram encodes nested coalescence relations not fixed by mode occupancy or edge histograms. Comparing two such trees changes which complete candidate region is selected without imposing one reference silhouette. The tree can still reflect material/view rather than class, and this must be a negative witness.",
+      "algorithm": [
+        "Build deterministic four-neighbor cosine single-linkage binary merge hierarchies on all physically valid query patches and on each reference FG/BG connected support separately. FG is fraction>=0.5, BG the remaining valid centers.",
+        "For each reference class keep its two largest support components by known valid mass (tie lowest original token ID), not query evidence. Query hierarchy forest includes every valid patch; invalid patches output negative.",
+        "Compress each query candidate subtree/template to at most8 terminal nodes by splitting the greatest-valid-mass current splittable terminal, tie lowest original token ID. Each node stores its unit feature centroid and actual merge-edge dissimilarity, zero for an original leaf.",
+        "For two compressed rooted binary trees A,B define c(A,B)=1-cos(centroid_A,centroid_B)+abs(height_A-height_B), with costs for zero centroids fixed to cosine0. Deleting a whole branch costs delta*node_count, delta=0.25.",
+        "If both nodes are leaves, D(A,B)=c(A,B). If A is leaf and B internal, D=c(A,B)+delta*(nB-1), and symmetrically for B leaf.",
+        "If both internal, D(A,B) is the minimum of c(A,B)+D(Aleft,Bleft)+D(Aright,Bright), c(A,B)+D(Aleft,Bright)+D(Aright,Bleft), D(Aleft,B)+delta*(1+nAright), D(Aright,B)+delta*(1+nAleft), D(A,Bleft)+delta*(1+nBright), D(A,Bright)+delta*(1+nBleft). This is restricted branch-pruning alignment, not a general tree-edit claim.",
+        "Compute the entire unnormalized recursion first. Only then divide root D by nA+nB; no recursively normalized subcost enters a minimum. For each query node evidence is minimum normalized BG-template cost minus minimum normalized FG-template cost.",
+        "Full query-forest decoder uses exact tree DP: BG reward0, whole-FG reward=valid_mass*node_evidence, or child rewards summed. Tie BG before split before whole. Return selected tokens as signed +/-1 with common renderer.",
+        "Empty reference FG or BG yields its appropriate constant valid-support mask. No query valid patches yields empty output. Discarded reference components remain recorded; template cap/leafcap are one recipe, not counted methods."
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "statement": "If target and distractor share per-token appearance but differ in feature nesting, tree alignment can select the complete target region despite deformation of its outer shape. No empirical DINO hierarchy transfer or mIoU gain is claimed."
+      },
+      "simplest_control": [
+        "Same hierarchy, candidate domain, decoder and rendering with centroid-only FG/BG template distance.",
+        "Same hierarchy/decoder using unordered leaf-bag matching, erasing nesting while keeping leaf features.",
+        "Reference-child random rewiring retaining leaves and subtree sizes as a dependency control."
+      ],
+      "why_not_duplicate": "The old role-tree uses a query hierarchy only to enumerate regions, but flattens reference roles and scores heldout correspondences. This scores an explicit reference/query merge-tree alignment. No silhouette/holes/rigid pose/adjacency histogram is transferred. Leafcap/editpenalty variants are one method. This novelty distinction is computational, not a claim of worldwide originality.",
+      "counterexample": [
+        "Two different classes with the same feature hierarchy are indistinguishable.",
+        "View, material or occlusion can change merge order of a true instance.",
+        "A query hierarchy can fail to contain an intact object node and force fragmentation.",
+        "Edit skip penalties can prefer small parts and omit extent; zero node evidence gives empty mask.",
+        "Repeated similar instances can merge before their own boundaries and become inseparable."
+      ],
+      "first_evidence": "Reviewer acceptance then two full query regions with equal centroid and same bag of unit leaf features but different nested groups; require complete tree-method output to beat same-tree centroid and leaf-bag controls. A deformed spatial layout preserving nesting is positive only if the actual feature hierarchy builder retains it. A changed nesting true target and same-hierarchy distractor are negatives. Native4 only activity/cost.",
+      "cpu_cost": "One CPU thread. Spatial hierarchy O(ElogE), all node centroid storage O((Nr+Nq)*D). Compressed candidate trees <=15nodes use shared centroid indices, not copied Nq*15*D tensors. At most2 FG+2 BG templates. Per query node alignment <=225 scalar DP states/template, total <=8191*4*225~7.4M states for4096 query patches. Recursion depth<=15 after compression. Native4096x1024 actual cost unknown; bounded cost probe precedes quality claims.",
+      "limitations": "Now fully defined restricted branch-pruning recurrence and root-only normalization; pending reviewer acceptance, not counted or implemented yet. Query proposal absence, material/view merge-order change, two-template truncation and skip penalties can delete extent. No general deformation invariance or real gain claimed. If same-tree centroid or leaf-bag control solves the witness equally well, report no nested hierarchy evidence; failure reflection separates those causes and cost."
+    },
+    {
+      "id": "local_005",
+      "title": "Nonparametric joint DINO patch-to-patch label voting",
+      "gap": "A reference-matched query neighborhood can contain reliable evidence about neighboring labels even when the center-only patch classifier is ambiguous. Center-only decisions discard the complete local MR label pattern and can miss a thin part or fill the wrong side of a boundary.",
+      "history_evidence": [
+        "Current local001 Gram classifier can add missed true pixels but creates very many FP on native4; local002 reference geometry was inactive at pooled/native scale. Neither proves local mask label motifs transfer.",
+        "Old constellation transferred one entire MR under a rigid pose and suppressed valid instances; this only transfers a nine-patch local label pattern through dense appearance matches, with no object pose, global silhouette or area/count constraint.",
+        "Summary3.7 requires separate correction and harm accounting; extra votes may recover extent but also erase thin parts. Same-matcher central-only and generic score smoothing controls are mandatory."
+      ],
+      "available_information": "Native frozen q/r DINO, full reference fractional MR on every patch and valid support, fixed local stencil geometry. No query seed, GT, class name or predicted object area.",
+      "new_observation_or_argument": "The output label vector of a matched reference neighborhood is legal supervised information that is not just its center label. Transferring and reconciling neighboring label predictions changes the full decoder while retaining each source local appearance configuration. This is a local mask-pattern prior, disclosed explicitly; it is not identity evidence when two classes share that appearance and label pattern.",
+      "algorithm": [
+        "Form unit-normalized ordered centered nine-patch DINO tensors at all valid reference/query centers; exactly the local003 patch observation, no new encoder.",
+        "Select up to32 reference centers per FG/BG class by deterministic farthest-patch selection, equal actual K=min(32,eligibleFG,eligibleBG), using known MR fraction>=0.5 and<0.5.",
+        "Each selected reference center stores all nine observed foreground fractions and physical-valid weights from MR, including its background neighbors. No template is a full object silhouette.",
+        "For every query center find the four nearest selected reference patch tensors. Fixed kernel weights exp(-squared-distance/h^2), where h^2 is median nearest-distinct reference-anchor tensor distance; degenerate h gives zero/tie background.",
+        "For every matched reference patch, cast its nine fractional labels onto the corresponding query stencil offsets, weighted by match kernel and both endpoint valid support. Sum votes from every valid query center.",
+        "For each query token return signed 2*(weighted FG votes/total votes)-1, or zero when no supported vote. Invalid tokens are negative; empty reference classes give their appropriate valid-support constant mask.",
+        "Common renderer gives a complete query mask; stencil offsets and four-neighbor counts are one fixed method, not multiple scales/variants."
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "statement": "A known local foreground/background arrangement can recover a weak pixel or choose the correct boundary side using other matched query centers, while an isotropic score average cannot represent that directional pattern. No real DINO gain, universal label-pattern transfer or originality is established."
+      },
+      "simplest_control": [
+        "Identical descriptors, anchors, bandwidth and nearest4 matching, but each matched patch votes only its central MR label to the query center.",
+        "The same central-only complete margin, followed by generic uniform nine-stencil score averaging; compares label transfer with ordinary smoothing.",
+        "Same matched local patches with noncentral MR labels permuted within each patch, keeping center label and foreground-label sum; isolates organized label geometry.",
+        "Full local003 convex ordered-patch classifier on same input/renderer; it reads center labels rather than joint label vectors."
+      ],
+      "why_not_duplicate": "This retains the same patch input as local003 deliberately, but changes MR use and output decision: each match jointly predicts nine query labels and global consensus is accumulated. Local003 reconstructs patch vectors and predicts only center class; local001 discards coordinate order; old role/triple methods fit label-state tables rather than transfer nonparametric local label vectors. It is explicitly a local motif prior, not a renamed global shape moment or deformable silhouette transfer. Matching variants/smoothing controls countzero.",
+      "counterexample": [
+        "Changed boundary geometry or scale can make reference neighbor labels wrong despite matching appearance.",
+        "Dense BG templates and repeated patterns can outvote a correct thin target; equal anchor counts do not prove unbiased votes.",
+        "A coherent false object with the same local label motif is accepted.",
+        "Common or zero tensor descriptors can create unsupported identity ties; no entropy or vote consensus claim substitutes for class evidence.",
+        "Occluded or missing parts may be filled according to the reference motif and create false positives."
+      ],
+      "first_evidence": "After reviewer acceptance, complete lawful-unit patch examples with equal center-only matching labels but different noncentral label motif; compare directional boundary/weak-hole repair with identical central-only and generic score averaging. Keep changed motif, coherent distractor and thin-structure negative examples. If uniform averaging matches the benefit, record no joint-label-geometry evidence. Native4 output/cost and four-action counts when root supplies sealed GT scoring, without generalization claims.",
+      "cpu_cost": "One CPU thread, at most64 anchors and nearest4 retained per query center. Streaming ordered-tensor construction/anchor selection O(Nr*64*9D); matching O(Nq*64*9D); label votes O(Nq*4*9). Additional memory local64-row chunks plus64 anchor tensors and Nq vote arrays. No new forwards; native64 cost unmeasured.",
+      "limitations": "This explicitly reopens local label-pattern transfer under the new100 task, with a different output decision and strong controls, rather than claiming all reference geometry is useful. CPU card requires reviewer distinction from old boundary/role tables; do not implement/count if judged duplicate. Failure reflection separates wrong feature match, true changed motif, generic smoothing benefit, BG-vote imbalance, and scale/resolution loss; no parameter search."
+    }
+  ],
+  "excluded_without_count": [
+    {
+      "route": "Dense deformable mask/template transfer",
+      "reason": "Currently lacks an information and decision distinction from old constellation, held-out role matching and reference-shape transfer; changing allowed deformation is not sufficient."
+    },
+    {
+      "route": "Higher-order contour or motif constraints",
+      "reason": "Still a single-reference role/topology template without a justified GT-blind complete decision; old directed-topology closure already recorded this gap."
+    },
+    {
+      "route": "Graph spectrum descriptor variants, radius sweeps or alternate Gram kernels",
+      "reason": "Same observable family or parameter/control variations of local_001, count zero."
+    }
+  ]
+}

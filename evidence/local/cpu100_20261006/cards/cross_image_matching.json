@@ -1,0 +1,109 @@
+{
+  "scope": "cross-image decision mechanisms; three candidates, not fourteen padded names",
+  "source_summary": "user-provided Opus session summary (local-only source, not included in repository)",
+  "source_status": "summary fully read; historical failures checked in current PLAN and RESULTS",
+  "cards": [
+    {
+      "id": "cross_image_csls_hubness",
+      "title": "双侧局部密度校正的参考角色匹配",
+      "gap": "直接余弦匹配会把跨类别的通用外观参考token当成hub；大面积查询背景还会使某些参考FG原子成为大量query的共同最近邻。此时最高余弦并非最有区分力的对应。",
+      "history_evidence": "总结3.2/3.10报告错误区域常比目标更像参考；RESULTS transfer/signature报告10NN和余弦在最难组失败。旧roundtrip检查的是返回参考标签或landing，本法不使用回程是否成功、不推断面积。CSLS是否已测未发现证据，不能据此宣称全世界新颖。",
+      "available_information": "同一R/Q的单位final-LN DINO特征、完整MR软覆盖、有效token权重；不用FoRIS场、QGT、外部类别或数据池。",
+      "new_observation_or_argument": "令Sij=q_i dot r_j。对每个r_j，h_j=它到query top-k的平均相似度；若某参考原子因通用外观成为高密度hub，h_j高。匹配分数2Sij-h_j降低它的优势；query侧密度项在FG/BG差值中严格抵消，必须报告此代数事实而非假称双侧都贡献。校正能改变参考原子排序，非单调重标定。hub确实来自非目标而非同类重复是未验证假设。",
+      "algorithm": [
+        "输入R/Q/MR及有效权重，单位化特征，按coverage>=0.5分FG/BG；空角色用统一prototype fallback。",
+        "以确定性farthest-point各压缩最多64个参考FG/BG原子，Q最多256个无标签原子；成本控制不是面积先验。",
+        "在压缩Q上取k=min(10,nq)得到各R原子的h_j；Q原子均匀权重防止重复面积直接决定hub惩罚。",
+        "对完整Q逐块计算S，并计算T=2S-h_j；query侧top-k密度为每行常数，可显式省略。",
+        "各role取T最高min(3,nrole)均值，margin=FGsupport-BGsupport。",
+        "返回完整signed margin；公共renderer输出完整工作/原尺寸二值mask。",
+        "控制同一参考/Q压缩和top3读出但h_j=0；另列全token直接FG/BG prototype。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "action": "降低通用FG原子对背景hub的误匹配，同时可能补回原本被hub遮挡的特异FG匹配",
+        "numeric_gain": "unknown"
+      },
+      "simplest_control": "同压缩、同top3支持、同render的未校正cosine；另把h_j替换为常数，恒等于该控制；重复同类Q原子/重复背景Q原子压力测试。",
+      "why_not_duplicate": "无roundtrip、参考列容量、占用比例、全图协方差或seed。作用变量是每个参考原子的无标签跨图hub密度，改变局部对应排序。CSLS/local-scaling/TFIDF若另命名仍只计此hubness family一项。",
+      "counterexample": "真实目标在Q内数量大、外观同质，而背景罕见；FG原子h_j高反被惩罚，稀有错误BG原子得优势。若所有h_j相同，输出必须退化为未校正控制。",
+      "first_evidence": "单位向量可实现hub遮挡例中完整输出相对同top3控制改正指定token；所有h相同负控精确同mask；多实例重复不施加列容量。随后native4例只测活动/成本，无QGT不报mIoU。",
+      "cpu_cost": "NumPy float64, BLAS1; kmeans/farthest压缩最多128R+256Q，完整Q逐256块乘R，O((N+M)dK+NMcompressed*d)，额外内存O((N+M)d+256*128)，4096x1024预计<150MB加输出，真实时间未测。 原生4096真实峰值/时间未测，4例64tokens成本不能外推。",
+      "limitations": "不是新语义证据；hypothesis只针对hubness错误，不能保证处理真实近类别歧义；压缩可能丢小外观模式。",
+      "failure_learning": "若h_j差异真实存在但被抑制的是正确target原子，hub密度不可靠；若全h相等，方法没有可用量；若输出差异来自压缩，归因到控制而非CSLS。",
+      "api": "src/ics/cpu100/common.py Episode -> Result(margin signed q_hw, info); margin>0 foreground, zero background; common render. Padding weight zero excluded; partial valid weights used in mode learning.",
+      "implementation": "src/ics/cpu100/cross_image_matching.py::METHODS[cross_image_csls_hubness]",
+      "evidence_report": "evidence/local/cpu100_20261006/reports/cross_image_matching/report.json",
+      "actual_empirical_gain": "unknown; no real QGT read, native4 only activity/cost",
+      "post_probe_status": "synthetic mechanism witness plus explicit counterexample; native4 active3/fallback1, no quality score"
+    },
+    {
+      "id": "cross_image_background_anchor_shift",
+      "title": "共享背景对应约束的参考平移",
+      "gap": "全图均值/协方差对齐把FG比例和语义变化混入域偏移；但若两张图存在确切共享背景外观，对应残差可独立于整图面积估计一个加性style项。",
+      "history_evidence": "总结3.11白化排序AUC0.955到0.72；RESULTS1570 CORAL34.65/62.41、全图mean-shift58.69/20.67失败。当前reference_domain_alignment是CORAL家族修订，不能作为新增机制。本法必须先证明共享背景锚点与全图矩不同，互为NN本身历史失败不作为身份保证。",
+      "available_information": "R/Q单位final-LN DINO、MR软覆盖、有效token；仅R coverage<=0.1的已知背景可提供校准锚，Q无标签。",
+      "new_observation_or_argument": "若共享背景对应满足q_j=r_i+b+epsilon，则这些匹配差的稳健中心估计b，不受R/Q物体占比差直接影响。不改变任何协方差/语义方向；只平移参考FG/BG原子，再与完整Q比较。锚点可错，b可能是背景类别差而非style，必须负例检测；无可信一致锚则fallback。",
+      "algorithm": [
+        "选R背景coverage<=0.1且valid>0，单位R/Q；最多64R背景锚和256Q原子，以确定性farthest压缩。",
+        "求R背景-Q双向最近邻；保留互为NN且双方第一/第二cosine差都>0.05的匹配。",
+        "若匹配数<3，直接FG/BG prototype fallback；不启动全图mean对齐。",
+        "按每个残差vector到所有残差的L2距离和选medoid b；要求至少2/3残差距b<=0.1，且||b||<=0.5，否则fallback。",
+        "r'_i=unit(r_i+b)；全RFG/BG coverage权重生成两个unit prototype。",
+        "margin=q dot protoFG'-q dot protoBG'；返回完整signed margin，公共renderer完整mask。",
+        "控制b=0、whole-image mean shift、相同锚但残差逐锚乱置，不重白化。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "action": "锚点识别正确且style近似加性时，纠正FG/BG对应偏移，不假定整个R/Q分布同组成",
+        "numeric_gain": "unknown"
+      },
+      "simplest_control": "直接prototype；全图center/mean-shift；同一背景锚集合但无平移。共享背景真对应正例，R/Q不同背景却互NN高margin反例，以及重复FG改变整图mean但不改变真实锚残差的压力测试。",
+      "why_not_duplicate": "不从整图前二阶矩对齐，不白化，不匹配参考目标占用或设一对一query容量；使用R已知背景对应残差。属于背景锚点域校准一项，平移/旋转/affine若仅operator版本不再多计。",
+      "counterexample": "两图共享的背景类别不是真正同一外观，互NN残差一致但误差是语义差；平移会破坏正确FG方向。锚稀疏/全同质会fallback，本法可能真实数据几乎从不活动。",
+      "first_evidence": "在合法单位向量构造中改变FG比例，背景真对应残差估计保持稳定而全图shift变；同信息全图shift输出错误且锚shift恢复。错误共享背景负例保留；fallback精确对prototype。随后4native例活动/成本，不以fallback通过宣称有效。",
+      "cpu_cost": "NumPy float64 BLAS1；最高64x256 cross相似度，完整R/Q prototype O((N+M)d)，无需dxd covariance，<100MB含4096token输入与输出。 原生4096真实峰值/时间未测，4例64tokens成本不能外推。",
+      "limitations": "归一化前后的加性style不同；单位feature上假设只是近似。门限为固定检测定义而非收益调参，可能fallback率高。共享背景假设未证实。",
+      "failure_learning": "分开记录锚数/残差散度/活动率；若散度小仍损害真对应，说明稳定残差不是style。若多数fallback，则未找到可用锚，不宣称关闭所有域校准家族。",
+      "api": "src/ics/cpu100/common.py Episode -> Result(margin signed q_hw, info); margin>0 foreground, zero background; common render. Padding weight zero excluded; partial valid weights used in mode learning.",
+      "implementation": "src/ics/cpu100/cross_image_matching.py::METHODS[cross_image_background_anchor_shift]",
+      "evidence_report": "evidence/local/cpu100_20261006/reports/cross_image_matching/report.json",
+      "actual_empirical_gain": "unknown; no real QGT read, native4 only activity/cost",
+      "post_probe_status": "synthetic anchor avoids composition-shift bias, negative target style counterexample; native4 fallback4/4, natural usable-anchor evidence absent"
+    },
+    {
+      "id": "cross_image_free_column_gram_matching",
+      "title": "无参考列容量的跨图关系对应",
+      "gap": "跨图同类绝对余弦可弱，但同图token间距离关系可能保留一部分结构；局部1NN没有利用完整关系一致性。必须允许多实例重复匹配同一参考角色。",
+      "history_evidence": "总结3.11跨图相似度0.6时对应计数中位数0；roundtrip负例和reference_occupancy18.877/旧balanced occupancy不能支持身份。ProM2 signed60060.632失败，使用角色四状态邻边势；本法不复用该势而优化显式跨图软对应与完整within-image Gram距离。",
+      "available_information": "同一R/Q DINO单位tokens，MR，valid。各图内部Gram距离和跨图cosine，无空间shape/局部Gram、不seed、不额外模型。",
+      "new_observation_or_argument": "Gram在共同正交基变换下不变；若Q类别部位关系保留而绝对向量旋转，距离关系可区分同样cross-cosine的候选。此假设可能随视角/背景组成失效。P每Q原子行和=1而参考列无上限，因此可多Q实例映射同一R模式，不暗设目标占比。",
+      "algorithm": [
+        "R按FG/BG分别确定性压缩最多32mode，Q无标签压缩最多64mode；R mode记录软coverage，Qmode权重均匀。",
+        "计算C=1-Q R^T、DQ=1-Q Q^T、DR=1-R R^T。",
+        "行随机P初始化softmax(-C/0.1)；参考列无容量、无参考面积先验。",
+        "固定40步mirror descent目标F(P)=0.2 mean_i sum_a CiaPia + mean_ijab PiaPjb(DQij-DRab)^2 + 0.02 mean_i sum_a Pia log Pia。",
+        "固定40步，以nq归一化后的row-mean objective为尺度：P←row_softmax(logP−0.25*nq*gram_gradient(P))；gradient是原四重loss在row simplex上的代表，row常数抵消；不声称全局最优。",
+        "pFG_i=sum_a Pia coverage_a；将每完整Q token以其最近Qmode分配该值。",
+        "返回signed margin=2*pFG-1，公共renderer完整mask；控制同压缩仅C softmax、仅距离profile/simple sorted Gram、固定relation=0。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "action": "在相对关系保留但跨图向量方向改变的情形改善角色对应；允许多个查询实例重用reference modes",
+        "numeric_gain": "unknown"
+      },
+      "simplest_control": "相同mode压缩和softmax外观匹配；每mode的sorted within-image distance profile nearest match（廉价结构控制）；小图穷举1-to-many hard assignments给目标界，不作为部署；P梯度finite-difference验证。",
+      "why_not_duplicate": "不同于参考模式占用债：无参考列边际约束。不同于roundtrip：没有回程验证。不同于ProM2：对应变量P在整个ref/query距离矩阵上联合优化，不估四状态label边势。属于关系对应family一项，GW/FusedGW/temperature参数不另计。",
+      "counterexample": "FG与干扰的内部距离结构同构，或Q背景类别组成不同导致全图关系无法对应；同类多实例带不同姿态亦可能改变距离。非凸P优化还可能困在外观错误初始化。",
+      "first_evidence": "单位Gram可实现的源/目标共同旋转+置换例，完整输出超过外观control且与sorted-profile control比较；复制同类Qmode仍可重用同列；同构FG/BG负例不能被假称可辨识；finite-diff与目标值记录辨别实现错误/优化失败。native4只活动/成本。",
+      "cpu_cost": "NumPy float64 BLAS1；最高64x64 mode Gram+40步矩阵乘，完整分配O(Nd64)，不形成4096x4096 pair阵。输入4096x1024每图FP64约32MiB，临时compression拷贝与outputs额外；保守512MiB工作预算，真实峰值未测。 原生4096真实峰值/时间未测，4例64tokens成本不能外推。",
+      "limitations": "mode压缩会丢罕见部位；均匀mode权重避免像素容量却不保证同类结构可迁移。实际收益未知，非凸求解没有最优证书。",
+      "failure_learning": "若实现梯度正确但构造中未收敛，为优化失败而非否定结构信号；若sorted-profile控制等效，复杂匹配不必要；若真实结构同构，信息不够，不能调参数解决身份。",
+      "api": "src/ics/cpu100/common.py Episode -> Result(margin signed q_hw, info); margin>0 foreground, zero background; common render. Padding weight zero excluded; partial valid weights used in mode learning.",
+      "implementation": "src/ics/cpu100/cross_image_matching.py::METHODS[cross_image_free_column_gram_matching]",
+      "evidence_report": "evidence/local/cpu100_20261006/reports/cross_image_matching/report.json",
+      "actual_empirical_gain": "unknown; no real QGT read, native4 only activity/cost",
+      "post_probe_status": "fixed version quality claim closed: rotation witness fails1/8 vs same-input appearance1/8 and sorted profile8/8; implementation retained as negative result"
+    }
+  ]
+}

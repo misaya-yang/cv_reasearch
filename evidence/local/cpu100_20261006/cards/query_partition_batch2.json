@@ -1,0 +1,149 @@
+{
+  "owner": "query_partition",
+  "status": "QP04/QP06/QP07 accepted for bounded probe; QP05 rejected duplicate, not implemented",
+  "cards": [
+    {
+      "id": "QP04",
+      "title": "参考校准的区域绝对分布相容性门",
+      "gap": "FG/BG相对密度差可给不属于FG分布的区域正值；相对判决遗漏了候选是否像参考FG整体分布。",
+      "history_evidence": [
+        "QP03和普通MMD差分关闭：q-q项在FG/BG差中抵消。QP04保留绝对FG距离条件，q-q项不会抵消。",
+        "旧模式占用600失败：跨实例组成可能不迁移，本卡也受此限制。"
+      ],
+      "available_information": "直接unit冻结DINO q/r、完整MR覆盖wf/wb、geometry/q_valid；无QGT/host/seed/新编码。",
+      "new_observation_or_argument": "绝对kernel MMD(q,F)保留q-q项；两个FG/BG核均值差相同的query区域仍可有不同绝对dF。以完整reference FG合法子集间dF定相容门，同时要求相对FG>BG。这不是MMD差分换名，不保证跨实例组成迁移。",
+      "algorithm": [
+        "1. 固定4×4native query窗口完整覆盖，valid覆盖加权。",
+        "2. 各R类按覆盖CDF等间距取最多128个token代表；kernel=exp((cos-1)/.25)。",
+        "3. 每窗口算完整biased MMD²到FG/BG，保留q-q、cross、R-R三项。",
+        "4. 参考FG代表固定四折与其余FG代表的MMD最大值为t_ref；neff按原完整覆盖算，不把重复代表当独立样本。",
+        "5. t=t_ref+1/neff_refFG+1/neff_query；这是固定启发式容差，不称置信界。",
+        "6. margin=min(dBG-dFG,t-dFG)，完整signed窗口场和固定readout，R单类退化规则。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "claim": "可删相对密度为FG而整体与FG不相容的纯干扰；也可能删真，不预测涨分。"
+      },
+      "simplest_control": [
+        "同窗MMD差分，即kernel分类池化",
+        "同窗KDE池化",
+        "逐token绝对FG相容门再同窗平均，隔离q-q作用",
+        "同窗均值/cov距离，同删预算KDE排序"
+      ],
+      "why_not_duplicate": "绝对FG约束依赖q-q kernel项；不是已抵消MMD差分。若源码漏该项或仅重标相对score则count0。",
+      "counterexample": "视角和部位比例变了，真目标可被门拒绝；参考不完整或小窗容差大时不能删。",
+      "first_evidence": "unit多模态FG匹配区域与点wise正值但分布不相容干扰完整构造，强control和部位比例反例；4真实例仅活动/成本不评分。",
+      "cpu_cost": "NumPy1线程；R代表128上限，q窗口<=16，O(Nq*128*D+Nr*128*D)，不稠密q²，不encoder。",
+      "limitations": "完整参考标注不保证同类实例组成相同；真实收益未测。失败记相容性不可迁移/窗口混类/有限样本，不扫kernel温度凑方法。",
+      "review_decision": "accept_for_probe"
+    },
+    {
+      "id": "QP06",
+      "title": "完整查询的四叉树最短描述分割",
+      "gap": "单点噪声碎片；NCut沿seed要求目标是一个节点，而完整目标可能多个不相邻子块并集。",
+      "history_evidence": [
+        "NCut负例层级没有目标节点；这里不沿seed选路径，可独立选所有叶块并集。",
+        "不估FG面积、不用参考面积当query先验。"
+      ],
+      "available_information": "直接unit q/r、完整MR覆盖及query合法二维grid；无QGT/seed/host。",
+      "new_observation_or_argument": "树DP共同决定所有分区与标签，允许多实例；范围先验惩罚分区节点编码复杂度，区别局部边界惩罚。身份仍由reference unary。",
+      "algorithm": [
+        "1. 类别平衡reference KDE logratio；固定native二维中点四叉树到token叶，不score建树。",
+        "2. 每节点FG/BG代价为valid加权softplus负/正margin和。",
+        "3. 叶取最低身份代价；内节点DP取min(全FG,全BG,sum children最优+log2)。",
+        "4. deterministic tie-break重建所有FG叶块完整并集。",
+        "5. 完整+1/-1 native field固定readout，paddingBG、R单类退化。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "claim": "净参考证据明确的连贯块可补弱token/删碎片，多实例不强迫单连通；真实收益未知。"
+      },
+      "simplest_control": [
+        "samepointwise KDE",
+        "same树最细叶无编码代价",
+        "同窗4×4平均KDE",
+        "QP05二元Potts"
+      ],
+      "why_not_duplicate": "不是NCut停法，不沿qseed、不取单节点；一次求全部分支并集，目标为合法unary+hierarchy code；不是旧mask组合。",
+      "counterexample": "细长斜边需要许多叶块，编码代价可吞目标；错unary连贯块会整体错选。",
+      "first_evidence": "两不相邻对象+弱内部正例，斜细目标反例、完整DP对tiny全树枚举；4例活动不评分。",
+      "cpu_cost": "NumPy1线程；tree O(Nq)节点，DP O(Nq)及KDE成本，不q²；4096轻量。",
+      "limitations": "显式几何编码先验，不新身份来源；编码尺度以nativetoken计，128与1024输出区别需记；不扫tree编码常数。",
+      "review_decision": "accept_for_probe"
+    },
+    {
+      "id": "QP07",
+      "title": "查询中心候选超平面的参考风险分割",
+      "gap": "reference均值差方向多模态抵消，query自身有可分方向；不能以最高分seed定方向身份。",
+      "history_evidence": [
+        "query白化破坏语义，本卡不白化不删高方差方向。",
+        "qseed均值原型失败，本卡所有有序中心对由完整R标签共同判断。",
+        "reference ridge负例：reference拟合不代表query迁移。"
+      ],
+      "available_information": "直接unit q/r、完整MR覆盖、geometry/q_valid；无QGT/host/seed。",
+      "new_observation_or_argument": "所有query字典中心差方向是query内合法分离候选；完整R平衡风险选方向/符号，一般不是reference均值差同一排序。",
+      "algorithm": [
+        "1. QP01合法query字典<=8中心，不seed。",
+        "2. 枚举有序不同中心对u=unit(ca-cb)，b=.5*(ca+cb)·u；单位球中心理论b0仍显式记录。",
+        "3. R margin=r·u-b，最小类别平衡logistic风险选pair；tielexicographic。",
+        "4. q·u-b为完整signed场、paddingBG；仅一个中心退公共prototype。",
+        "5. 固定readout，不面积估计/常数扫。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "claim": "query可分而reference均值多模式抵消时可能身份改判；无迁移保证、不预测分数。"
+      },
+      "simplest_control": [
+        "FG-BG prototype",
+        "QP02离散字典命名",
+        "reference-only pair方向风险选择（最多64同预算）",
+        "pointwise KDE"
+      ],
+      "why_not_duplicate": "输出全token连续平面，可切开字典组，区别QP02整组离散label；需非等价构造，不能只展示两中心同结果。",
+      "counterexample": "目标模式环绕背景不能由一个过原点平面分开；跨图标签距离逆转可选错方向；R风险选择虚高。",
+      "first_evidence": ">=3中心且QP02整组label与平面非等价完整构造，同简单控制和环绕负例；4例活动不评分。",
+      "cpu_cost": "1线程NumPy，<=56方向，O((Nq+Nr)KD*12+56(Nr+Nq)D)，可矩阵batch，不额外encoder。",
+      "limitations": "候选方向受query样本组成影响，reference风险最优只在候选域；单平面局限/真实质量未知，不扫方向库凑更多。",
+      "review_decision": "accept_for_probe"
+    }
+  ],
+  "rejected_cards": [
+    {
+      "id": "QP05",
+      "title": "参考身份代价下的精确二元区域割",
+      "gap": "逐token参考密度的孤立翻转造成query碎片；需要完整离散区域优化，不能把连贯当身份证据。",
+      "history_evidence": [
+        "RCG/Huber/Harmonic是已有信号放大器，本卡同样只称范围/抗孤立噪声。",
+        "joint harmonic23.17因q边压倒R边；本卡每q节点有完整参考平衡unary，无弱R-Q约束质量。",
+        "旧RGB Potts61?实际62.903951与MEAN未建立增益；这里无RGB、无MEAN宿主，仍需比较已有binaryPotts合同是否实质重复。"
+      ],
+      "available_information": "直接unit DINO q/r、完整MR覆盖、geometry/q_valid；无QGT/host/seed/新编码。",
+      "new_observation_or_argument": "精确binary Potts cut与continuous harmonic后cut不是同一决策；可合并稀疏噪声洞且限定空间邻接。新作用是离散区域优化，身份仍来自reference。",
+      "algorithm": [
+        "1. 类别平衡reference cosine KDE logratio m_i。",
+        "2. native四邻边w_ij=exp((cos(qi,qj)-1)/.1)*min(valid_i,valid_j)。",
+        "3. E=sum_i valid_i*softplus(-(2z_i-1)*m_i)+.25sum_edges w_ij*[z_i!=z_j]。",
+        "4. deterministic CPU push-relabel s-t mincut精确求所有二元query标签，paddingBG。",
+        "5. +1/-1完整native field及固定readout，R单类退化。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "claim": "局部稀疏噪声且特征边界正确时补洞/删碎片；不从一致性推身份、不预测分数。"
+      },
+      "simplest_control": [
+        "sameKDE/no edge",
+        "sameunary/samegraph continuousquadratic+cut",
+        "sameunary单位边权binarycut",
+        "同增删预算unary排序"
+      ],
+      "why_not_duplicate": "改变变量域和全局目标，不是λ/阈值变化；若已有DINO binaryPotts同合同则count0。",
+      "counterexample": "平滑错类别unary会被强化；薄目标可被删，邻近实例可能误桥接。",
+      "first_evidence": "完整稀疏噪声区域修复构造和薄目标/错误身份反例，比较exact brute force小图；4例仅活动。",
+      "cpu_cost": "1线程，O(Nq)四邻边，push-relabel最坏O(V³)，必须实测4096token成本；无新编码。",
+      "limitations": "只改范围及稀疏噪声，不解身份歧义；强unary置信度与权重校准跨图未知；不会凭负例扫λ。",
+      "review_decision": "reject_duplicate",
+      "count_delta": 0,
+      "closure_reason": "Existing reference_boundary affinity.control and pro_paired_environment exact_potts_cut are already DINO 4-neighbor binary Potts, not continuous-only. Native KDE unary / lambda / affinity scale does not make a new mechanism."
+    }
+  ]
+}

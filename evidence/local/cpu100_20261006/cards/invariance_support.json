@@ -1,0 +1,196 @@
+{
+  "owner": "invariance_support",
+  "count_requested_upper_bound": 14,
+  "count_submitted": 7,
+  "cards": [
+    {
+      "id": "inv_adversarial_channel_support",
+      "title": "Adversarial deletion of concentrated positive feature evidence",
+      "gap": "Direct FG−BG margin can be positive because a few feature coordinates have unusually large positive contributions even though the remaining semantic support is negative.",
+      "history_evidence": "Opus summary §3.2/3.11: the same scalar ranking can favor distractors; arbitrary covariance whitening destroyed semantic directions. No claim that channel concentration is historically measured.",
+      "available_information": "Unit final-layer q/r and complete reference FG/BG weights; fixed model feature coordinate basis. No query labels, image pool or new encoding. All support/statistics exclude valid=0 tokens; partial area coverage is weighted. Query padding has negative final margin.",
+      "new_observation_or_argument": "For c_d=q_d(vFG_d−vBG_d), the exact worst margin under deletion of at most k positive coordinate contributions is sum(c)−sum(top_k(max(c,0))). This is q-dependent and can reverse concentrated false support; it is not a global threshold or normalization-cancelled scalar gate.",
+      "algorithm": [
+        "Compute unit weighted reference FG/BG prototypes and direct contrast v.",
+        "Set k=max(1,ceil(sqrt(D))); never tune on query labels.",
+        "For each query token compute signed contributions c=q*v.",
+        "Subtract its k largest positive contributions from sum(c).",
+        "Produce signed field; zero cut and standard physical-grid/full-mask decoder.",
+        "Empty FG gives empty mask; absent BG uses direct complete-FG fallback."
+      ],
+      "expected_benefit": {
+        "kind": "hypothesized",
+        "scope": "False-positive deletion when non-target positive support is concentrated, while target support is spread across more than k coordinates.",
+        "real_quality": "unmeasured"
+      },
+      "simplest_control": "Exact direct-prototype margin; same decoder; worst k-coordinate deletion versus matched constant erosion to distinguish q-dependent support from merely stricter threshold.",
+      "why_not_duplicate": "Deletes worst coordinate evidence before decision. Not random-seed ensemble, parameter variant, whitening, graph propagation or feature gate followed by unit normalization.",
+      "counterexample": "A real small part identified by only k useful coordinates is necessarily rejected; a distractor with broad correlated support survives. Feature axes are not rotation invariant.",
+      "first_evidence": "Construct unit vectors with same direct positive margin but concentrated distractor/broad target support; verify changed complete masks. Rotate basis as a declared negative control. Local native4 checks only execution/cost/changes; Q quality is unavailable.",
+      "cpu_cost": "O(ND log k+MD), O(ND) batched storage; NumPy existing-feature CPU only, one thread.",
+      "limitations": "Known model-coordinate assumption; worst-case deletion prior may be much too conservative; failure distinguishes concentration premise from stable identity ambiguity."
+    },
+    {
+      "id": "inv_reference_mad_winsor",
+      "title": "Reference-conditioned coordinate winsorization",
+      "gap": "A direct angle can be dominated by feature-coordinate tails or outlying response magnitude rather than recurring FG/BG difference.",
+      "history_evidence": "Summary §3.11 rejects unconditional semantic whitening; RESULTS.md:213 rejects common per-image standardization. This version only caps per-coordinate reference-observed tails and must beat the no-cap control.",
+      "available_information": "Unit q/r and valid reference weights; full reference mask used for resulting FG/BG prototypes. No feature basis rotation is claimed. All support/statistics exclude valid=0 tokens; partial area coverage is weighted. Query padding has negative final margin.",
+      "new_observation_or_argument": "Clipping q and r by the same reference robust median±3 MAD box is nonlinear before prototype construction; vectors outside observed support can change direction. It preserves central amplitudes instead of inverse-variance rescaling all coordinates.",
+      "algorithm": [
+        "Estimate each feature coordinate weighted median and weighted MAD using reference valid-area weights.",
+        "Define median±3*1.4826*MAD bounds with a deterministic 1e−4 minimum radius.",
+        "Clip both query and reference coordinates to that same box.",
+        "Unit-normalize clipped token vectors and form FG/BG weighted prototypes.",
+        "Direct signed prototype contrast; standard complete decoder.",
+        "Do not select clipping strength from query results."
+      ],
+      "expected_benefit": {
+        "kind": "hypothesized",
+        "scope": "Distractor/query corruption lying outside reference-observed coordinate support while FG retains stable central responses.",
+        "real_quality": "unmeasured"
+      },
+      "simplest_control": "Direct cosine prototype and reference-centering-only encoding with exactly the same decoder; central data witness where clipping is the identity.",
+      "why_not_duplicate": "A bounded coordinate influence function, not whitening or normalized positive scalar feature gates; no new item for different clipping strengths.",
+      "counterexample": "A target viewpoint creates legitimate coordinate responses outside reference support, so clipping removes the discriminating direction; rotation can change behavior.",
+      "first_evidence": "Construct aligned unit reference/query tails where direct classification fails and fixed winsorization succeeds; preserve a rare-target-tail counterexample. Compare complete outputs, not clipping diagnostics.",
+      "cpu_cost": "O(MD log M+ND), O((M+N)D); reference statistics CPU only.",
+      "limitations": "Single-reference tails need not model cross-image nuisance; small or multimodal reference support can collapse coordinates. Failure identifies unsupported support-range assumptions."
+    },
+    {
+      "id": "inv_multiscale_feature_consensus",
+      "title": "Spatial scale consensus after feature pooling",
+      "gap": "Individual token noise can mis-rank a coherent weak target, while an isolated misleading token produces a sharp direct peak.",
+      "history_evidence": "Summary §3.9: RCG smooths scores and cannot identify wrong seeds. Prior gray and layer readout controls show smoother output alone is insufficient; this version recomputes nonlinear semantic matching on pooled feature vectors.",
+      "available_information": "Native square patch grids q/r, reference mask area weights, recorded query geometry. No resized RGB encoder or earlier layer. All support/statistics exclude valid=0 tokens; partial area coverage is weighted. Query padding has negative final margin.",
+      "new_observation_or_argument": "unit(mean(features)) matched to pooled reference prototypes is generally not equal to mean(direct token margins); different scale information comes from observable local coherent direction before matching.",
+      "algorithm": [
+        "Use fixed native-grid scales {1,2,4} where dimensions permit.",
+        "At each scale take coverage-weighted feature means in nonoverlapping cells, then unit-normalize; padding never contributes.",
+        "Pool reference FG/BG weights by area sums and fit two prototypes at that scale.",
+        "Compute full query signed margins at each scale.",
+        "Upsample margins to the native grid and take their per-token median.",
+        "Apply physical-grid mapping and one complete decoder, with fixed zero decision."
+      ],
+      "expected_benefit": {
+        "kind": "hypothesized",
+        "scope": "A true region with coherent semantic support and token noise; scale-fragile isolated peaks are suppressed.",
+        "real_quality": "unmeasured"
+      },
+      "simplest_control": "Pool/upsample scalar direct margins at identical scales then median; no-pooling direct prototypes. Both share spatial scales and decoder.",
+      "why_not_duplicate": "Recompute matching after unit feature pooling; distinct from RCG/Huber score smoothing and different encoder-resolution variants.",
+      "counterexample": "A small true target occupies less than one pooling cell, so consensus deletes it; a large coherent non-target matching reference remains selected.",
+      "first_evidence": "Construct complete masks where feature pooling changes the ranking and scalar-score pooling cannot; include small-object dilution and coherent wrong-region controls. Native4 only confirms bounded execution.",
+      "cpu_cost": "O((N+M)D) for three scales plus linear upsampling; O((N+M)D), no encoding.",
+      "limitations": "Native4 input side128 has coarse 8×8 tokens; cannot infer the 1024 outcome. It supplies coherence evidence, not an identity guarantee."
+    },
+    {
+      "id": "inv_spatial_geomedian",
+      "title": "Geometric-median filtering of cached semantic vectors",
+      "gap": "A minority of isolated corrupted feature vectors can dominate local classification without representing the surrounding region.",
+      "history_evidence": "Old Huber regularizes query score differences, and the summary warns against confusing consistency with identity. This candidate minimizes vector-space absolute-distance error before matching and must be tested against feature mean and score median.",
+      "available_information": "Full final-layer q/r patch grids, reference mask weights and image geometry. All support/statistics exclude valid=0 tokens; partial area coverage is weighted. Query padding has negative final margin.",
+      "new_observation_or_argument": "The exact geometric median is orthogonally equivariant and can differ from feature means and scalar score medians because vector distances, rather than scalar ordering, set influence. Eight fixed Weiszfeld iterations approximate this estimator; no exact breakdown guarantee is claimed for the truncated solver. A tightly clustered negative-margin minority can dominate over a dispersed positive-margin majority. If a fixed prototype gives ALL neighbors the same positive scalar margin, convexity forbids sign reversal; this is explicitly not a witness.",
+      "algorithm": [
+        "For each native q/r patch take reflected 3×3 feature neighborhood.",
+        "Run eight fixed coverage-weighted Weiszfeld iterations, epsilon=1e−6, initialized by weighted vector mean.",
+        "Unit-normalize the resulting local geometric median.",
+        "Fit reference FG/BG prototypes using unchanged known area weights.",
+        "Compute complete query signed prototype field and decode at zero.",
+        "Use the same fixed iterations on controls; no query-label stopping."
+      ],
+      "expected_benefit": {
+        "kind": "hypothesized",
+        "scope": "Isolated vector contamination occupying a minority of a locally coherent semantic region.",
+        "real_quality": "unmeasured"
+      },
+      "simplest_control": "3×3 feature mean followed by unit matching; 3×3 scalar median of direct score. Same neighborhood and full decoder.",
+      "why_not_duplicate": "Robust vector estimator before reference/query matching; not coordinate winsorization, Huber scalar graph or local Gram descriptor.",
+      "counterexample": "Thin target objects or true boundaries are a minority of a 3×3 neighborhood and are erased; robust filtering also reinforces a coherent wrong-class region.",
+      "first_evidence": "Unit-vector nine-neighbor witness: four identical negative-margin vectors and five dispersed small-positive-margin vectors; scalar median and vector mean can remain positive while vector median is negative. Also include thin-target negative witness and orthogonal rotation equivariance check. Separate query-only and reference-only changes to avoid prototype-shift misattribution.",
+      "cpu_cost": "O(8*9*(N+M)D); batched O(9BD) memory, B≤128; one CPU thread and no feature re-encoding.",
+      "limitations": "Denoising assumption local only; matching after reference smoothing may mix FG/BG edges. Failure reveals local contamination versus genuine semantic boundaries."
+    },
+    {
+      "id": "inv_local_affine_reconstruction",
+      "title": "Leave-center-out local affine semantic reconstruction",
+      "gap": "The center token of a smooth semantic field may be corrupted, while naive local averages smear a legitimate direction gradient.",
+      "history_evidence": "Layer trajectory curvature was closed because it did not beat endpoint/all-state controls. This uses spatial final-layer values only and does not reopen layer magic or unavailable intermediate states.",
+      "available_information": "Native final-layer patch grid and its physical positions, full reference mask weights. No earlier layers. All support/statistics exclude valid=0 tokens; partial area coverage is weighted. Query padding has negative final margin.",
+      "new_observation_or_argument": "A least-squares fit in local (x,y) reconstructs affine coordinates at a missing center, including one-sided borders. A nonconstant whole unit-vector field is generally not strictly affine, so the model on actual unit DINO inputs is a local smooth approximation. A reachable unit witness can have an affine discriminant coordinate plus a nonlinear norm-completing coordinate; this is enough to test signed classification without claiming full-vector exactness.",
+      "algorithm": [
+        "For every native q/r center collect distinct in-bounds 5×5 neighbors excluding center and valid=0.",
+        "Fit [1,x,y] to feature coordinates by coverage-weighted least squares on observed neighbors only.",
+        "Replace center by the fitted value at its exact physical coordinate and unit-normalize.",
+        "If rank deficient or fewer than three independent neighbors, retain original center.",
+        "Fit weighted FG/BG prototypes on reconstructed reference features.",
+        "Produce query margin and standard full decoder."
+      ],
+      "expected_benefit": {
+        "kind": "hypothesized",
+        "scope": "Sparse center contamination on locally smooth directional gradients, especially one-sided image neighborhoods.",
+        "real_quality": "unmeasured"
+      },
+      "simplest_control": "Leave-center-out uniform vector average; affine fit including center; same native grid and decoder.",
+      "why_not_duplicate": "Spatial model-based missing-value prediction with exact affine reproduction, not a second spatial-pooling strength, graph score smoothing or trajectory curvature.",
+      "counterexample": "A real feature discontinuity or texture center contains class information not predictable from neighbors; reconstruction deletes rare parts. It can hallucinate across FG/BG boundaries.",
+      "first_evidence": "Construct a unit field whose discriminant coordinate is linear in x and norm-completing coordinate is nonlinear; corrupt one border center. Neighbor mean biases its discriminant sign, while leave-center spatial affine fit restores the signed coordinate. Include a discontinuous isolated semantic-center negative witness. No unnormalized feature field is used as native evidence.",
+      "cpu_cost": "O(25*(N+M)D), with 3×3 design solves per distinct boundary pattern; batched memory O(25BD).",
+      "limitations": "Cross-image objects need not be locally affine. It adds no identity information absent in neighborhood vectors; failure distinguishes local smoothness premise from simple noise removal."
+    },
+    {
+      "id": "inv_local_lowrank_reconstruction",
+      "title": "Leave-center-out local low-rank semantic reconstruction",
+      "gap": "A corrupted center can have a component orthogonal to the local semantic variation subspace, even when its direct margin remains high.",
+      "history_evidence": "Summary §3.11: global covariance whitening removes semantic high variance; this uses top local semantic variance directions and never inverse-scales them. It must not be interpreted as general domain alignment.",
+      "available_information": "Cached final-layer q/r grids, complete reference mask weights. All support/statistics exclude valid=0 tokens; partial area coverage is weighted. Query padding has negative final margin.",
+      "new_observation_or_argument": "Fit a local affine feature subspace from center-excluded neighbor vectors and project the center onto its leading directions; removing only orthogonal residual preserves local semantic variance rather than flattening covariance.",
+      "algorithm": [
+        "For each center collect reflected 3×3 neighbors excluding the center.",
+        "Compute coverage-weighted neighbor mean and the centered small Gram matrix; invalid neighbors contribute zero.",
+        "Keep exactly the leading two positive local directions, never inverse-scale singular values.",
+        "Project the original center onto mean+span(top2 directions), then unit-normalize.",
+        "Fit full reference FG/BG weighted prototypes after reconstruction.",
+        "Output zero-cut complete query mask with fixed decoder."
+      ],
+      "expected_benefit": {
+        "kind": "hypothesized",
+        "scope": "Feature corruption perpendicular to a low-dimensional local semantic manifold while genuine local variation lies in its principal subspace.",
+        "real_quality": "unmeasured"
+      },
+      "simplest_control": "Same neighborhood mean reconstruction (rank zero) and original token; same-information two-direction reconstruction using center included checks contamination leakage.",
+      "why_not_duplicate": "Local manifold projection is feature-space geometry; differs from affine prediction using spatial x/y, from coordinate tail clipping, and from global whitening.",
+      "counterexample": "A true target’s distinguishing part is the rare orthogonal residual and is deleted; a wrong coherent region remains a well-fit manifold. Rank-two assumption is fixed and unverified.",
+      "first_evidence": "Local curved/spatially permuted low-rank witness with orthogonal center corruption where spatial affine prediction is biased; rare-semantic-residual negative witness; orthogonal rotation should preserve output.",
+      "cpu_cost": "O(9*(N+M)D) plus (N+M) tiny eigensolves; batch≤128, one CPU thread.",
+      "limitations": "Most reference/query boundaries have rank above two. No query-label validation; failure attributes harm to rank truncation or unavailable local identity."
+    },
+    {
+      "id": "inv_huber_reference_readout",
+      "title": "Huber robust episode-local linear reference readout",
+      "gap": "A least-squares reference classifier can devote large influence to a minority of atypical labelled appearance parts and damage query decisions shared by the majority.",
+      "history_evidence": "RESULTS.md:157 already has episode-local role-balanced ridge and summary §3.3 rejects cross-dataset calibrated decision readout. This candidate must compare against that episode-local simple control and uses no held-out label constants; old Huber graph solves scalar query smoothing, not reference fitting.",
+      "available_information": "Legal reference FG/BG area fractions and final-layer tokens; query token vectors. Deterministically cap fit reference set at 256 class-stratified area quantiles, identical for the ridge control. All support/statistics exclude valid=0 tokens; partial area coverage is weighted. Query padding has negative final margin.",
+      "new_observation_or_argument": "Huber residual loss gives bounded influence to reference label-prediction errors rather than squared-loss leverage. An explicit fixed residual model can alter the learned direction without external training; whether atypical parts are nuisance is falsifiable.",
+      "algorithm": [
+        "Select up to 256 reference tokens by fixed per-role weighted cumulative-area quantiles; identical selection for controls.",
+        "Build unit-feature design with bias and labels y=2*FGcoverage/valid−1.",
+        "Role-balance valid area weights and use ridge lambda=0.01, unpenalized bias.",
+        "Run exactly 12 IRLS steps for Huber delta=0.5, preserving the final deterministic coefficients.",
+        "Predict all query token signed linear margins.",
+        "Use standard complete decoder; empty reference role falls back to direct prototype behavior."
+      ],
+      "expected_benefit": {
+        "kind": "hypothesized",
+        "scope": "A minority atypical reference-part residuals misdirecting squared-loss fit; no predicted population gain.",
+        "real_quality": "unmeasured"
+      },
+      "simplest_control": "Role-balanced ridge with exact same fit subset, lambda, full query input and decoder; direct weighted prototypes.",
+      "why_not_duplicate": "Reference residual robust M-estimation, distinct from prior Huber query graph. One method only; different losses/IRLS counts are not extra methods.",
+      "counterexample": "Rare but genuine foreground parts cause high residuals; Huber downweights precisely the information required for viewpoint change, making missed-target recovery worse.",
+      "first_evidence": "Explicit contaminated reference linear-classifier positive witness and rare-part negative witness; verify objective decreases and dual solution matches a primal small problem.",
+      "cpu_cost": "Fit P≤256: O(P²D+12P³+NPD); batched prediction≤256, O(P²+PD). No model encoding or dataset-trained parameters.",
+      "limitations": "This fits legal episode-local reference labels at inference; not a claim of zero mathematical optimization. Generalization from one image may fail. Fixed prior version remains unmeasured."
+    }
+  ]
+}

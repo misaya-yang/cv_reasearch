@@ -70,7 +70,7 @@ def extract(args):
     config = json.loads((args.model_dir/'config.json').read_text())
     if config.get('architecture') != 'vit_large_patch16_dinov3':
         raise ValueError('Pinned DINOv3-L/16 architecture required, not a shape-compatible other model')
-    torch.set_num_threads(2)
+    torch.set_num_threads(args.threads)
     torch.set_num_interop_threads(1)
     checkpoint_hash = sha(args.model_dir/'model.safetensors')
     config_hash = sha(args.model_dir/'config.json')
@@ -172,6 +172,7 @@ def main():
     sub = p.add_subparsers(dest='stage', required=True)
     a = sub.add_parser('export-local'); a.add_argument('--source', type=Path, required=True); a.add_argument('--out', type=Path, required=True)
     a = sub.add_parser('extract')
+    a.add_argument('--threads', type=int, default=2)
     for name in ('model-dir', 'reference-rgb', 'reference-mask', 'query-rgb', 'out'):
         a.add_argument('--'+name, type=Path, required=True)
     a = sub.add_parser('infer'); a.add_argument('--manifest', type=Path, required=True); a.add_argument('--out', type=Path, required=True)

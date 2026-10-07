@@ -1,0 +1,124 @@
+{
+  "schema": "CPU100_CANDIDATE_CARDS_V1",
+  "owner": "reference_evidence",
+  "stage": "review_before_implementation",
+  "proposed_count": 4,
+  "counted_methods": 0,
+  "scope": "Existing unit frozen DINO q/r, one complete soft-weight reference mask; no QGT, new model, forward, network, FoRIS score or class priors. Single-thread NumPy CPU. Episode->Result full signed native margin; padding excluded; root shared complete renderer.",
+  "cards": [
+    {
+      "id": "ref_conditional_tree",
+      "title": "参考角色的条件阈值树",
+      "gap": "A global reference prototype can merge several foreground/background modes into the same mean; one global threshold per coordinate also cannot express a role-dependent boundary such as different y-cuts on different x-sides.",
+      "history_evidence": "Summary3.10/RESULTS.md:1548-1582 document reference-to-query signature failure and absent discrimination by ordinary cues; ridge and quadratic fixed readouts were negative. This candidate does not claim all failures are reference ambiguity: it addresses only source/query roles preserved by a shallow piecewise conditional partition.",
+      "available_information": "Legal R feature coordinates, soft FG/BG weights and their conditional joint distribution. Previous first-batch channel code shows known-reference source coordinate patterns are available but may overfit and may collapse after basis changes. R/Q coordinates need not preserve class partition across images.",
+      "new_observation_or_argument": "A depth3 binary tree implements conditional, multi-threshold axis regions that a single stump, prototype or fixed three-coordinate median histogram cannot always express. A complete unit-feature conditional-boundary fixture is the first real evidence; no natural transfer benefit is assumed.",
+      "algorithm": [
+        "Select at most128 spatially uniform rows with positive known FG mass and128 with positive known BG mass; merge identical spatial IDs, at most256 total; identical row set for tree/stump controls; retain soft labels.",
+        "Balance selected FG/BG masses to0.5 each. Choose16 channels with largest balanced reference variance, ties channel ID.",
+        "At each node enumerate midpoint cuts between distinct reference values on these channels; minimize weighted binary Gini child impurity.",
+        "Fix maximum depth3 and child pooled mass>=0.02; only split for positive gain>1e-12; ties channel ID then smallest threshold.",
+        "Leaf complete query margin is (known balanced FG mass-BG mass)/(sum); every Q row follows learned conditional cuts.",
+        "No FG gives background; no BG gives foreground; all-zero discriminative gain leaves one constant source-prior leaf. Invalid Q padding emits0; shared renderer outputs full mask."
+      ],
+      "expected_benefit": "hypothesized/synthetic_witness pending: recover FG modes needing conditional source boundaries without forcing an EM query seed. Natural signature transfer unknown; no numerical prediction.",
+      "simplest_control": "Common raw FG cosine/prototype; same-selected-channel depth1 stump; first-batch three-channel code with same render; reference degree2 readout if available. Source copy fit alone is insufficient: evaluate different query feature values governed by the same fixed partition.",
+      "why_not_duplicate": "Conditional branching and learned cut values differ from fixed global median joint cells, a single affine margin, kernel regression or a query cluster. Depth/bins/features variants count0; this is one finite tree decision. Single-reference adaptation only, not base-class training.",
+      "counterexample": "Cross-image coordinate warp crosses learned cuts. A diagonal or curved decision boundary requiring more than eight rectangles cannot be represented at fixed depth. Rare intra-class modes can be omitted by fixed spatial sampling; stratifying known roles prevents dropping a tiny known FG class entirely but does not guarantee its modes survive.",
+      "first_evidence": "Unit feature grid[x,y,sqrt(1-x²-y²)] with role=(x<0 and y<0) or (x>0 and y>0.3): source x/y±0.1/±0.4, different held-out query values. Require complete tree output and stump/prototype/code controls. Negative oblique/rotated partition. Then native128 complete4 and root native1024 quality on exactly frozen recipe.",
+      "cpu_cost": "<=256 source rows,16 features,depth3; O(3*16*256log256)+O(3*Nq) after O(Nr*D) variance stats. No dense Q graph; one thread, feature workspace<16MiB.",
+      "limitations": "Source conditional partition transfer remains unverified. Reference fitting can overfit even without Q labels. Soft labels and balanced source masses are algorithmic weights, not calibrated query posterior. Failure reflection compares source held-out branch validity, unseen source leaf occupancy and query drift; do not automatically add depth.",
+      "evidence_levels": {
+        "source_coordinate_patterns": "measured previously, not transfer evidence",
+        "tree_partition_argument": "algebraic",
+        "synthetic_complete_output": "pending",
+        "natural_gain": "unknown"
+      }
+    },
+    {
+      "id": "ref_role_support_box",
+      "title": "角色轴向支持盒的最大违约判别",
+      "gap": "Prototype agreement can be strong even if a query token violates one discriminative coordinate range of the reference target. Averaging over1024 channels can dilute that specific support violation; conversely a target may differ in combinations absent from the reference convex hull but stay within all role-wise coordinate supports.",
+      "history_evidence": "Summary3.11 warns that whitening semantic variance fails. Previous convex hull48.915 and kernel/covariance negative scores do not demonstrate that all coordinate support is useful. This is a different feasible set (Cartesian product of source intervals), with known danger that unsupported coordinate combinations are admitted.",
+      "available_information": "Known-reference weighted coordinate quantiles for each role, physical validity weights, and fixed DINO basis. First-batch native4 per-channel robust spans vary across R/Q; no observation yet that class boxes transfer.",
+      "new_observation_or_argument": "A class coordinate box admits independent combinations and measures worst range violation. It differs from convex mixtures, average prototype distance and a metric density. A box can include a target outside the source convex hull, but can also admit a false impossible combination. Both are decisive constructed cases, not semantics guarantees.",
+      "algorithm": [
+        "For each role use all legal R rows with known soft role mass; compute per-channel weighted5% and95% quantiles.",
+        "Scale each channel by whole-reference valid-weight5%-95% span; constant channels use only exact equality (0 if equal,1 if not) to avoid an infinite score.",
+        "For every Q token compute positive interval violations max(lower-q,0,q-upper) divided by channel scale.",
+        "Role cost is maximum coordinate violation; margin=(BGcost-FGcost)/(BGcost+FGcost),0 for two zero costs.",
+        "Emit complete signed margin, padding0; empty role degeneracy uses common baseline; same fixed shared renderer. No area/seed/score enters."
+      ],
+      "expected_benefit": "hypothesized: reject a high-mean-similarity distractor with one class-specific impossible coordinate and tolerate independent within-role variation. Worst-coordinate nuisance shift may instead delete true targets. No predicted mIoU.",
+      "simplest_control": "Raw FG cosine/prototype; same intervals with mean violation and squared Euclidean box distance; exact convex-hull distance on the same small witness. Quantile choices and aggregation controls count0.",
+      "why_not_duplicate": "The source support set is an axis-aligned Cartesian product and the decision is a worst-coordinate constraint. It is not the old hull's nonnegative coupled mixture or a renamed Gaussian metric. A feasible-set witness must produce a different full decision from hull/mean violation.",
+      "counterexample": "One coordinate carrying image-specific nuisance can dominate all other correct coordinates. Independent boxes include feature combinations never produced by the target. Different rotation changes the support set although pair distances are identical.",
+      "first_evidence": "Finite unit-feature source whose FG coordinate box contains a lawful held-out FG combination outside its convex hull, and distractor violates one coordinate despite favorable aggregate mean. Negative impossible cross-combination inside FG box and one-coordinate style drift. Real4 full output/frozen root1024 quality without adjusting5/95.",
+      "cpu_cost": "O(D*NrlogNr+Nq*D); process channels in64-channel chunks, memory O(D*Nr) existing inputs plus O(64*Nq) workspace. One CPU thread; approximately2MiB Q workspace at4096.",
+      "limitations": "Coordinate support invariance is stronger than observed transfer evidence; partial R weights do not create pure target tokens. No probability/coverage guarantee. Failure reflection attributes worst violating channels and compares mean-box control so nuisance veto and impossible support acceptance are visible.",
+      "evidence_levels": {
+        "support_set_distinction": "algebraic",
+        "positive_full_decision": "pending",
+        "natural_coordinate_support_transfer": "hypothesized",
+        "natural_gain": "unknown"
+      }
+    },
+    {
+      "id": "ref_distribution_energy",
+      "title": "无带宽的类分布能量评分",
+      "gap": "Different FG/BG distributions can have equal mean signature, leaving prototype identity tied. Nearest-anchor rules let one isolated match dominate; fixed Gaussian density uses a bandwidth that may truncate informative reference dispersion.",
+      "history_evidence": "Summary3.10 reference mean transfer gap, old ridge/quadratic/RBF density negatives. Existing RBF density is source-mass-weighted local similarity at temperature0.07, not the unsquared-distance proper score defined here. Same-reference class distribution transfer remains an untested assumption.",
+      "available_information": "Known-reference weighted FG/BG distance distributions using native unit tokens, without Q density, class share, ROI or query seed. Source dispersion is finite and available but its semantic transfer is unknown.",
+      "new_observation_or_argument": "For a class distribution P define S(P,q)=E||q-X||-.5E||X-X'||. Algebraically its expected advantage over Q when q~P is half the energy distance, nonnegative. This establishes proper distribution scoring under the same distribution assumption, not pointwise classification, cross-image transfer or probability calibration. Squared-distance version collapses exactly to mean distance and is a necessary control.",
+      "algorithm": [
+        "Select at most256 weighted spatially uniform R rows per role, with normalized known FG/BG masses; controls use identical selected rows.",
+        "Compute role self-dispersion C=.5 sum_i,j w_i w_j||r_i-r_j|| (unsquared Euclidean distance).",
+        "For every Q row compute role energy S=sum_i w_i||q-r_i||-C.",
+        "Output signed BG-minus-FG energy; exact ties0, padding0; empty FG/BG common degenerate behavior.",
+        "Shared fixed complete renderer; no kernel bandwidth, learned calibration, query prior, graph or mixture estimation."
+      ],
+      "expected_benefit": "algebraic under source/query distribution identity: account for multimodal class support rather than one normalized mean or one closest point. Actual identity drift can invalidate the proper-score expectation. Natural segmentation gain unknown.",
+      "simplest_control": "Raw FG cosine/prototype, squared-energy score (must equal unnormalized centroid squared distance to numerical tolerance), unsquared mean distance with self-dispersion term removed, and original0.07 fixed RBF density on exactly same selected rows.",
+      "why_not_duplicate": "Unsquared pairwise self-dispersion changes a proper score and has no Gaussian bandwidth. It is not a bandwidth/order sweep of the same KDE decision; source self-interaction enters an explicit complete score. If its full decision reduces to a monotone existing cost on all relevant inputs, count0.",
+      "counterexample": "P can be far broader than the query's true target subset; subtracting its dispersion may make a broad clutter role too attractive. Proper expectation does not guarantee each individual q is identified. Image style drift changes the class distributions.",
+      "first_evidence": "Equal-mean unit distributions FG±e1 and BG±e2: prototypes tie, class energy identifies held-out near-axis target/distractor. Verify squared-energy collapse algebraically. Broader-clutter/style-shift counterexample and matched RBF/unadjusted distance outputs. Then complete native4 activity and fixed root native1024 quality.",
+      "cpu_cost": "At most256 rows/role, O(D*(NrFG²+NrBG²)+D*Nq*(NrFG+NrBG));32-query blocks and<=256x256 source distance arrays. One thread, <8MiB distance workspace; full4096x1024 arithmetic cost needs measured latency.",
+      "limitations": "Source distribution identity is not observed merely because moments differ. Uses full soft R weights, potential mixed-token contamination. Expected score advantage cannot be converted to predicted mIoU. Failure reflection separates the self-dispersion term's effect from raw distance and records recovered targets versus broad-clutter false additions when root scores.",
+      "evidence_levels": {
+        "energy_properness_and_squared_collapse": "algebraic",
+        "constructed_complete_output": "pending",
+        "cross_image_class_distribution_identity": "hypothesized",
+        "natural_gain": "unknown"
+      }
+    },
+    {
+      "id": "ref_class_typicality_rank",
+      "title": "类内留一距离的典型性秩判别",
+      "gap": "An absolute closest-reference comparison treats a distance equally across a dense target class and a sparse background class. Even normalized local radii impose a numeric scale ratio; source tail-rank comparison instead asks how unusual the query's distance is under the known class's empirical leave-one-out distances.",
+      "history_evidence": "Summary3.11 local cross-image matches absent and previous NN cue negative. First-batch local radius proof succeeds under heteroscedastic support but active native128 examples collapse to empty masks. A class distance ECDF is a different finite decision, but may be same local-support family revision; reviewer must adjudicate count, not assume new merely because of conformal terminology.",
+      "available_information": "Unambiguous legal reference FG/BG rows and their class-specific nearest nonself distances, no query role label or fitted share. Four native128 packs have2 cases with no pure FG, so this fixed version must disclose fallback there. Native1024 pure-row coverage is root's new data and has not yet been evaluated here.",
+      "new_observation_or_argument": "Two class costs can reverse ordering after class-specific rank calibration, even when a class-global/local radius cost agrees with raw NN. A class-conditional typicality tail does not supply class posterior odds. Ordinary conformal exchangeability would not hold across arbitrary R/Q images, so no semantic coverage guarantee is claimed.",
+      "algorithm": [
+        "Select full-patch absolute FG mass wf>=0.9 and BG mass wb>=0.9 with wf<=0.1, wvalid>=0.9; not conditional wf/wvalid purity. Use at most256 uniformly selected spatial row IDs for both roles and all matched controls.",
+        "If either class has<3 rows, return common raw prototype complete margin with inactive reason.",
+        "Compute source leave-one-out nonconformity a_i=min_j!=i||r_i-r_j||² for each class.",
+        "For each Q token compute a_q=min_i||q-r_i||² and tail rank p=(1+count(a_i>=a_q))/(n+1).",
+        "Output margin=pFG-pBG (tie0), padding0; shared full renderer. These are comparative source typicalities, not target probabilities or certified cross-image p-values."
+      ],
+      "expected_benefit": "hypothesized: reject a nearest-anchor false target lying in the extreme tail of compact source FG while fitting ordinary sparse BG distances. Ties and domain drift can delete real targets; natural gain unknown.",
+      "simplest_control": "Raw FG cosine/prototype and same-selected nearest-class distance, class-global radius normalization, local-radius first batch decision. Explicit witness must separate rank decision from those costs; if not, retain as control/family revision with count0.",
+      "why_not_duplicate": "Decision uses complete leave-one-out tail distribution and discrete class-specific rank, not just one local/global distance scale. Different n/k/tail smoothing count0. If reviewer identifies it as monotone local-support calibration rather than an independent mechanism, do not count.",
+      "counterexample": "Source tiny FG spacing plus query style change makes every true query target atypical; both class tails can bottom out and produce tie/background. Unequal source sample sizes give different minimum ranks despite identical geometry; no semantic exchangeability guarantee.",
+      "first_evidence": "Finite unit-vector support where same raw nearest/radius ordering yields different tail-rank decision, with labels stipulated by class exchangeability. Negative equal geometry/unequal class n and shifted target support. If no such genuine distinct positive is obtained, retire independently counted version; real4 output and root native1024 quality only after frozen decision.",
+      "cpu_cost": "<=256 rows per role, source Gram<=256²; O(D*Nq*512) distance products, O(Nq*log256) sorted ECDF lookup;32-query chunks; one thread/<8MiB workspace. Compute bounded latency before full200.",
+      "limitations": "Unproven and often false source/query exchangeability; pure-role requirement inactive2/4 native128. This is not statistical segmentation confidence. Failure reflection must isolate tail resolution/sample-n bias from identity shift and compare local-radius output, not merely say tune significance.",
+      "evidence_levels": {
+        "class_distance_distribution_availability": "measured",
+        "distinct_rank_decision": "pending witness",
+        "semantic_tail_transfer": "hypothesized",
+        "natural_gain": "unknown"
+      },
+      "pure_role_definition": "Strict full-encoder-patch mass: FG requires wf>=0.9 and wvalid>=0.9; BG requires wb=wvalid-wf>=0.9, wf<=0.1 and wvalid>=0.9. This is stricter than conditional physical c=wf/wvalid purity, intentionally excluding neutral-padding contamination. No quality/coverage guarantee."
+    }
+  ]
+}

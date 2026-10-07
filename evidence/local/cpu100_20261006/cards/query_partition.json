@@ -1,0 +1,145 @@
+{
+  "owner": "query_partition",
+  "source": "user-provided Opus session summary (local-only source, not included in repository)",
+  "count_requested_max": 14,
+  "count_proposed": 2,
+  "quality_status": "hypothesized; reviewer pending; no quality claim",
+  "cards": [
+    {
+      "id": "QP01",
+      "title": "查询字典上的完整参考标签反向计数",
+      "gap": "逐token参考距离会把同一查询外观组的弱部分切掉；反向借用查询原型后仍不能由组内一致性证明身份。本方法明确将完整参考FG/BG标签映射到查询字典，由参考标签支持量决定每个查询组的身份，不使用查询最高分种子。",
+      "history_evidence": [
+        "总结3.9：RCG是已有身份信号的放大器，不能从图一致性推出正确身份。",
+        "RESULTS.md:215-218：查询分组/锚点在错种子时失败；分组本身的oracle表现不代表合法身份判决。",
+        "RESULTS.md:169-184：联合参考harmonic产生大量FP；这里没有query-query标签图、扩散强度或会压倒参考标签的query边质量。",
+        "PLAN末尾：硬反向最近邻重建代理真目标落点39/81，不支持默认继续反向路线。本方法必须先构造同信息差异并由reviewer裁定是否实质重复；若被归为同族且没有新依据，不计方法。"
+      ],
+      "available_information": "直接final-LN冻结DINOv3单位q/r、完整MR格点覆盖w、有效覆盖v、q/r原生grid及读出geometry；不queryGT、不FoRIS场、不额外模型或encoder。",
+      "new_observation_or_argument": "查询token的几何用于决定参考监督在哪些查询原型上累积。所有参考token独立投票给最近查询原型；FG/BG总票分别归一化，避免MR面积成为类别先验。它和用query原型到reference均值做点积不是代数同一算子：参考token落在哪个Voronoi cell改变计数，即使参考FG/BG均值相同，完整参考分布也可改变query组的标签。但这只说明有额外可用决策，不证明DINO真实分布中的身份迁移成立。",
+      "algorithm": [
+        "1. 单位化q/r；以query token 0及最远点确定性初始化K=min(8,max(1,floor(sqrt(Nq))))个球面中心，最多12次Lloyd更新。",
+        "2. 对每个reference token，计算其与所有query中心的余弦并以稳定argmax映射到一个query字典项。",
+        "3. 在字典项k分别累积MR覆盖票Fk=sum(w)/sum(all w)，背景票Bk=sum(v-w)/sum(all(v-w))。",
+        "4. identity[k]=(Fk-Bk)/(Fk+Bk+1e-12)；无FG或BG时分别全空或全满，无支持字典项默认背景。",
+        "5. 每个query token取得所属字典项identity；保留连续[-1,1]场，完整固定bilinear读出到工作1024及实际query尺寸，在margin>0输出。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "claim": "当参考标签在查询字典上可区分，而查询弱部分仍落在同一纯组时，可一次补回弱部分；不依赖同分数估面积。真实mIoU未测、不预测分数。"
+      },
+      "simplest_control": [
+        "同输入/同读出的参考FG-BG均值margin。",
+        "同输入/同读出的类别平衡cosine KDE log-density ratio；固定温度0.07。",
+        "相同query字典，直接按query组内KDE log-density ratio均值作共同标签；用于隔离反向标签计数是否只是池化已有分数。",
+        "逐reference最近query-token投票，再按相同query字典累积；隔离中心归纳是否是新差异。"
+      ],
+      "why_not_duplicate": "不以q分数选锚、不NCut/图扩散、不query均值当新FG种子；query字典在标签前固定。但反向监督仍与已失败回程族相邻，因此需要reviewer严格决定、不得自行算数。",
+      "counterexample": "query目标和干扰共享同一外观字典项时，所有两区必须获得相同标签；小目标对应中心未被K字典保留时会被大背景吞并；跨图偏移使参考FG落在错误query中心时整组误选。错种子负例中本方法没有输入seed，仍需证明支持错落时不会自称识别成功。",
+      "first_evidence": "1线程运行单位DINO可实现的正构造及均值匹配干扰反例；必须报告四臂完整输出差异、若KDE/池化同样解决不能宣称计数独有价值。随后现有4例直接128DINO仅活动/成本/输出检查，无queryGT无质量评分。",
+      "cpu_cost": "NumPy，最多8中心/12轮；时间O((Nq+Nr)KD)，额外空间O((Nq+Nr)K+KD)，4096x1024输入1线程；无稠密Nq^2图、无额外编码。",
+      "limitations": "字典包含前景节点不保证节点被参考标签正确命名；参考映射错位、粒度混合、query类别多时信息不足；固定K不按GT/类别/面积调。若负例显示问题在字典则记范围失配；若字典纯但票支持错则记身份迁移失配；不把失败归结为需要扫K或换阈值。"
+    },
+    {
+      "id": "QP02",
+      "title": "查询字典的全参考成对风险联合命名",
+      "gap": "在同一完整reference中，FG与BG都可能最近落到同一个query原型；硬投票无法命名尚未获得最近票的query区域。只看哪一个最像丢失了FG/BG到两个query候选的相对间隔。",
+      "history_evidence": [
+        "总结3.2/3.10：参考平均相似度在困难图中打平；不能用query一致性解决身份。",
+        "RESULTS.md:169-184 harmonic失败：query边质量压倒reference监督；本方法没有query标签图边，不在查询扩散能量中淹没reference。",
+        "PLAN硬反向重建39/81：本方法仍属反向监督相邻族，必须保留hard-vote对照，并以构造证明相对FG/BG全标签风险能改变hard票支持不足的决策。"
+      ],
+      "available_information": "与QP01相同直接DINO和完整MR；无queryGT/hostscore/seed；q_valid正token确定query字典，partial参考FG/BG标签按覆盖分数分别累积。",
+      "new_observation_or_argument": "固定query字典后，为所有query原型联合选择FG/BG二元标签，使它们作为分类原型时对完整参考标签的类别平衡logistic风险最小。前景角色命名由参考监督共同决定，不先指定某个query峰为FG；与QP01的独立Voronoi票符号不同，候选标签之间通过各类最大响应非线性交互。对这个固定候选域，最小风险不大于任何简单control诱导字典标签的风险是代数保证；这只保证reference拟合，不保证query迁移或分割收益。",
+      "algorithm": [
+        "1. 构造QP01同一合法确定性球面query字典K<=8和全部token到字典标签。",
+        "2. 算S[r,k]=单位reference到每个query中心的余弦。",
+        "3. 枚举全部2^K-2非空FG/非空BG原型标签集合；K=1或缺失reference一类按显式退化control处理。",
+        "4. 每个集合得到reference margin m[r]=max(S[r,FG])-max(S[r,BG])。",
+        "5. 风险R=.5 sum(wf/sumwf*softplus(-m/.07))+.5 sum(wb/sumwb*softplus(m/.07))。",
+        "6. 取最低风险集合，数值相同按字典label bitmask升序；margin[k]为+1/-1，完整固定render输出。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "claim": "可命名没有获得FG最近票、但作为FG类别原型时比反向赋值更能解释完整参考FG/BG间隔的query组；没有真实收益分数。"
+      },
+      "simplest_control": [
+        "同query字典QP01反向平衡hard票。",
+        "同query字典按中心FG-BG均值margin命名。",
+        "同query字典按中心KDE log-density ratio命名；同读出。",
+        "QP01控制中的pointwise KDE。"
+      ],
+      "why_not_duplicate": "不是QP01阈值或票平滑：联合标签风险包含集合内最大响应，会有多个原型互相替代和相反身份组合；不是querySeed传播。若构造/源码显示输出仅等价某简单control，count0关闭。",
+      "counterexample": "reference中局部BG偶然像query目标、域偏移逆转距离时，最低reference风险可选错完整query身份。已知query有多个同类实例时不限制只选一组，但未被reference解释的外观模式仍可能全删。",
+      "first_evidence": "合法unit向量构造必须验证QP01最邻票不足而联合风险可命名的差异，同时报告均值/KDE是否已经解决；再加明确跨图语义逆转负例。4真实直接128例只输出/成本检查、不GT不质量宣称。",
+      "cpu_cost": "NumPy 1线程，构建O(Nq*K*D*12+Nr*K*D)，枚举O(2^K*Nr*K)上限254集合；空间O((Nq+Nr)K+KD)，4096tokens不Nq²，不新encoding。",
+      "limitations": "离散query原型标签的有限reference风险拟合不等于新无标签信号；需要匹配control观察过拟合。失败反思要区分字典目标不存在、参照角色混淆、反向风险泛化失配，不扫温度/标签集合数来改名计数。"
+    }
+  ],
+  "closed_before_implementation": [
+    {
+      "idea": "换graph、K、NCut停法或最高分seed扩散",
+      "reason": "仍是同一身份信号的放大与范围切分；已有错种子/不存在目标层级节点反例，没有当前新依据",
+      "count": 0
+    },
+    {
+      "idea": "region平均FoRIS分数/同分数估面积",
+      "reason": "没有纠正分数错误的独立量；历史分组均分与尺寸估计已有负例",
+      "count": 0
+    },
+    {
+      "idea": "region MMD比较FG与BG",
+      "reason": "同核差分时query-query项代数抵消，只剩token核分类的线性池化；不算新区域证据",
+      "count": 0
+    },
+    {
+      "idea": "reference模式占用、convex hull、response covariance再换名",
+      "reason": "已实现且测过；换距离/矩阶/分区参数不能绕过旧失败",
+      "count": 0
+    },
+    {
+      "idea": "枚举query区域作为FG并以reference重建误差挑选",
+      "reason": "当前缺少超出硬反向重建39/81与回程负例的合法依据；不先批量实现再找理由",
+      "count": 0
+    }
+  ],
+  "rejected_cards": [
+    {
+      "id": "QP03",
+      "title": "完整查询区域的三阶联合DINO签名",
+      "gap": "前景与干扰区域的native特征均值和二阶协方差相同时，原型/二次分类/二阶区域统计无法区分；参考完整标签允许读取FG/BG不同的三阶依赖。本卡只针对这个明确子情形，不把所有DINO困难误差归因于三阶。",
+      "history_evidence": [
+        "已测reference response covariance600=12.34低于MEAN，native角度协方差旧DEV未建立收益；因此本方法必须证明不是二阶矩/模式频率换名称。",
+        "旧带方向二次核已测51.61；不能由更高阶复杂度推出收益。",
+        "总结3.7/3.11：局部特征模式频率可能不可跨实例迁移；此处同样存在whole-region组成依赖。"
+      ],
+      "available_information": "原生unit q/r、完整参考覆盖和合法query分组；不queryGT/seed/host。",
+      "new_observation_or_argument": "单位向量tetrahedron的两组相反parity支持拥有相同均值和二阶矩、不同三阶张量。这是精确可实现的信息差异，不是oracle方向。完整reference FG/BG三阶张量由合法标注求得，candidate query区域张量与两者比较可以改判。真实DINO区域是否稳定存在该差异未知。",
+      "algorithm": [
+        "1. 以固定非重叠4×4原生token窗口覆盖完整query grid，尾块截断；只统计q_valid>0并按partial覆盖加权，不score/seed估窗口。",
+        "2. 从有效reference单位特征确定最多3个最大方差正交方向P（对reference小Gram作eigh，截取非零谱）；只投影、不白化。",
+        "3. 对reference FG/BG分别用合法覆盖权重计算原始三阶张量T[a,b,c]=E[(r@P)a(r@P)b(r@P)c]。",
+        "4. 对每个固定query窗口计算同一三阶张量；identity=||Tq-Tbg||F−||Tq-Tfg||F。",
+        "5. 每个query token取得所属组signed identity，完整固定readout；无参考一类按公共退化规则、无有效组为空。"
+      ],
+      "expected_benefit": {
+        "level": "algebraic_then_hypothesized",
+        "claim": "一/二阶统计相同而三阶依赖不同的区域可区分是构造级可能性；跨图原生DINO分割收益完全未知。"
+      },
+      "simplest_control": [
+        "同分区参考/query均值距离",
+        "同分区完整二阶矩距离、covariance距离",
+        "同信息逐token三阶张量FG/BG分类margin并在同分区平均，隔离region特有价值",
+        "同分区query到完整reference的cosine KDE均值margin；原型同读出"
+      ],
+      "why_not_duplicate": "原三阶张量与旧response covariance代数不同；先展示同原生mean/cov的reachable unit反例才允许计数。若本卡只靠逐token三次分类作用且region未增加可测作用，诚实记为高阶参考分类候选而非query范围机制，并与reference_evidence去重。",
+      "counterexample": "FG与BG同三阶也不识别；跨实例部位组成不同可把真目标张量判成BG；region把目标与背景合并时高阶信息混合毁掉；奇偶统计如果只是图像域风格则反向身份。",
+      "first_evidence": "3D嵌入1024D单位parity正例，完整query网格的固定4×4窗内分别重复FG/BG四个顶点，实际完整window输出且检验两区域mean/cov相等；身份交换/部位组成改变负例，报告所有control；4真实例只活动和成本，无质量分。",
+      "cpu_cost": "1CPU NumPy，reference Gram截断最多256参考代表，O(256²D+256³)，固定窗区域三阶O((Nr+Nq)*27)；完整4096输入必须记录256代表确定性覆盖抽样及控制预算，不新encoder。",
+      "limitations": "参考截断/ PCA方向不是queryGT方向；部分覆盖权重必须原样分摊FG/BG。PCA退化同谱时全3维张量距离在正交旋转下不变；不足3维没有parity见证。若简单高阶control同解则不宣称分组价值；失败记录高阶不可迁移/窗口与目标范围失配/低维截断丢失，不扫阶数或维数凑更多方法。",
+      "review_decision": "reject_duplicate",
+      "count_delta": 0,
+      "closure_reason": "对窗口T=mean(phi(q))，db²-df²=2T·(Tfg-Tbg)+||Tbg||²-||Tfg||²，严格是逐token三阶线性score同窗平均；db-df cut0与它相同。不是独立region联合信息，且ref_joint_channel_code已有within-token高阶parity。按reviewer关闭，不实现、不通过更换阶数/窗口重开。"
+    }
+  ]
+}

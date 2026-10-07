@@ -1,0 +1,532 @@
+{
+  "owner": "decision_risk",
+  "input_contract": "Only native frozen final-LN DINO q/r, complete known reference mask coverage and native image geometry. No QGT, FoRIS fields, external labels, new encoder, GPU, SSH or download. Full masks use common.render on a complete signed native query grid.",
+  "proposal_count": 16,
+  "review_status": "DR01-08 accept_for_probe with fixed constructive evidence; DR09-16 pending review",
+  "methods": [
+    {
+      "id": "DR01",
+      "title": "已知参考覆盖率的仿射趋势外推签名",
+      "gap": "参考小物体的DINO patch混入背景；直接用fractional MR面积加权平均会把混合token再次平均，不等于恢复纯目标签名。",
+      "history_evidence": "总结§3.11证明跨图直接局部匹配困难，但没有证明mask覆盖率能线性解混。PLAN直接入口只按MR面积权重求prototype。旧PU/π线估的是未知query占比，不适用于已知R coverage的反演；本构造不估queryπ。",
+      "available_information": "每个R token的DINO向量r_i、known foreground weight wf_i、valid weight v_i；c_i=wf_i/v_i合法已知。",
+      "new_observation_or_argument": "weighted二列线性回归对合法known R coverage提取条件方向；只有在未unit的潜在向量严格r_i=c_i*f+(1-c_i)*b时才有满秩精确恢复性质。common要求所有r unit，因此非平凡多c的unit凸混合通常不可能，不能把该理想代数直接当DINO真值。本算法在unit r上做趋势拟合并外推coverage0/1，属于待证启发式；实际第一构造将最终r单位化并承认不再精确恢复。",
+      "algorithm": [
+        "v_i>0时取c_i=wf_i/v_i，A_i=[c_i,1-c_i]。",
+        "求theta=argmin sum_i v_i||r_i-A_i theta||²；2x2设计病态(最小/最大特征值<1e-6)时回退prototype。",
+        "不加ridge造新常数，使用满秩weighted least squares的解析2x2解。",
+        "将theta的两行单位化成f,b。",
+        "完整query margin_i=q_i dot(f-b)；空FG/BG按共同baseline退化合同。",
+        "common.render输出1024及原尺寸完整mask，cut固定0。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized; least-squares algebra only for explicitly unnormalized ideal model",
+        "claim": "unit参考向量仍随known coverage具有稳定趋势时，外推可能减少prototype污染。没有DINO单位向量精确解混定理，真实mIoU未测。"
+      },
+      "simplest_control": "同输入同render的weighted FG/BG prototype；仅pure coverage>=.75/<=.25 reference prototype；这些控制不计方法。",
+      "why_not_duplicate": "使用已知R mask覆盖率作为线性设计反演两个签名，不是query面积估计、阈值改变、同score重标定或重开reference局部数量匹配。",
+      "counterexample": "DINO单位化后的r_i不满足线性混合；foreground与background因上下文非线性改变、c无跨度或真实referenceFG内部多模态时可能失败，解析解也可能放大噪声。",
+      "first_evidence": "使用normalized linear-mixture的最终unit r作为common合法输入；检验coverage外推完整mask是否改善weighted与pure控制而非要求恢复潜在f,b。保留非unit潜在ideal检查但不计收益证据。负例加入非线性c²语义项、3种coverage的unit非仿射关系和constant c病态回退。",
+      "cpu_cost": "1 BLAS thread；O((Nr+Nq)D) time、O(D)额外空间；无新编码。真实4例只有64 native tokens，不代表1024 input成本。",
+      "limitations": "线性混合不是DINO事实；如果强pure-token control已解决则复杂反演没有必要。失败产出是分清覆盖信息是否能解释混合偏差，而非需要调参。 已有r是unit，f/b外推端点可非unit；末端再次unit是启发式，不可从ideal恢复性质推断。",
+      "validation_evidence": {
+        "implementation": "src/ics/cpu100/decision_risk.py",
+        "mechanism_review": "reviews/batch01.md",
+        "synthetic": "reports/decision_risk/fixed_probes.json",
+        "input_contract": "reports/decision_risk/contract_checks.json",
+        "real_source": "server/probe29_native4_v2/methods_summary.json",
+        "real_reflection": "reports/decision_risk/native1024_four_reflection.json",
+        "real_scope": "nativeFP32 final-LN1024 four reused descriptive cases; no population confirmation",
+        "real_score": 30.445593415487238,
+        "delta_prototype_pp": 1.461343130850672,
+        "delta_average_logistic_pp": -8.468221369969555,
+        "stable_incremental_benefit_established": false
+      }
+    },
+    {
+      "id": "DR02",
+      "title": "参考边界局部配对的场景抵消判别",
+      "gap": "reference背景均值包含远处无关场景；全图FG-BG原型差可能把背景布局差异误当目标身份，而目标附近FG/BG共享局部场景偏移。",
+      "history_evidence": "总结§3.10显示换参考不能普遍救query难例，故不承诺解决所有身份打平；§3.11禁止把所有方差随意当nuisance。旧reference shape/adjacency转移失败不能直接证明局部FG-BG配对差无信息。",
+      "available_information": "R native grid坐标、known MR fractional coverage、R向量与Q向量。只在R图中用已知FG/BG；不从错误query seed传播。",
+      "new_observation_or_argument": "若边界相邻r_f=t+n_local和r_b=b+n_local，则差r_f-r_b抵消共享局部项。全图背景均值不共享n_local时不会抵消。该假设须用局部与随机配对同成本控制区分，不能把位置本身说成语义。 common单位rf/rb下mid dot unit(rf-rb)=0，故midpoint项恒消失，实际算法完全等价q dot(weighted mean of unit pair differences)。局部信息仅来自pair选择及逐pair归一化，不声称midpoint增加信息。",
+      "algorithm": [
+        "取native四邻边(i,j)，仅当c_i>=.75,c_j<=.25或相反时作为有向FG->BG pair。",
+        "pair权重w=v_i*v_j*(c_f-c_b)，d=unit(r_f-r_b)，mid=(r_f+r_b)/2。",
+        "单位token使mid dot d=0，直接完整margin=q dot(weightedmean d)，不得把midpoint作为新增信息。",
+        "pair不存在或全部d为0时回退weighted prototype。",
+        "margin不做概率校准；native padding query置负。",
+        "common.render固定cut0产生完整mask。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized; algebraic cancellation only under local additive model",
+        "claim": "局部共同场景项很强时可从reference中提取更接近目标vs邻背景的方向，降低远背景造成的身份偏差。真实质量未知。"
+      },
+      "simplest_control": "weighted prototype；相同FG/BG token数的deterministic远端配对；所有cross-class pair平均。所有pair数量与render匹配，不把更少reference tokens偷作方法优势。",
+      "why_not_duplicate": "配对由known mask在R局部边界定义，用差分消共享场景；不是reference部位布局转移、query平滑、shape先验或kernel多数票。已与reference_evidence代理协调独占。 对common unit输入仅改变由局部pair与归一化定义的线性方向，已披露简化；与普通global FG-BG方向是否有不同值必须核对。",
+      "counterexample": "边界tokens已经混合；局部BG恰好也是目标材质、目标边缘只剩轮廓而非类别，或Q局部上下文偏移不共享R midpoint，均可导致负迁移。",
+      "first_evidence": "合成reference中每个FG-BG相邻pair共享不同nuisance，Q目标换nuisance；与远配对完整mask对照。负例使局部BG含目标特征或把Q加独立共同偏移；记录正确/错误增删，不因净分失败丢失哪一动作。",
+      "cpu_cost": "1 BLAS thread；pair筛选O(Nr)，至多64pair提取方向O(64D)，已披露线性简化后Q O(NqD)，额外O(D)；无新编码。",
+      "limitations": "不存在跨图偏移普适消除保证；pair cap是确定CPU合同不是方法变体。失败能区分pair身份污染与局部差分无法跨图的原因。",
+      "validation_evidence": {
+        "implementation": "src/ics/cpu100/decision_risk.py",
+        "mechanism_review": "reviews/batch01.md",
+        "synthetic": "reports/decision_risk/fixed_probes.json",
+        "input_contract": "reports/decision_risk/contract_checks.json",
+        "real_source": "server/probe29_native4_v2/methods_summary.json",
+        "real_reflection": "reports/decision_risk/native1024_four_reflection.json",
+        "real_scope": "nativeFP32 final-LN1024 four reused descriptive cases; no population confirmation",
+        "real_score": 18.93472380678334,
+        "delta_prototype_pp": -10.049526477853227,
+        "delta_average_logistic_pp": -19.979090978673455,
+        "stable_incremental_benefit_established": false
+      }
+    },
+    {
+      "id": "DR03",
+      "title": "参考空间组的最坏组判别风险",
+      "gap": "reference大块重复纹理在平均经验风险中淹没小块但合法的目标部位；单均值与平均loss会沿多数纹理而不是完整mask判别。",
+      "history_evidence": "总结§3.7要求保留补真并量化副作用；§3.11警告白化伤语义。本方法不删除语义方差、不估π、不挑query cut。旧leave-block BG cleaner在FoRIS成品mask上未赢，不是本raw-DINO方向优化的收益证据。",
+      "available_information": "R grid以固定2x2空间格分组，每格分别有已知FG/BG area weights；完整Q feature用于应用方向，QGT和query先验不进入风险。",
+      "new_observation_or_argument": "average loss可在少数reference空间组付出很大分类误差；min max_g balanced reference loss为每个有证据的空间组设置竞争。新增量是已知mask下的空间条件判别错误，不是重新命名全图score。",
+      "algorithm": [
+        "R以2x2格分组，每格FG/BG分别形成一个加权loss组；总和为0的组跳过。",
+        "每组最多32个token按native index均匀采样，保留MR area权重。",
+        "令signed labels对应known FG/BG权重，L_g(w,b)=weighted softplus(-y*(r dot w+b))。",
+        "固定200步primal-dual：min_(w,b) max_(p simplex) sum p_g L_g + .05||w||²。",
+        "w,b步长.1，p multiplicative-weights步长.1；从w=b=0,p均匀启动，不用QGT调参。",
+        "完整query margin=q dot w+b；报告最终group losses、primal objective、duality gap估计。",
+        "空FG/BG回退baseline；common.render固定cut0输出完整mask。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "claim": "reference少数合法部位被majority平均牺牲且这些部位出现在query时，有望恢复它们；无真实mIoU增益证据，DRO并非跨域保证。"
+      },
+      "simplest_control": "相同模型、200步、正则与数据的class-balanced average logistic；随机打散空间组DRO；weighted prototype。只loss组结构不同，不以更大模型取胜。",
+      "why_not_duplicate": "优化新的空间条件判别方向；并非在固定FoRIS/原型score换阈值，不是query图平滑。average logistic为控制不计。",
+      "counterexample": "最坏组本身包含boundary混合、错标或不共享query的背景；max risk会过拟合那个组并损害所有干净组。空间相关性意味着无IID一般化保证。",
+      "first_evidence": "reference多数/少数目标部位冲突的构造，query仅呈少数目标；必须与average logistic同方向维数对照。负例用一个污染组，记录DRO为何追逐污染。先检查优化数值，与小D SciPy独立凸解核对不把未收敛误当机制失败。",
+      "cpu_cost": "1 BLAS thread；G<=8、每组<=32，200步O(256D)，query O(NqD)，额外O(256D)；无新编码，不允许运行百万超参搜索。",
+      "limitations": "固定200步只是计算预算，收敛需要证据；本卡不声称部署保证。失败产出分为优化误差、最坏组污染和reference->query组不对应，不能归结为改阈值。",
+      "validation_evidence": {
+        "implementation": "src/ics/cpu100/decision_risk.py",
+        "mechanism_review": "reviews/batch01.md",
+        "synthetic": "reports/decision_risk/DR03_probe.json",
+        "input_contract": "reports/decision_risk/contract_checks.json",
+        "real_source": "server/probe29_native4_v2/methods_summary.json",
+        "real_reflection": "reports/decision_risk/native1024_four_reflection.json",
+        "real_scope": "nativeFP32 final-LN1024 four reused descriptive cases; no population confirmation",
+        "real_score": 36.613896974854086,
+        "delta_prototype_pp": 7.62964669021752,
+        "delta_average_logistic_pp": -2.2999178106027074,
+        "stable_incremental_benefit_established": false
+      }
+    },
+    {
+      "id": "DR04",
+      "title": "参考标注风险的类内修剪判别",
+      "gap": "单张参考含少量特异材质或上下文异常token，普通平均判别会追逐这些高损失点并转移到query。",
+      "history_evidence": "总结§3.11禁止把高方差一律当噪声；本方法只把explicitly假设的少量reference判别异常当候选污染。旧Huber是query图边作用力，不是reference标签判别风险；不重开同版本。",
+      "available_information": "reference known FG/BG area weights与native向量，完整query向量。",
+      "new_observation_or_argument": "在明确的每类最多25% reference risk污染假设下，least-trimmed logistic可用多数干净reference约束方向；普通平均loss的高损失outlier可能主导梯度。25%是假设不是观测事实，也不是query target area prior。",
+      "algorithm": [
+        "以weighted prototype方向初始化w，b=0。",
+        "对FG/BG分别计算当前signed logistic loss；按loss升序保留各类75% area权重(最后token分割其area权重)。",
+        "在保留权重上做40步固定步长.1的balanced logistic+ .05||w||²。",
+        "共5个trim/refit轮次；无Q score cutoff或QGT参与。",
+        "完整query margin=q dot w+b，空reference类回退baseline。",
+        "common.render fixed cut0产生完整1024及原尺寸mask。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "claim": "reference gross-risk异常确为不转移的污染时，可减少跟随污染的误改；不保证真实mIoU，rare但合法目标可能被误丢。"
+      },
+      "simplest_control": "相同200 gradient steps、正则、数据、render的average balanced logistic；uniform deterministic 75% reference removal；weighted prototype。",
+      "why_not_duplicate": "通过非凸class-wise least-trimmed判别风险重新学习reference方向；与DRO保护高损失组目标相反，不是换Q阈值/同score映射，也不是Huber图强度修订。",
+      "counterexample": "少数高loss reference token恰是query中的合法目标部位，则trim消灭最需要的信息；随机label噪声超过25%或起始方向错误也可能锁进错误局部解。",
+      "first_evidence": "构造一组reference label污染使mean logistic转向，而多数clean ref可正确分类Q；完整mask与同成本average对比。负例把outlier换成query合法minority，确认损害。保存五轮active weights以反思到底trim掉什么。",
+      "cpu_cost": "1 thread，reference固定最多128 class-weighted uniform samples；200步O(128D)，Q O(NqD)，额外O(128D)，无编码。",
+      "limitations": "trim比例不搜索且不计多个方法。固定版本失败需分清污染假设错或优化局部误差；不说只需再调trim。",
+      "validation_evidence": {
+        "implementation": "src/ics/cpu100/decision_risk.py",
+        "mechanism_review": "reviews/batch01.md",
+        "synthetic": "reports/decision_risk/fixed_probes.json",
+        "input_contract": "reports/decision_risk/contract_checks.json",
+        "real_source": "server/probe29_native4_v2/methods_summary.json",
+        "real_reflection": "reports/decision_risk/native1024_four_reflection.json",
+        "real_scope": "nativeFP32 final-LN1024 four reused descriptive cases; no population confirmation",
+        "real_score": 37.40782764977818,
+        "delta_prototype_pp": 8.423577365141611,
+        "delta_average_logistic_pp": -1.505987135678616,
+        "stable_incremental_benefit_established": false
+      }
+    },
+    {
+      "id": "DR05",
+      "title": "参考空间jackknife不确定性选择性改判",
+      "gap": "一个reference空间块可以使FG/BG prototype方向发生大幅变化；full prototype没有区分稳定身份证据与单块偶然支配。",
+      "history_evidence": "总结§3.7辅助必须报告收益保留和副作用削减；RESULTS历史leave-block BG cleaning相对originalB未赢，故本法不宣称已知收益。区别是direct DINO reference-space uncertainty和bias-corrected完整场，不是旧FoRIS删除票决。",
+      "available_information": "known R mask与R空间2x2 blocks，DINO q/r；不使用QGT、oracle J或classπ。",
+      "new_observation_or_argument": "对每个Q token，LOO参考方向的变化可揭示该token判别依赖reference某一位置。jackknife偏差修正和方差是不同Q token的量，通常不是prototype单分数的单调函数；空间相关reference下它不是严格概率置信证书。",
+      "algorithm": [
+        "固定R空间2x2 blocks；计算full prototype margin m。",
+        "每次去掉一块，若两类仍存在计算m_k；不足3个有效LOO回退baseline。",
+        "K个LOO平均mu，jackknife bias-corrected bc=K*m-(K-1)*mu。",
+        "sd=sqrt((K-1)/K * sum_k(m_k-mu)²)。",
+        "bc-1.96sd>0时返回bc；bc+1.96sd<0时返回bc；其余token返回m。",
+        "不把bc/sd称为概率；padding Q负，common.render fixed cut0输出完整mask。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "claim": "prototype受到小块非转移影响且jackknife偏差反映它时，可作少量有根据的身份改判；interval不是跨图泛化保证，真实质量未知。"
+      },
+      "simplest_control": "full prototype；LOO mean仅不用uncertainty guard；空间块随机token替代的jackknife；同uncertainty但不bias-corrected控制(通常不改变base符号)。",
+      "why_not_duplicate": "Q特定reference空间影响量控制bias-corrected margin编辑；不只加大单阈值、不沿旧score估面积，不复用旧BG-pool cleaner实现。",
+      "counterexample": "所有reference块共享错误身份，jackknife稳定地错；合法特异部位只在一块时删块变化大，guard可能保留base错误。LOO三块非IID使1.96不具名义95%覆盖。",
+      "first_evidence": "构造一reference block偶然改变full direction但其他块一致的正例，完整Q比较bias-correction与guard。负例用全块共同wrong identity，必须仍失败并如实记录不能解决seed身份。",
+      "cpu_cost": "1 thread，K<=4；O((Nr+KNq)D)；O(KNq) space；无编码。",
+      "limitations": "不得叫distribution-free certificate，必须记录每次改判是否guard触发；失败可量化reference影响能否预测query可靠性，而非复制旧小样本死亡结论。",
+      "validation_evidence": {
+        "implementation": "src/ics/cpu100/decision_risk.py",
+        "mechanism_review": "reviews/batch01.md",
+        "synthetic": "reports/decision_risk/fixed_probes.json",
+        "input_contract": "reports/decision_risk/contract_checks.json",
+        "real_source": "server/probe29_native4_v2/methods_summary.json",
+        "real_reflection": "reports/decision_risk/native1024_four_reflection.json",
+        "real_scope": "nativeFP32 final-LN1024 four reused descriptive cases; no population confirmation",
+        "real_score": 29.148267613928937,
+        "delta_prototype_pp": 0.16401732929237056,
+        "delta_average_logistic_pp": -9.765547171527857,
+        "stable_incremental_benefit_established": false
+      }
+    },
+    {
+      "id": "DR06",
+      "title": "参考正负分布的全配对秩竞争",
+      "gap": "少数极高相似度reference tokens可主导prototype均值而其他FG/BG reference ordering不支持该身份；mean和最近匹配不利用成对排序多数。",
+      "history_evidence": "总结§3.2困难query假目标可能更像参考均值；这个事实否定仅换均值score阈值，不直接否定全reference分布的U-statistic，但后者收益也未测。",
+      "available_information": "query对每个known FG/BG reference token的余弦值及其MR area weights。",
+      "new_observation_or_argument": "p(q)=sum_if sum_jb wf_i*wb_j*[q dot r_i>q dot r_j]/(sum wf sum wb)，ties贡献1/2。它衡量FG相似值击败BG相似值的加权频率，可与均值差有相反符号，故不是原score重标定；也不是把AUC直接当校准概率。",
+      "algorithm": [
+        "每个Q token与全部合法R token计算相似度。",
+        "按相似度stable排序，分组相等值。",
+        "累计BG area weight，FG每组贡献wf*(belowBG + .5equalBG)。",
+        "除以FG_total*BG_total得到p，signed margin=2p-1。",
+        "full Q所有token，padding置负；无classπ或QGT。",
+        "common.render fixed cut0得到完整mask；空类按baseline。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "claim": "当reference多数pair可靠而少数极端相似token错误主导mean时，可纠正身份；p不是query目标后验，不承诺mIoU最优。"
+      },
+      "simplest_control": "同输入weighted prototype、weighted median FG-BG similarity、最近reference FG/BG竞争；同render。",
+      "why_not_duplicate": "非线性class-pair rank U-statistic，不是KDE/kernel mean、binaryFG/BG最近match或同score单调变换；已向reference_evidence代理避重。",
+      "counterexample": "query真目标只对应reference极少数部位，多数pair不支持目标时会删真；跨图全FG相似度下降会被稳定误拒；token相关性使pair数不能当独立样本数。",
+      "first_evidence": "用单位可实现向量构造mean-score同值但FG-BG ordering不同的两Q点，展示完整分类与mean控制不同。负例令query只匹配少数合法FG部位并记录删真。",
+      "cpu_cost": "1 BLAS thread；O(Nq*Nr*D + Nq*Nr logNr)，reference最多128个valid native index均匀子集并保留各MR area weights，压缩丢失类则fallback；相似度按64Q块streaming，O(64Nr) temporary。",
+      "limitations": "sampling不多计。失败产出是多数成对排序是否丢失目标局部稀有证据；不能用global AUC替代实际编辑purity。",
+      "validation_evidence": {
+        "implementation": "src/ics/cpu100/decision_risk.py",
+        "mechanism_review": "reviews/batch01.md",
+        "synthetic": "reports/decision_risk/fixed_probes.json",
+        "input_contract": "reports/decision_risk/contract_checks.json",
+        "real_source": "server/probe29_native4_v2/methods_summary.json",
+        "real_reflection": "reports/decision_risk/native1024_four_reflection.json",
+        "real_scope": "nativeFP32 final-LN1024 four reused descriptive cases; no population confirmation",
+        "real_score": 28.58058975433956,
+        "delta_prototype_pp": -0.40366053029700666,
+        "delta_average_logistic_pp": -10.333225031117234,
+        "stable_incremental_benefit_established": false
+      }
+    },
+    {
+      "id": "DR07",
+      "title": "完整参考掩码连通成分的多实例判别",
+      "gap": "reference完整class mask可能含多实例，单FG prototype按面积平均导致小实例外观被大实例吞没；query可能只呈现小实例。",
+      "history_evidence": "总结§3.8要求目标是同类全部实例，不是最大目标；现有raw weighted prototype未保存reference实例差异。旧reference shape候选使用形状匹配，已失败；本法不转移形状或query尺度。",
+      "available_information": "reference native c_i=wf_i/v_i与MR已知连通FG/BG结构、DINO q/r，Q无种子。",
+      "new_observation_or_argument": "known class mask中每个disconnected FG component本来就是合法正证据，其appearance均值不应因面积小而消失。max(FG component similarity)-max(BG component similarity)保留少数reference实例，同时用每个已知BG成分竞争。不是证明组件等于真实实例。",
+      "algorithm": [
+        "native grid按c>.5为FG、其余合法区域为BG做4-connected components。",
+        "每类保留area-weight最大的8 components，其余components合成一个remainder；每token仍带wf或wb。",
+        "各component生成weighted unit prototype；mixed token不跨类复制，阈值只是knownR分组。",
+        "complete Q margin=max_FG q dot f_k-max_BG q dot b_l。",
+        "component缺类回退global weighted prototype；padding负。",
+        "common.render fixed cut0得到完整mask；不选只一个query实例。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "claim": "reference minor connected object外观重要且query与其相似时，可能恢复wholeclass成员；真实mIoU未测。"
+      },
+      "simplest_control": "global weighted prototype；同K feature-space kmeans prototypes(同信息成本)；只最大FG component；all native FG/BG nearest-token classifier。",
+      "why_not_duplicate": "reference known-mask连通成分决定正负appearance集合，区别query partition、reference shape transfer和无label feature clustering；前景union与背景hardest competition构成完整classifier，OR/AND公式不是新的数学定理。",
+      "counterexample": "单物体mask被native lowresolution断裂，背景切成许多任意块；tiny reference component为错标/上下文时max会高敏感地产生FP。MR threshold .5损失fractional对象时只能退化。",
+      "first_evidence": "reference有大/小两个合法同类appearance，小者query出现，global mean漏选但component retained；同K kmeans若也赢则无需geometry。负例reference孤立错标component，量化新增FP。",
+      "cpu_cost": "1 thread；component labeling O(Nr)，prototypes<=18，query O(18NqD)，额外O(18D)；无编码。",
+      "limitations": "不是instance GT，reference原图mask不可用时只coarse connectivity。若同K kmeans完全解释收益，本法参考连通性必要性未成立。",
+      "validation_evidence": {
+        "implementation": "src/ics/cpu100/decision_risk.py",
+        "mechanism_review": "reviews/batch01.md",
+        "synthetic": "reports/decision_risk/fixed_probes.json",
+        "input_contract": "reports/decision_risk/contract_checks.json",
+        "real_source": "server/probe29_native4_v2/methods_summary.json",
+        "real_reflection": "reports/decision_risk/native1024_four_reflection.json",
+        "real_scope": "nativeFP32 final-LN1024 four reused descriptive cases; no population confirmation",
+        "real_score": 29.105314578954445,
+        "delta_prototype_pp": 0.12106429431787902,
+        "delta_average_logistic_pp": -9.808500206502348,
+        "stable_incremental_benefit_established": false
+      }
+    },
+    {
+      "id": "DR08",
+      "title": "参考两类凸集的最大间隔判别方向",
+      "gap": "mean difference由FG/BG的中心决定，不保证困难的合法reference样本被分开；最接近的异类pair定义另一条区分类界。",
+      "history_evidence": "PLAN旧reference_hull600=48.915低于MEAN，否定的是query到hull的residual宿主构造；本法求两reference class hull间最近点产生一个全query线性判别方向，不直接以query hull fit作身份。此改变是否有收益仍未知。",
+      "available_information": "R中known coverage>=.75的FG和<=.25的BG token；合法Q全部features。",
+      "new_observation_or_argument": "当FG/BG两个convex hull分离，最短连接f*-b*及其中点是最大间隔hyperplane。相对于mean，它保障reference最困难几何点；这是reference geometry性质，不是跨图语义保证。",
+      "algorithm": [
+        "取pure-ish knownR FG/BG，各最多64按native index均匀采样；任一空则prototype。",
+        "初始化f,b各类weighted mean，d=f-b。",
+        "250步Frank-Wolfe：FG取min r dot d，BG取max r dot d，v=f_vertex-b_vertex。",
+        "eta=clip(-d dot(v-d)/||v-d||²,0,1)，同步f,b更新，记录FW gap。",
+        "若||d||<1e-8则class hull重叠，回退prototype。",
+        "complete query margin=(q-(f+b)/2) dot unit(d)；无QGT/J/π。",
+        "common.render fixed cut0输出完整mask；padding负。"
+      ],
+      "expected_benefit": {
+        "level": "algebraic reference margin; query benefit hypothesized",
+        "claim": "reference异类最近几何边界恰能跨图保持时，修正mean方向忽视的hard reference negatives；真实mIoU未知，不能由reference separability推出query成功。"
+      },
+      "simplest_control": "相同pure-ish tokens weighted prototypes；balanced average logistic；closest-query-hull distance classification(作为已失败族同信息控制)。",
+      "why_not_duplicate": "hull->hull最短间隔确定单linearclassseparator，与旧hull->query非线性残差不同；不把FW step、正则或阈值当多个方法。",
+      "counterexample": "nearest FG/BG pointpair由boundary混合决定，方向过拟合该pair；highdim reference容易分离但Q改变appearance后仍错；两hull重叠没有margin方向。",
+      "first_evidence": "小维点集构造mean separator误分合法Q而hull maximum-margin成功；负例query沿ref未见方向变化。FW和SciPy SLSQP最近集解小维核对，避免把未收敛当失败。",
+      "cpu_cost": "1 thread；250*128*D算子、Q O(NqD)、O(128D) storage；full real4 N64更轻；无编码。",
+      "limitations": "只能声称有reference最大间隔性质；pure-ish sample选择与oldhull不同需单列成本。失败产出是hard reference boundary是否可迁移，以及convex overlap是否拒绝了真实可分非线性样本。",
+      "validation_evidence": {
+        "implementation": "src/ics/cpu100/decision_risk.py",
+        "mechanism_review": "reviews/batch01.md",
+        "synthetic": "reports/decision_risk/fixed_probes.json",
+        "input_contract": "reports/decision_risk/contract_checks.json",
+        "real_source": "server/probe29_native4_v2/methods_summary.json",
+        "real_reflection": "reports/decision_risk/native1024_four_reflection.json",
+        "real_scope": "nativeFP32 final-LN1024 four reused descriptive cases; no population confirmation",
+        "real_score": 37.506201263679465,
+        "delta_prototype_pp": 8.521950979042899,
+        "delta_average_logistic_pp": -1.4076135217773285,
+        "stable_incremental_benefit_established": false
+      }
+    },
+    {
+      "history_evidence": "总结§3.2/3.10说明均值与错误种子不能普遍辨身份；RESULTS:157-166 full-vector reference ridge49.72低于FoRIS58.56但比meancontrast42.86高，说明reference拟合可改变排序也会有严重转移副作用。新构造不以raw/cache转换冒充新机制，不重开旧ridge固定读出；与其完整控制比较。",
+      "available_information": "只有冻结native DINO q/r、known完整MR area coverage和几何；所有episode-local监督来自该MR，不使用queryGT、其他image/class labels或预训练额外头。",
+      "cpu_cost": "1 BLAS thread；合法R类均匀cap64各类(<=128)、anchors<=16、Q block128；全部输出完整native margin再common.render。没有新编码，真实4096token成本须由root实测。",
+      "limitations": "仅accept_for_probe候选；任何真实正收益均未验证。失败必须区分reference fit改判确实成功但query不可迁移、同信息简单control已足够、优化未收敛、成本过高，不自动参数搜索。",
+      "id": "DR09",
+      "title": "参考原型相似度弱决策的AdaBoost",
+      "gap": "单一方向/单个prototype cut不能表示几个合法目标外观与多个背景模式的联合判别。",
+      "new_observation_or_argument": "boosting按reference错误重加权组合多个不同anchor的cosine stump，输出sum alpha*h；不是在一个score扫描阈值，也不把source分类精度当query身份保证。",
+      "algorithm": [
+        "取纯度>=.75FG/<=.25BG各至多64R tokens，class-balanced area权重。",
+        "由R feature farthest-point确定最多16anchor，不读Q。",
+        "每anchor的R相似度取16个training quantile间的midpoint为stump cut，双极性形成固定weak bank。",
+        "40轮选择weighted error最小的stump，alpha=.5log((1-error)/error)，更新reference weights。",
+        "error>=.5则停止，error<1e-8截断并停止，空弱bank回退prototype。",
+        "完整Q margin=sum alpha*stump(q dot anchor)，common.render fixed cut0。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "claim": "当合法MR描述非线性多模态而单决策错误可被另一anchor纠正，boosted分界可救回目标/删错背景；仅hypothesized。"
+      },
+      "simplest_control": "同anchor最佳单stump、same-input nearestreference、sameanchor linear ridge、raw prototype。",
+      "why_not_duplicate": "AdaBoost sequential error emphasis和prototype-score组合新完整决策，不是axis CART、参数变体或旧ridge改正则。",
+      "counterexample": "少数nontransferable reference材质成为高权重error，boosting会追逐它；source100%分类正确仍可能query全错。",
+      "first_evidence": "unit circle的多FG/BG模式构造与single stump/NN同render比较；负例source特有FG材质与QBG同形，记录boost rounds追逐该点的权重。"
+    },
+    {
+      "history_evidence": "总结§3.2/3.10说明均值与错误种子不能普遍辨身份；RESULTS:157-166 full-vector reference ridge49.72低于FoRIS58.56但比meancontrast42.86高，说明reference拟合可改变排序也会有严重转移副作用。新构造不以raw/cache转换冒充新机制，不重开旧ridge固定读出；与其完整控制比较。",
+      "available_information": "只有冻结native DINO q/r、known完整MR area coverage和几何；所有episode-local监督来自该MR，不使用queryGT、其他image/class labels或预训练额外头。",
+      "cpu_cost": "1 BLAS thread；合法R类均匀cap64各类(<=128)、anchors<=16、Q block128；全部输出完整native margin再common.render。没有新编码，真实4096token成本须由root实测。",
+      "limitations": "仅accept_for_probe候选；任何真实正收益均未验证。失败必须区分reference fit改判确实成功但query不可迁移、同信息简单control已足够、优化未收敛、成本过高，不自动参数搜索。",
+      "id": "DR10",
+      "title": "平衡参考重采样的最大间隔委员会",
+      "gap": "single nearest-hull support pair可能来自某个非转移参考材质，整个方向被一对样本决定。",
+      "new_observation_or_argument": "16个class-balanced参考bootstrap分别求两class hull间隔，Q按hyperplane sign majority；它平均支持向量敏感性，不提供独立证据或IID概率保证。",
+      "algorithm": [
+        "known纯度>=.75/<=.25的FG/BG reference各采16个weighted area bootstrap样本，seed0固定。",
+        "16个bootstrap依次以250FW固定步求reference最大间隔(沿DR08解，不改首8)。",
+        "hull重合的member用same-sample prototype方向；没有合法两类则global prototype。",
+        "完整query对16个(member midpoint,direction)签号，margin=mean signs。",
+        "ties margin0为BG，不估π/J或名义posterior。",
+        "common.render complete masks；报告members分歧和support sampler状态。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "claim": "若support-vector异常出现率低于委员会多数，可能避免单hull误删/误增；稀有合法FG也可能被bootstrap丢失。"
+      },
+      "simplest_control": "全reference DR08、同样16bootstrap的prototype voting、DR04 trimmed risk、raw NN。",
+      "why_not_duplicate": "重采样maxmargin多数是非线性committee，与DR05空间jackknife偏差纠正/guard不同；不把成员数/seed多计。",
+      "counterexample": "所有source成员共享错identity时稳定全错；真正稀有的referenceFG多数bootstrap未见，会被抹掉。",
+      "first_evidence": "source稀有support材质使single hard margin误判的构造；负例把该材质改为真实QFG，显示委员会可丢失合法少数模式。"
+    },
+    {
+      "history_evidence": "Actual current source checked after card draft: src/ics/methods/reference_quadratic.py line1 and predict use solve_kernel(((1+cosine_gram)*.5)**2,labels,weights,ridge). PLAN completed public600 quadratic=51.607. My initial card incorrectly inferred density/QDA from filename; now corrected before implementation.",
+      "available_information": "只有冻结native DINO q/r、known完整MR area coverage和几何；所有episode-local监督来自该MR，不使用queryGT、其他image/class labels或预训练额外头。",
+      "cpu_cost": "1 BLAS thread；合法R类均匀cap64各类(<=128)、anchors<=16、Q block128；全部输出完整native margin再common.render。没有新编码，真实4096token成本须由root实测。",
+      "limitations": "仅accept_for_probe候选；任何真实正收益均未验证。失败必须区分reference fit改判确实成功但query不可迁移、同信息简单control已足够、优化未收敛、成本过高，不自动参数搜索。 count_delta=0. Lesson: inspect actual decision formula, not method filename; no automatic polynomial-family variation.",
+      "id": "DR11",
+      "title": "参考标签的二阶多项式判别读出",
+      "gap": "二类reference可均值打平且linear方向无法区分，但合法MR标签能约束feature交互符号。",
+      "new_observation_or_argument": "kernel K_ij=(1+r_i dot r_j)^2对应常数/线性/二阶交互；拟合reference signed roles重新确定判别二次系数，不等同旧Gaussian/QDA密度模型，亦不由旧ridge失败保证它成功。",
+      "algorithm": [
+        "压缩knownFG/BG各64样本，复制fractional角色时保留balanced area权重a。",
+        "signed y=+1/-1，K=(1+X X.T)^2。",
+        "解 beta=(sqrt(a)Ksqrt(a)+.1I)^-1 sqrt(a)y，alpha=sqrt(a)beta。",
+        "完整Q margin=(1+q X.T)^2 alpha。",
+        "常数在kernel内，不用querycut校准或model training outside episode。",
+        "common.render complete masks；空类prototype fallback。"
+      ],
+      "expected_benefit": {
+        "level": "not_applicable_duplicate",
+        "claim": "No new method count and no new implementation. Existing source family and its old measured negative remain intact; not generically disproved, but no new distinct mechanism here."
+      },
+      "simplest_control": "相同reference sampling/weights的linear kernel ridge(旧family控制)、reference quadratic density/QDA、NN、raw prototype。",
+      "why_not_duplicate": "WITHDRAWN: source src/ics/methods/reference_quadratic.py explicitly implements role-balanced degree-two kernel reference classifier with K=((1+cos)/2)^2 and weightedridge. The proposed nonhomogeneous degree-two weightedridge differs only compression/regularization/readout; changing cache to raw inputs does not make it independent.",
+      "counterexample": "feature交互是source局部context偶然项，query改变该关联即过拟合；RFG/BG identical features时二次也没有信息。",
+      "first_evidence": "单位四维XOR/role交互且一二阶density控制明确匹配；negative打乱Q交互同时保留reference source可分；不以reference100% fit替代Q收益。",
+      "review_status": "withdrawn_duplicate_before_implementation"
+    },
+    {
+      "history_evidence": "总结§3.2/3.10说明均值与错误种子不能普遍辨身份；RESULTS:157-166 full-vector reference ridge49.72低于FoRIS58.56但比meancontrast42.86高，说明reference拟合可改变排序也会有严重转移副作用。新构造不以raw/cache转换冒充新机制，不重开旧ridge固定读出；与其完整控制比较。",
+      "available_information": "只有冻结native DINO q/r、known完整MR area coverage和几何；所有episode-local监督来自该MR，不使用queryGT、其他image/class labels或预训练额外头。",
+      "cpu_cost": "1 BLAS thread；合法R类均匀cap64各类(<=128)、anchors<=16、Q block128；全部输出完整native margin再common.render。没有新编码，真实4096token成本须由root实测。",
+      "limitations": "仅accept_for_probe候选；任何真实正收益均未验证。失败必须区分reference fit改判确实成功但query不可迁移、同信息简单control已足够、优化未收敛、成本过高，不自动参数搜索。",
+      "id": "DR12",
+      "title": "参考原型相似坐标的固定小ReLU判别",
+      "gap": "reference身份需要多条件组合时，单线性方向只有一个平面，不能表达分离的合法FG模式。",
+      "new_observation_or_argument": "固定16anchors cosine坐标上的16-hidden ReLU分类器，可表达若干局部线性条件的联合；MR fit只是available computation，不是新外部model或成功承诺。",
+      "algorithm": [
+        "R valid向量farthest-point选最多16anchors，以r dot anchor定义参考/查询坐标。",
+        "known角色class-balanced样本至多128，MR area作binary logistic weights。",
+        "初始化固定seed0 Xavier W1,b1,W2,b2，hidden16 ReLU。",
+        "固定200 fullbatch gradient steps，rate.05、weightdecay.001，不调hidden/seed。",
+        "完整Q score=W2 ReLU(W1 z+b1)+b2；不输出query概率保证。",
+        "common.render fixed cut0；空reference类baseline。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "claim": "多模态reference逻辑延续到Q时，多个局部平面可能减少mean方向冲突；比NN/核方法更好的收益未知。"
+      },
+      "simplest_control": "同anchor linear logistic/ridge、DR09 boosted stumps、nearestreference、raw prototype。",
+      "why_not_duplicate": "piecewise-affine ReLU组合监督拟合，与axis CART和DR09 adaptive weighted stumps的函数/优化规则不同；不以width/activation变体多计。",
+      "counterexample": "fixed训练预算可未收敛；source可分但Q不在R模式中；网络可以记住MR context而不识别目标类别。",
+      "first_evidence": "明确nonlinear FG模式完整unit例；必须同anchor线性control，negative source-only交互；记录loss下降、gradient norm和输出对init的假设范围，不搜索init。"
+    },
+    {
+      "history_evidence": "总结§3.2/3.10说明均值与错误种子不能普遍辨身份；RESULTS:157-166 full-vector reference ridge49.72低于FoRIS58.56但比meancontrast42.86高，说明reference拟合可改变排序也会有严重转移副作用。新构造不以raw/cache转换冒充新机制，不重开旧ridge固定读出；与其完整控制比较。",
+      "available_information": "只有冻结native DINO q/r、known完整MR area coverage和几何；所有episode-local监督来自该MR，不使用queryGT、其他image/class labels或预训练额外头。",
+      "cpu_cost": "1 BLAS thread；合法R类均匀cap64各类(<=128)、anchors<=16、Q block128；全部输出完整native margin再common.render。没有新编码，真实4096token成本须由root实测。",
+      "limitations": "仅accept_for_probe候选；任何真实正收益均未验证。失败必须区分reference fit改判确实成功但query不可迁移、同信息简单control已足够、优化未收敛、成本过高，不自动参数搜索。",
+      "id": "DR13",
+      "title": "已知参考角色的近邻冲突编辑",
+      "gap": "nearest-reference会被一个孤立前景表征触发，而其余known reference邻域把该token归为背景材质。",
+      "new_observation_or_argument": "reference labels已知时，3NN leave-one-out角色冲突可识别孤立class-support；编辑ref exemplars后再完整Q NN，并非在query错误种子上过滤后传播。",
+      "algorithm": [
+        "选known purity>=.75 FG/<=.25 BG各最多64，保留native索引与area权重。",
+        "在reference feature内计算cosine3NN，不包括自己；NN area-label weighted majority作为leave-one-out role。",
+        "only原角色与neighbor majority一致者保留；平票保留，任一类全删则回退原unfiltered NN。",
+        "完整Q margin=max retained FG cosine-max retained BG cosine。",
+        "不改Q threshold，不称role一致性为query身份。",
+        "common.render fixedcut0；没有纯class则global prototype。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "claim": "孤立nontransferable FG/BG表征在reference多数邻域中冲突时，删掉它可减少nearest-match错误；hypothesized。"
+      },
+      "simplest_control": "同pure samples unfiltered NN、仅coverage-purity过滤NN、DR06pair rank、prototype。",
+      "why_not_duplicate": "reference known-role LOO冲突导致support集合改变；历史DINO query候选二段过滤负例不自动等于此固定算法，但若同构必须count0。",
+      "counterexample": "真正稀有合法FG appearance也会被多数BG邻域排除；同类孤立并不等于污染。",
+      "first_evidence": "few noisy-looking FG token与manyBG邻近，QBG错匹配该token的构造；负例Q正是reference孤立合法FG，输出删真与强NN对照。"
+    },
+    {
+      "history_evidence": "总结§3.2/3.10说明均值与错误种子不能普遍辨身份；RESULTS:157-166 full-vector reference ridge49.72低于FoRIS58.56但比meancontrast42.86高，说明reference拟合可改变排序也会有严重转移副作用。新构造不以raw/cache转换冒充新机制，不重开旧ridge固定读出；与其完整控制比较。",
+      "available_information": "只有冻结native DINO q/r、known完整MR area coverage和几何；所有episode-local监督来自该MR，不使用queryGT、其他image/class labels或预训练额外头。",
+      "cpu_cost": "1 BLAS thread；合法R类均匀cap64各类(<=128)、anchors<=16、Q block128；全部输出完整native margin再common.render。没有新编码，真实4096token成本须由root实测。",
+      "limitations": "仅accept_for_probe候选；任何真实正收益均未验证。失败必须区分reference fit改判确实成功但query不可迁移、同信息简单control已足够、优化未收敛、成本过高，不自动参数搜索。",
+      "id": "DR14",
+      "title": "覆盖参考分类约束的凝聚近邻支撑集",
+      "gap": "all-reference NN容易围绕大量冗余细节形成锯齿决策，mean又丢掉必要少数边界，需直接选哪些support对已知R分类不可缺少。",
+      "new_observation_or_argument": "class medoid初始化，按knownR misclassified加入exemplar直到cap训练集被支撑集分类正确；这是reference判别覆盖而不是无label kmeans密度压缩。",
+      "algorithm": [
+        "pure known角色各最多64按nativeindex均匀样本，训练集<=128。",
+        "each class weighted medoid初始化两support。",
+        "按固定native索引顺序扫R；若current nearest support角色错误则加入该R。",
+        "最多128轮或整轮无新增，重复feature不同role的矛盾标记unresolved。",
+        "完整Q按nearest FG/BG support cosine gap决策，不只输出coreset。",
+        "common.render；空pureclass baseline，报告support数量与R residual误分类。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "claim": "冗余reference细节被压缩时有成本收益，某些Q泛化可能减少偶然极值；mIoU收益待证，source覆盖不是Qextent保证。"
+      },
+      "simplest_control": "unfiltered NN、same-size fixed/random support NN、class kmeans同K、global prototype。",
+      "why_not_duplicate": "支撑集由已知reference分类覆盖约束选取，与DR13删冲突点相反；不是仅快代码复写NN，Q输出必须实际可不同。",
+      "counterexample": "label-conflicting相同feature没有可满足覆盖；容易保留所有noise点；training order会改变supports与Q，不保证de-noise。",
+      "first_evidence": "reference大量重复且few necessary minority supports，报告完整mask/压缩成本；negative noisy边界使support几乎全保留，并验证若Q output同NN则只有成本证据不能冒称质量增益。"
+    },
+    {
+      "history_evidence": "总结§3.2/3.10说明均值与错误种子不能普遍辨身份；RESULTS:157-166 full-vector reference ridge49.72低于FoRIS58.56但比meancontrast42.86高，说明reference拟合可改变排序也会有严重转移副作用。新构造不以raw/cache转换冒充新机制，不重开旧ridge固定读出；与其完整控制比较。",
+      "available_information": "只有冻结native DINO q/r、known完整MR area coverage和几何；所有episode-local监督来自该MR，不使用queryGT、其他image/class labels或预训练额外头。",
+      "cpu_cost": "1 BLAS thread；合法R类均匀cap64各类(<=128)、anchors<=16、Q block128；全部输出完整native margin再common.render。没有新编码，真实4096token成本须由root实测。",
+      "limitations": "仅accept_for_probe候选；任何真实正收益均未验证。失败必须区分reference fit改判确实成功但query不可迁移、同信息简单control已足够、优化未收敛、成本过高，不自动参数搜索。",
+      "id": "DR15",
+      "title": "参考类别风险驱动的学习向量量化",
+      "gap": "class kmeans按密度拟合不要求FG/BG互相分开，close class modes可能在查询上混淆。",
+      "new_observation_or_argument": "GLVQ更新class-owned prototypes最小化参考correct-vs-wrong squared-distance relative margin；不是把无label cluster当identity或改querycut。",
+      "algorithm": [
+        "known balanced area样本每类<=64，每类2 prototypes用weighted class kmeans12步初始化。",
+        "200步对each sample找sameclass nearest prototype c+、opposite c-。",
+        "minimize weighted (d+-d-)/(d++d-+1e-6)，使用解析prototype gradients。",
+        "rate.05，global gradient norm cap5、prototype radius cap2，固定不调。",
+        "完整Q margin=min_BG ||q-cb||²-min_FG ||q-cf||²。",
+        "common.render；不足samples auto1class prototype，空类baseline；保存finalR risk。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "claim": "reference跨类混淆需移动判别原型而非密度中心，可能改善接近类别分界的Q；真实质量unknown。"
+      },
+      "simplest_control": "same2 kmeans不risk更新、nearestreference、DR08hard margin、raw prototype。",
+      "why_not_duplicate": "优化class-owned prototype position的explicit role discrimination，与Rmask连通means/kmeans或query grouping不同；不以prototype K变体多计。",
+      "counterexample": "原型移动追随source-specific appearance，损失Q合法外观；小分母造成优化不稳定，gradient cap使固定数值行为需核查。",
+      "first_evidence": "reference density centers跨类近但class-risk可改变边界的unit构造；negative Q只呈reference低频被移动丢失的部位；独立finite-difference核对gradient。"
+    },
+    {
+      "history_evidence": "总结§3.2/3.10说明均值与错误种子不能普遍辨身份；RESULTS:157-166 full-vector reference ridge49.72低于FoRIS58.56但比meancontrast42.86高，说明reference拟合可改变排序也会有严重转移副作用。新构造不以raw/cache转换冒充新机制，不重开旧ridge固定读出；与其完整控制比较。",
+      "available_information": "只有冻结native DINO q/r、known完整MR area coverage和几何；所有episode-local监督来自该MR，不使用queryGT、其他image/class labels或预训练额外头。",
+      "cpu_cost": "1 BLAS thread；合法R类均匀cap64各类(<=128)、anchors<=16、Q block128；全部输出完整native margin再common.render。没有新编码，真实4096token成本须由root实测。",
+      "limitations": "仅accept_for_probe候选；任何真实正收益均未验证。失败必须区分reference fit改判确实成功但query不可迁移、同信息简单control已足够、优化未收敛、成本过高，不自动参数搜索。",
+      "id": "DR16",
+      "title": "合法参考角色的近邻大间隔度量",
+      "gap": "blind whitening能删掉语义方差；原度量却可能让reference同类因nuisance离得远、异类材质离得近。",
+      "new_observation_or_argument": "只用knownR role triplets学习低rankPSD使same-role近、different-role远；先有标签约束再改度量，区别无label方差白化。但reference监督并不保证learned axes跨图语义。",
+      "algorithm": [
+        "fixed16R farthest anchors，z_i=r_i dot anchors，Q同坐标。",
+        "pure reference角色each<=64，sameclass2nearest targets由initial z Euclidean定义。",
+        "A初始化前8行identity，M=A.T A PSD。",
+        "200步最小within-target距离+max(0,1+d_A(i,target)-d_A(i,hardest negative))+.001||A||²。",
+        "rate.02，gradient norm cap5；每步重新选nearest wrongrole impostor，triplet labels只来自MR。",
+        "完整Q按learned A坐标的nearest knownFG/BG距离gap输出margin。",
+        "common.render；pureclass<2 baseline；无global whitening/外部fit。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "claim": "有稳定class-separating reference directions时，label-aware metric可能保留语义而压制source内部noise；跨图效果未知。"
+      },
+      "simplest_control": "sameanchor identity metricNN、rawfeature NN、referenceLDA、blind whitening(已负族控制)、DR08。",
+      "why_not_duplicate": "监督triplet PSD风险与无labelnuisance投影/白化不同；不通过regularization/metric rank多计。已与invariance_support协调其无此构造。",
+      "counterexample": "reference classdistortion随query变化；假nuisance轴实际是Q语义被metric抹去；class仅1token没有triplets。",
+      "first_evidence": "R nuisance决定Euclidean邻近而合法roles定义另一轴的unit例；negative Q语义沿被压缩轴，记录错误方向而非自动再调rank；gradient finite-difference。"
+    }
+  ]
+}

@@ -1,0 +1,432 @@
+{
+  "owner": "rgb_complement",
+  "phase": "first5_implemented_second4_cards_for_review",
+  "count": 0,
+  "candidate_count": 9,
+  "rejected_reopens": [
+    "query-color bottleneck already implemented",
+    "RGB Potts already measured",
+    "RGB disagreement revisions count 0",
+    "radial-power texture already implemented",
+    "gray/new DINO encodings outside CPU-cache contract",
+    "RGB-guided interpolation repeats closed color boundary reading"
+  ],
+  "methods": [
+    {
+      "history_evidence": [
+        {
+          "source": "docs/research/PLAN.md:39",
+          "fact": "RGB Potts vs MEAN −0.027595 [−0.160435,0.032420] on reused public600; query-boundary smoothing did not establish gain."
+        },
+        {
+          "source": "docs/research/PLAN.md:48",
+          "fact": "RCG+RGB disagreement revision vs RCG +0.036362 [−0.015595,0.135117]; not stable positive."
+        },
+        {
+          "source": "evidence/local/research_20261006/reference_texture_01a1100b/contract.md",
+          "fact": "Radial power texture already exists; its striping witness is solved by dominant-band control. It must not be recounted."
+        },
+        {
+          "source": "user-provided Opus session summary (local-only source, not included in repository) §3.2,3.7,3.8",
+          "fact": "Same-score identity ambiguity, edit benefit/harm accounting, and score-correlated area errors motivate genuinely different RGB observations; historical numbers are not current quality evidence."
+        }
+      ],
+      "available_information": "Aligned frozen DINO q/r grid, reference coverage/valid weights and known producer; actual uint8 RGB images plus complete known reference mask. No Q GT, class names, external pool/model, encoder calls or remote use. Coverage-only version must be labeled separately.",
+      "output_contract": "Return complete field/token mask and fixed half-pixel bilinear original-size binary mask, plus exact same readout for controls. RGB observation capped as signed correction to direct FG–BG DINO prototype margin, not FoRIS score. Empty known FG => empty; all FG => full; absent or uninformative RGB observation => direct DINO control.",
+      "evidence_level": "hypothesized; true-data quality unknown; witness/CPU measurements pending",
+      "cpu_cost": "NumPy/Pillow CPU only; single BLAS thread, RGB <=256 squared, patches in blocks <=128; no N² DINO matrix, 512 MiB incremental target. Real timings must be measured, not inferred.",
+      "limitations": "Appearance is not semantic identity. Cross-instance color/texture changes and shared distractor appearance can violate transfer; no general gain is guaranteed.",
+      "failure_accounting": "Report aTP/aFP/dTP/dFP and per-class exact IoU delta only if legitimately available Q GT in a separate scorer. Without Q GT, report activity/cost and synthetic witnesses only. Wrong-seed/appearance-swap cases are negative evidence, never oracle-method proof.",
+      "count_rule": "Candidate only until reviewer approves distinct complete mechanism and implementation/checks; controls and parameter variations count zero.",
+      "id": "RGB01",
+      "title": "参考背景锚定的RGB光照对齐",
+      "gap": "DINO FG/BG margin near zero because similar semantic distractor dominates. Target and distractor have distinct reference-conditioned RGB, but a global photometric shift invalidates direct RGB transfer.",
+      "new_observation_or_argument": "Use reference BG and DINO-confident query BG only to estimate per-channel median location/scale nuisance; unlike DINO whitening, RGB nuisance fit is explicit diagonal affine and does not remove DINO semantic variance. The correction is useful only if BG-anchor mixture remains comparable. Synthetic first check found the aligned nearest-median control solved the witness equally; primary was simplified to that control rather than attributing the alignment gain to complex density.",
+      "algorithm": [
+        "Build the direct DINO FG–BG prototype margin m and downsample true RGB to its aligned grid.",
+        "Estimate per-channel medians/MAD in known R BG and Q tokens with m<=−0.25; fewer than 8 anchors => no alignment.",
+        "Map Q RGB by the diagonal affine median/MAD map, with scale clipped to [0.5,2]; fixed floor 1/255.",
+        "Fit weighted known R FG/BG RGB medians; primary uses aligned nearest-median squared distance, preserving the minimal successful observation.",
+        "h=(dB−dF)/(dF+dB), 0/0=>0. Product Laplace likelihood is a stronger same-input control, not the source of claimed gain.",
+        "Primary complete margin m+0.5*h; produce full mask by fixed readout.",
+        "Controls: m alone, unaligned RGB likelihood, aligned nearest RGB prototype, RGB-only likelihood with identical readout."
+      ],
+      "expected_benefit": "synthetic hypothesis: correct a color-distinct distractor rejection despite an affine RGB illumination shift, when BG anchor composition is genuinely stable.",
+      "simplest_control": "Unaligned/ aligned two RGB medians with the identical DINO cap; BG-anchor oracle is forbidden.",
+      "why_not_duplicate": "Prior RGB Potts uses only Q edge contrasts; this decision uses known R RGB FG/BG class likelihood plus explicitly limited photometric normalization. Distinct from DINO covariance whitening.",
+      "counterexample": "Q background is a different scene color or DINO confident BG contains target: nuisance map is not illumination and can invert identity; target changes color across instances.",
+      "first_evidence": "Witness where Q target/distractor DINO margins tie but known-background anchors have m<=−0.25, R RGB classes separate and Q undergoes a shared-channel affine illumination transform; negative: absent anchors, different BG composition and FG/BG RGB appearance swap. Compare all simple controls.",
+      "failure_reflection": "If aligned prototype ties primary, retain the simpler control; if nuisance harms while unaligned wins, background composition/seed contamination rather than lack of color evidence is diagnosed.",
+      "revision_note": "Same mechanism/inputs, reduced classifier complexity after same-information control; no new method count."
+    },
+    {
+      "history_evidence": [
+        {
+          "source": "docs/research/PLAN.md:39",
+          "fact": "RGB Potts vs MEAN −0.027595 [−0.160435,0.032420] on reused public600; query-boundary smoothing did not establish gain."
+        },
+        {
+          "source": "docs/research/PLAN.md:48",
+          "fact": "RCG+RGB disagreement revision vs RCG +0.036362 [−0.015595,0.135117]; not stable positive."
+        },
+        {
+          "source": "evidence/local/research_20261006/reference_texture_01a1100b/contract.md",
+          "fact": "Radial power texture already exists; its striping witness is solved by dominant-band control. It must not be recounted."
+        },
+        {
+          "source": "user-provided Opus session summary (local-only source, not included in repository) §3.2,3.7,3.8",
+          "fact": "Same-score identity ambiguity, edit benefit/harm accounting, and score-correlated area errors motivate genuinely different RGB observations; historical numbers are not current quality evidence."
+        }
+      ],
+      "available_information": "Aligned frozen DINO q/r grid, reference coverage/valid weights and known producer; actual uint8 RGB images plus complete known reference mask. No Q GT, class names, external pool/model, encoder calls or remote use. Coverage-only version must be labeled separately.",
+      "output_contract": "Return complete field/token mask and fixed half-pixel bilinear original-size binary mask, plus exact same readout for controls. RGB observation capped as signed correction to direct FG–BG DINO prototype margin, not FoRIS score. Empty known FG => empty; all FG => full; absent or uninformative RGB observation => direct DINO control.",
+      "evidence_level": "hypothesized; true-data quality unknown; witness/CPU measurements pending",
+      "cpu_cost": "NumPy/Pillow CPU only; single BLAS thread, RGB <=256 squared, patches in blocks <=128; no N² DINO matrix, 512 MiB incremental target. Real timings must be measured, not inferred.",
+      "limitations": "Appearance is not semantic identity. Cross-instance color/texture changes and shared distractor appearance can violate transfer; no general gain is guaranteed.",
+      "failure_accounting": "Report aTP/aFP/dTP/dFP and per-class exact IoU delta only if legitimately available Q GT in a separate scorer. Without Q GT, report activity/cost and synthetic witnesses only. Wrong-seed/appearance-swap cases are negative evidence, never oracle-method proof.",
+      "count_rule": "Candidate only until reviewer approves distinct complete mechanism and implementation/checks; controls and parameter variations count zero.",
+      "id": "RGB02",
+      "title": "参考监督的局部序纹理直方图",
+      "gap": "DINO and RGB color histograms tie when objects share colors but differ in local brightness ordering.",
+      "new_observation_or_argument": "For each 16x16 true RGB gray patch, 8-neighbor rank comparisons encode local ordinal structure. Positive affine intensity transformations preserve comparisons. This differs from radial power shares; whether it adds beyond power must be tested.",
+      "algorithm": [
+        "Compute direct DINO margin m; obtain aligned 16x16 RGB gray windows for all R/Q token centers.",
+        "For each inner pixel compute 8-neighbor >= center binary code; collapse each code to minimum cyclic rotation.",
+        "Form normalized histogram over all 36 rotation-equivalence codes per patch.",
+        "Use only pure known R FG/BG windows; fewer than 4 each => abstain.",
+        "Build weighted mean FG/BG histograms; h=(dB−dF)/(dF+dB) using Hellinger squared distances.",
+        "Primary m+0.5*h with complete fixed mask output.",
+        "Controls: DINO only, identical-window color histogram, gray variance, radial-power histogram, dominant-band descriptor."
+      ],
+      "expected_benefit": "synthetic hypothesis: local-order identity evidence when patch colors and radial power are insufficient, without assuming target location/size.",
+      "simplest_control": "Same-window dominant frequency/energy and radial power, not only an intentionally weak global color histogram.",
+      "why_not_duplicate": "RGB local ordinal order is not query color-path propagation or existing radial Fourier power. If no witness beats existing power controls, reviewer should reject as unsupported texture variant.",
+      "counterexample": "DINO-target and non-target have same local ordinal texture, or texture scale is changed/blurred in Q; repeated ordinal texture on background causes coherent FP.",
+      "first_evidence": "Seek one deterministic same-color/power-tied local-order witness and preserve a matched texture wrong-category negative. No synthetic success => remain unverified, not counted as positive.",
+      "failure_reflection": "A win over color but tie/loss to power means local order is unnecessary on that setting; domain texture change separates transfer failure from implementation error."
+    },
+    {
+      "history_evidence": [
+        {
+          "source": "docs/research/PLAN.md:39",
+          "fact": "RGB Potts vs MEAN −0.027595 [−0.160435,0.032420] on reused public600; query-boundary smoothing did not establish gain."
+        },
+        {
+          "source": "docs/research/PLAN.md:48",
+          "fact": "RCG+RGB disagreement revision vs RCG +0.036362 [−0.015595,0.135117]; not stable positive."
+        },
+        {
+          "source": "evidence/local/research_20261006/reference_texture_01a1100b/contract.md",
+          "fact": "Radial power texture already exists; its striping witness is solved by dominant-band control. It must not be recounted."
+        },
+        {
+          "source": "user-provided Opus session summary (local-only source, not included in repository) §3.2,3.7,3.8",
+          "fact": "Same-score identity ambiguity, edit benefit/harm accounting, and score-correlated area errors motivate genuinely different RGB observations; historical numbers are not current quality evidence."
+        }
+      ],
+      "available_information": "Aligned frozen DINO q/r grid, reference coverage/valid weights and known producer; actual uint8 RGB images plus complete known reference mask. No Q GT, class names, external pool/model, encoder calls or remote use. Coverage-only version must be labeled separately.",
+      "output_contract": "Return complete field/token mask and fixed half-pixel bilinear original-size binary mask, plus exact same readout for controls. RGB observation capped as signed correction to direct FG–BG DINO prototype margin, not FoRIS score. Empty known FG => empty; all FG => full; absent or uninformative RGB observation => direct DINO control.",
+      "evidence_level": "hypothesized; true-data quality unknown; witness/CPU measurements pending",
+      "cpu_cost": "NumPy/Pillow CPU only; single BLAS thread, RGB <=256 squared, patches in blocks <=128; no N² DINO matrix, 512 MiB incremental target. Real timings must be measured, not inferred.",
+      "limitations": "Appearance is not semantic identity. Cross-instance color/texture changes and shared distractor appearance can violate transfer; no general gain is guaranteed.",
+      "failure_accounting": "Report aTP/aFP/dTP/dFP and per-class exact IoU delta only if legitimately available Q GT in a separate scorer. Without Q GT, report activity/cost and synthetic witnesses only. Wrong-seed/appearance-swap cases are negative evidence, never oracle-method proof.",
+      "count_rule": "Candidate only until reviewer approves distinct complete mechanism and implementation/checks; controls and parameter variations count zero.",
+      "id": "RGB03",
+      "title": "参考监督的三频相位耦合",
+      "gap": "Power descriptors cannot distinguish patches with equal Fourier amplitude but different higher-order phase organization; DINO/color may also tie.",
+      "new_observation_or_argument": "Normalized bispectral products X(k)X(l)conj(X(k+l)) preserve translation phase cancellation and observe phase relationships erased by power. This is a precise new observable; translation on cyclic patch is the exact invariance, not arbitrary natural-image scale invariance.",
+      "algorithm": [
+        "Compute m and true RGB gray 16x16 windows, subtract per-window mean.",
+        "FFT each window; fixed triplets (k,l): ((1,0),(1,0)), ((0,1),(0,1)), ((1,0),(0,1)), ((1,0),(0,−1)), ((1,1),(1,0)), ((1,1),(0,1)), ((1,−1),(1,0)), ((1,−1),(0,−1)), ((2,0),(−1,1)), ((0,2),(1,−1)), ((2,1),(−1,0)), ((1,2),(0,−1)); third coordinate is k+l modulo 16.",
+        "Normalize each triple by product of amplitudes with zero-amplitude result 0; concatenate real/imag parts.",
+        "Average descriptors over 4 discrete 90-degree patch rotations; no arbitrary-angle invariance claim.",
+        "Only pure R FG/BG windows fit mean descriptors; missing or equal means => abstain.",
+        "h=(dB−dF)/(dF+dB) from squared distance; primary m+0.5*h and complete mask.",
+        "Controls: same-window full 2D power nearest-prototype, existing radial/peak power, local ordinal histogram, DINO alone."
+      ],
+      "expected_benefit": "algebraic observer separation: equal-amplitude different-phase textures may become distinguishable. Natural RGB gains remain unknown.",
+      "simplest_control": "Full 2D power spectrum with same reference labels and Euclidean classifier; radial-only control is not enough.",
+      "why_not_duplicate": "Bispectral phase relations are absent from existing radial power candidate. Distinctness requires an amplitude-identical witness and stronger power control; cannot count just another FFT ring.",
+      "counterexample": "Texture has unstable local phase or isotropic noise; patch translation with nonperiodic crop changes observations; identical bispectra/class textures give no identity.",
+      "first_evidence": "Periodic amplitude-identical FG/BG RGB fixtures with prescribed phase triples, cyclic translation check, wrong-category identical texture and scale-change negatives.",
+      "failure_reflection": "If phase witness works but natural input does not, diagnose cross-instance phase transfer; if ordinal histogram ties, higher-order complexity may be unnecessary even if distinct observable exists."
+    },
+    {
+      "history_evidence": [
+        {
+          "source": "docs/research/PLAN.md:39",
+          "fact": "RGB Potts vs MEAN −0.027595 [−0.160435,0.032420] on reused public600; query-boundary smoothing did not establish gain."
+        },
+        {
+          "source": "docs/research/PLAN.md:48",
+          "fact": "RCG+RGB disagreement revision vs RCG +0.036362 [−0.015595,0.135117]; not stable positive."
+        },
+        {
+          "source": "evidence/local/research_20261006/reference_texture_01a1100b/contract.md",
+          "fact": "Radial power texture already exists; its striping witness is solved by dominant-band control. It must not be recounted."
+        },
+        {
+          "source": "user-provided Opus session summary (local-only source, not included in repository) §3.2,3.7,3.8",
+          "fact": "Same-score identity ambiguity, edit benefit/harm accounting, and score-correlated area errors motivate genuinely different RGB observations; historical numbers are not current quality evidence."
+        }
+      ],
+      "available_information": "Aligned frozen DINO q/r grid, reference coverage/valid weights and known producer; actual uint8 RGB images plus complete known reference mask. No Q GT, class names, external pool/model, encoder calls or remote use. Coverage-only version must be labeled separately.",
+      "output_contract": "Return complete field/token mask and fixed half-pixel bilinear original-size binary mask, plus exact same readout for controls. RGB observation capped as signed correction to direct FG–BG DINO prototype margin, not FoRIS score. Empty known FG => empty; all FG => full; absent or uninformative RGB observation => direct DINO control.",
+      "evidence_level": "hypothesized; true-data quality unknown; witness/CPU measurements pending",
+      "cpu_cost": "NumPy/Pillow CPU only; single BLAS thread, RGB <=256 squared, patches in blocks <=128; no N² DINO matrix, 512 MiB incremental target. Real timings must be measured, not inferred.",
+      "limitations": "Appearance is not semantic identity. Cross-instance color/texture changes and shared distractor appearance can violate transfer; no general gain is guaranteed.",
+      "failure_accounting": "Report aTP/aFP/dTP/dFP and per-class exact IoU delta only if legitimately available Q GT in a separate scorer. Without Q GT, report activity/cost and synthetic witnesses only. Wrong-seed/appearance-swap cases are negative evidence, never oracle-method proof.",
+      "count_rule": "Candidate only until reviewer approves distinct complete mechanism and implementation/checks; controls and parameter variations count zero.",
+      "id": "RGB04",
+      "title": "参考多模态 RGB patch 字典",
+      "gap": "One RGB/texture prototype averages multiple legitimate target appearances into a descriptor resembling a distractor; DINO margin is insufficient.",
+      "new_observation_or_argument": "A nonparametric reference dictionary retains modes and spatial pixel arrangements rather than their mean. The evidence is reference RGB patch similarity, not transfer of the reference silhouette.",
+      "algorithm": [
+        "Compute m and aligned true-RGB 8x8 windows, remove each channel mean and normalize contrast; append the 3 means separately at weight 1/4.",
+        "Select at most 64 FG and 64 BG pure R windows by deterministic farthest-point sampling under patch distance; first index smallest.",
+        "At every Q window compute nearest squared patch distance to each class in blocks of 128; no Q ROI or GT selection.",
+        "h=(dB−dF)/(dF+dB), 0/0 =>0.",
+        "Primary m+0.5*h and full mask; no template location or shape transfer.",
+        "Controls: identical RGB descriptors with one class mean, raw RGB prototype, nearest texture histogram, DINO alone."
+      ],
+      "expected_benefit": "synthetic hypothesis: preserve two known target appearance modes when their average coincides with background; benefit requires their actual local arrangement to repeat in Q.",
+      "simplest_control": "Nearest RGB patch dictionary using all allowed reference samples; class-mean same descriptor tests whether nonparametric mode retention supplies the benefit.",
+      "why_not_duplicate": "Existing texture computes two descriptor means after radial aggregation, not nearest labeled pixel-arrangement exemplars. This is a different decision and observation, not extra texture scales.",
+      "counterexample": "Viewpoint/rotation makes pixel arrangements incomparable, nearest dictionary mistakes accidental background pattern, or reference FG support is too small.",
+      "first_evidence": "Two FG patch modes equidistant around a BG mean, shuffled same-color negative and rotated-query transfer failure; complete query masks with m tied.",
+      "failure_reflection": "If RGB mean matches dictionary, multimodality hypothesis absent; if dictionary wins witness but fails RGB real inputs, patch alignment/transfer is the limitation, not evidence for DINO ceiling."
+    },
+    {
+      "history_evidence": [
+        {
+          "source": "docs/research/PLAN.md:39",
+          "fact": "RGB Potts vs MEAN −0.027595 [−0.160435,0.032420] on reused public600; query-boundary smoothing did not establish gain."
+        },
+        {
+          "source": "docs/research/PLAN.md:48",
+          "fact": "RCG+RGB disagreement revision vs RCG +0.036362 [−0.015595,0.135117]; not stable positive."
+        },
+        {
+          "source": "evidence/local/research_20261006/reference_texture_01a1100b/contract.md",
+          "fact": "Radial power texture already exists; its striping witness is solved by dominant-band control. It must not be recounted."
+        },
+        {
+          "source": "user-provided Opus session summary (local-only source, not included in repository) §3.2,3.7,3.8",
+          "fact": "Same-score identity ambiguity, edit benefit/harm accounting, and score-correlated area errors motivate genuinely different RGB observations; historical numbers are not current quality evidence."
+        }
+      ],
+      "available_information": "Aligned frozen DINO q/r grid, reference coverage/valid weights and known producer; actual uint8 RGB images plus complete known reference mask. No Q GT, class names, external pool/model, encoder calls or remote use. Coverage-only version must be labeled separately.",
+      "output_contract": "Return complete field/token mask and fixed half-pixel bilinear original-size binary mask, plus exact same readout for controls. RGB observation capped as signed correction to direct FG–BG DINO prototype margin, not FoRIS score. Empty known FG => empty; all FG => full; absent or uninformative RGB observation => direct DINO control.",
+      "evidence_level": "hypothesized; true-data quality unknown; witness/CPU measurements pending",
+      "cpu_cost": "NumPy/Pillow CPU only; single BLAS thread, RGB <=256 squared, patches in blocks <=128; no N² DINO matrix, 512 MiB incremental target. Real timings must be measured, not inferred.",
+      "limitations": "Appearance is not semantic identity. Cross-instance color/texture changes and shared distractor appearance can violate transfer; no general gain is guaranteed.",
+      "failure_accounting": "Report aTP/aFP/dTP/dFP and per-class exact IoU delta only if legitimately available Q GT in a separate scorer. Without Q GT, report activity/cost and synthetic witnesses only. Wrong-seed/appearance-swap cases are negative evidence, never oracle-method proof.",
+      "count_rule": "Candidate only until reviewer approves distinct complete mechanism and implementation/checks; controls and parameter variations count zero.",
+      "id": "RGB05",
+      "title": "参考监督 DINO–RGB 邻域关系耦合",
+      "gap": "Separate DINO and RGB descriptors can have matching marginals for target/distractor yet pair different semantic variations with different visual variations.",
+      "new_observation_or_argument": "Local pairwise DINO distances and local pairwise RGB distances encode their coupling. Correlation of distance matrices distinguishes matched vs mismatched co-variation, even if each modality separately has the same marginal histogram. This coupling can be measured from the given pair, not inferred from Q area.",
+      "algorithm": [
+        "Build m and align physical RGB 3-channel averages to native DINO token grid.",
+        "For each 3x3 token window, compute its 36 upper-triangle cosine DINO distances and RGB squared distances.",
+        "Descriptor is centered normalized distance correlation plus RGB/DINO distance medians; constant distances => coupling zero.",
+        "Pure R FG/BG windows supervise class descriptor means; at least 4 per class or abstain.",
+        "Compute normalized distance advantage h over all Q windows.",
+        "Primary m+0.5*h and complete mask.",
+        "Controls: concatenated uncoupled DINO/RGB neighborhood distance histograms; direct DINO; permuted RGB–DINO pairing retaining all descriptor marginals."
+      ],
+      "expected_benefit": "algebraic hypothesis: identity can differ through cross-modal arrangement while separate marginal appearance summaries tie; real transfer unknown.",
+      "simplest_control": "Same pairwise distances with uncoupled concatenated histograms and pairing-permutation control. Raw RGB alone is insufficient attribution.",
+      "why_not_duplicate": "Neither query color smoothing nor reference Fourier power uses correspondence of DINO and RGB neighborhood changes. Distinct cross-modal dependence observer, no fixed color identity.",
+      "counterexample": "FG itself has weak/no RGB–DINO coupling, DINO context couples shadows instead of class, or class and distractor have identical joint relation.",
+      "first_evidence": "Deterministic local permutation fixtures preserving separate RGB and DINO pairwise-distance marginal distributions but changing coupling; appearance-matched wrong-class negative.",
+      "failure_reflection": "If uncoupled descriptors win equally, relation term unnecessary; coupling failure under Q domain change shows it is scene-dependent evidence rather than semantic identity."
+    },
+    {
+      "history_evidence": [
+        {
+          "source": "docs/research/PLAN.md:39",
+          "fact": "RGB Potts vs MEAN −0.027595 [−0.160435,0.032420] on reused public600; query-boundary smoothing did not establish gain."
+        },
+        {
+          "source": "docs/research/PLAN.md:48",
+          "fact": "RCG+RGB disagreement revision vs RCG +0.036362 [−0.015595,0.135117]; not stable positive."
+        },
+        {
+          "source": "evidence/local/research_20261006/reference_texture_01a1100b/contract.md",
+          "fact": "Radial power texture already exists; its striping witness is solved by dominant-band control. It must not be recounted."
+        },
+        {
+          "source": "user-provided Opus session summary (local-only source, not included in repository) §3.2,3.7,3.8",
+          "fact": "Same-score identity ambiguity, edit benefit/harm accounting, and score-correlated area errors motivate genuinely different RGB observations; historical numbers are not current quality evidence."
+        }
+      ],
+      "available_information": "Aligned frozen DINO q/r grid, reference coverage/valid weights and known producer; actual uint8 RGB images plus complete known reference mask. No Q GT, class names, external pool/model, encoder calls or remote use. Coverage-only version must be labeled separately.",
+      "output_contract": "Return complete field/token mask and fixed half-pixel bilinear original-size binary mask, plus exact same readout for controls. RGB observation capped as signed correction to direct FG–BG DINO prototype margin, not FoRIS score. Empty known FG => empty; all FG => full; absent or uninformative RGB observation => direct DINO control.",
+      "evidence_level": "hypothesized; true-data quality unknown; witness/CPU measurements pending",
+      "cpu_cost": "NumPy/Pillow CPU only; single BLAS thread, RGB <=256 squared, patches in blocks <=128; no N² DINO matrix, 512 MiB incremental target. Real timings must be measured, not inferred.",
+      "limitations": "Appearance is not semantic identity. Cross-instance color/texture changes and shared distractor appearance can violate transfer; no general gain is guaranteed.",
+      "failure_accounting": "Report aTP/aFP/dTP/dFP and per-class exact IoU delta only if legitimately available Q GT in a separate scorer. Without Q GT, report activity/cost and synthetic witnesses only. Wrong-seed/appearance-swap cases are negative evidence, never oracle-method proof.",
+      "count_rule": "Candidate only until reviewer approves distinct complete mechanism and implementation/checks; controls and parameter variations count zero.",
+      "id": "RGB06",
+      "title": "参考监督的跨模态边界似然切分",
+      "gap": "Query RGB edges include internal texture/shadow edges; indiscriminate RGB Potts cannot decide which edges are target boundaries. DINO boundary and RGB boundary may jointly separate known reference cuts from internal edges.",
+      "new_observation_or_argument": "Known R mask labels edge pairs as same-class or cut. Joint bins of relative DINO contrast and relative RGB contrast retain their dependency, unlike generic Q edge smoothing. Only positive same/cut log-likelihood becomes attractive Potts strength; identity still comes from direct DINO unary.",
+      "algorithm": [
+        "Compute m and aligned R/Q DINO plus physical RGB token averages; four-neighbor edges only.",
+        "For each edge compute cosine DINO distance and RGB squared distance; quantile calibration learns their scale from reference only and uses the same bins in Q. No query-local contrast normalization is silently assumed.",
+        "Build 4x4 reference-quantile joint bins; estimate equal-prior same/cut densities with add-one counts on known pure R endpoints.",
+        "At all Q edges w=max(0,log p_same/p_cut)/4; missing R cut edges => zero pairwise.",
+        "Use identical exact binary min-cut E=-sum_i m_i*z_i + sum_e w_e*[z_a!=z_b], identical 1e6 integer capacity quantization and native signed output for all arms.",
+        "Produce full binary field and fixed output masks; no Q label/proposal inputs.",
+        "Controls: pointwise RGB-only and DINO-only reference likelihoods with the exact same unary/edges/readout/quantization. Normalize positive weights to primary total pairwise mass; if an arm has zero positive evidence use uniform weights of the same total mass; zero-edge DINO is also kept."
+      ],
+      "expected_benefit": "synthetic hypothesis: close a weak DINO hole while retaining true boundary when RGB-only contrasts are identical for texture and object edge but DINO/RGB dependency differs.",
+      "simplest_control": "Existing reference_boundary DINO-only calibrated cut and RGB Potts with identical unary, graph, readout and pairwise mass; no old pipeline mismatch.",
+      "why_not_duplicate": "Existing reference_boundary estimates DINO edge density alone. This uses joint DINO/RGB dependence; however decoder and reference-edge supervision are shared. Reviewer may classify as a modality extension/revision (count 0), which must be accepted.",
+      "counterexample": "Reference has too few pure cut edges, Q boundary appearance changes, or wrong DINO identity seeds are strengthened; boundary fitting cannot identify an entirely wrong object.",
+      "first_evidence": "Construct R with balanced binary DINO/RGB bits A/B, known class L=A xor B, edge transition counts n00=n11 and n01=n10. Individual edge histograms then exactly tie while joint cut/same dependency differs. A tiny label direction defines the actual DINO unary without altering double-precision edge-distance bins. Q hole/cut complete-mask witness plus exhaustive small-graph energy check; wrong-identity seed negative.",
+      "failure_reflection": "If joint method equals one-modality control, reject extra dependency complexity; if cut corrects holes but wrong identity grows, isolate readout benefit from identity failure.",
+      "revision_note": "Joint observation, not merely extra RGB weight. Comparator API and exact signed energy now match existing boundary control; same mass zero-evidence fallback explicit."
+    },
+    {
+      "history_evidence": [
+        {
+          "source": "docs/research/PLAN.md:39",
+          "fact": "RGB Potts vs MEAN −0.027595 [−0.160435,0.032420] on reused public600; query-boundary smoothing did not establish gain."
+        },
+        {
+          "source": "docs/research/PLAN.md:48",
+          "fact": "RCG+RGB disagreement revision vs RCG +0.036362 [−0.015595,0.135117]; not stable positive."
+        },
+        {
+          "source": "evidence/local/research_20261006/reference_texture_01a1100b/contract.md",
+          "fact": "Radial power texture already exists; its striping witness is solved by dominant-band control. It must not be recounted."
+        },
+        {
+          "source": "user-provided Opus session summary (local-only source, not included in repository) §3.2,3.7,3.8",
+          "fact": "Same-score identity ambiguity, edit benefit/harm accounting, and score-correlated area errors motivate genuinely different RGB observations; historical numbers are not current quality evidence."
+        }
+      ],
+      "available_information": "Aligned frozen DINO q/r grid, reference coverage/valid weights and known producer; actual uint8 RGB images plus complete known reference mask. No Q GT, class names, external pool/model, encoder calls or remote use. Coverage-only version must be labeled separately.",
+      "output_contract": "Return complete field/token mask and fixed half-pixel bilinear original-size binary mask, plus exact same readout for controls. RGB observation capped as signed correction to direct FG–BG DINO prototype margin, not FoRIS score. Empty known FG => empty; all FG => full; absent or uninformative RGB observation => direct DINO control.",
+      "evidence_level": "hypothesized; true-data quality unknown; witness/CPU measurements pending",
+      "cpu_cost": "NumPy/Pillow CPU only; single BLAS thread, RGB <=256 squared, patches in blocks <=128; no N² DINO matrix, 512 MiB incremental target. Real timings must be measured, not inferred.",
+      "limitations": "Appearance is not semantic identity. Cross-instance color/texture changes and shared distractor appearance can violate transfer; no general gain is guaranteed.",
+      "failure_accounting": "Report aTP/aFP/dTP/dFP and per-class exact IoU delta only if legitimately available Q GT in a separate scorer. Without Q GT, report activity/cost and synthetic witnesses only. Wrong-seed/appearance-swap cases are negative evidence, never oracle-method proof.",
+      "count_rule": "Candidate only until reviewer approves distinct complete mechanism and implementation/checks; controls and parameter variations count zero.",
+      "id": "RGB07",
+      "title": "逐像素阴影商空间颜色判据",
+      "gap": "Same target albedo occurs under locally varying positive achromatic shading; RGB means move across reference class means and no global affine transform can undo the pixel-dependent nuisance.",
+      "new_observation_or_argument": "Algebraic invariant u(s(x)*RGB)=u(RGB) for positive non-clipped scalar s(x), where u(c)=c/||c||. This removes only local brightness magnitude, preserving chromatic direction. Direct DINO identity remains the baseline.",
+      "algorithm": [
+        "Validate physical uint8 RGB and complete R mask; use RGB256 recorded physical transform.",
+        "At each physical pixel form unit RGB chromatic direction; zero black pixels abstain.",
+        "Average unit chromatic directions within each native DINO cell, excluding padding.",
+        "Known R FG/BG weights fit unit class mean directions; Q h=(uQ dot uF - uQ dot uB)/2.",
+        "Output complete native margin m+0.5*h with fixed shared renderer; empty/all FG obey shared contract.",
+        "Controls: raw RGB median prototype, RGB01 global affine aligned prototype, grayscale intensity prototype, RGB-only chromaticity."
+      ],
+      "expected_benefit": "algebraic invariance; hypothesized recovery of chromatically distinct target under spatially varying achromatic shadow, not semantic guarantee.",
+      "simplest_control": "Raw and globally aligned RGB prototypes with same class support and readout; primary itself is the simple cosine RGB invariant, no elaborate log-color operator.",
+      "why_not_duplicate": "RGB01 estimates one global per-channel affine map from Q BG anchors; RGB07 removes a per-pixel scalar without any Q seeds. The nuisance group and decisions differ; if reviewer calls it color-feature variation, count0 accepted.",
+      "counterexample": "Achromatic FG/BG, colored illumination, clipped channels or same chromaticity distractor; eliminating intensity can remove class evidence.",
+      "first_evidence": "Spatially alternating shade multipliers per Q native cell while target and BG albedos have distinct chromaticity; negative achromatic classes where raw intensity succeeds but quotient fails.",
+      "failure_reflection": "Raw-only wins on achromatic class => discarded intensity carried semantics. Colored-light failure => scalar shading model broken. Do not infer general lighting invariance."
+    },
+    {
+      "history_evidence": [
+        {
+          "source": "docs/research/PLAN.md:39",
+          "fact": "RGB Potts vs MEAN −0.027595 [−0.160435,0.032420] on reused public600; query-boundary smoothing did not establish gain."
+        },
+        {
+          "source": "docs/research/PLAN.md:48",
+          "fact": "RCG+RGB disagreement revision vs RCG +0.036362 [−0.015595,0.135117]; not stable positive."
+        },
+        {
+          "source": "evidence/local/research_20261006/reference_texture_01a1100b/contract.md",
+          "fact": "Radial power texture already exists; its striping witness is solved by dominant-band control. It must not be recounted."
+        },
+        {
+          "source": "user-provided Opus session summary (local-only source, not included in repository) §3.2,3.7,3.8",
+          "fact": "Same-score identity ambiguity, edit benefit/harm accounting, and score-correlated area errors motivate genuinely different RGB observations; historical numbers are not current quality evidence."
+        }
+      ],
+      "available_information": "Aligned frozen DINO q/r grid, reference coverage/valid weights and known producer; actual uint8 RGB images plus complete known reference mask. No Q GT, class names, external pool/model, encoder calls or remote use. Coverage-only version must be labeled separately.",
+      "output_contract": "Return complete field/token mask and fixed half-pixel bilinear original-size binary mask, plus exact same readout for controls. RGB observation capped as signed correction to direct FG–BG DINO prototype margin, not FoRIS score. Empty known FG => empty; all FG => full; absent or uninformative RGB observation => direct DINO control.",
+      "evidence_level": "hypothesized; true-data quality unknown; witness/CPU measurements pending",
+      "cpu_cost": "NumPy/Pillow CPU only; single BLAS thread, RGB <=256 squared, patches in blocks <=128; no N² DINO matrix, 512 MiB incremental target. Real timings must be measured, not inferred.",
+      "limitations": "Appearance is not semantic identity. Cross-instance color/texture changes and shared distractor appearance can violate transfer; no general gain is guaranteed.",
+      "failure_accounting": "Report aTP/aFP/dTP/dFP and per-class exact IoU delta only if legitimately available Q GT in a separate scorer. Without Q GT, report activity/cost and synthetic witnesses only. Wrong-seed/appearance-swap cases are negative evidence, never oracle-method proof.",
+      "count_rule": "Candidate only until reviewer approves distinct complete mechanism and implementation/checks; controls and parameter variations count zero.",
+      "id": "RGB08",
+      "title": "参考像素 RGB 分布的混合解码",
+      "gap": "A native DINO patch contains a multimodal target texture and surrounding background; mean RGB and pure RGB patch templates do not identify its foreground occupancy.",
+      "new_observation_or_argument": "Use labeled R per-pixel joint RGB histogram, then query per-pixel color evidence to fit a two-component mixture weight per native patch. This is independent RGB information, not pi inferred from the DINO score histogram. Its class-conditional color transfer assumption is explicit.",
+      "algorithm": [
+        "Validate physical actual RGB and R mask; construct RGB256 in recorded transform.",
+        "Build 4x4x4 joint RGB class histograms on all known R foreground/background physical pixels with add-one smoothing and equal class priors.",
+        "For each Q native cell collect all its RGB256 pixels; let f/b be the reference class mass at each color bin.",
+        "Fit mixture alpha in [0,1] by fixed 32-iteration concave-likelihood derivative bisection; no DINO term enters estimation.",
+        "Q h=2*alpha-1; output m+0.5*h and complete mask by shared renderer.",
+        "Controls: pixel likelihood foreground fraction, mean log likelihood ratio per patch, native cell mean RGB prototype, one-step EM at alpha=.5, DINO alone."
+      ],
+      "expected_benefit": "hypothesized area/identity correction when color distribution identifies a true mixture and the mean collapses its modes; actual quality unknown.",
+      "simplest_control": "Same per-pixel FG/BG likelihoods with mean log LR or direct posterior vote; oracle alpha/true Q labels forbidden.",
+      "why_not_duplicate": "Existing score-derived occupancy routes never use actual R-labeled RGB pixel class distributions. RGB04 compares pure pixel-arrangement exemplars; this fits mixture prevalence without copying a template, though simpler same-information control may make it unnecessary.",
+      "counterexample": "Q background shares reference FG colors, unknown extra mixture component, or same-color FG/BG histograms; mixture alpha is not semantic area in those settings.",
+      "first_evidence": "Algebraic closure before any probe; no experiment or implementation needed.",
+      "failure_reflection": "The ML optimizer is a different computation of the same standalone binary decision. Confidence amplitude is a readout variation, not an independent new identity method.",
+      "status": "closed_exact_standalone_posterior_vote_equivalence",
+      "count_delta": 0,
+      "closure_argument": "L is concave. alpha*>1/2 iff L′(1/2)>0 iff sum(f-b)/(f+b)>0 iff mean equal-prior pixel posterior>1/2, apart from nonunique/tie endpoints. Adding DINO changes only confidence magnitude; not new identity information."
+    },
+    {
+      "history_evidence": [
+        {
+          "source": "docs/research/PLAN.md:39",
+          "fact": "RGB Potts vs MEAN −0.027595 [−0.160435,0.032420] on reused public600; query-boundary smoothing did not establish gain."
+        },
+        {
+          "source": "docs/research/PLAN.md:48",
+          "fact": "RCG+RGB disagreement revision vs RCG +0.036362 [−0.015595,0.135117]; not stable positive."
+        },
+        {
+          "source": "evidence/local/research_20261006/reference_texture_01a1100b/contract.md",
+          "fact": "Radial power texture already exists; its striping witness is solved by dominant-band control. It must not be recounted."
+        },
+        {
+          "source": "user-provided Opus session summary (local-only source, not included in repository) §3.2,3.7,3.8",
+          "fact": "Same-score identity ambiguity, edit benefit/harm accounting, and score-correlated area errors motivate genuinely different RGB observations; historical numbers are not current quality evidence."
+        }
+      ],
+      "available_information": "Aligned frozen DINO q/r grid, reference coverage/valid weights and known producer; actual uint8 RGB images plus complete known reference mask. No Q GT, class names, external pool/model, encoder calls or remote use. Coverage-only version must be labeled separately.",
+      "output_contract": "Return complete field/token mask and fixed half-pixel bilinear original-size binary mask, plus exact same readout for controls. RGB observation capped as signed correction to direct FG–BG DINO prototype margin, not FoRIS score. Empty known FG => empty; all FG => full; absent or uninformative RGB observation => direct DINO control.",
+      "evidence_level": "hypothesized; true-data quality unknown; witness/CPU measurements pending",
+      "cpu_cost": "NumPy/Pillow CPU only; single BLAS thread, RGB <=256 squared, patches in blocks <=128; no N² DINO matrix, 512 MiB incremental target. Real timings must be measured, not inferred.",
+      "limitations": "Appearance is not semantic identity. Cross-instance color/texture changes and shared distractor appearance can violate transfer; no general gain is guaranteed.",
+      "failure_accounting": "Report aTP/aFP/dTP/dFP and per-class exact IoU delta only if legitimately available Q GT in a separate scorer. Without Q GT, report activity/cost and synthetic witnesses only. Wrong-seed/appearance-swap cases are negative evidence, never oracle-method proof.",
+      "count_rule": "Candidate only until reviewer approves distinct complete mechanism and implementation/checks; controls and parameter variations count zero.",
+      "id": "RGB09",
+      "title": "参考边界两侧的方向性角色判据",
+      "gap": "DINO identity weak and Q absolute RGB shifts from R, while the learned reference foreground-versus-local-background color contrast persists. Symmetric boundaries know only where to cut, not which side is target.",
+      "new_observation_or_argument": "Known reference cut edges are ordered FG to BG; their unit RGB difference direction provides a foreground-side role. Query edges can then vote toward one endpoint independently of DINO seeds. This is a learned relational contrast, not an assumed bright-target prior.",
+      "algorithm": [
+        "Validate RGB/mask; obtain physical RGB means on native grids and direct DINO m.",
+        "From known pure R FG/BG four-neighbor cut edges compute ordered FG-minus-BG unit RGB difference; average and unit-normalize, zero/no cuts => abstain.",
+        "Partition Q four-neighbor grid into components joined when RGB contrast <= median R within-class RGB contrast, floor 1/255.",
+        "For inter-component Q edges, each endpoint receives signed dot(unit(c_i-c_j), reference_direction) role vote; weight by observed contrast.",
+        "Each component takes boundary-vote average and assigns it to all member tokens; no component selected by size/location.",
+        "Output m+0.5*h and complete shared-rendered mask.",
+        "Controls: pointwise absolute RGB prototype, RGB01 alignment, no-component per-edge role vote, symmetric RGB-only cut with same unary."
+      ],
+      "expected_benefit": "hypothesized recovery of a whole visually coherent missed region using a reference-conditioned foreground-side relation, without a correct DINO seed.",
+      "simplest_control": "The same learned polarity applied pointwise, plus symmetric boundary segmentation, to isolate role and component propagation; an oracle component identity is forbidden.",
+      "why_not_duplicate": "Query color-bottleneck inherits DINO FG/BG seeds and symmetric RGB Potts has no FG-side reference role. RGB06 fits same/cut dependency but is symmetric. This instead uses directed FG-to-BG reference contrast to supply a region identity hypothesis.",
+      "counterexample": "Q surrounding context reverses contrast, internal texture partitions object or merges target/background, one target borders several incompatible colors, same relational contrast distractor.",
+      "first_evidence": "Uniform bright-offset R/Q foreground/background with tied DINO target identity and no confident BG anchors, where absolute colors fail but ordered local contrast persists; role inversion and wrong-context negatives.",
+      "failure_reflection": "If pointwise role matches components, propagation unnecessary. If sign reverses under new context, a background-role transfer assumption failed; do not call the learned reference relation semantic identity guarantee."
+    }
+  ]
+}

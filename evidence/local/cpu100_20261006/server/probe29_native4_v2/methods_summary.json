@@ -1,0 +1,3541 @@
+{
+  "actual_method_count": 30,
+  "case_count": 4,
+  "all_arms_complete": true,
+  "input_model_side": [
+    1024
+  ],
+  "checkpoint": [
+    "45172f209c9583c40538afc26b60a07033e6fcc2e8c30228338e6b2e932e7941"
+  ],
+  "baseline_score": 28.984250284636566,
+  "inference_wall_seconds": 124.25492668151855,
+  "rows": [
+    {
+      "id": "ref_ordinal_copula",
+      "score": 24.99591532964066,
+      "gain_vs_prototype": -3.9883349549959064,
+      "ci95_vs_prototype": [
+        -22.965045426713083,
+        14.988375516721272
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": -3.9883349549959064,
+          "ci95": [
+            -22.965045426713083,
+            14.988375516721272
+          ]
+        },
+        "ref_ordinal_zscore_control": {
+          "score": 24.7058128603546,
+          "gain": 0.2901024692860581,
+          "ci95": [
+            -0.08658009658730847,
+            0.6667850351594282
+          ]
+        },
+        "ref_raw_prototype_control": {
+          "score": 28.984250284636566,
+          "gain": -3.9883349549959064,
+          "ci95": [
+            -22.965045426713083,
+            14.988375516721272
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "dino_prototype.control",
+      "gain_vs_best_matched_control": -3.9883349549959064,
+      "mean_seconds": 1.2894289046525955,
+      "max_seconds": 1.2998356893658638,
+      "actions_vs_prototype": {
+        "add_TP": 0,
+        "add_FP": 35347,
+        "delete_TP": 29744,
+        "delete_FP": 57554
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 35347,
+          "delete_TP": 0,
+          "delete_FP": 0,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 89897,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 3360,
+          "delete_FP": 28267,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 5943,
+          "final_U": 11084,
+          "gain": 29.97675103344255,
+          "exact_formula_gain": 29.976751033442536
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 10396,
+          "delete_FP": 15224,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 653,
+          "final_U": 11049,
+          "gain": -36.144543640866196,
+          "exact_formula_gain": -36.14454364086619
+        },
+        "75": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 15988,
+          "delete_FP": 14063,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 36888,
+          "final_U": 91181,
+          "gain": -9.785547212559969,
+          "exact_formula_gain": -9.78554721255997
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.0",
+        "deletions remove both targets and background; pooled background fraction=0.65928",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "ref_local_support_radius",
+      "score": 0.9745023909403214,
+      "gain_vs_prototype": -28.009747893696243,
+      "ci95_vs_prototype": [
+        -44.198957554564856,
+        -11.820538232827628
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": -28.009747893696243,
+          "ci95": [
+            -44.198957554564856,
+            -11.820538232827628
+          ]
+        },
+        "ref_support_nearest_control": {
+          "score": 30.12047679166992,
+          "gain": -29.145974400729596,
+          "ci95": [
+            -41.163494742146625,
+            -17.128454059312574
+          ]
+        },
+        "ref_support_global_radius_control": {
+          "score": 1.6246395278653343,
+          "gain": -0.6501371369250128,
+          "ci95": [
+            -1.3002742738500257,
+            0.0
+          ]
+        },
+        "ref_support_fixed_kernel_control": {
+          "score": 19.41048040025352,
+          "gain": -18.435978009313196,
+          "ci95": [
+            -28.56896790681318,
+            -8.302988111813216
+          ]
+        },
+        "ref_raw_prototype_control": {
+          "score": 28.984250284636566,
+          "gain": -28.009747893696243,
+          "ci95": [
+            -44.198957554564856,
+            -11.820538232827628
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "ref_support_nearest_control",
+      "gain_vs_best_matched_control": -29.145974400729596,
+      "mean_seconds": 0.4069319646805525,
+      "max_seconds": 0.46902643889188766,
+      "actions_vs_prototype": {
+        "add_TP": 0,
+        "add_FP": 88,
+        "delete_TP": 70970,
+        "delete_FP": 118501
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 0,
+          "delete_FP": 25824,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 28726,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 9303,
+          "delete_FP": 30048,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 0,
+          "final_U": 9303,
+          "gain": -23.641076465655257,
+          "exact_formula_gain": -23.641076465655257
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 11049,
+          "delete_FP": 15224,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 0,
+          "final_U": 11049,
+          "gain": -42.05458074829673,
+          "exact_formula_gain": -42.05458074829673
+        },
+        "75": {
+          "add_TP": 0,
+          "add_FP": 88,
+          "delete_TP": 50618,
+          "delete_FP": 47405,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 2258,
+          "final_U": 57927,
+          "gain": -46.34333436083299,
+          "exact_formula_gain": -46.34333436083299
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.0",
+        "deletions remove both targets and background; pooled background fraction=0.62543",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "ref_joint_channel_code",
+      "score": 6.141243478437356,
+      "gain_vs_prototype": -22.84300680619921,
+      "ci95_vs_prototype": [
+        -37.37907712226283,
+        -8.306936490135596
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": -22.84300680619921,
+          "ci95": [
+            -37.37907712226283,
+            -8.306936490135596
+          ]
+        },
+        "ref_code_univariate_control": {
+          "score": 12.258292233950051,
+          "gain": -6.117048755512696,
+          "ci95": [
+            -18.025545735465673,
+            5.791448224440279
+          ]
+        },
+        "ref_code_pairwise_control": {
+          "score": 6.4681533341168675,
+          "gain": -0.3269098556795118,
+          "ci95": [
+            -0.7199947820552346,
+            0.0661750706962082
+          ]
+        },
+        "ref_code_degree3_control": {
+          "score": 6.47195126537156,
+          "gain": -0.33070778693420433,
+          "ci95": [
+            -0.7144003999812529,
+            0.05298482611284283
+          ]
+        },
+        "ref_raw_prototype_control": {
+          "score": 28.984250284636566,
+          "gain": -22.84300680619921,
+          "ci95": [
+            -37.37907712226283,
+            -8.306936490135596
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "dino_prototype.control",
+      "gain_vs_best_matched_control": -22.84300680619921,
+      "mean_seconds": 0.34231285378336906,
+      "max_seconds": 0.36630166321992874,
+      "actions_vs_prototype": {
+        "add_TP": 18,
+        "add_FP": 144896,
+        "delete_TP": 57797,
+        "delete_FP": 96227
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 18,
+          "add_FP": 21268,
+          "delete_TP": 0,
+          "delete_FP": 17294,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 18,
+          "final_U": 58524,
+          "gain": 0.030756612671724422,
+          "exact_formula_gain": 0.030756612671724422
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 91157,
+          "delete_TP": 1466,
+          "delete_FP": 18494,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 7837,
+          "final_U": 112014,
+          "gain": -16.644629592942916,
+          "exact_formula_gain": -16.644629592942916
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 30819,
+          "delete_TP": 3772,
+          "delete_FP": 14327,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 7277,
+          "final_U": 42765,
+          "gain": -25.038329140673675,
+          "exact_formula_gain": -25.038329140673675
+        },
+        "75": {
+          "add_TP": 0,
+          "add_FP": 1652,
+          "delete_TP": 52559,
+          "delete_FP": 46112,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 317,
+          "final_U": 60784,
+          "gain": -49.719825103851974,
+          "exact_formula_gain": -49.719825103851974
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.00012",
+        "deletions remove both targets and background; pooled background fraction=0.62475",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "local_001",
+      "score": 14.34011044335902,
+      "gain_vs_prototype": -14.644139841277546,
+      "ci95_vs_prototype": [
+        -27.26633583437441,
+        -2.021943848180687
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": -14.644139841277546,
+          "ci95": [
+            -27.26633583437441,
+            -2.021943848180687
+          ]
+        },
+        "local_001.diagonal_control": {
+          "score": 13.370757110660852,
+          "gain": 0.9693533326981676,
+          "ci95": [
+            -1.0855440794919433,
+            3.024250744888274
+          ]
+        },
+        "local_001.trace_control": {
+          "score": 9.150324782898917,
+          "gain": 5.189785660460103,
+          "ci95": [
+            1.1527240947057038,
+            9.226847226214502
+          ]
+        },
+        "local_001.label_permuted_control": {
+          "score": 9.195344640379206,
+          "gain": 5.144765802979814,
+          "ci95": [
+            2.2443398224562934,
+            8.045191783503332
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "dino_prototype.control",
+      "gain_vs_best_matched_control": -14.644139841277546,
+      "mean_seconds": 1.2256354000419378,
+      "max_seconds": 1.2735467925667763,
+      "actions_vs_prototype": {
+        "add_TP": 21789,
+        "add_FP": 301546,
+        "delete_TP": 17265,
+        "delete_FP": 43782
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 18470,
+          "add_FP": 149447,
+          "delete_TP": 0,
+          "delete_FP": 15068,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 18470,
+          "final_U": 188929,
+          "gain": 9.77615929793732,
+          "exact_formula_gain": 9.77615929793732
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 59266,
+          "delete_TP": 4134,
+          "delete_FP": 12453,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 5169,
+          "final_U": 86164,
+          "gain": -17.642051350758084,
+          "exact_formula_gain": -17.642051350758084
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 54453,
+          "delete_TP": 7468,
+          "delete_FP": 11380,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 3581,
+          "final_U": 69346,
+          "gain": -36.89062031799073,
+          "exact_formula_gain": -36.89062031799073
+        },
+        "75": {
+          "add_TP": 3319,
+          "add_FP": 38380,
+          "delete_TP": 5663,
+          "delete_FP": 4881,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 50532,
+          "final_U": 138743,
+          "gain": -13.820046994298691,
+          "exact_formula_gain": -13.820046994298693
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.06739",
+        "deletions remove both targets and background; pooled background fraction=0.71719",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "local_002",
+      "score": 29.074841614357993,
+      "gain_vs_prototype": 0.09059132972142692,
+      "ci95_vs_prototype": [
+        -5.97688909726288,
+        6.158071756705738
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": 0.09059132972142692,
+          "ci95": [
+            -5.97688909726288,
+            6.158071756705738
+          ]
+        },
+        "local_002.unary_control": {
+          "score": 29.478416727973176,
+          "gain": -0.40357511361518306,
+          "ci95": [
+            -0.9677404379325196,
+            0.16059021070215707
+          ]
+        },
+        "local_002.label_potts_control": {
+          "score": 28.825701795226134,
+          "gain": 0.2491398191318588,
+          "ci95": [
+            0.07501024246104038,
+            0.4232693958026843
+          ]
+        },
+        "local_002.permuted_coordinates_control": {
+          "score": 29.074841614357993,
+          "gain": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "local_002.unary_control",
+      "gain_vs_best_matched_control": -0.40357511361518306,
+      "mean_seconds": 3.4694941118359566,
+      "max_seconds": 3.505867302417755,
+      "actions_vs_prototype": {
+        "add_TP": 54,
+        "add_FP": 14497,
+        "delete_TP": 19107,
+        "delete_FP": 47925
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 9033,
+          "delete_TP": 0,
+          "delete_FP": 11953,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 51630,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 11,
+          "delete_TP": 1807,
+          "delete_FP": 17255,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 7496,
+          "final_U": 22107,
+          "gain": 10.26673553959195,
+          "exact_formula_gain": 10.266735539591949
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 2524,
+          "delete_TP": 412,
+          "delete_FP": 4679,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 10637,
+          "final_U": 24118,
+          "gain": 2.049407973819528,
+          "exact_formula_gain": 2.049407973819531
+        },
+        "75": {
+          "add_TP": 54,
+          "add_FP": 2929,
+          "delete_TP": 16888,
+          "delete_FP": 14038,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 36042,
+          "final_U": 94135,
+          "gain": -11.953778194525755,
+          "exact_formula_gain": -11.953778194525757
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.00371",
+        "deletions remove both targets and background; pooled background fraction=0.71496",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "QP01",
+      "score": 35.79222677657427,
+      "gain_vs_prototype": 6.807976491937701,
+      "ci95_vs_prototype": [
+        0.8886916616784148,
+        12.727261322196988
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": 6.807976491937701,
+          "ci95": [
+            0.8886916616784148,
+            12.727261322196988
+          ]
+        },
+        "QP_pointwise_KDE": {
+          "score": 19.64943641025067,
+          "gain": 16.1427903663236,
+          "ci95": [
+            5.049805700303381,
+            27.235775032343817
+          ]
+        },
+        "QP_pooled_KDE": {
+          "score": 24.252087292373815,
+          "gain": 11.540139484200452,
+          "ci95": [
+            -0.0619232748314964,
+            23.142202243232404
+          ]
+        },
+        "QP_fine_inverse_vote": {
+          "score": 33.383397531774946,
+          "gain": 2.408829244799321,
+          "ci95": [
+            -0.010539841027359387,
+            4.828198330626009
+          ]
+        },
+        "QP_center_prototype": {
+          "score": 34.20415848673728,
+          "gain": 1.5880682898369898,
+          "ci95": [
+            -1.139376222087222,
+            4.315512801761198
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "QP_center_prototype",
+      "gain_vs_best_matched_control": 1.5880682898369898,
+      "mean_seconds": 0.5773634631186724,
+      "max_seconds": 0.6462023705244064,
+      "actions_vs_prototype": {
+        "add_TP": 1408,
+        "add_FP": 134971,
+        "delete_TP": 850,
+        "delete_FP": 24022
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 132403,
+          "delete_TP": 0,
+          "delete_FP": 22,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 186931,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 8,
+          "delete_TP": 9,
+          "delete_FP": 11973,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 9294,
+          "final_U": 27386,
+          "gain": 10.29597166112485,
+          "exact_formula_gain": 10.29597166112485
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 1244,
+          "delete_TP": 0,
+          "delete_FP": 8205,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 11049,
+          "final_U": 19312,
+          "gain": 15.158550983269137,
+          "exact_formula_gain": 15.158550983269137
+        },
+        "75": {
+          "add_TP": 1408,
+          "add_FP": 1316,
+          "delete_TP": 841,
+          "delete_FP": 3822,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 53443,
+          "final_U": 102738,
+          "gain": 1.7773833233568292,
+          "exact_formula_gain": 1.7773833233568226
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.01032",
+        "deletions remove both targets and background; pooled background fraction=0.96583"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "QP02",
+      "score": 35.90285570583882,
+      "gain_vs_prototype": 6.918605421202251,
+      "ci95_vs_prototype": [
+        1.3891638678852232,
+        12.44804697451928
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": 6.918605421202251,
+          "ci95": [
+            1.3891638678852232,
+            12.44804697451928
+          ]
+        },
+        "QP_pointwise_KDE": {
+          "score": 19.64943641025067,
+          "gain": 16.25341929558815,
+          "ci95": [
+            5.550277906510189,
+            26.95656068466611
+          ]
+        },
+        "QP_pooled_KDE": {
+          "score": 24.252087292373815,
+          "gain": 11.650768413465002,
+          "ci95": [
+            0.4385489313753119,
+            22.862987895554696
+          ]
+        },
+        "QP_fine_inverse_vote": {
+          "score": 33.383397531774946,
+          "gain": 2.519458174063871,
+          "ci95": [
+            -0.28975418870506786,
+            5.328670536832817
+          ]
+        },
+        "QP_center_prototype": {
+          "score": 34.20415848673728,
+          "gain": 1.6986972191015397,
+          "ci95": [
+            -0.9467925819585261,
+            4.344187020161598
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "QP_center_prototype",
+      "gain_vs_best_matched_control": 1.6986972191015397,
+      "mean_seconds": 0.6411490794271231,
+      "max_seconds": 0.7264154329895973,
+      "actions_vs_prototype": {
+        "add_TP": 2835,
+        "add_FP": 79761,
+        "delete_TP": 333,
+        "delete_FP": 32953
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 76022,
+          "delete_TP": 0,
+          "delete_FP": 9846,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 120726,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 29,
+          "delete_TP": 9,
+          "delete_FP": 11741,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 9294,
+          "final_U": 27639,
+          "gain": 9.985321016163914,
+          "exact_formula_gain": 9.985321016163912
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 1318,
+          "delete_TP": 0,
+          "delete_FP": 8195,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 11049,
+          "final_U": 19396,
+          "gain": 14.91077293287464,
+          "exact_formula_gain": 14.910772932874648
+        },
+        "75": {
+          "add_TP": 2835,
+          "add_FP": 2392,
+          "delete_TP": 324,
+          "delete_FP": 3171,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 55387,
+          "final_U": 104465,
+          "gain": 2.7783277357704472,
+          "exact_formula_gain": 2.778327735770439
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.03432",
+        "deletions remove both targets and background; pooled background fraction=0.99"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "cross_image_csls_hubness",
+      "score": 34.64582695689663,
+      "gain_vs_prototype": 5.661576672260061,
+      "ci95_vs_prototype": [
+        -7.356010695657048,
+        18.679164040177177
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": 5.661576672260061,
+          "ci95": [
+            -7.356010695657048,
+            18.679164040177177
+          ]
+        },
+        "cross_image_cosine_dictionary_control": {
+          "score": 28.585552219615217,
+          "gain": 6.060274737281411,
+          "ci95": [
+            -0.8975685223502623,
+            13.018117996913098
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "dino_prototype.control",
+      "gain_vs_best_matched_control": 5.661576672260061,
+      "mean_seconds": 1.120673118159175,
+      "max_seconds": 1.2865886464715004,
+      "actions_vs_prototype": {
+        "add_TP": 121,
+        "add_FP": 39745,
+        "delete_TP": 16568,
+        "delete_FP": 33959
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 35449,
+          "delete_TP": 0,
+          "delete_FP": 3886,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 86113,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 109,
+          "delete_FP": 13456,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 9194,
+          "final_U": 25895,
+          "gain": 11.86384726479464,
+          "exact_formula_gain": 11.863847264794638
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 282,
+          "delete_TP": 0,
+          "delete_FP": 10198,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 11049,
+          "final_U": 16357,
+          "gain": 25.49448081555972,
+          "exact_formula_gain": 25.494480815559722
+        },
+        "75": {
+          "add_TP": 121,
+          "add_FP": 4014,
+          "delete_TP": 16459,
+          "delete_FP": 6419,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 36538,
+          "final_U": 102839,
+          "gain": -14.712021391314096,
+          "exact_formula_gain": -14.7120213913141
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.00304",
+        "deletions remove both targets and background; pooled background fraction=0.6721",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "cross_image_background_anchor_shift",
+      "score": 28.984250284636566,
+      "gain_vs_prototype": 0.0,
+      "ci95_vs_prototype": [
+        0.0,
+        0.0
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "cross_image_whole_mean_shift_control": {
+          "score": 37.01114656713054,
+          "gain": -8.026896282493972,
+          "ci95": [
+            -18.24008727169121,
+            2.186294706703265
+          ]
+        },
+        "cross_image_cosine_dictionary_control": {
+          "score": 28.585552219615217,
+          "gain": 0.39869806502134963,
+          "ci95": [
+            -5.661046043264079,
+            6.458442173306786
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "cross_image_whole_mean_shift_control",
+      "gain_vs_best_matched_control": -8.026896282493972,
+      "mean_seconds": 1.0795059315860271,
+      "max_seconds": 1.2442536279559135,
+      "actions_vs_prototype": {
+        "add_TP": 0,
+        "add_FP": 0,
+        "delete_TP": 0,
+        "delete_FP": 0
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 0,
+          "delete_FP": 0,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 54550,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 0,
+          "delete_FP": 0,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 9303,
+          "final_U": 39351,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 0,
+          "delete_FP": 0,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 11049,
+          "final_U": 26273,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "75": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 0,
+          "delete_FP": 0,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 52876,
+          "final_U": 105244,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        }
+      },
+      "reflection": [
+        "no complete-mask activity on these four cases; inspect recorded fallback/inactivity before assigning a mechanism gain",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "cross_image_free_column_gram_matching",
+      "score": 26.60547513613034,
+      "gain_vs_prototype": -2.378775148506225,
+      "ci95_vs_prototype": [
+        -9.380380276854503,
+        4.622829979842058
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": -2.378775148506225,
+          "ci95": [
+            -9.380380276854503,
+            4.622829979842058
+          ]
+        },
+        "cross_image_appearance_assignment_control": {
+          "score": 23.41316602891502,
+          "gain": 3.1923091072153227,
+          "ci95": [
+            -0.6197588173041844,
+            7.004377031734837
+          ]
+        },
+        "cross_image_sorted_gram_profile_control": {
+          "score": 0.0,
+          "gain": 26.60547513613034,
+          "ci95": [
+            16.443368212669686,
+            36.767582059591
+          ]
+        },
+        "cross_image_cosine_dictionary_control": {
+          "score": 28.585552219615217,
+          "gain": -1.9800770834848755,
+          "ci95": [
+            -4.030445063843565,
+            0.07029089687382495
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "dino_prototype.control",
+      "gain_vs_best_matched_control": -2.378775148506225,
+      "mean_seconds": 0.7128763161599636,
+      "max_seconds": 0.7722470611333847,
+      "actions_vs_prototype": {
+        "add_TP": 28,
+        "add_FP": 21695,
+        "delete_TP": 14055,
+        "delete_FP": 25753
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 14089,
+          "delete_TP": 0,
+          "delete_FP": 9893,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 58746,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 87,
+          "delete_TP": 0,
+          "delete_FP": 11150,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 9303,
+          "final_U": 28288,
+          "gain": 9.245659959684113,
+          "exact_formula_gain": 9.24565995968411
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 5997,
+          "delete_TP": 0,
+          "delete_FP": 1638,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 11049,
+          "final_U": 30632,
+          "gain": -5.98445800084309,
+          "exact_formula_gain": -5.984458000843087
+        },
+        "75": {
+          "add_TP": 28,
+          "add_FP": 1522,
+          "delete_TP": 14055,
+          "delete_FP": 3072,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 38849,
+          "final_U": 103694,
+          "gain": -12.77630255286592,
+          "exact_formula_gain": -12.776302552865921
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.00129",
+        "deletions remove both targets and background; pooled background fraction=0.64693",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "RGB01",
+      "score": 17.55794639653726,
+      "gain_vs_prototype": -11.426303888099305,
+      "ci95_vs_prototype": [
+        -21.110966192654708,
+        -1.7416415835439025
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": -11.426303888099305,
+          "ci95": [
+            -21.110966192654708,
+            -1.7416415835439025
+          ]
+        },
+        "RGB01.unaligned": {
+          "score": 15.297934702980076,
+          "gain": 2.2600116935571855,
+          "ci95": [
+            -7.759152434019402,
+            12.27917582113377
+          ]
+        },
+        "RGB01.prototype": {
+          "score": 17.55794639653726,
+          "gain": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "RGB01.laplace": {
+          "score": 8.24762339491916,
+          "gain": 9.310323001618102,
+          "ci95": [
+            1.6281949547313168,
+            16.992451048504883
+          ]
+        },
+        "RGB01.rgb_only": {
+          "score": 4.731382543105604,
+          "gain": 12.826563853431658,
+          "ci95": [
+            4.454439181441319,
+            21.198688525421993
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "dino_prototype.control",
+      "gain_vs_best_matched_control": -11.426303888099305,
+      "mean_seconds": 0.3783023748546839,
+      "max_seconds": 0.44295255094766617,
+      "actions_vs_prototype": {
+        "add_TP": 6230,
+        "add_FP": 134976,
+        "delete_TP": 28170,
+        "delete_FP": 34095
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 5934,
+          "add_FP": 84636,
+          "delete_TP": 0,
+          "delete_FP": 13115,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 5934,
+          "final_U": 126071,
+          "gain": 4.706871524775721,
+          "exact_formula_gain": 4.706871524775722
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 21399,
+          "delete_TP": 0,
+          "delete_FP": 540,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 9303,
+          "final_U": 60210,
+          "gain": -8.190154691863526,
+          "exact_formula_gain": -8.190154691863526
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 21886,
+          "delete_TP": 91,
+          "delete_FP": 19,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 10958,
+          "final_U": 48140,
+          "gain": -19.29180550941015,
+          "exact_formula_gain": -19.29180550941015
+        },
+        "75": {
+          "add_TP": 296,
+          "add_FP": 7055,
+          "delete_TP": 28079,
+          "delete_FP": 20421,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 25093,
+          "final_U": 91878,
+          "gain": -22.930126875899266,
+          "exact_formula_gain": -22.93012687589927
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.04412",
+        "deletions remove both targets and background; pooled background fraction=0.54758",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "RGB02",
+      "score": 32.87495313516813,
+      "gain_vs_prototype": 3.890702850531561,
+      "ci95_vs_prototype": [
+        0.0,
+        7.781405701063115
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": 3.890702850531561,
+          "ci95": [
+            0.0,
+            7.781405701063115
+          ]
+        },
+        "RGB02.color": {
+          "score": 27.001730798620006,
+          "gain": 5.873222336548121,
+          "ci95": [
+            -0.44999660281435894,
+            12.196441275910594
+          ]
+        },
+        "RGB02.variance": {
+          "score": 22.74470836515412,
+          "gain": 10.130244770014006,
+          "ci95": [
+            -2.9059635531439163,
+            23.16645309317192
+          ]
+        },
+        "RGB02.full_power": {
+          "score": 32.67872680628254,
+          "gain": 0.19622632888558655,
+          "ci95": [
+            -6.067822519007201,
+            6.46027517677836
+          ]
+        },
+        "RGB02.radial_power": {
+          "score": 27.82294954412895,
+          "gain": 5.052003591039178,
+          "ci95": [
+            -0.07387300714678702,
+            10.177880189225128
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "RGB02.full_power",
+      "gain_vs_best_matched_control": 0.19622632888558655,
+      "mean_seconds": 0.44047452323138714,
+      "max_seconds": 0.4884686693549156,
+      "actions_vs_prototype": {
+        "add_TP": 1423,
+        "add_FP": 12908,
+        "delete_TP": 2104,
+        "delete_FP": 36050
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 6722,
+          "delete_TP": 0,
+          "delete_FP": 10860,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 50412,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 4449,
+          "delete_TP": 1676,
+          "delete_FP": 24002,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 7627,
+          "final_U": 19798,
+          "gain": 14.88301687710664,
+          "exact_formula_gain": 14.883016877106636
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 0,
+          "delete_FP": 0,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 11049,
+          "final_U": 26273,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "75": {
+          "add_TP": 1423,
+          "add_FP": 1737,
+          "delete_TP": 428,
+          "delete_FP": 1188,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 53871,
+          "final_U": 105793,
+          "gain": 0.6797945250195947,
+          "exact_formula_gain": 0.6797945250195925
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.0993",
+        "deletions remove both targets and background; pooled background fraction=0.94486"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "RGB03",
+      "score": 28.70492257862427,
+      "gain_vs_prototype": -0.27932770601229606,
+      "ci95_vs_prototype": [
+        -0.6977624645524756,
+        0.13910705252789057
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": -0.27932770601229606,
+          "ci95": [
+            -0.6977624645524756,
+            0.13910705252789057
+          ]
+        },
+        "RGB03.full_power": {
+          "score": 32.67872680628254,
+          "gain": -3.9738042276582703,
+          "ci95": [
+            -9.314042887006742,
+            1.3664344316902017
+          ]
+        },
+        "RGB03.ordinal": {
+          "score": 32.87495313516813,
+          "gain": -4.170030556543857,
+          "ci95": [
+            -8.47916816561559,
+            0.13910705252789057
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "RGB03.ordinal",
+      "gain_vs_best_matched_control": -4.170030556543857,
+      "mean_seconds": 0.5287634059786797,
+      "max_seconds": 0.5828278064727783,
+      "actions_vs_prototype": {
+        "add_TP": 472,
+        "add_FP": 34399,
+        "delete_TP": 951,
+        "delete_FP": 13595
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 209,
+          "add_FP": 23707,
+          "delete_TP": 0,
+          "delete_FP": 3135,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 209,
+          "final_U": 75122,
+          "gain": 0.27821410505577593,
+          "exact_formula_gain": 0.27821410505577593
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 10208,
+          "delete_TP": 386,
+          "delete_FP": 10030,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 8917,
+          "final_U": 39529,
+          "gain": -1.0829545804570462,
+          "exact_formula_gain": -1.0829545804570475
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 0,
+          "delete_FP": 0,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 11049,
+          "final_U": 26273,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "75": {
+          "add_TP": 263,
+          "add_FP": 484,
+          "delete_TP": 565,
+          "delete_FP": 430,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 52574,
+          "final_U": 105298,
+          "gain": -0.31257034864791144,
+          "exact_formula_gain": -0.3125703486479144
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.01354",
+        "deletions remove both targets and background; pooled background fraction=0.93462",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "RGB04",
+      "score": 29.362515414208413,
+      "gain_vs_prototype": 0.3782651295718473,
+      "ci95_vs_prototype": [
+        -5.323768346059563,
+        6.080298605203261
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": 0.3782651295718473,
+          "ci95": [
+            -5.323768346059563,
+            6.080298605203261
+          ]
+        },
+        "RGB04.mean": {
+          "score": 28.526627103852476,
+          "gain": 0.8358883103559371,
+          "ci95": [
+            -4.034363251739055,
+            5.706139872450933
+          ]
+        },
+        "RGB04.color": {
+          "score": 19.85478164543814,
+          "gain": 9.507733768770272,
+          "ci95": [
+            -2.675632975330789,
+            21.69110051287133
+          ]
+        },
+        "RGB04.variance": {
+          "score": 16.20660768628232,
+          "gain": 13.155907727926092,
+          "ci95": [
+            -0.9061521042448071,
+            27.217967560096984
+          ]
+        },
+        "RGB04.full_power": {
+          "score": 30.64061232213072,
+          "gain": -1.2780969079223077,
+          "ci95": [
+            -5.691677325804967,
+            3.1354835099603378
+          ]
+        },
+        "RGB04.ordinal": {
+          "score": 31.984985012715768,
+          "gain": -2.6224695985073545,
+          "ci95": [
+            -4.4216689999555605,
+            -0.823270197059152
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "RGB04.ordinal",
+      "gain_vs_best_matched_control": -2.6224695985073545,
+      "mean_seconds": 0.4780144076794386,
+      "max_seconds": 0.5252073407173157,
+      "actions_vs_prototype": {
+        "add_TP": 1774,
+        "add_FP": 54184,
+        "delete_TP": 2536,
+        "delete_FP": 13860
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 202,
+          "add_FP": 25501,
+          "delete_TP": 0,
+          "delete_FP": 1814,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 202,
+          "final_U": 78237,
+          "gain": 0.25818985901811164,
+          "exact_formula_gain": 0.25818985901811164
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 16840,
+          "delete_TP": 7,
+          "delete_FP": 2655,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 9296,
+          "final_U": 53536,
+          "gain": -6.2770597292535815,
+          "exact_formula_gain": -6.277059729253582
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 779,
+          "delete_TP": 938,
+          "delete_FP": 8313,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 10111,
+          "final_U": 18739,
+          "gain": 11.902407351388412,
+          "exact_formula_gain": 11.902407351388419
+        },
+        "75": {
+          "add_TP": 1572,
+          "add_FP": 11064,
+          "delete_TP": 1591,
+          "delete_FP": 1078,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 52857,
+          "final_U": 115230,
+          "gain": -4.370476962865554,
+          "exact_formula_gain": -4.37047696286556
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.0317",
+        "deletions remove both targets and background; pooled background fraction=0.84533",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "RGB05",
+      "score": 22.931399199789237,
+      "gain_vs_prototype": -6.05285108484733,
+      "ci95_vs_prototype": [
+        -11.59121917838776,
+        -0.5144829913069024
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": -6.05285108484733,
+          "ci95": [
+            -11.59121917838776,
+            -0.5144829913069024
+          ]
+        },
+        "RGB05.uncoupled": {
+          "score": 11.153536313887132,
+          "gain": 11.777862885902104,
+          "ci95": [
+            1.6385503765707572,
+            21.917175395233443
+          ]
+        },
+        "RGB05.permuted": {
+          "score": 23.18716832921871,
+          "gain": -0.25576912942947416,
+          "ci95": [
+            -1.4118437000077257,
+            0.9003054411487739
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "dino_prototype.control",
+      "gain_vs_best_matched_control": -6.05285108484733,
+      "mean_seconds": 0.7064682431519032,
+      "max_seconds": 0.7645996063947678,
+      "actions_vs_prototype": {
+        "add_TP": 3685,
+        "add_FP": 124787,
+        "delete_TP": 6203,
+        "delete_FP": 28523
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 2431,
+          "add_FP": 79124,
+          "delete_TP": 0,
+          "delete_FP": 5662,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 2431,
+          "final_U": 128012,
+          "gain": 1.899040714932975,
+          "exact_formula_gain": 1.899040714932975
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 24311,
+          "delete_TP": 1950,
+          "delete_FP": 15356,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 7353,
+          "final_U": 48306,
+          "gain": -8.419364877032725,
+          "exact_formula_gain": -8.419364877032725
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 18066,
+          "delete_TP": 348,
+          "delete_FP": 5129,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 10701,
+          "final_U": 39210,
+          "gain": -14.763073479742793,
+          "exact_formula_gain": -14.763073479742792
+        },
+        "75": {
+          "add_TP": 1254,
+          "add_FP": 3286,
+          "delete_TP": 3905,
+          "delete_FP": 2376,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 50225,
+          "final_U": 106154,
+          "gain": -2.928006697546776,
+          "exact_formula_gain": -2.928006697546779
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.02868",
+        "deletions remove both targets and background; pooled background fraction=0.82137",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "DR01",
+      "score": 30.445593415487238,
+      "gain_vs_prototype": 1.461343130850672,
+      "ci95_vs_prototype": [
+        -0.013469680386037908,
+        2.9361559420873817
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": 1.461343130850672,
+          "ci95": [
+            -0.013469680386037908,
+            2.9361559420873817
+          ]
+        },
+        "DR_control_average_logistic": {
+          "score": 38.91381478545679,
+          "gain": -8.468221369969555,
+          "ci95": [
+            -18.488580536316675,
+            1.5521377963775649
+          ]
+        },
+        "DR_control_pure_prototype": {
+          "score": 25.736344414157774,
+          "gain": 4.709249001329464,
+          "ci95": [
+            -0.2369092717230039,
+            9.655407274381922
+          ]
+        },
+        "DR_control_global_pairs": {
+          "score": 18.485893606446734,
+          "gain": 11.959699809040504,
+          "ci95": [
+            0.1996245570319246,
+            23.719775061049084
+          ]
+        },
+        "DR_control_unguarded_jackknife": {
+          "score": 30.407758425640306,
+          "gain": 0.03783498984693168,
+          "ci95": [
+            -0.7548393222889302,
+            0.8305093019827865
+          ]
+        },
+        "DR_control_shuffled_group_risk": {
+          "score": 34.34520020469659,
+          "gain": -3.8996067892093507,
+          "ci95": [
+            -7.960209525277662,
+            0.1609959468589537
+          ]
+        },
+        "DR_control_median_similarity": {
+          "score": 12.868922533235999,
+          "gain": 17.57667088225124,
+          "ci95": [
+            -0.630642784560898,
+            35.783984549063376
+          ]
+        },
+        "DR_control_component_kmeans": {
+          "score": 28.9516884643384,
+          "gain": 1.4939049511488385,
+          "ci95": [
+            -0.013469680386037908,
+            3.001279582683715
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "DR_control_average_logistic",
+      "gain_vs_best_matched_control": -8.468221369969555,
+      "mean_seconds": 0.36641421914100647,
+      "max_seconds": 0.43508803844451904,
+      "actions_vs_prototype": {
+        "add_TP": 0,
+        "add_FP": 0,
+        "delete_TP": 63,
+        "delete_FP": 4927
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 0,
+          "delete_FP": 26,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 54524,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 0,
+          "delete_FP": 2363,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 9303,
+          "final_U": 36988,
+          "gain": 1.5103239885461055,
+          "exact_formula_gain": 1.5103239885461062
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 0,
+          "delete_FP": 2469,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 11049,
+          "final_U": 23804,
+          "gain": 4.36198789562866,
+          "exact_formula_gain": 4.36198789562866
+        },
+        "75": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 63,
+          "delete_FP": 69,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 52813,
+          "final_U": 105175,
+          "gain": -0.026939360772071375,
+          "exact_formula_gain": -0.026939360772075066
+        }
+      },
+      "reflection": [
+        "deletions remove both targets and background; pooled background fraction=0.98737",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "DR02",
+      "score": 18.93472380678334,
+      "gain_vs_prototype": -10.049526477853227,
+      "ci95_vs_prototype": [
+        -20.498305368045735,
+        0.39925241233927977
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": -10.049526477853227,
+          "ci95": [
+            -20.498305368045735,
+            0.39925241233927977
+          ]
+        },
+        "DR_control_average_logistic": {
+          "score": 38.91381478545679,
+          "gain": -19.979090978673455,
+          "ci95": [
+            -41.92304184644979,
+            1.9648598891028826
+          ]
+        },
+        "DR_control_pure_prototype": {
+          "score": 25.736344414157774,
+          "gain": -6.801620607374435,
+          "ci95": [
+            -13.779054035751194,
+            0.17581282100231377
+          ]
+        },
+        "DR_control_global_pairs": {
+          "score": 18.485893606446734,
+          "gain": 0.44883020033660515,
+          "ci95": [
+            -0.15478483072114546,
+            1.0524452313943584
+          ]
+        },
+        "DR_control_unguarded_jackknife": {
+          "score": 30.407758425640306,
+          "gain": -11.473034618856968,
+          "ci95": [
+            -23.585340766674122,
+            0.6392715289601796
+          ]
+        },
+        "DR_control_shuffled_group_risk": {
+          "score": 34.34520020469659,
+          "gain": -15.41047639791325,
+          "ci95": [
+            -31.39467083541078,
+            0.5737180395842714
+          ]
+        },
+        "DR_control_median_similarity": {
+          "score": 12.868922533235999,
+          "gain": 6.06580127354734,
+          "ci95": [
+            -0.21792069183558027,
+            12.34952323893026
+          ]
+        },
+        "DR_control_component_kmeans": {
+          "score": 28.9516884643384,
+          "gain": -10.01696465755506,
+          "ci95": [
+            -20.4331817274494,
+            0.39925241233927977
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "DR_control_average_logistic",
+      "gain_vs_best_matched_control": -19.979090978673455,
+      "mean_seconds": 0.29590879939496517,
+      "max_seconds": 0.3368654400110245,
+      "actions_vs_prototype": {
+        "add_TP": 3349,
+        "add_FP": 199418,
+        "delete_TP": 102,
+        "delete_FP": 8415
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 71739,
+          "delete_TP": 0,
+          "delete_FP": 3998,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 122291,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 82664,
+          "delete_TP": 29,
+          "delete_FP": 3340,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 9274,
+          "final_U": 118675,
+          "gain": -15.82645670580693,
+          "exact_formula_gain": -15.82645670580693
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 39166,
+          "delete_TP": 0,
+          "delete_FP": 0,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 11049,
+          "final_U": 65439,
+          "gain": -25.170154030284543,
+          "exact_formula_gain": -25.17015403028454
+        },
+        "75": {
+          "add_TP": 3349,
+          "add_FP": 5849,
+          "delete_TP": 73,
+          "delete_FP": 1077,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 56152,
+          "final_U": 110016,
+          "gain": 0.7985048246785587,
+          "exact_formula_gain": 0.7985048246785572
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.01652",
+        "deletions remove both targets and background; pooled background fraction=0.98802",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "DR03",
+      "score": 36.613896974854086,
+      "gain_vs_prototype": 7.62964669021752,
+      "ci95_vs_prototype": [
+        -3.6827435090625613,
+        18.9420368894976
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": 7.62964669021752,
+          "ci95": [
+            -3.6827435090625613,
+            18.9420368894976
+          ]
+        },
+        "DR_control_average_logistic": {
+          "score": 38.91381478545679,
+          "gain": -2.2999178106027074,
+          "ci95": [
+            -6.965681158313878,
+            2.3658455371084592
+          ]
+        },
+        "DR_control_pure_prototype": {
+          "score": 25.736344414157774,
+          "gain": 10.877552560696312,
+          "ci95": [
+            -3.9061831003995273,
+            25.66128822179214
+          ]
+        },
+        "DR_control_global_pairs": {
+          "score": 18.485893606446734,
+          "gain": 18.128003368407352,
+          "ci95": [
+            -3.469649271644599,
+            39.7256560084593
+          ]
+        },
+        "DR_control_unguarded_jackknife": {
+          "score": 30.407758425640306,
+          "gain": 6.2061385492137795,
+          "ci95": [
+            -3.4427243924416615,
+            15.855001490869213
+          ]
+        },
+        "DR_control_shuffled_group_risk": {
+          "score": 34.34520020469659,
+          "gain": 2.268696770157497,
+          "ci95": [
+            -3.5082778818175697,
+            8.045671422132557
+          ]
+        },
+        "DR_control_median_similarity": {
+          "score": 12.868922533235999,
+          "gain": 23.744974441618087,
+          "ci95": [
+            -4.299916613237421,
+            51.789865496473595
+          ]
+        },
+        "DR_control_component_kmeans": {
+          "score": 28.9516884643384,
+          "gain": 7.662208510515686,
+          "ci95": [
+            -3.6827435090625613,
+            19.007160530093934
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "DR_control_average_logistic",
+      "gain_vs_best_matched_control": -2.2999178106027074,
+      "mean_seconds": 0.3280552811920643,
+      "max_seconds": 0.3895932585000992,
+      "actions_vs_prototype": {
+        "add_TP": 0,
+        "add_FP": 27,
+        "delete_TP": 12929,
+        "delete_FP": 49962
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 0,
+          "delete_FP": 16643,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 37907,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 56,
+          "delete_FP": 14682,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 9247,
+          "final_U": 24669,
+          "gain": 13.843215560774677,
+          "exact_formula_gain": 13.843215560774675
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 3528,
+          "delete_FP": 14894,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 7521,
+          "final_U": 11379,
+          "gain": 24.04085821822054,
+          "exact_formula_gain": 24.040858218220542
+        },
+        "75": {
+          "add_TP": 0,
+          "add_FP": 27,
+          "delete_TP": 9345,
+          "delete_FP": 3743,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 43531,
+          "final_U": 101528,
+          "gain": -7.365487018125122,
+          "exact_formula_gain": -7.365487018125125
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.0",
+        "deletions remove both targets and background; pooled background fraction=0.79442",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "DR04",
+      "score": 37.40782764977818,
+      "gain_vs_prototype": 8.423577365141611,
+      "ci95_vs_prototype": [
+        -0.7538894772021827,
+        17.6010442074854
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": 8.423577365141611,
+          "ci95": [
+            -0.7538894772021827,
+            17.6010442074854
+          ]
+        },
+        "DR_control_average_logistic": {
+          "score": 38.91381478545679,
+          "gain": -1.505987135678616,
+          "ci95": [
+            -3.823692270918656,
+            0.8117179995614201
+          ]
+        },
+        "DR_control_pure_prototype": {
+          "score": 25.736344414157774,
+          "gain": 11.671483235620403,
+          "ci95": [
+            -0.9773290685391487,
+            24.32029553977994
+          ]
+        },
+        "DR_control_global_pairs": {
+          "score": 18.485893606446734,
+          "gain": 18.921934043331444,
+          "ci95": [
+            -0.5407952397842202,
+            38.384663326447104
+          ]
+        },
+        "DR_control_unguarded_jackknife": {
+          "score": 30.407758425640306,
+          "gain": 7.000069224137871,
+          "ci95": [
+            -0.5138703605812829,
+            14.514008808857014
+          ]
+        },
+        "DR_control_shuffled_group_risk": {
+          "score": 34.34520020469659,
+          "gain": 3.0626274450815885,
+          "ci95": [
+            -4.888663963356763,
+            11.01391885351994
+          ]
+        },
+        "DR_control_median_similarity": {
+          "score": 12.868922533235999,
+          "gain": 24.53890511654218,
+          "ci95": [
+            -1.3710625813770427,
+            50.448872814461396
+          ]
+        },
+        "DR_control_component_kmeans": {
+          "score": 28.9516884643384,
+          "gain": 8.456139185439778,
+          "ci95": [
+            -0.7538894772021827,
+            17.666167848081734
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "DR_control_average_logistic",
+      "gain_vs_best_matched_control": -1.505987135678616,
+      "mean_seconds": 0.3442666921764612,
+      "max_seconds": 0.40442460775375366,
+      "actions_vs_prototype": {
+        "add_TP": 18,
+        "add_FP": 307,
+        "delete_TP": 4041,
+        "delete_FP": 35178
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 0,
+          "delete_FP": 13057,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 41493,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 5,
+          "delete_FP": 6041,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 9298,
+          "final_U": 33310,
+          "gain": 4.272463011979085,
+          "exact_formula_gain": 4.272463011979087
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 513,
+          "delete_FP": 11837,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 10536,
+          "final_U": 14436,
+          "gain": 30.92962540299171,
+          "exact_formula_gain": 30.929625402991718
+        },
+        "75": {
+          "add_TP": 18,
+          "add_FP": 307,
+          "delete_TP": 3523,
+          "delete_FP": 4243,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 49371,
+          "final_U": 101308,
+          "gain": -1.5077789544043596,
+          "exact_formula_gain": -1.5077789544043605
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.05538",
+        "deletions remove both targets and background; pooled background fraction=0.89696",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "DR05",
+      "score": 29.148267613928937,
+      "gain_vs_prototype": 0.16401732929237056,
+      "ci95_vs_prototype": [
+        0.006010799742099948,
+        0.3220238588426483
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": 0.16401732929237056,
+          "ci95": [
+            0.006010799742099948,
+            0.3220238588426483
+          ]
+        },
+        "DR_control_average_logistic": {
+          "score": 38.91381478545679,
+          "gain": -9.765547171527857,
+          "ci95": [
+            -21.124955499377414,
+            1.5938611563217044
+          ]
+        },
+        "DR_control_pure_prototype": {
+          "score": 25.736344414157774,
+          "gain": 3.411923199771163,
+          "ci95": [
+            -0.33945294838586193,
+            7.1632993479281755
+          ]
+        },
+        "DR_control_global_pairs": {
+          "score": 18.485893606446734,
+          "gain": 10.662374007482203,
+          "ci95": [
+            0.24134791697606417,
+            21.083400097988346
+          ]
+        },
+        "DR_control_unguarded_jackknife": {
+          "score": 30.407758425640306,
+          "gain": -1.2594908117113697,
+          "ci95": [
+            -2.7872544196017444,
+            0.26827279617900146
+          ]
+        },
+        "DR_control_shuffled_group_risk": {
+          "score": 34.34520020469659,
+          "gain": -5.196932590767652,
+          "ci95": [
+            -10.5965844883384,
+            0.20271930680309325
+          ]
+        },
+        "DR_control_median_similarity": {
+          "score": 12.868922533235999,
+          "gain": 16.279345080692938,
+          "ci95": [
+            -0.5889194246167584,
+            33.14760958600264
+          ]
+        },
+        "DR_control_component_kmeans": {
+          "score": 28.9516884643384,
+          "gain": 0.19657914959053713,
+          "ci95": [
+            0.028253679558101652,
+            0.36490461962297616
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "DR_control_average_logistic",
+      "gain_vs_best_matched_control": -9.765547171527857,
+      "mean_seconds": 0.48728716373443604,
+      "max_seconds": 0.5825154930353165,
+      "actions_vs_prototype": {
+        "add_TP": 3,
+        "add_FP": 29,
+        "delete_TP": 23,
+        "delete_FP": 687
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 1,
+          "delete_TP": 0,
+          "delete_FP": 119,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 54432,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 16,
+          "delete_TP": 0,
+          "delete_FP": 36,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 9303,
+          "final_U": 39331,
+          "gain": 0.012021599484202117,
+          "exact_formula_gain": 0.012021599484200889
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 0,
+          "delete_FP": 362,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 11049,
+          "final_U": 25911,
+          "gain": 0.5875403585690775,
+          "exact_formula_gain": 0.5875403585690794
+        },
+        "75": {
+          "add_TP": 3,
+          "add_FP": 12,
+          "delete_TP": 23,
+          "delete_FP": 170,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 52856,
+          "final_U": 105086,
+          "gain": 0.05650735911620908,
+          "exact_formula_gain": 0.05650735911620858
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.09375",
+        "deletions remove both targets and background; pooled background fraction=0.96761",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "DR06",
+      "score": 28.58058975433956,
+      "gain_vs_prototype": -0.40366053029700666,
+      "ci95_vs_prototype": [
+        -0.9267026201712696,
+        0.11938155957725982
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": -0.40366053029700666,
+          "ci95": [
+            -0.9267026201712696,
+            0.11938155957725982
+          ]
+        },
+        "DR_control_average_logistic": {
+          "score": 38.91381478545679,
+          "gain": -10.333225031117234,
+          "ci95": [
+            -21.424736478404057,
+            0.758286416169593
+          ]
+        },
+        "DR_control_pure_prototype": {
+          "score": 25.736344414157774,
+          "gain": 2.8442453401817858,
+          "ci95": [
+            -1.3004200478573296,
+            6.988910728220896
+          ]
+        },
+        "DR_control_global_pairs": {
+          "score": 18.485893606446734,
+          "gain": 10.094696147892826,
+          "ci95": [
+            -0.5942268231760472,
+            20.783619118961703
+          ]
+        },
+        "DR_control_unguarded_jackknife": {
+          "score": 30.407758425640306,
+          "gain": -1.827168671300747,
+          "ci95": [
+            -3.6225167736536292,
+            -0.031820568947871664
+          ]
+        },
+        "DR_control_shuffled_group_risk": {
+          "score": 34.34520020469659,
+          "gain": -5.764610450357029,
+          "ci95": [
+            -10.896365467365044,
+            -0.6328554333490182
+          ]
+        },
+        "DR_control_median_similarity": {
+          "score": 12.868922533235999,
+          "gain": 15.71166722110356,
+          "ci95": [
+            -1.4244941647688698,
+            32.847828606975995
+          ]
+        },
+        "DR_control_component_kmeans": {
+          "score": 28.9516884643384,
+          "gain": -0.3710987099988401,
+          "ci95": [
+            -0.9267026201712696,
+            0.18450520017359295
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "DR_control_average_logistic",
+      "gain_vs_best_matched_control": -10.333225031117234,
+      "mean_seconds": 0.38528173975646496,
+      "max_seconds": 0.4893626570701599,
+      "actions_vs_prototype": {
+        "add_TP": 3070,
+        "add_FP": 91757,
+        "delete_TP": 0,
+        "delete_FP": 68
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 326,
+          "add_FP": 82052,
+          "delete_TP": 0,
+          "delete_FP": 65,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 326,
+          "final_U": 136537,
+          "gain": 0.2387631191545149,
+          "exact_formula_gain": 0.2387631191545149
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 0,
+          "delete_FP": 0,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 9303,
+          "final_U": 39351,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 0,
+          "delete_FP": 0,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 11049,
+          "final_U": 26273,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "75": {
+          "add_TP": 2744,
+          "add_FP": 9705,
+          "delete_TP": 0,
+          "delete_FP": 3,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 55620,
+          "final_U": 114946,
+          "gain": -1.8534052403425372,
+          "exact_formula_gain": -1.8534052403425405
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.03237",
+        "deletions remove both targets and background; pooled background fraction=1.0",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "DR07",
+      "score": 29.105314578954445,
+      "gain_vs_prototype": 0.12106429431787902,
+      "ci95_vs_prototype": [
+        0.0007853351234956563,
+        0.24134325351226238
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": 0.12106429431787902,
+          "ci95": [
+            0.0007853351234956563,
+            0.24134325351226238
+          ]
+        },
+        "DR_control_average_logistic": {
+          "score": 38.91381478545679,
+          "gain": -9.808500206502348,
+          "ci95": [
+            -21.183393224891795,
+            1.5663928118870984
+          ]
+        },
+        "DR_control_pure_prototype": {
+          "score": 25.736344414157774,
+          "gain": 3.3689701647966714,
+          "ci95": [
+            -0.32951745983046976,
+            7.067457789423811
+          ]
+        },
+        "DR_control_global_pairs": {
+          "score": 18.485893606446734,
+          "gain": 10.619420972507712,
+          "ci95": [
+            0.21387957254145817,
+            21.024962372473965
+          ]
+        },
+        "DR_control_unguarded_jackknife": {
+          "score": 30.407758425640306,
+          "gain": -1.3024438466858612,
+          "ci95": [
+            -2.845692145116125,
+            0.24080445174439546
+          ]
+        },
+        "DR_control_shuffled_group_risk": {
+          "score": 34.34520020469659,
+          "gain": -5.239885625742144,
+          "ci95": [
+            -10.655022213852781,
+            0.17525096236848725
+          ]
+        },
+        "DR_control_median_similarity": {
+          "score": 12.868922533235999,
+          "gain": 16.236392045718446,
+          "ci95": [
+            -0.6163877690513644,
+            33.08917186048826
+          ]
+        },
+        "DR_control_component_kmeans": {
+          "score": 28.9516884643384,
+          "gain": 0.15362611461604558,
+          "ci95": [
+            0.0007853351234956563,
+            0.3064668941085955
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "DR_control_average_logistic",
+      "gain_vs_best_matched_control": -9.808500206502348,
+      "mean_seconds": 0.33981223218142986,
+      "max_seconds": 0.38416266441345215,
+      "actions_vs_prototype": {
+        "add_TP": 0,
+        "add_FP": 574,
+        "delete_TP": 30,
+        "delete_FP": 929
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 105,
+          "delete_TP": 0,
+          "delete_FP": 8,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 54647,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 459,
+          "delete_TP": 0,
+          "delete_FP": 603,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 9303,
+          "final_U": 39207,
+          "gain": 0.08682926546418612,
+          "exact_formula_gain": 0.08682926546418641
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 8,
+          "delete_TP": 0,
+          "delete_FP": 253,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 11049,
+          "final_U": 26028,
+          "gain": 0.3958572415603434,
+          "exact_formula_gain": 0.3958572415603465
+        },
+        "75": {
+          "add_TP": 0,
+          "add_FP": 2,
+          "delete_TP": 30,
+          "delete_FP": 65,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 52846,
+          "final_U": 105181,
+          "gain": 0.0015706702469975298,
+          "exact_formula_gain": 0.0015706702469974547
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.0",
+        "deletions remove both targets and background; pooled background fraction=0.96872",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "DR08",
+      "score": 37.506201263679465,
+      "gain_vs_prototype": 8.521950979042899,
+      "ci95_vs_prototype": [
+        -6.50878074029368,
+        23.552682698379463
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": 8.521950979042899,
+          "ci95": [
+            -6.50878074029368,
+            23.552682698379463
+          ]
+        },
+        "DR_control_average_logistic": {
+          "score": 38.91381478545679,
+          "gain": -1.4076135217773285,
+          "ci95": [
+            -7.455685822384922,
+            4.6404587788302365
+          ]
+        },
+        "DR_control_pure_prototype": {
+          "score": 25.736344414157774,
+          "gain": 11.769856849521691,
+          "ci95": [
+            -6.732220331630646,
+            30.271934030674004
+          ]
+        },
+        "DR_control_global_pairs": {
+          "score": 18.485893606446734,
+          "gain": 19.02030765723273,
+          "ci95": [
+            -6.295686502875718,
+            44.336301817341166
+          ]
+        },
+        "DR_control_unguarded_jackknife": {
+          "score": 30.407758425640306,
+          "gain": 7.098442838039158,
+          "ci95": [
+            -6.268761623672781,
+            20.465647299751076
+          ]
+        },
+        "DR_control_shuffled_group_risk": {
+          "score": 34.34520020469659,
+          "gain": 3.161001058982876,
+          "ci95": [
+            -6.334315113048689,
+            12.65631723101442
+          ]
+        },
+        "DR_control_median_similarity": {
+          "score": 12.868922533235999,
+          "gain": 24.637278730443466,
+          "ci95": [
+            -7.12595384446854,
+            56.40051130535546
+          ]
+        },
+        "DR_control_component_kmeans": {
+          "score": 28.9516884643384,
+          "gain": 8.554512799341065,
+          "ci95": [
+            -6.50878074029368,
+            23.617806338975797
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "DR_control_average_logistic",
+      "gain_vs_best_matched_control": -1.4076135217773285,
+      "mean_seconds": 0.30374982953071594,
+      "max_seconds": 0.3589925020933151,
+      "actions_vs_prototype": {
+        "add_TP": 81,
+        "add_FP": 3929,
+        "delete_TP": 18863,
+        "delete_FP": 56697
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 903,
+          "delete_TP": 0,
+          "delete_FP": 15864,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 39589,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 299,
+          "delete_FP": 17930,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 9004,
+          "final_U": 21421,
+          "gain": 18.392442044218235,
+          "exact_formula_gain": 18.392442044218228
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 2852,
+          "delete_FP": 14690,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 8197,
+          "final_U": 11583,
+          "gain": 28.7129233525407,
+          "exact_formula_gain": 28.712923352540702
+        },
+        "75": {
+          "add_TP": 81,
+          "add_FP": 3026,
+          "delete_TP": 15712,
+          "delete_FP": 8213,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 37245,
+          "final_U": 100057,
+          "gain": -13.017561480587359,
+          "exact_formula_gain": -13.017561480587359
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.0202",
+        "deletions remove both targets and background; pooled background fraction=0.75036",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "inv_adversarial_channel_support",
+      "score": 36.50156594496726,
+      "gain_vs_prototype": 7.517315660330695,
+      "ci95_vs_prototype": [
+        -8.948049595174318,
+        23.982680915835708
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": 7.517315660330695,
+          "ci95": [
+            -8.948049595174318,
+            23.982680915835708
+          ]
+        },
+        "inv_adversarial_constant": {
+          "score": 35.96432626136099,
+          "gain": 0.5372396836062734,
+          "ci95": [
+            -5.230782671416463,
+            6.305262038629021
+          ]
+        },
+        "inv_direct_prototype": {
+          "score": 28.984250284636566,
+          "gain": 7.517315660330695,
+          "ci95": [
+            -8.948049595174318,
+            23.982680915835708
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "inv_adversarial_constant",
+      "gain_vs_best_matched_control": 0.5372396836062734,
+      "mean_seconds": 0.41520242393016815,
+      "max_seconds": 0.46520205587148666,
+      "actions_vs_prototype": {
+        "add_TP": 0,
+        "add_FP": 0,
+        "delete_TP": 34250,
+        "delete_FP": 97253
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 0,
+          "delete_FP": 25651,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 28899,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 756,
+          "delete_FP": 22328,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 8547,
+          "final_U": 17023,
+          "gain": 26.567464919529492,
+          "exact_formula_gain": 26.567464919529495
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 3238,
+          "delete_FP": 13963,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 7811,
+          "final_U": 12310,
+          "gain": 21.397896912141935,
+          "exact_formula_gain": 21.397896912141935
+        },
+        "75": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 30256,
+          "delete_FP": 35311,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 22620,
+          "final_U": 69933,
+          "gain": -17.896099190348636,
+          "exact_formula_gain": -17.896099190348643
+        }
+      },
+      "reflection": [
+        "deletions remove both targets and background; pooled background fraction=0.73955",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "inv_reference_mad_winsor",
+      "score": 29.75723118797571,
+      "gain_vs_prototype": 0.7729809033391426,
+      "ci95_vs_prototype": [
+        -0.0006110997608779201,
+        1.5465729064391667
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": 0.7729809033391426,
+          "ci95": [
+            -0.0006110997608779201,
+            1.5465729064391667
+          ]
+        },
+        "inv_reference_center_only": {
+          "score": 16.119026354438766,
+          "gain": 13.638204833536943,
+          "ci95": [
+            0.7734784024673331,
+            26.502931264606556
+          ]
+        },
+        "inv_direct_prototype": {
+          "score": 28.984250284636566,
+          "gain": 0.7729809033391426,
+          "ci95": [
+            -0.0006110997608779201,
+            1.5465729064391667
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "dino_prototype.control",
+      "gain_vs_best_matched_control": 0.7729809033391426,
+      "mean_seconds": 1.5149256344884634,
+      "max_seconds": 1.5976307839155197,
+      "actions_vs_prototype": {
+        "add_TP": 1,
+        "add_FP": 17,
+        "delete_TP": 47,
+        "delete_FP": 3715
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 0,
+          "delete_FP": 1140,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 53410,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 0,
+          "delete_FP": 1012,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 9303,
+          "final_U": 38339,
+          "gain": 0.6240321704594043,
+          "exact_formula_gain": 0.6240321704594047
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 7,
+          "delete_TP": 0,
+          "delete_FP": 1464,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 11049,
+          "final_U": 24816,
+          "gain": 2.469113642418935,
+          "exact_formula_gain": 2.469113642418937
+        },
+        "75": {
+          "add_TP": 1,
+          "add_FP": 10,
+          "delete_TP": 47,
+          "delete_FP": 99,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 52830,
+          "final_U": 105155,
+          "gain": -0.001222199521755396,
+          "exact_formula_gain": -0.0012221995217641544
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.05556",
+        "deletions remove both targets and background; pooled background fraction=0.98751",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "inv_multiscale_feature_consensus",
+      "score": 29.97697367915697,
+      "gain_vs_prototype": 0.9927233945204037,
+      "ci95_vs_prototype": [
+        -1.167800976096256,
+        3.153247765137074
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": 0.9927233945204037,
+          "ci95": [
+            -1.167800976096256,
+            3.153247765137074
+          ]
+        },
+        "inv_multiscale_score_pool": {
+          "score": 30.63919253482432,
+          "gain": -0.6622188556673514,
+          "ci95": [
+            -1.2708109430421928,
+            -0.05362676829250823
+          ]
+        },
+        "inv_direct_prototype": {
+          "score": 28.984250284636566,
+          "gain": 0.9927233945204037,
+          "ci95": [
+            -1.167800976096256,
+            3.153247765137074
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "inv_multiscale_score_pool",
+      "gain_vs_best_matched_control": -0.6622188556673514,
+      "mean_seconds": 0.7017445974051952,
+      "max_seconds": 0.7512597888708115,
+      "actions_vs_prototype": {
+        "add_TP": 522,
+        "add_FP": 4887,
+        "delete_TP": 2330,
+        "delete_FP": 11854
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 342,
+          "delete_TP": 0,
+          "delete_FP": 4628,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 50264,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 985,
+          "delete_TP": 0,
+          "delete_FP": 1851,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 9303,
+          "final_U": 38485,
+          "gain": 0.5319779711383005,
+          "exact_formula_gain": 0.5319779711382994
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 707,
+          "delete_TP": 0,
+          "delete_FP": 3879,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 11049,
+          "final_U": 23101,
+          "gain": 5.774517559135845,
+          "exact_formula_gain": 5.774517559135848
+        },
+        "75": {
+          "add_TP": 522,
+          "add_FP": 2853,
+          "delete_TP": 2330,
+          "delete_FP": 1496,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 51068,
+          "final_U": 106601,
+          "gain": -2.335601952192512,
+          "exact_formula_gain": -2.335601952192516
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.09651",
+        "deletions remove both targets and background; pooled background fraction=0.83573",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "inv_spatial_geomedian",
+      "score": 29.18336231788883,
+      "gain_vs_prototype": 0.19911203325226268,
+      "ci95_vs_prototype": [
+        -0.41968785934482966,
+        0.8179119258493586
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": 0.19911203325226268,
+          "ci95": [
+            -0.41968785934482966,
+            0.8179119258493586
+          ]
+        },
+        "inv_spatial_feature_mean": {
+          "score": 29.357226968362465,
+          "gain": -0.17386465047363586,
+          "ci95": [
+            -0.9799725512486148,
+            0.6322432503013466
+          ]
+        },
+        "inv_spatial_score_median": {
+          "score": 29.58099170299902,
+          "gain": -0.39762938511019286,
+          "ci95": [
+            -0.7915152110897239,
+            -0.0037435591306635985
+          ]
+        },
+        "inv_direct_prototype": {
+          "score": 28.984250284636566,
+          "gain": 0.19911203325226268,
+          "ci95": [
+            -0.41968785934482966,
+            0.8179119258493586
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "inv_spatial_score_median",
+      "gain_vs_best_matched_control": -0.39762938511019286,
+      "mean_seconds": 2.323788143694401,
+      "max_seconds": 2.826516456902027,
+      "actions_vs_prototype": {
+        "add_TP": 428,
+        "add_FP": 3737,
+        "delete_TP": 1096,
+        "delete_FP": 6011
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 974,
+          "delete_TP": 0,
+          "delete_FP": 2231,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 53293,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 410,
+          "delete_TP": 0,
+          "delete_FP": 1141,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 9303,
+          "final_U": 38620,
+          "gain": 0.4474786871153297,
+          "exact_formula_gain": 0.44747868711532873
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 820,
+          "delete_TP": 0,
+          "delete_FP": 1542,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 11049,
+          "final_U": 25551,
+          "gain": 1.1883451645833876,
+          "exact_formula_gain": 1.1883451645833916
+        },
+        "75": {
+          "add_TP": 428,
+          "add_FP": 1533,
+          "delete_TP": 1096,
+          "delete_FP": 1097,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 52208,
+          "final_U": 105680,
+          "gain": -0.8393757186896555,
+          "exact_formula_gain": -0.8393757186896583
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.10276",
+        "deletions remove both targets and background; pooled background fraction=0.84579",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "inv_local_affine_reconstruction",
+      "score": 30.232498551574917,
+      "gain_vs_prototype": 1.2482482669383508,
+      "ci95_vs_prototype": [
+        -2.406284671164528,
+        4.902781205041229
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": 1.2482482669383508,
+          "ci95": [
+            -2.406284671164528,
+            4.902781205041229
+          ]
+        },
+        "inv_affine_mean": {
+          "score": 30.304328934422998,
+          "gain": -0.07183038284808063,
+          "ci95": [
+            -0.152950279039743,
+            0.009289513343585298
+          ]
+        },
+        "inv_affine_include_center": {
+          "score": 30.17268048732905,
+          "gain": 0.05981806424586722,
+          "ci95": [
+            -0.14406361256349953,
+            0.2636997410552411
+          ]
+        },
+        "inv_direct_prototype": {
+          "score": 28.984250284636566,
+          "gain": 1.2482482669383508,
+          "ci95": [
+            -2.406284671164528,
+            4.902781205041229
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "inv_affine_mean",
+      "gain_vs_best_matched_control": -0.07183038284808063,
+      "mean_seconds": 1.0937524065375328,
+      "max_seconds": 1.1469796225428581,
+      "actions_vs_prototype": {
+        "add_TP": 618,
+        "add_FP": 8462,
+        "delete_TP": 5001,
+        "delete_FP": 18855
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 938,
+          "delete_TP": 0,
+          "delete_FP": 6947,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 48541,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 1620,
+          "delete_TP": 0,
+          "delete_FP": 2879,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 9303,
+          "final_U": 38092,
+          "gain": 0.7813744426719532,
+          "exact_formula_gain": 0.7813744426719513
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 1213,
+          "delete_TP": 64,
+          "delete_FP": 5980,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 10985,
+          "final_U": 21506,
+          "gain": 9.024187967410512,
+          "exact_formula_gain": 9.024187967410516
+        },
+        "75": {
+          "add_TP": 618,
+          "add_FP": 4691,
+          "delete_TP": 4937,
+          "delete_FP": 3049,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 48557,
+          "final_U": 106886,
+          "gain": -4.812569342329054,
+          "exact_formula_gain": -4.812569342329059
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.06806",
+        "deletions remove both targets and background; pooled background fraction=0.79037",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "inv_local_lowrank_reconstruction",
+      "score": 29.27873736047933,
+      "gain_vs_prototype": 0.29448707584276335,
+      "ci95_vs_prototype": [
+        -0.016304207416339977,
+        0.6052783591018667
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": 0.29448707584276335,
+          "ci95": [
+            -0.016304207416339977,
+            0.6052783591018667
+          ]
+        },
+        "inv_lowrank_mean": {
+          "score": 29.393508219328496,
+          "gain": -0.11477085884916605,
+          "ci95": [
+            -1.4261356143233002,
+            1.1965938966249645
+          ]
+        },
+        "inv_lowrank_include_center": {
+          "score": 29.146235821073873,
+          "gain": 0.13250153940545673,
+          "ci95": [
+            -0.034888152801563876,
+            0.29989123161248443
+          ]
+        },
+        "inv_direct_prototype": {
+          "score": 28.984250284636566,
+          "gain": 0.29448707584276335,
+          "ci95": [
+            -0.016304207416339977,
+            0.6052783591018667
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "inv_lowrank_mean",
+      "gain_vs_best_matched_control": -0.11477085884916605,
+      "mean_seconds": 1.4362995121628046,
+      "max_seconds": 1.4821319356560707,
+      "actions_vs_prototype": {
+        "add_TP": 178,
+        "add_FP": 1371,
+        "delete_TP": 256,
+        "delete_FP": 3187
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 305,
+          "delete_TP": 0,
+          "delete_FP": 1076,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 53779,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 261,
+          "delete_TP": 0,
+          "delete_FP": 609,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 9303,
+          "final_U": 39003,
+          "gain": 0.2109349180844572,
+          "exact_formula_gain": 0.21093491808445577
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 419,
+          "delete_TP": 0,
+          "delete_FP": 1029,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 11049,
+          "final_U": 25663,
+          "gain": 0.9996218001192769,
+          "exact_formula_gain": 0.9996218001192771
+        },
+        "75": {
+          "add_TP": 178,
+          "add_FP": 386,
+          "delete_TP": 256,
+          "delete_FP": 473,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 52798,
+          "final_U": 105157,
+          "gain": -0.032608414832679955,
+          "exact_formula_gain": -0.03260841483268159
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.11491",
+        "deletions remove both targets and background; pooled background fraction=0.92565",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    },
+    {
+      "id": "inv_huber_reference_readout",
+      "score": 40.46687227851544,
+      "gain_vs_prototype": 11.482621993878873,
+      "ci95_vs_prototype": [
+        -2.7551258673147245,
+        25.720369855072462
+      ],
+      "matched_controls": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": 11.482621993878873,
+          "ci95": [
+            -2.7551258673147245,
+            25.720369855072462
+          ]
+        },
+        "inv_huber_ridge": {
+          "score": 40.56355463215631,
+          "gain": -0.09668235364087252,
+          "ci95": [
+            -0.8731911499045282,
+            0.6798264426227831
+          ]
+        },
+        "inv_direct_prototype": {
+          "score": 28.984250284636566,
+          "gain": 11.482621993878873,
+          "ci95": [
+            -2.7551258673147245,
+            25.720369855072462
+          ]
+        }
+      },
+      "best_matched_control_on_this_probe": "inv_huber_ridge",
+      "gain_vs_best_matched_control": -0.09668235364087252,
+      "mean_seconds": 0.6475503258407116,
+      "max_seconds": 0.7341966778039932,
+      "actions_vs_prototype": {
+        "add_TP": 4,
+        "add_FP": 120,
+        "delete_TP": 11949,
+        "delete_FP": 59043
+      },
+      "class_actions_vs_prototype": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 0,
+          "delete_FP": 17468,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 37082,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 981,
+          "delete_FP": 23066,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 8322,
+          "final_U": 16285,
+          "gain": 27.46116486071871,
+          "exact_formula_gain": 27.461164860718704
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 3741,
+          "delete_FP": 15206,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 7308,
+          "final_U": 11067,
+          "gain": 23.979574849426232,
+          "exact_formula_gain": 23.979574849426236
+        },
+        "75": {
+          "add_TP": 4,
+          "add_FP": 120,
+          "delete_TP": 7227,
+          "delete_FP": 3303,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 45653,
+          "final_U": 102061,
+          "gain": -5.5102517346294455,
+          "exact_formula_gain": -5.510251734629453
+        }
+      },
+      "reflection": [
+        "additions require class-specific break-even accounting; pooled target fraction=0.03226",
+        "deletions remove both targets and background; pooled background fraction=0.83169",
+        "does not beat the declared simpler control on this probe; prototype gain alone is not incremental mechanism value",
+        "at least one class loses; useful actions and harmed targets must remain separate"
+      ],
+      "scope": "four reused descriptive cases, not population quality or independent confirmation"
+    }
+  ],
+  "best_control_selection": "descriptive maximum among predeclared local controls, not a method or independent selection evidence"
+}
