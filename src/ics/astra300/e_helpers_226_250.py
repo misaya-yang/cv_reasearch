@@ -266,18 +266,26 @@ def _fit_pixel_logistic_uncached(phi,z,token_ids,labels,valid,max_steps=100):
     p=(phi-pm)/ps; zz=(z-zm)/zs
     lips=.25*(float(w@np.sum(p*p,1))+float(tw@np.sum(zz*zz,1))+1.)+1.
     step=1./lips
+    # Preserve the original full-array weighted moments and Lipschitz scalar.
+    # Every zero-weight pixel/token has exactly zero derivative: its repeated
+    # score/gradient multiplication is omitted, without omitting a training
+    # observation, changing100steps or replacing the1024-dimensional feature.
+    observed=np.flatnonzero(w);native=np.flatnonzero(tw)
+    token_position=np.full(len(z),-1,int);token_position[native]=np.arange(len(native))
+    pp=p[observed];zz_train=zz[native];active_token=token_position[token_ids[observed]]
+    ww=w[observed];ll=labels[observed]
     a=np.zeros(p.shape[1]);b=np.zeros(z.shape[1]);bias=0.
     losses=[]
     for _ in range(max_steps):
-        logits=p@a+(zz@b)[token_ids]+bias
-        diff=w*(expit(logits)-labels)
-        a-=step*(p.T@diff+a)
-        b-=step*(zz.T@np.bincount(token_ids,weights=diff,minlength=len(z))+b)
+        logits=pp@a+(zz_train@b)[active_token]+bias
+        diff=ww*(expit(logits)-ll)
+        a-=step*(pp.T@diff+a)
+        b-=step*(zz_train.T@np.bincount(active_token,weights=diff,minlength=len(native))+b)
         bias-=step*diff.sum()
-        loss=float(w@(np.logaddexp(0,logits)-labels*logits)+.5*(a@a+b@b))
+        loss=float(ww@(np.logaddexp(0,logits)-ll*logits)+.5*(a@a+b@b))
         losses.append(loss)
-    logits=p@a+(zz@b)[token_ids]+bias
-    loss=float(w@(np.logaddexp(0,logits)-labels*logits)+.5*(a@a+b@b))
+    logits=pp@a+(zz_train@b)[active_token]+bias
+    loss=float(ww@(np.logaddexp(0,logits)-ll*logits)+.5*(a@a+b@b))
     return PixelLogistic(a,b,float(bias),pm,ps,zm,zs,
                          dict(steps=max_steps,lipschitz_bound=lips,step=step,
                               class_balance=True,train_pixels=int(np.count_nonzero(w)),

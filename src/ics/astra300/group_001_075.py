@@ -653,3 +653,9 @@ from .a_context_034_049 import install as _install_context
 _install_context(register,REQUIREMENTS,METHODS,CONTROLS,RECIPES)
 from .a_parts_034_046 import install as _install_parts
 _install_parts(register,REQUIREMENTS,METHODS,CONTROLS,RECIPES)
+from .a_views_028_031 import install as _install_views
+_install_views(register,REQUIREMENTS,METHODS,CONTROLS,RECIPES)
+from .a_dual_task_050 import install as _install_dual
+_install_dual(register,REQUIREMENTS,METHODS,CONTROLS,RECIPES)
+from .a_jacobian_021 import install as _install_jacobian
+_install_jacobian(register,REQUIREMENTS,METHODS,CONTROLS,RECIPES)

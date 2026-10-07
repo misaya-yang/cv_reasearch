@@ -2576,3 +2576,11 @@ CONTROLS['control_C143_wedge_only']=region_method('control_C143_wedge_only',lamb
 CONTROLS['control_C143_degree_homophily_null']=region_method('control_C143_degree_homophily_null',lambda c,p:_c143_descriptor(c,p,strict=True))
 ASSUMPTIONS['control_C143_degree_homophily_null']=['The stricter null additionally preserves the multiset of original decile cosine-homophily bins and current unary-sign homophily for each swapped edge pair; it does not preserve exact continuous cosine sums.']
 CONTROLS['control_C143_joint_three_attributes']=CONTROLS['control_C105_no_permutation']
+
+# B has its own legal four-fold calibration and exact FoRIS host edit contract.
+# It never uses the C kernel or substitutes the MEAN host for original FoRIS.
+from . import b_methods_076_100 as _b_originals
+METHODS.update(_b_originals.METHODS)
+ASSUMPTIONS.update(_b_originals.ASSUMPTIONS)
+REQUIREMENTS.update(_b_originals.REQUIREMENTS)
+for _name,_fn in _b_originals.CONTROLS.items():CONTROLS[_name]=_fn

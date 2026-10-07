@@ -206,7 +206,7 @@ def infer_a(ep, method_id, fit, assumptions=(), fixed_threshold=None):
     valid = ep.q_valid > 0
     margin = np.full(len(ep.q), -1., float)
     score, activity = predict(np.asarray(ep.q[valid], float), np.flatnonzero(valid), "q")
-    fallback,activity=fallback_scope(activity,fit_info,len(score),alpha_contract=fixed_threshold is not None)
+    fallback,activity=fallback_scope(activity,fit_info,len(score),alpha_contract=(fixed_threshold==.5 and method_id.split('__')[0] in ('A033','A048')))
     if not np.isfinite(score).all():
         raise ValueError(f"{method_id} produced non-finite complete query scores")
     margin[valid] = score - cut

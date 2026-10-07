@@ -15,6 +15,13 @@ from .common import Result, artifact, continuous_original, ArtifactUnavailable
 from .group_076_150_common import unit,dot,edges4,blocks,spherical
 
 
+def role_cluster(x,k):
+    centers,label=spherical(x,k)
+    used=np.unique(label[label>=0])
+    remap=np.full(len(centers),-1,int);remap[used]=np.arange(len(used))
+    return centers[used],remap[label]
+
+
 def ward(x,hw,valid,levels=(8,32,128)):
     ids=np.flatnonzero(valid>0);n=len(x)
     if not len(ids):return ()
@@ -99,8 +106,8 @@ class BPrepared:
         x,hw,valid=(self.r,self.ep.r_hw,self.rv)if source else(self.q,self.ep.q_hw,self.qv)
         r=self.r[ids];coverage=self.c[ids];weights=self.rv[ids]
         fg=np.flatnonzero(coverage>=.9);bg=np.flatnonzero(coverage<=.1)
-        fc,fl=spherical(r[fg],min(8,len(fg)))if len(fg)else(np.empty((0,x.shape[1])),np.empty(0,int))
-        bc,bl=spherical(r[bg],min(8,len(bg)))if len(bg)else(np.empty((0,x.shape[1])),np.empty(0,int))
+        fc,fl=role_cluster(r[fg],min(8,len(fg)))if len(fg)else(np.empty((0,x.shape[1])),np.empty(0,int))
+        bc,bl=role_cluster(r[bg],min(8,len(bg)))if len(bg)else(np.empty((0,x.shape[1])),np.empty(0,int))
         profile=dot(x,r)if compute_profile else np.empty((len(x),0))
         if compute_profile:
             ell=logmean(profile,coverage*weights)-logmean(profile,(1-coverage)*weights)
@@ -113,7 +120,7 @@ class BPrepared:
         ry,rx=np.unravel_index(ids,self.ep.r_hw)
         rgeo=np.column_stack(((ry+.5)/self.ep.r_hw[0],(rx+.5)/self.ep.r_hw[1]))
         return Frame(self.ep,x,hw,valid,r,coverage,weights,ids,profile,fg,bg,fc,bc,fl,bl,
-                     self.r_regions if source else self.q_regions,ell,dot(x,fc),dot(x,bc),tf,tb,qgeo,rgeo,source,fold)
+                     self.r_regions if source else self.q_regions,ell,dot(x,fc)if compute_profile else np.zeros((len(x),len(fc))),dot(x,bc)if compute_profile else np.zeros((len(x),len(bc))),tf,tb,qgeo,rgeo,source,fold)
     def structure_active(self):
         for fold in range(4):
             ids=np.flatnonzero((self.rv>0)&~boundary_excluded_fold(self.ep.r_hw,fold))
@@ -161,12 +168,14 @@ def calibrate(p,fn,mode='threshold'):
     return min(candidates,key=lambda t:(risk(t),-t))
 
 
-def owner(frame,energies,point_fields):
+def owner(frame,energies,point_fields,explained_counts=None):
     out=np.zeros(len(frame.x));best=np.full(len(frame.x),np.inf);size=np.full(len(frame.x),np.inf);index=np.full(len(frame.x),np.inf)
     for stable,(c,energy,field)in enumerate(zip(frame.regions,energies,point_fields)):
         field=np.asarray(field,float)
         if field.shape!=(len(c),):raise ValueError('owner fields must align with every candidate member')
-        value=float(energy)/max(np.count_nonzero(field),1)
+        count=len(c)if explained_counts is None else explained_counts[stable]
+        if count<=0:continue
+        value=float(energy)/count
         win=(value<best[c])|((value==best[c])&((len(c)<size[c])|((len(c)==size[c])&(stable<index[c]))))
         ids=c[win];out[ids]=field[win];best[ids]=value;size[ids]=len(c);index[ids]=stable
     return out
@@ -178,7 +187,8 @@ def finish_b(ep,raw,method,kind,scale=None,info=None):
     p0=np.asarray(artifact(ep,'foris_p0'),float)
     mask0=np.asarray(artifact(ep,'foris_mask0'))
     producer=artifact(ep,'foris_producer');renderer=artifact(ep,'foris_renderer')
-    if not isinstance(producer,dict)or producer.get('pipeline')!='FoRIS_native_Part1_2_3_4_original_config':
+    valid_producer=isinstance(producer,dict)and(producer.get('kind')=='complete_released_FoRIS_Part1_Part2_Part3_Part4_CRF'and bool(producer.get('source_archive_sha256'))or producer.get('pipeline')=='FoRIS_native_Part1_2_3_4_original_config')
+    if not valid_producer:
         raise ArtifactUnavailable('B H0 requires original-config actual FoRIS Part1--4; MEAN host is not a substitute')
     if producer.get('source_image_hashes')!=ep.producer.get('source_image_hashes'):
         raise ArtifactUnavailable('FoRIS H0 images do not match this native feature episode')
