@@ -6,7 +6,14 @@ from scipy import sparse
 from .common import (Result,artifact,ArtifactUnavailable,br_margin,br_result,fit_br,finish,finish_highres,
                      degenerate_margin,unit,readonly,source_contract)
 from .observations_09_16 import prepare_last,source_statistics
-METHODS={};CONTROLS={};REQUIREMENTS={};ASSUMPTIONS={}
+METHODS={};REQUIREMENTS={};ASSUMPTIONS={}
+class _Controls(dict):
+    def __setitem__(self,name,fn):
+        def tagged(ep):
+            out=fn(ep);underlying=out.info.get('method_id');out.info=dict(out.info,method_id=name,registered_control_id=name,underlying_method_id=underlying,control=True)
+            return out
+        super().__setitem__(name,tagged)
+CONTROLS=_Controls()
 
 
 def _return(ep,z,mid,info,highres=False):
