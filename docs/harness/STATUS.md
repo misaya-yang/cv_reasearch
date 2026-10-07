@@ -1,5 +1,7 @@
 # 当前状态
 
+用户最新纠正：直接用冻结DINOv3特征处理。独立DINO-only输入/完整掩码入口已实现，本地四例真实RGB128输出已封存，不用FoRIS分数/Part1/旧MEAN；只作输入路线与算子核对，未评分、不代替RGB1024/600目标。服务器保持关闭，完整1024直接特征/Q GT在本次本地项目检查中未就绪，extract/600未运行。详见[记录](../../evidence/local/research_20261006/direct_dino_input_01a1100b/README.md)。
+
 2026-10-06 最新：用户已关机；本轮远端工作已停止，停止SSH/SCP重试和部署，不启动实例/替换端点/自动恢复旧队列。灰度first4已完成，随后full600及fresh parity未启动；纹理实际smoke4未运行，600资产导出完成状态未核实。19个候选定义不等于1000项或高质量结果，本轮目标未交付。
 
 - 灰度first4报告：[结果与比较](../../evidence/local/research_20261006/grayscaled_dino_preparation_01a1100b/actual_result.md)。
@@ -7,6 +9,8 @@
 - 表示轨迹观察已关闭，未测查询质量：[结果摘要](../../evidence/local/research_20261006/representation_path_01a1100b/review.md)。
 
 工作缓存仍来自冻结DINOv3，但已过FoRIS Part1条件位置去偏/再归一化/FP16保存，不是未经处理的原始DINO输出。新灰度直接FP32 final-LN特征未Part1，而MEAN基场仍用旧processed cache；不能把完整实验标成已去除FoRIS处理链。
+
+Pro原文不是五个纯DINO-only方案：其3.2明确允许FoRIS宿主连续证据，M1/M5固定位置gate，M2角色字典明确用末层去位置特征；同时3.1要求真实FP32编码。加工DINO缓存的存在不自动解释质量失败，旧FP16适配结果也不证明五个严格原合同均已失败。
 
 以下保留关机前已完成事实和当时授权；当前资源状态以上文与PLAN最新段为准。
 
