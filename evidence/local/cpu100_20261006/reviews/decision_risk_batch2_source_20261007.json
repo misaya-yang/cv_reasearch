@@ -1,0 +1,40 @@
+{
+  "schema": "CPU100_SOURCE_REVIEW_V1",
+  "reviewer": "summary_reviewer",
+  "scope": "Read-only static implementation and preserved receipt audit; no reviewer probes, training, or real inference",
+  "source_sha256": {
+    "src/ics/cpu100/decision_risk.py": "aef1516b39f2e7e1278c211bc71fc7953e50db9526ab619f81c74e3615ba5db9",
+    "src/ics/cpu100/decision_risk_batch2.py": "89ce21f6251988db499c91c1130d72022ff3a98c80e6c825e34fc58b04ad0182"
+  },
+  "decision": "accept_for_probe source audit; no new method count or quality upgrade",
+  "method_ids": ["DR09", "DR10", "DR12", "DR13", "DR14", "DR15", "DR16"],
+  "closed_duplicate_ids": ["DR11"],
+  "input_audit": "Reference purity/coverage selection, native indices, class-balanced weights, classifiers, support editing, and metric fitting use only frozen R features and the complete known MR. Q features enter only final complete-margin inference. No Q labels, host scores, external training, or additional encoder forwards are accessed.",
+  "algorithm_audit": [
+    "Boosting chooses successive fixed-bank anchor stumps by reference weighted classification error and changes the complete decision; it is not multiple thresholds on one score.",
+    "Bootstrap hull vote uses16 deterministic-seed class-balanced member samples and retains each member's Frank-Wolfe gap. Members are correlated and are not independent probability evidence.",
+    "The fixed ReLU, GLVQ, and low-rank PSD routines optimize episode parameters explicitly while the DINO backbone stays frozen. They must not be described as having no parameter fitting.",
+    "Reference editing can remove rare correct support; condensed NN can retain noise and depends on fixed native order. Condensed source coverage is not a statement about query extent or equivalence to full NN.",
+    "GLVQ denominator epsilon occurs in both derivative terms. The preserved finite-difference checks support the implementation derivatives, not convergence or generalization.",
+    "The supervised metric changes a PSD distance through a rectangular matrix and uses only known-reference triplets. PSD and source role labels do not ensure that query semantic axes survive."
+  ],
+  "preserved_receipts": {
+    "gradient_artifact": "evidence/local/cpu100_20261006/reports/decision_risk/batch2_gradients.json",
+    "gradient_max_errors": "ReLU <1e-10, GLVQ2.04e-11, LMNN2.51e-10; checks are fixed non-tied synthetic finite differences",
+    "contract_artifact": "evidence/local/cpu100_20261006/reports/decision_risk/batch2_contract_checks.json",
+    "contract_scope": "All7 preserve recorded finite full shape, query-padding background, zero-mass reference padding invariance, empty-class rules, and orthogonal-basis checks on the fixed contract inputs",
+    "full_mask_artifact": "evidence/local/cpu100_20261006/reports/decision_risk/batch2_fixed_probes.json",
+    "strongest_supplied_control_witness_ids": ["DR10", "DR14", "DR15"],
+    "no_strict_increment_witness_ids": ["DR09", "DR12", "DR13", "DR16"],
+    "scope": "Unit-vector construction results, not actual DINO or a natural population benefit. Runnable distinct negative methods may be delivered with these limitations and learned failures.",
+    "DR15_expectation_correction": "The intended high-end negative improves0.0060 over the strongest supplied control, while the intended close-boundary positive loses0.1383. The observed counterexample must replace the original expected story; no variant is needed to make the story fit."
+  },
+  "nonblocking_declaration_corrections": [
+    "DR09 empty-bank or uninformative-bank fallback is pure-reference nearest-neighbor in source, rather than the card's generic prototype wording. Align the card with the implementation; do not change the frozen algorithm for this wording issue.",
+    "The shared card says Q block128, while source mostly evaluates vectorized Q-by-support/anchor arrays. Declare the actual vectorized workspace and measured cost; no blocking or extra experiment is required for this harmless bounded array difference.",
+    "DR_control_average_logistic derives legal supervision from complete MR but uses weighted-quantile compression to at most64 rows per role. Do not call it an all-reference-token uncompressed logistic fit.",
+    "A Frank-Wolfe objective gap below1e-8 is a numerical tolerance statement, not literal exact maximum-margin geometry. The inherited DR08 info flag must be read with that limit; historical frozen receipts remain unchanged."
+  ],
+  "remaining_attribution_limit": "DR16 initializes only the first min(8,K) anchor coordinates but its identity-metric control uses allK. Therefore any future observed learned-metric improvement needs a same-initial-matrix control to separate supervised updates from rank truncation. Current negative/no-increment reflection needs no new job or extra control to be stated honestly.",
+  "real_measurement_status": "At this review the new7 card/PROGRESS records root inference pending. Root owns fixed-source snapshot, actual native outputs, independent scoring, and scheduling. This review neither starts a job nor increments completed real delivery count."
+}

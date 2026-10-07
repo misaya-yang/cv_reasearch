@@ -1,7 +1,7 @@
 {
   "owner": "decision_risk",
   "input_contract": "Only native frozen final-LN DINO q/r, complete known reference mask coverage and native image geometry. No QGT, FoRIS fields, external labels, new encoder, GPU, SSH or download. Full masks use common.render on a complete signed native query grid.",
-  "proposal_count": 16,
+  "proposal_count": 17,
   "review_status": "DR01-08 accept_for_probe with fixed constructive evidence; DR09-16 pending review",
   "methods": [
     {
@@ -591,6 +591,33 @@
         "synthetic": "reports/decision_risk/batch2_fixed_probes.json",
         "synthetic_strongest_control_gain_witness": false
       }
+    },
+    {
+      "id": "DR17",
+      "title": "参考支持敏感性控制的查询语义一致性求解",
+      "gap": "200例中强Huber参考判别达到52.3734并比同样本ridge高.7109，但相对prototype仍删去1137142个真像素。源参考linear判别在query陌生方向上可产生较大的错误margin；仅按|margin|当confidence会把这些错误锁住。需要用另一个合法量决定哪些unary允许query内同类结构改判。",
+      "history_evidence": "server/screen12_native200_v3/methods_summary.json：nativeFP32 finalLN1024、200复用开发例/74类。Huber52.373390，相对同subset ridge51.662537增+.710854，photoCI[.135326,1.001446]；对proto42.580632删TP1137142/删FP3753092。这是after4-case selection开发screen非确认。总结§3.9的RCG正效果属于processedFoRIS宿主，不与本base相加；raw weak-host差和seed悖论仍适用。RESULTS:169-187旧joint-reference harmonic23.17的ref/query edge mass=.0001612，不能重放那一固定构造。",
+      "available_information": "同q/r unit DINO、known完整MR的wf/v、reference fit样本和其最终robust weights、query cosine邻域；不读QGT，不估J/π，不加RGB/text/model/encoder。",
+      "new_observation_or_argument": "正负margin相同的两query tokens可以在reference拟合设计中具有不同外推敏感性。定义v=q-mu_R，C=sum a_i(r_i-mu_R)(r_i-mu_R)^T，u=v^T(C+.01I)^-1v。u是source-support几何代理，不是query错误概率。保留原始q affinity和原Huber unary，仅把u放入query fidelity；不白化/删除semantic variance。所有Q点有A>=.05的direct unary，约束总质量随Nq增长，避免旧只固定R节点导致reference质量被query图淹没。",
+      "algorithm": [
+        "原封调用invariance_support同_fit_sample、_weighted_ridge及12个Huber IRLS步骤，得到与inv_huber_reference_readout逐值相同的yQ和最后用过的weights a。",
+        "按a计算source weighted mean mu、centered X，lambda=.01；u(q)=(||q-mu||²-t^T(G+lambda diag(1/a))^-1t)/lambda，t=X(q-mu)，G=XX.T，数值负舍入clip0。",
+        "对valid Q：A_i=clip(median_valid(u)/(u_i+1e-12),.05,20)*q_valid_i；不把该量称posterior置信。",
+        "valid Q cosine取8NN（不足时min8），W_ij=exp(-(1-cos)/.1)，对称化W=(W+W.T)/2；invalid Q不参与图。",
+        "L=diag(W1)-W，求SPD系统(A+16L)z=A*yQ；CG rtol1e-7,最多500步，未收敛记录failed不偷偷回退。",
+        "完整native margin=z，fixedcut0经common.render到1024/original mask；empty R class和<2validQ保持原base。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized complete improvement; measured support only for base",
+        "claim": "当source陌生/高敏感patch在query与可信同类邻域相连，减少其错误anchor强度可恢复被base删掉的部分或清除错扩展。真实完整增量未知；不声称+.7109+RCG1.41可加，不承诺解决整块错误身份。"
+      },
+      "simplest_control": "原inv_huber_reference_readout、同sample inv_huber_ridge、DR_control_average_logistic；完全同L同16的A=1 graph、A由|yQ|归一的graph。这些均控制不计新增；Cov无graph必回到原base。",
+      "why_not_duplicate": "新增量是reference-fit support几何与query fidelity的耦合，并非只把Huber当新RCG宿主、换graph strength或阈值。constant/margin graph控制把组合收益与u的实际增量分开；reviewer决定独立计数，若仅组合效果则count0。",
+      "counterexample": "u大不等于错误：合法query foreground沿source未见方向且更像query BG，降fidelity会删掉base本来正确的部分。全component原unaries非正时，M-matrix最大原则不能创造正目标身份；所有错误种子一起一致仍错。共同跨图偏移可使u几乎常数，Cov门控退成普通graph而无额外价值。",
+      "first_evidence": "先与publicHuber源码逐值核对完整base；小维u Woodbury与直接inverse核对、SPD系统CG与dense解核对。unit构造R类仅X=+/- .3且Z=+/-sqrt(.91)，Y没出现：Q 15个FG(.1,0,sqrt(.99))加高u误负part(-.3,.7,sqrt(.42))；15BG对称加误正part。Cov graph应能按Z邻域改判而constant graph保留错误。反例把合法FGpart改为(.3,.7,-sqrt(.42))：base正确，query BG邻域可使Cov错删。全负component负例核最大原则。然后root只用当前native4/200固定同baseline输出/逐类增删，不开参数变体。",
+      "cpu_cost": "CPU1thread；reference<=256fit samples，不形成DxD inverse；u分block128经256x256 Cholesky。query8NN streaming128 blocks，O(Nq²D)时间、O(128Nq+256²+Nq*8)额外空间；Nq4096约17G点积乘法，真正host时间须报。稀疏CG memoryO(8Nq)。无新encoder/GPU/SSH/download。",
+      "limitations": "u是外推敏感性，不是calibrated错误率；intra-query similarity可能跨真实类别。最多一个固定构造；若同graphconstant控制解释收益或新增TP副作用低于本class盈亏线，就关闭固定版本，不扫lambda/τ/caps。base+图是完整方法，覆盖全部同类实例而非只最大ROI，实际成功仍待评估。",
+      "review_status": "pending; not implemented, not counted"
     }
   ],
   "implemented_distinct_count": 15,
@@ -601,5 +628,8 @@
   "source_sha256": {
     "src/ics/cpu100/decision_risk.py": "aef1516b39f2e7e1278c211bc71fc7953e50db9526ab619f81c74e3615ba5db9",
     "src/ics/cpu100/decision_risk_batch2.py": "89ce21f6251988db499c91c1130d72022ff3a98c80e6c825e34fc58b04ad0182"
-  }
+  },
+  "new_proposals_since_native200": [
+    "DR17"
+  ]
 }

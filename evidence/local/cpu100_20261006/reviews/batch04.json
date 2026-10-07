@@ -1,0 +1,45 @@
+{
+  "schema": "CPU100_REVIEW_BATCH_V1",
+  "reviewer": "summary_reviewer",
+  "scope": "DR17 proposal algebra, evidence, and matched controls; removal of unsupported encoder LayerNorm epsilon assertion. Read-only review, no experiments or encoder execution.",
+  "method_reviews": [
+    {
+      "method_id": "DR17",
+      "decision": "accept_for_probe",
+      "implementation_or_delivery_count_delta": 0,
+      "accept_semantics": "One complete fixed method proposal is logically eligible for a bounded probe. It is not measured incremental benefit, completed source/output, or an automatically approved native200 job.",
+      "information_distinction": "Source-centered covariance leverage depends on components of q outside the fitted discriminant direction. Equal Huber scores can therefore yield different fidelity. This is a legal new derived observable from the existing R/MR and Q inputs, rather than a new encoder input or a monotone rescaling of the score.",
+      "analytic_witness_scope": "Clarify R roles explicitly: FG=(+.3,0,+sqrt(.91)) and (+.3,0,-sqrt(.91)); BG=(-.3,0,+sqrt(.91)) and (-.3,0,-sqrt(.91)), equal weights. With lambda .01, source covariance is diag(.09,0,.91), and the fixed Huber fit remains w=(3,0,0), bias0 because ridge residual magnitude .1 is below Huber delta .5. Query vectors(.1,0,sqrt(.99)) and(.1,.7,sqrt(.50)) both have margin .3, but u is about1.176 and49.643 respectively. This is an algebraic possibility proof on lawful unit vectors, not a full-mask experiment or evidence that real DINO errors follow u.",
+      "Woodbury_audit": "For X rows r_i-mu, C=X.T diag(a) X and t=Xv, the proposed expression u=(||v||^2-t.T(XX.T+lambda diag(1/a))^-1t)/lambda is correct for positive a. Compute mu with normalized a, retain the actual absolute a scale in C, and use the last weights actually used by the sealed12-step Huber fit. IRLS weights are a surrogate fit geometry, not the exact Huber Hessian or calibrated parameter uncertainty.",
+      "graph_audit": "On valid query nodes, positive A and symmetric nonnegative W give an SPD A+16L. The exact solution is a row-stochastic positive averaging of the original unary within each connected component; it cannot create a positive label in an entirely nonpositive component. It changes range/consistency using existing unary identity and query similarity, without a guarantee that neighbors have the correct class.",
+      "required_same_cost_control_correction": {
+        "problem": "Median normalization and clipping do not ensure sum(A)=Nvalid. A=1 with the same16L changes both the spatial allocation and the total fidelity mass; apparent u benefit could be a global graph-strength difference.",
+        "control": "Retain A=1, and add A_const_i=(sum_j A_j / sum_j q_valid_j)*q_valid_i on the exact same valid graph. Match the total fidelity mass for the magnitude-based control too, so the comparison isolates its allocation from total graph/unary balance.",
+        "scope": "This is a count0 matched control, not a primary-method parameter search or a new approval stage. Add it to the fixed card/probe before an attribution or gain claim; primary lambda, graph strength, and caps stay fixed."
+      },
+      "minimum_contract_clarifications": [
+        "Specify the four reference vectors' FG/BG roles in the proposed constructed example. The opposite Z variants must occur within each role; if Z alone determines the reference label, the stated erroneous-part premise changes.",
+        "Disclose whether the covariance uses original IRLS weights or their numerical floor. Recompute no extra Huber step; preserve the sealed base output exactly, including reference sample selection and floating-point path.",
+        "A>=.05 applies to native q_valid=1. With partial physical support the actual bound is A>=.05*q_valid; zero-valid nodes are omitted and receive background output.",
+        "CG failure is a failed or unresolved solve receipt, not a completed mask gain and not a silently substituted base. Preserve convergence/residual and actual CPU cost.",
+        "O(Nq^2 D)8NN graph formation at native4096 tokens has material cost; root owns first cost/probe and any subsequent200 scheduling. The new400 cache does not itself authorize all pending methods to expand."
+      ],
+      "benefit_scope": "Huber52.3734 versus ridge +.7109 is measured on200 reused development cases, and motivates auditing deletions. It supports only the unchanged base, not DR17. DeletedTP1,137,142 is relative to prototype; recovering some does not ensure a positive marginal class-summed IoU after new FP and deleted TP.",
+      "counting_scope": "If u is operationally constant and the submitted fields are just ordinary Huber-plus-graph outputs, this is a combination/control variant, count0. A genuinely different complete fixed decision may be retained as a negative method with its falsified premise and full evidence; lacking a quality gain alone must not be relabeled as algebraic duplication. Root maintains actual delivery counts.",
+      "strong_negative": "Novel correct FG can have large source sensitivity yet connect to BG; reducing its anchor can delete a correct base prediction. Source-support sensitivity is not error probability, and coherent wrong components remain wrong. Do not tune lambda, caps, neighbors, or graph strength using the negative or real score."
+    }
+  ],
+  "encoder_repair_review": {
+    "source": "src/ics/cpu100/encoder.py",
+    "source_sha256": "b691cdb7623e1c7a0990b1d823c4d19970a399db54926cd1ba2ef0937a65cc43",
+    "decision": "Accept structural-preserving identity repair, count0",
+    "old_failure": "The hard eps1e-6 assertion had no verified source and blocked construction of the actual pinned model, whose observed epsilon is1e-5 according to root's server audit. This was an adapter assertion failure before forward, not proof that native DINO extraction or hardware failed.",
+    "reviewer_error": "The prior reviewer accepted the unsupported epsilon condition while reviewing structure/fake receipts. That was a missed distinction between interface tests and actual model construction. Do not reuse that guessed requirement.",
+    "current_source_behavior": "The factory preserves the loaded model's LayerNorm, checks its1024 shape and finite positive epsilon, binds actual norm.eps and source hash, and compares epsilon only if a producer explicitly supplies it. Conflicting or invalid producer epsilon declarations are rejected. No epsilon, weights, preprocessing, or value forward is modified.",
+    "identity_limit": "Unknown producer epsilon remains unknown; recording the actual callback epsilon does not retroactively prove the old producer had it. Existing checkpoint/config and available Eva/norm hashes remain enforced; fresh real-view parity is the relevant remaining evidence.",
+    "existing_checks": "Thirteen fake interface checks include a declared norm-epsilon mismatch and zero real forwards. They support guard behavior, not real DINO numerical parity. The reviewed source hash equals the adapter snapshot and fake receipt hash.",
+    "real_state": "Root owns the actual model construction, forward, parity, and resource monitoring. No new actual forward is asserted by this reviewer."
+  },
+  "target_count": 100,
+  "target_complete": false
+}

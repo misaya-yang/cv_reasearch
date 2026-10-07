@@ -68,7 +68,26 @@ def assert_matches_producer(producer, binding):
         raise ValueError("Callback is not the pinned architecture")
     if tuple(binding.get("output_shape", ())) != OUTPUT_SHAPE or binding.get("native_output_dtype") != "float32":
         raise ValueError("Callback must return native FP32 patch grid, before unit normalization")
+    expected_eps = _provided_norm_eps(producer)
+    if expected_eps is not None:
+        actual_eps = binding.get("norm_eps", binding.get("layernorm", {}).get("eps"))
+        if actual_eps is None or float(actual_eps) != expected_eps:
+            raise ValueError("Frozen encoder producer identity differs: norm_eps")
     return expected
+
+
+def _provided_norm_eps(producer):
+    assets = producer.get("model_assets", {})
+    norm = producer.get("layernorm", {})
+    if not isinstance(norm, dict):
+        raise ValueError("Declared LayerNorm descriptor must be a dictionary")
+    values = [v for v in (producer.get("norm_eps"), assets.get("norm_eps"), norm.get("eps")) if v is not None]
+    for value in values:
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not np.isfinite(value) or value <= 0:
+            raise ValueError("Declared LayerNorm epsilon must be finite and positive")
+    if values and any(float(value) != float(values[0]) for value in values):
+        raise ValueError("Conflicting declared LayerNorm epsilons")
+    return float(values[0]) if values else None
 
 
 def _stamp(path):
@@ -198,8 +217,8 @@ class _TimmCPUForward:
             raise ValueError("Pinned five-prefix Eva DINO interface required")
         norm = getattr(model, "norm", None)
         if (not isinstance(norm, torch.nn.LayerNorm) or tuple(norm.normalized_shape) != (1024,)
-                or abs(float(norm.eps)-1e-6) > 1e-12):
-            raise ValueError("Pinned native final LayerNorm(1024,eps1e-6) required")
+                or not np.isfinite(float(norm.eps)) or float(norm.eps) <= 0):
+            raise ValueError("Native final LayerNorm(1024) with finite positive epsilon required")
         norm_path = Path(inspect.getsourcefile(type(norm)))
         norm_hash = _sha(norm_path)
         if expected["layernorm_source_sha256"] is not None and expected["layernorm_source_sha256"] != norm_hash:
@@ -212,7 +231,7 @@ class _TimmCPUForward:
                         "FoRIS_Part1_applied": False, "architecture": ARCHITECTURE,
                         "model_input_side": 1024, "input_shape": list(INPUT_SHAPE),
                         "output_shape": list(OUTPUT_SHAPE), "native_output_dtype": "float32",
-                        "prefix_tokens": 5, "execution_kind": "real_frozen_cpu_model", "device": "cpu",
+                        "prefix_tokens": 5, "norm_eps": float(norm.eps), "execution_kind": "real_frozen_cpu_model", "device": "cpu",
                         "frozen": True, "eval": True, "autocast": False, "TF32": False,
                         "cpu_threads": threads, "torch_version": torch.__version__, "timm_version": timm.__version__,
                         "input_normalization": {"mean": [.485,.456,.406], "std": [.229,.224,.225]},

@@ -1,0 +1,44 @@
+{
+  "schema": "CPU100_SOURCE_REVIEW_V1",
+  "reviewer": "summary_reviewer",
+  "scope": "Read-only source, card, and existing toy-receipt review; no reviewer experiments or real model forwards",
+  "source": "src/ics/cpu100/context_interventions.py",
+  "source_sha256": "afb0ab16070208ad82a214d8f43e896c7af44c919cb0ec04e3ac3edcfed53fdf",
+  "decision": "accept_for_bounded_probe; quality remains unknown",
+  "accepted_registered_ids": [
+    "context_remote_reference_response",
+    "context_external_shuffle_sensitivity",
+    "context_probe_nonadditive_competition",
+    "context_patch_position_orbit"
+  ],
+  "new_method_count_delta": 0,
+  "stimulus_contract_revision": {
+    "decision": "Accepted same-family revision before real execution and QGT inspection; does not add a method",
+    "new_contract": "Foreground probe is the complete known-MR bounding box plus fixed16pixel natural context, as a rectangular RGB crop. Negative replaces only known-MR pixels with nearest known-reference-background RGB. Outside-MR pixels are byte-identical before the same crop/resize.",
+    "old_failure": "Grey alpha-masked negative preserved the foreground silhouette, so it did not justify an object-absence interpretation. Old toy receipt is retained as old_rgba_toy_report.json.",
+    "remaining_limit": "Nearest-background replacement may still leave shape, seam, and texture artifacts. It is known-foreground pixel replacement, not a guarantee that DINO perceives semantic object absence."
+  },
+  "source_audit": [
+    "All panel differences read only48 upper token rows whose main RGB is identical across conditions; the48row reference mask is transformed through the same main-window geometry and the complete field maps back to64 query rows.",
+    "Quadrant intervention preserves each scored512pixel quadrant at its original position, covers every native token once, and compares with the same original1024 producer/geometry.",
+    "Mixed raw-feature difference is evaluated before feature unit normalization, has a declared nominal subtraction guard, and does not claim that guard certifies model-forward error.",
+    "Position orbit re-encodes physical patch-aligned RGB rolls and inverse maps the resulting token grid. Pixel bytes are preserved, but seam/context and position effects are explicitly not causally separated.",
+    "Small complete-result group caching computes same-view controls while adapter views remain cached. It does not create an unbounded second feature cache; the declared worst-case maximum is28 additional views per episode.",
+    "Registered methods and controls produce complete signed margins. Missing legal RGB/reference mask/encoder origin is explicit, rather than pretending cached origin features are new forwards."
+  ],
+  "receipt_review": {
+    "artifact": "evidence/local/cpu100_20261006/reports/context_interventions/toy_report.json",
+    "source_binding": "Receipt code SHA equals the reviewed source SHA",
+    "real_DINO_forwards": 0,
+    "scope": "Pixel-derived stipulated encoders demonstrate possible decision changes and counterexamples, not an actual DINO response or gain. They are not a proof that frozen DINO has the stipulated interaction.",
+    "positive_full_mask_examples": "Remote1.0, mixed competition1.0, orbit1.0; external sensitivity0.25 versus mean0 and vector0.0833. Each has an explicit echo/additive/style/seam negative.",
+    "mapping_audits": "Four preserved quadrants and RGB inverse rolls pass recorded byte audits; reference main-mask coverage sum closes exactly. All-methods-then-controls toy callback attempts21 are below the28 cap, with zero real forwards."
+  },
+  "nonblocking_declaration_issue": {
+    "control_id": "context_panel_inserted_probe_control",
+    "observed_source": "The control averages the whole bottom16x64 token panel per view, including neutral canvas, then matches upper query tokens to foreground/background panel averages.",
+    "required_claim_limit": "Describe this as whole-panel average matching. It is not a reproduction of ProM4 or an actual inserted-object-only token control. A proper inserted-area control can reuse the same encodings; no extra model forwards are needed."
+  },
+  "current_real_probe_limit": "Latest card records root authorization for one fixed first episode only, not automatic4/200 expansion. Root owns scheduling, resource monitoring, and any extension decision.",
+  "delivery_limit": "Card/source eligibility is not completed real output, actual cost, natural benefit, or completion of100 methods. Root tracks the final fixed-source delivery inventory."
+}

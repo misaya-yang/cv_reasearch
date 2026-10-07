@@ -10,11 +10,11 @@
       "title": "未改动查询 patch 的参考条件响应",
       "gap": "Cross-image static final features can rank a distractor ahead of the target. A frozen encoder may nevertheless respond differently at the unchanged target pixels when a reference-class stimulus is present elsewhere; current static comparisons never measure this conditional response.",
       "history_evidence": "RESULTS joint encoding best cut lower by2.77/1.97 than matched l24; ProM1 shared-KV suffix first4 ctx25.113 vsuniform35.135; ProM4 paired22.142, ref_canvas31.260 with17encodings; object-removal revision0 allIoU0/newTP0. These do not positively support this candidate. ProM4 reads pasted known-object points and estimates environment covariance; here the readout is exclusively unmodified main-image patches and the FG-versus-BG intervention difference, not the pasted probe or absolute joint encoding.",
-      "available_information": "Same legal R/Q RGB, known MR and frozen actual CPU DINO. A known-reference foreground crop and same-shape known-background RGB probe; fixed neutral background is part of rendering, not an external semantic condition.",
+      "available_information": "Same legal R/Q RGB, complete MR, existing frozen CPU DINO. Known foreground bbox+fixed16pixel natural context full rectangle; matched negative replaces MR-inside pixels by nearest known R-background pixels, MR-outside identical. Pixel replacement is not a guarantee of semantic object absence.",
       "new_observation_or_argument": "Changing only a distant FG/BG probe can expose conditional attention sensitivity absent from the original final representation. This is only a possible observable: duplicate-instance echo, global colour shifts or positional effects can dominate it, and source response separation does not prove semantic transfer to Q.",
       "algorithm": [
         "Make canonical R/Q main windows1024x768 in upper48 patch rows; reserve bottom16 rows for a probe panel. Main pixels are identical between conditions; sample only upper48 rows.",
-        "From full MR make bounded foreground RGBA crop; background probe uses only known MR-background RGB filled into identical alpha/shape; if no known class/usable probe, return common direct control.",
+        "From completeMR create bbox+16px natural-context RGB rectangular probe; negative replaces onlyMR pixels by nearest knownR-background RGB, outsideMR unchanged. No FG alpha silhouette. Missing knownclass gives common control.",
         "At two fixed panel locations separately encode foreground probe and background probe for each of R/Q:8 forwards total, no other image sources.",
         "Average raw final-LN difference D=H_F-H_B over two locations at unchanged main patches; pasted-panel rows never enter R/Q response or head.",
         "Area-resample complete MR into main R48x64; compute weighted response means muFG/muBG from known R labels.",
@@ -32,7 +32,10 @@
       "first_evidence": "Toy frozen attention encoder from legal pixel-derived keys with instance-noise and class-pattern trait: require a different-instance target conditional response, compare same-view averages and inserted-point controls. Exact local-content identity/panel exclusion verified. Linear ambient-shift-only and instance-hash echo negative must fail. Then root runs the single fixed full method on real4, sealed beforeQGT.",
       "cpu_cost": "8 fresh1024 forwards/pair; root current measured37s per2-forward pair in4worker x6thread group implies about148s/group of4 if linear scaling, explicitly extrapolated. Bound12minutes for one4-episode batch incl matchedcontrols/cache, max16view cache, <=6GiB/worker target, actual peak/runtime to record. No automatic600 expansion.",
       "limitations": "Image-window compression from64 to48 rows can lose small targets; same-view controls isolate this. R source echo and single-reference response-statistic transfer remain unverified. Not probability or causal identity proof.",
-      "failure_learning": "Separate source response discrimination from Q edits; if source strong/QnoTP, conditional instance matching did not transfer. If mean-view control is equal/better, response head unnecessary. If delta nearly constant, no usable identity observable, not an optimizer error."
+      "failure_learning": "Separate source response discrimination from Q edits; if source strong/QnoTP, conditional instance matching did not transfer. If mean-view control is equal/better, response head unnecessary. If delta nearly constant, no usable identity observable, not an optimizer error.",
+      "api_implementation": "src/ics/cpu100/context_interventions.py::METHODS[context_remote_reference_response]",
+      "real_empirical_gain": "unknown; no actual DINO forward has been run by this worker",
+      "implementation_scope": "4 primary methods and16 same-view controls; group result cache stores only signed margins/info, <=28 new view misses for one episode with16 raw-view LRU"
     },
     {
       "id": "context_external_shuffle_sensitivity",
@@ -60,7 +63,10 @@
       "first_evidence": "Byte-for-byte preserved quadrant audit and complete coverage; toy nonlocal encoder with same local pixels but class-correlated context influence, paired context-dependent-true-target negative. If scalar sensitivity versus vector/mean controls adds nothing, record that. Real4 once byroot, no source-fit success treated as Q gain.",
       "cpu_cost": "8 new1024 forwards/pair, same148s/group4 extrapolation from root37s two-forward measurement, actual cost unknown. <=16 cached views, target6GiB/worker; one bounded4-episode probe <=12min, no further search.",
       "limitations": "Uses source labelled scalar calibration, not learned base classes; R/Q sensitivity calibration may not transfer. Window boundary continuation is a declared failure mode, not hidden crop difference. Existing features must be same checkpoint/1024 canonical geometry.",
-      "failure_learning": "If local pixels fixed but features change, observable exists; that alone is not benefit. If true targets are more context-sensitive than RFG expected, transfer assumption fails. Compare source/conditional statistics and fourQ edit classes after sealed evaluation."
+      "failure_learning": "If local pixels fixed but features change, observable exists; that alone is not benefit. If true targets are more context-sensitive than RFG expected, transfer assumption fails. Compare source/conditional statistics and fourQ edit classes after sealed evaluation.",
+      "api_implementation": "src/ics/cpu100/context_interventions.py::METHODS[context_external_shuffle_sensitivity]",
+      "real_empirical_gain": "unknown; no actual DINO forward has been run by this worker",
+      "implementation_scope": "4 primary methods and16 same-view controls; group result cache stores only signed margins/info, <=28 new view misses for one episode with16 raw-view LRU"
     },
     {
       "id": "context_probe_nonadditive_competition",
@@ -74,7 +80,7 @@
         "Encode4 assignments forR andQ, total8 freshforwards; retain only unmodified upper48x64 patches.",
         "Compute raw final-LN C=H_FF-H_FB-H_BF+H_BB, before any new unit normalization, avoiding normalization-created curvature.",
         "Learn knownR response means muF/muB with fullMR area weights; everyQ patch compares squared distances to these means as in firstcard.",
-        "If source C means coincide or allCnorm<=1e-6, use same-view average feature prototype; full margin resampled/common render.",
+        "If source response means coincide or below nominal arithmetic guard max(1e-6,8*eps_float32*sum(mean raw view norm)), use same-view avg prototype. Guard is subtraction-only nominal, not a forward-error certificate. Full margin/common renderer.",
         "Controls same8views: firstdifference H_FF-H_BB response head; avgH head; two single-slot finite differences; allcontrols share raw-LN handling."
       ],
       "expected_benefit": {
@@ -82,13 +88,16 @@
         "action": "change identity through measurable stimulus interaction when first-order and absolute-feature responses do not separate",
         "numeric_gain": "unknown"
       },
-      "simplest_control": "All above same-view8 controls; additive toy encoder must giveCzero and exactfallback. Nonadditive toy with equal firstdifferences must distinguish different-instance target before acceptance of uniqueobservable. Panel token exclusion/seam geometry fixed.",
+      "simplest_control": "All above same-view8 controls; additive toy encoder must giveCzero and exactfallback. Nonadditive toy with equal firstdifferences must distinguish different-instance target before acceptance of uniqueobservable. Panel token exclusion/seam geometry fixed. Same-view four-state raw-stack squared-distance prototype control must also be evaluated, not just firstdifferences.",
       "why_not_duplicate": "Only if nonadditive witness exists beyond firstorder/full average. One two-stimulus interaction decision, not multiple finite-difference orders or intensities. DifferentC/firstdifference quantities do not guarantee semantic usefulness; reviewer decides counting.",
       "counterexample": "Two reference copies compete for attention and suppress identical-instance features while realQ objects have different effect; panel seam effects themselves nonadditive. Signal may be tiny float32 cancellation or universallyzero. Nonzero curvature is not category discrimination.",
       "first_evidence": "Frozen pixel-driven polynomial/attention toy where a class has responsea*n+b*n² witha adjusted so firstdifference cancels but mixed second difference differs; noQGT in encoder. Additive and instance-only echo negative. Verify CcomputedfromrawLN notunitLN and compare every sameviewcontrol. Then rootreal4 once; if no measuredCclasssignal, close fixed version rather than try moreorders.",
       "cpu_cost": "8 new1024forward/pair;148s/group4 extrapolated, <=16viewcache and6GiB/worker target. Potentialcache overlap with firstcard acknowledged, not counted as quality. One4batch <=12min; noautomaticextraorders/600.",
       "limitations": "A toy proves an observable can be nonadditive, not that frozenDINO has useful curvature. Source class separation may be exact-reference echo; same-class transfer is the real unverified assumption. Negative result narrows this interaction construct, not all semantic DINO information.",
-      "failure_learning": "Report Cnorm versus raw/firstdifference norms and floating precision; if nearroundoff it is numerics, if stablebutBG/FGnondiscriminative it is missingidentitysignal, if sourceonly it is transfer/echo. Don't equate nonlinear response to causal semantic evidence."
+      "failure_learning": "Report Cnorm versus raw/firstdifference norms and floating precision; if nearroundoff it is numerics, if stablebutBG/FGnondiscriminative it is missingidentitysignal, if sourceonly it is transfer/echo. Don't equate nonlinear response to causal semantic evidence.",
+      "api_implementation": "src/ics/cpu100/context_interventions.py::METHODS[context_probe_nonadditive_competition]",
+      "real_empirical_gain": "unknown; no actual DINO forward has been run by this worker",
+      "implementation_scope": "4 primary methods and16 same-view controls; group result cache stores only signed margins/info, <=28 new view misses for one episode with16 raw-view LRU"
     },
     {
       "id": "context_patch_position_orbit",
@@ -115,7 +124,12 @@
       "first_evidence": "Byte-permutation/inverse audit; toyencoder contentplusfixedpositionbasis where halfroll changes nuisance but notcontents, compare scalaraverage and cachedroll identity. Seam-splitobject counterexample and puretranslation-equivariant fallback identity. Then real4, reportactual inversefeaturechange/sorting/actions, notpositioncausalityfromvariancealone.",
       "cpu_cost": "4 new1024forwards/pair;about74s/group4 extrapolatedfromroot37s twoforwardbatch. Target6GiB/worker, <=16viewSHA cache. Oneboundedreal4 <=6min; actualcostunknown. CPUonly/nomodeldownload.",
       "limitations": "Position and context effects inseparable underroll; claim is orbit robustness, not isolated positionalcausality. Probe resolution is fixed1024andpurelocalpatchbytes unchanged. FullRGBneeded; oldnative128cardsnotusedasproof.",
-      "failure_learning": "Ifinversefeaturesunchanged, observableabsent; ifchangedbutclasssortingnotimproved, positionorbit didnotextractusefulsemanticcomponent; ifseamtokenscarryharm, contextdamage ratherthanmissingDINOcapacity. Do notconvertnegativeintoallpositionmethodsclosed."
+      "failure_learning": "Ifinversefeaturesunchanged, observableabsent; ifchangedbutclasssortingnotimproved, positionorbit didnotextractusefulsemanticcomponent; ifseamtokenscarryharm, contextdamage ratherthanmissingDINOcapacity. Do notconvertnegativeintoallpositionmethodsclosed.",
+      "api_implementation": "src/ics/cpu100/context_interventions.py::METHODS[context_patch_position_orbit]",
+      "real_empirical_gain": "unknown; no actual DINO forward has been run by this worker",
+      "implementation_scope": "4 primary methods and16 same-view controls; group result cache stores only signed margins/info, <=28 new view misses for one episode with16 raw-view LRU"
     }
-  ]
+  ],
+  "real_probe_scope": "root latest instruction: one fixed first episode only; no automatic4/200 expansion",
+  "stimulus_contract_revision": "Reviewer approved count0 before any real execution/QGT: natural bbox+16px context full rectangular probe; negative replaces known MR pixels only, outside MR byte-identical. Old grey-alpha BG probe preserved foreground silhouette and did not support object-absence interpretation; old toy report retained."
 }

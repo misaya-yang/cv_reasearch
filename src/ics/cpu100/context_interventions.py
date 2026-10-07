@@ -130,24 +130,28 @@ def _result(ep, margin, source_hw, info, before):
 def _probes(ep):
     r=_native_rgb(ep,"r");m=_mask(ep).astype(bool)
     if not m.any() or m.all(): return None
-    y,x=np.nonzero(m);t,l,b,rr=y.min(),x.min(),y.max()+1,x.max()+1
-    foreground=r[t:b,l:rr].copy();alpha=m[t:b,l:rr].astype(float)
+    y,x=np.nonzero(m)
+    t,l=max(0,int(y.min())-16),max(0,int(x.min())-16)
+    b,rr=min(1024,int(y.max())+17),min(1024,int(x.max())+17)
+    foreground=r[t:b,l:rr].copy()
     nearest=distance_transform_edt(m,return_distances=False,return_indices=True)
-    bg=r[nearest[0],nearest[1]][t:b,l:rr].copy()
+    removed=r[nearest[0],nearest[1]]
+    if not np.array_equal(removed[~m],r[~m]):
+        raise RuntimeError("Natural reference background outside MR must remain identical")
+    bg=removed[t:b,l:rr].copy()
     if np.any(m[nearest[0][m],nearest[1][m]]):
         raise RuntimeError("Negative probe must draw only known-background pixels")
-    height,width=alpha.shape;scale=192/max(height,width)
+    height,width=foreground.shape[:2];scale=192/max(height,width)
     sh,sw=max(1,round(height*scale)),max(1,round(width*scale))
-    a=np.asarray(Image.fromarray(alpha.astype(np.float32)).resize((sw,sh),Image.Resampling.BILINEAR),float)
     templates=[]
     for colour in (foreground,bg):
-        # Outside-alpha colour is the same neutral carrier in both conditions.
-        colour[alpha<=0]=NEUTRAL
-        c=np.asarray(Image.fromarray(colour).resize((sw,sh),Image.Resampling.BILINEAR),float)
-        templates.append(np.clip(np.rint(c*a[...,None]+NEUTRAL*(1-a[...,None])),0,255).astype(np.uint8))
+        templates.append(np.asarray(Image.fromarray(colour).resize((sw,sh),Image.Resampling.BILINEAR)).copy())
+    area=np.asarray(Image.fromarray(m[t:b,l:rr].astype(np.float32)).resize((sw,sh),Image.Resampling.BILINEAR),float)
     return templates,dict(probe_hw=[sh,sw],probe_original_bbox=[int(t),int(l),int(b),int(rr)],
                            full_reference_mask_sha256=_digest(ep.reference_mask),
-                           known_background_source_only=True,alpha_sha256=_digest(a))
+                           known_background_source_only=True,natural_outside_MR_identical=True,
+                           probe_intervention="known-FG pixels replaced by nearest known-R-background pixels; semantic object absence not guaranteed",
+                           fixed_context_padding_pixels=16,foreground_shape_alpha_not_used=True),area
 
 
 def _main_canvas(ep,role):
@@ -167,11 +171,11 @@ def _panel(ep,kind):
     _ready(ep);before=_stats();prepared=_probes(ep)
     if prepared is None:
         return Result(prototype_margin(ep),dict(mechanism=kind,encoder_delta={},response_fallback="missing known probe class"))
-    probes,pinfo=prepared;response={};averages={};fg_only={};bg_only={};probe_atoms={}
+    probes,pinfo,area=prepared;response={};averages={};fg_only={};bg_only={};probe_atoms={};area_atoms={}
     view_hashes=[]
     for role in ("r","q"):
         canvas=_main_canvas(ep,role);d=np.zeros((48,64,1024));average=np.zeros_like(d)
-        pos=np.zeros_like(d);neg=np.zeros_like(d);atoms=[]
+        pos=np.zeros_like(d);neg=np.zeros_like(d);atoms=[];pooled=[]
         for slot in (0,1):
             maps=[]
             for label,probe in enumerate(probes):
@@ -179,10 +183,14 @@ def _panel(ep,kind):
                 maps.append(h[:48]);average+=h[:48]/4
                 (pos if label==0 else neg)[:]+=h[:48]/2
                 atoms.append(np.asarray(h[48:],float).mean((0,1)))
+                sh,sw=probe.shape[:2];oy=768+(256-sh)//2;ox=(256 if slot==0 else 768)-sw//2
+                weight=np.zeros((1024,1024));weight[oy:oy+sh,ox:ox+sw]=area
+                token_weight=_coverage(weight)
+                pooled.append(np.average(np.asarray(h,float).reshape(-1,1024),axis=0,weights=token_weight))
                 view_hashes.append(dict(role=role,slot=slot,probe=label,view_sha256=_digest(image),
                     main_sha256=_digest(image[:768]),panel_rows_excluded=[48,64]))
             d+=(np.asarray(maps[0],float)-maps[1])/2
-        response[role]=d;averages[role]=average;fg_only[role]=pos;bg_only[role]=neg;probe_atoms[role]=atoms
+        response[role]=d;averages[role]=average;fg_only[role]=pos;bg_only[role]=neg;probe_atoms[role]=atoms;area_atoms[role]=pooled
     wf=_coverage(_mask(ep,768));extra={}
     if kind=="response":margin,extra=_response(response["r"],response["q"],wf,averages["r"],averages["q"])
     elif kind=="mean":margin=_proto(averages["r"],averages["q"],wf)
@@ -193,6 +201,12 @@ def _panel(ep,kind):
         f=unit(np.mean([probe_atoms["q"][j] for j in (0,2)],axis=0))
         b=unit(np.mean([probe_atoms["q"][j] for j in (1,3)],axis=0))
         margin=_dot(_unit_map(averages["q"]),f-b)
+        extra["control_scope"]="whole bottom16x64 panel average including neutral carrier; not original ProM4"
+    elif kind=="probe_area":
+        f=unit(np.mean([area_atoms["q"][j] for j in (0,2)],axis=0))
+        b=unit(np.mean([area_atoms["q"][j] for j in (1,3)],axis=0))
+        margin=_dot(_unit_map(averages["q"]),f-b)
+        extra["control_scope"]="known source-MR area pooled stimulus matching in query context; same8views, not original ProM4 covariance pipeline"
     else:raise ValueError(kind)
     return _result(ep,margin,(48,64),dict(mechanism="remote_reference_"+kind,**pinfo,**extra,
         view_hashes=view_hashes,new_view_budget=8,main_window=[0,0,768,1024],
@@ -252,7 +266,7 @@ def external_vector_change_control(ep):return _external(ep,"vector")
 def _competition(ep,kind):
     _ready(ep);before=_stats();prepared=_probes(ep)
     if prepared is None:return Result(prototype_margin(ep),dict(mechanism=kind,response_fallback="missing probe class"))
-    probes,pinfo=prepared;banks={};hashes=[]
+    probes,pinfo,_=prepared;banks={};hashes=[]
     for role in ("r","q"):
         base=_main_canvas(ep,role);views=[]
         for a,b in ((0,0),(0,1),(1,0),(1,1)):
@@ -351,7 +365,7 @@ def _group_cache(group, selectors, compute):
     return wrapper
 
 
-_P=_group_cache("panel",("response","mean","foreground_view","background_view","inserted_probe"),_panel)
+_P=_group_cache("panel",("response","mean","foreground_view","background_view","inserted_probe","probe_area"),_panel)
 _E=_group_cache("external",("sensitivity","mean","vector"),_external)
 _C=_group_cache("competition",("mixed","first","mean","stacked","slot_left_fg","slot_left_bg","slot_right_fg","slot_right_bg"),_competition)
 _O=_group_cache("orbit",("features","scalar","horizontal","vertical"),_orbit)
@@ -366,6 +380,7 @@ CONTROLS={
     "context_panel_foreground_view_control":_P("foreground_view"),
     "context_panel_background_view_control":_P("background_view"),
     "context_panel_inserted_probe_control":_P("inserted_probe"),
+    "context_panel_probe_area_control":_P("probe_area"),
     "context_external_mean_feature_control":_E("mean"),
     "context_external_vector_change_control":_E("vector"),
     "context_competition_first_difference_control":_C("first"),

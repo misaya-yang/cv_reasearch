@@ -6,7 +6,7 @@
 
 ## 证据口径与计数
 
-审查潜在资格53项新合同+19项旧合同=72，包含尚待完整入口/真实评测的项。资格、实现、构造、真实运行、稳定正收益分别计；72不是稳定有效72，更不是100已完成。稳定正收益计数仍0，200开发集正增量如实保留。
+审查修正：首30 + 二批22项新增 + 旧19 = 71项资格；二批实际请求23方法还包含local_002同方法修订，独立增量0，且不含local_004。batch03另新增context四项、local_005、QP09共6项探针资格，因此当前潜在77（新58 + 旧19），仍不是完成77，更不是稳定有效77或100。source审查、注册、完整运行与质量分别计。
 
 旧600的四动作相对旧native，非MEAN；旧M5/gray相对同renderer MEAN；新原生相对direct prototype。对比基线不同，动作数量不跨组相加。
 
@@ -657,7 +657,11 @@ existing19 source/CLI/assets/version index（本地证据，未纳入仓库）
 
 ## 二批新增审查资格：ready不等于真实收益
 
-以下23项只是二批新增审查资格（排除已在首30的local_002）。审查要求和反例作为证据边界引用，不构成新待办；自然质量未测就写unknown，不假装已有失败因果。
+以下22项为二批新增资格；local_004已经撤回并移至关闭记录。local_002在首30保留v0观察，后续修订独立计0，能量/τ口径变动不能默默继承v0分数。root的batch02_launch_selection.json确认23请求项=22新增+local_002，未包含local_004。真实二批质量报告尚待完整收回；缺控制或pending结果不能证明稀疏机制收益。
+
+actual selection（本地证据，未纳入仓库） SHA 903d7156b3f7ca5a9cd17713ea12fb86d83a771142477ed982ac8f92fef73d4d
+
+以下22项为二批新增资格；local_004已经撤回并移至关闭记录。local_002在首30保留v0观察，后续修订独立计0，能量/τ口径变动不能默默继承v0分数。root的batch02_launch_selection.json确认23请求项=22新增+local_002，未包含local_004。真实二批质量报告尚待完整收回；缺控制或pending结果不能证明稀疏机制收益。
 
 ### ready cross_image_joint_sparse_role_removal - 联合参考稀疏解释的角色去除代价
 
@@ -714,17 +718,6 @@ existing19 source/CLI/assets/version index（本地证据，未纳入仓库）
 - **特有反例:** If FG and BG patch cones overlap, reconstruction cannot determine identity.; Large dictionaries can reconstruct both classes and erase discriminative residual; the fixed cap is not a proof of separability.; Viewpoint or feature-coordinate changes can move true target patches outside the reference cone.; Convex mixtures may create nonphysical local composites and accept a distractor.; A center near target boundary uses surrounding reference BG; altered query context can cause target deletion.
 - **证据:** [card](cards/local_structure.json); [batch02](reviews/batch02.json)
 
-### ready local_004 - Intrinsic feature merge-tree edit classification with full tree decoding
-
-- **逻辑/条件性预期:** A reference/query feature merge dendrogram encodes nested coalescence relations not fixed by mode occupancy or edge histograms. Comparing two such trees changes which complete candidate region is selected without imposing one reference silhouette. The tree can still reflect material/view rather than class, and this must be a negative witness.
-- **预期收益（假设）:** If target and distractor share per-token appearance but differ in feature nesting, tree alignment can select the complete target region despite deformation of its outer shape. No empirical DINO hierarchy transfer or mIoU gain is claimed.
-- **source/合法输入:** [source](../../../src/ics/cpu100/local_structure_tree.py) SHA 2dd191125820f4e7; METHODS registration unknown; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N
-- **强control:** Same hierarchy, candidate domain, decoder and rendering with centroid-only FG/BG template distance.; Same hierarchy/decoder using unordered leaf-bag matching, erasing nesting while keeping leaf features.; Reference-child random rewiring retaining leaves and subtree sizes as a dependency control.
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
-- **未知前提/审查限制:** raw six-case recursion first, root-only normalization, max2 templates/role and8terminals; exact tiny audit/centroid-leafbag-rewire controls; bounded4k cost; differentiate empty MR from no majority-grid template
-- **特有反例:** Two different classes with the same feature hierarchy are indistinguishable.; View, material or occlusion can change merge order of a true instance.; A query hierarchy can fail to contain an intact object node and force fragmentation.; Edit skip penalties can prefer small parts and omit extent; zero node evidence gives empty mask.; Repeated similar instances can merge before their own boundaries and become inseparable.
-- **证据:** [card](cards/local_structure.json); [batch02](reviews/batch02.json)
-
 ### ready DR09 - 参考原型相似度弱决策的AdaBoost
 
 - **逻辑/条件性预期:** boosting按reference错误重加权组合多个不同anchor的cosine stump，输出sum alpha*h；不是在一个score扫描阈值，也不把source分类精度当query身份保证。
@@ -735,6 +728,8 @@ existing19 source/CLI/assets/version index（本地证据，未纳入仓库）
 - **未知前提/审查限制:** single stump/sameanchor ridge/NN; source-error focus can amplify nontransferable rare material
 - **特有反例:** 少数nontransferable reference材质成为高权重error，boosting会追逐它；source100%分类正确仍可能query全错。
 - **证据:** [card](cards/decision_risk.json); [batch02](reviews/batch02.json)
+
+- **Reviewed source / scope correction:** 源码已核：bank为空/无信息时回退pure-reference nearest-neighbor；不是泛称prototype。该fallback不算boosting生效；真实二批质量仍unknown。
 
 ### ready DR10 - 平衡参考重采样的最大间隔委员会
 
@@ -791,6 +786,8 @@ existing19 source/CLI/assets/version index（本地证据，未纳入仓库）
 - **特有反例:** 原型移动追随source-specific appearance，损失Q合法外观；小分母造成优化不稳定，gradient cap使固定数值行为需核查。
 - **证据:** [card](cards/decision_risk.json); [batch02](reviews/batch02.json)
 
+- **Reviewed source / scope correction:** 已有固定构造反驳原故事：近边界预期正例对最强控制−0.1383，高端预期负例反而+0.0060。有限差分通过只支持导数，不证明收敛或跨图收益；保留反例，不自动开变体。
+
 ### ready DR16 - 合法参考角色的近邻大间隔度量
 
 - **逻辑/条件性预期:** 只用knownR role triplets学习低rankPSD使same-role近、different-role远；先有标签约束再改度量，区别无label方差白化。但reference监督并不保证learned axes跨图语义。
@@ -801,6 +798,8 @@ existing19 source/CLI/assets/version index（本地证据，未纳入仓库）
 - **未知前提/审查限制:** identity metric/rawNN/LDA controls; source metric can suppress query semantics, no cross-image guarantee
 - **特有反例:** reference classdistortion随query变化；假nuisance轴实际是Q语义被metric抹去；class仅1token没有triplets。
 - **证据:** [card](cards/decision_risk.json); [batch02](reviews/batch02.json)
+
+- **Reviewed source / scope correction:** 归因限制：PSD初始矩阵仅前min(8,K)坐标，而identity control用全部K；任何未来metric改善需先区分rank截断与监督更新，当前未有自然质量结论。
 
 ### ready QP04 - 参考校准的区域绝对分布相容性门
 
@@ -915,6 +914,96 @@ existing19 source/CLI/assets/version index（本地证据，未纳入仓库）
 - **证据:** [card](cards/rgb_complement.json); [batch02](reviews/batch02.json)
 - **Synthetic only:** [fixed constructive/negative full masks](reports/rgb_complement/checks_extra.json); no natural-quality claim.
 
+### closed local_004
+
+local_004固定读出已关闭，独立计0；辅助源码保留但未注册METHODS，不是ready。查询branch pruning只匹配了子集，whole-node奖励与FG读出却按整节点面积，把未匹配Q背景也标FG。完整构造IoU0.428571，低于centroid0.514286及leafbag0.5；rewired同0.428571。它反驳当前读出scope，不证明所有hierarchy不可能。强制全Q覆盖会改alignment合同，只能是同家族修订计0，未自动开始。
+
+[closure receipt](reports/local_structure/local_004_closure.json) ; [batch03](reviews/batch03.json).
+
+## 第三批新增探针资格：6项，自然质量未知
+
+第三批6项已accept_for_probe，取代此前“未见接受”的旧状态。资格不等于真实模型前向、质量或交付完成。context需要有界CPU编码器与同一checkpoint/config/FP32、原RGB和完整MR；共享view缓存/编码费用另列，假callback不计实际DINO前向。root拥有运行调度，本记录不自动扩4/200。
+
+### ready context_remote_reference_response - 未改动查询 patch 的参考条件响应
+
+- **逻辑/条件性预期:** Changing only a distant FG/BG probe can expose conditional attention sensitivity absent from the original final representation. This is only a possible observable: duplicate-instance echo, global colour shifts or positional effects can dominate it, and source response separation does not prove semantic transfer to Q.
+- **source/合法输入:** [source](../../../src/ics/cpu100/context_interventions.py) SHA e7d7d652eb657e18d4da84dc7cf5f2885087991ac5c1e20ea86e03e24bf4086c; 合同N加实际原RGB/完整MR及受限CPU冻结encoder callback（同checkpoint/config/实现hash，eval/noGrad/noAutocast/FP32），需要新编码；不能伪称只有缓存NumPy成本。
+- **强control:** Same8 views: main feature average prototype; foreground-only main feature prototype; background-only main feature prototype; source probe feature matching readout (ProM4-style absolute inserted evidence) on unchanged Q. Same main-window geometry and decoder. Native raw prototype is an additional resource-separated baseline.
+- **观测质量/四动作:** 真实二批/第三批质量 unknown；四类增删 unknown，未把未回收/缺控制的结果写成收益。
+- **特有反例:** Identical reference object in R induces strong duplicate-instance echo, but different-instance same-class Q does not respond. Global ambient delta identical everywhere gives no identity signal. Near-class distractor may respond more strongly. Probe panel can cause attention competition rather than attraction.
+- **可得到什么/未决限制:** main-window MR area mapping and byte-identical-condition audit; compare same8view mean/FG/BG/inserted evidence; source identical-instance echo is not same-class Q transfer
+- **review:** [batch03](reviews/batch03.json) ; [card](cards/context_interventions.json).
+
+- **Reviewed source / scope correction:** 实际 `context_panel_inserted_probe_control` 为整个16×64底部panel均值（包括neutral canvas）与未改动主图匹配；不是ProM4复现，也不是插入对象专属token控制。卡中ProM4-style旧措辞以此源码审查为准。
+
+### ready context_external_shuffle_sensitivity - 保留局部像素的外部上下文敏感度
+
+- **逻辑/条件性预期:** For each quadrant leave its RGB and position intact while cycling the other three quadrants. At its tokens, ||H_original-H_perturbed|| measures dependence on outside arrangement while local pixels do not change. Whether FG/BG sensitivity measured on R predicts Q is unknown; sensitivity is not inherently background.
+- **source/合法输入:** [source](../../../src/ics/cpu100/context_interventions.py) SHA e7d7d652eb657e18d4da84dc7cf5f2885087991ac5c1e20ea86e03e24bf4086c; 合同N加实际原RGB/完整MR及受限CPU冻结encoder callback（同checkpoint/config/实现hash，eval/noGrad/noAutocast/FP32），需要新编码；不能伪称只有缓存NumPy成本。
+- **强control:** Same8 views: average original and preserved-patch edited features then known-R prototype; full vector-change prototype; scalar original token norm (constant for unit features). Same geometry/window. No different crop or extra forward-budget advantage.
+- **观测质量/四动作:** 真实二批/第三批质量 unknown；四类增删 unknown，未把未回收/缺控制的结果写成收益。
+- **特有反例:** A true object is context-dependent while generic grass is stable; background sensitivity from R flips in Q. Query object spans a quadrant boundary and outside permutation destroys its continuation. Source means may differ merely because boundary proportions differ.
+- **可得到什么/未决限制:** original Episode must be same native1024 RGB/checkpoint/geometry as callback; all-patch preserved-quadrant coverage; scalar/vector/mean sameview controls; continuation destruction negative
+- **review:** [batch03](reviews/batch03.json) ; [card](cards/context_interventions.json).
+
+### ready context_probe_nonadditive_competition - 双参考刺激的非加性交互响应
+
+- **逻辑/条件性预期:** Encode assignments(F,F),(F,B),(B,F),(B,B). The raw-LN mixed difference C=H_FF-H_FB-H_BF+H_BB is identicallyzero for any additive probe effect. It can carry class-dependent nonlinear interaction even when H_FF-H_BB is identical on classes. It is not monotonic rescaling of firstdifference, but could still be duplicate-instance interference rather than category signal.
+- **source/合法输入:** [source](../../../src/ics/cpu100/context_interventions.py) SHA e7d7d652eb657e18d4da84dc7cf5f2885087991ac5c1e20ea86e03e24bf4086c; 合同N加实际原RGB/完整MR及受限CPU冻结encoder callback（同checkpoint/config/实现hash，eval/noGrad/noAutocast/FP32），需要新编码；不能伪称只有缓存NumPy成本。
+- **强control:** All above same-view8 controls; additive toy encoder must giveCzero and exactfallback. Nonadditive toy with equal firstdifferences must distinguish different-instance target before acceptance of uniqueobservable. Panel token exclusion/seam geometry fixed. Same-view four-state raw-stack squared-distance prototype control must also be evaluated, not just firstdifferences.
+- **观测质量/四动作:** 真实二批/第三批质量 unknown；四类增删 unknown，未把未回收/缺控制的结果写成收益。
+- **特有反例:** Two reference copies compete for attention and suppress identical-instance features while realQ objects have different effect; panel seam effects themselves nonadditive. Signal may be tiny float32 cancellation or universallyzero. Nonzero curvature is not category discrimination.
+- **可得到什么/未决限制:** complete cross-scene additive-nuisance witness beyond firstFF-BB AND both single-slot AND average/stack controls; rawLN before unit; additive/instance-only echo negatives, report precision scale; no further order/intensity variants counted
+- **review:** [batch03](reviews/batch03.json) ; [card](cards/context_interventions.json).
+
+### ready context_patch_position_orbit - 局部像素不变的位置轨道重编码
+
+- **逻辑/条件性预期:** Inverse-mapped re-encoded features can separate content from position-dependent terms if their semantic component survives a coarse roll and nuisance changes sign/averagesout. This is a newforwardobservable, not shifting oldarrays (which would unroll exactly and add0information). Wholeobjects crossing the seam may be damaged, and RoPE relative invariance could leave nochange.
+- **source/合法输入:** [source](../../../src/ics/cpu100/context_interventions.py) SHA e7d7d652eb657e18d4da84dc7cf5f2885087991ac5c1e20ea86e03e24bf4086c; 合同N加实际原RGB/完整MR及受限CPU冻结encoder callback（同checkpoint/config/实现hash，eval/noGrad/noAutocast/FP32），需要新编码；不能伪称只有缓存NumPy成本。
+- **强control:** Same4newforwards scalar score averaging; same inversegeometry andreadout. Originalprototype resource-separated; duplicate unchanged forward audit optionaladapterparity (engineering, not method). No finepixel interpolation or layer difference can be credited.
+- **观测质量/四动作:** 真实二批/第三批质量 unknown；四类增删 unknown，未把未回收/缺控制的结果写成收益。
+- **特有反例:** Object/scene continuation crossesrollseam andsemanticfeaturechanges; randombackground acquires spuriousstableaverageddirection. True discriminativecontext is discarded. IfrelativeRoPE/encoder is perfectlyroll-equivariant, newforwardoutputs equaloriginal and method noactiveobservable.
+- **可得到什么/未决限制:** patch-byte/inverse-map audit, same4forward scalar-average control, actual original1024 producer/view parity; separate seam/context harm from positional claims
+- **review:** [batch03](reviews/batch03.json) ; [card](cards/context_interventions.json).
+
+### ready local_005 - Nonparametric joint DINO patch-to-patch label voting
+
+- **逻辑/条件性预期:** The output label vector of a matched reference neighborhood is legal supervised information that is not just its center label. Transferring and reconciling neighboring label predictions changes the full decoder while retaining each source local appearance configuration. This is a local mask-pattern prior, disclosed explicitly; it is not identity evidence when two classes share that appearance and label pattern.
+- **source/合法输入:** [source](../../../src/ics/cpu100/local_structure.py) SHA 213d452c7be4491066ec7ae3ded664f0b448f2a3c3b2791267ade99ee7bf5c6f; N; known-MR local labels and physical-valid weights only.
+- **强control:** Identical descriptors, anchors, bandwidth and nearest4 matching, but each matched patch votes only its central MR label to the query center.; The same central-only complete margin, followed by generic uniform nine-stencil score averaging; compares label transfer with ordinary smoothing.; Same matched local patches with noncentral MR labels permuted within each patch, keeping center label and foreground-label sum; isolates organized label geometry.; Full local003 convex ordered-patch classifier on same input/renderer; it reads center labels rather than joint label vectors.
+- **观测质量/四动作:** 真实二批/第三批质量 unknown；四类增删 unknown，未把未回收/缺控制的结果写成收益。
+- **特有反例:** Changed boundary geometry or scale can make reference neighbor labels wrong despite matching appearance.; Dense BG templates and repeated patterns can outvote a correct thin target; equal anchor counts do not prove unbiased votes.; A coherent false object with the same local label motif is accepted.; Common or zero tensor descriptors can create unsupported identity ties; no entropy or vote consensus claim substitutes for class evidence.; Occluded or missing parts may be filled according to the reference motif and create false positives.
+- **可得到什么/未决限制:** same-matcher center-only/generic smoothing/noncentral-label permutation controls; explicit local label-pattern prior; distinguish truly empty MR from missing majority-grid anchors; thin-target and wrong-motif negatives
+- **review:** [batch03](reviews/batch03.json) ; [card](cards/local_structure.json).
+
+### ready QP09 - 完整参考类距离的查询字典最短测地线
+
+- **逻辑/条件性预期:** 单位特征的cost=1-cos不是角距离的三角不等式度量，多个小角步可比一个大角捷径便宜。因此完整R类初值在query字典min-plus闭包下可改变最近参考类别排序；这个代数作用只在同类沿连续链、跨类有间隙时有利。
+- **source/合法输入:** [source](../../../src/ics/cpu100/query_partition.py) SHA 1528f46486309a68d4707e57fcbfbd0993bc0127f393871492b70ab2e46f5b40; N; known-MR local labels and physical-valid weights only.
+- **强control:** 相同query字典完整R softmin类初值差（无路径）; samegraph continuous harmonic solve初值差; samegraph min/max瓶颈路径（旧路径原则仅不计控制）; same DINO prototype/pointwise KDE/QP02
+- **观测质量/四动作:** 真实二批/第三批质量 unknown；四类增删 unknown，未把未回收/缺控制的结果写成收益。
+- **特有反例:** 类别边界可在连续feature链中没有间隙；路径会补入本来正确排BG的近类干扰。dense sampling改变路径成本，远端弱类支持可被错误捷径传播。
+- **可得到什么/未决限制:** same-dictionary no-path/harmonic/minmax controls,1-cos small-step chain proof and exact same-features cross-class-bridge negative; density dependence and mistaken initial identity explicit; semiring/k variants0
+- **review:** [batch03](reviews/batch03.json) ; [card](cards/query_partition_batch4.json).
+
+### 新完成的静态source审查（不加方法数／不升级quality）
+
+context源码静态审查已完成：当前物理probe由完整MR包围框加16像素自然上下文构成；negative仅替换已知MR像素为最近已知R背景，外MR字节保持相同。旧灰色alpha负刺激保留了FG silhouette，不能解释为物体不存在；旧toy保留。新刺激也不保证DINO感知语义缺席，仍可有轮廓、接缝和纹理伪影。
+
+toy只有规定的pixel-derived假编码器，实际DINO前向0。remote/mixed/orbit完整构造1.0；external sensitivity0.25 vs mean0/vector0.0833；这只证明可作用，不证明DINO具该响应。四象限保留字节与RGB inverse-roll映射审计通过；21个callback尝试在28 cap内。whole-panel-average control包含neutral canvas，不是ProM4复现或插入对象专属token控制。
+
+[context source audit](reviews/context_source_20261007.json) SHA 7e0474cbde148e1cb14e3a3e4e26a71ac05b1db00be91934b7ab8f7650e0d279
+
+注：`context_source_20261007.json` 绑定源 SHA `afb0ab16070208ad82a214d8f43e896c7af44c919cb0ec04e3ac3edcfed53fdf`，与当前 `context_interventions.py` SHA `e7d7d652eb657e18d4da84dc7cf5f2885087991ac5c1e20ea86e03e24bf4086c` 不同；当前版本另含 probe-area pooled control，不能称该审查已覆盖此完整源码。新的 toy receipt 绑定当前源码，但只使用构造假编码器，真实 DINO 前向仍为0。
+
+DR09/10/12/13/14/15/16静态源码审查已完成，只用合法R特征/MR拟合，Q仅最终完整margin推断。DINO冻结但ReLU/GLVQ/PSD确有episode参数优化；source源码资格不升级自然质量。DR09无效bank回退是pure-reference NN，不是卡的泛称prototype；源码多数为vectorized Q×support workspace，不能称统一block128。
+
+DR_control_average_logistic采用每角色最多64条weighted-quantile压缩，不能称完整R逐token未压缩拟合；Frank-Wolfe gap<1e-8是数值容差，不是字面精确几何。DR16初始矩阵仅前min(8,K)坐标，而identity-control用全部K；未来若有提升不能直接归因监督metric更新。
+
+保留构造审查：ReLU梯度误差<1e-10、GLVQ2.04e-11、LMNN2.51e-10只支持实现导数；七项完整shape、padding、空类等合同检查不是自然收益。DR10/14/15存在相对最强所给control的构造见证；DR09/12/13/16没有严格增量见证。DR15原预期近边界正例反而低于control0.1383，预期高端负例却高0.0060；应撤回原故事，不扫变体。
+
+[risk source audit](reviews/decision_risk_batch2_source_20261007.json) SHA f8d10ecf7424b696c83de4fe8aebe8f3e8a121c5bc3f40698debabd3d6b898fe
+
 ## 重复、代数关闭和未审核卡：不计数
 
 | ID | 失败解释与所得 |
@@ -925,15 +1014,17 @@ existing19 source/CLI/assets/version index（本地证据，未纳入仓库）
 | QP05 | 已有DINO-neighbor binary cut；只换unary/scale不计新机制。 |
 | RGB08 | 凹mixture ML alpha*>.5 iff导数(.5)>0 iff平均equal-prior posterior>.5；fusion幅度是confidence读出，不是新identity。未实现，计0。 |
 | ref_class_typicality_rank | R距离scale/tail跨Q转移仍被local-radius反例针对；未放行，不改rank名字绕反证。 |
-| local_005 / QP09 | 当前batch01/02未见正式接受与完整真实结果，不能提前计入交付。 |
-| 4张context_interventions卡 | 依赖native状态/新CPU前向；未见审查接受和完整算法结果，不把encoder.py存在当方法完成。 |
+| local_005 / QP09 | batch03已accept_for_probe；完整真实质量未见，新增资格2，非完成2。 |
+| context四项 | batch03已accept_for_probe且源码静态审查完成；只获有界CPU probe资格，fake callback不算DINO，真实质量unknown。 |
 
 ## 当前获得的结论与缺口
 
-本文件逐项收录30个原生4例方法、12个原生200开发结果、19个历史方法和23个二批新增资格。它保留的是72项潜在资格及各自证据边界，不把重复、控制或未知项填作稳定有效100。
+本文件现记录首30、二批22新增、旧19及第三批6资格，合计潜在77。local_004单列关闭计0；local_002修订计0；source/static/toy/完整真实输出/稳定正收益严格分开。未完成100。
 
 200例Huber vs ridge +0.7109 [0.1353,1.0014]是已测真实开发边际；不能抹掉，也不能把相对prototype的+9.7928全部归给Huber。ridge=51.6625，平均logistic=50.3467，常量erosion=50.7178都是强简单controls。
 
 尚无独立确认、同协议完整FoRIS比较、稳定>=2 pp或完整论文方法交付。新52.3734不能与旧processed60.70/62.93跨协议判优劣。负结果不证明信息用尽/DINO上限已定，也不授权新变体。
 
 更新只跟随新封存结果修订相应方法的观察、control、T和解释范围。本文件不授权SSH/实验，也不是新pending-work清单。
+
+本次只同步必要审查修订，不新增方法、文件或实验；尚未回收的二批真实得分维持unknown。
