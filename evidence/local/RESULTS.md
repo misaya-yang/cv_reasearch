@@ -5,6 +5,9 @@ Current interpretation: [CLAIM](../../docs/research/CLAIM.md); external/cloud ev
 [dots record](../dots-2026-10-05/IMPORT.md). Numbers below retain their original cohorts,
 resource settings, rendering stages and intervals. Missing provenance fields are not retroactively invented.
 The 2026-10-05 cleanup corrected overbroad interpretations without changing result values.
+Bulk run artifacts under `research_20261005/pipeline_verified/` remain local but are Git-ignored;
+the 4k fixed-arm, residual-transfer and exact-family selection packages and their verification records are retained.
+Other relative report links may resolve only in this workspace.
 
 The opening table is the **historical supervised-readout / early SAM3 configuration**. Later SAM3 results
 appear under their dated entries; do not use the early exemplar as the current strongest baseline.

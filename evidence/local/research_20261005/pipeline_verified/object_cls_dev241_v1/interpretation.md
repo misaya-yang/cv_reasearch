@@ -1,9 +1,0 @@
-# Object-crop CLS diagnostic: unresolved
-
-The fixed CLS cue has episode AUROC0.591975 [0.388889,0.787783] on the original18 paired episodes (40 missed GT and31 stray fine64 regions). Above chance: +0.091975 [-0.111111,0.287783]. Versus raw region mean: +0.197531 [-0.071429,0.470370]; versus cached projected region mean: +0.336420 [0.124980,0.562500]. Every fold exceeds0.5 (0.650,0.600,0.513889,0.600), but superiority to chance and raw remains unresolved. Neither a positive-cue claim nor stopping this construction is supported by n18.
-
-All197-region pooled CLS AUROC0.449059 and pixel-mass-weighted pooled0.694408 are secondary mixed-episode summaries. They do not replace the paired episode estimand.
-
-Independent reconstruction checked all367 compact vectors and85 descriptor-file hashes. Direct FP64 cosine differs from stored FP32 margins by at most5.25e-8; FP32 margins reproduce exactly. Direct region-pair AUROC, all2000 RandomState(0) independent-photo-graph draws, paired CIs, folds and pooled summaries reproduce with maximum error0. The recorded CLS upper95percent limit is0.787783, correcting the0.787821 handoff typo.
-
-Prepare the same frozen crop/CLS construction on all fully sealed exposed1200 masks to reduce uncertainty. Reuse the exact original197 region/170 reference descriptors by class, reference and query identity wherever source geometry matches. No parameters, crop policy, sign, threshold or additional selection change. Full1200 raw activations are unavailable: the raw control remains limited to the original241 cohort, and the full1200 fixed region-average packet FGmax-minus-BGmax is explicitly a different simple control. This is diagnostic sample expansion, not independent confirmation or a complete method result. GT boxes remain privileged and do not supply legal proposals.

@@ -72,3 +72,32 @@ secrets*.json
 
 # New experiment outputs are generated; promote only compact evidence deliberately.
 /outputs/
+
+# Date-stamped Astra batch workspaces stay local; promote winning evidence explicitly.
+evidence/local/astra300_*/
+
+# CPU100 run folders keep only their hand-maintained result summary in Git.
+evidence/local/cpu100_*/
+!evidence/local/cpu100_*/
+evidence/local/cpu100_*/**
+!evidence/local/cpu100_*/METHODS_AND_FAILURES.md
+
+# Date-stamped research batch workspaces stay local by default; keep the archived 2026-10-05 results visible.
+evidence/local/research_20??????/
+!evidence/local/research_20261005/
+!evidence/local/research_20261005/pipeline_verified/
+
+# Bulk pipeline runs stay local; retain the complete 4k result packages and selection verification.
+evidence/local/research_20261005/pipeline_verified/**
+!evidence/local/research_20261005/pipeline_verified/
+!evidence/local/research_20261005/pipeline_verified/frozen_public4000_v1/
+!evidence/local/research_20261005/pipeline_verified/frozen_public4000_v1/**
+!evidence/local/research_20261005/pipeline_verified/mean_fine_residual_transfer4000_v1/
+!evidence/local/research_20261005/pipeline_verified/mean_fine_residual_transfer4000_v1/**
+!evidence/local/research_20261005/pipeline_verified/exact_family_selection_v1/
+!evidence/local/research_20261005/pipeline_verified/exact_family_selection_v1/**
+!evidence/local/research_20261005/pipeline_verified/exact_family_selection_verification_v1/
+!evidence/local/research_20261005/pipeline_verified/exact_family_selection_verification_v1/**
+
+# Batch-created input collections remain local.
+evidence/new_rgb_inputs_*/
