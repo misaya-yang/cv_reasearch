@@ -368,7 +368,7 @@ def m22(ep,*,variant='conditional_trajectory'):
     return _finish(ep,H.bounded_fusion(b,residual),mid,info,start)
 
 
-def _response_descriptors(ep,ctx,A,*,local=False,ordinary=False):
+def _response_descriptors(ep,ctx,A,*,local=False,ordinary=False,margin_only=False):
     raw20={role:ctx.state(ep,role,20,prefix=True) for role in ('r','q')}
     x20={role:unit(raw20[role][5:]) for role in ('r','q')}
     x24={role:ctx.normalize(ctx.state(ep,role,24)) for role in ('r','q')}
@@ -377,6 +377,10 @@ def _response_descriptors(ep,ctx,A,*,local=False,ordinary=False):
     descriptors={};simple={};stability={};directions={}
     for role in ('r','q'):
         valid=ep.wvalid>0 if role=='r' else ep.q_valid>0;n=len(valid);rng=np.random.RandomState(0);codes=rng.choice((-1.,1.),size=(2,n))
+        simple[role]=np.c_[H.mm(x20[role],axis20),H.mm(x24[role],axis24)]
+        if margin_only:
+            descriptors[role]=simple[role]
+            continue
         tangent_all=np.zeros_like(raw20[role]);tangent_all[5:]=valid[:,None]*d
         tangents=[tangent_all]
         for code in codes:
@@ -391,8 +395,8 @@ def _response_descriptors(ep,ctx,A,*,local=False,ordinary=False):
         responses=[ctx.jvp(ep,role,raw20[role],tangent,local_only=local)[1][5:] for tangent in tangents]
         all_response=responses[0];self1=codes[0,:,None]*responses[1];self2=codes[1,:,None]*responses[2];self_response=.5*(self1+self2)
         dot=np.sum(self_response*all_response,axis=1);ns=np.linalg.norm(self_response,axis=1);na=np.linalg.norm(all_response,axis=1)
-        descriptors[role]=np.c_[H.mm(x20[role],axis20),H.mm(x24[role],axis24),H.mm(self_response,w),H.mm(all_response,w),ns,na,np.linalg.norm(all_response-self_response,axis=1),dot/np.maximum(ns*na,1e-6)]
-        simple[role]=descriptors[role][:,:2];stability[role]=dict(two_code_response_relative_difference=float(np.linalg.norm(self1-self2)/max(np.linalg.norm(self_response),H.EPS)),
+        descriptors[role]=np.c_[simple[role],H.mm(self_response,w),H.mm(all_response,w),ns,na,np.linalg.norm(all_response-self_response,axis=1),dot/np.maximum(ns*na,1e-6)]
+        stability[role]=dict(two_code_response_relative_difference=float(np.linalg.norm(self1-self2)/max(np.linalg.norm(self_response),H.EPS)),
             code_self_dot_correlation=float(np.corrcoef(H.mm(self1,w),H.mm(self2,w))[0,1]) if np.std(H.mm(self1,w))*np.std(H.mm(self2,w))>0 else None)
     return descriptors,simple,stability,d,w,raw20,directions
 
@@ -407,7 +411,9 @@ def m23(ep,*,variant='semantic_JVP'):
     if variant=='full_state_kernel':
         z=_full_state_control(ep,ctx,(20,24),kernel=True)
         return _finish(ep,z,mid,dict(active=True,actual_layers=[20,24],internal_cost_receipt=dict(ctx.receipt)),start)
-    response=_response_descriptors(ep,ctx,A,local=variant=='token_MLP_LN_JVP',ordinary=variant=='same_budget_state_perturbation_average')
+    margin_only=variant=='two_native_margins'
+    response=_response_descriptors(ep,ctx,A,local=variant=='token_MLP_LN_JVP',
+        ordinary=variant=='same_budget_state_perturbation_average',margin_only=margin_only)
     if response is None:return _finish(ep,b-.5,mid,dict(active=False,inactive_reason='anchor semantic direction degenerate'),start)
     phi,simple,stability,d,w,raw20,directions=response
     if variant=='same_budget_state_perturbation_average':
@@ -416,10 +422,13 @@ def m23(ep,*,variant='semantic_JVP'):
         return _finish(ep,z,mid,dict(active=True,perturbation_epsilon=1e-3,actual_suffix_calls=6,internal_cost_receipt=dict(ctx.receipt)),start)
     if variant=='two_native_margins':phi=simple
     residual,info=H.residual_readout(ep,phi['r'],phi['q'],simple['r'],simple['q'],A,C)
+    descriptor_order=(['margin20','margin24'] if margin_only else
+        ['margin20','margin24','w_self','w_all','norm_self','norm_all','norm_all_minus_self','cos_self_all'])
     info.update(semantic_direction20=d.tolist(),semantic_output_direction=w.tolist(),directions_frozen_after_anchor=True,
-        eight_descriptor_order=['margin20','margin24','w_self','w_all','norm_self','norm_all','norm_all_minus_self','cos_self_all'],
-        self_estimator_codes=2,space_code_seed=0,code_independence='independent IID Rademacher codes across all native patch IDs; padded tangent zero',
-        response_stability=stability,actual_suffix_JVPs=6 if variant!='two_native_margins' else 6,
+        descriptor_order=descriptor_order,
+        self_estimator_codes=0 if margin_only else 2,space_code_seed=None if margin_only else 0,
+        code_independence='not used by the two-margin control' if margin_only else 'independent IID Rademacher codes across all native patch IDs; padded tangent zero',
+        response_stability=stability,actual_suffix_JVPs=0 if margin_only else 6,
         internal_cost_receipt=dict(ctx.receipt),modifiable_native_node_fraction=float(np.mean((b>.3)&(b<.7))),
         max_residual_magnitude=float(np.max(np.abs(residual))),implementation_assumption='native semantic margins use unit role-mean cosine difference; tangent d unit raw-H20 role-mean difference')
     return _finish(ep,H.bounded_fusion(b,residual),mid,info,start)

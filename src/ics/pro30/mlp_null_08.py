@@ -36,6 +36,8 @@ def _actual_packet(ep):
             expected=ep.producer.get('source_image_hashes')
             if not expected or supplied.get('source_image_hashes')!=expected:
                 raise ArtifactUnavailable('M08 supplied observations do not bind the exact R/Q image hashes')
+            if supplied.get('physical_transforms')!={'r':ep.reference_geometry,'q':ep.query_geometry}:
+                raise ArtifactUnavailable('M08 supplied observations do not bind the exact R/Q physical transforms')
             if not all(role in supplied.get('final_feature_parity_max',{}) and supplied['final_feature_parity_max'][role]<=1e-5 for role in ('r','q')):
                 raise ArtifactUnavailable('M08 supplied pre-down observations lack actual normal-forward native-feature parity')
         packet=supplied
@@ -64,6 +66,7 @@ def _actual_packet(ep):
             module_path='blocks.'+str(len(model.blocks)-1)+'.mlp.'+name,MLP_class=type(mlp).__name__,
             weight_array_sha256=array_hash(weight),bias_present=bias is not None,activation_stage='exact tensor passed into actual down module, after real gating/activation/dropout',
             final_feature_parity_max=parity,source_image_hashes=ep.producer.get('source_image_hashes'),
+            physical_transforms={'r':dict(ep.reference_geometry),'q':dict(ep.query_geometry)},
             actual_extra_forwards=engine.receipt['actual_extra_forwards']-extra_before)
         engine.forward.check_frozen()
     weight=np.asarray(packet['weight']);r,q=np.asarray(packet['r']),np.asarray(packet['q'])
@@ -111,7 +114,8 @@ def mlp_null(ep,mode='kernel'):
         return finish(ep,score,mid,dict(fit,**source_contract(8),control='same_one_extra_scalar_native_cubic_readout',
             new_encoder_forwards=0,inactive=False,postprocess_seconds=time.perf_counter()-start))
     partition=blocks(ep.r_hw);possible=[j for j in range(4) if ep.wf[partition==j].sum()>=2 and ep.wb[partition==j].sum()>=2]
-    if len(possible)<2 and mode not in ('full_activation','full_activation_alone'):
+    ungated=('full_activation','full_activation_alone','rowspace_unconditional','MLP_output_unconditional')
+    if len(possible)<2 and mode not in ungated:
         score,fit=br_margin(ep);return finish(ep,score,mid,dict(fit,inactive=True,inactive_reason='fewer_than_two_mass_valid_reference_blocks',
             valid_mass_blocks=possible,new_encoder_forwards=0,source_tensor_extraction_skipped_by_exact_known_gate=True,**source_contract(8)))
     packet,hit=_actual_packet(ep);r,q=np.asarray(packet['r']),np.asarray(packet['q']);w=np.asarray(packet['weight'],float)
@@ -130,7 +134,7 @@ def mlp_null(ep,mode='kernel'):
     active=len(block_vectors)>=2 and median>=0 and ratio>=.05
     gate=dict(valid_mass_blocks=possible,valid_nonzero_direction_blocks=len(block_vectors),median_block_direction_cosine=median,
         null_fraction=ratio,active=active,null_projection_relative_error=float(np.linalg.norm(w@v)/max(norm,1e-8)))
-    if not active and mode not in ('full_activation','full_activation_alone','final_nonlinear'):
+    if not active and mode not in ungated:
         score,fit=br_margin(ep);return finish(ep,score,mid,dict(fit,inactive=True,inactive_reason='source_kernel_stability_gate_failed',
             gate=gate,weight_factor=factor_info,observation_cache_hit=hit,new_encoder_forwards=0 if hit else packet.get('actual_extra_forwards',0),**source_contract(8)))
     if mode=='full_activation_alone':
@@ -138,30 +142,32 @@ def mlp_null(ep,mode='kernel'):
     elif mode=='full_activation':
         score,fit=br_margin(ep,unit(np.c_[ep.r,.5*unit(r)]),unit(np.c_[ep.q,.5*unit(q)]))
     else:
-        if mode=='rowspace':direction=delta-v
+        if mode in ('rowspace','rowspace_unconditional'):direction=delta-v
         elif mode=='random_kernel':
             direction=_kernel(w,inverse,np.random.default_rng(0).normal(size=len(delta)))
             direction*=norm/max(float(np.linalg.norm(direction)),1e-8)
-        elif mode=='MLP_output':
+        elif mode in ('MLP_output','MLP_output_unconditional'):
             rr=_mm(r,w.T);qq=_mm(q,w.T)
             difference=_mm(ep.wf/ep.wf.sum(),rr)-_mm(ep.wb/ep.wb.sum(),rr)
             direction=unit(difference);rh=_mm(rr,direction);qh=_mm(qq,direction)
         elif mode=='kernel':direction=v
         else:raise ValueError(mode)
-        if mode!='MLP_output':
+        if mode not in ('MLP_output','MLP_output_unconditional'):
             direction=direction/max(float(np.linalg.norm(direction)),1e-8);rh=_mm(r,direction);qh=_mm(q,direction)
         score,fit=_append(ep,rh,qh)
     info=dict(source_contract(8),mode=mode,gate=gate,weight_factor=factor_info,fit=fit,inactive=False,
         observation_cache_hit=hit,module_path=packet.get('module_path'),MLP_class=packet.get('MLP_class'),
         weight_array_sha256=array_hash(packet['weight']),bias_present=packet.get('bias_present'),bias_scope='source auxiliary scalar is centered; common output bias is removed by reference centering',
         observation_stage=packet['stage'],new_encoder_forwards=0 if hit else packet.get('actual_extra_forwards',0),
+        unconditional_same_capacity_control=mode in ('rowspace_unconditional','MLP_output_unconditional'),
         postprocess_seconds=time.perf_counter()-start,quality='unmeasured new tensor; synthetic fixture is not reachableRGB evidence')
     return finish(ep,score,mid,info)
 
 
 def install(methods,controls,requirements,contracts):
     methods['PRO30_M08']=mlp_null
-    for mode in ('MLP_output','full_activation','full_activation_alone','rowspace','random_kernel','final_nonlinear'):
+    for mode in ('MLP_output','full_activation','full_activation_alone','rowspace','random_kernel','final_nonlinear',
+                 'rowspace_unconditional','MLP_output_unconditional'):
         controls['PRO30_M08__'+mode]=partial(mlp_null,mode=mode)
     requirements['PRO30_M08']=['actual_last_MLP_down_input_RQ','actual_down_Linear_weight_and_sourcebinding','or boundinternal_encoder for genuine RGB re-extraction']
     contracts['PRO30_M08']=dict(source_contract(8),input_contract='N+X',host='B_R',

@@ -22,6 +22,7 @@ DEFAULT_MODULES = ('group_001_075', 'group_076_150', 'group_151_225', 'group_226
 SAFE_NAME = re.compile(r'^[A-Za-z0-9_.-]+$')
 FORBIDDEN_LABEL_KEYS = {'q_gt', 'query_gt', 'query_ground_truth', 'ground_truth',
                         'truth', 'query_mask', 'evaluation_rows', 'evaluation_metadata'}
+KNOWN_EPISODE_FACTORIES = {'pro30.runtime_inputs:bind': 'ics.pro30.runtime_inputs'}
 
 
 def file_sha(path):
@@ -85,17 +86,30 @@ def module_binding(name):
     return 'ics.' + package + '.' + basename, 'src/ics/' + package + '/' + basename + '.py'
 
 
+def episode_factory(binding):
+    """Only the reviewed inference-input adapter is dynamically selectable."""
+    if binding is None:
+        return None
+    if binding not in KNOWN_EPISODE_FACTORIES:
+        raise ValueError('Unknown episode factory: ' + str(binding))
+    return importlib.import_module(KNOWN_EPISODE_FACTORIES[binding]).bind
+
+
 def registry(modules):
     methods, controls = {}, {}
     for name in modules:
         module = importlib.import_module(module_binding(name)[0])
         for target, entries in ((methods, module.METHODS), (controls, module.CONTROLS)):
-            if set(target) & set(entries):
-                raise ValueError('Duplicate arm IDs across modules: ' + repr(set(target) & set(entries)))
+            duplicates = set(target) & set(entries)
+            conflicts = {identity for identity in duplicates
+                         if target[identity] is not entries[identity]}
+            if conflicts:
+                raise ValueError('Conflicting arm IDs across modules: ' + repr(conflicts))
             for identity, function in entries.items():
                 if not SAFE_NAME.fullmatch(identity) or not callable(function):
                     raise ValueError('Safe callable method/control IDs required')
-            target.update(entries)
+            target.update({identity: function for identity, function in entries.items()
+                           if identity not in duplicates})
     if set(methods) & set(controls):
         raise ValueError('Controls cannot also count as methods')
     return methods, controls
@@ -125,7 +139,9 @@ def verify_snapshots(run, hashes):
 
 def freeze_sources(out):
     sources = (list((ROOT / 'src/ics/astra300').glob('*.py'))
+               + list((ROOT / 'src/ics/astra300').glob('*.cpp'))
                + list((ROOT / 'src/ics/pro30').glob('*.py'))
+               + list((ROOT / 'src/ics/pro30').glob('*.cpp'))
                + list((ROOT / 'src/ics/cpu100').glob('*.py'))
                + list((ROOT / 'src/ics/methods').glob('*.py'))
                + [ROOT / 'src/ics/cpu100/common.py', ROOT / 'src/ics/cpu100/encoder.py',
@@ -230,12 +246,21 @@ def _rss_bytes():
 
 
 def one_episode(row, row_binding, out, modules, selected, selected_controls, source_hashes,
-                input_base=None, save_native_fields=False, host=None, model_dir=None, threads=1):
+                input_base=None, save_native_fields=False, host=None, model_dir=None, threads=1,
+                episode_factory_binding=None):
     import numpy as np
     from ics.astra300.common import (Result, load_episode, render, array_hash, ArtifactUnavailable)
     start_wall, start_cpu = time.monotonic(), time.process_time()
     case = Path(out) / row['id']; case.mkdir(exist_ok=False)
     write(case / 'input.json', row)
+    def progress(phase, arm=None, arm_start=None, **extra):
+        now = time.time()
+        write(case / 'progress.json', dict(id=row['id'], phase=phase, current_arm=arm,
+            current_arm_started_at_unix=arm_start,
+            current_arm_started_at_UTC=None if arm_start is None else time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime(arm_start)),
+            updated_at_unix=now, worker_pid=os.getpid(),
+            episode_elapsed_seconds=time.monotonic()-start_wall, query_GT_read=False, **extra))
+    progress('loading_native_episode')
     ep = load_episode(dict(row, artifacts={}))
     artifact_error = None; asset_bindings = []
     try:
@@ -263,6 +288,19 @@ def one_episode(row, row_binding, out, modules, selected, selected_controls, sou
                 raise ArtifactUnavailable('Independent artifact binding failed: ' + artifact_error)
             return original_require(episode, name)
         provider.require = bound_require
+    factory_receipt = None
+    if episode_factory_binding is not None:
+        factory = episode_factory(episode_factory_binding)
+        factory_start = time.time(); factory_wall, factory_cpu = time.monotonic(), time.process_time()
+        progress('binding_episode_factory', '__episode_factory__', factory_start,
+                 episode_factory=episode_factory_binding)
+        # Legal native artifacts/provider are bound first. The Pro30 adapter
+        # captures B's original weights before individual A/C cards change them.
+        ep = factory(ep, row, modules, selected + selected_controls, model_dir, threads)
+        factory_receipt = dict(binding=episode_factory_binding,
+            wall_seconds=time.monotonic()-factory_wall, cpu_seconds=time.process_time()-factory_cpu,
+            source_sha256=source_hashes['src/ics/pro30/runtime_inputs.py'],
+            included_in_episode_wall_seconds=True, query_GT_read=False)
     immutable = {name: getattr(ep, name) for name in ('q', 'r', 'wf', 'wvalid', 'q_valid', 'q_rgb', 'r_rgb', 'reference_mask')
                  if getattr(ep, name) is not None}
     immutable.update({'artifact:' + name: value for name, value in ep.artifacts.items() if isinstance(value, np.ndarray)})
@@ -279,6 +317,8 @@ def one_episode(row, row_binding, out, modules, selected, selected_controls, sou
         for name in set(owner.METHODS) | set(owner.CONTROLS):
             method_sources[name] = source_hashes[source_name]
     for name, function in arms.items():
+        arm_started_at = time.time()
+        progress('running_arm', name, arm_started_at, completed_arms=list(receipts))
         wall, cpu = time.monotonic(), time.process_time()
         before_encoder = ep.provider.cache.get('encoder')
         before = None if before_encoder is None else before_encoder.stats()
@@ -321,13 +361,17 @@ def one_episode(row, row_binding, out, modules, selected, selected_controls, sou
         record = dict(id=row['id'], arms=receipts, source_sha256=row['sha256'], producer=ep.producer,
                       input_row_sha256=file_sha(case / 'input.json'), native_array_hashes=array_hashes,
                       artifact_bindings=asset_bindings, artifact_binding_error=artifact_error,
+                      episode_factory=factory_receipt,
                       provider_receipt=provider_receipt, query_GT_read=False, row_binding=row_binding)
         write(case / 'receipt.json', record)
+        progress('arm_finished', name, arm_started_at, arm_state=receipts[name]['state'],
+                 completed_arms=list(receipts), arm_wall_seconds=receipts[name]['wall_seconds'])
     for name, value in immutable.items():
         if array_hash(value) != array_hashes[name]:
             raise ValueError('An arm mutated legal input: ' + name)
     if row_binding['inference_row_path'] is not None and file_sha(row_binding['inference_row_path']) != row_binding['inference_row_sha256']:
         raise ValueError('Inference-only row changed while running')
+    progress('episode_complete', completed_arms=list(receipts))
     return dict(id=row['id'], arms=receipts, producer=ep.producer, input_sha256=row['sha256'],
                 row_binding=row_binding, receipt_sha256=file_sha(case / 'receipt.json'),
                 wall_seconds=time.monotonic()-start_wall, cpu_seconds=time.process_time()-start_cpu)
@@ -346,6 +390,8 @@ def frozen_worker(frozen, *args):
 
 def infer(args):
     initialize(args.threads)
+    if args.episode_factory is not None and args.episode_factory not in KNOWN_EPISODE_FACTORIES:
+        raise ValueError('Unknown episode factory: ' + args.episode_factory)
     raw = args.manifest.read_text(); bound = json.loads(raw); assert_inference_only(bound)
     rows = bound if isinstance(bound, list) else bound['rows']
     input_base = args.input_base or (None if isinstance(bound, list) else bound.get('input_base'))
@@ -392,6 +438,7 @@ def infer(args):
                   renderer='Astra continuous physical interpolation once then strict threshold; explicit original bool allowed',
                   wait_inputs=args.wait_inputs, save_native_fields=args.save_native_fields,
                   host_manifest_sha256=host_manifest_hash, encoder_model_dir=model_dir,
+                  episode_factory=args.episode_factory,
                   extra_encoder_loading='lazy CPU provider only if a selected card requests it')
     write(args.out / 'config.json', config)
     expected_arms = selected + selected_controls
@@ -414,7 +461,7 @@ def infer(args):
                 waiting_reasons.pop(identity, None)
                 future = pool.submit(frozen_worker, str(frozen), row, binding, str(args.out), args.modules,
                                      selected, selected_controls, source_hashes, input_base, args.save_native_fields,
-                                     host_mapping.get(identity), model_dir, args.threads)
+                                     host_mapping.get(identity), model_dir, args.threads, args.episode_factory)
                 future_rows[future] = identity; queued.add(identity)
             if future_rows:
                 done, _ = concurrent.futures.wait(future_rows, timeout=1., return_when=concurrent.futures.FIRST_COMPLETED)
@@ -586,6 +633,8 @@ def main():
     inference.add_argument('--threads', type=int, default=2); inference.add_argument('--out', type=Path, required=True)
     inference.add_argument('--input-base', type=Path); inference.add_argument('--wait-inputs', action='store_true')
     inference.add_argument('--host-manifest', type=Path); inference.add_argument('--encoder-model-dir', type=Path)
+    inference.add_argument('--episode-factory', choices=tuple(KNOWN_EPISODE_FACTORIES),
+                           help='Known inference-only adapter, after native artifacts/provider binding')
     inference.add_argument('--wait-timeout', type=float); inference.add_argument('--save-native-fields', action='store_true')
     scoring = stages.add_parser('score'); scoring.add_argument('--run', type=Path, required=True)
     scoring.add_argument('--evaluation-rows', type=Path, required=True); scoring.add_argument('--data', type=Path, required=True)
