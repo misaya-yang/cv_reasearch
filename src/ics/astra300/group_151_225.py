@@ -45,20 +45,24 @@ def _mixture_fit(q, anchors, variance, anchor_strength, count_penalty, proposed,
     em_steps=0
     def fit(means, weights,iterations):
         nonlocal em_steps
-        best=None
-        for _ in range(iterations):
-            em_steps+=1
+        def evaluate(means,weights):
             distance=np.maximum(0.,np.sum(q*q,axis=1)[:,None]+np.sum(means*means,axis=1)-2*dh.mm(q,means.T))
             logs=np.log(np.maximum(weights,1e-12))-distance/(2*variance)-.5*d*np.log(2*np.pi*variance)
-            ll=logsumexp(logs,axis=1); responsibilities=np.exp(logs-ll[:,None])
+            ll=logsumexp(logs,axis=1)
             objective=float(-ll.sum()+anchor_strength*np.sum((means[:nf]-anchors)**2)/(2*variance)
                             +count_penalty*(len(means)-nf))
-            if best is None or objective<best[0]:
-                best=(objective,means.copy(),weights.copy(),logs.copy())
+            return objective,logs,ll
+        objective,logs,ll=evaluate(means,weights)
+        best=(objective,means.copy(),weights.copy(),logs.copy())
+        for _ in range(iterations):
+            em_steps+=1
+            responsibilities=np.exp(logs-ll[:,None])
             mass=responsibilities.sum(axis=0)
             updated=dh.mm(responsibilities.T,q)/np.maximum(mass[:,None],1e-12)
             updated[:nf]=(dh.mm(responsibilities[:,:nf].T,q)+anchor_strength*anchors)/(mass[:nf,None]+anchor_strength)
             means=updated; weights=np.maximum(mass,1e-12)/max(float(mass.sum()),1e-12)
+            objective,logs,ll=evaluate(means,weights)
+            if objective<best[0]:best=(objective,means.copy(),weights.copy(),logs.copy())
         return best
     # One candidate has at most TWENTY EM updates in total. Four initialize the
     # inherited model; each of up to eight birth proposals gets two updates.

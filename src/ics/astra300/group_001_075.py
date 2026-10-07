@@ -649,3 +649,7 @@ from .a_observations_021_048 import install as _install_observations
 _install_observations(register,REQUIREMENTS,METHODS,CONTROLS,RECIPES)
 from .a_algorithms_034_050 import install as _install_034_050
 _install_034_050(register,REQUIREMENTS,METHODS,CONTROLS,RECIPES)
+from .a_context_034_049 import install as _install_context
+_install_context(register,REQUIREMENTS,METHODS,CONTROLS,RECIPES)
+from .a_parts_034_046 import install as _install_parts
+_install_parts(register,REQUIREMENTS,METHODS,CONTROLS,RECIPES)

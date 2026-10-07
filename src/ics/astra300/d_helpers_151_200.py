@@ -252,11 +252,24 @@ def source_modes(x,k,*,spherical=True,weights=None):
     x=np.asarray(x,float)
     if len(x)<8:return np.empty((0,x.shape[1])),np.empty(0,int)
     count=min(int(k),len(x)//8)
-    while count>0:
-        centers,assignment=kmeans(x,count,spherical=spherical,weights=weights)
-        if min(np.bincount(assignment,minlength=len(centers)))>=8:return centers,assignment
-        count-=1
-    return np.empty((0,x.shape[1])),np.empty(0,int)
+    centers,assignment=kmeans(x,count,spherical=spherical,weights=weights)
+    weights=np.ones(len(x)) if weights is None else np.asarray(weights,float)
+    # A single twenty-round clustering, followed by deterministic pooling.
+    # No new twenty-round restart is hidden in the eight-sample correction.
+    while len(centers)>1:
+        counts=np.bincount(assignment,minlength=len(centers));small=np.flatnonzero(counts<8)
+        if not len(small):break
+        j=int(small[np.argmin(counts[small])]);targets=np.flatnonzero(np.arange(len(centers))!=j)
+        dest=int(targets[np.argmin(np.sum((centers[targets]-centers[j])**2,axis=1))])
+        assignment[assignment==j]=dest
+        unique=np.unique(assignment);assignment=np.searchsorted(unique,assignment)
+        updated=[]
+        for group in range(len(unique)):
+            here=assignment==group;center=np.average(x[here],axis=0,weights=weights[here])
+            if spherical:center=center/max(float(np.linalg.norm(center)),EPS)
+            updated.append(center)
+        centers=np.asarray(updated)
+    return centers,assignment
 
 
 def fps_rows(x, maximum):
@@ -446,3 +459,51 @@ def calibrate_field(ep,method,builder,configs=DEFAULT_CONFIGS):
     return finish(ep,np.asarray(field).ravel()-chosen[1],method,branch='source_selected_method',
                   configuration=chosen[0],source_error=best[0],source_threshold=chosen[1],
                   source_candidates=summaries,calibration_query='reference_spatial_pseudo_query',**info)
+
+
+def threshold_with_fallback(ep,score,selected,available,base):
+    inside=selected&available;outside=selected&~available
+    fm=ep.wf[selected].sum();bm=ep.wb[selected].sum()
+    if min(fm,bm)<=EPS:return 0.,np.inf,0
+    constant=ep.wf[outside&(base<=0)].sum()/fm+ep.wb[outside&(base>0)].sum()/bm
+    if not inside.any():return 0.,float(constant),0
+    order=np.flatnonzero(inside);order=order[np.argsort(score[order],kind='stable')];s=score[order]
+    a=np.r_[0.,np.cumsum(ep.wf[order])];b=np.r_[0.,np.cumsum(ep.wb[order])]
+    cuts=np.r_[0,np.flatnonzero(np.diff(s)>0)+1,len(s)]
+    errors=constant+a[cuts]/fm+(b[-1]-b[cuts])/bm
+    thresholds=np.empty(len(cuts));thresholds[0]=np.nextafter(s[0],-np.inf);thresholds[-1]=s[-1]
+    if len(cuts)>2:
+        c=cuts[1:-1];thresholds[1:-1]=s[c-1]+(s[c]-s[c-1])/2
+    tied=np.flatnonzero(np.abs(errors-errors.min())<1e-12)
+    edits=[int(np.count_nonzero((score[inside]>thresholds[j])!=(base[inside]>0))) for j in tied]
+    winner=int(tied[np.argmin(edits)])
+    return float(thresholds[winner]),float(errors[winner]),min(edits)
+
+
+def calibrate_fallback(ep,method,builder,configs=DEFAULT_CONFIGS):
+    """C preserves the actual unshifted B0 wherever the new cue is undefined."""
+    validate(ep);base=b0_field(ep);spatial=folds(ep)
+    if not spatial:return finish(ep,base,method,branch='missing_role_after_fold_merge_B0')
+    selected=np.zeros(len(ep.r),bool);base_oof=np.zeros(len(ep.r));episodes=[]
+    for train,held in spatial:
+        reduced=restricted(ep,train);selected|=held;episodes.append((reduced,held))
+        base_oof[held]=b0_field(reduced,ep.r[held])
+    best=(risk(ep,base_oof,selected),0,-1);chosen=None;summaries=[]
+    for j,config in enumerate(configs):
+        score=np.zeros(len(ep.r));available=np.zeros(len(ep.r),bool);legal=True
+        for reduced,held in episodes:
+            scorer,info=builder(reduced,config)
+            if scorer is None:legal=False;break
+            ids=np.flatnonzero(held);score[held]=scorer.source_score(ids);available[held]=scorer.source_available(ids)
+        if not legal:summaries.append(dict(config=config,legal=False));continue
+        threshold,error,edits=threshold_with_fallback(ep,score,selected,available,base_oof)
+        summaries.append(dict(config=config,source_error=error,threshold=threshold,edits=edits,new_cue_samples=int(available[selected].sum())))
+        if (error,edits,j)<best:best=(error,edits,j);chosen=(config,threshold)
+    if chosen is None:return finish(ep,base,method,branch='source_selected_zero_adaptation',source_candidates=summaries)
+    scorer,info=builder(ep,chosen[0])
+    if scorer is None:return finish(ep,base,method,branch='full_fit_unavailable_B0')
+    field=base.copy();available=np.asarray(scorer.query_available,bool)
+    field[available]=scorer(ep.q)[available]-chosen[1]
+    return finish(ep,field,method,branch='source_selected_method',source_candidates=summaries,
+                  source_threshold=chosen[1],configuration=chosen[0],fallback_points=int((~available&(ep.q_valid>0)).sum()),
+                  undefined_cue_restores_B0_margin_cut_zero=True,**info)

@@ -371,42 +371,56 @@ def _mutual_shift(q, r):
     return geometric_median(q[qi] - r[qr[qi]])
 
 
-def _domain_shift(c, y, remove=False):
+def _domain_shift(c, y, remove=False,domain=None):
     rf = c.r[c.F]
     if remove:
         labels = (rf @ c.fm.T).argmax(1)
         biggest = int(np.argmax(np.bincount(labels, minlength=len(c.fm))))
         rf = rf[labels != biggest]
-    df = _mutual_shift(c.q[y], rf)
-    db = _mutual_shift(c.q[~y], c.r[c.B])
+    inside=np.ones(len(y),bool) if domain is None else np.asarray(domain,bool)
+    outside=~inside if domain is not None else np.ones(len(y),bool)
+    if domain is not None:
+        outside=ndimage.binary_dilation(inside.reshape(c.hw),iterations=2).ravel()&~inside
+    df = _mutual_shift(c.q[y&inside], rf)
+    db = _mutual_shift(c.q[~y&outside], c.r[c.B])
     if df is None or db is None or df @ db <= 0:
         return np.zeros(c.q.shape[1])
     direction = unit(unit(df) + unit(db))
     blocks = quarters(c.rhw)
     shifts = []
     for a, b in combinations(range(4), 2):
-        if (c.valid & (blocks == a)).any() and (c.valid & (blocks == b)).any():
-            shifts.append(np.linalg.norm(c.r[c.valid & (blocks == a)].mean(0) - c.r[c.valid & (blocks == b)].mean(0)))
+        for role in (c.F,c.B):
+            if (role&(blocks==a)).any() and (role&(blocks==b)).any():
+                shifts.append(np.linalg.norm(c.r[role&(blocks==a)].mean(0)-c.r[role&(blocks==b)].mean(0)))
     cap = float(np.median(shifts)) if shifts else 0.
     return direction * min(cap, max(0., float((df @ direction + db @ direction) / 2)))
 
 
 def f277(c, weight=1., control=False):
-    _pure_roles(c); n = len(c.q)
+    _pure_roles(c); n = len(c.q);pieces=c.P;ownership=_piece_ownership(pieces,c.hw);cache={}
     def objective(y):
-        shifts = [_domain_shift(c, y)] if control else [_domain_shift(c, y), _domain_shift(c, y, True)]
-        fees = []
-        for delta in shifts:
-            moved = unit(c.q - delta)
-            df = 1 - np.max(moved @ c.fm.T, axis=1)
-            db = 1 - np.max(moved @ c.bm.T, axis=1)
-            fees.append(np.where(y, df, db))
-        # Renormalization is essential: this is not a constant logit shift.
-        fit = np.max(fees, axis=0).sum()
-        alignment = np.sum(np.linalg.norm(unit(c.q[~y] - shifts[0]) - c.q[~y], axis=1))
-        return c.energy(y) + weight * (fit + alignment)
+        fit=0.
+        for j,p in enumerate(pieces):
+            roi=ndimage.binary_dilation(p.reshape(c.hw),iterations=2).ravel()
+            key=(j,np.packbits(y[roi]).tobytes())
+            if key not in cache:
+                shifts=[_domain_shift(c,y,domain=p)] if control else [_domain_shift(c,y,domain=p),_domain_shift(c,y,True,domain=p)]
+                ids=ownership==j;fees=[]
+                for delta in shifts:
+                    moved=unit(c.q[ids]-delta)
+                    df=1-(moved@c.fm.T).max(1);db=1-(moved@c.bm.T).max(1)
+                    fees.append(np.where(y[ids],df,db))
+                halo=roi&~p&~y
+                alignment=float(np.sum(np.linalg.norm(unit(c.q[halo]-shifts[0])-c.q[halo],axis=1)))
+                cache[key]=float(np.max(fees,axis=0).sum()+alignment)
+                # Cache contains exact candidate/local-label sufficient state;
+                # it never turns a whole-query shift into a local shift.
+                if len(cache)>32768:cache.pop(next(iter(cache)))
+            fit+=cache[key]
+        return c.energy(y)+weight*fit
     state, info = search_labels(c, objective, starts=c.Q)
-    return result(c, labels=state[:n], mechanism='F277_leave_dominant_double_side_renormalized', **info)
+    return result(c, labels=state[:n], mechanism='F277_candidate_local_leave_dominant_double_side_renormalized',
+                  candidate_domains=len(pieces),single_pixel_responsibility=True,control=control,**info)
 
 
 def f278(c, weight=1., control=False):

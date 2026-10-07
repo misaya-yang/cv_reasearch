@@ -8,7 +8,7 @@ from . import e226_250 as B
 
 
 def _cut(problem,evidence,pair_extra=None):
-    from ics.methods.pro_paired_environment import exact_potts_cut
+    from .e_float_cut import exact_potts_cut
     U=problem.U.ravel();u=np.clip(U,H.EPS,1-H.EPS)
     unary=np.log(u/(1-u))+np.asarray(evidence,float).ravel()
     edges,cap=H.rgb_edges(problem.ep.q_rgb)
@@ -27,22 +27,24 @@ def _native_fields(problem,role='q',wf=None,wvalid=None):
     z=ep.q if role=='q' else ep.r;hw=ep.q_hw if role=='q' else ep.r_hw
     shape=ep.original_shape if role=='q' else ep.r_rgb.shape[:2]
     g=ep.query_geometry if role=='q' else ep.reference_geometry
-    ff=np.empty(len(z));bb=np.empty(len(z))
-    for start in range(0,len(z),128):
-        sim=z[start:start+128]@ep.r.T
-        ff[start:start+128]=sim[:,f].max(1);bb[start:start+128]=sim[:,b].max(1)
-    return H.native_to_original(ff.reshape(hw),shape,g),H.native_to_original(bb.reshape(hw),shape,g)
+    def build():
+        ff=np.empty(len(z));bb=np.empty(len(z));full=H.similarity(z,ep.r)
+        for start in range(0,len(z),128):
+            sim=z[start:start+128]@ep.r.T if full is None else full[start:start+128]
+            ff[start:start+128]=sim[:,f].max(1);bb[start:start+128]=sim[:,b].max(1)
+        return H.native_to_original(ff.reshape(hw),shape,g),H.native_to_original(bb.reshape(hw),shape,g)
+    return H.derived(H.cache_key('native_role_max_fields',z,ep.r,wf,wvalid,hw,shape,g),build)
 
 
 def _lifting_design(rgb,u,fsim,bsim,centers=None):
-    shape=u.shape;ids=np.arange(u.size).reshape(shape)
+    shape=u.shape
     if centers is None:centers=np.arange(u.size)
     centers=np.asarray(centers,int);cy,cx=np.divmod(centers,shape[1])
-    colour=np.asarray(rgb,float).reshape(-1,3)/255.;uf=u.ravel()
+    colour=H.normalized_rgb(rgb);uf=u.ravel()
     f,b=fsim.ravel(),bsim.ravel();features=[];values=[]
     for dy in range(-2,3):
         for dx in range(-2,3):
-            ni=ids[np.clip(cy+dy,0,shape[0]-1),np.clip(cx+dx,0,shape[1]-1)]
+            ni=np.clip(cy+dy,0,shape[0]-1)*shape[1]+np.clip(cx+dx,0,shape[1]-1)
             features.append(np.stack((np.sum((colour[ni]-colour[centers])**2,1),
                 uf[ni]-uf[centers],np.abs(uf[ni]-uf[centers]),f[ni]-f[centers],
                 b[ni]-b[centers],np.full(len(centers),dy/2),np.full(len(centers),dx/2)),1))
@@ -50,12 +52,11 @@ def _lifting_design(rgb,u,fsim,bsim,centers=None):
     return np.stack(features,1).astype(np.float32),np.stack(values,1).astype(np.float32)
 
 
-def e243_source_learned_lift(problem,control=None):
-    ep=problem.ep;qfields=_native_fields(problem,'q')
-    if qfields is None:return problem.U.copy(),dict(status='fallback_missing_pure_source_role')
+def _source_lift_fit(problem):
+    ep=problem.ep
     valid=problem.rvalid;ids=np.flatnonzero(valid)
     if not np.any(valid&problem.labels) or not np.any(valid&~problem.labels):
-        return problem.U.copy(),dict(status='fallback_missing_two_source_targets')
+        return dict(fallback=dict(status='fallback_missing_two_source_targets'))
     # Same per-token budget prevents P x 25 x F from becoming a hidden memory
     # assumption. Every reference token is represented; no query labels select.
     # A whole coarse field and every neighbour response of a training example
@@ -63,6 +64,7 @@ def e243_source_learned_lift(problem,control=None):
     # per-token OOF fields first would leak held labels through neighbouring
     # predictions whose banks contained that block.
     h,w0=ep.r_hw;yy,xx=np.indices(ep.r_hw);designs=[];observations=[];groups=[];valid_folds=0
+    grouped_pixels,token_offsets=H.token_pixel_rows(problem.rtokens,valid,len(ep.r))
     for by in range(2):
         for bx in range(2):
             y0,y1=by*h//2,(by+1)*h//2;x0,x1=bx*w0//2,(bx+1)*w0//2
@@ -76,21 +78,23 @@ def e243_source_learned_lift(problem,control=None):
             coarse=H.native_to_original(native.reshape(ep.r_hw),ep.r_rgb.shape[:2],ep.reference_geometry)
             centers=[]
             for token in np.flatnonzero(test&(ep.wvalid>0)):
-                points=np.flatnonzero(valid&(problem.rtokens==token))
+                points=grouped_pixels[token_offsets[token]:token_offsets[token+1]]
                 if len(points):centers.append(B._spread_rows(points,16))
             if not centers:continue
             centers=np.concatenate(centers);x,v=_lifting_design(ep.r_rgb,coarse,*fields,centers)
             groups.append(centers);designs.append(x);observations.append(v);valid_folds+=1
-    if valid_folds<2:return problem.U.copy(),dict(status='fallback_insufficient_source_lifting_tasks',valid_source_folds=valid_folds)
+    if valid_folds<2:return dict(fallback=dict(status='fallback_insufficient_source_lifting_tasks',valid_source_folds=valid_folds))
     train=np.concatenate(groups);psi=np.concatenate(designs);values=np.concatenate(observations)
     w=H.balanced_weights(problem.labels[train],np.ones(len(train),bool),problem.rtokens[train])
+    if w is None:
+        # Some real references have both pixel roles, but every legal held
+        # block with a two-role bank contains only one sampled target role.
+        # No class-balanced objective exists for those tasks.
+        return dict(fallback=dict(status='fallback_source_lifting_tasks_missing_two_target_roles',
+              valid_source_folds=valid_folds,train_source_pixels=len(train),
+              sampled_foreground=int(problem.labels[train].sum()),sampled_background=int((~problem.labels[train]).sum())))
     target=problem.labels[train].astype(float);theta=np.zeros(7)
     best=theta.copy();bestloss=np.inf;losses=[]
-    linear=None
-    if control=='linear':
-        inputs=np.concatenate((psi.reshape(len(psi),-1),values),1)
-        linear=H.fit_pixel_logistic(inputs,np.zeros((1,1)),np.zeros(len(inputs),int),
-                                    target,np.ones(len(inputs),bool))
     for iteration in range(100):
         score=np.einsum('skf,f->sk',psi,theta)
         alpha=np.exp(score-logsumexp(score,axis=1,keepdims=True))
@@ -103,6 +107,22 @@ def e243_source_learned_lift(problem,control=None):
         # Fixed disclosed step. This is bounded nonconvex fitting, not a
         # Lipschitz/global-optimization claim about the learned lift.
         theta-=.05*gradient;losses.append(loss)
+    return dict(train=train,psi=psi,values=values,target=target,best=best,bestloss=bestloss,valid_folds=valid_folds)
+
+
+def e243_source_learned_lift(problem,control=None):
+    ep=problem.ep;qfields=_native_fields(problem,'q')
+    if qfields is None:return problem.U.copy(),dict(status='fallback_missing_pure_source_role')
+    key=H.cache_key('E243_same_source_learned_lift_fit',ep.r_rgb,ep.r,ep.wf,ep.wvalid,
+          problem.labels,problem.rvalid,ep.r_hw,ep.reference_geometry)
+    fitted=H.derived(key,lambda:_source_lift_fit(problem))
+    if 'fallback' in fitted:return problem.U.copy(),dict(fitted['fallback'])
+    train=fitted['train'];psi=fitted['psi'];values=fitted['values'];target=fitted['target']
+    best=fitted['best'];bestloss=fitted['bestloss'];valid_folds=fitted['valid_folds'];linear=None
+    if control=='linear':
+        inputs=np.concatenate((psi.reshape(len(psi),-1),values),1)
+        linear=H.fit_pixel_logistic(inputs,np.zeros((1,1)),np.zeros(len(inputs),int),
+                                    target,np.ones(len(inputs),bool))
     result=np.empty(problem.U.size);qU=problem.U
     if control=='uniform':best=np.zeros_like(best)
     for start in range(0,len(result),8192):
@@ -239,9 +259,14 @@ def e244_fragment_coexplanation(problem,control=None):
     if not retained:return problem.U.copy(),dict(status='fallback_no_directly_authenticated_fragment')
     groups=[p.copy() for p in retained];merges=0
     dim=x.shape[1]
+    colour_identity=H.array_identity(ep.q_rgb)
     def mdl(points):
-        model=H.fit_gmm(x[points],1)
-        return -float(model.log_density(x[points]).sum())+dim*np.log(1+len(points)),model
+        def build():
+            model=H.fit_gmm(x[points],1)
+            return -float(model.log_density(x[points]).sum())+dim*np.log(1+len(points)),model
+        # Preserve the exact ordered pixel set and EM/log-likelihood arithmetic.
+        # An unaffected group/pair is no longer refitted for every merge trial.
+        return H.derived(H.cache_key('E244_exact_group_MDL',colour_identity,np.asarray(points,int)),build)
     if control!='independent':
         while len(groups)>1:
             best=(0.,None)

@@ -1844,6 +1844,7 @@ def _layers(ctx,p,name):
 def _layer_fields(ctx,p,name):
     q=_layers(ctx,p,name);r=np.asarray(artifact(p.ep,'r_'+name));r=unit(r)
     if r.ndim!=3 or r.shape[1:]!=p.r.shape or q.shape[0]!=r.shape[0]:raise ValueError('reference/query actual layers differ')
+    if not np.allclose(r[-1],p.r,atol=2e-5,rtol=2e-5):raise ArtifactUnavailable('Reference layer artifact final state differs from the bound native unit episode')
     fields=[]
     excluded=()if ctx.fold is None else((ctx.fold,)if isinstance(ctx.fold,(int,np.integer))else tuple(ctx.fold))
     eligible=(p.rv>0)&~np.isin(p.rb,excluded)
@@ -1971,3 +1972,607 @@ register('C134',_c134,
          ['Four fixed reference crop boxes are the absolute 2×2 image quadrants; their borders are pseudo-edges without re-encoding.',
           'Every decoded station assigns its signed FG/BG label to its three inward tokens; overlapping corner stations are averaged, and all interior tokens retain u.'])
 CONTROLS['control_C134_independent_edge_stations']=lambda ep:_c134(ep,True)
+
+
+def _working_rgb(ctx,p):
+    from ics.cpu100.common import rgb_view
+    role='r'if ctx.source else'q'
+    try:image=rgb_view(p.ep,role).astype(np.float64)/255
+    except ValueError as error:raise ArtifactUnavailable('Original '+role+' RGB and exact recorded physical canvas required')from error
+    if image.shape[:2]!=(ctx.hw[0]*16,ctx.hw[1]*16):raise ValueError('Actual RGB canvas and native patch geometry differ')
+    return image
+
+
+def _encode_changed(ctx,p,image):
+    callback=artifact(p.ep,'frozen_encode_rgb');role='r'if ctx.source else'q'
+    feature=np.asarray(callback(role,image,working_canvas=True,side=image.shape[0]))
+    if feature.shape!=ctx.hw+(ctx.x.shape[1],)or not np.isfinite(feature).all():raise ValueError('Changed RGB encoder must return actual native patch features, not cached final features')
+    return unit(feature.reshape(ctx.x.shape))
+
+
+def _margin_changed(ctx,feature):
+    profile=dot(feature,ctx.bank)
+    return np.clip((profile[:,ctx.fg].max(axis=1)-profile[:,ctx.bg].max(axis=1))/ctx.scale,-4,4)
+
+
+def _pixel_mask(ctx,ids,shape):
+    mask=np.zeros(ctx.hw,bool);mask.ravel()[ids]=True
+    return np.repeat(np.repeat(mask,shape[0]//ctx.hw[0],axis=0),shape[1]//ctx.hw[1],axis=1)
+
+
+def _inner_boundary(ctx,c):
+    from scipy.ndimage import binary_erosion
+    mask=np.zeros(ctx.hw,bool);mask.ravel()[c]=True
+    inner=binary_erosion(mask,np.array([[0,1,0],[1,1,1],[0,1,0]]),border_value=0)
+    return np.flatnonzero(inner.ravel()),np.flatnonzero((mask&~inner).ravel())
+
+
+def _c103_descriptor(ctx,p):
+    from scipy.ndimage import label
+    original=_working_rgb(ctx,p);out=[]
+    for c in ctx.regions:
+        top=c[np.lexsort((c,-ctx.u[c]))[:max(1,int(np.ceil(len(c)/4)))]]
+        mask=np.zeros(ctx.hw,bool);mask.ravel()[top]=True
+        cc,count=label(mask,np.array([[0,1,0],[1,1,1],[0,1,0]]))
+        groups=[np.flatnonzero(cc.ravel()==k)for k in range(1,count+1)]
+        H=min(groups,key=lambda g:(-len(g),int(g.min())))
+        inner,boundary=_inner_boundary(ctx,c);preserved=np.r_[H,_ring(ctx,H,1)]
+        editable=np.setdiff1d(inner,preserved,assume_unique=False)
+        remaining=np.setdiff1d(c,H,assume_unique=True)
+        if not len(editable)or not len(boundary)or not len(remaining):out.append([np.nan]*4);continue
+        canvas=original.copy();pixels=_pixel_mask(ctx,editable,original.shape)
+        color=np.median(original[_pixel_mask(ctx,boundary,original.shape)],axis=0);canvas[pixels]=color
+        new=_margin_changed(ctx,_encode_changed(ctx,p,canvas));delta=ctx.u-new
+        outside=np.setdiff1d(np.flatnonzero(ctx.valid>0),c,assume_unique=True)
+        denominator=abs(delta[outside].mean())if len(outside)else 0.
+        out.append([ctx.u[remaining].mean(),delta[remaining].mean(),abs(delta[H].mean())/(denominator+1e-12),ctx.u[c].mean()])
+    return np.asarray(out)
+
+
+register('C103',region_method('C103',_c103_descriptor),
+         ['The largest four-connected component of the highest-u ceil(|C|/4) tokens is H; ties use the smallest row ID.',
+          'Only one-grid interior pixels outside H plus its one-grid buffer are replaced; the original candidate boundary median RGB fills them, and the complete changed image is genuinely re-encoded.'],
+         ('final_unit_dino','original_q_rgb','original_r_rgb','frozen_encode_rgb'))
+CONTROLS['control_C103_original_candidate_mean']=CONTROLS['control_C102_region_mean']
+
+
+def _c149_descriptor(ctx,p,static=False):
+    original=_working_rgb(ctx,p);out=[]
+    for c in ctx.regions:
+        inner,boundary=_inner_boundary(ctx,c)
+        if len(inner)<4:out.append([np.nan]*4);continue
+        ordered=np.sort(inner);shift=len(ordered)//2;changes=[]
+        for direction in(1,-1):
+            if static:
+                feature=ctx.x.copy();feature[ordered]=ctx.x[np.roll(ordered,direction*shift)]
+            else:
+                canvas=original.copy()
+                source=np.roll(ordered,direction*shift)
+                for target,origin in zip(ordered,source):
+                    ty,tx=np.unravel_index(target,ctx.hw);sy,sx=np.unravel_index(origin,ctx.hw)
+                    canvas[ty*16:(ty+1)*16,tx*16:(tx+1)*16]=original[sy*16:(sy+1)*16,sx*16:(sx+1)*16]
+                feature=_encode_changed(ctx,p,canvas)
+            changes.append(ctx.u-_margin_changed(ctx,feature))
+        out.append([ctx.u[c].mean(),np.mean([d[inner].mean()for d in changes]),
+                    np.mean([d[boundary].mean()for d in changes]),changes[0][inner].mean()-changes[1][inner].mean()])
+    return np.asarray(out)
+
+
+register('C149',region_method('C149',_c149_descriptor),
+         ['Candidate interior patches are cyclically shifted by floor(interior_count/2) in both signs, keeping every one-grid boundary patch and each patch internal RGB arrangement unchanged.',
+          'Interior/boundary response drops are averaged across the two actual changed-image encodings; their signed difference is retained.'],
+         ('final_unit_dino','original_q_rgb','original_r_rgb','frozen_encode_rgb'))
+CONTROLS['control_C149_static_descriptor_permutation']=region_method('control_C149_static_descriptor_permutation',lambda c,p:_c149_descriptor(c,p,True))
+
+
+def _encode_changed_with_attention(ctx,p,image):
+    from .internal_encoder import CaptureSession
+    callback=artifact(p.ep,'frozen_encode_rgb')
+    bound=getattr(callback,'__self__',None)
+    model=getattr(bound,'model',None)
+    if model is None:model=artifact(p.ep,'frozen_model')
+    if not hasattr(model,'blocks'):raise ArtifactUnavailable('Actual bound frozen DINO model required for changed-image attention capture')
+    block=len(model.blocks);capture=CaptureSession(model,attention_layers=(block,))
+    with capture.hooks():feature=_encode_changed(ctx,p,image)
+    if block not in capture.attention:raise ArtifactUnavailable('Changed-image encoder callback did not execute the supplied actual model')
+    return feature,capture.attention[block]
+
+
+def _replica_positions(ctx,c):
+    y,x=np.unravel_index(c,ctx.hw);height=int(y.max()-y.min()+1);width=int(x.max()-x.min()+1)
+    original_center=np.array([y.mean(),x.mean()]);grid=np.arange(len(ctx.x)).reshape(ctx.hw);options=[]
+    for row in range(ctx.hw[0]-height+1):
+        for col in range(ctx.hw[1]-width+1):
+            ids=grid[row:row+height,col:col+width].ravel()
+            if not np.all(ctx.valid[ids]>=1)or np.intersect1d(c,ids,assume_unique=True).size:continue
+            center=np.array([row+(height-1)/2,col+(width-1)/2]);distance=np.linalg.norm(center-original_center)
+            options.append((-distance,row,col,ids))
+    options.sort(key=lambda v:v[:3]);selected=[]
+    for option in options:
+        if any(np.intersect1d(option[3],old[3],assume_unique=True).size for old in selected):continue
+        selected.append(option)
+        if len(selected)==2:break
+    return selected,(int(y.min()),int(x.min()),height,width)
+
+
+def _c126_descriptor(ctx,p):
+    original=_working_rgb(ctx,p);A=_attention(ctx,p).mean(axis=0);out=[]
+    for c in ctx.regions:
+        positions,box=_replica_positions(ctx,c)
+        if len(positions)<2:out.append([np.nan]*7);continue
+        row,col,height,width=box;source=original[row*16:(row+height)*16,col*16:(col+width)*16].copy()
+        ring=_ring(ctx,c,1);copied=np.r_[positions[0][3],positions[1][3]]
+        ring=np.setdiff1d(ring,copied,assume_unique=False)
+        if not len(ring):out.append([np.nan]*7);continue
+        canvas=original.copy();changes=[];attention_drop=[]
+        oldmass=A[c][:,c].sum(axis=1).mean()
+        for _,dest_y,dest_x,ids in positions:
+            canvas[dest_y*16:(dest_y+height)*16,dest_x*16:(dest_x+width)*16]=source
+            feature,observed=_encode_changed_with_attention(ctx,p,canvas)
+            margin=_margin_changed(ctx,feature);changes.append(margin)
+            current=observed.weights(c+observed.prefix,c+observed.prefix).sum(axis=-1).mean()
+            attention_drop.append((oldmass-current)/max(oldmass,1e-12))
+        out.append([ctx.u[c].mean(),changes[0][c].mean()-ctx.u[c].mean(),changes[1][c].mean()-ctx.u[c].mean(),
+                    changes[0][ring].mean()-ctx.u[ring].mean(),changes[1][ring].mean()-ctx.u[ring].mean(),attention_drop[0],attention_drop[1]])
+    return np.asarray(out)
+
+
+register('C126',region_method('C126',_c126_descriptor),
+         ['Replica boxes are placed on the native patch lattice; legal boxes have fully physical support, overlap neither original C nor another replica, and maximize distance from C centroid.',
+          'Attention diversion is the signed relative drop of original-C sender attention to original-C receivers under the actual changed-image head capture; both one/two-copy responses are recorded.'],
+         ('final_unit_dino','original_q_rgb','original_r_rgb','frozen_encode_rgb','frozen_model','q_attention_final','r_attention_final'))
+CONTROLS['control_C126_margin_curve_only']=region_method('control_C126_margin_curve_only',lambda c,p:_c126_descriptor(c,p)[:,:5])
+
+
+def _exclude_folds(ctx,p,support):
+    excluded=()if ctx.fold is None else((ctx.fold,)if isinstance(ctx.fold,(int,np.integer))else tuple(ctx.fold))
+    return bool(excluded and np.any(np.isin(p.rb[support],excluded)))
+
+
+def _relation_kernel(ctx,p,sample_fn,dimension):
+    """Reference FF versus FB relations; BB contributes to neither library."""
+    rc=p.context(True,ctx.fold);relations,descriptors=sample_fn(rc,p)
+    data=[];labels=[];weights=[]
+    for (A,B),d in zip(relations,descriptors):
+        if _exclude_folds(ctx,p,np.r_[A,B])or not np.isfinite(d).any():continue
+        a=p.ep.wf[A].sum()/max(p.rv[A].sum(),1e-12);b=p.ep.wf[B].sum()/max(p.rv[B].sum(),1e-12)
+        fg=a*b;bg=a*(1-b)+(1-a)*b;mass=fg+bg
+        if mass<=0:continue
+        data.append(d);labels.append(fg/mass);weights.append(mass*np.mean(p.rv[np.r_[A,B]]))
+    return Kernel(np.asarray(data).reshape(-1,dimension),np.asarray(labels),np.asarray(weights))
+
+
+def _cross_band_relations(ctx):
+    from scipy.ndimage import label
+    structure=np.array([[0,1,0],[1,1,1],[0,1,0]])
+    negative=ctx.negative.reshape(ctx.hw);band,nb=label(negative,structure)
+    sides,_=label((ctx.valid.reshape(ctx.hw)>0)&~negative,structure)
+    eligible=[]
+    for C in ctx.regions:
+        identifiers=np.unique(sides.ravel()[C])
+        if len(identifiers)!=1 or identifiers[0]==0:continue
+        around=_ring(ctx,C,1);contacts=set(band.ravel()[around]);contacts.discard(0)
+        if contacts:eligible.append((C,int(identifiers[0]),contacts))
+    return [(A,B)for (A,a,aa),(B,b,bb)in itertools.combinations(eligible,2)if a!=b and aa&bb]
+
+
+def _region_relation_rows(ctx,p,relations,attention=True):
+    A=_attention(ctx,p).mean(axis=0)if attention else None
+    centers={c.tobytes():np.column_stack(np.unravel_index(c,ctx.hw)).mean(axis=0)for c in ctx.regions}
+    negative=[c for c in ctx.regions if np.mean(ctx.negative[c])>=.9]
+    rows=[]
+    for left,right in relations:
+        ca=centers[left.tobytes()];cb=centers[right.tobytes()]
+        distance=int(np.floor(np.linalg.norm(ca-cb)));cos=float(unit(ctx.x[left].mean(axis=0))@unit(ctx.x[right].mean(axis=0)))
+        if not attention:rows.append([ctx.u[left].mean(),ctx.u[right].mean(),cos]);continue
+        ab=A[np.ix_(left,right)].sum()/len(left);ba=A[np.ix_(right,left)].sum()/len(right)
+        controls=[]
+        for source,center in((left,ca),(right,cb)):
+            for bg in negative:
+                if np.intersect1d(source,bg,assume_unique=True).size:continue
+                if int(np.floor(np.linalg.norm(center-centers[bg.tobytes()])))==distance:
+                    controls.append(A[np.ix_(source,bg)].sum()/len(source)+A[np.ix_(bg,source)].sum()/len(bg))
+        rows.append([ab,ba,ab+ba-(np.mean(controls)if controls else np.nan),ctx.u[left].mean(),ctx.u[right].mean(),cos])
+    return np.asarray(rows).reshape(-1,6 if attention else 3)
+
+
+def _c132_samples(ctx,p,attention=True):
+    relations=_cross_band_relations(ctx)
+    return relations,_region_relation_rows(ctx,p,relations,attention)
+
+
+def _c132(ep,attention=True):
+    p=prepare(ep);deg=p.degenerate()
+    if deg is not None:return result(ep,deg[0],'C132',{'degenerate':deg[1]})
+    ctx=p.context();fn=lambda c,p:_c132_samples(c,p,attention)
+    model=_relation_kernel(ctx,p,fn,6 if attention else 3);pairs,d=fn(ctx,p);scores=np.maximum(model(d),0)
+    total=np.zeros(len(ctx.x));norm=np.zeros(len(ctx.x))
+    for (A,B),score in zip(pairs,scores):
+        if score<=0:continue
+        for C in(A,B):
+            points=C[ctx.broad[C]&~ctx.negative[C]]
+            total[points]+=score/len(C);norm[points]+=1/len(C)
+    h=np.divide(total,norm,out=np.zeros_like(total),where=norm>0);z=ctx.u+h;z[ctx.valid<=0]=-4
+    return result(ep,z,'C132',{'pairs':len(pairs),'source_pair_kernel_active':bool(model.active),'modified_existing_weak_points':int(np.sum(norm>0)),'BG_band_fill':False})
+
+
+register('C132',_c132,
+         ['A strong-BG band is a physical four-connected negative-anchor component; two candidates must lie entirely in different components after deleting the band and touch the same band.',
+          'Same-distance controls use floor(Euclidean centroid distance) buckets and candidates with at least .9 public negative-anchor fraction; missing controls are explicit missing coordinates.',
+          'Existing weak points mean frozen public weak-A membership without a strong-BG anchor; only positive FF-versus-FB kernel scores write there.'],
+         ('final_unit_dino','q_attention_final','r_attention_final'))
+CONTROLS['control_C132_endpoint_cosine']=lambda ep:_c132(ep,False)
+
+
+def _atom_interfaces(ctx):
+    owner=np.full(len(ctx.x),-1,int)
+    for k,C in enumerate(ctx.atoms):owner[C]=k
+    i,j=edges4(ctx.hw,ctx.valid);pairs={tuple(sorted((int(a),int(b))))for a,b in zip(owner[i],owner[j])if a>=0 and b>=0 and a!=b}
+    return [(ctx.atoms[a],ctx.atoms[b])for a,b in sorted(pairs)]
+
+
+def _c137_samples(ctx,p):
+    fields,layers=_layer_fields(ctx,p,'layer_tokens_mid_final');pairs=_atom_interfaces(ctx)
+    if len(fields)!=2:raise ValueError('C137 requires actual middle/final states')
+    final_cos=[float(unit(layers[-1,A].mean(axis=0))@unit(layers[-1,B].mean(axis=0)))for A,B in pairs]
+    cutoff=float(np.median(final_cos))if final_cos else -np.inf;chosen=[];rows=[]
+    for (A,B),cosine in zip(pairs,final_cos):
+        if cosine>=cutoff:continue
+        midcos=float(unit(layers[0,A].mean(axis=0))@unit(layers[0,B].mean(axis=0)))
+        owner=np.zeros(len(ctx.x),bool);owner[A]=True;i,j=edges4(ctx.hw,ctx.valid)
+        boundary_edges=(owner[i]&np.isin(j,B))|(owner[j]&np.isin(i,B))
+        boundary=np.unique(np.r_[i[boundary_edges],j[boundary_edges]])
+        change=np.mean(np.linalg.norm(layers[1,boundary]-layers[0,boundary],axis=1))if len(boundary)else np.nan
+        chosen.append((A,B));rows.append([(midcos-cosine)/max(1-midcos,.01),fields[1,A].mean()-fields[0,A].mean(),fields[1,B].mean()-fields[0,B].mean(),change,fields[1,A].mean(),fields[1,B].mean()])
+    return chosen,np.asarray(rows).reshape(-1,6)
+
+
+def _c137_descriptor(ctx,p,constant=False,mid_graph=False):
+    pairs,descriptors=_c137_samples(ctx,p);model=_relation_kernel(ctx,p,_c137_samples,6);scores=np.maximum(model(descriptors),0)
+    W=ctx.W.copy().tolil();count=0
+    if mid_graph:
+        from .group_076_150_common import graph4
+        _,layers=_layer_fields(ctx,p,'layer_tokens_mid_final');W=graph4(layers[0],ctx.hw,ctx.valid).tolil()
+    else:
+        for (A,B),score in zip(pairs,scores):
+            if score<=0:continue
+            cosine=dot(ctx.x[A],ctx.x[B]);right=np.argmax(cosine,axis=1);left=np.argmax(cosine,axis=0)
+            for k,v in enumerate(right):
+                if left[v]!=k:continue
+                a,b=int(A[k]),int(B[v]);weight=1. if constant else min(score,4.)
+                W[a,b]=float(W[a,b])+weight;W[b,a]=float(W[b,a])+weight;count+=1
+    z,code=G(ctx,W.tocsr())
+    return np.column_stack((ctx.u,z))
+
+
+register('C137',point_method('C137',_c137_descriptor),
+         ['Interface candidates are spatially adjacent atom pairs whose final feature-centroid cosine lies strictly below the median of all adjacent atom-pair cosines.',
+          'Pair descriptor uses relative middle-to-final cosine-distance change, each endpoint margin change, mean actual interface-token state change and final endpoint margins; only mutual nearest endpoint pairs receive positive calibrated jump weights.'],
+         ('final_unit_dino','q_layer_tokens_mid_final','r_layer_tokens_mid_final'))
+CONTROLS['control_C137_constant_jump']=point_method('control_C137_constant_jump',lambda c,p:_c137_descriptor(c,p,True))
+CONTROLS['control_C137_middle_graph']=point_method('control_C137_middle_graph',lambda c,p:_c137_descriptor(c,p,mid_graph=True))
+CONTROLS['control_C137_endpoint_layer_fields']=point_method('control_C137_endpoint_layer_fields',lambda c,p:_layer_fields(c,p,'layer_tokens_mid_final')[0].T)
+
+
+def _gap_relations(ctx):
+    grid=np.arange(len(ctx.x)).reshape(ctx.hw);out=[];seen=set()
+    foreground=[C for C in ctx.regions if ctx.u[C].mean()>0]
+    for A,B in itertools.combinations(foreground,2):
+        if np.intersect1d(A,B,assume_unique=True).size:continue
+        ya,xa=np.unravel_index(A,ctx.hw);yb,xb=np.unravel_index(B,ctx.hw)
+        if np.min(np.abs(ya[:,None]-yb[None])+np.abs(xa[:,None]-xb[None]))>3:continue
+        y0=min(ya.min(),yb.min());y1=max(ya.max(),yb.max())+1;x0=min(xa.min(),xb.min());x1=max(xa.max(),xb.max())+1
+        H=np.setdiff1d(grid[y0:y1,x0:x1].ravel(),np.r_[A,B]);H=H[ctx.valid[H]>0]
+        if not len(H):continue
+        # Keep only gap components that actually border both visible fragments.
+        from scipy.ndimage import label
+        mask=np.zeros(ctx.hw,bool);mask.ravel()[H]=True;cc,n=label(mask,np.array([[0,1,0],[1,1,1],[0,1,0]]))
+        for k in range(1,n+1):
+            h=np.flatnonzero(cc.ravel()==k);ring=_ring(ctx,h,1)
+            if not np.intersect1d(ring,A).size or not np.intersect1d(ring,B).size:continue
+            key=(A.tobytes(),B.tobytes(),h.tobytes())
+            if key not in seen:out.append((A,B,h));seen.add(key)
+    return out
+
+
+def _c140_samples(ctx,p,profile_only=False):
+    pairs=_gap_relations(ctx);attention=_attention(ctx,p).mean(axis=0);norm=_head_message_norm(ctx,p);regions=[];rows=[]
+    for A,B,H in pairs:
+        regions.append(H)
+        if profile_only:rows.append(np.r_[ctx.u[H].mean(),dot(ctx.x[H],p.r).mean(axis=0)]);continue
+        rows.append([attention[np.ix_(H,A)].sum()/len(H),attention[np.ix_(H,B)].sum()/len(H),
+                     attention[np.ix_(A,H)].sum()/len(A),attention[np.ix_(B,H)].sum()/len(B),norm[H].mean(),
+                     ctx.u[H].mean(),ctx.u[A].mean(),ctx.u[B].mean(),float(unit(ctx.x[A].mean(axis=0))@unit(ctx.x[B].mean(axis=0)))])
+    return regions,np.asarray(rows).reshape(-1,1+len(p.r)if profile_only else 9)
+
+
+def _c140(ep,profile_only=False):
+    z,info=dynamic_region_run(ep,lambda c,p:_c140_samples(c,p,profile_only));return result(ep,z,'C140',info)
+
+
+register('C140',_c140,
+         ['Neighboring positive-mean candidates are nonoverlapping and separated by at most three Manhattan grid steps; their union container is their axis-aligned bounding box.',
+          'Only physical gap components touching both fragments receive a descriptor and correction. Value-message norm is the actual full-AV per-head output norm, not rerouted or masked attention.'],
+         ('final_unit_dino','q_attention_final','r_attention_final','q_head_output_final','r_head_output_final'))
+CONTROLS['control_C140_gap_full_profile']=lambda ep:_c140(ep,True)
+CONTROLS['control_C140_head_point_readout']=point_method('control_C140_head_point_readout',lambda c,p:np.column_stack((c.u,_head_message_norm(c,p))))
+
+
+def _dct_inputs(shape,random=False):
+    height,width=shape;y=np.arange(height)+.5;x=np.arange(width)+.5
+    frequencies=sorted(((a,b)for a in range(9)for b in range(9)if a+b>0),key=lambda k:(sum(k),k))[:8]
+    directions=np.array([np.cos(np.pi*a*y[:,None]/height)*np.cos(np.pi*b*x[None,:]/width)for a,b in frequencies])
+    directions/=np.sqrt(np.mean(directions**2,axis=(1,2)))[:,None,None]
+    if random:
+        # An orthogonal rotation of the same eight-dimensional input subspace.
+        orthogonal,_=np.linalg.qr(np.random.default_rng(135).normal(size=(8,8)))
+        directions=np.einsum('ij,jyx->iyx',orthogonal,directions,optimize=False)
+    return directions
+
+
+def _c135_observations(p,source,random=False):
+    key=(source,random)
+    if not hasattr(p,'c135_observations'):p.c135_observations={}
+    if key in p.c135_observations:return p.c135_observations[key]
+    contexts=[p.context(source,fold)for fold in([None]+list(range(16))if source else[None])]
+    contexts=[c for c in contexts if len(c.fg)and len(c.bg)]
+    original=_working_rgb(contexts[0],p);directions=_dct_inputs(original.shape[:2],random)
+    partial={ctx.fold:[]for ctx in contexts};means={ctx.fold:np.zeros(len(ctx.x))for ctx in contexts}
+    # Only fields are retained; no 32-forward feature pool, caps or fake JVP.
+    for direction in directions:
+        fields={ctx.fold:[]for ctx in contexts}
+        for epsilon in(1/255,1/510):
+            for sign in(1,-1):
+                image=np.clip(original+sign*epsilon*direction[:,:,None],0,1)
+                feature=_encode_changed(contexts[0],p,image)
+                for ctx in contexts:
+                    field=_margin_changed(ctx,feature);fields[ctx.fold].append(field);means[ctx.fold]+=field/32
+        for ctx in contexts:
+            a,b,c,d=fields[ctx.fold];derivative=(a-b)/(2/255);fine=(c-d)/(2/510)
+            stable=np.abs(derivative-fine)/np.maximum(np.abs(fine),.01)<=.2
+            partial[ctx.fold].append((np.where(stable,fine,0),stable))
+    observation={}
+    for ctx in contexts:
+        derivative=np.column_stack([d for d,v in partial[ctx.fold]]);valid=np.column_stack([v for d,v in partial[ctx.fold]])
+        observation[ctx.fold]=(np.column_stack((derivative,valid.astype(float))),means[ctx.fold],valid)
+    p.c135_observations[key]=observation
+    return observation
+
+
+def _c135_descriptor(ctx,p,point_only=False,original=False,average=False,random=False):
+    from .group_076_150_common import mutual_graph
+    fingerprint,mean,valid=_c135_observations(p,ctx.source,random)[ctx.fold]
+    if point_only:return np.column_stack((ctx.u,fingerprint))
+    if average:return np.column_stack((ctx.u,mean))
+    W=mutual_graph(ctx.x,20);i,j=W.nonzero();yi,xi=np.unravel_index(i,ctx.hw);yj,xj=np.unravel_index(j,ctx.hw)
+    eligible=((yi-yj)**2+(xi-xj)**2<=64)&(ctx.valid[i]>0)&(ctx.valid[j]>0)
+    i,j=i[eligible],j[eligible];f=unit(fingerprint)
+    weight=np.maximum(np.einsum('id,id->i',f[i],f[j]),0)
+    # Tokens with no valid perturbation direction have no fingerprint edges.
+    weight[~valid[i].any(axis=1)|~valid[j].any(axis=1)]=0
+    Wj=sparse.csr_matrix((weight,(i,j)),shape=ctx.W.shape);z,code=G(ctx,Wj);baseline,_=G(ctx,W)
+    return np.column_stack((ctx.u,baseline,baseline if original else z))
+
+
+register('C135',point_method('C135',_c135_descriptor),
+         ['The first eight non-DC DCT modes use ascending (frequency sum,row frequency,column frequency), with RMS one; the same luminance scalar is added to all three RGB channels.',
+          'Exactly 32 actual floating-point forward views per image are encoded; both finite-difference steps and the .2 relative-stability test are applied before retaining fine-step derivatives.',
+          'Fingerprint cosine is on the literal 16-dimensional derivative-plus-validity vector, clipped below at zero; no-valid-direction tokens have no fingerprint edges. Native physical working canvas is required.'],
+         ('final_unit_dino','original_q_rgb','original_r_rgb','frozen_encode_rgb'))
+CONTROLS['control_C135_point_fingerprint']=point_method('control_C135_point_fingerprint',lambda c,p:_c135_descriptor(c,p,point_only=True))
+CONTROLS['control_C135_view_mean']=point_method('control_C135_view_mean',lambda c,p:_c135_descriptor(c,p,average=True))
+CONTROLS['control_C135_original_graph']=point_method('control_C135_original_graph',lambda c,p:_c135_descriptor(c,p,original=True))
+CONTROLS['control_C135_orthogonal_DCT_inputs']=point_method('control_C135_orthogonal_DCT_inputs',lambda c,p:_c135_descriptor(c,p,random=True))
+
+
+def _event_descriptor(ctx,nodes,node):
+    a,b=node['children'];A=nodes[a]['support'];B=nodes[b]['support'];H=node['bridge']
+    groups=(A,B,H);centers=[unit(ctx.x[C].mean(axis=0))if len(C)else None for C in groups]
+    cosine=[float(centers[i]@centers[j])if centers[i]is not None and centers[j]is not None else np.nan for i,j in((0,1),(0,2),(1,2))]
+    return np.r_[[ctx.u[C].mean()if len(C)else np.nan for C in groups],cosine,[np.mean(ctx.negative[C])if len(C)else np.nan for C in groups]]
+
+
+def _c133_library(ctx,p):
+    from .c_tree_076_150 import max_tree
+    rc=p.context(True,ctx.fold);nodes,_=max_tree(rc);data=[];labels=[]
+    for node in nodes:
+        if not node['event']:continue
+        groups=[nodes[c]['support']for c in node['children']]+[node['bridge']]
+        if _exclude_folds(ctx,p,np.concatenate(groups)):continue
+        coverage=[p.ep.wf[C].sum()/max(p.rv[C].sum(),1e-12)for C in groups]
+        labels.append(tuple(1 if c>=.9 else 0 if c<=.1 else 2 for c in coverage));data.append(_event_descriptor(rc,nodes,node))
+    model=Kernel(np.asarray(data).reshape(-1,9),np.full(len(data),.5));labels=np.asarray(labels).reshape(-1,3)
+    def cost(d):
+        standardized=model.standardize(np.asarray(d).reshape(1,-1));logk=-np.sum((model.d-standardized[0])**2,axis=1)/(2*model.sigma**2)
+        table=np.zeros((3,3,3))
+        for state in itertools.product(range(3),repeat=3):
+            at=np.all(labels==state,axis=1)
+            if at.any():table[state]=-(logsumexp(logk[at])-np.log(at.sum()))
+        return table
+    return cost,len(data)
+
+
+def _c133(ep,independent=False):
+    from .c_tree_076_150 import max_tree,decode
+    p=prepare(ep);deg=p.degenerate()
+    if deg is not None:return result(ep,deg[0],'C133',{'degenerate':deg[1]})
+    ctx=p.context();nodes,roots=max_tree(ctx);kernel,count=_c133_library(ctx,p);costs={}
+    if not independent:
+        for index,node in enumerate(nodes):
+            if node['event']:costs[index]=kernel(_event_descriptor(ctx,nodes,node))
+    mask,info=decode(ctx,nodes,roots,costs);mask[ctx.valid<=0]=False
+    return result(ep,2*mask.astype(float)-1,'C133',dict(info,source_event_samples=count,unseen_states='zero joint cost; independent leaf unary remains'))
+
+
+register('C133',_c133,
+         ['Equal-u plateaus enter together; on a merge with more than two old components the first row-ordered pair receives the actual new bridge, subsequent unions have no invented bridge potential.',
+          'Three hard reference states use actual whole-support coverage; an absent source joint state receives zero interaction cost, retaining independent -u_i*y_i leaf costs.',
+          'Every bridge is fully decoded as a constrained BG/FG/MIX leaf sequence and every original vertex is backtraced; energy ties first minimize S0 edits and then row labels.'])
+CONTROLS['control_C133_unary_tree_DP']=lambda ep:_c133(ep,True)
+
+
+def _widest_arm(ctx,domain,start,targets,foreground):
+    import heapq
+    if not len(targets):return np.nan
+    allowed=np.zeros(len(ctx.x),bool);allowed[domain]=True;role=expit(ctx.u if foreground else-ctx.u)
+    W=ctx.W.tocsr();strength=np.full(len(ctx.x),-np.inf);strength[start]=1.;queue=[(-1.,int(start))];wanted=set(map(int,targets))
+    while queue:
+        minus,node=heapq.heappop(queue);value=-minus
+        if value!=strength[node]:continue
+        if node in wanted:return value
+        for at in range(W.indptr[node],W.indptr[node+1]):
+            other=int(W.indices[at])
+            if not allowed[other]:continue
+            weight=float(W.data[at])*role[node]*role[other];proposal=min(value,weight)
+            if proposal>strength[other]:strength[other]=proposal;heapq.heappush(queue,(-proposal,other))
+    return np.nan
+
+
+def _c136_events(ctx,p,mode='both'):
+    from .c_tree_076_150 import max_tree
+    nodes,_=max_tree(ctx);events=[];rows=[]
+    for node in nodes:
+        if not node['event']or not len(node['bridge']):continue
+        A,B=[nodes[c]['support']for c in node['children']];peaks=[int(C[np.lexsort((C,-ctx.u[C]))[0]])for C in(A,B)]
+        h=int(node['bridge'].min());hy,hx=np.unravel_index(h,ctx.hw);yy,xx=np.indices(ctx.hw);domain=np.flatnonzero(((np.abs(yy-hy)+np.abs(xx-hx)<=2)&(ctx.valid.reshape(ctx.hw)>0)).ravel())
+        ay,ax=np.unravel_index(peaks[0],ctx.hw);by,bx=np.unravel_index(peaks[1],ctx.hw);axis=np.array([by-ay,bx-ax],float)
+        if np.linalg.norm(axis)==0:continue
+        dy,dx=np.unravel_index(domain,ctx.hw);coordinate=np.column_stack((dy-hy,dx-hx));projection=coordinate@axis;perpendicular=coordinate@np.array([-axis[1],axis[0]])
+        f=[]
+        for peak,C,sign in zip(peaks,(A,B),(-1,1)):
+            if peak in domain:targets=np.array([peak])
+            else:
+                target=domain[np.isin(domain,C)&(sign*projection>0)]
+                if len(target):
+                    distance=np.abs(np.unravel_index(target,ctx.hw)[0]-hy)+np.abs(np.unravel_index(target,ctx.hw)[1]-hx)
+                    targets=target[distance==distance.max()]
+                else:targets=np.empty(0,int)
+            f.append(_widest_arm(ctx,domain,h,targets,True))
+        b=[_widest_arm(ctx,domain,h,domain[ctx.negative[domain]&(sign*perpendicular>0)],False)for sign in(-1,1)]
+        fstrength=min(f)if np.isfinite(f).all()else np.nan;bstrength=min(b)if np.isfinite(b).all()else np.nan
+        identity=float(np.linalg.norm(ctx.profile[peaks[0]]-ctx.profile[peaks[1]]));row=[ctx.u[h],fstrength,bstrength,identity]
+        if mode=='F':row[2]=np.nan
+        if mode=='u':row[1:]=[np.nan]*3
+        if mode=='profile':row=np.r_[ctx.u[h],dot(ctx.x[domain],p.r).mean(axis=0)]
+        events.append((h,domain));rows.append(row)
+    return events,np.asarray(rows).reshape(-1,1+len(p.r)if mode=='profile'else 4)
+
+
+def _c136(ep,mode='both'):
+    p=prepare(ep);deg=p.degenerate()
+    if deg is not None:return result(ep,deg[0],'C136',{'degenerate':deg[1]})
+    data=[];labels=[];weights=[];dimension=1+len(p.r)if mode=='profile'else 4
+    for fold in range(16):
+        ctx=p.context(True,fold)
+        if not len(ctx.fg)or not len(ctx.bg):continue
+        events,rows=_c136_events(ctx,p,mode)
+        for (h,domain),row in zip(events,rows):
+            if p.rb[h]!=fold:continue
+            data.append(row);labels.append(p.c[h]);weights.append(p.rv[h])
+    model=Kernel(np.asarray(data).reshape(-1,dimension),np.asarray(labels),np.asarray(weights));ctx=p.context();events,d=_c136_events(ctx,p,mode);h=model(d)
+    total=np.zeros(len(ctx.x));norm=np.zeros(len(ctx.x))
+    for (_,domain),score in zip(events,h):total[domain]+=score;norm[domain]+=1
+    z=ctx.u+np.divide(total,norm,out=np.zeros_like(total),where=norm>0);z[ctx.valid<=0]=-4
+    return result(ep,z,'C136',{'events':len(events),'source_event_samples':len(data),'kernel_active':bool(model.active),'missing_arms':'NaN with common missing flags, no forced cut'})
+
+
+register('C136',_c136,
+         ['Peak/saddle events are genuine upper-level-set merges in the maximum vertex-u bottleneck forest; joint plateaus use their lowest-row new bridge vertex as h.',
+          'Local arms use exact widest spatial paths in the Manhattan-radius-two neighborhood, with capacities w_ij*sigma(role*u_i)*sigma(role*u_j); out-of-window peaks use the furthest local points in their actual premerge component.',
+          'BG arms must reach actual negative anchors on opposite perpendicular sides of the peak axis; source labels are h coverage, and overlapping event-neighborhood increments are averaged uniformly.'])
+CONTROLS['control_C136_foreground_arms']=lambda ep:_c136(ep,'F')
+CONTROLS['control_C136_saddle_unary']=lambda ep:_c136(ep,'u')
+CONTROLS['control_C136_local_full_profile']=lambda ep:_c136(ep,'profile')
+
+
+def _triangles(graph,ids=None):
+    allowed=set(range(graph.shape[0]))if ids is None else set(map(int,ids));neighbors={i:set(map(int,graph.indices[graph.indptr[i]:graph.indptr[i+1]]))&allowed for i in allowed}
+    triples=[];wedges=[]
+    for center in sorted(allowed):
+        around=sorted(neighbors[center])
+        for a,b in itertools.combinations(around,2):
+            wedges.append((a,center,b))
+            if center<a<b and b in neighbors[a]:triples.append((center,a,b))
+    return np.asarray(triples,int).reshape(-1,3),np.asarray(wedges,int).reshape(-1,3)
+
+
+def _triangle_descriptor(ctx,triples):
+    if not len(triples):return np.empty((0,6))
+    a,b,c=triples.T
+    return np.column_stack((ctx.u[a],ctx.u[b],ctx.u[c],np.einsum('id,id->i',ctx.x[a],ctx.x[b]),np.einsum('id,id->i',ctx.x[b],ctx.x[c]),np.einsum('id,id->i',ctx.x[a],ctx.x[c])))
+
+
+def _c143_kernels(ctx,p):
+    from .group_076_150_common import mutual_graph
+    rc=p.context(True,ctx.fold);graph=mutual_graph(rc.x,20);triangles,_=_triangles(graph,np.flatnonzero(rc.valid>0));d=[];labels=[];weights=[]
+    for t in triangles:
+        if _exclude_folds(ctx,p,t):continue
+        coverage=p.c[t];fg=np.prod(coverage);mixed=1-fg-np.prod(1-coverage);mass=fg+mixed
+        if mass<=0:continue
+        for order in itertools.permutations(t):
+            d.append(_triangle_descriptor(rc,np.array([order]))[0]);labels.append(fg/mass);weights.append(mass/6)
+    tri=Kernel(np.asarray(d).reshape(-1,6),np.asarray(labels),np.asarray(weights))
+    i,j=graph.nonzero();rows=[];labels=[];weights=[]
+    for a,b in zip(i,j):
+        if _exclude_folds(ctx,p,np.array([a,b])):continue
+        ca,cb=p.c[a],p.c[b];fg=ca*cb;mix=ca*(1-cb)+(1-ca)*cb;mass=fg+mix
+        if mass<=0:continue
+        rows.append([rc.u[a],rc.u[b],float(rc.x[a]@rc.x[b])]);labels.append(fg/mass);weights.append(mass)
+    pair=Kernel(np.asarray(rows).reshape(-1,3),np.asarray(labels),np.asarray(weights))
+    return tri,pair
+
+
+def _swap_graph(ctx,graph,seed,strict=False):
+    rng=np.random.default_rng(seed);i,j=sparse.triu(graph,k=1).nonzero();edges=list(zip(map(int,i),map(int,j)));existing=set(edges);accepted=0
+    if len(edges)<2:return graph.copy(),0
+    affinity=[float(ctx.x[a]@ctx.x[b])for a,b in edges];cuts=np.quantile(affinity,np.linspace(0,1,11))
+    def signature(a,b):return(int(np.searchsorted(cuts,float(ctx.x[a]@ctx.x[b]),side='right')),int((ctx.u[a]>0)==(ctx.u[b]>0)))
+    for _ in range(8*len(edges)):
+        a,b=sorted(rng.choice(len(edges),2,replace=False));(u,v),(x,y)=edges[a],edges[b]
+        if rng.integers(2):x,y=y,x
+        if len({u,v,x,y})<4:continue
+        left=tuple(sorted((u,y)));right=tuple(sorted((x,v)))
+        if left==right or left in existing or right in existing:continue
+        if strict and sorted((signature(u,v),signature(x,y)))!=sorted((signature(*left),signature(*right))):continue
+        existing.remove(edges[a]);existing.remove(edges[b]);existing.add(left);existing.add(right);edges[a]=left;edges[b]=right;accepted+=1
+    rows=np.array(edges,int);out=sparse.csr_matrix((np.ones(2*len(rows)),(np.r_[rows[:,0],rows[:,1]],np.r_[rows[:,1],rows[:,0]])),shape=graph.shape)
+    assert np.array_equal(np.diff(out.indptr),np.diff(graph.indptr))
+    return out,accepted
+
+
+def _triangle_residual(ctx,graph,C,tri,pair,wedge_only=False):
+    triangles,wedges=_triangles(graph,C);edge_score=[]
+    if len(wedges):
+        a,b,c=wedges.T
+        for i,j in((a,b),(b,c)):
+            d=np.column_stack((ctx.u[i],ctx.u[j],np.einsum('id,id->i',ctx.x[i],ctx.x[j])));edge_score.append(pair(d))
+        independent=np.mean(edge_score[0]+edge_score[1])
+    else:independent=0.
+    if wedge_only:return float(independent)
+    if not len(triangles):return -float(independent)
+    scores=[]
+    for permutation in itertools.permutations(range(3)):scores.append(tri(_triangle_descriptor(ctx,triangles[:,permutation])))
+    return float(np.mean(scores)-independent)
+
+
+def _c143_descriptor(ctx,p,strict=False,wedge_only=False):
+    from .group_076_150_common import mutual_graph
+    graph=mutual_graph(ctx.x,20);tri,pair=_c143_kernels(ctx,p);permuted=[];accepted=[]
+    for seed in range(14300,14308):
+        changed,count=_swap_graph(ctx,graph,seed,strict);permuted.append(changed);accepted.append(count)
+    if not any(accepted):return np.full((len(ctx.regions),4),np.nan)
+    rows=[]
+    for C in ctx.regions:
+        residual=_triangle_residual(ctx,graph,C,tri,pair,wedge_only)
+        null=np.array([_triangle_residual(ctx,g,C,tri,pair,wedge_only)for g in permuted])
+        rows.append([ctx.u[C].mean(),residual,residual-null.mean(),null.var()])
+    return np.asarray(rows)
+
+
+register('C143',region_method('C143',_c143_descriptor),
+         ['The triple kernel averages all six endpoint orders. Independent wedge prediction is the sum of two FF-versus-mixed pair log ratios; residual is mean triangle score minus mean over all centered two-edge wedges.',
+          'Each of eight fixed-seed simple-graph nulls attempts exactly eight swaps per undirected edge; every accepted double-edge swap preserves all vertex degrees and fixed endpoint features. No legal swaps make the increment inactive.'])
+CONTROLS['control_C143_wedge_only']=region_method('control_C143_wedge_only',lambda c,p:_c143_descriptor(c,p,wedge_only=True))
+CONTROLS['control_C143_degree_homophily_null']=region_method('control_C143_degree_homophily_null',lambda c,p:_c143_descriptor(c,p,strict=True))
+ASSUMPTIONS['control_C143_degree_homophily_null']=['The stricter null additionally preserves the multiset of original decile cosine-homophily bins and current unary-sign homophily for each swapped edge pair; it does not preserve exact continuous cosine sums.']
+CONTROLS['control_C143_joint_three_attributes']=CONTROLS['control_C105_no_permutation']

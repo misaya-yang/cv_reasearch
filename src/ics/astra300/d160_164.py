@@ -37,12 +37,12 @@ def _d160_builder(ep,strength):
             held=selected&heldout; train=selected&training
             if held.any() and train.any():
                 spatial_dist.extend(dh.nearest_distance(rr[held],train).tolist())
-                if active:amplitude_pairs.extend(np.abs(ra[held,None]-ra[None,train]).ravel().tolist())
+                if active:amplitude_pairs.append(np.abs(ra[held,None]-ra[None,train]).ravel())
         width=max(float(np.median(spatial_dist)) if spatial_dist else 1.,1e-5)
         amplitude_width=1.
         if active:
             # Source spatial pairs only; no query amplitude labels enter widths.
-            amplitude_width=max(float(np.median(amplitude_pairs)) if amplitude_pairs else 1.,1e-5)
+            amplitude_width=max(float(np.median(np.concatenate(amplitude_pairs))) if amplitude_pairs else 1.,1e-5)
         classes.append((selected,reps,member,width,amplitude_width))
     def score(x,amplitude=None):
         values=[]
@@ -165,7 +165,7 @@ def _d161_builder(ep,config,mean=False):
     if len(rid)<8 or not _nonadjacent_both(ep,rid,qid):
         return None,dict(pairs=len(rid),reason='insufficient_BG_pairs')
     difference=ep.q[qid]-ep.r[rid]
-    _,group=dh.kmeans(difference,min(4,len(difference)))
+    _,group=dh.source_modes(difference,min(4,len(difference)))
     qualified=[]
     for k in np.unique(group):
         ids=np.flatnonzero(group==k)
@@ -320,12 +320,12 @@ def d163_control(ep):
 def _layer_features(ep,x,groups,reference,selected,k,mode):
     """Cross-spatial-block routing and CDF: a scored point never enters its null."""
     f,b,_=dh.pure(ep); sim=dh.mm(x,ep.r.T); target=np.max(sim[:,f],axis=1); original=dh.b0_field(ep,x)
-    output=np.c_[original,target]; counts=[]
+    output=np.c_[original,target]; counts=[];available=np.zeros(len(x),bool)
     for block in np.unique(groups):
         tested=groups==block; pool=selected&(groups!=block)
         if pool.sum()<8:
             counts.append(0);continue
-        centers,which=dh.kmeans(reference[pool],k)
+        centers,which=dh.source_modes(reference[pool],k)
         affinity=dh.mm(x[tested],centers.T); affinity-=np.max(affinity,axis=1,keepdims=True)
         routing=np.exp(affinity/.1); routing/=routing.sum(axis=1,keepdims=True)
         source_sim=dh.mm(reference[pool],ep.r[f].T); null=np.max(source_sim,axis=1)
@@ -340,8 +340,9 @@ def _layer_features(ep,x,groups,reference,selected,k,mode):
                 statistic=np.searchsorted(np.sort(values),target[tested],side='right')/len(values)
             transformed+=routing[:,layer]*statistic; good+=routing[:,layer]
         usable=good>1e-6; ids=np.flatnonzero(tested)[usable]
+        available[ids]=True
         output[ids,0]=transformed[usable]/good[usable]; counts.append(int(pool.sum()))
-    return output,counts
+    return output,counts,available
 
 
 def _d164_builder(ep,config,mode='cdf'):
@@ -349,9 +350,9 @@ def _d164_builder(ep,config,mode='cdf'):
     if not f.any() or not b.any():
         return None,{}
     source_groups=dh.blocks(ep.r_hw); query_groups=dh.blocks(ep.q_hw)
-    source_features,source_counts=_layer_features(ep,ep.r,source_groups,ep.r,b,k,mode)
+    source_features,source_counts,source_available=_layer_features(ep,ep.r,source_groups,ep.r,b,k,mode)
     query_neg=(dh.b0_field(ep)<0)&(ep.q_valid>0)
-    query_features,query_counts=_layer_features(ep,ep.q,query_groups,ep.q,query_neg,k,mode)
+    query_features,query_counts,query_available=_layer_features(ep,ep.q,query_groups,ep.q,query_neg,k,mode)
     model=dh.head(ep,source_features)
     def scorer(x):
         if x is ep.q:
@@ -359,16 +360,18 @@ def _d164_builder(ep,config,mode='cdf'):
         ids=np.argmax(dh.mm(x,ep.r.T),axis=1)
         return dh.predict(model,source_features[ids])
     scorer.source_score=lambda ids:dh.predict(model,source_features[ids])
+    scorer.source_available=lambda ids:source_available[ids]
+    scorer.query_available=query_available
     return scorer,dict(source_layer_pool_sizes=source_counts,query_layer_pool_sizes=query_counts,
                       background_layers=k,statistic=mode,scored_block_excluded_from_routing_and_CDF=True)
 
 
 def d164(ep):
-    return dh.calibrate(ep,'D164',_d164_builder)
+    return dh.calibrate_fallback(ep,'D164',_d164_builder)
 
 
 def d164_control(ep):
-    return dh.calibrate(ep,'D164_control_same_layers_zscore',lambda ep,c:_d164_builder(ep,c,'zscore'))
+    return dh.calibrate_fallback(ep,'D164_control_same_layers_zscore',lambda ep,c:_d164_builder(ep,c,'zscore'))
 
 
 METHODS={'D160':d160,'D161':d161,'D162':d162,'D163':d163,'D164':d164}

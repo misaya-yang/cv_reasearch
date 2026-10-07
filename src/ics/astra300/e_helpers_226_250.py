@@ -6,11 +6,90 @@ their MEAN host.  No model is loaded on import and no query labels are accepted.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from collections import OrderedDict
+import hashlib,json,threading
 import numpy as np
 from scipy import ndimage, sparse
 from scipy.special import expit, logsumexp
 
 EPS = 1e-6
+_CACHE_LOCK=threading.RLock()
+_SIMILARITIES=OrderedDict();_SIMILARITY_BYTES=0
+_DERIVED=OrderedDict();_DERIVED_BYTES=0
+SIMILARITY_CACHE_BYTES=512*1024*1024
+DERIVED_CACHE_BYTES=128*1024*1024
+_CACHE_STATS=dict(similarity_hits=0,similarity_misses=0,derived_hits=0,derived_misses=0)
+
+
+def array_identity(value):
+    a=np.ascontiguousarray(value)
+    return (a.shape,a.dtype.str,hashlib.blake2b(memoryview(a).cast('B'),digest_size=16).hexdigest())
+
+
+def cache_key(*values):
+    parts=[]
+    for value in values:
+        if isinstance(value,np.ndarray):parts.append(array_identity(value))
+        else:parts.append(json.dumps(value,sort_keys=True,default=str))
+    return tuple(parts)
+
+
+def _bytes(value):
+    if isinstance(value,np.ndarray):return value.nbytes
+    if isinstance(value,(list,tuple)):return sum(_bytes(v) for v in value)
+    if isinstance(value,dict):return sum(_bytes(v) for v in value.values())
+    if hasattr(value,'__dict__'):return _bytes(vars(value))
+    return 0
+
+
+def derived(key,build):
+    """Content-addressed, bounded exact reuse of deterministic E calculations."""
+    global _DERIVED_BYTES
+    with _CACHE_LOCK:
+        if key in _DERIVED:
+            _DERIVED.move_to_end(key);_CACHE_STATS['derived_hits']+=1;return _DERIVED[key]
+        _CACHE_STATS['derived_misses']+=1;value=build();size=_bytes(value)
+        if size<=DERIVED_CACHE_BYTES:
+            while _DERIVED and _DERIVED_BYTES+size>DERIVED_CACHE_BYTES:
+                _,old=_DERIVED.popitem(last=False);_DERIVED_BYTES-=_bytes(old)
+            _DERIVED[key]=value;_DERIVED_BYTES+=size
+        return value
+
+
+def similarity(q,r,chunk=128):
+    """Same native dot products, reused across masks/blocks/controls.
+
+    Dtype is deliberately retained: E243 fields originally use FP32 whereas
+    direct_u0 explicitly uses FP64. No quantization or feature substitution.
+    """
+    global _SIMILARITY_BYTES
+    q,r=np.asarray(q),np.asarray(r)
+    dtype=np.result_type(q.dtype,r.dtype)
+    if len(q)*len(r)*np.dtype(dtype).itemsize>SIMILARITY_CACHE_BYTES:return None
+    key=cache_key('native_dot_products',q,r,int(chunk))
+    with _CACHE_LOCK:
+        if key in _SIMILARITIES:
+            _SIMILARITIES.move_to_end(key);_CACHE_STATS['similarity_hits']+=1;return _SIMILARITIES[key]
+        _CACHE_STATS['similarity_misses']+=1
+        value=np.empty((len(q),len(r)),dtype=dtype)
+        for start in range(0,len(q),chunk):value[start:start+chunk]=q[start:start+chunk]@r.T
+        value.setflags(write=False)
+        while _SIMILARITIES and _SIMILARITY_BYTES+value.nbytes>SIMILARITY_CACHE_BYTES:
+            _,old=_SIMILARITIES.popitem(last=False);_SIMILARITY_BYTES-=old.nbytes
+        _SIMILARITIES[key]=value;_SIMILARITY_BYTES+=value.nbytes
+        return value
+
+
+def cache_stats():
+    return dict(_CACHE_STATS,similarity_bytes=_SIMILARITY_BYTES,derived_bytes=_DERIVED_BYTES,
+                similarity_byte_limit=SIMILARITY_CACHE_BYTES,derived_byte_limit=DERIVED_CACHE_BYTES)
+
+
+def clear_caches():
+    global _SIMILARITY_BYTES,_DERIVED_BYTES
+    with _CACHE_LOCK:
+        _SIMILARITIES.clear();_DERIVED.clear();_SIMILARITY_BYTES=_DERIVED_BYTES=0
+        for name in _CACHE_STATS:_CACHE_STATS[name]=0
 
 
 def native_to_original(field, shape, geometry):
@@ -72,7 +151,7 @@ def footprint(shape, hw, geometry):
                              shape=(np.prod(hw),np.prod(shape)))
 
 
-def pixel_phi(rgb):
+def _pixel_phi_uncached(rgb):
     """Fixed E242 RGB chromaticity, luminance and 3x3 gradients."""
     c = np.asarray(rgb,float)/255.
     l = c.mean(-1)
@@ -83,7 +162,7 @@ def pixel_phi(rgb):
                            np.hypot(gx,gy)[...,None]),axis=-1).reshape(-1,7)
 
 
-def texture_phi(rgb):
+def _texture_phi_uncached(rgb):
     """Fixed RGB/local texture representation; never a newly fitted backbone."""
     c = np.asarray(rgb,float)/255.
     l = c.mean(-1)
@@ -93,6 +172,28 @@ def texture_phi(rgb):
     gy = ndimage.sobel(l,0,mode='nearest')/8.
     return np.concatenate((c,avg[...,None],np.sqrt(var)[...,None],
                            gx[...,None],gy[...,None]),axis=-1).reshape(-1,7)
+
+
+def pixel_phi(rgb):
+    return derived(cache_key('fixed_pixel_phi',np.asarray(rgb)),lambda:_pixel_phi_uncached(rgb))
+
+
+def texture_phi(rgb):
+    return derived(cache_key('fixed_texture_phi',np.asarray(rgb)),lambda:_texture_phi_uncached(rgb))
+
+
+def normalized_rgb(rgb):
+    return derived(cache_key('original_RGB_div255',np.asarray(rgb)),lambda:np.asarray(rgb,float).reshape(-1,3)/255.)
+
+
+def token_pixel_rows(token_ids,valid,native_count):
+    """Same row-major per-token members, obtained with one stable grouping."""
+    token_ids=np.asarray(token_ids,int);valid=np.asarray(valid,bool)
+    def build():
+        points=np.flatnonzero(valid);order=np.argsort(token_ids[points],kind='stable')
+        counts=np.bincount(token_ids[points],minlength=native_count)
+        return points[order],np.r_[0,np.cumsum(counts)]
+    return derived(cache_key('physical_token_pixel_groups',token_ids,valid,native_count),build)
 
 
 def grid_edges(shape):
@@ -148,7 +249,7 @@ class PixelLogistic:
         return expit(colour@self.a+native[token_ids]+self.bias)
 
 
-def fit_pixel_logistic(phi,z,token_ids,labels,valid,max_steps=100):
+def _fit_pixel_logistic_uncached(phi,z,token_ids,labels,valid,max_steps=100):
     """C_E class-balanced L2 logistic, reg=1 and train-only scales.
 
     A conservative Lipschitz step uses the weighted feature Frobenius norm.
@@ -183,6 +284,12 @@ def fit_pixel_logistic(phi,z,token_ids,labels,valid,max_steps=100):
                               token_balanced=True,final_objective=loss))
 
 
+def fit_pixel_logistic(phi,z,token_ids,labels,valid,max_steps=100):
+    key=cache_key('source_balanced_L2_pixel_head',np.asarray(phi),np.asarray(z),np.asarray(token_ids),
+                  np.asarray(labels),np.asarray(valid),int(max_steps))
+    return derived(key,lambda:_fit_pixel_logistic_uncached(phi,z,token_ids,labels,valid,max_steps))
+
+
 @dataclass
 class DiagGMM:
     means: np.ndarray
@@ -196,11 +303,19 @@ class DiagGMM:
         return logsumexp(np.log(self.weights)[None,:]-.5*(d+norm),axis=1)
 
 
-def fit_gmm(x,k=2,steps=20):
+def _fit_gmm_uncached(x,k=2,steps=20):
     """Deterministic diagonal mixture with fixed, disclosed numerical floor."""
     x=np.asarray(x,float)
     if not len(x):return None
     k=min(k,len(x)); centers=[0]
+    if k==1 and steps>0:
+        # The one-component E step has responsibility exactly1 for every row.
+        # Its first M step is already the exact fixed point of all20 steps.
+        # Keep the original responsibility matrix/BLAS expression and order.
+        resp=np.ones((len(x),1),float);mass=resp.sum(0)
+        means=(resp.T@x)/np.maximum(mass[:,None],EPS)
+        variances=np.maximum((resp.T@(x*x))/np.maximum(mass[:,None],EPS)-means*means,1e-4)
+        return DiagGMM(means,variances,np.ones(1))
     for _ in range(1,k):
         dist=((x[:,None]-x[centers])**2).sum(2).min(1)
         centers.append(int(np.argmax(dist)))
@@ -215,6 +330,10 @@ def fit_gmm(x,k=2,steps=20):
         variances=np.maximum((resp.T@(x*x))/np.maximum(mass[:,None],EPS)-means*means,1e-4)
         weights=np.maximum(mass,EPS);weights/=weights.sum()
     return DiagGMM(means,variances,weights)
+
+
+def fit_gmm(x,k=2,steps=20):
+    return derived(cache_key('fixed_diagonal_GMM',np.asarray(x),int(k),int(steps)),lambda:_fit_gmm_uncached(x,k,steps))
 
 
 def diagonal_colour_evidence(qrgb,rrgb,rlabels,rvalid,k=2):
@@ -385,16 +504,16 @@ def two_ray_fit(x,c,e):
     return np.stack([a for a,b in ds],1)[rows,best],np.stack([b for a,b in ds],1)[rows,best],errors[rows,best]
 
 
-def direct_u0(q,r,wf,wvalid,chunk=128):
+def _direct_u0_uncached(q,r,wf,wvalid,chunk=128):
     """C_E U0, including the specified all-reference 16-NN coverage vote."""
     q,r=np.asarray(q,float),np.asarray(r,float)
     wf,wvalid=np.asarray(wf,float),np.asarray(wvalid,float)
     known=wvalid>0;coverage=np.divide(wf,wvalid,out=np.zeros_like(wf),where=known)
     if not known.any() or wf.sum()<=0:return np.zeros(len(q)),dict(status='empty_reference_foreground')
     f=known&(coverage>=.9);b=known&(coverage<=.1)
-    out=np.empty(len(q))
+    out=np.empty(len(q));full=similarity(q,r,chunk=chunk)
     for start in range(0,len(q),chunk):
-        sim=q[start:start+chunk]@r[known].T
+        sim=q[start:start+chunk]@r[known].T if full is None else full[start:start+chunk,known]
         if f.any() and b.any():
             s=sim[:,f[known]].max(1)-sim[:,b[known]].max(1)
             out[start:start+chunk]=.5+s/4.
@@ -405,6 +524,11 @@ def direct_u0(q,r,wf,wvalid,chunk=128):
             out[start:start+chunk]=(coverage[known][order]*mass).sum(1)/np.maximum(mass.sum(1),EPS)
     return out,dict(status='pure_role_max' if f.any() and b.any() else 'weighted_16nn_vote',
                     pure_fg=int(f.sum()),pure_bg=int(b.sum()))
+
+
+def direct_u0(q,r,wf,wvalid,chunk=128):
+    return derived(cache_key('CE_pure_max_or_16NN',np.asarray(q),np.asarray(r),np.asarray(wf),np.asarray(wvalid),int(chunk)),
+                   lambda:_direct_u0_uncached(q,r,wf,wvalid,chunk))
 
 
 def source_block_predictions(r,hw,wf,wvalid):

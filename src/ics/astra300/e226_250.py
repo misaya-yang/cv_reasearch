@@ -33,17 +33,22 @@ class PixelProblem:
 def prepare(ep,host_q=None,host_r=None,host_binding=None,direct_host=False):
     if ep.q_rgb is None or ep.r_rgb is None or ep.reference_mask is None:
         raise ValueError('Supplied E methods require actual original RGB and complete MR')
-    q0,_=H.direct_u0(ep.q,ep.r,ep.wf,ep.wvalid)
-    r0,_=H.direct_u0(ep.r,ep.r,ep.wf,ep.wvalid)
-    oob,folds=H.source_block_predictions(ep.r,ep.r_hw,ep.wf,ep.wvalid)
-    rt=H.pixel_tokens(ep.r_rgb.shape[:2],ep.r_hw,ep.reference_geometry)
-    qt=H.pixel_tokens(ep.q_rgb.shape[:2],ep.q_hw,ep.query_geometry)
-    valid=ep.wvalid[rt]>0
-    cov=np.divide(ep.wf,ep.wvalid,out=np.zeros_like(ep.wf),where=ep.wvalid>0)
-    thresholds=H.anchor_thresholds(oob,cov,ep.wvalid)
-    uq=H.native_to_original(q0.reshape(ep.q_hw),ep.original_shape,ep.query_geometry)
-    # Source self-prediction is not used for threshold/coverage calibration.
-    rp=H.native_to_original(r0.reshape(ep.r_hw),ep.r_rgb.shape[:2],ep.reference_geometry)
+    def build():
+        q0,_=H.direct_u0(ep.q,ep.r,ep.wf,ep.wvalid)
+        r0,_=H.direct_u0(ep.r,ep.r,ep.wf,ep.wvalid)
+        oob,folds=H.source_block_predictions(ep.r,ep.r_hw,ep.wf,ep.wvalid)
+        rt=H.pixel_tokens(ep.r_rgb.shape[:2],ep.r_hw,ep.reference_geometry)
+        qt=H.pixel_tokens(ep.q_rgb.shape[:2],ep.q_hw,ep.query_geometry)
+        valid=ep.wvalid[rt]>0
+        cov=np.divide(ep.wf,ep.wvalid,out=np.zeros_like(ep.wf),where=ep.wvalid>0)
+        thresholds=H.anchor_thresholds(oob,cov,ep.wvalid)
+        uq=H.native_to_original(q0.reshape(ep.q_hw),ep.original_shape,ep.query_geometry)
+        # Source self-prediction is not used for threshold/coverage calibration.
+        rp=H.native_to_original(r0.reshape(ep.r_hw),ep.r_rgb.shape[:2],ep.reference_geometry)
+        return q0,r0,oob,folds,rt,qt,valid,thresholds,uq,rp
+    key=H.cache_key('CE_native_pixel_preparation',ep.q,ep.r,ep.wf,ep.wvalid,ep.q_hw,ep.r_hw,
+              ep.r_rgb.shape[:2],ep.original_shape,ep.reference_geometry,ep.query_geometry)
+    q0,r0,oob,folds,rt,qt,valid,thresholds,uq,rp=H.derived(key,build)
     if direct_host:
         U,rU=uq,rp;binding=dict(kind='C_E_U0_pure_role_max_or_16nn_vote')
     else:
@@ -243,7 +248,7 @@ def e250_dichromatic(problem,control=None):
     # calibration to be identifiable. Missing that information closes the ray
     # module, not an otherwise well-defined ordinary colour classifier.
     if control in {'gmm','chromaticity'}:
-        from ics.methods.pro_paired_environment import exact_potts_cut
+        from .e_float_cut import exact_potts_cut
         saturated=np.any(np.asarray(ep.q_rgb).reshape(-1,3)>=254,axis=1)
         U=problem.U.ravel();uc=np.clip(U,H.EPS,1-H.EPS);base=np.log(uc/(1-uc))
         edges,cap=H.rgb_edges(ep.q_rgb)
@@ -273,7 +278,7 @@ def e250_dichromatic(problem,control=None):
     if float(np.max(np.abs(source[valid]),initial=0))<=H.EPS:
         return problem.U.copy(),dict(status='fallback_reflection_roles_unidentifiable')
     edges,cap=H.rgb_edges(ep.q_rgb)
-    from ics.methods.pro_paired_environment import exact_potts_cut
+    from .e_float_cut import exact_potts_cut
     U=problem.U.ravel();base=np.log(np.clip(U,H.EPS,1-H.EPS)/(1-np.clip(U,H.EPS,1-H.EPS)))
     labels=U>.5;anchors=_anchors(problem).ravel()
     activity=0

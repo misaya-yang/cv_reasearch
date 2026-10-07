@@ -973,7 +973,7 @@ def _f268(c,weight,control=None,resources=None):
     observation=(resources or {}).get("f268_tail_observations")
     if observation is None:
         raise ResourceUnavailable("F268 requires saved pre-last-two-block states and real frozen QKV recomputation for source 8 pairs and query <=4 split/merge pairs, private special tokens per group (24 two-block tail replays)")
-    required={"real_encoder_execution":True,"qkv_recomputed":True,"private_special_tokens":True,"tail_blocks":2,"native_dtype":"float32"}
+    required={"real_encoder_execution":True,"qkv_recomputed":control not in ('fixed_QK','group_mean'),"private_special_tokens":True,"tail_blocks":2,"native_dtype":"float32"}
     if any(observation.get(k)!=v for k,v in required.items()):
         raise ResourceUnavailable("F268 refuses fixed-QK, pooled endpoints or fake tail replay as its main arm")
     _verify_observation(c,observation)
@@ -996,7 +996,9 @@ def _f268(c,weight,control=None,resources=None):
     if np.any(edgefee<0):raise ValueError("F268 cut needs nonnegative learned edge fees")
     y,certificate=_cut(c,extra_edges=(edges,weight*edgefee))
     info=dict(exact_cut_certificate=certificate)
-    info.update(**required,tail_replays=2*(len(ref)+len(query)),extra_transformer_blocks=4*(len(ref)+len(query)),query_pairs=len(query),reference_pairs=len(ref),learned_edge_fees=edgefee.tolist())
+    logical=0 if control=='group_mean' else 2*(len(ref)+len(query))
+    info.update(**required,tail_replays=logical,extra_transformer_blocks=2*logical,query_pairs=len(query),reference_pairs=len(ref),learned_edge_fees=edgefee.tolist(),
+                actual_component_block_count=observation.get('actual_component_block_count'),encoder_receipt=observation.get('encoder_receipt'))
     return dict(y=y,info=info)
 
 
@@ -1519,12 +1521,16 @@ def run(number,ep,*,weight=None,control=None,resources=None):
     if number in (256,268):
         name="f256_three_views" if number==256 else "f268_tail_observations"
         if resources is None:
-            resources={name:common.artifact(ep,name)}
+            from .f256_268_actual import configure_resources
+            resources=configure_resources(ep,number)
+        c.resources=resources
         # Verify the true observation before treating source calibration as an
         # implementation. Label-derived source folds must be separately rebuilt.
-        try:getattr(__import__(__name__,fromlist=["x"]),f"_f{number}")(c,1.,control,resources)
-        except ResourceUnavailable as error:raise common.ArtifactUnavailable(str(error)) from error
-        if weight is None:
+        provider=resources.get('f256_provider' if number==256 else 'f268_provider')
+        if provider is None:
+            try:getattr(__import__(__name__,fromlist=["x"]),f"_f{number}")(c,1.,control,resources)
+            except ResourceUnavailable as error:raise common.ArtifactUnavailable(str(error)) from error
+        if weight is None and provider is None:
             raise common.ArtifactUnavailable(f"F{number} additionally requires per-buffered-source-fold real observations rebuilt without held labels; native observations cannot substitute")
     def kernel(context,w):
         context.factor_scale=_reference_scale(context,number)
@@ -1532,7 +1538,15 @@ def run(number,ep,*,weight=None,control=None,resources=None):
             y,certificate=exact_e0(context)
             return dict(y=y,info=dict(primary_factor_disabled=True,exact_E0_certificate=certificate))
         function=globals()[f"_f{number}"]
-        if number in (256,268):return function(context,w,control,resources)
+        if number in (256,268):
+            provider=resources.get('f256_provider' if number==256 else 'f268_provider')
+            observed=resources
+            if provider is not None:
+                name='f256_three_views' if number==256 else 'f268_tail_observations'
+                context.resources=resources
+                observed={name:provider(context) if number==256 else provider(context,control)}
+            try:return function(context,w,control,observed)
+            except (ArithmeticError,np.linalg.LinAlgError) as error:return dict(probability=context.p0,info=dict(fallback='nonidentifiable_true_view_role_or_response',fallback_detail=str(error),primary_factor_disabled=True))
         if number in (253,263,264,265,266,267,269,272) and context.trace.get("source_oof_fit_calls",0)<2:
             return dict(probability=context.p0,info=dict(fallback="fewer_than_two_source_OOF_fits",primary_factor_disabled=True))
         try:return function(context,w,control)
