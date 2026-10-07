@@ -15,7 +15,7 @@ from scipy.special import logsumexp, expit
 
 from .common import Result,artifact,ArtifactUnavailable
 from .group_076_150_common import (Context, Kernel, Prepared, G, blocks, dot, edges4,
-                                  prepare, region_run, point_run, dynamic_region_run, rp, spherical, unit)
+                                  prepare, region_run, point_run, dynamic_region_run, region_point_run, rp, spherical, unit)
 
 
 METHODS = {}
@@ -56,6 +56,13 @@ def point_method(method, descriptor, additive=False):
     def run(ep):
         z, info = point_run(ep, descriptor, additive)
         return result(ep, z, method, info)
+    return run
+
+
+def region_point_method(method,sample_fn,additive=False):
+    def run(ep):
+        z,info=region_point_run(ep,sample_fn,additive)
+        return result(ep,z,method,info)
     return run
 
 
@@ -491,9 +498,10 @@ def _edge_descriptors(ctx,i,j):
 
 
 class _PairStates:
-    def __init__(self,descriptors,soft):
+    def __init__(self,descriptors,soft,emission_columns=(0,1)):
         self.model=Kernel(descriptors,np.full(len(descriptors),.5))
         self.states=np.array(((1,1),(1,0),(0,1),(0,0)))
+        self.emission_columns=emission_columns
         self.weights=np.prod(np.where(self.states[None]>0,soft[:,None],1-soft[:,None]),axis=2)
     def logs(self,d):
         z=self.model.standardize(d);out=np.zeros((len(d),4))
@@ -506,7 +514,7 @@ class _PairStates:
                     lw=np.log(w,where=w>0,out=np.full(len(w),-np.inf))
                     out[start:start+128,state]=logsumexp(logk+lw,axis=1)-np.log(w.sum())
                 else:
-                    u=np.asarray(d)[start:start+128,:2]
+                    u=np.asarray(d)[start:start+128][:,self.emission_columns]
                     out[start:start+128,state]=-np.sum(np.logaddexp(0,u)-u*self.states[state],axis=1)
         return out
 
@@ -652,7 +660,7 @@ def _negative_objects(ctx):
     return objects
 
 
-def _c128_descriptor(ctx,p,overlap_exclusion=True):
+def _c128_fields(ctx,p,overlap_exclusion=True):
     objects=_negative_objects(ctx)
     negative_profile=unit(np.array([ctx.profile[c].mean(axis=0) for c in objects])) if objects else np.empty((0,len(ctx.bank)))
     positives=unit(dot(ctx.bank[ctx.fg],ctx.bank))
@@ -664,15 +672,14 @@ def _c128_descriptor(ctx,p,overlap_exclusion=True):
             bg=dot(profile[c],negative_profile[keep]).max(axis=1)
             fields.append(np.column_stack((ctx.u[c],positive[c]-bg,ctx.max_f[c]-ctx.max_b[c],np.full(len(c),1-keep.mean()))))
         else:
-            fields.append(np.column_stack((ctx.u[c],np.full(len(c),np.nan),ctx.max_f[c]-ctx.max_b[c],np.ones(len(c)))))
-    out=np.column_stack([rp(ctx,[f[:,i] for f in fields])for i in range(4)])
-    return out
+            fields.append(np.full((len(c),4),np.nan))
+    return ctx.regions,fields
 
 
-register('C128',point_method('C128',_c128_descriptor),
+register('C128',region_point_method('C128',_c128_fields),
          ['Negative objects and reference FG are compared in normalized complete-reference-response space.',
-          'All candidate-conditioned point descriptors are projected with the common inverse-area RP before the final point K; empty negative bank is marked missing.'])
-CONTROLS['control_C128_no_overlap_exclusion']=point_method('control_C128_no_overlap_exclusion',lambda c,p:_c128_descriptor(c,p,False))
+          'All candidate-conditioned point fields apply K before the common inverse-area RP; an empty candidate-conditioned negative bank uses its source-only u.'])
+CONTROLS['control_C128_no_overlap_exclusion']=region_point_method('control_C128_no_overlap_exclusion',lambda c,p:_c128_fields(c,p,False))
 
 
 def _perimeter(ctx,c):
@@ -769,7 +776,7 @@ register('C147',region_method('C147',_c147_descriptor),
 CONTROLS['control_C147_trimmed_mean']=region_method('control_C147_trimmed_mean',lambda c,p:np.array([[c.u[a].mean(),np.sort(c.u[a])[:max(1,int(.9*len(a)))].mean(),len(a)]for a in c.regions]))
 
 
-def _c148_descriptor(ctx,p,split_outliers=True):
+def _c148_fields(ctx,p,split_outliers=True):
     from scipy.ndimage import label
     fields=[];regions=[]
     for c in ctx.regions:
@@ -787,18 +794,13 @@ def _c148_descriptor(ctx,p,split_outliers=True):
             margin=(np.maximum(ctx.max_f[shell],added)-ctx.max_b[shell])/ctx.scale
             fields.append(np.column_stack((ctx.u[shell],np.clip(margin,-4,4),np.full(len(shell),len(ids)/len(c)))))
             regions.append(shell)
-    out=np.full((len(ctx.x),3),np.nan)
-    if fields:
-        covered=np.zeros(len(ctx.x),bool)
-        for region in regions:covered[region]=True
-        for j in range(3):out[covered,j]=rp(ctx,[f[:,j]for f in fields],regions)[covered]
-    return out
+    return regions,fields
 
 
-register('C148',point_method('C148',_c148_descriptor),
+register('C148',region_point_method('C148',_c148_fields),
          ['Positive complete-reference rank means class-balanced ordering >.5; any strong BG member vetoes that source face.',
-          'Only each qualified face one-grid shell receives the extra frozen prototype; overlapping shell descriptors use common inverse-area RP.'])
-CONTROLS['control_C148_all_local_faces']=point_method('control_C148_all_local_faces',lambda c,p:_c148_descriptor(c,p,False))
+          'Only each qualified face one-grid shell receives the extra frozen prototype; each shell applies K before common inverse-area RP.'])
+CONTROLS['control_C148_all_local_faces']=region_point_method('control_C148_all_local_faces',lambda c,p:_c148_fields(c,p,False))
 
 
 def _c111_descriptor(ctx,p,pair_interaction=True):
@@ -1354,7 +1356,9 @@ def _c101_descriptor(ctx,p,flow_only=False):
     flow=(attention[i,j]-attention[j,i])*(ctx.u[i]+ctx.u[j])/2
     incidence=sparse.csr_matrix((np.r_[np.ones(len(i)),-np.ones(len(i))],
                                 (np.r_[np.arange(len(i)),np.arange(len(i))],np.r_[i,j])),shape=(len(i),len(ctx.x)))
-    potential=lsmr(incidence,flow,atol=1e-10,btol=1e-10,maxiter=2000)[0]
+    solved=lsmr(incidence,flow,atol=1e-10,btol=1e-10,maxiter=2000)
+    if solved[1]not in(0,1,2):raise ArithmeticError('C101 actual Hodge least-squares did not converge within 2000 iterations')
+    potential=solved[0]
     gradient=incidence@potential;curl=flow-gradient
     rows=[]
     for c in ctx.regions:
@@ -1377,7 +1381,7 @@ register('C101',region_method('C101',_c101_descriptor),
 CONTROLS['control_C101_original_flow_only']=region_method('control_C101_original_flow_only',lambda c,p:_c101_descriptor(c,p,True))
 
 
-def _c145_descriptor(ctx,p,symmetric=False):
+def _c145_fields(ctx,p,symmetric=False,degree_only=False):
     A=_attention(ctx,p).mean(axis=0);message=_head_message_norm(ctx,p);fields=[];regions=[]
     for c in ctx.regions:
         raw=A[np.ix_(c,c)];degree=raw.sum(axis=1);P=np.divide(raw,degree[:,None],out=np.zeros_like(raw),where=degree[:,None]>0)
@@ -1390,21 +1394,17 @@ def _c145_descriptor(ctx,p,symmetric=False):
         def multiply(matrix,vector):return np.einsum('ij,j->i',matrix,vector,optimize=False)
         df=multiply(P,multiply(P.T,bf))-multiply(P.T,multiply(P,bf))
         db=multiply(P,multiply(P.T,bb))-multiply(P.T,multiply(P,bb))
-        fields.append(np.column_stack((ctx.u[c],df,db,raw.sum(axis=1),raw.sum(axis=0),message[c])));regions.append(c)
-    out=np.full((len(ctx.x),6),np.nan)
-    if fields:
-        covered=np.zeros(len(ctx.x),bool)
-        for c in regions:covered[c]=True
-        for column in range(6):out[covered,column]=rp(ctx,[f[:,column]for f in fields],regions)[covered]
-    return out
+        descriptor=np.column_stack((ctx.u[c],df,db,raw.sum(axis=1),raw.sum(axis=0),message[c]))
+        fields.append(descriptor[:,[0,3,4,5]]if degree_only else descriptor);regions.append(c)
+    return regions,fields
 
 
-register('C145',point_method('C145',_c145_descriptor),
+register('C145',region_point_method('C145',_c145_fields),
          ['The final-block head attention matrices are averaged before each candidate row-normalization; all-empty row becomes an exact self-loop.',
-          'Point descriptors from every valid candidate use the documented inverse-area RP before the final point kernel; row/column degrees are measured on actual attention before local row normalization, and complete AV message norms are required.'],
+          'Every candidate applies point K before the documented inverse-area RP; row/column degrees are measured on actual attention before local row normalization, and complete AV message norms are required.'],
          ('final_unit_dino','q_attention_final','r_attention_final','q_head_output_final','r_head_output_final'))
-CONTROLS['control_C145_symmetric_attention']=point_method('control_C145_symmetric_attention',lambda c,p:_c145_descriptor(c,p,True))
-CONTROLS['control_C145_degree_only']=point_method('control_C145_degree_only',lambda c,p:_c145_descriptor(c,p)[:,[0,3,4,5]])
+CONTROLS['control_C145_symmetric_attention']=region_point_method('control_C145_symmetric_attention',lambda c,p:_c145_fields(c,p,True))
+CONTROLS['control_C145_degree_only']=region_point_method('control_C145_degree_only',lambda c,p:_c145_fields(c,p,degree_only=True))
 
 
 def _select_attention_destination(ctx,p):
@@ -1467,3 +1467,300 @@ register('C150',point_method('C150',_c150_descriptor,additive=True),
           'Each positive source atom contributes its mean actual sender-row arrival mass, and different atoms combine by max; threshold is the reference-FG receiver mass 25% quantile.'],
          ('final_unit_dino','q_attention_last2','r_attention_last2'))
 CONTROLS['control_C150_all_heads_mean']=point_method('control_C150_all_heads_mean',lambda c,p:_c150_descriptor(c,p,True),additive=True)
+
+
+def _attention_head_regions(ctx,p,head):
+    A=_attention(ctx,p)[head];descriptors=[];valid=ctx.valid>0
+    for c in ctx.regions:
+        mask=np.zeros(len(ctx.x),bool);mask[c]=True;outside=np.flatnonzero(valid&~mask)
+        out=A[c][:,outside].sum(axis=1).mean()if len(outside)else 0.
+        inward=A[outside][:,c].sum(axis=1).mean()if len(outside)else 0.
+        internal=A[c][:,c].sum(axis=1).mean()
+        descriptors.append([out-inward,internal,ctx.u[c].mean(),len(c)])
+    return np.asarray(descriptors)
+
+
+def _select_region_head(ctx,p):
+    key=ctx.fold
+    if not hasattr(p,'region_attention_head_selection'):p.region_attention_head_selection={}
+    if key in p.region_attention_head_selection:return p.region_attention_head_selection[key]
+    raw=np.asarray(artifact(p.ep,'r_attention_final'))
+    if raw.ndim!=3 or raw.shape[1:]!=(len(p.r),len(p.r)):raise ValueError('actual reference per-head final attention required')
+    byhead=[[]for _ in range(len(raw))];labels=[];weights=[];source_folds=[]
+    for fold in range(16):
+        if fold==ctx.fold or not np.any((p.rb==fold)&(p.rv>0)):continue
+        excluded=(fold,)if ctx.fold is None else(fold,ctx.fold)
+        rc=p.context(True,excluded)
+        if not len(rc.fg)or not len(rc.bg):continue
+        chosen=[k for k,c in enumerate(rc.regions)if p.rb[c[len(c)//2]]==fold]
+        for head in range(len(raw)):
+            byhead[head].extend(_attention_head_regions(rc,p,head)[chosen])
+        for k in chosen:
+            c=rc.regions[k];labels.append(p.ep.wf[c].sum()/max(p.rv[c].sum(),1e-12));weights.append(p.rv[c].mean());source_folds.append(fold)
+    labels=np.asarray(labels);weights=np.asarray(weights);source_folds=np.asarray(source_folds)
+    if not len(labels)or not np.sum(labels*weights)or not np.sum((1-labels)*weights):selected=None
+    else:
+        effects=[]
+        for head,data in enumerate(byhead):
+            d=np.asarray(data).reshape(-1,4);pred=np.zeros(len(d))
+            for fold in np.unique(source_folds):
+                held=source_folds==fold;model=Kernel(d[~held],labels[~held],weights[~held]);pred[held]=model(d[held])
+            effect=abs(np.sum(pred*labels*weights)/np.sum(labels*weights)-np.sum(pred*(1-labels)*weights)/np.sum((1-labels)*weights))
+            effects.append(effect)
+        selected=int(np.argmax(effects))
+    p.region_attention_head_selection[key]=selected
+    return selected
+
+
+def _c110_descriptor(ctx,p,mean_heads=False):
+    head=_select_region_head(ctx,p)
+    if head is None:return np.full((len(ctx.regions),4),np.nan)
+    if mean_heads:
+        return np.mean([_attention_head_regions(ctx,p,h)for h in range(len(_attention(ctx,p)))],axis=0)
+    return _attention_head_regions(ctx,p,head)
+
+
+register('C110',region_method('C110',_c110_descriptor),
+         ['Head selection maximizes absolute class-balanced source-kernel prediction effect under true leave-one-centre-block-out evaluation; ties use the smallest head ID.',
+          'The selector and all its source kernels are rebuilt without an outer source-pseudoquery block; incoming/outgoing masses are normalized by actual sender counts.'],
+         ('final_unit_dino','q_attention_final','r_attention_final'))
+CONTROLS['control_C110_mean_heads']=region_method('control_C110_mean_heads',lambda c,p:_c110_descriptor(c,p,True))
+
+
+def _overlap_domains(ctx):
+    # Exact all-candidate overlap groups. A full root can legitimately make this
+    # one whole-query domain; do not prune it to manufacture local behavior.
+    parent=np.arange(len(ctx.x));used=np.zeros(len(ctx.x),bool)
+    def find(i):
+        while parent[i]!=i:parent[i]=parent[parent[i]];i=int(parent[i])
+        return i
+    for c in ctx.regions:
+        if not len(c):continue
+        root=find(int(c[0]));used[c]=True
+        for point in c[1:]:
+            other=find(int(point))
+            if root!=other:parent[other]=root
+    groups={}
+    for i in np.flatnonzero(used):groups.setdefault(find(int(i)),[]).append(int(i))
+    return [np.array(v,int)for _,v in sorted(groups.items())]
+
+
+def _c124_descriptor(ctx,p,graph=True):
+    from .group_076_150_flow import minimum_edit_cut,persistent
+    domains=_overlap_domains(ctx);out=np.full((len(ctx.x),5),np.nan)
+    for ids in domains:
+        W=ctx.W[ids][:,ids]if graph else sparse.csr_matrix((len(ids),len(ids)))
+        _,_,solver=minimum_edit_cut(ctx.u[ids],W);fg,bg,unknown=persistent(solver,len(ids),len(ids)+1,len(ids))
+        votes=[]
+        for role in(0,1):
+            reference=ctx.fg if role==0 else ctx.bg
+            _,assignment=spherical(ctx.bank[reference],min(16,len(reference)))
+            for mode in np.unique(assignment):
+                retained=reference[assignment!=mode]
+                if not len(retained):continue
+                f=retained if role==0 else ctx.fg;b=retained if role==1 else ctx.bg
+                u=np.clip((ctx.profile[ids][:,f].max(axis=1)-ctx.profile[ids][:,b].max(axis=1))/ctx.scale,-4,4)
+                _,_,changed=minimum_edit_cut(u,W);pf,pb,pu=persistent(changed,len(ids),len(ids)+1,len(ids))
+                votes.append(np.column_stack((pf,pb,pu)))
+        if votes:
+            rate=np.mean(votes,axis=0)
+            out[ids]=np.column_stack((ctx.u[ids],fg.astype(int)-bg.astype(int),rate))
+    return out
+
+
+register('C124',point_method('C124',_c124_descriptor),
+         ['All candidate-overlap domains are retained, including a whole-query domain if the unpruned tree root connects them.',
+          'Persistent classes come from the true residual minimum-cut lattice; original/perturbed cuts use exact SCC closure to choose minimum S0 edits without changing primary energy.'])
+CONTROLS['control_C124_mode_unary_votes']=point_method('control_C124_mode_unary_votes',lambda c,p:_c124_descriptor(c,p,False))
+
+
+def _source_cut(ep):
+    from .group_076_150_flow import minimum_edit_cut
+    p=prepare(ep);deg=p.degenerate()
+    if deg is not None:return result(ep,deg[0],'control_C_E0_cut',{'degenerate':deg[1]})
+    ctx=p.context();y,energy,_=minimum_edit_cut(ctx.u,ctx.W);y[ctx.valid<=0]=False
+    return result(ep,2*y.astype(float)-1,'control_C_E0_cut',{'energy':energy,'tie':'exact minimum-S0-edit residual-SCC closure'})
+CONTROLS['control_C_E0_cut']=_source_cut
+
+
+def _c144_fields(ctx,p,replacement=True):
+    from .group_076_150_common import graph4
+    donors=[a for a in ctx.atoms if np.any(ctx.negative[a])]
+    if len(donors)<3:return [],[]
+    donors=sorted(donors,key=lambda a:int(a.min()))[:3]
+    fields=[];regions=[]
+    for c in ctx.regions:
+        ring=_ring(ctx,c,2)
+        domain=np.sort(np.r_[c,ring]);local=_subcontext(ctx,domain)
+        baseline,info=G(local)
+        if info:continue
+        outcomes=[]
+        for donor in donors:
+            edited=ctx.x.copy();edited[ring]=ctx.x[donor[np.arange(len(ring))%len(donor)]]
+            W=graph4(edited,ctx.hw,ctx.valid)[domain][:,domain]if replacement else local.W
+            field,status=G(local,W)
+            if status:break
+            outcomes.append(field[np.searchsorted(domain,c)])
+        if len(outcomes)!=3:continue
+        values=np.array(outcomes);old=baseline[np.searchsorted(domain,c)]
+        fields.append(np.column_stack((ctx.u[c],old,values.min(axis=0),values.max(axis=0),np.median(values,axis=0),np.full(len(c),len(c)))))
+        regions.append(c)
+    return regions,fields
+
+
+register('C144',region_point_method('C144',_c144_fields),
+         ['Three donor atoms are the lowest-row distinct atoms containing a fixed negative anchor; each outer ring is replaced by cyclic alignment in row order.',
+          'Original u and public anchors are unchanged; only the local graph over C plus its two-grid outer ring is rebuilt, and each candidate point K precedes RP.'])
+CONTROLS['control_C144_original_local_G']=region_point_method('control_C144_original_local_G',lambda c,p:_c144_fields(c,p,False))
+
+
+def _radial_regions(ctx,c):
+    center=int(c[np.argmax(ctx.u[c])]);cy,cx=np.unravel_index(center,ctx.hw);yy,xx=np.unravel_index(c,ctx.hw)
+    radius=np.abs(yy-cy)+np.abs(xx-cx);rings=[c[radius==r]for r in np.unique(radius)]
+    rows=[];previous=None
+    for ring in rings:
+        profile=ctx.profile[ring].mean(axis=0)
+        difference=np.linalg.norm(profile-previous)if previous is not None else 0.
+        rows.append([ctx.u[ring].mean(),ctx.u[ring].min(),ctx.u[ring].max(),difference]);previous=profile
+    return rings,np.asarray(rows)
+
+
+def _radial_library(ctx,p):
+    rc=p.context(True,ctx.fold);d=[];soft=[]
+    for c in rc.regions:
+        if ctx.fold is not None and np.any(p.rb[c]==ctx.fold):continue
+        rings,rows=_radial_regions(rc,c)
+        for k in range(1,len(rings)):
+            d.append(np.r_[rows[k-1],rows[k]])
+            soft.append([np.sum(p.ep.wf[g])/max(p.rv[g].sum(),1e-12)for g in(rings[k-1],rings[k])])
+    return _PairStates(np.asarray(d).reshape(-1,8),np.asarray(soft).reshape(-1,2),emission_columns=(0,4))
+
+
+def _c139_fields(ctx,p,independent=False):
+    library=_radial_library(ctx,p);fields=[]
+    for c in ctx.regions:
+        rings,d=_radial_regions(ctx,c)
+        ids=np.array([g[0]for g in rings]);observed=ctx.u[ids].copy()
+        # The line emission is the actual ring mean, not the representative token.
+        from dataclasses import replace
+        proxy=replace(ctx,u=ctx.u.copy());proxy.u[ids]=d[:,0]
+        if len(rings)>1:
+            costs=-library.logs(np.array([np.r_[d[k-1],d[k]]for k in range(1,len(rings))]))[:,[3,2,1,0]]
+            label=_first_order(proxy,ids,costs)if not independent else d[:,0]>0
+        else:label=d[:,0]>0
+        rows=np.empty((len(c),5));lookup={int(point):k for k,point in enumerate(c)}
+        for k,ring in enumerate(rings):
+            at=np.array([lookup[int(i)]for i in ring]);rows[at]=np.column_stack((ctx.u[ring],np.full(len(ring),label[k]),np.repeat(d[k,:3][None],len(ring),axis=0)))
+        fields.append(rows)
+    return ctx.regions,fields
+
+
+register('C139',region_point_method('C139',_c139_fields),
+         ['Four-neighbor radial distance is Manhattan distance on the physical grid; rings are restricted to the candidate support.',
+          'Ring-transition kernels use the concatenated four-coordinate descriptors of two consecutive rings; final point descriptor is [u,decoded ring label,ring mean/min/max], with K before RP.'])
+CONTROLS['control_C139_independent_rings']=region_point_method('control_C139_independent_rings',lambda c,p:_c139_fields(c,p,True))
+
+
+def _tree_parent_children(ctx):
+    n=len(ctx.x);parent=np.arange(n);members={int(i):np.array([i],int)for i in np.flatnonzero(ctx.valid>0)}
+    i,j=edges4(ctx.hw,ctx.valid);weights=np.maximum(np.einsum('id,id->i',ctx.x[i],ctx.x[j]),0)**4
+    relations=[];seen=set()
+    def find(a):
+        while parent[a]!=a:parent[a]=parent[parent[a]];a=int(parent[a])
+        return a
+    def append(C,H):
+        key=(C.tobytes(),H.tobytes())
+        if key not in seen and len(H)<len(C):relations.append((C,H));seen.add(key)
+    for k in np.lexsort((j,i,-weights)):
+        a,b=find(int(i[k])),find(int(j[k]))
+        if a==b:continue
+        if a>b:a,b=b,a
+        A,B=members.pop(a),members.pop(b);C=np.sort(np.r_[A,B]);parent[b]=a;members[a]=C
+        append(C,A);append(C,B)
+    # Upper-level-set tree, including joint equal-value plateaus.
+    parent=np.arange(n);members={};active=np.zeros(n,bool);neighbors=[[]for _ in range(n)]
+    for a,b in zip(i,j):neighbors[int(a)].append(int(b));neighbors[int(b)].append(int(a))
+    order=np.flatnonzero(ctx.valid>0);order=order[np.argsort(-ctx.u[order],kind='stable')];start=0
+    while start<len(order):
+        stop=start+1
+        while stop<len(order)and ctx.u[order[stop]]==ctx.u[order[start]]:stop+=1
+        new=order[start:stop];previous=[]
+        for node in new:
+            for neighbor in neighbors[int(node)]:
+                if active[neighbor]:previous.append(members[find(neighbor)].copy())
+        previous.extend(np.array([i],int)for i in new)
+        for node in new:active[node]=True;members[int(node)]=np.array([node],int)
+        for node in new:
+            for neighbor in neighbors[int(node)]:
+                if not active[neighbor]:continue
+                a,b=find(int(node)),find(neighbor)
+                if a==b:continue
+                if a>b:a,b=b,a
+                C=np.sort(np.r_[members.pop(a),members.pop(b)]);parent[b]=a;members[a]=C
+        for old in previous:
+            C=members[find(int(old[0]))];append(C,old)
+        start=stop
+    return relations
+
+
+def _capacity_certificate(ctx,C,H):
+    from .group_076_150_flow import cut
+    shell=np.setdiff1d(C,H,assume_unique=True);outside=_ring(ctx,C,1)
+    source=H[ctx.positive[H]];sink=outside[ctx.negative[outside]]
+    if not len(source)or not len(sink)or not len(shell):return [np.nan]*4
+    domain=np.sort(np.r_[C,outside]);position={int(x):k for k,x in enumerate(domain)}
+    s=np.zeros(len(domain));t=np.zeros(len(domain));s[[position[int(x)]for x in source]]=1/len(source);t[[position[int(x)]for x in sink]]=1/len(sink)
+    W=ctx.W[domain][:,domain];zero=np.zeros(len(domain));_,kappa,_=cut(zero,W,s,t)
+    ts=np.zeros(len(domain));ts[[position[int(x)]for x in shell]]=1/len(shell)
+    _,ks,_=cut(zero,W,s,ts)
+    return [ctx.u[H].mean(),ctx.u[shell].mean(),ks/(kappa+1e-12),np.mean(ctx.negative[shell])]
+
+
+def _c113_samples(ctx,p):
+    pairs=_tree_parent_children(ctx);regions=[];d=[]
+    for C,H in pairs:
+        row=_capacity_certificate(ctx,C,H)
+        if np.isfinite(row).any():regions.append(C);d.append(row)
+    return regions,np.asarray(d).reshape(-1,4)
+
+
+def _c113(ep):
+    z,info=dynamic_region_run(ep,_c113_samples)
+    return result(ep,z,'C113',info)
+
+
+register('C113',_c113,
+         ['Every true parent-child relation in both public trees supplies one (C,H) certificate, exact duplicate pairs are removed; no best-core label search is introduced.',
+          'The shell certificate replaces the original outside-BG sink set with every shell point at normalized total sink capacity one.'])
+CONTROLS['control_C113_region_means']=lambda ep:result(ep,*dynamic_region_run(ep,lambda c,p:(lambda regions,d:(regions,d[:,:2]))(*_c113_samples(c,p)))[:1],'control_C113_region_means',{})
+
+
+def _c121_fields(ctx,p,shuffle=False):
+    K0=p.k0_for(ctx);pairs=_tree_parent_children(ctx);donors=[]
+    for C,H in pairs:
+        shell=np.setdiff1d(C,H,assume_unique=True)
+        if not len(shell):continue
+        if K0(_base_descriptor(ctx,H))[0]>0 and K0(_base_descriptor(ctx,shell))[0]>0:
+            delta=ctx.x[shell].mean(axis=0)-ctx.x[H].mean(axis=0)
+            donors.append((C,H,shell,delta,ctx.profile[H].mean(axis=0)))
+    if shuffle and donors:
+        perm=np.random.default_rng(121).permutation(len(donors));deltas=[donors[k][3]for k in perm]
+        donors=[(d[0],d[1],d[2],delta,d[4])for d,delta in zip(donors,deltas)]
+    fields=[];regions=[]
+    for C,H in pairs:
+        shell=np.setdiff1d(C,H,assume_unique=True)
+        if not len(shell):continue
+        available=[d for d in donors if not np.intersect1d(C,d[0],assume_unique=True).size]
+        if not available:continue
+        profile=ctx.profile[H].mean(axis=0)
+        chosen=min(enumerate(available),key=lambda item:(np.linalg.norm(profile-item[1][4]),int(item[1][0].min()),item[0]))[1]
+        core=ctx.x[H].mean(axis=0);v=unit(core+chosen[3]);core=unit(core)
+        translated=ctx.x[shell]@v;original=ctx.x[shell]@core
+        fields.append(np.column_stack((ctx.u[shell],translated,original,ctx.max_b[shell])));regions.append(shell)
+    return regions,fields
+
+
+register('C121',region_point_method('C121',_c121_fields),
+         ['The same public tree parent-child relations define core H and its disjoint own shell C\\H; donor core and shell both require the independently prebuilt source K0 positive gate.',
+          'All overlapping donor containers are excluded; a one-time nonoverlapping complete-profile nearest donor supplies Delta, and only the receiver own shell is scored.'])
+CONTROLS['control_C121_shuffle_paired_delta']=region_point_method('control_C121_shuffle_paired_delta',lambda c,p:_c121_fields(c,p,True))

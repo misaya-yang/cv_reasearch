@@ -489,3 +489,48 @@ def dynamic_region_run(ep,sample_fn):
     h=model(d);h[~np.isfinite(d).any(axis=1)]=0
     z=ctx.u+rp(ctx,h,regions);z[ctx.valid<=0]=-4
     return z,{'kernel_active':bool(model.active),'source_samples':len(data),'regions':len(regions),'memberships':sum(map(len,regions))}
+
+
+def region_point_run(ep,sample_fn,additive=False):
+    """Apply each candidate's point K before RP, preserving nonlinear order.
+
+    This retains every source candidate/point observation. Its source bandwidth
+    cost may be quadratic in total memberships; no pruning is substituted.
+    """
+    p=prepare(ep);deg=p.degenerate()
+    if deg is not None:return deg[0],{'degenerate':deg[1]}
+    data=[];labels=[];weights=[];dimension=None
+    for fold in range(16):
+        if not np.any((p.rb==fold)&(p.rv>0)):continue
+        ctx=p.context(True,fold)
+        if not len(ctx.fg)or not len(ctx.bg):continue
+        regions,fields=sample_fn(ctx,p)
+        for c,d in zip(regions,fields):
+            d=np.asarray(d,float);dimension=d.shape[1]
+            if d.shape[0]!=len(c):raise ValueError('candidate point descriptors must match all members')
+            chosen=(p.rb[c]==fold)&np.isfinite(d).any(axis=1)
+            ids=c[chosen];data.extend(d[chosen]);labels.extend(p.c[ids]);weights.extend(p.rv[ids])
+    ctx=p.context();regions,descriptors=sample_fn(ctx,p)
+    if dimension is None:
+        dimension=descriptors[0].shape[1]if len(descriptors)else 1
+    model=Kernel(np.asarray(data).reshape(-1,dimension),np.asarray(labels),np.asarray(weights))
+    if not model.active:
+        z=ctx.u.copy();z[ctx.valid<=0]=-4
+        return z,{'kernel_active':False,'source_point_candidate_samples':len(data),'increment_inactive':'no two-class source kernel support','nonlinear_order':'per-candidate K, then RP'}
+    fields=[]
+    for c,d in zip(regions,descriptors):
+        d=np.asarray(d,float)
+        if model.active:field=model(d)
+        else:field=np.zeros(len(c))if additive else ctx.u[c].copy()
+        missing=~np.isfinite(d).any(axis=1)
+        field[missing]=0 if additive else ctx.u[c][missing]
+        fields.append(field)
+    z=rp(ctx,fields,regions)
+    covered=np.zeros(len(ctx.x),bool)
+    for c in regions:covered[c]=True
+    if additive:z=ctx.u+z
+    else:z[~covered]=ctx.u[~covered]
+    z[ctx.valid<=0]=-4
+    return z,{'kernel_active':bool(model.active),'source_point_candidate_samples':len(data),
+              'regions':len(regions),'memberships':sum(map(len,regions)),'nonlinear_order':'per-candidate K, then RP',
+              'source_kernel_exact_distinct_bandwidth':'no membership cap or prototype approximation'}

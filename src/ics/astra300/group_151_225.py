@@ -67,7 +67,7 @@ def _mixture_fit(q, anchors, variance, anchor_strength, count_penalty, proposed,
         groups=np.argmin(np.sum((q[:,None]-proposed[None])**2,axis=2),axis=1) if proposal_groups is None else proposal_groups
         scores={k:(int(np.sum(unexplained&(groups==k))),float(np.min(distances[groups==k],axis=1).sum()),-k) for k in remaining}
         j=max(remaining,key=lambda k:scores[k])
-        if scores[j][0]==0:
+        if scores[j][0]<8:
             break
         remaining.remove(j); attempted+=1
         newmeans=np.vstack((incumbent[1],proposed[j])); newweights=np.r_[incumbent[2]*(1.-1./len(newmeans)),1./len(newmeans)]
@@ -81,15 +81,17 @@ def _mixture_fit(q, anchors, variance, anchor_strength, count_penalty, proposed,
 
 
 def _d151_builder(ep,config):
-    k,rank,penalty=config; xr,xq,p=dh.project(ep); f,b,_=dh.pure(ep); valid=ep.q_valid>0
+    k,rank,penalty=config; xr,xq,p=dh.project(ep); f,b,contamination=dh.pure(ep); valid=ep.q_valid>0
     if not f.any() or not b.any() or not valid.any():
         return None,{}
-    centers,_=dh.kmeans(xr[f],k,spherical=False)
+    centers,_=dh.source_modes(xr[f],k,spherical=False,weights=ep.wf[f])
+    if not len(centers):return None,dict(reason='fewer_than_eight_F_support_samples')
     source=xr[f]; distances=np.maximum(0.,np.sum(source*source,axis=1)[:,None]+np.sum(source*source,axis=1)-2*dh.mm(source,source.T))
     np.fill_diagonal(distances,np.inf)
     nearest=np.min(distances,axis=1); finite=nearest[np.isfinite(nearest)]
     variance=float(np.median(finite))/max(xr.shape[1],1) if len(finite) else .01
-    proposed,proposal_groups=dh.kmeans(xq[valid],8,spherical=False)
+    proposed,proposal_groups=dh.source_modes(xq[valid],8,spherical=False)
+    if not len(proposed):return None,dict(reason='fewer_than_eight_query_BG_proposal_samples')
     fit,nf,detail=_mixture_fit(xq[valid],centers,variance,penalty*len(xq[valid])/max(len(centers),1),
                              penalty*np.log1p(valid.sum())*xr.shape[1],proposed,proposal_groups)
     if len(fit[1])==nf:
@@ -99,7 +101,7 @@ def _d151_builder(ep,config):
         # Class posterior log odds: the shared normalizer cancels exactly.
         logs=np.log(np.maximum(fit[2],1e-12))-distance/(2*max(variance,1e-5))
         return logsumexp(logs[:,:nf],axis=1)-logsumexp(logs[:,nf:],axis=1)
-    return score,detail
+    return score,dict(**detail,soft_coverage_fallback=bool(contamination),source_F_component_counts_minimum=8)
 
 
 def d151(ep):
@@ -110,10 +112,12 @@ def _d151_control_builder(ep,config):
     k,_,_=config; f,b,_=dh.pure(ep); score0=dh.b0_field(ep); valid=ep.q_valid>0
     if not f.any() or not b.any():
         return None,{}
-    fg,_=dh.kmeans(ep.r[f],k)
+    fg,_=dh.source_modes(ep.r[f],k,weights=ep.wf[f])
+    if not len(fg):return None,{}
     qbg=ep.q[valid & (score0<0)]
     pool=np.vstack((ep.r[b],qbg)) if len(qbg) else ep.r[b]
-    bg,_=dh.kmeans(pool,8)
+    bg,_=dh.source_modes(pool,8)
+    if not len(bg):return None,{}
     return lambda x: np.max(dh.mm(x,fg.T),axis=1)-np.max(dh.mm(x,bg.T),axis=1),dict(bg_capacity=8,bg_modes=len(bg),target_capacity=k)
 
 
@@ -160,7 +164,7 @@ def _d152_builder(ep,config,control=False):
         reduced=dh.restricted(ep,train); original=dh.head(reduced,xr)
         changed=_pseudo_head(reduced,xr,xq,ids,labels,strength)
         centers,_=dh.foreground_modes(reduced,8)
-        modes=np.argmax(dh.mm(ep.r,centers.T),axis=1)
+        modes=np.argmax(dh.mm(ep.r,centers.T),axis=1) if len(centers) else np.zeros(len(ep.r),int)
         good=dh.fg_recall_non_decrease(ep,dh.predict(original,xr),dh.predict(changed,xr),modes,held)
         audit.append(bool(good)); safe &= good
     if not safe:
@@ -307,7 +311,8 @@ def _d156_builder(ep,config,control=False):
     fg_radius=dh.source_radius(ep,f); bg_radius=dh.source_radius(ep,b)
     if not np.isfinite(fg_radius) or not np.isfinite(bg_radius):
         return None,{}
-    reference=dh.head(ep,xr); _,bg_group=dh.kmeans(ep.r[b],k); bids=np.flatnonzero(b)
+    reference=dh.head(ep,xr); bgcenters,bg_group=dh.source_modes(ep.r[b],k,weights=ep.wb[b]); bids=np.flatnonzero(b)
+    if not len(bgcenters):return None,dict(reason='fewer_than_eight_BG_support_samples')
     qr=dh.pair(ep); qvalid=ep.q_valid>0; qnearest=np.argmax(np.where(ep.wvalid[None]>0,qr,-np.inf),axis=1)
     rnearest=np.argmax(np.where(qvalid[:,None],qr,-np.inf),axis=0)
     experts=[]; recurrence=[]

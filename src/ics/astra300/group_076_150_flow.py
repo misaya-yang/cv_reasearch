@@ -83,6 +83,35 @@ def persistent(solver,source,sink,n):
     return forward[:n],backward[:n],~(forward[:n]|backward[:n])
 
 
+def minimum_edit_cut(unary,W):
+    """Minimize original float energy, then edits to u>0, then row labels.
+
+    The secondary problem is an exact integer closure on the residual SCC
+    lattice, so no epsilon perturbation can silently change primary energy.
+    """
+    from scipy import sparse
+    from scipy.sparse.csgraph import connected_components
+    y,value,solver=cut(unary,W);n=len(unary);source=n;sink=n+1
+    ii=[];jj=[]
+    for i,edges in enumerate(solver.g):
+        for j,_,capacity in edges:
+            if capacity>1e-12:ii.append(i);jj.append(j)
+    graph=sparse.csr_matrix((np.ones(len(ii)),(ii,jj)),shape=(n+2,n+2))
+    count,labels=connected_components(graph,directed=True,connection='strong')
+    closure=Dinic(count+2);s=count;t=count+1;infinity=n+1
+    desired=np.asarray(unary)>0
+    for component in range(count):
+        points=np.flatnonzero(labels[:n]==component)
+        closure.add(s,component,int(desired[points].sum()))
+        closure.add(component,t,int((~desired[points]).sum()))
+    closure.add(s,int(labels[source]),infinity);closure.add(int(labels[sink]),t,infinity)
+    arcs={(int(labels[i]),int(labels[j]))for i,j in zip(ii,jj)if labels[i]!=labels[j]}
+    for a,b in sorted(arcs):closure.add(a,b,infinity)
+    _,reachable=closure.solve(s,t)
+    chosen=reachable[labels[:n]]
+    return chosen,value,solver
+
+
 class MinCostFlow:
     def __init__(self,n):self.g=[[] for _ in range(n)]
     def add(self,u,v,capacity,cost):

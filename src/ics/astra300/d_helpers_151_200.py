@@ -50,9 +50,9 @@ def role(ep):
 
 def pure(ep):
     c = cov(ep); f = (ep.wvalid > 0) & (c >= .9); b = (ep.wvalid > 0) & (c <= .1)
-    fallback = not f.any() or not b.any()
-    if fallback:
-        f, b = role(ep)
+    fallback = f.sum()<8 or b.sum()<8
+    if f.sum()<8:f=ep.wf>0
+    if b.sum()<8:b=ep.wb>0
     return f, b, fallback
 
 
@@ -63,7 +63,7 @@ def blocks(hw, n=2):
 
 def folds(ep):
     """Four continuous quadrants, one-patch buffer, deterministic fold merging."""
-    assignment = blocks(ep.r_hw); valid = ep.wvalid > 0; f, b = role(ep)
+    assignment = blocks(ep.r_hw); valid = ep.wvalid > 0
     def make(ids):
         held = valid & np.isin(assignment, ids)
         buffer = binary_dilation(held.reshape(ep.r_hw), structure=np.ones((3, 3))).ravel()
@@ -71,7 +71,7 @@ def folds(ep):
         return train, held
     def legal(fold):
         train, held = fold
-        return held.any() and (train & f).any() and (train & b).any()
+        return held.any() and ep.wf[train].sum()>EPS and ep.wb[train].sum()>EPS
     single = [make([k]) for k in range(4)]
     if all(legal(s) for s in single):
         return single
@@ -237,6 +237,18 @@ def kmeans(x, k, *, spherical=True, weights=None):
     return centers, assignment
 
 
+def source_modes(x,k,*,spherical=True,weights=None):
+    """No separately fitted component with fewer than eight physical samples."""
+    x=np.asarray(x,float)
+    if len(x)<8:return np.empty((0,x.shape[1])),np.empty(0,int)
+    count=min(int(k),len(x)//8)
+    while count>0:
+        centers,assignment=kmeans(x,count,spherical=spherical,weights=weights)
+        if min(np.bincount(assignment,minlength=len(centers)))>=8:return centers,assignment
+        count-=1
+    return np.empty((0,x.shape[1])),np.empty(0,int)
+
+
 def fps_rows(x, maximum):
     x=np.asarray(x, float)
     if not len(x):
@@ -295,8 +307,8 @@ def calibrate(ep, method, builder, configs=DEFAULT_CONFIGS, minimum_threshold=No
     builder(train_episode, configuration) returns a callable scoring arbitrary
     original-D rows and diagnostics. Every fold rebuilds all private state.
     """
-    validate(ep); f,b=role(ep); base=b0_field(ep)
-    if not f.any() or not b.any():
+    validate(ep); base=b0_field(ep)
+    if ep.wf.sum()<=EPS or ep.wb.sum()<=EPS:
         return finish(ep, base, method, branch='single_role_documented_B0')
     spatial=folds(ep)
     if not spatial:
@@ -343,8 +355,8 @@ def fg_recall_non_decrease(ep, original, changed, mode_id, selected):
 
 def foreground_modes(ep, k=8):
     f,b,_=pure(ep); assignment=np.full(len(ep.r), -1, int)
-    centers, ids=kmeans(ep.r[f], k)
-    assignment[f]=ids
+    centers, ids=source_modes(ep.r[f], k,weights=ep.wf[f])
+    if len(centers):assignment[f]=ids
     return centers, assignment
 
 

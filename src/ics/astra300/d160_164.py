@@ -49,16 +49,17 @@ def _d160_builder(ep,strength):
         for selected,reps,member,width,awidth in classes:
             cosine=np.clip(dh.mm(x,reps.T),-1.,1.)
             logs=-(2.-2.*cosine)/(2.*width*width)
-            terms=[]; count=int(selected.sum())
+            terms=[]; role_weight=ep.wf if selected is f else ep.wb
+            mass=float(role_weight[selected].sum())
             for j in range(len(reps)):
                 ids=np.flatnonzero(selected)[member==j]
                 if not len(ids):
                     continue
                 if active and amplitude is not None:
                     alog=-float(strength)*(amplitude[:,None]-ra[ids][None])**2/(2.*awidth*awidth)
-                    terms.append(logs[:,j]+logsumexp(alog,axis=1)-np.log(count))
+                    terms.append(logs[:,j]+logsumexp(alog+np.log(np.maximum(role_weight[ids],1e-12))[None],axis=1)-np.log(mass))
                 else:
-                    terms.append(logs[:,j]+np.log(len(ids)/count))
+                    terms.append(logs[:,j]+np.log(role_weight[ids].sum()/mass))
             values.append(logsumexp(np.asarray(terms),axis=0))
         return values[0]-values[1]
     def scorer(x):
@@ -222,8 +223,11 @@ def _d163_builder(ep,config,free=False):
     k,rank,penalty=config; xr,xq,p=dh.project(ep); f,b,_=dh.pure(ep)
     if not f.any() or not b.any():
         return None,{}
-    fg,group=dh.kmeans(xr[f],k,spherical=False); bg,_=dh.kmeans(xq[ep.q_valid>0],min(8,k),spherical=False)
-    original_fg,_=dh.kmeans(ep.r[f],k); radius=dh.source_radius(ep,f)
+    original_fg,group=dh.source_modes(ep.r[f],k,weights=ep.wf[f])
+    fg=np.asarray([np.average(xr[f][group==j],axis=0,weights=ep.wf[f][group==j]) for j in range(len(original_fg))])
+    bg,_=dh.source_modes(xq[ep.q_valid>0],min(8,k),spherical=False)
+    radius=dh.source_radius(ep,f)
+    if not len(bg):return None,dict(reason='query_BG_modes_have_less_than_eight_samples')
     if len(fg)<2 or not np.isfinite(radius):
         return None,dict(reason='fewer_than_two_F_modes')
     sim=dh.mm(ep.q,original_fg.T); winners=np.argmax(sim,axis=1); distances=np.sqrt(np.maximum(0.,2.-2.*np.max(sim,axis=1)))

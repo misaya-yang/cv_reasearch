@@ -206,6 +206,66 @@ def fit_a025(frame,remove=True):
         "shared_intercept_always_zero":True,"remove_shared_term":remove}
 
 
+def _pure_branch_filtration(bank,labels,blocks):
+    """R merge forest: pure branch death is its first opposite-role contact."""
+    n=len(bank);distance=np.sqrt(sqdist(bank,bank));ii,jj=np.triu_indices(n,1)
+    order=np.lexsort((jj,ii,distance[ii,jj]))
+    parent=list(range(2*n-1));nodes=[dict(members=[i],label=int(labels[i]),birth=0.,death=np.inf,children=[]) for i in range(n)]
+    def root(i):
+        while parent[i]!=i:parent[i]=parent[parent[i]];i=parent[i]
+        return i
+    def contact(i,t):
+        stack=[i]
+        while stack:
+            j=stack.pop()
+            if nodes[j]['label'] in (0,1) and not np.isfinite(nodes[j]['death']):nodes[j]['death']=t
+            stack.extend(nodes[j]['children'])
+    for k in order:
+        a,b=root(int(ii[k])),root(int(jj[k]))
+        if a==b:continue
+        t=float(distance[ii[k],jj[k]]);la,lb=nodes[a]['label'],nodes[b]['label'];role=la if la==lb else -1
+        if role==-1:contact(a,t);contact(b,t)
+        j=len(nodes);nodes.append(dict(members=nodes[a]['members']+nodes[b]['members'],label=role,birth=t,death=np.inf,children=[a,b]))
+        parent[a]=j;parent[b]=j
+    safe=[]
+    for node in nodes:
+        if node['label'] not in (0,1) or not np.isfinite(node['death']) or node['death']<=node['birth']:continue
+        members=np.array(node['members'],int)
+        if len(set(blocks[members]))<2:continue
+        safe.append((node['label'],members,node['birth'],node['death']))
+    return distance,safe
+
+
+def fit_a027(frame,multiradius=False,shuffle=False):
+    f,b,fi,bi,_=frame.banks()
+    if not len(f) or not len(b) or np.any(fi<0) or np.any(bi<0):return _plain(frame)
+    bank=np.r_[f,b];labels=np.r_[np.ones(len(f),int),np.zeros(len(b),int)];blocks=frame.blocks[np.r_[fi,bi]]
+    if shuffle:labels=np.random.default_rng(0).permutation(labels)
+    distance,branches=_pure_branch_filtration(bank,labels,blocks)
+    fg=[v for v in branches if v[0]==1];bg=[v for v in branches if v[0]==0]
+    if not fg or not bg:
+        predict,info=_plain(frame)
+        return predict,dict(info,card_id='A027',degeneration='no_two_role_positive_crossblock_persistent_branches',FG_branches=len(fg),BG_branches=len(bg))
+    radii=np.quantile(distance[np.triu_indices(len(bank),1)],[.1,.3,.5,.7,.9])
+    def predict(q,ids,role):
+        d=np.sqrt(sqdist(q,bank));nearest=[d[:,labels==c].min(1) for c in (0,1)]
+        if multiradius:
+            margins=[(d[:,labels==1]<=r).mean(1)-(d[:,labels==0]<=r).mean(1) for r in radii]
+            return np.mean(margins,axis=0),{'radii':radii.tolist()}
+        durations=[]
+        for role,branchbank in ((1,fg),(0,bg)):
+            out=np.zeros(len(q))
+            for _,members,birth,death in branchbank:
+                join=d[:,members].min(1)
+                exit_=np.minimum(death,nearest[1-role])
+                out=np.maximum(out,np.maximum(exit_-np.maximum(birth,join),0))
+            durations.append(out)
+        return durations[0]-durations[1],{'FG_positive_stay_points':int((durations[0]>0).sum()),'BG_positive_stay_points':int((durations[1]>0).sum()),'query_query_edges':0}
+    return predict,{'anchors':len(bank),'FG_safe_branches':len(fg),'BG_safe_branches':len(bg),
+        'lifespan_convention':'pure_component_formation_until_first_mixed_ancestor_contact',
+        'reference_filtration_fixed_before_query':True,'label_shuffle_control':shuffle,'multiradius_control':multiradius}
+
+
 def install(register,requirements):
     register("A023",fit_a023,(
         "64FPS FG mutual8NN graph, PCA tangent rank<=4; BGnormal nearestpureBG within2patch andbalancederror<.5 inknownblocks containing neitherendpoint.",
@@ -219,3 +279,8 @@ def install(register,requirements):
         "Maskdepth isnearestKNOWN opposite-pure-side grid distance withFGpositivesign; noheldout-asBG EDT; rolecurve degree2 ridge1.",
         "Shared powers1/2 onlyif rolecoefficientcos>=.95, meanvector, nointercept removal; integrateq.1/.3/.5/.7/.9 eachroledepth byequalmeanexp(-distance2/.07), outputlogratio.",),
         (("same_depth_no_shared_removal",lambda f:fit_a025(f,remove=False)),("original_5NN",_plain)))
+    register('A027',fit_a027,(
+        'CompleteEuclidean pairdistance zero-dimensional unionfind on<=128 observedroleanchors; purecomponent birth=formationradius, death=firstmixedancestorcontact.',
+        'Bothrolebranches requiremembersfrom>=2Rblocks andpositivelife. Qstay=max(0,min(branchdeath,nearestoppositeedge)−max(branchbirth,nearestmemberedge)); maxrole durationdifference.',
+        'Rbranchforestfixed,noQ-Q. Puredescendants persist toBGcontact insteadordinaryH0 same-label eldermerge death; this semantic lifetime convention is an explicitimplementationassumption.',),
+        (('same_anchors_multiradius_vote',lambda f:fit_a027(f,multiradius=True)),('same_count_labels_shuffled',lambda f:fit_a027(f,shuffle=True))))
