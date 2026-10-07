@@ -58,3 +58,19 @@ from .mlp_null_08 import install as _install08
 _install08(METHODS,CONTROLS,REQUIREMENTS,CONTRACTS)
 from .align_factor_02_07 import install as _install02_07
 _install02_07(METHODS,CONTROLS,REQUIREMENTS,CONTRACTS)
+
+def _m07_m03_control(ep):
+    result=METHODS['PRO30_M03'](ep)
+    result.info.update(method_id='PRO30_M07__M03_shared_source_dictionary',control_only=True,reused_original_method='M03')
+    return result
+
+def _m07_qp02_control(ep):
+    degeneration=degenerate_margin(ep)
+    if degeneration is not None:return finish(ep,degeneration[0],'PRO30_M07__historical_QP02',degeneration[1])
+    from ics.cpu100.query_partition import qp02
+    result=qp02(ep)
+    return finish(ep,result.margin,'PRO30_M07__historical_QP02',dict(result.info,control_only=True,reused_original_method='CPU100_QP02'))
+
+CONTROLS['PRO30_M07__M03_shared_source_dictionary']=_m07_m03_control
+CONTROLS['PRO30_M07__historical_QP02']=_m07_qp02_control
+CONTRACTS['PRO30_M07']['controls'].extend(['PRO30_M07__M03_shared_source_dictionary','PRO30_M07__historical_QP02'])
