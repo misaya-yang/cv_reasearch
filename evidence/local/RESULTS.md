@@ -1766,3 +1766,151 @@ scale -0.05 [-1.40, +0.98]. Not measured: a size estimate that does not come fro
 Split of the +3.98 (true-size bins, public 4000): applied only to episodes whose best cut reaches IoU 0.5: +1.69; only
 to the others (16.3 %): +2.14. In the second group an estimate taken around the score peak may measure another
 object, so +1.69 is the part that needs a size estimate alone.
+
+## 2026-10-07 fixed-600 scoreboard (CPU server 56464, read-only tally by Claude)
+
+Same 600 reused development episodes (80 classes, 150 per fold, 570 photograph groups), class mIoU at
+original query resolution. Rows list: `cpu100_20261006_01a1100b/fixed600_evaluation_rows.json`.
+Not an independent confirmation; nothing here is comparable with the 1024-workspace numbers above.
+
+| Row | mIoU | Report under `/root/autodl-tmp/` |
+|---|---:|---|
+| Complete FoRIS (cached) | 61.5627 | `codex_rcg_h387_600_20261007_01a1100b/final_comparison_v1/report.json` |
+| Complete INSID3, bilinear, no CRF | 56.3812 | `astra300_20261007_01a1100b/INSID3_complete_bilinear_fixed600_recovery_v1/score/report.json` |
+| B_R: Huber linear readout fitted on the reference, raw final-LN features | 46.5752 | `astra300_.../PRO30_M04_controls_fixed600_v12/score/report.json` |
+| Same-sample ridge | 46.3504 | same |
+| Raw nearest neighbour | 43.0828 | `codex_rcg_h387_.../final_comparison_v1/report.json` |
+| D_I (Codex graph variant) raw / position-debiased features | 42.2969 / 48.0981 | `codex_rcg_h387_.../processed_2x2_score_v1/report.json` |
+| MEAN on its own evidence, raw / debiased | 40.3626 / 41.9695 | same |
+| Pro30 M03, M06 | 46.0795, 46.0573 | `astra300_.../PRO30_M04_controls_fixed600_v12`, `PRO30_M06_exact_fixed600_v15` |
+| Pro30 M14, M19 | 40.4745, 37.6339 | `PRO30_M14_direct_fixed600_v18`, `PRO30_M19_repair_direct_fixed600_v23` |
+| Pro30 M04, M05 | 29.0910, 28.8915 | `PRO30_M04_controls_fixed600_v12`, `PRO30_M05_direct_fixed600_v18` |
+| Pro30 M07, M18, M12 | 17.3528, 14.1722, 11.3780 | `PRO30_M07_direct_fixed600_v16`, `PRO30_M18_fixed600_v14`, `PRO30_M12_direct_fixed600_v18` |
+
+Astra300: 0 of 300 scored (all batches unsealed at 19:00). Pro30: 9 of 30 scored, none above B_R.
+Position debiasing on the D_I variant: +5.80 (48.10 vs 42.30). Earlier 200-episode screen (74 classes):
+Huber readout 52.37, ridge 51.66, prototype 42.58. Per-method edit accounts are in
+`evidence/local/cpu100_20261006/METHODS_AND_FAILURES.md`.
+Reading: every card was scored as a stand-alone method against B_R, 15.0 below complete FoRIS and 9.8 below
+INSID3 on the same episodes; no run used the strong host. The gap sits in the evidence stage.
+
+## 2026-10-07 size from the query image alone (`scripts/score_query_size.py`, server 25142, CPU)
+
+fresh600 token record, RCG field, 64.52 at the fixed 0.5 cut; cut level per quartile of the estimate, levels fitted on
+the other folds. True size (diagnostic) +4.72. Query image resized to 256x256, Lab, Gaussian 1 px; seed = the 4x4
+block of the score peak. No reference similarity enters the region itself.
+
+| Estimate | Gain | Corr. with true log size | Within 2.7x of true |
+|---|---:|---:|---:|
+| Area RCG > 0.5 (score-derived control) | +0.36 | 0.84 | 0.91 |
+| Colour flood, dE < 10 / < 20 | +0.15 / -0.40 | 0.29 / 0.26 | 0.57 / 0.57 |
+| Flood bounded by colour edges, gradient percentile 60 / 75 | -0.54 / -0.03 | 0.30 / 0.25 | 0.57 / 0.57 |
+| Watershed on colour edges, peak block vs RCG < 0.1 | -0.35 | 0.34 | 0.58 |
+| Watershed on colour edges, RCG > 0.9 vs RCG < 0.1 | +0.25 | 0.52 | 0.68 |
+| Each of the six fitted together with the area (held fold) | +0.23 to +0.66 | 0.84 | 0.90-0.91 |
+
+Closed: colour and edge regions around the peak do not measure object size (correlation 0.25-0.52, against 0.84 for
+the score area), and adding them to the score area stays inside the +-0.7 band of the nine score-derived estimates.
+Not run: a multi-scale segmentation hierarchy (no skimage on the server; nothing was installed).
+
+
+## 2026-10-07 PLAN step3: position-level acceptance stopped (CPU25142)
+
+Only PLAN next step3 was authorized. Same ordered fresh600 (80 classes), post-Part1 FP16 q/r joined exactly
+by key/fold/class/reference/query to the retained1200 input manifest; no new encoder, GPU, public4000,
+Pro30/300 continuation, fitting or parameter change. Primary metric: strict binary token truth>0.5,
+64x64 class-summed intersection/union. Old soft-coverage IoU is a different protocol.
+
+| Acceptance | Saved class mIoU | Replay class mIoU | Paired replay-minus-saved pp [95% CI] |
+|---|---:|---:|---:|
+| saved score -> unchanged rcg.predict -> cut0.5 | 64.517347 | 64.507849 | -0.009498 [-0.019476,-0.000903] |
+
+Acceptance1 failed:147 changed token decisions across65/600 episodes. Rounding the replay field back to
+FP16 still changes75 decisions (64.514140, gain-0.003207 [-0.009687,+0.003627]); that diagnostic does not
+replace the prescribed API or pass the gate. Field max absolute difference0.038998. Complete600 replay:
+40.91s,16workers x2threads, CPU only. Paired2000 RandomState(0) resamples use564 connected R/Q photo groups;
+this measures replay drift on reused development data, not an evidence-method gain versus s2.
+
+Confirmed source differences:run_order_tokens stored FP16 score/RCG after solving with then-FP32 score;
+its run_rcg2.solve consumes already rounded q/r without another unit normalization, while current
+rcg.predict normalizes them again. CG caps600/300 differ in source, but replay iterations max77, so this
+run did not hit either cap. The separate contributions of feature/score precision and normalization
+were not experimentally identified; no constants were adjusted to force agreement.
+
+Per the explicit stop condition, acceptance2(native Part2 vs saved s2) and the five-level decomposition
+were NOT RUN. Source review also found a definition conflict:stage_bank native s2 uses FG prototype LSE
+and one orthogonalized hardest20% BG-token mean with BG weight0.55; the written five levels use BG
+prototype LSE. They cannot silently be labeled the same endpoint. A no-position-debias row is unavailable
+from this processed cache; no extraction was started. No seven-row decomposition result is claimed.
+
+Evidence: `evidence/local/evidence_bench_step3_20261007/acceptance1_report.json`,
+`acceptance1_receipts.json`, `acceptance1_paired_ci.json`, `acceptance1_counts.npz`,
+`acceptance1_replayed_fields.npz`, and `review.md`. Raw outputs remain at
+`/root/autodl-tmp/evidence_bench_step3_20261007_25142/acceptance1`.
+
+The delivered `scripts/bench_evidence.py` was then run with `--acceptance1-provider` against those exact
+completed outputs. It rechecked all600 feature hashes, identities, source hashes, fields and counts,
+called RCG zero additional times, returned `STOPPED_ACCEPTANCE1` with exit2, and marked acceptance2 and
+decomposition `NOT_RUN`. Evidence: `bench_stop_report.json`, `bench_config.json`, and
+`final_process_state.json` in the same local directory; final active task programs0. Execution stopped.
+
+
+## 2026-10-07 PLAN A: source-aligned six-level evidence decomposition (CPU25142)
+
+The updated acceptance gates (0.3pp class-mIoU,1% token decisions) were selected after observing acceptance1; no historical preregistration is claimed. Acceptance1 is reused,64.517347 saved vs64.507849 replay. Native s2 acceptance2 is51.728906 saved vs51.730365 replay,370/2,457,600 different positions(0.0151%); all600 source reference covariances match exactly. Original annotation root is /root/autodl-tmp/datasets/ics/COCO2014/annotations, not the similarly named demo4_cache annotation directory. Native Part2/ref-only parameters were saved once for decomposition.
+
+| level | direct positions mIoU; Δ vs matched s2 [95% CI] | RCG positions mIoU; Δ vs matched s2 [95% CI] | target>wrong, direct/RCG |
+|---|---|---|---|
+| L1 FG mean cosine | 46.8470; -4.8819 [-7.0307, -3.5664] | 49.7460; -5.6382 [-8.1072, -4.2112] | 32/81 ; 22/81 |
+| L2 minus.55 all-BG mean | 49.8131; -1.9159 [-3.5979, -0.4355] | 53.0594; -2.3248 [-4.1989, -0.6866] | 31/81 ; 26/81 |
+| L3 hardest20% BG token mean | 52.7628; +1.0339 [-0.1965, +2.1362] | 55.3702; -0.0140 [-1.2285, +1.2822] | 32/81 ; 23/81 |
+| L4 orthogonalized hard-BG mean | 53.2289; +1.5000 [+0.1790, +2.5144] | 55.8685; +0.4843 [-0.7096, +1.7279] | 31/81 ; 25/81 |
+| L5 FG prototype maximum | 50.6542; -1.0747 [-1.4294, -0.6191] | 55.2327; -0.1515 [-1.0028, +0.3172] | 28/81 ; 24/81 |
+| L6 FG prototype LSE T.07: native s2 | 51.7304; +0.0015 [-0.0109, +0.0092] | 55.3870; +0.0028 [-0.0058, +0.0088] | 28/81 ; 24/81 |
+| no APD | unavailable in this processed cache | unavailable | — |
+
+Position-level binary-token class IoU; reused development fresh600. Baseline: stored_s2. Native s2 replay drift: 0.0014587903061027419 pp. Gates were chosen after acceptance1.
+
+Both columns use binary64x64 truth>0.5 and class-summed I/U; RCG outputs are cut directly at0.5. Direct baseline is stored s2(51.728906), graph baseline is unchanged RCG on that same s2(55.384197), not RCG on final FoRIS score(64.517347). Paired2000 RandomState(0) connected-photo resamples use the same draws and present-class denominator. This is reused fresh600 development evidence, not original-resolution complete-method or independent-confirmation evidence.
+
+Reading: hard-BG selection and orthogonalization with a single FG mean(L4) reach53.228858 directly,+1.499952[+0.179008,+2.514432] over s2; graph55.868450 is only+0.484254[-0.709641,+1.727898], unresolved. FG-prototype max/LSE are not necessary for the higher direct number in this setting. The complete DEV24114-point gap cannot be assigned to these token-level increments across protocols. The measured graph background staircaseL4-L1 is6.122415pp, exceeding the C card2 zero-control trigger2.0; this is same-object arithmetic, not a new causal or transferable gain claim.
+
+Sources: evidence/local/evidence_bench_step3_20261007/A_six_levels_v6/{report.json,config.json,acceptance2_report.json,table.md,counts.npz}. Server /root/autodl-tmp/evidence_bench_step3_20261007_25142/A_six_levels_v6 retains all FP32 fields/ref-only auxiliary arrays and frozen sources.
+
+## 2026-10-07 PLAN B: actual development complement prepared (CPU25142)
+
+Actual1200 unique source episodes minus the exact fresh600 identities leaves600, not the PLAN-estimated601; no example or feature was fabricated. The same original-annotation truth code replays fresh600 with zero binary-token differences (required<=0.1%); reference area coverage is exact. All600 complement records are complete. FP32 position-level baseline reads s2=51.569098 andRCG(s2)=55.857945. These are separate-cohort baseline numbers, not gains against fresh600.
+
+tokens.npz/rows.json contain actual truth,ref,s2,rcg,score plusrcg_s2 alias. Here rcg means RCG on recomputed s2, unlike fresh600 historical rcg on final score; field producer metadata states this. FP32 per-example fields and binary I/U are retained,FP16 compatibility storage errors are recorded. This complement was previously reused development data and is not independent confirmation. No encoder/model forward or GPU used.
+
+Source: evidence/local/evidence_bench_step3_20261007/B_holdout_actual600_v1/{report.json,truth_acceptance.json,rows.json,tokens.npz}; server retains per-example fields/source bindings.
+
+## 2026-10-07 PLAN C/D: fixed Pro repairs closed (CPU25142)
+
+Same fresh600 binary64x64 positions, frozen A endpoint/graph/readout; baseline s2=51.728906 direct and55.384197 graph.
+Paired2000 connected-photo resamples, reused development data. No encoder forward.
+
+| fixed output | direct mIoU; gain [paired95%CI] | RCG mIoU; gain [paired95%CI] | target>wrong direct/RCG | decision |
+|---|---|---|---|---|
+| Card1 mode return | 46.4788; −5.2501 [−6.6382,−4.0046] | 51.8506; −3.5336 [−5.1040,−2.3277] | 30/81;23/81 | closed |
+| Card1 global control | 47.0079; −4.7210 [−5.9462,−3.5493] | 53.3552; −2.0290 [−3.8250,−0.9878] | 28/81;21/81 | required control |
+| Card2 pure-BG NORMAL-cache control | 51.5505; −0.1784 [−0.3323,−0.0921] | 55.3008; −0.0834 [−0.3498,+0.0120] | 28/81;24/81 | closed |
+
+Card1 graph also loses to its mandatory global-calibration control by1.504574pp [−2.443158,−0.204775],
+and fails the failing-image floor23/81 vs24/81. Card2 here is ONLY the normal-cache pure-background control:
+no graph gain, same24/81; full all-layer attention-isolation hypothesis remains UNTESTED.
+Neither reaches the fixed fresh gate, so no candidate B repetition was run. No new mechanism or variant was opened.
+
+Timing pool5:6.225s; remaining595 across all three fixed outputs:127.404s,16CPUworkers×2threads,
+about133.63s measured pool wall combined. A parser error was repaired before inference.
+Original C scoring then stopped on64×64/4096 shape mismatch; score_pro_repairs.py flattened only count inputs
+and reused all sealed fields without any inference rerun. Original predictor/source, failure log, scoring repair
+hash and field seal remain in C_zero_repairs_v1. Local current runner also has the count-input shape repair.
+
+The simpler A L4 direct evidence53.228858 beats native s2 by1.499952 [+0.179008,+2.514432] here,
+but its graph advantage+0.484254 [−0.709641,+1.727898] is unresolved. This does not establish an original
+replacement evidence or a complete-method improvement.
+
+Full D table and decisions: evidence/local/pro_cards_20261008/D_report.md. Local C report/table/counts/config/seal/source/repair receipt
+copied back. Final current experiment processes0; disk31GiB free. A→B→C→D stopped; card2 encoding and any
+integration/original-resolution work await the next user decision.

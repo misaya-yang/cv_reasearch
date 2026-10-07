@@ -1,10 +1,82 @@
-# CPU方法与失败证据：单一整理记录
+# 方法与失败证据：CPU100历史及Astra300当前映射
 
-**当前有真实开发集收益线索，但没有100个稳定有效方法，也没有完成同协议SOTA结论。原生DINO1024的30方法四例探针已完整，其中12方法随后在复用200例开发集完成。Huber参考读出在200例比ridge控制高0.7109 pp；多数高于prototype的收益可由简单控制解释。RGB02从4例正增益转为200例显著负。本文件只整理证据，不安排实验、不创建第二PLAN。**
+**当前任务已改为按给定Astra300原始定义实现并直接评固定600，不先筛200；尚无Astra600质量测量。300个ID定义已固定，已到件实现、待审批次、缺真实观测与待实现分开记录，不把代码或合成检查计成300方法交付。CPU100历史仍有真实开发收益线索：Huber在200例比ridge高0.7109 pp；RGB02从4例正增益转为200例负。本文件只整理证据，不安排实验、不创建第二PLAN。**
 
-记录日期2026-10-07；实验批次20261006。只写本文件，未SSH、未跑方法或实验。
+记录日期2026-10-07；本次来源/到件状态窗口为05:14–05:25 UTC，活跃源码可能继续变化。只写本文件，未SSH、未跑方法或实验；下文读取的运行收据来自对应执行者，不是本整理员新跑结果。
 
-## 证据口径与计数
+## 全队公共阅读区与两条当前claim
+
+本文件是全队共用的来源、方法、失败与到件证据阅读区；各owner把源码/原卡映射/实现假设/hash/ready或缺项落到自己的证据目录，本整理仅把实际新来源和收据归入同一MD。批次不互相刷状态，只有必须root处理的故障或完整批次交接进入聊天。协议与行动范围仍见当前AGENTS、[PLAN](/Users/yang/projects/CVPR2027/docs/research/PLAN.md)和用户指令，本文件不另立规则或待办。
+
+两条最新目标来自当前[CLAIM](/Users/yang/projects/CVPR2027/docs/research/CLAIM.md)，尚无新完整方法证明达到任一条：
+
+| 目标 | 对应必须交付的证据 |
+|---|---|
+| 极简效率：极简、高效率，完整准确率超过同协议完整INSID3 | 同输入/样本/分辨率的完整INSID3与最强简单替代；完整mask质量、端到端/缓存后CPU延迟、内存及实际编码次数。轻量、拟合正确或source准备不等于准确率已胜。 |
+| 适度延迟换精度：允许适度推理延迟，超过同协议完整FoRIS及已有强方法 | 完整FoRIS、实际MEAN/RCG/fine和同信息/同预算强控；完整净收益、逐类I/U与四动作、配对区间及精度/延迟。不能只胜弱prototype或跨pipeline挪用历史分。 |
+
+可原创或重构既有方法，可使用FoRIS操作，不预设必须保留四段流程；可读真实内部层/attention/响应/新增view，不受现缓存或末层限制，仍不增加外部类别名、模型、图池、基类标签。旧“稳定至少+2”是历史愿望，当前不是无限搜索或论文价值的硬门。两路研究与给定300项交付并行，不互相替代；本整理员不设计或启动任一路实验。
+
+## Astra300当前来源、合同与到件状态
+
+原始来源为[用户给定300定义](/Users/yang/Downloads/冻结DINOv3单参考分割_300个完整方法候选.md)，仓内封存副本为[astra300.md](/Users/yang/projects/CVPR2027/evidence/local/astra300_20261007/source/astra300.md)，628,580 bytes，实际SHA256 `8c85ec4e8d1f32b7b98aef902ad94a4bb525b2ebd7023302f7551dbfab356f83`。[methods300.json](/Users/yang/projects/CVPR2027/evidence/local/astra300_20261007/source/methods300.json)实际SHA256 `5fcd68101c95d687f13ff1e4f9024193a2bf453eca33543a505fbe399f85412e`；本次只读核对300个唯一ID、number 1–300连续、300段definition的逐段SHA全匹配。JSON中的初始`supplied_pending_implementation`不是实时实现状态，`owner`是原六组写作分工，不是当前四组执行职责。
+
+原文六族各50：A001–A050参考身份；B051–B100跨图对应；C101–C150查询组织；D151–D200负证据与参考内辨别；E201–E250真实RGB/混合采样；F251–F300联合决策与有限新观测。每卡的完整原文、原题、缺口、合法输入、终判、强控、反例与成本都由上述JSON保留，不在本文件另造或改写300条定义。本整理核读全局合同、六组公共协议及到件批次说明/收据；逐卡原文覆盖限实际读到的卡，不声称已经语义精读全部300条。
+
+| 当前执行组（各75） | 原始ID范围 | 本窗口到件证据与实际状态 |
+|---|---|---|
+| 001–075，reference_evidence | A001–A050、B051–B075 | 首批8ID已正式审查：revision1 **7个主方法通过**（A001/002/003/004/005/007/008），A006有缺pure-token组件被漏掉的合同错误、需修订；取代先前“A8 ready”的泛称。A009、A011–A016另有7方法合成检查，待审；A010求解器存在但原卡要求的跨图坐标稀疏预检真实证据缺失，显式不可运行。A017–A020只见活动源码注册调用，未据此计完成。其余本窗口未见完整到件证据。 |
+| 076–150，local_structure | B076–B100、C101–C150 | status.json到件C102/C104/C105/C106/C108/C109/C114/C116/C117/C119共10项，`implemented_for_review`、固定600结果null。活动源码已增加注册调用，不能拿旧10项status外推新增项已审/完整运行；其余仍待相应批次收据。 |
+| 151–225，decision_risk | D151–D200、E201–E225 | 首批D151/152/153/155/156和二批D160/161/162/163/164共10项有recipes及完整合成probe，两批ready均`review_status=pending`；PROGRESS尚余65。各probe只绑定其记录的source SHA，后续活动源码不能静默继承旧分数。D160真实pre-final-LN缺项另列，不把合成幅值或合法angle-only退出分支叫真实幅值主机制运行。 |
+| 226–300，cross_image_matching | E226–E250、F251–F300 | E236/E238/E242/E245/E250共5项实现与数值/完整合成mask检查已到件，root报告E5 review；没有接受/真实600质量凭据。E235/E239/E240/E243/E244只见活动源码导出，待完整收据。F251–F275已有内核；其中23项wrapper及同名control合成协议检查通过，F256/F268显式缺实际观测，当前group export未因此交付全部F；F276–F300只见内核源码，不能当已完成公共协议接入。 |
+
+以上为证据层级快照，不加成“已交付方法数”。未列入具体到件ID的定义仍在300映射中，状态为待完整实现/收据/审查；“未见收据”不等于断言活动源码绝不存在。当前300项的自然mIoU、逐类I/U、四类增删和同协议完整FoRIS/INSID3比较均unknown。原文的30/200诊断顺序被最新固定600指令替换；各卡的参考内留块重建、校准与有限求解仍是算法组成，未被取消。
+
+### 实现合同与合法输入的区别
+
+固定模型、单张R RGB/完整类别MR、Q RGB；不加查询真值、类别名、额外模型、图池或基类标签。末层缓存是加速资产，不限定设计可观察信息。reference小头/字典/阈值允许按原卡求解，但不能叫无需优化。A的U和D的G把连续场一次映回原尺寸再阈值，与CPU100的binary1024→original读出不同；本轮保留源规定的renderer和零模块控制，不把渲染差额当新增类别证据。
+
+各组原点/回退不合并：A为每role至多64锚5NN差；D为完整R coverage≥.5最近role；E通常使用实际MEAN宿主，指定E207/216/218/237/238/242/243等才用U0；B的H/W/Z还要求实际完整FoRIS宿主；C、F也有各自基场及退化规则。项目历史`model.raw_nn`另绑定，不能借用旧42.90给任何新NN/均值头。源内拟合必须先移除未知留块及规定缓冲，再从FG/BG同时重建所有标签相关状态；只把held-out wf置0会漏成BG。共享编码上下文的参考块校准不提供独立跨图保证。
+
+### 旧1200可读与新固定600生产状态
+
+[逐项1200可读性核查](/Users/yang/projects/CVPR2027/evidence/local/astra300_20261007/existing1200_readability.json)实际SHA256 `18bb8c5404f80b1bc1265c5212b6df205a8e94427d301c9a9ae24d5da29a1d45`：1200唯一manifest key，feature、packet、R/Q原RGB、MEANfield及stored host mask各1200可读。此前目录glob只数到546个文件，不表示manifest缺654项，已撤回这种解释。此审计曾打开packet truth成员的shape/dtype，因此`query_GT_read=true`须保留；没有以标签做推断/评分，packet禁止进入方法推断。可读性不自动证明某个卡的producer、renderer或内部状态合同已满足。
+
+[实际MEAN600宿主绑定](/Users/yang/projects/CVPR2027/evidence/local/astra300_20261007/mean_host600.json)实际SHA256 `93250d921749a7aaab57aefe7f8bff9fdcd1c453a130e5b2f1ca67a24c9eff1f`记录exact_fixed600、连续field和stored mask逐例hash，以及其旧processed链：单位化→条件FoRIS Part1→单位化→FP16。stored M0为连续64→1024阈值→二值1024再映原图阈值；另一个continuous-original zero单独列。这是合法且来源明确的MEAN宿主，不能改称raw-native或完整FoRIS强基线。[首对provider核查](/Users/yang/projects/CVPR2027/evidence/local/astra300_20261007/provider_first_pair_v1.json)确认该对actual host mask identity、工作mask差0、无QGT读取；不外推600全链已运行。
+
+新fixed600 raw提取root本窗口报告已440+，尚未收到全部600完成的封存收据，不写600已全备或300已评分。新native source pack为FP32 final-LN原生patch，无FoRIS Part1；CPU100匹配loader随后单位化。source pack保留的final-LN原始norm可供明确需该量的卡使用，**不能供D160冒充pre-final-LN**：D160原卡明确要求最后block输出、最终LayerNorm之前的实际h；reviewer曾仅看标题误判成final-LN norm，已按原文纠正。D160原卡允许未保存LN前状态时幅值臂退出到同信息angle分类器，这是已写明的合法退化；输出可运行不等于幅值主机制获得真实测量。真实中间层、QKV/attention、特殊token、输入导数及额外view仍须按卡给实际绑定观测，不从unit final或旧processed缓存伪造。
+
+最新PLAN已授权1200扩充，且旧1200资产逐项可读；原生1024FP32目前生产的是同一fixed600，不能把旧1200可读写成raw1200已齐。fixed600独立评分清单600例/80类、四折各150，PLAN记录SHA `913272d7f0d4290141a870e3d5a4922886d6345c64cc1693930096039e07c8b6`；本整理没有远端重读该清单。1200仍是复用开发数据，不称新独立确认；缓存复用/生命周期由root调度，本MD不新起资源计划。
+
+[实际CPU冻结encoder首view parity](/Users/yang/projects/CVPR2027/evidence/local/astra300_20261007/encoder_first_view_parity_v6.json)实际SHA256 `2215d0ad6a55d6c3761ae9ed989f66b5868c2be038873abd1016293624e72bcc`：有1次真实FP32 CPU前向、同checkpoint/config、eval/frozen、无Part1；输出64×64×1024，单位化与已有native pack最大差0、重复缓存差0。实测该前向wall36.9978s、CPU73.5537s（2线程），首view过程46.8103s；这是单view receipt，不是某方法端到端时间、全部内部观测或全部600成本。不能再把真实encoder适配说成始终假callback，也不能由一个正常view声称输入梯度/尾层重放全部可用。
+
+### 当前检查能支持什么，不能支持什么
+
+A001–A008修订后[冻结manifest](/Users/yang/projects/CVPR2027/evidence/local/astra300_20261007/group_001_075/batch01_revision1_manifest.json)绑定[checks](/Users/yang/projects/CVPR2027/evidence/local/astra300_20261007/group_001_075/batch01_revision1_checks.json)，后者实际SHA `c5caeca1d7c08a3e7fda2c6ad8bd28d035fd5d16df2cfceb40a7c6f6df1d2b07`。覆盖率阈值已按literal半role加权|prediction−coverage|修正，不能把仅不同类条件归一的旧阈值检查称原卡实现。[正式revision1审查](/Users/yang/projects/CVPR2027/evidence/local/astra300_20261007/reviews/batch_A001_A008_rev1.json)，本窗口实际SHA `94648d9f21d124aa9660dc6f856c4b1236d95bef37fa7410d8c69bd2bbec32f4`：7主方法通过可直接固定600，A006需修订。旧revision0共同校准错误，曾误启动进程已由root按实际服务器hash停止；旧partial receipt不与修订结果合并。
+
+本整理此前误从陈旧READY说明把A004的revision0四角差2.43e−16迁到revision1，已纠正：revision1实际checks记录四角差0.0629708293、16个SVM拟合均无失败，参数由balanced total hinge weight1改为per-sample C1，不能沿用旧强制均值差的代数退化关闭新版本。零four-corner只推出包括intercept的可分离learned potentials，不等于centroid cosine；原文这个欠定义说法已显式修正。独立性不由8个ID直接推定，但不能再把A004 revision1自动计0。此例说明必须对准冻结版本的实际record，不能用较早READY摘要替代。
+
+A006实际像素组件计算存在，但把面积>一patch且无pure-FG token的合法组件丢掉，可能把真实多组件R变成单组件B0，违反原卡“每个合格组件建bank”及共同缺pure-support时coverage均值协议；它当前未通过。review要求保留该组件真实footprint权重并用其weighted FG mean，方法owner负责修复，本整理不改代码。另有控制命名/匹配缺口：A003的same_endpoint_5NN实际为global bank，A004的same_anchor_RBF实际global FPS而非SVM支持点；这些不是7主方法立即运行的附加质量门，但不能用于宣称配对或SVM独有收益。
+
+A009/A011–A016的[batch02工程检查](/Users/yang/projects/CVPR2027/evidence/local/astra300_20261007/group_001_075/batch02_checks.json)只有16维合成144R/48Q完整输出。A009在该合成例所有48Q到30步仍KKT>1e−4，实际求解后按合同回B0，不能从“输出完成”声称竞争机制已改判断；正交字典反例KKT=0是求解器检查。A014该例8域各仅一个role，均identity、学习迭代0；A012半空间0，也不能当主体活动。A010缺真实跨图预检证据，未完成卡，不把普通近邻fallback填成已交付。
+
+D首批5项[probe](/Users/yang/projects/CVPR2027/evidence/local/astra300_20261007/group_151_225/batch01_probe.json)在easy checkerboard全都源内选zero adaptation；direct builders分别运行不等于最终query新增收益。二批D160–D164的[probe](/Users/yang/projects/CVPR2027/evidence/local/astra300_20261007/group_151_225/batch02_probe.json)实际SHA `2170e89fd0d5457e85334f71aa247c1eac649d9c173587aa18fe60aaa940c33b`也全选zero adaptation；幅值、robust median、shared map和mode-constraint仅有合成算法/反例活动，不是自然类别收益。[二批ready](/Users/yang/projects/CVPR2027/evidence/local/astra300_20261007/group_151_225/batch02_ready.json)绑定group SHA `29574c27869c79dd34784a585de90499a9deb82d29e9aeb97e36aa8d0a19fac2`、helper `0c2a1665fb018a36e565bff05b8b59da239912863bd5ec957c9c19ec91fcd973`、d160_164 `7dafa674072bbd25c9bca1a51b7aef3f77dd7158965da5ef8a37d7b016045e4d`，仍pending review。
+
+E5的[工程/完整合成检查](/Users/yang/projects/CVPR2027/evidence/local/astra300_20261007/group_226_300/e_batch1_checks.json)对仿射QP、footprint伴随、占有量primal-dual gap有数值证据，actual_encoder_forwards=0、自然quality unknown；shared-colour合成正例以及colour-reversal/same-colour负例均保留，不能用合成1.0 IoU代替自然身份可靠性。
+
+F251–F275的[wrapper协议检查](/Users/yang/projects/CVPR2027/evidence/local/astra300_20261007/group_226_300/f251_275/protocol_checks.json)实际SHA `920661d7bb2f7e1affb96aaf4fbebafadc4ddca16b09d39c8b300f719b02dbb6`支持23 wrapper/控制合成完整输出、12次源IoU标定、移除held标签及一patch缓冲、字典逐折重建、共同二值disagreement读出。它不含真实DINO或自然评分，源例选weight0；F256需实际三view双端观测，F268需真实末两block前状态及重估QKV尾层重放，resources仍executed=false。
+
+[公共API检查](/Users/yang/projects/CVPR2027/evidence/local/astra300_20261007/common_api/checks.json)和[runner检查](/Users/yang/projects/CVPR2027/evidence/local/astra300_20261007/runner/checks.json)只支持输入封存、缺资源拒绝、GT隔离、原尺寸连续renderer及paired scorer等工程合同。runner的`all_arms_complete=true`属于合成测试工作区，不是Astra600 run结果。[源合同review](/Users/yang/projects/CVPR2027/evidence/local/astra300_20261007/reviews/source_contract.json)本窗口实际SHA `5ebbbee04a5fe63b344421d9e22609741a4d95df2942dbd0d7c05afbde7c24d6`；它是共同合同审查，不是300卡逐项接受或已测收益。
+
+### 既有失败对本轮的具体约束
+
+4例RGB02比prototype高3.8907，200例反为−4.5711；因此本轮合成/小样本正例只证明可达判决，不能给300卡预先写收益。200例Huber比ridge高0.7109的真实开发边际应保留，但相对prototype的9.7928大头已被ridge解释；A/B/D小头不能把拟合相对弱头的收益全部称新身份信息。QP01/02四例约+6.8到200近0，local001大负，提醒参考或query组织正确求解不保证跨图终判。
+
+旧两槽EM补回53.9%漏检却新增只有25.2%为真、只补−2.44；它可提示A新增集合有可用TP，但GT辅助砍半FP的+0.52不是已实现B。九种score-derived尺寸估计与原分数错判同向，相关性不提供纠错。附着FP不能统一解释成孤立组件，正确种子也不能保证范围；没有具体逐例观测时，不为全局增删账编造图中材质/部件的唯一原因。
+
+本轮四向账仍逐类I/U计算；未知为unknown，已有反例按实际合同保留。旧processed的FoRIS/MEAN成绩、新raw1024的CPU100成绩、Astra各组新B0/M0和renderer分别绑定，不跨链相加或挪用。未提供同协议完整FoRIS/INSID3等强基线时，记录缺口，不拿MEAN host parity、准备完成或方法数量代替SOTA结论。
+
+## CPU100历史证据口径与计数
 
 审查修正：首30 + 二批22项新增 + 旧19 = 71项资格；二批实际请求23方法还包含local_002同方法修订，独立增量0，且不含local_004。batch03另新增context四项、local_005、QP09共6项探针资格，因此当前潜在77（新58 + 旧19），仍不是完成77，更不是稳定有效77或100。source审查、注册、完整运行与质量分别计。
 
@@ -26,9 +98,9 @@ CPU入口平均秒不含冻结DINO提取；是否含共享prepare/controls/rende
 
 从用户Opus总结实际吸收：先从模型原点解释错判，再问机制改变哪个判断；oracle阈值/面积/方向只指出缺口，不给合法取法；排序、区域、范围、读出分开；错误种子传播一致不等于正确；补真/补假/删真/删假分账；同读出、同字典、ridge/logistic等强控制防止挪用收益；数值正确、CPU速度、完整质量是不同证据。
 
-用户研究档案（第一部分为原会话总结）（用户本地来源，未纳入仓库）
+当前用户[研究档案（原总结＋指引与历史）](/Users/yang/Desktop/CVPR2027_研究档案_Opus5.5_160MB_20261006.md)，实际SHA256 `d3a24569adb7dbe27403b5f4291b8c86fec500f24cb76d8bab0183827544d61f`，本次分段完整读取513行，读取前后SHA一致。这里“完整读取”只指该合并MD，不声称读过其171MB原始会话JSONL，亦未逐条重新复算档案内所有历史测量。
 
-原总结现已并入研究档案；其中历史授权、任务与agent指引作为来源材料，不替代当前用户调度。
+先前确实读过原独立总结路径 `/Users/yang/Desktop/CVPR2027_会话总结_Opus5.5_160MB_20261006.md`；该文件现已并入研究档案、原路径当前不存在，未事先封存原字节SHA，故原总结独立文件SHA为unknown，不能用合并文件SHA冒充旧文件身份。档案内历史授权、任务、agent检查单和旧筛查阶梯仅作来源材料，不替代当前用户固定600调度。
 
 同一类别同一基线J=I/U：ΔJ=[(aTP−dTP)−J(aFP−dFP)]/[U+aFP−dFP]。仅补目标纯度需>J/(1+J)，仅删背景纯度需>1/(1+J)。旧37.5%/62.5%与LR>22/<0.24只属于旧队列/基线，不能套本轮。下文T统一顺序为补真/补假/删真/删假。新T相对direct prototype；旧T基线另列。全局T只描述动作，逐类IoU账才是主结论。
 
@@ -655,260 +727,372 @@ existing19 source/CLI/assets/version index（本地证据，未纳入仓库）
 - **失败解释与所得:** Radial-power complete algorithm is runnable but real smoke never ran. Dominant-band+energy control solves its synthetic positive too, so multi-band necessity and natural quality remain unestablished.
 - **CPU:** bounded local physical-RGB checks; natural end-to-end time unmeasured; current complete version quality remains unmeasured unless its exact historical full contract is reproduced.
 
-## 二批新增审查资格：ready不等于真实收益
+## 二批原生4例实测：22新增主臂及local002修订
 
-以下22项为二批新增资格；local_004已经撤回并移至关闭记录。local_002在首30保留v0观察，后续修订独立计0，能量/τ口径变动不能默默继承v0分数。root的batch02_launch_selection.json确认23请求项=22新增+local_002，未包含local_004。真实二批质量报告尚待完整收回；缺控制或pending结果不能证明稀疏机制收益。
+[二批原生4例主报告](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json)实际SHA `818d27208bfcada9761f3d46d9e1d366d868366a35409a04938be334fe8c76ea`，n4/4classes，复用开发probe，原尺寸完整输出；23主方法各4例complete。输入manifest SHA `d2f36304c4f69a2f8cdc0f2da2f036b76f4ec5b2b5709dd8d76c4f950235e2a3`，config SHA `e03c56b21940f9b6c64672014af20377f272b1eebe01372929e59a660f3edb88`，score-runner SHA `4dcf979ed43a3bb3b4261aaf030954d8e4ec6cf82e4e86b4b5d1ade98874a160`。原请求全部arms完成flag=False，排除的cross_image_convex_hull_control=failed4/complete0；[修复封存](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/hull_control_repair4_v5/sealed.json)该控制及prototype均complete4，config `d096933655a6e6706978d9a088ef2edfa2707598af245382dc06c9694c0bb036`，但未见其独立score报告，尚不补hull分数。主方法已有完整评分不被这项缺control抹掉；复杂稀疏收益也不因它缺失而成立。
+
+各条关键control按同卡/简单完整替代指定，不把report中所有模块的controls都当该卡匹配控制。秒数为已有receipt arm平均，不重跑；shared prepare/controls/编码费用另列，四类T全局总数仅描述行为，主结论仍逐类I/U。
+
+以下22项为二批新增资格，现已回收原生4例主臂质量；local_004撤回、local_002同方法修订计0。批次23主方法均4例完整，但原hull控制4例失败，原seal仍all_arms_complete=false；后续hull修复4例已另封存complete，评分报告本窗口未到件。缺失control分数不作为稀疏收益证据。
 
 actual selection（本地证据，未纳入仓库） SHA 903d7156b3f7ca5a9cd17713ea12fb86d83a771142477ed982ac8f92fef73d4d
 
-以下22项为二批新增资格；local_004已经撤回并移至关闭记录。local_002在首30保留v0观察，后续修订独立计0，能量/τ口径变动不能默默继承v0分数。root的batch02_launch_selection.json确认23请求项=22新增+local_002，未包含local_004。真实二批质量报告尚待完整收回；缺控制或pending结果不能证明稀疏机制收益。
-
-### ready cross_image_joint_sparse_role_removal - 联合参考稀疏解释的角色去除代价
+### measured4 cross_image_joint_sparse_role_removal - 联合参考稀疏解释的角色去除代价
 
 - **逻辑/条件性预期:** 先用混合字典共同解释q，再去掉FG或BG贡献，两个残差衡量同一个解释对各role的依赖；不是两个class各自随意换解释。混合可以使一个单role最近点胜利变为另一个role解释占主导，但系数竞争是否对应语义尚未知。
 - **预期收益（假设）:** 若目标贡献必须与背景联合解释才能显现，恢复目标；若干扰只能借多类字典拼接，可由角色去除改变身份
 - **source/合法输入:** [source](../../../src/ics/cpu100/cross_image_matching_batch2.py) SHA bfde408146bb24f6; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N
 - **强control:** 相同atoms下独立FG/BG非负OMP3残差；same OMP coefficient summed-role vote；class cone/full convex hull；prototype和nearest。同signed margin common render。
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
+- **原生4例v4实测:** mIoU 35.6663; Δprototype +6.6820 [-6.6059, +19.9700]; T=24 / 10,441 / 19,193 / 53,828; receipt arm平均1.857s（不含DINO生产，不是端到端延迟）。
+- **关键已完整control:** cross_image_dense_class_cone_control=39.4955; Δcontrol -3.8292 [-7.9154, +0.2570]。这是指定比较，非遍历所有跨模块control后的因果归属。
+- **冻结source:** src/ics/cpu100/cross_image_matching_batch2.py SHA `bfde408146bb24f6ddbcddc03cb2db4788f511680a8d8dfb64b6bbb30659ff5a`；本批输入/config/scorer身份见下述原report，当前文件增补不迁移该分数。
+- **200/600:** 本项未见新原生200/600评分；unknown，不能由4例外推。
+- **失败/所得（解释与观察分开）:** 相对prototype+6.6820但CI跨0；dense cone高3.8292、independent sparse高3.3249、coefficient vote高3.1778。后者paired差CI为[−5.6885,−0.6671]。即使暂缺hull评分，也不能写复杂joint/sparse增量成立；当前主要删区，仍删真19,193。
+- **逐类四动作/I-U:** [v4 report](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json) -> class_actions_vs_dino_prototype.cross_image_joint_sparse_role_removal。
 - **未知前提/审查限制:** small NNLS independent audit; same-budget independent OMP, dense cone/hull and coefficient-vote controls; reconstruction not identity
 - **特有反例:** 字典高度相干时alpha不唯一，贪婪选错先手；真实目标需>3原子，或背景原子替代FG导致误删。重构好不保证语义对。
 - **证据:** [card](cards/cross_image_matching_batch2.json); [batch02](reviews/batch02.json)
 
-### ready cross_image_exemplar_facility_cover - 全查询共享参考解释的设施选择
+### measured4 cross_image_exemplar_facility_cover - 全查询共享参考解释的设施选择
 
 - **逻辑/条件性预期:** 联合总代价sum_i w_i min_open(1-q_i dot r_a)+0.05*number_open，使低支持的偶发原子不值得单独打开，而多个相似query能共付解释成本。绝非新语义证据，依赖重复解释比孤立误匹配更可信的条件。total valid query mass归一化，因此数量增加代表面积影响。
 - **预期收益（假设）:** 关闭只服务孤立错误query的FG解释，同时允许同类多实例共同打开参考解释
 - **source/合法输入:** [source](../../../src/ics/cpu100/cross_image_matching_batch2.py) SHA bfde408146bb24f6; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N
 - **强control:** same dictionary全部开放nearest；相同开放个数的global unary排序和随机/固定ID选择；same source prototype。完整joint objective值只是求解账，不能当质量。
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
+- **原生4例v4实测:** mIoU 0.0000; Δprototype -28.9843 [-46.1480, -11.8205]; T=0 / 0 / 73,228 / 118,865; receipt arm平均0.367s（不含DINO生产，不是端到端延迟）。
+- **关键已完整control:** cross_image_all_exemplars_control=28.2192; Δcontrol -28.2192 [-38.7801, -17.6583]。这是指定比较，非遍历所有跨模块control后的因果归属。
+- **冻结source:** src/ics/cpu100/cross_image_matching_batch2.py SHA `bfde408146bb24f6ddbcddc03cb2db4788f511680a8d8dfb64b6bbb30659ff5a`；本批输入/config/scorer身份见下述原report，当前文件增补不迁移该分数。
+- **200/600:** 本项未见新原生200/600评分；unknown，不能由4例外推。
+- **失败/所得（解释与观察分开）:** 四例最终空输出，开放个数匹配的unary/random控制也为0，全部开放nearest为28.2192。固定开放费/共同解释本版使身份输出整体关闭，matched-count同为0只显示退化，不是结构收益。
+- **逐类四动作/I-U:** [v4 report](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json) -> class_actions_vs_dino_prototype.cross_image_exemplar_facility_cover。
 - **未知前提/审查限制:** state complexity/area prior, matched-open-count controls and tiny-target deletion negative; small subset optimum audit
 - **特有反例:** 正确目标很小只需一个独特原子，正好被开放费删除；重复错误区域成为便宜FGhub，会被保护；source多个target外观需要很多open atoms而BG简单。
 - **证据:** [card](cards/cross_image_matching_batch2.json); [batch02](reviews/batch02.json)
 
-### ready cross_image_nonreturn_path_consensus - 跨图无立即回退路径的角色共识
+### measured4 cross_image_nonreturn_path_consensus - 跨图无立即回退路径的角色共识
 
 - **逻辑/条件性预期:** 输出3-hop Q_i→R_a→Q_j→R_b的末端role平均，只保留j≠i、b≠a。这是directed edge-history状态而非token harmonic固定点；禁返回可使单个互为NN不再凭自循环获得共识。但高连边错误背景仍可提供多条独立路径，须负例。
 - **预期收益（假设）:** 抑制互为NN单边回声，把身份依据转到不重复的参考原子支持
 - **source/合法输入:** [source](../../../src/ics/cpu100/cross_image_matching_batch2.py) SHA bfde408146bb24f6; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N
 - **强control:** same dictionary、sameW、same3hop长度但允许回退的ordinary walk；1-hop source kernel；wrong high-connectivity background桥接负例。不能与成本/输入不同的old base score仅比总分。
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
+- **原生4例v4实测:** mIoU 25.9988; Δprototype -2.9855 [-10.9217, +4.9508]; T=10 / 23,229 / 15,376 / 39,635; receipt arm平均0.523s（不含DINO生产，不是端到端延迟）。
+- **关键已完整control:** cross_image_one_hop_path_control=26.2995; Δcontrol -0.3008 [-0.9016, +0.3001]。这是指定比较，非遍历所有跨模块control后的因果归属。
+- **冻结source:** src/ics/cpu100/cross_image_matching_batch2.py SHA `bfde408146bb24f6ddbcddc03cb2db4788f511680a8d8dfb64b6bbb30659ff5a`；本批输入/config/scorer身份见下述原report，当前文件增补不迁移该分数。
+- **200/600:** 本项未见新原生200/600评分；unknown，不能由4例外推。
+- **失败/所得（解释与观察分开）:** 比one-hop低0.3007，新增TP10、FP23,229且删真15,376。排除立即返回没有把路径一致性变成独立身份；现有路径图可共识错误，只是解释，未归因到每个边。
+- **逐类四动作/I-U:** [v4 report](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json) -> class_actions_vs_dino_prototype.cross_image_nonreturn_path_consensus。
 - **未知前提/审查限制:** same-W ordinary walk/one-hop and direct enumerator; repeated false bridges may still be coherent, paths not independent samples
 - **特有反例:** 错误类别在Q内部高连接并匹配多个FGatoms，则禁返回仍强化错误身份；单实例/少Rmode没有independent path会fallback；真实唯一part对应可能被排除。
 - **证据:** [card](cards/cross_image_matching_batch2.json); [batch02](reviews/batch02.json)
 
-### ready cross_image_source_opponent_matching - 参考角色全局对手匹配的中位判决
+### measured4 cross_image_source_opponent_matching - 参考角色全局对手匹配的中位判决
 
 - **逻辑/条件性预期:** 在R内作最小成本FG/BG一对一匹配，再对每pair的unit difference方向取query margins中位数。normalization和非线性中位读出使不同配对改变决策；必须用all-pairs和independent-nearest opponent同中位控制判断global matching增量。R端均匀mode投票是先验，不能称semantic保证。
 - **预期收益（假设）:** 避免单个参考BG对手被无限复用支配比较，在多局部决策方向存在时改变身份
 - **source/合法输入:** [source](../../../src/ics/cpu100/cross_image_matching_batch2.py) SHA bfde408146bb24f6; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N
 - **强control:** 相同K字典的独立nearest-opponent median/allCartesian median/unit-globalmean；costmatching只在R上，Qrender和信息完全一样。matched randompermutation median为控制，非多方法。
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
+- **原生4例v4实测:** mIoU 19.4300; Δprototype -9.5542 [-17.2542, -1.8542]; T=822 / 96,868 / 2,817 / 183; receipt arm平均0.375s（不含DINO生产，不是端到端延迟）。
+- **关键已完整control:** cross_image_nearest_opponent_median_control=27.9560; Δcontrol -8.5260 [-19.6556, +2.6036]。这是指定比较，非遍历所有跨模块control后的因果归属。
+- **冻结source:** src/ics/cpu100/cross_image_matching_batch2.py SHA `bfde408146bb24f6ddbcddc03cb2db4788f511680a8d8dfb64b6bbb30659ff5a`；本批输入/config/scorer身份见下述原report，当前文件增补不迁移该分数。
+- **200/600:** 本项未见新原生200/600评分；unknown，不能由4例外推。
+- **失败/所得（解释与观察分开）:** 新增TP822、FP96,868，低于nearest-opponent median；在R上优化配对成本没有带来Q终判收益。错对手/参考模态失配符合预列反例，但不能把全局账当逐图原因已确认。
+- **逐类四动作/I-U:** [v4 report](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json) -> class_actions_vs_dino_prototype.cross_image_source_opponent_matching。
 - **未知前提/审查限制:** nearest/allpairs/random opponent same median; K1 activity and source-matching cost distinct from query quality
 - **特有反例:** 独特BGatom被迫配给无关FG，产生不代表真实边界的方向；target参考模态数量少会K=1退化；unit小差方向放大source noise；多数局部pair本身错会中位失效。
 - **证据:** [card](cards/cross_image_matching_batch2.json); [batch02](reviews/batch02.json)
 
-### ready local_003 - Foreground/background regularized convex patch reconstruction
+### measured4 local_003 - Foreground/background regularized convex patch reconstruction
 
 - **逻辑/条件性预期:** The ordered nine-patch centered DINO tensor is an available continuous joint observation. Independent-token matching or Gram invariants discard its coordinate directions and ordering. A constrained convex mixture of reference tensors can represent intermediate target local patterns without requiring one nearest template or transferring an entire silhouette. This changes the decision, but whether its reference target span is sufficiently distinctive is unknown. The L2 objective does not guarantee sparse coefficients; it is called regularized convex patch reconstruction. Different ordered patch evidence, rather than the penalty, is the proposed counting distinction from central reference_hull.
 - **预期收益（假设）:** The normalized mixture of distinct unit target patch tensors lies outside their convex hull in general, but can still have a smaller nonzero regularized reconstruction residual than the background hull while being farther from every individual target tensor. Ordered raw patch observation is the proposed extra information; L2/cap are not claimed sparse, independently new, or a real gain.
 - **source/合法输入:** [source](../../../src/ics/cpu100/local_structure.py) SHA 63b1cfe14ecd5a3e; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N
 - **强control:** Same nine-patch tensors, dictionaries and renderer: nearest individual-template reconstruction error per class.; Same constrained convex reconstruction on central DINO token only (old central-feature hull-type control).; Complete local001 Gram classifier on same legal inputs/renderer, keeping its distinct invariance limitation.; Same class tensors with spatial stencil order shuffled independently in reference; bag contents remain but organization is removed.
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
+- **原生4例v4实测:** mIoU 19.9813; Δprototype -9.0030 [-16.2168, -1.7891]; T=14,239 / 268,435 / 16,334 / 33,943; receipt arm平均5.346s（不含DINO生产，不是端到端延迟）。
+- **关键已完整control:** local_003.central_hull_control=32.9569; Δcontrol -12.9756 [-31.6887, +5.7375]。这是指定比较，非遍历所有跨模块control后的因果归属。
+- **冻结source:** src/ics/cpu100/local_structure.py SHA `22ac1e36e634b9bcc12431e42729e0f5719bce661bbba9945cd0a40cae889c65`；本批输入/config/scorer身份见下述原report，当前文件增补不迁移该分数。
+- **200/600:** 本项未见新原生200/600评分；unknown，不能由4例外推。
+- **失败/所得（解释与观察分开）:** 有序9patch hull比central-token hull低12.9756；补假268,435远多补真14,239并删真16,334。空间/上下文组合本版损伤迁移，不能把更完整的局部张量当自然身份保证；未因此否定所有局部观测。
+- **逐类四动作/I-U:** [v4 report](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json) -> class_actions_vs_dino_prototype.local_003。
 - **未知前提/审查限制:** no sparse guarantee from L2; unit mixture is not exact convex combination, use nonzero residual superiority; central hull/nearest ordered patch/complete Gram controls
 - **特有反例:** If FG and BG patch cones overlap, reconstruction cannot determine identity.; Large dictionaries can reconstruct both classes and erase discriminative residual; the fixed cap is not a proof of separability.; Viewpoint or feature-coordinate changes can move true target patches outside the reference cone.; Convex mixtures may create nonphysical local composites and accept a distractor.; A center near target boundary uses surrounding reference BG; altered query context can cause target deletion.
 - **证据:** [card](cards/local_structure.json); [batch02](reviews/batch02.json)
 
-### ready DR09 - 参考原型相似度弱决策的AdaBoost
+### measured4 DR09 - 参考原型相似度弱决策的AdaBoost
 
 - **逻辑/条件性预期:** boosting按reference错误重加权组合多个不同anchor的cosine stump，输出sum alpha*h；不是在一个score扫描阈值，也不把source分类精度当query身份保证。
 - **预期收益（假设）:** 当合法MR描述非线性多模态而单决策错误可被另一anchor纠正，boosted分界可救回目标/删错背景；仅hypothesized。
 - **source/合法输入:** [source](../../../src/ics/cpu100/decision_risk_batch2.py) SHA 89ce21f6251988db; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N
 - **强control:** 同anchor最佳单stump、same-input nearestreference、sameanchor linear ridge、raw prototype。 另与same-anchor ridge/logistic及all-legal-MR平均logistic对照(均为control，不增加method count)。
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
+- **原生4例v4实测:** mIoU 19.4702; Δprototype -9.5141 [-30.8099, +11.7818]; T=35 / 328 / 40,738 / 86,989; receipt arm平均0.259s（不含DINO生产，不是端到端延迟）。
+- **关键已完整control:** DR_control_average_logistic=38.9138; Δcontrol -19.4436 [-46.1132, +7.2260]。这是指定比较，非遍历所有跨模块control后的因果归属。
+- **冻结source:** src/ics/cpu100/decision_risk_batch2.py SHA `89ce21f6251988db499c91c1130d72022ff3a98c80e6c825e34fc58b04ad0182`；本批输入/config/scorer身份见下述原report，当前文件增补不迁移该分数。
+- **200/600:** 本项未见新原生200/600评分；unknown，不能由4例外推。
+- **失败/所得（解释与观察分开）:** 删真40,738、删假86,989且完整分低于prototype9.5141。boosting可以拟合R弱分类但本版误删Q目标；多stump/source重加权没有给出跨图身份安全性。
+- **逐类四动作/I-U:** [v4 report](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json) -> class_actions_vs_dino_prototype.DR09。
 - **未知前提/审查限制:** single stump/sameanchor ridge/NN; source-error focus can amplify nontransferable rare material
 - **特有反例:** 少数nontransferable reference材质成为高权重error，boosting会追逐它；source100%分类正确仍可能query全错。
 - **证据:** [card](cards/decision_risk.json); [batch02](reviews/batch02.json)
 
 - **Reviewed source / scope correction:** 源码已核：bank为空/无信息时回退pure-reference nearest-neighbor；不是泛称prototype。该fallback不算boosting生效；真实二批质量仍unknown。
 
-### ready DR10 - 平衡参考重采样的最大间隔委员会
+### measured4 DR10 - 平衡参考重采样的最大间隔委员会
 
 - **逻辑/条件性预期:** 16个class-balanced参考bootstrap分别求两class hull间隔，Q按hyperplane sign majority；它平均支持向量敏感性，不提供独立证据或IID概率保证。
 - **预期收益（假设）:** 若support-vector异常出现率低于委员会多数，可能避免单hull误删/误增；稀有合法FG也可能被bootstrap丢失。
 - **source/合法输入:** [source](../../../src/ics/cpu100/decision_risk_batch2.py) SHA 89ce21f6251988db; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N
 - **强control:** 全reference DR08、同样16bootstrap的prototype voting、DR04 trimmed risk、raw NN。 另与same-anchor ridge/logistic及all-legal-MR平均logistic对照(均为control，不增加method count)。
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
+- **原生4例v4实测:** mIoU 39.3909; Δprototype +10.4066 [-5.6999, +26.5131]; T=6 / 551 / 13,627 / 50,394; receipt arm平均0.793s（不含DINO生产，不是端到端延迟）。
+- **关键已完整control:** DR_control_average_logistic=38.9138; Δcontrol +0.4771 [-4.1343, +5.0884]。这是指定比较，非遍历所有跨模块control后的因果归属。
+- **冻结source:** src/ics/cpu100/decision_risk_batch2.py SHA `89ce21f6251988db499c91c1130d72022ff3a98c80e6c825e34fc58b04ad0182`；本批输入/config/scorer身份见下述原report，当前文件增补不迁移该分数。
+- **200/600:** 本项未见新原生200/600评分；unknown，不能由4例外推。
+- **失败/所得（解释与观察分开）:** 相对prototype+10.4066但宽CI跨0；相对average logistic仅+0.4771[−4.1343,5.0884]。参考重采样hull委员会在本四例确有删错区活动，尚不能把简单logistic已有收益归给委员会；成员共享同一R，不是独立身份证据。
+- **逐类四动作/I-U:** [v4 report](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json) -> class_actions_vs_dino_prototype.DR10。
 - **未知前提/审查限制:** same-bootstrap prototype voting, fullDR08; members are not independent confidence evidence
 - **特有反例:** 所有source成员共享错identity时稳定全错；真正稀有的referenceFG多数bootstrap未见，会被抹掉。
 - **证据:** [card](cards/decision_risk.json); [batch02](reviews/batch02.json)
 
-### ready DR12 - 参考原型相似坐标的固定小ReLU判别
+### measured4 DR12 - 参考原型相似坐标的固定小ReLU判别
 
 - **逻辑/条件性预期:** 固定16anchors cosine坐标上的16-hidden ReLU分类器，可表达若干局部线性条件的联合；MR fit只是available computation，不是新外部model或成功承诺。
 - **预期收益（假设）:** 多模态reference逻辑延续到Q时，多个局部平面可能减少mean方向冲突；比NN/核方法更好的收益未知。
 - **source/合法输入:** [source](../../../src/ics/cpu100/decision_risk_batch2.py) SHA 89ce21f6251988db; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N
 - **强control:** 同anchor linear logistic/ridge、DR09 boosted stumps、nearestreference、raw prototype。 另与same-anchor ridge/logistic及all-legal-MR平均logistic对照(均为control，不增加method count)。
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
+- **原生4例v4实测:** mIoU 29.6953; Δprototype +0.7111 [-4.6700, +6.0921]; T=52 / 3,121 / 12,632 / 36,109; receipt arm平均0.272s（不含DINO生产，不是端到端延迟）。
+- **关键已完整control:** DR_control_average_logistic=38.9138; Δcontrol -9.2185 [-15.9052, -2.5318]。这是指定比较，非遍历所有跨模块control后的因果归属。
+- **冻结source:** src/ics/cpu100/decision_risk_batch2.py SHA `89ce21f6251988db499c91c1130d72022ff3a98c80e6c825e34fc58b04ad0182`；本批输入/config/scorer身份见下述原report，当前文件增补不迁移该分数。
+- **200/600:** 本项未见新原生200/600评分；unknown，不能由4例外推。
+- **失败/所得（解释与观察分开）:** 比prototype+0.7111区间跨0，却比available average logistic低9.2185。参考小ReLU的表达力不是query收益；公平评价要保留完整简单头，不因比特定压缩anchor控制好而宣称需要非线性。
+- **逐类四动作/I-U:** [v4 report](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json) -> class_actions_vs_dino_prototype.DR12。
 - **未知前提/审查限制:** disclose200-step temporary classifier parameter optimization; frozenDINO/no external data remains, cannot call it no fitting; sameanchor linear/boosting controls
 - **特有反例:** fixed训练预算可未收敛；source可分但Q不在R模式中；网络可以记住MR context而不识别目标类别。
 - **证据:** [card](cards/decision_risk.json); [batch02](reviews/batch02.json)
 
-### ready DR13 - 已知参考角色的近邻冲突编辑
+### measured4 DR13 - 已知参考角色的近邻冲突编辑
 
 - **逻辑/条件性预期:** reference labels已知时，3NN leave-one-out角色冲突可识别孤立class-support；编辑ref exemplars后再完整Q NN，并非在query错误种子上过滤后传播。
 - **预期收益（假设）:** 孤立nontransferable FG/BG表征在reference多数邻域中冲突时，删掉它可减少nearest-match错误；hypothesized。
 - **source/合法输入:** [source](../../../src/ics/cpu100/decision_risk_batch2.py) SHA 89ce21f6251988db; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N
 - **强control:** 同pure samples unfiltered NN、仅coverage-purity过滤NN、DR06pair rank、prototype。 另与same-anchor ridge/logistic及all-legal-MR平均logistic对照(均为control，不增加method count)。
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
+- **原生4例v4实测:** mIoU 23.3740; Δprototype -5.6103 [-13.2901, +2.0695]; T=90 / 25,519 / 15,677 / 17,145; receipt arm平均0.270s（不含DINO生产，不是端到端延迟）。
+- **关键已完整control:** DR_control_average_logistic=38.9138; Δcontrol -15.5398 [-28.5934, -2.4863]。这是指定比较，非遍历所有跨模块control后的因果归属。
+- **冻结source:** src/ics/cpu100/decision_risk_batch2.py SHA `89ce21f6251988db499c91c1130d72022ff3a98c80e6c825e34fc58b04ad0182`；本批输入/config/scorer身份见下述原report，当前文件增补不迁移该分数。
+- **200/600:** 本项未见新原生200/600评分；unknown，不能由4例外推。
+- **失败/所得（解释与观察分开）:** 比prototype低5.6103，补假25,519、删真15,677。已知R标签的3NN冲突编辑在本四例未改善Q；参考邻域多数冲突可同时删除稀有但合法的类别外观，源内孤立不能直接解释成跨图污染。
+- **逐类四动作/I-U:** [v4 report](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json) -> class_actions_vs_dino_prototype.DR13。
 - **未知前提/审查限制:** unfiltered/purity-only NN; rare legal target may be removed; class disappears fallback explicit
 - **特有反例:** 真正稀有合法FG appearance也会被多数BG邻域排除；同类孤立并不等于污染。
 - **证据:** [card](cards/decision_risk.json); [batch02](reviews/batch02.json)
 
-### ready DR14 - 覆盖参考分类约束的凝聚近邻支撑集
+### measured4 DR14 - 覆盖参考分类约束的凝聚近邻支撑集
 
 - **逻辑/条件性预期:** class medoid初始化，按knownR misclassified加入exemplar直到cap训练集被支撑集分类正确；这是reference判别覆盖而不是无label kmeans密度压缩。
 - **预期收益（假设）:** 冗余reference细节被压缩时有成本收益，某些Q泛化可能减少偶然极值；mIoU收益待证，source覆盖不是Qextent保证。
 - **source/合法输入:** [source](../../../src/ics/cpu100/decision_risk_batch2.py) SHA 89ce21f6251988db; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N
 - **强control:** unfiltered NN、same-size fixed/random support NN、class kmeans同K、global prototype。 另与same-anchor ridge/logistic及all-legal-MR平均logistic对照(均为control，不增加method count)。
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
+- **原生4例v4实测:** mIoU 19.6278; Δprototype -9.3565 [-20.3093, +1.5963]; T=107 / 97,100 / 16,043 / 26,485; receipt arm平均0.257s（不含DINO生产，不是端到端延迟）。
+- **关键已完整control:** DR_control_average_logistic=38.9138; Δcontrol -19.2861 [-35.6127, -2.9595]。这是指定比较，非遍历所有跨模块control后的因果归属。
+- **冻结source:** src/ics/cpu100/decision_risk_batch2.py SHA `89ce21f6251988db499c91c1130d72022ff3a98c80e6c825e34fc58b04ad0182`；本批输入/config/scorer身份见下述原report，当前文件增补不迁移该分数。
+- **200/600:** 本项未见新原生200/600评分；unknown，不能由4例外推。
+- **失败/所得（解释与观察分开）:** 补真107、补假97,100，完整低于prototype9.3565。按R分类覆盖凝聚的NN支撑集改变了Q分界，源样本被正确分类不保证Q类别范围；此为本版迁移失败，不由小样负判定所有参考压缩不可能。
+- **逐类四动作/I-U:** [v4 report](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json) -> class_actions_vs_dino_prototype.DR14。
 - **未知前提/审查限制:** show actual query decision distinction; identical-output runtime optimization alone is not another inference mechanism; same-size NN controls
 - **特有反例:** label-conflicting相同feature没有可满足覆盖；容易保留所有noise点；training order会改变supports与Q，不保证de-noise。
 - **证据:** [card](cards/decision_risk.json); [batch02](reviews/batch02.json)
 
-### ready DR15 - 参考类别风险驱动的学习向量量化
+### measured4 DR15 - 参考类别风险驱动的学习向量量化
 
 - **逻辑/条件性预期:** GLVQ更新class-owned prototypes最小化参考correct-vs-wrong squared-distance relative margin；不是把无label cluster当identity或改querycut。
 - **预期收益（假设）:** reference跨类混淆需移动判别原型而非密度中心，可能改善接近类别分界的Q；真实质量unknown。
 - **source/合法输入:** [source](../../../src/ics/cpu100/decision_risk_batch2.py) SHA 89ce21f6251988db; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N
 - **强control:** same2 kmeans不risk更新、nearestreference、DR08hard margin、raw prototype。 另与same-anchor ridge/logistic及all-legal-MR平均logistic对照(均为control，不增加method count)。
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
+- **原生4例v4实测:** mIoU 39.5171; Δprototype +10.5328 [+0.2785, +20.7872]; T=299 / 110 / 286 / 32,367; receipt arm平均1.238s（不含DINO生产，不是端到端延迟）。
+- **关键已完整control:** DR_control_two_class_kmeans=41.0339; Δcontrol -1.5168 [-4.9236, +1.8900]。这是指定比较，非遍历所有跨模块control后的因果归属。
+- **冻结source:** src/ics/cpu100/decision_risk_batch2.py SHA `89ce21f6251988db499c91c1130d72022ff3a98c80e6c825e34fc58b04ad0182`；本批输入/config/scorer身份见下述原report，当前文件增补不迁移该分数。
+- **200/600:** 本项未见新原生200/600评分；unknown，不能由4例外推。
+- **失败/所得（解释与观察分开）:** prototype+10.5328的四例CI[0.2785,20.7872]不证明稳定；同两类kmeans仍高1.5168，average logistic仅差+0.6033且CI跨0。真实删错区32,367保留为活动事实；移动原型优化的独有质量收益尚未成立，旧数值反例不抹掉。
+- **逐类四动作/I-U:** [v4 report](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json) -> class_actions_vs_dino_prototype.DR15。
 - **未知前提/审查限制:** same initialization no-update control and finite-difference gradient; small denominator/rare-part negatives
 - **特有反例:** 原型移动追随source-specific appearance，损失Q合法外观；小分母造成优化不稳定，gradient cap使固定数值行为需核查。
 - **证据:** [card](cards/decision_risk.json); [batch02](reviews/batch02.json)
 
 - **Reviewed source / scope correction:** 已有固定构造反驳原故事：近边界预期正例对最强控制−0.1383，高端预期负例反而+0.0060。有限差分通过只支持导数，不证明收敛或跨图收益；保留反例，不自动开变体。
 
-### ready DR16 - 合法参考角色的近邻大间隔度量
+### measured4 DR16 - 合法参考角色的近邻大间隔度量
 
 - **逻辑/条件性预期:** 只用knownR role triplets学习低rankPSD使same-role近、different-role远；先有标签约束再改度量，区别无label方差白化。但reference监督并不保证learned axes跨图语义。
 - **预期收益（假设）:** 有稳定class-separating reference directions时，label-aware metric可能保留语义而压制source内部noise；跨图效果未知。
 - **source/合法输入:** [source](../../../src/ics/cpu100/decision_risk_batch2.py) SHA 89ce21f6251988db; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N
 - **强control:** sameanchor identity metricNN、rawfeature NN、referenceLDA、blind whitening(已负族控制)、DR08。 另与same-anchor ridge/logistic及all-legal-MR平均logistic对照(均为control，不增加method count)。
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
+- **原生4例v4实测:** mIoU 29.3949; Δprototype +0.4106 [-6.9832, +7.8045]; T=0 / 2,991 / 21,437 / 59,210; receipt arm平均0.919s（不含DINO生产，不是端到端延迟）。
+- **关键已完整control:** DR_control_average_logistic=38.9138; Δcontrol -9.5189 [-22.2866, +3.2487]。这是指定比较，非遍历所有跨模块control后的因果归属。
+- **冻结source:** src/ics/cpu100/decision_risk_batch2.py SHA `89ce21f6251988db499c91c1130d72022ff3a98c80e6c825e34fc58b04ad0182`；本批输入/config/scorer身份见下述原report，当前文件增补不迁移该分数。
+- **200/600:** 本项未见新原生200/600评分；unknown，不能由4例外推。
+- **失败/所得（解释与观察分开）:** prototype+0.4106区间跨0且低于average logistic9.5189；删真21,437。参考role监督的PSD度量本版不能说明比完整简单头更好，源目标/低维求解检查不能替代Q完整分割。
+- **逐类四动作/I-U:** [v4 report](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json) -> class_actions_vs_dino_prototype.DR16。
 - **未知前提/审查限制:** identity metric/rawNN/LDA controls; source metric can suppress query semantics, no cross-image guarantee
 - **特有反例:** reference classdistortion随query变化；假nuisance轴实际是Q语义被metric抹去；class仅1token没有triplets。
 - **证据:** [card](cards/decision_risk.json); [batch02](reviews/batch02.json)
 
 - **Reviewed source / scope correction:** 归因限制：PSD初始矩阵仅前min(8,K)坐标，而identity control用全部K；任何未来metric改善需先区分rank截断与监督更新，当前未有自然质量结论。
 
-### ready QP04 - 参考校准的区域绝对分布相容性门
+### measured4 QP04 - 参考校准的区域绝对分布相容性门
 
 - **逻辑/条件性预期:** 绝对kernel MMD(q,F)保留q-q项；两个FG/BG核均值差相同的query区域仍可有不同绝对dF。以完整reference FG合法子集间dF定相容门，同时要求相对FG>BG。这不是MMD差分换名，不保证跨实例组成迁移。
 - **预期收益（假设）:** 可删相对密度为FG而整体与FG不相容的纯干扰；也可能删真，不预测涨分。
 - **source/合法输入:** [source](../../../src/ics/cpu100/query_partition.py) SHA 1528f46486309a68; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N
 - **强control:** 同窗MMD差分，即kernel分类池化; 同窗KDE池化; 逐token绝对FG相容门再同窗平均，隔离q-q作用; 同窗均值/cov距离，同删预算KDE排序
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
+- **原生4例v4实测:** mIoU 0.0000; Δprototype -28.9843 [-46.1480, -11.8205]; T=0 / 0 / 73,228 / 118,865; receipt arm平均0.351s（不含DINO生产，不是端到端延迟）。
+- **关键已完整control:** QP_pooled_KDE=24.2521; Δcontrol -24.2521 [-38.4124, -10.0918]。这是指定比较，非遍历所有跨模块control后的因果归属。
+- **冻结source:** src/ics/cpu100/query_partition.py SHA `1528f46486309a68d4707e57fcbfbd0993bc0127f393871492b70ab2e46f5b40`；本批输入/config/scorer身份见下述原report，当前文件增补不迁移该分数。
+- **200/600:** 本项未见新原生200/600评分；unknown，不能由4例外推。
+- **失败/所得（解释与观察分开）:** 四例最终空输出，所有原点TP/FP均删去，mIoU0。候选absolute foreground explanation本版没有形成合法正决策；空输出是实测大退化，不能拿区域组织/求解完成冒充识别成功。
+- **逐类四动作/I-U:** [v4 report](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json) -> class_actions_vs_dino_prototype.QP04。
 - **未知前提/审查限制:** same-window relative/KDE and pointwise absolute gate; true target composition change negative; heuristic tolerance not confidence bound
 - **特有反例:** 视角和部位比例变了，真目标可被门拒绝；参考不完整或小窗容差大时不能删。
 - **证据:** [card](cards/query_partition_batch2.json); [batch02](reviews/batch02.json)
 
-### ready QP06 - 完整查询的四叉树最短描述分割
+### measured4 QP06 - 完整查询的四叉树最短描述分割
 
 - **逻辑/条件性预期:** 树DP共同决定所有分区与标签，允许多实例；范围先验惩罚分区节点编码复杂度，区别局部边界惩罚。身份仍由reference unary。
 - **预期收益（假设）:** 净参考证据明确的连贯块可补弱token/删碎片，多实例不强迫单连通；真实收益未知。
 - **source/合法输入:** [source](../../../src/ics/cpu100/query_partition.py) SHA 1528f46486309a68; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N
 - **强control:** samepointwise KDE; same树最细叶无编码代价; 同窗4×4平均KDE; QP05二元Potts
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
+- **原生4例v4实测:** mIoU 19.3954; Δprototype -9.5888 [-16.2802, -2.8975]; T=116 / 61,129 / 10,243 / 2,324; receipt arm平均0.900s（不含DINO生产，不是端到端延迟）。
+- **关键已完整control:** QP_pointwise_KDE=19.6494; Δcontrol -0.2540 [-1.0999, +0.5919]。这是指定比较，非遍历所有跨模块control后的因果归属。
+- **冻结source:** src/ics/cpu100/query_partition.py SHA `1528f46486309a68d4707e57fcbfbd0993bc0127f393871492b70ab2e46f5b40`；本批输入/config/scorer身份见下述原report，当前文件增补不迁移该分数。
+- **200/600:** 本项未见新原生200/600评分；unknown，不能由4例外推。
+- **失败/所得（解释与观察分开）:** 补真116、补假61,129，完整结果19.3954，低于pointwise KDE且大幅低于prototype。四叉树DP的范围/描述长度组织本版没有纠正已有核unary错判；完整分区求解不保证正区域是目标。
+- **逐类四动作/I-U:** [v4 report](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json) -> class_actions_vs_dino_prototype.QP06。
 - **未知前提/审查限制:** sameunary leaf/window/Potts controls; hierarchy prior and thin-target deletion explicit
 - **特有反例:** 细长斜边需要许多叶块，编码代价可吞目标；错unary连贯块会整体错选。
 - **证据:** [card](cards/query_partition_batch2.json); [batch02](reviews/batch02.json)
 
-### ready QP07 - 查询中心候选超平面的参考风险分割
+### measured4 QP07 - 查询中心候选超平面的参考风险分割
 
 - **逻辑/条件性预期:** 所有query字典中心差方向是query内合法分离候选；完整R平衡风险选方向/符号，一般不是reference均值差同一排序。
 - **预期收益（假设）:** query可分而reference均值多模式抵消时可能身份改判；无迁移保证、不预测分数。
 - **source/合法输入:** [source](../../../src/ics/cpu100/query_partition.py) SHA 1528f46486309a68; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N
 - **强control:** FG-BG prototype; QP02离散字典命名; reference-only pair方向风险选择（最多64同预算）; pointwise KDE
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
+- **原生4例v4实测:** mIoU 18.4263; Δprototype -10.5579 [-19.9324, -1.1835]; T=2,497 / 207,996 / 15 / 26,482; receipt arm平均0.547s（不含DINO生产，不是端到端延迟）。
+- **关键已完整control:** QP_fine_inverse_vote=33.3834; Δcontrol -14.9571 [-32.6702, +2.7560]。这是指定比较，非遍历所有跨模块control后的因果归属。
+- **冻结source:** src/ics/cpu100/query_partition.py SHA `1528f46486309a68d4707e57fcbfbd0993bc0127f393871492b70ab2e46f5b40`；本批输入/config/scorer身份见下述原report，当前文件增补不迁移该分数。
+- **200/600:** 本项未见新原生200/600评分；unknown，不能由4例外推。
+- **失败/所得（解释与观察分开）:** 补真2,497、补假207,996，低于fine inverse vote 14.9571。R风险选择的query中心差超平面能够扩张，却未建立新增集合身份纯度；选中某个合法方向与query正确类别分界是不同断言，不能只报召回。
+- **逐类四动作/I-U:** [v4 report](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json) -> class_actions_vs_dino_prototype.QP07。
 - **未知前提/审查限制:** unit center midpoint offset cancels; candidate source risk not query guarantee; reference-pair/KDE/whole-dictionary controls
 - **特有反例:** 目标模式环绕背景不能由一个过原点平面分开；跨图标签距离逆转可选错方向；R风险选择虚高。
 - **证据:** [card](cards/query_partition_batch2.json); [batch02](reviews/batch02.json)
 
-### ready QP08 - 查询地标响应上的完整参考条件决策树
+### measured4 QP08 - 查询地标响应上的完整参考条件决策树
 
 - **逻辑/条件性预期:** query球面字典的响应向量s(x)=x·Cq提供<=8维共享坐标；以完整R的平衡FG/BG覆盖在这些轴上贪心最小化Gini可得到非线性条件身份规则。它可在多模式环绕BG构造中改变单平面判决，是真正不同推断；query地标是否比reference地标有益须对照，不默认。
 - **预期收益（假设）:** 多模式R/Q支持合法非线性分离时可完整恢复两侧FG；不预测真实涨分。
 - **source/合法输入:** [source](../../../src/ics/cpu100/query_partition.py) SHA 1528f46486309a68; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N
 - **强control:** 同Q响应FG/BG均值线性判别; same CART但reference-only同预算球面字典; same Q响应单层stump; pointwise KDE、QP02及QP07同readout
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
+- **原生4例v4实测:** mIoU 15.7317; Δprototype -13.2526 [-35.2268, +8.7216]; T=11,539 / 155,619 / 47,935 / 62,774; receipt arm平均0.566s（不含DINO生产，不是端到端延迟）。
+- **关键已完整control:** QP08_stump=23.7728; Δcontrol -8.0412 [-20.4517, +4.3694]。这是指定比较，非遍历所有跨模块control后的因果归属。
+- **冻结source:** src/ics/cpu100/query_partition.py SHA `1528f46486309a68d4707e57fcbfbd0993bc0127f393871492b70ab2e46f5b40`；本批输入/config/scorer身份见下述原report，当前文件增补不迁移该分数。
+- **200/600:** 本项未见新原生200/600评分；unknown，不能由4例外推。
+- **失败/所得（解释与观察分开）:** 补假155,619且删真47,935，低于简单stump 8.0412。源训练的非线性规则不能由源拟合外推Q；当前反例是本定义与本四例，不是所有核树均不可能。
+- **逐类四动作/I-U:** [v4 report](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json) -> class_actions_vs_dino_prototype.QP08。
 - **未知前提/审查限制:** cross-slot ref_conditional_tree and sameCART reference-landmark controls; no further landmark/basis variants counted
 - **特有反例:** reference少样本轴阈值偶然分开两类而Q关系逆转则整块错；类条件响应强域偏移；query未出现的FG模式会被背景吸收。
 - **证据:** [card](cards/query_partition_batch3.json); [batch02](reviews/batch02.json)
 
-### ready ref_conditional_tree - 参考角色的条件阈值树
+### measured4 ref_conditional_tree - 参考角色的条件阈值树
 
 - **逻辑/条件性预期:** A depth3 binary tree implements conditional, multi-threshold axis regions that a single stump, prototype or fixed three-coordinate median histogram cannot always express. A complete unit-feature conditional-boundary fixture is the first real evidence; no natural transfer benefit is assumed.
 - **预期收益（假设）:** hypothesized/synthetic_witness pending: recover FG modes needing conditional source boundaries without forcing an EM query seed. Natural signature transfer unknown; no numerical prediction.
 - **source/合法输入:** [source](../../../src/ics/cpu100/reference_evidence.py) SHA 5607a1edf58c26c9; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N
 - **强control:** Common raw FG cosine/prototype; same-selected-channel depth1 stump; first-batch three-channel code with same render; reference degree2 readout if available. Source copy fit alone is insufficient: evaluate different query feature values governed by the same fixed partition.
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
+- **原生4例v4实测:** mIoU 19.6910; Δprototype -9.2933 [-17.4548, -1.1317]; T=1,429 / 81,470 / 7,175 / 54,412; receipt arm平均0.275s（不含DINO生产，不是端到端延迟）。
+- **关键已完整control:** ref_tree_stump_control=16.9384; Δcontrol +2.7525 [-0.2161, +5.7212]。这是指定比较，非遍历所有跨模块control后的因果归属。
+- **冻结source:** src/ics/cpu100/reference_evidence.py SHA `5607a1edf58c26c96d1a93f449e965f56c36cf3a114bbff5ffb27bf05208c36a`；本批输入/config/scorer身份见下述原report，当前文件增补不迁移该分数。
+- **200/600:** 本项未见新原生200/600评分；unknown，不能由4例外推。
+- **失败/所得（解释与观察分开）:** 本版比prototype低9.2933，补假81,470、删真7,175。树比stump好不能消除相对原点损失；条件分区增加参考表达力未建立Q身份迁移。此为解释范围，未逐例证明唯一因果。
+- **逐类四动作/I-U:** [v4 report](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json) -> class_actions_vs_dino_prototype.ref_conditional_tree。
 - **未知前提/审查限制:** same-selected source/branch budget stump/code and held-out feature values; source fit not domain transfer
 - **特有反例:** Cross-image coordinate warp crosses learned cuts. A diagonal or curved decision boundary requiring more than eight rectangles cannot be represented at fixed depth. Rare intra-class modes can be omitted by fixed spatial sampling; stratifying known roles prevents dropping a tiny known FG class entirely but does not guarantee its modes survive.
 - **证据:** [card](cards/reference_evidence_batch2.json); [batch02](reviews/batch02.json)
 
-### ready ref_role_support_box - 角色轴向支持盒的最大违约判别
+### measured4 ref_role_support_box - 角色轴向支持盒的最大违约判别
 
 - **逻辑/条件性预期:** A class coordinate box admits independent combinations and measures worst range violation. It differs from convex mixtures, average prototype distance and a metric density. A box can include a target outside the source convex hull, but can also admit a false impossible combination. Both are decisive constructed cases, not semantics guarantees.
 - **预期收益（假设）:** hypothesized: reject a high-mean-similarity distractor with one class-specific impossible coordinate and tolerate independent within-role variation. Worst-coordinate nuisance shift may instead delete true targets. No predicted mIoU.
 - **source/合法输入:** [source](../../../src/ics/cpu100/reference_evidence.py) SHA 5607a1edf58c26c9; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N
 - **强control:** Raw FG cosine/prototype; same intervals with mean violation and squared Euclidean box distance; exact convex-hull distance on the same small witness. Quantile choices and aggregation controls count0.
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
+- **原生4例v4实测:** mIoU 24.4195; Δprototype -4.5647 [-16.0948, +6.9654]; T=28,050 / 353,662 / 46,756 / 73,589; receipt arm平均0.980s（不含DINO生产，不是端到端延迟）。
+- **关键已完整control:** ref_box_squared_control=4.5943; Δcontrol +19.8252 [+3.5635, +36.0870]。这是指定比较，非遍历所有跨模块control后的因果归属。
+- **冻结source:** src/ics/cpu100/reference_evidence.py SHA `5607a1edf58c26c96d1a93f449e965f56c36cf3a114bbff5ffb27bf05208c36a`；本批输入/config/scorer身份见下述原report，当前文件增补不迁移该分数。
+- **200/600:** 本项未见新原生200/600评分；unknown，不能由4例外推。
+- **失败/所得（解释与观察分开）:** 补真28,050同时补假353,662、删真46,756；参考逐坐标支持盒在本四例不构成可靠跨图范围。比很弱的box控制好也不等于比完整原点好；不能用宽盒回补量宣称收益。
+- **逐类四动作/I-U:** [v4 report](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json) -> class_actions_vs_dino_prototype.ref_role_support_box。
 - **未知前提/审查限制:** same intervals mean/squared-box controls, impossible combinations and broad-BG/one-coordinate-nuisance negatives;5/95 variants0
 - **特有反例:** One coordinate carrying image-specific nuisance can dominate all other correct coordinates. Independent boxes include feature combinations never produced by the target. Different rotation changes the support set although pair distances are identical.
 - **证据:** [card](cards/reference_evidence_batch2.json); [batch02](reviews/batch02.json)
 
-### ready ref_distribution_energy - 无带宽的类分布能量评分
+### measured4 ref_distribution_energy - 无带宽的类分布能量评分
 
 - **逻辑/条件性预期:** For a class distribution P define S(P,q)=E||q-X||-.5E||X-X'||. Algebraically its expected advantage over Q when q~P is half the energy distance, nonnegative. This establishes proper distribution scoring under the same distribution assumption, not pointwise classification, cross-image transfer or probability calibration. Squared-distance version collapses exactly to mean distance and is a necessary control.
 - **预期收益（假设）:** algebraic under source/query distribution identity: account for multimodal class support rather than one normalized mean or one closest point. Actual identity drift can invalidate the proper-score expectation. Natural segmentation gain unknown.
 - **source/合法输入:** [source](../../../src/ics/cpu100/reference_evidence.py) SHA 5607a1edf58c26c9; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N
 - **强control:** Raw FG cosine/prototype, squared-energy score (must equal unnormalized centroid squared distance to numerical tolerance), unsquared mean distance with self-dispersion term removed, and original0.07 fixed RBF density on exactly same selected rows.
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
+- **原生4例v4实测:** mIoU 22.9034; Δprototype -6.0809 [-24.1181, +11.9564]; T=0 / 0 / 21,862 / 65,831; receipt arm平均0.401s（不含DINO生产，不是端到端延迟）。
+- **关键已完整control:** ref_energy_centroid_control=31.3881; Δcontrol -8.4848 [-23.3374, +6.3679]。这是指定比较，非遍历所有跨模块control后的因果归属。
+- **冻结source:** src/ics/cpu100/reference_evidence.py SHA `5607a1edf58c26c96d1a93f449e965f56c36cf3a114bbff5ffb27bf05208c36a`；本批输入/config/scorer身份见下述原report，当前文件增补不迁移该分数。
+- **200/600:** 本项未见新原生200/600评分；unknown，不能由4例外推。
+- **失败/所得（解释与观察分开）:** 纯删账删真21,862、删假65,831，完整结果低于同输入centroid 8.4847。分布形状项本版没有超过简单均值解释；能量/数值性质不证明类别判决。
+- **逐类四动作/I-U:** [v4 report](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json) -> class_actions_vs_dino_prototype.ref_distribution_energy。
 - **未知前提/审查限制:** squared-collapse algebra, sameRBF and no-selfterm controls; proper expected score not pointwise identity or mIoU guarantee
 - **特有反例:** P can be far broader than the query's true target subset; subtracting its dispersion may make a broad clutter role too attractive. Proper expectation does not guarantee each individual q is identified. Image style drift changes the class distributions.
 - **证据:** [card](cards/reference_evidence_batch2.json); [batch02](reviews/batch02.json)
 
-### ready RGB06 - 参考监督的跨模态边界似然切分
+### measured4 RGB06 - 参考监督的跨模态边界似然切分
 
 - **逻辑/条件性预期:** Known R mask labels edge pairs as same-class or cut. Joint bins of relative DINO contrast and relative RGB contrast retain their dependency, unlike generic Q edge smoothing. Only positive same/cut log-likelihood becomes attractive Potts strength; identity still comes from direct DINO unary.
 - **预期收益（假设）:** synthetic hypothesis: close a weak DINO hole while retaining true boundary when RGB-only contrasts are identical for texture and object edge but DINO/RGB dependency differs.
 - **source/合法输入:** [source](../../../src/ics/cpu100/rgb_complement_extra.py) SHA 947abb93258a5ab7; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N + actual RGB/complete R mask
 - **强control:** Existing reference_boundary DINO-only calibrated cut and RGB Potts with identical unary, graph, readout and pairwise mass; no old pipeline mismatch.
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
+- **原生4例v4实测:** mIoU 29.3693; Δprototype +0.3851 [-0.1027, +0.8729]; T=1,406 / 4,413 / 246 / 5,215; receipt arm平均0.431s（不含DINO生产，不是端到端延迟）。
+- **关键已完整control:** RGB06.dino=29.4816; Δcontrol -0.1122 [-0.2244, +0.0000]。这是指定比较，非遍历所有跨模块control后的因果归属。
+- **冻结source:** src/ics/cpu100/rgb_complement_extra.py SHA `947abb93258a5ab7d02202dd0de6640103c91ea600355bab094e88e59e03e3e7`；本批输入/config/scorer身份见下述原report，当前文件增补不迁移该分数。
+- **200/600:** 本项未见新原生200/600评分；unknown，不能由4例外推。
+- **失败/所得（解释与观察分开）:** 相对prototype+0.3851区间跨0，joint比DINO-only cut低0.1122，pairedCI[−0.2244,0]。本四例不能把cut/renderer回收归给联合RGB/DINO依赖；相同mass/zero等控制已完整，保留真正joint构造但不宣称自然有效。
+- **逐类四动作/I-U:** [v4 report](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json) -> class_actions_vs_dino_prototype.RGB06。
 - **未知前提/审查限制:** actually verify source/query bins with tiny-label DINO component, singlemodality same-mass controls and complete masks; no verbal bin-invariance assumption
 - **特有反例:** Reference has too few pure cut edges, Q boundary appearance changes, or wrong DINO identity seeds are strengthened; boundary fitting cannot identify an entirely wrong object.
 - **证据:** [card](cards/rgb_complement.json); [batch02](reviews/batch02.json)
 - **Synthetic only:** [fixed constructive/negative full masks](reports/rgb_complement/checks_extra.json); no natural-quality claim.
 
-### ready RGB07 - 逐像素阴影商空间颜色判据
+### measured4 RGB07 - 逐像素阴影商空间颜色判据
 
 - **逻辑/条件性预期:** Algebraic invariant u(s(x)*RGB)=u(RGB) for positive non-clipped scalar s(x), where u(c)=c/||c||. This removes only local brightness magnitude, preserving chromatic direction. Direct DINO identity remains the baseline.
 - **预期收益（假设）:** algebraic invariance; hypothesized recovery of chromatically distinct target under spatially varying achromatic shadow, not semantic guarantee.
 - **source/合法输入:** [source](../../../src/ics/cpu100/rgb_complement_extra.py) SHA 947abb93258a5ab7; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N + actual RGB/complete R mask
 - **强control:** Raw and globally aligned RGB prototypes with same class support and readout; primary itself is the simple cosine RGB invariant, no elaborate log-color operator.
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
+- **原生4例v4实测:** mIoU 28.9289; Δprototype -0.0553 [-0.2907, +0.1800]; T=73 / 10,909 / 63 / 495; receipt arm平均0.301s（不含DINO生产，不是端到端延迟）。
+- **关键已完整control:** RGB07.global_affine=17.5579; Δcontrol +11.3710 [+1.5385, +21.2034]。这是指定比较，非遍历所有跨模块control后的因果归属。
+- **冻结source:** src/ics/cpu100/rgb_complement_extra.py SHA `947abb93258a5ab7d02202dd0de6640103c91ea600355bab094e88e59e03e3e7`；本批输入/config/scorer身份见下述原report，当前文件增补不迁移该分数。
+- **200/600:** 本项未见新原生200/600评分；unknown，不能由4例外推。
+- **失败/所得（解释与观察分开）:** 比raw/global-affine颜色臂大幅好，完整结果却相对prototype−0.0553；补真73、补假10,909。quotient在本版主要减少坏颜色证据的损伤，不能把相对坏RGB控制的11.371当DINO增益。理论不变性仍限记录encoder-view/nonclipped条件。
+- **逐类四动作/I-U:** [v4 report](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json) -> class_actions_vs_dino_prototype.RGB07。
 - **未知前提/审查限制:** invariance only for observed nonclipped scalar shade/constant-color patches, resize/quantization scope explicit; achromatic semantic information loss negative
 - **特有反例:** Achromatic FG/BG, colored illumination, clipped channels or same chromaticity distractor; eliminating intensity can remove class evidence.
 - **证据:** [card](cards/rgb_complement.json); [batch02](reviews/batch02.json)
 - **Synthetic only:** [fixed constructive/negative full masks](reports/rgb_complement/checks_extra.json); no natural-quality claim.
 
-### ready RGB09 - 参考边界两侧的方向性角色判据
+### measured4 RGB09 - 参考边界两侧的方向性角色判据
 
 - **逻辑/条件性预期:** Known reference cut edges are ordered FG to BG; their unit RGB difference direction provides a foreground-side role. Query edges can then vote toward one endpoint independently of DINO seeds. This is a learned relational contrast, not an assumed bright-target prior.
 - **预期收益（假设）:** hypothesized recovery of a whole visually coherent missed region using a reference-conditioned foreground-side relation, without a correct DINO seed.
 - **source/合法输入:** [source](../../../src/ics/cpu100/rgb_complement_extra.py) SHA 947abb93258a5ab7; 当前源码可能在旧快照后追加；历史分数仅绑定该冻结运行，不静默迁移。; N + actual RGB/complete R mask
 - **强control:** The same learned polarity applied pointwise, plus symmetric boundary segmentation, to isolate role and component propagation; an oracle component identity is forbidden.
-- **真实质量:** 未见这些新增项的真实原生4/200质量报告；自然分数和四类增删均unknown。源码/构造不是方法结果。
+- **原生4例v4实测:** mIoU 25.9948; Δprototype -2.9895 [-7.5911, +1.6121]; T=4,863 / 108,878 / 9,055 / 34,287; receipt arm平均0.308s（不含DINO生产，不是端到端延迟）。
+- **关键已完整control:** RGB09.symmetric_Potts=28.6471; Δcontrol -2.6523 [-8.1572, +2.8525]。这是指定比较，非遍历所有跨模块control后的因果归属。
+- **冻结source:** src/ics/cpu100/rgb_complement_extra.py SHA `947abb93258a5ab7d02202dd0de6640103c91ea600355bab094e88e59e03e3e7`；本批输入/config/scorer身份见下述原report，当前文件增补不迁移该分数。
+- **200/600:** 本项未见新原生200/600评分；unknown，不能由4例外推。
+- **失败/所得（解释与观察分开）:** 比pointwise role低0.6914、比symmetric Potts低2.6523；补真4,863、补假108,878并删真9,055。本例有向边界角色没有稳定纠正DINO，组件/同关系对比仍可能传错身份；无逐图新视觉解释。
+- **逐类四动作/I-U:** [v4 report](/Users/yang/projects/CVPR2027/evidence/local/cpu100_20261006/server/batch02_native4_v4/batch02_native4_v4/score/report.json) -> class_actions_vs_dino_prototype.RGB09。
 - **未知前提/审查限制:** pointwise same-role control, reversed context and wrong component negatives; components are not class proof
 - **特有反例:** Q surrounding context reverses contrast, internal texture partitions object or merges target/background, one target borders several incompatible colors, same relational contrast distractor.
 - **证据:** [card](cards/rgb_complement.json); [batch02](reviews/batch02.json)
@@ -919,6 +1103,11 @@ actual selection（本地证据，未纳入仓库） SHA 903d7156b3f7ca5a9cd1771
 local_004固定读出已关闭，独立计0；辅助源码保留但未注册METHODS，不是ready。查询branch pruning只匹配了子集，whole-node奖励与FG读出却按整节点面积，把未匹配Q背景也标FG。完整构造IoU0.428571，低于centroid0.514286及leafbag0.5；rewired同0.428571。它反驳当前读出scope，不证明所有hierarchy不可能。强制全Q覆盖会改alignment合同，只能是同家族修订计0，未自动开始。
 
 [closure receipt](reports/local_structure/local_004_closure.json) ; [batch03](reviews/batch03.json).
+
+
+### local_002 v4同方法修订实测（独立计0）
+
+原生4例mIoU 28.7410; Δprototype -0.2432 [-6.0890, +5.6026]; T=55 / 15,847 / 19,416 / 47,519。local_002.unary_control=29.4784; Δcontrol -0.7374 [-1.5232, +0.0484]。冻结module SHA `22ac1e36e634b9bcc12431e42729e0f5719bce661bbba9945cd0a40cae889c65`。本次为首批local002同方法修订，独立计0；prototype−0.2432、低于同unary0.7374，CI跨0。坐标strain本四例未显示增量；v4能量/温度已改，不能静默替换v0数值或拼作新方法。 逐类账与修订输入配置均在本批report；首30的v0仍保留原冻结版本分数。
 
 ## 第三批新增探针资格：6项，自然质量未知
 
@@ -1019,7 +1208,7 @@ DR_control_average_logistic采用每角色最多64条weighted-quantile压缩，�
 
 ## 当前获得的结论与缺口
 
-本文件现记录首30、二批22新增、旧19及第三批6资格，合计潜在77。local_004单列关闭计0；local_002修订计0；source/static/toy/完整真实输出/稳定正收益严格分开。未完成100。
+CPU100历史记录首30、二批22新增、旧19及第三批6资格，合计潜在77，已被Astra300当前映射任务接替。local_004单列关闭计0；local_002修订计0；source/static/toy/完整真实输出/稳定正收益严格分开。未完成100。
 
 200例Huber vs ridge +0.7109 [0.1353,1.0014]是已测真实开发边际；不能抹掉，也不能把相对prototype的+9.7928全部归给Huber。ridge=51.6625，平均logistic=50.3467，常量erosion=50.7178都是强简单controls。
 
@@ -1027,4 +1216,95 @@ DR_control_average_logistic采用每角色最多64条weighted-quantile压缩，�
 
 更新只跟随新封存结果修订相应方法的观察、control、T和解释范围。本文件不授权SSH/实验，也不是新pending-work清单。
 
-本次只同步必要审查修订，不新增方法、文件或实验；尚未回收的二批真实得分维持unknown。
+本次同步Astra300固定源定义/实际到件、旧1200可读性、真实encoder首view以及二批4例主评分。Astra固定600尚无质量结果，未新增方法、文件或实验；当前300交付状态与CPU100历史资格分开。
+
+## 当前A共享回退合同修复（2026-10-07）
+
+原共享helper把所有score减参考t_R，导致原文指定B0回退也被改阈值。root已按实际cmdline暂停A首批与A006修复两个进程组；这不是自然质量负例，也不能把此前pass或toy记录当完整合同已经成立。回退的参考OOF与query两端均应保B0 cut0，校准不能随候选t_R改变fallback点；新版source/checks单独封存，旧source/partial预测保留且未质量评分。E两批继续固定600。C v1小构造probe被owner重跑覆盖，源码快照仍存；等revision2独立报告，不补造旧probe证据。详细依据在../astra300_20261007/reviews/A_shared_B0_threshold_erratum.json及group_076_150/batch01_old_probe_mutation_incident.json。
+
+### 当前交接修正：只通过文件读取批次（2026-10-07）
+
+reference_evidence 是原卡1–75 owner，cross_image_matching 是226–300 owner，沿用名称不代表当前方法分类，也不承担全队调度。进度、完成、READY、普通阻断、接口问题均写各自目录；root/reviewer 主动读取，不索要回执。只有需要立即停止活动实验的实质错误可消息。
+
+- E235/E239/E243 按不可变审查源码直接同一600启动，服务器 `E235_E239_E243_fixed600_v8`，review SHA256 `20b6431545ab06eb56fbe588916ec650d1ba6144807b8c9175b72a6ef793817e`，5workers×2threads；与既有两批合计线程预算30。实际CPU最近约18核，预算不等于实际利用率。新批首例E235主动分支已有完整输出，但整个600未完成，未评分，没有已验证收益。
+- A共同B0回退/OOF错误 revision3 已独立审查通过，review SHA256 `6c0c216406e05a046b6f7807c70350aefedb452b530fde53754d300642cb3f3b`。旧9527/11454进程组身份核实后终止，输出保留且未质量评分。新的A001/A003–A008与A002分为两队列，各自完整600等待资源；A002原求解预算保持，慢方法不拖住其他七项交付。修复不计新方法。
+- 完整基线来源归档25成员包含8个AppleDouble元数据。实际17个Python源已单独提取并逐文件SHA验证，索引为 `../astra300_20261007/host_source/complete_baseline_python_source_hashes.json`；原归档与全成员哈希保留。这证明代码来源，不是完整基线分割结果。
+- 原始基础600已全齐，以上部署均复用同一manifest，不再重提取，也不补1200。
+
+### Pro30优先后的性能事实与工程失败（2026-10-07）
+
+- **完整结果：** Pro M04固定同一原生600，8个单线程worker，600/600成功，封存墙钟149.44秒；分配worker折算1.992秒/例包含批执行开销，arm自身平均1.032秒。来源为 `../pro30_20261007/runtime/M04_fixed600/runtime.json`。这支持分钟级吞吐可达，尚无质量评分或准确率收益结论。
+- **为何旧批慢：** E242单例profile为29.137秒，10次相似度计算11.669秒、5次像素拟合16.665秒；同例控制重复准备。C102首例1667.59秒、C1041066.19秒。已停止旧E/C慢批并保留输出；慢实现不是DINO特征缺失或600数据规模必然需要数小时，也不是科学上的方法负结果。精确复用/向量化需真实场与mask等价后才重新调度。
+- **root调度错误：** M04对照批遗漏 `--methods none`，实际包含已审核M03/M04，重复运行M04。保留已完成合法输出，后续对照命令明确none。M04主批无control，原self-baseline评分不符合runner合同，已撤掉，不用假对照评分。等待同一600完整对照批作公平比较。
+- **监控错误：** OS state Z进程的cmdline为空，旧版先检查cmdline会错误返回identity mismatch，导致封存结果无法进入评分。v3改为先识别Z，只替换监控，未重跑或中断有效实验。
+- **未解决：** 完整INSID3 bilinear固定600进程池在250输出后BrokenProcessPool，cgroup没有OOM事件；根因未知。旧输出保留，后续只续缺项、隔离并记录真实故障case与退出信号，不能把软件崩溃解释成方法失败。CPU CRF原扩展出现malloc断言，原版本不可称已验证；不得重复原样放大运行。
+
+
+### Pro30 M04固定600质量结论与逐类精确账目（2026-10-07）
+
+**M04此固定版关闭。** 同一原生FP32 DINOv3/1024、600个复用开发episode、80类、原尺寸class-summed mIoU：M04 **29.091009**，B_R **46.575235**，差 **−17.484226 pp**，照片关联组描述性配对95%区间 **[−21.401753,−15.104086]**（570组、RandomState0、2000次）。这更新此前“尚无质量评分”的时点状态；此前分钟级吞吐事实保留，速度成立不代表准确率成立。来源：[封存评分](../pro30_20261007/runtime/M04_fixed600/paired_score_report.json)、[质量决定及80类账目](../pro30_20261007/runtime/M04_fixed600/quality_decision.json)。不是新独立确认，不与旧processed或native200绝对分数混比。
+
+按Opus研究档案§3.6的逐类价格、并用原卡公共§2.2的**精确**恒等式，先每类汇总四动作，再算 `ΔJ_c=[(aT−dT)−J_c(aF−dF)]/(U_c+aF−dF)`，最后对80类平均。全部四项使用该类最终union作共同分母；因此下面是同一完整mask差的精确算术拆解，不能解释成各模块的因果收益，也不能把独立“只补/只删”反事实直接相加。
+
+| 四动作 | 总像素数（只说明规模） | 精确逐类平均贡献（pp） |
+|---|---:|---:|
+| 补真目标aT | 5,617,829 | +8.368856 |
+| 补假目标aF | 36,921,503 | −26.057704 |
+| 删真目标dT | 27,717 | −0.028745 |
+| 删假目标dF | 728,417 | +0.233367 |
+
+合并“补”的共同分母贡献 **−17.688848 pp**，“删”贡献 **+0.204622 pp**，精确合为 **−17.484226 pp**。**65/80类补集合不划算，65类最终IoU下降，15类提高**；删在18类划算、6类不划算、56类完全没有删，规模不足以抵消新增假前景。此版的观测主要是**大量错误扩张**，不能套用“多数规则主要抹掉稀有真部位”的故事。以class0为例，基线J=0.737864，补纯度0.222429低于该类盈亏线0.424581；删背景纯度0.918121高于该类0.575419线，仍净−14.717519 pp。class64的补纯度0.047678远低于其0.406813线，净−52.221156 pp。每类使用自己的J；没有拿总体purity或历史37.5%/62.5%替代这80个判断。
+
+**全局配对有一个小效应，完整方法仍失败。** M04对随机配对中位数 **+0.662335 pp [0.485334,0.917188]**、对allpair中位数 **+0.355572 [0.244581,0.527514]**、对最近对手中位数 **+2.553348 [0.421778,4.237908]**。其中对随机控制的逐类精确净差可拆为intersection项+0.026516、假前景价格项+0.635819 pp；净假前景减少1,500,184像素，净intersection增加20,307。它支持这些固定控制下配对略有排他收益，不能推成跨配置或独立数据的通用保证。对更简单且原始均值不依赖配对π的raw_matched_mean **30.285193**，M04却 **−1.194185 pp [−1.440194,−0.965023]**，74/80类更差；其中intersection项+0.087810、假前景价格项−1.281994 pp，新增净假前景3,095,282像素。故“单位化差向量后中位数”的整套读出没有胜过其简单控制。不能仅凭这些边际计数分离M04与控制之间的四类独有编辑，质量JSON明确只报可识别的净差。
+
+按照[M04原卡](../pro30_20261007/source/M04.md)“输B_R不进入路线①下一轮”的失败条件，**关闭此版，不自动改阈值、扩字典或另开变体**。配对费用低/数值正确不保证跨图类别排他性；四动作还不能定位到底是差向量归一化、中位数、对手错误还是迁移错位造成损失。此结果否定的是该完整读出版本，**不是原始DINO特征失效或DINO信息上限**；同批B_R仍为46.575235。
+
+**M03结论单列，归因尚未完成。** M03=**46.079531**，对B_R差 **−0.495704 pp [−3.405414,1.067063]**，目前没有支持超过B_R；区间仍跨零。其自己的同字典independent OMP3、系数角色投票、dense-class-cone和convex-hull控制在此报告中**未跑/未评分**。M04的配对控制不能充当M03的机制控制，因此不能宣称“M03全部控制也失败”，也不能将当前结果写成共享稀疏角色解释已被完整归因否决。本条不新开任何实验。
+
+
+### Pro30 M06固定600：有向差分负结果与保留的renderer工程（2026-10-07）
+
+**M06方法此固定版关闭；精确renderer工程保留。** 同一原生DINOv3/1024的600个复用开发episode、80类，M06 **46.057272** vs B_R **46.575235**，差 **-0.517963 pp [-0.805102,-0.263999]**。来源：[封存评分](../pro30_20261007/runtime/M06_fixed600/score_report.json)、[80类精确账和关闭决定](../pro30_20261007/runtime/M06_fixed600/quality_decision.json)。原尺寸class-summed口径、570照片关联组/2000次RandomState0描述性配对bootstrap；不当独立确认。
+
+**保留原逻辑与控制。** [M06原卡](../pro30_20261007/source/M06.md)用R完整软mask的边差分监督16维未白化空间的反对称双线性K，预测跨图有向e，再以B_R锚定Poisson读出；区别在新增散度，不在另换Laplacian。纯环流会被积分投影去掉，数值环流/边拟合不等于类别收益。源中的B_R、零e同图平滑、同容量pointwise quadratic、center-neighbor双线性、divergence unary、gradient_e、反转/打乱K在这次评分中均保留，不能只挑较弱行解释改善。
+
+精确按每类自己的`J_c=I_c/U_c`算`ΔJ_c=[(aT−dT)−J_c(aF−dF)]/(U_c+aF−dF)`再平均80类。四项使用该类最终union作共同分母，算术拆解为：
+
+| 四动作 | 总像素数（仅规模） | 逐类精确平均贡献（pp） |
+|---|---:|---:|
+| 补真aT | 115,163 | +0.446760 |
+| 补假aF | 142,322 | -0.236460 |
+| 删真dT | 239,891 | -1.420420 |
+| 删假dF | 255,870 | +0.692157 |
+
+补净 **+0.210300 pp**，删净 **-0.728263 pp**，相抵后正好 **−0.517963 pp**。54类的补集合划算、26类不划算；删在59类不划算，仅21类划算；最终52类下降、28类上升。主要观测是**删除真目标的代价超过删除背景收益**；不能由总体纯度或历史37.5%/62.5%线替代这80类判断，也不能直接推成整实例误删（此报告是像素账）。
+
+**新增边方向效应没有给完整构造过线。** 对zero_e **+0.068899 pp [−0.021777,+0.152852]**，对同容量pointwise quadratic **+0.011364 [−0.134220,+0.291527]**，都未建立可靠增量；对更简单的divergence unary反而 **−0.476558 [−0.789610,−0.144901]**。对反转K **+0.180399 [+0.007942,+0.363332]**、对打乱K **+0.103702 [+0.011333,+0.203805]**是这些固定弱化控制下的小方向效应，不能取代胜B_R/同容量简单读出的目标，也不作多比较独立确认。
+
+**gradient_e=Cs_B这行与B_R评测mask恒等，四动作全0、分数完全同为46.575235**。代数上`(gammaI+L)z=(gammaI+L)s_B`只返回原场；它不能被当成新语义信号或Poisson方法已有收益。相反，真正双线性e的完整版本产生负净编辑；其具体原因尚不能从四动作证明是纯环流、阴影材质、16维漏语义还是边转移失配。
+
+按原卡需超同图零e/同容量node监督的条件，**关闭此版，不增gamma退回B_R后宣称有效，不自动新变体**。原field/mask逐位一致的blocked renderer是单独成立的速度工程，继续保留；它不会因方法精度失败而失效。本记录否定M06完整读出，不是DINO上限或所有图/边机制不可能。
+
+
+### Pro30 M18固定600：绝对集合门的负结果与所得（2026-10-07）
+
+**M18绝对集合相容性此固定版关闭。** 实际完整600/600输出、同一原生DINOv3/1024、80类原尺寸class-summed mIoU：M18 **14.172234** vs B_R **46.575235**，差 **-32.403001 pp [-36.394437,-29.752803]**。来源：[封存评分](../pro30_20261007/runtime/M18_fixed600/score_report.json)、[80类精确账和关闭决定](../pro30_20261007/runtime/M18_fixed600/quality_decision.json)。仅在评分报告实际回收后分析方向，未先由分数猜错因；570照片关联组、2000次RandomState0的描述性配对区间，数据仍是复用开发。
+
+**原方案逻辑保留，绝对项确实不同但未产生收益。** [M18原卡](../pro30_20261007/source/M18.md)在共同Ward128连通叶子/合并树上，以最多64个面积代表点计算完整FG/BG MMD，保留Q-Q/R-R/Q-R三项；`v=min(DB-DF,tF-DF)`由参考四组分布给绝对FG相容门，完整树DP输出整节点/叶子并集。相对MMD仅去掉绝对门，此时Q-Q项在DB-DF中代数抵消；它是必要控制。主法没有剪去不相似部位，不把低能量或低DF当类别概率。
+
+按每类真实基线`J_c=I_c/U_c`和同一最终union，用`ΔJ_c=[(aT−dT)−J_c(aF−dF)]/(U_c+aF−dF)`精确记账后平均80类：
+
+| 四动作 | 总像素数（仅规模） | 逐类精确平均贡献（pp） |
+|---|---:|---:|
+| 补真aT | 154,907 | +0.581602 |
+| 补假aF | 2,455,165 | -2.587550 |
+| 删真dT | 8,595,968 | -40.587753 |
+| 删假dF | 3,561,593 | +10.190699 |
+
+补净 **-2.005947 pp**，删净 **-30.397054 pp**，合为 **−32.403001 pp**。删在**78/80类不划算、仅2类划算**；补在40类不划算、24类划算、16类没有补；最终77类下降、3类提高。主损失是**删除原先正确的目标覆盖**，不是没有制造足够假前景去涨面积。class0删除484,860真目标、23,463背景；删集合背景比例0.046158远低于该类盈亏线0.575419。class64将B_R已覆盖的62,495真像素全部删掉（最终intersection=0），删背景5,578，对该类净−68.580866 pp。这里不能从class-summed像素账推成每张图/整实例都被删光；也不能拿总体pure或固定62.5%线代替每类预算。
+
+**最关键的同结构控制已否定绝对门的完整价值。** relativeMMD=**28.189687**，主法对它 **−14.017453 pp [−16.859913,−11.678730]**；pointwiseKDE=**28.213257**，差 **−14.041023 [−17.513805,−11.396408]**。相比relativeMMD，主法净intersection减少**4,730,713**，净假前景减少**1,284,444**；以控制每类J和主法最终union定价，真覆盖项 **−16.765396 pp**、假前景项 **+2.747943 pp**，精确仍为−14.017453 pp。这只识别净差，不能由BR边际动作伪造二者之间四类独有编辑。
+
+same_count_prototype=**14.376918**，M18差 **−0.204684 pp [−0.439682,+0.157105]**，没有支持相容性比已有同数量原型排序更好；这个实现匹配的是**有效native-token阳性数**，不是严格原尺寸像素数，应保留该限制。mean_variance仅**0.277167**，M18虽高13.895067 pp，但赢一个几乎崩坏的控制不是成功结论。报告没有完整INSID3/FoRIS/同候选MEAN行，不能声称已测过这些差值；现有BR及相对MMD/KDE控制已足够否决此固定方案的推进。
+
+**所得与关闭范围。** 绝对分布项没有因“保留Q-Q”就自动形成类别证据，实际补/删账表现为大量正确覆盖被拒；与单参考容忍度/跨姿态材料分布失配的风险一致，但尚不能用这些计数确认究竟是容忍度、区域平均还是表征迁移导致。按原卡完整主方案需赢简单控制的条件，**关闭此版，不再扫核/带宽、不改为只取最相似部分后继续冒充完整集合相容性**。源码、完整输出、合法参考信息和负结果全部保留；这不是DINO信息上限，也不否定全部集合或图方法。本条不授权新实验或新变体。

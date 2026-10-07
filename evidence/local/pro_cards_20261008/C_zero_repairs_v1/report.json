@@ -1,0 +1,272 @@
+{
+  "state": "C_SCORED_STOP",
+  "n": 600,
+  "cohort": "fresh600",
+  "table": [
+    {
+      "arm": "card1.mode_return",
+      "raw": {
+        "class_mIoU": 46.478832925716404,
+        "baseline_class_mIoU": 51.728906270803485,
+        "gain_vs_matched_s2": -5.250073345087081,
+        "paired_ci95": [
+          -6.6382228652142246,
+          -4.004626478379846
+        ],
+        "failing_target_mean_above_wrong_region": 30,
+        "baseline_failing_target_mean_above_wrong_region": 28,
+        "comparable_failure_count": 81,
+        "vs_global_control": {
+          "gain": -0.5290446235563167,
+          "paired_ci95": [
+            -1.2361831072199174,
+            0.0918710495104973
+          ]
+        }
+      },
+      "rcg": {
+        "class_mIoU": 51.85062664399365,
+        "baseline_class_mIoU": 55.384196605941646,
+        "gain_vs_matched_s2": -3.5335699619479968,
+        "paired_ci95": [
+          -5.104002285941821,
+          -2.3276937641168574
+        ],
+        "failing_target_mean_above_wrong_region": 23,
+        "baseline_failing_target_mean_above_wrong_region": 24,
+        "comparable_failure_count": 81,
+        "vs_global_control": {
+          "gain": -1.5045740405185342,
+          "paired_ci95": [
+            -2.4431576790115486,
+            -0.20477594660490914
+          ]
+        }
+      },
+      "gate": {
+        "passed": false,
+        "conditions": {
+          "graph_gain_above_1pp": false,
+          "paired_lower_above_0": false,
+          "failing_images_not_worse": false,
+          "higher_than_global_control": false
+        },
+        "decision": "closed fixed card; no variant",
+        "rule": "gain>1pp; CI lower>0; failures>=matched baseline; card1>global"
+      }
+    },
+    {
+      "arm": "card1.global.control",
+      "raw": {
+        "class_mIoU": 47.00787754927272,
+        "baseline_class_mIoU": 51.728906270803485,
+        "gain_vs_matched_s2": -4.7210287215307645,
+        "paired_ci95": [
+          -5.946157346160326,
+          -3.549314347321849
+        ],
+        "failing_target_mean_above_wrong_region": 28,
+        "baseline_failing_target_mean_above_wrong_region": 28,
+        "comparable_failure_count": 81
+      },
+      "rcg": {
+        "class_mIoU": 53.355200684512184,
+        "baseline_class_mIoU": 55.384196605941646,
+        "gain_vs_matched_s2": -2.0289959214294626,
+        "paired_ci95": [
+          -3.8250393889645573,
+          -0.9878120912652552
+        ],
+        "failing_target_mean_above_wrong_region": 21,
+        "baseline_failing_target_mean_above_wrong_region": 24,
+        "comparable_failure_count": 81
+      },
+      "gate": {
+        "role": "required strong control, not independent primary candidate",
+        "passed": null
+      }
+    },
+    {
+      "arm": "card2.pure_bg.control",
+      "raw": {
+        "class_mIoU": 51.55053473692013,
+        "baseline_class_mIoU": 51.728906270803485,
+        "gain_vs_matched_s2": -0.17837153388335736,
+        "paired_ci95": [
+          -0.3323482293321792,
+          -0.09211510197460808
+        ],
+        "failing_target_mean_above_wrong_region": 28,
+        "baseline_failing_target_mean_above_wrong_region": 28,
+        "comparable_failure_count": 81
+      },
+      "rcg": {
+        "class_mIoU": 55.30080781535176,
+        "baseline_class_mIoU": 55.384196605941646,
+        "gain_vs_matched_s2": -0.08338879058988624,
+        "paired_ci95": [
+          -0.34977192827538117,
+          0.012046976012240107
+        ],
+        "failing_target_mean_above_wrong_region": 24,
+        "baseline_failing_target_mean_above_wrong_region": 24,
+        "comparable_failure_count": 81
+      },
+      "gate": {
+        "passed": false,
+        "conditions": {
+          "graph_gain_above_1pp": false,
+          "paired_lower_above_0": false,
+          "failing_images_not_worse": true
+        },
+        "decision": "closed fixed card; no variant",
+        "rule": "gain>1pp; CI lower>0; failures>=matched baseline; card1>global"
+      }
+    }
+  ],
+  "config_sha256": "f491f82cdf304ccefeeb09f9167dd480b21f4004d990d0230501a24fcba1cdab",
+  "inference_seal_sha256": "bfb49d5607b5cbd67567466fe3eb2dd1c65350ebc99f8a869e4d10a81eeede67",
+  "A_source_hashes": {
+    "scripts/bench_evidence.py": "4e720a26908a5ed00a9091c85bdf511046148294c08a530ebd999a308808a82c",
+    "scripts/run_order_tokens.py": "362ff57f5a6bc657b466cc17be824ec3701af978f71da55a4665e6d79e2e68fd",
+    "scripts/run_rcg2.py": "dfe1cd2efc199a5ee857c41935de7f3d8605ff2ec1b1a907daf6581996856d2d",
+    "scripts/score_order_tokens.py": "f9a42b9a37b053a81d6c610d8c6bffef4d5301422a0a5beb440e5d24fe3f764d",
+    "scripts/score_size_threshold.py": "ec64358af660f081e2e02d149dd9c69548e18fe80af8cb7aa48bb6f9e81ff395",
+    "src/ics/methods/rcg.py": "d9d8e15a69c0b939eb06dc4e41967afb684f29731f9dcb00519e73d944963d98",
+    "src/ics/methods/stage_bank.py": "05d4e20ca812ea86fede93f46741c32416cd7a9bc66c4bebc6d76ad284383456",
+    "src/ics/experiment.py": "d95459d0b59c7048618661e7a16999248990b02e92cd1269d4629a497f62f843",
+    "src/ics/__init__.py": "f5f646ff0c339439f0b2511d0e126bdf1db65eba332621dbd06df47545595d2b",
+    "src/ics/methods/__init__.py": "2df7eedc804f1e3d1feb11bcc696ae526455005d017faa9ca0a76a9648b23b56",
+    "scripts/score_reverse_landing.py": "d01a9d82e5e130d7a034b2f8f29a5d1b98034bfb130cf6145186ad9bf26c6560"
+  },
+  "script_sha256": "719c07569249e8ffb54126546bf72bd8b256f91a2990b0c08dcd5eda75fd250d",
+  "timing": {
+    "state": "TIMING_PASS",
+    "config_sha256": "f491f82cdf304ccefeeb09f9167dd480b21f4004d990d0230501a24fcba1cdab",
+    "fixed_first5_keys": [
+      "0_60_40",
+      "0_61_52",
+      "0_62_60",
+      "0_63_0",
+      "0_64_60"
+    ],
+    "workers": 16,
+    "threads_per_worker": 2,
+    "available_CPUs": 32,
+    "first5_max_active_workers": 5,
+    "observed_pool": {
+      "wall_seconds": 6.224972732365131,
+      "newly_computed_cases": 5,
+      "reused_complete_cases": 0
+    },
+    "estimates": {
+      "card1.mode_return": {
+        "first5_case_wall_seconds": [
+          1.3295481130480766,
+          1.2372302263975143,
+          1.3093619719147682,
+          1.3602329865098,
+          1.2924557849764824
+        ],
+        "first5_case_CPU_seconds": [
+          2.338852881,
+          2.1882488359999996,
+          2.3092283260000004,
+          2.374649778,
+          2.24870043
+        ],
+        "projected600_CPU_seconds": 1375.16163012,
+        "projected600_wall_seconds": 57.91382621973753
+      },
+      "card1.global.control": {
+        "first5_case_wall_seconds": [
+          1.3437891006469727,
+          1.2300747856497765,
+          1.312084473669529,
+          1.3802651762962341,
+          1.3192315995693207
+        ],
+        "first5_case_CPU_seconds": [
+          2.3655516949999997,
+          2.1728395149999997,
+          2.318455877,
+          2.4188685440000004,
+          2.302163057
+        ],
+        "projected600_CPU_seconds": 1389.34544256,
+        "projected600_wall_seconds": 58.67504943162203
+      },
+      "card2.pure_bg.control": {
+        "first5_case_wall_seconds": [
+          1.40171679854393,
+          1.2791284620761871,
+          1.3615176603198051,
+          1.4187996983528137,
+          1.323359102010727
+        ],
+        "first5_case_CPU_seconds": [
+          2.480776369999999,
+          2.2695752870000003,
+          2.41584664,
+          2.4893132620000005,
+          2.310419537999999
+        ],
+        "projected600_CPU_seconds": 1435.91173164,
+        "projected600_wall_seconds": 60.13936126977205
+      }
+    },
+    "cost_gate": {
+      "card1_with_required_global_control": {
+        "projected600_wall_seconds": 116.58887565135956,
+        "within20minutes": true
+      },
+      "card2_zero_encoding_control": {
+        "projected600_wall_seconds": 60.13936126977205,
+        "within20minutes": true
+      }
+    },
+    "active_arms": [
+      "card1.mode_return",
+      "card1.global.control",
+      "card2.pure_bg.control"
+    ],
+    "skipped_arms": [],
+    "uncertainty": "600 projections from fixed5, not measured600 cost; content/parallel contention unknown; max observed per-case wave and CPU-capacity bound plus cold pool cost",
+    "timing_case_fields_reused_in_full_inference": true,
+    "new_encoder_forwards": 0
+  },
+  "failure_region_protocol": {
+    "source": "scripts/score_reverse_landing.py",
+    "selection": "Original stored RCG best binary-token IoU<.5 on fixed33 levels.1..9; true and wrong-kept regions nonempty",
+    "failure_count": 82,
+    "comparable_count": 81,
+    "definition": "target: truth>.5; wrong: original storedRCG>.5 and not target; never reselect with candidate scores",
+    "selection_field_origin": "original fresh storedRCG-on-final-score"
+  },
+  "observed_inference_pool": {
+    "wall_seconds": 127.40363599359989,
+    "newly_computed_cases": 595,
+    "reused_complete_cases": 5
+  },
+  "baseline_failing_target_mean_above_wrong_region": {
+    "raw": 28,
+    "rcg": 24
+  },
+  "bootstrap": {
+    "draws": 2000,
+    "seed": 0,
+    "rng": "RandomState(0)",
+    "groups": 564,
+    "unit": "connected support/query photographs",
+    "all_arms_and_baselines_share_draws": true,
+    "class_denominator": "only classes present by resampled row mass, frozen A metric"
+  },
+  "truth_and_readout": "binary64 positions, truth>.5; direct frozen stage_bank.unit>.5; unchanged rcg.predict output>.5",
+  "exposure": "reused development data; no independent confirmation claim",
+  "native_cache_stage": "FoRIS Part1 processed FP16 cache; not raw DINOv3",
+  "baseline_source": "A saved per-case ladder baseline_evidence/unit/rcg",
+  "new_encoder_forwards": 0,
+  "new_baseline_RCG_calls": 0,
+  "all_layer_card2": "NOT_EXECUTED; D report then human decision",
+  "originality": "FoRIS evidence-formula repairs, not our own replacement evidence principle"
+}

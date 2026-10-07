@@ -1,0 +1,185 @@
+{
+  "state": "HOLDOUT_TOKENS_COMPLETE",
+  "n": 600,
+  "classes": 80,
+  "selection": {
+    "expected_manifest_rows": 1200,
+    "actual_manifest_rows": 1200,
+    "unique_source_exact_identities": 1200,
+    "fresh_rows": 600,
+    "unique_fresh_exact_identities": 600,
+    "exact_shared_identities": 600,
+    "fresh_identities_missing_from_source": [],
+    "expected_holdout_rows_in_PLAN": 601,
+    "actual_holdout_rows": 600,
+    "count_discrepancy_vs_PLAN": -1,
+    "exact_identity_fields": [
+      "support",
+      "query",
+      "c",
+      "fold",
+      "key"
+    ],
+    "duplicate_source_rows": [],
+    "semantic_duplicate_groups": [],
+    "fresh_semantic_aliases_in_exact_complement": [],
+    "unique_holdout_support_query_class": 600,
+    "no_rows_or_features_manufactured": true,
+    "exposure": "previously reused development data; never independent confirmation"
+  },
+  "source_binding": {
+    "files": {
+      "input_manifest": {
+        "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/confirm1200_conditional_v1/inputs/manifest.json",
+        "sha256": "1656f2b54350ce842c0d51cd445383d6bee1f9f78ae7ee93a79b628cd83f6aa6"
+      },
+      "fresh_rows": {
+        "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/claude_order_fresh600/rows.json",
+        "sha256": "6d7092c27e1c58e4c45768cfa6bd1fb35d3d0a6f85a93f91a16822928ee9fd3e"
+      },
+      "fresh_tokens": {
+        "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/claude_order_fresh600/tokens.npz",
+        "sha256": "f16710fad768f6cec5fc346062a1e67635e6eaee46a998e13d1a221dc133207b"
+      }
+    },
+    "annotation_root": "/root/autodl-tmp/datasets/ics/COCO2014/annotations",
+    "annotation_source_metadata": [
+      {
+        "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/claude_official/batch0.json",
+        "sha256": "4dd6078054e91c7fc90df4443120624b763539e83c1c7752cd031bfb4c859d22",
+        "annotation_root": "/root/autodl-tmp/datasets/ics/COCO2014/annotations"
+      }
+    ],
+    "source_hashes": {
+      "scripts/prepare_holdout_tokens.py": "191f82359c481e80c4d213360f1bbb570b5cfa7122a905c3e9d8e48992845823",
+      "scripts/run_order_tokens.py": "362ff57f5a6bc657b466cc17be824ec3701af978f71da55a4665e6d79e2e68fd"
+    },
+    "identity_rule": [
+      "support",
+      "query",
+      "c",
+      "fold",
+      "key"
+    ],
+    "truth_rule": "original PNG ==c+1 -> Torch nearest1024 -> avg_pool2d16 -> FP32 coverage64",
+    "truth_acceptance_rule": "fresh600 generated and stored truth strict>.5 aggregate disagreement<=.001",
+    "reference_rule": "the same annotation transform must reproduce stored reference coverage exactly",
+    "default_annotation_source": "original ICS root recovered from claude_official batch0/1, not demo4_cache"
+  },
+  "inference_source_hashes": {
+    "scripts/bench_evidence.py": "4e720a26908a5ed00a9091c85bdf511046148294c08a530ebd999a308808a82c",
+    "src/ics/methods/stage_bank.py": "05d4e20ca812ea86fede93f46741c32416cd7a9bc66c4bebc6d76ad284383456",
+    "src/ics/methods/rcg.py": "d9d8e15a69c0b939eb06dc4e41967afb684f29731f9dcb00519e73d944963d98"
+  },
+  "accepted_A": {
+    "path": "/root/autodl-tmp/evidence_bench_step3_20261007_25142/A_six_levels_v6/report.json",
+    "sha256": "21198cc0073198cd3437665690bcc32bbc59efd8fd987b65f2d355b11a63529a",
+    "native_s2_difference_pp": 0.0014587903061027419,
+    "grade": {
+      "continue_ladder": true,
+      "band": "within.3pp_and1percent",
+      "baseline": "stored_s2",
+      "mask_one_percent_rule": "passed"
+    }
+  },
+  "truth_acceptance": {
+    "evaluated": 600,
+    "errors": [],
+    "mask_different_tokens": 0,
+    "mask_disagreement_fraction": 0.0,
+    "fixed_tolerance_fraction": 0.001,
+    "truth_passed": true,
+    "reference_coverage_exact": true,
+    "reference_mismatch_keys": [],
+    "passed": true,
+    "query_truth_used_for_evidence": false
+  },
+  "original_cache_stage": "already FoRIS Part1 processed FP16; no raw/no-APD claim",
+  "inference_API": "bench.native_foreground -> bench.native_evidence(bench.part2_prefix) -> bench.ladder_evidence(6), canonical rcg.predict CPU",
+  "native_s2_CONFIG": {
+    "origin": "model.raw_nn",
+    "tau": 0.6,
+    "lse_temperature": 0.07,
+    "bg_weight": 0.55,
+    "vote_boost": 0.2,
+    "prior_boost": 0.25,
+    "disagreement": 0.08,
+    "coupling": 0.05,
+    "fg_boost": 0.2,
+    "conflict": 0.18,
+    "uncertainty_power": 1.5,
+    "penalty_max": 0.22,
+    "neg_cap": 0.12,
+    "hard_bg": 0.2,
+    "debias_below": 0.8,
+    "merge_threshold": 0.2,
+    "color_weight": 0.35,
+    "position_weight": 0.2,
+    "log_floor": 0.001,
+    "query_gt_in_inference": false
+  },
+  "RCG_CONFIG": {
+    "arm": "RCG",
+    "alpha": 0.5,
+    "cross_image_k": 10,
+    "query_k": 20,
+    "source_purity": 0.9,
+    "lambda": 16.0,
+    "confidence_floor": 0.1,
+    "query_gt_in_inference": false,
+    "native_mask_in_inference": false,
+    "finalizer": "bilinear 1024, align_corners=False, >0.5; no re-minmax",
+    "parameter_provenance": "historical development-selected constants; fixed here; no new fold selection performed",
+    "dense_device": "caller-selected; GPU numerical parity not yet verified",
+    "cg_rtol": 1e-07,
+    "cg_atol": 1e-09,
+    "cg_maxiter": 300
+  },
+  "rcg_field_origin": "recomputed native_s2, not original packet final score",
+  "rcg_input": "s2",
+  "fresh_original_rcg_input": "FoRIS final score",
+  "field_producers": {
+    "truth": "bound original query label nearest1024/avgpool16",
+    "ref": "bound original reference label nearest1024/avgpool16, exact packet cov",
+    "s2": "A native Part2 prefix, reference native bilinear FG, processed FP16 features",
+    "rcg": "canonical fixed rcg.predict(q,r,ref,recomputed_s2)",
+    "rcg_s2": "same actual array as rcg; explicit input-stage alias",
+    "score": "actual packet FoRIS final score, saved without recalculation"
+  },
+  "absent_fields_not_fabricated": [
+    "nbr",
+    "back_fg",
+    "back_bg",
+    "native"
+  ],
+  "fields_storage": "FP32 episode files; FP16 flat tokens.npz for historical compatibility",
+  "FP32_field_class_mIoU": {
+    "s2": 51.56909848786263,
+    "rcg_s2": 55.85794459003945
+  },
+  "FP16_storage_mask_changes": {
+    "s2": 226,
+    "rcg": 277
+  },
+  "query_GT_used_for_evidence": false,
+  "query_GT_role": "truth generation, storage and post-inference scoring only",
+  "actual_new_encoder_forwards": 0,
+  "workers": 16,
+  "threads_per_worker": 2,
+  "elapsed_compute_seconds": 56.01680900156498,
+  "exposure": "reused development complement; not independent confirmation",
+  "output_files": {
+    "tokens.npz": {
+      "path": "/root/autodl-tmp/evidence_bench_step3_20261007_25142/B_holdout_actual600_v1/tokens.npz",
+      "sha256": "3dc56b7502fbe01978a093232c308e0320f925de6214e6d17d3955e0051d2134"
+    },
+    "rows.json": {
+      "path": "/root/autodl-tmp/evidence_bench_step3_20261007_25142/B_holdout_actual600_v1/rows.json",
+      "sha256": "4bdc311583b357c0364b8e1ed6eafee6580121297f2643c6fdac3d9c86caa870"
+    },
+    "receipts.json": {
+      "path": "/root/autodl-tmp/evidence_bench_step3_20261007_25142/B_holdout_actual600_v1/receipts.json",
+      "sha256": "b60dfd6fc981062b44d127ca913bc1e7f13becc2884276459442aebb3d9850ba"
+    }
+  }
+}

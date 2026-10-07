@@ -8,4 +8,5 @@ Astra300、Pro30、CPU100 的批量任务已结束，2026-10-06 13:00 之后新�
 用户给的方法卡原文、失败记录和本地评分报告仍在 `evidence/local/` 下。
 整理前的入口文档快照仍保留在本地工作树 `docs/archive/2026-10-07-entry-docs-snapshot.md`，尚未推送。
 
-代码清理已提交并推送（`6e986b9`）；其余入口文档改动仍在本地，尚未一并提交。服务器已由用户关机。已打开的其他代理不会自动重读本页。
+代码清理已于 `6e986b9` 推送；当前研究状态与 A/B/C/D 汇总见 [PLAN](docs/research/PLAN.md)、
+[RESULTS](evidence/local/RESULTS.md) 和 [D 汇报](evidence/local/pro_cards_20261008/D_report.md)。原始数组、封存件和运行收据保留在本地证据目录，未纳入 Git；本轮没有启动远程任务。服务器当前状态未核实。
