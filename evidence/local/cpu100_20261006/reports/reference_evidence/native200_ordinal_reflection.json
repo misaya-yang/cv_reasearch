@@ -1,0 +1,58 @@
+{
+  "source": "evidence/local/cpu100_20261006/server/screen12_native200_v3/methods_summary.json",
+  "n": 200,
+  "class_groups": 74,
+  "exposure": "Methods selected using four cases; this 200 is a reused public development cohort, not independent confirmation",
+  "pipeline": "Native frozen DINOv3 RGB1024 same-checkpoint/same-prototype baseline; do not combine old processed600 scores",
+  "method_id": "ref_ordinal_copula",
+  "score": 36.202930539360416,
+  "baseline": 42.580632275065824,
+  "gain_pp": -6.377701735705408,
+  "ci95": [
+    -11.452812343842945,
+    -2.4672140861506704
+  ],
+  "matched_controls": {
+    "dino_prototype.control": {
+      "score": 42.580632275065824,
+      "gain": -6.377701735705408,
+      "ci95": [
+        -11.452812343842945,
+        -2.4672140861506704
+      ]
+    },
+    "ref_raw_prototype_control": {
+      "score": 42.580632275065824,
+      "gain": -6.377701735705408,
+      "ci95": [
+        -11.452812343842945,
+        -2.4672140861506704
+      ]
+    },
+    "ref_ordinal_zscore_control": {
+      "score": 35.777133683603864,
+      "gain": 0.4257968557565519,
+      "ci95": [
+        -0.8299625400492603,
+        0.8323129425384997
+      ]
+    }
+  },
+  "actions": {
+    "add_TP": 30143,
+    "add_FP": 1109403,
+    "delete_TP": 2683477,
+    "delete_FP": 4089263
+  },
+  "positive_class_groups": 26,
+  "negative_class_groups": 48,
+  "status": "fixed ordinal complete-quality claim closed; keep callable negative method and component effects; no new threshold/CDF variant",
+  "reflection": [
+    "The observed complete method loses6.378pp on200 reused development cases; its interval[-11.453,-2.467] does not support the anticipated complete gain. Four-case class73 deletion effect did not turn into a complete win.",
+    "Only30143 true pixels added alongside1109403 false additions;2683477 targets removed alongside4089263 background. Useful deletions remain real but their harm is priced class by class.",
+    "Per-image coordinate CDFs enforce uniform marginals. In an algebraic fixed-feature class-mixture model, changing query class fraction shifts conditional FG ranks even without any nuisance warp; the frozen synthetic prevalence negative demonstrates this. Thus the transform can erase class composition/absolute semantic signal rather than remove only style.",
+    "This is a mechanism-specific failure compatible with the natural200 result, not a causal proof that composition alone explains every lost pixel. Coordinate semantics, background composition and R/Q transfer may also contribute; no extra diagnostic sweep is started.",
+    "Same-info zscore35.777 is also below raw prototype42.581; ordinal advantage over zscore0.426 has interval[-0.830,0.832]. Nonlinear rank encoding is not established as a necessary natural signal.",
+    "Keep the legal monotone-invariance theorem within its fixed-membership/no-composition-change assumptions. It is not a semantic segmentation guarantee. Do not silently retune cut or transplant old FoRIS area priors."
+  ]
+}

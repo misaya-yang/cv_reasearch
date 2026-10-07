@@ -1,0 +1,21 @@
+{
+  "owner": "query_partition",
+  "cards": [
+    {
+      "id": "QP09",
+      "title": "完整参考类距离的查询字典最短测地线",
+      "gap": "同一目标的查询局部外观可以形成连续短步链，远端却直接更像参考BG；逐点参考距离遗漏了查询局部链的结构。必须同时面对跨类也可连续的反例。",
+      "history_evidence": ["旧seed-NCut/harmonic/RCG不能由query一致性证明身份；本方法完整R两类已知标签给初始类距离，不选qseed、不把路径天然视为语义证明。", "旧color_bottleneck.py是RGB空间min/max从MEAN高低分seed出发并混回宿主场，本卡不同：原生DINO query字典、完整R两类softmin初值、min-plus全路径，无宿主。", "cross_image_nonreturn_path_consensus是R/Q二部length3权重和，本卡q-only字典最短路径，已与负责代理去重。"],
+      "available_information": "直接unit q/r、完整MR的wf/wb、q_valid/geometry；无qGT、qseed、host场、新编码或面积估计。",
+      "new_observation_or_argument": "单位特征的cost=1-cos不是角距离的三角不等式度量，多个小角步可比一个大角捷径便宜。因此完整R类初值在query字典min-plus闭包下可改变最近参考类别排序；这个代数作用只在同类沿连续链、跨类有间隙时有利。",
+      "algorithm": ["1. QP01合法query球面字典<=8和完整token标签。", "2. 每q中心到两R类的初值dC=-.1log(sum(normalized complete class coverage*exp(-(1-cos)/.1)))，不类面积先验。", "3. q中心互连由任一端选中的2最近邻，边cost=max(0,1-cos)，对称、自边0。", "4. Floyd-Warshall求q字典全部min-plus最短路径；各类dist[k]=min_j(initC[j]+path[j,k])。", "5. margin[k]=distBG[k]-distFG[k]赋全部q token，paddingBG，公共固定render和R空类规则。"],
+      "expected_benefit": {"level": "algebraic_then_hypothesized", "claim": "小角同类链能让参考远端由BG改为FG；真实类别是否沿链恒定未知，不预测mIoU。"},
+      "simplest_control": ["相同query字典完整R softmin类初值差（无路径）", "samegraph continuous harmonic solve初值差", "samegraph min/max瓶颈路径（旧路径原则仅不计控制）", "same DINO prototype/pointwise KDE/QP02"],
+      "why_not_duplicate": "不是graph参数/阈值替换或seed扩散；类距离取min-plus路径最优，不是线性分数平滑、固定长度二部权重和、颜色minmax场。必须以同graph对照展示完整输出不同。",
+      "counterexample": "类别边界可在连续feature链中没有间隙；路径会补入本来正确排BG的近类干扰。dense sampling改变路径成本，远端弱类支持可被错误捷径传播。",
+      "first_evidence": "q字典0/10/.../60/89度，RFG0/BG90：远端50/60直接BG但FG小角链成本更低，完整输出正例；同特征把50/60定义为真实BG，最短路径错误增加FP的负例；samegraph controles，4真实128仅活动。",
+      "cpu_cost": "1CPU NumPy；q/R到<=8中心O((Nq+Nr)KD)，Floyd O(K³)<=512，图不Nq²，不新encoder。",
+      "limitations": "不是无条件身份解法；连续流形标签一致、采样密度及跨图角色迁移都未知；失败记错误跨类桥、字典漏模态或R类初值错，不换k/semiring凑新方法。"
+    }
+  ]
+}

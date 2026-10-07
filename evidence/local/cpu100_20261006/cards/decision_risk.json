@@ -330,7 +330,7 @@
       "algorithm": [
         "取纯度>=.75FG/<=.25BG各至多64R tokens，class-balanced area权重。",
         "由R feature farthest-point确定最多16anchor，不读Q。",
-        "每anchor的R相似度取16个training quantile间的midpoint为stump cut，双极性形成固定weak bank。",
+        "每anchor的R相似度取16个training quantile间的midpoint为stump cut，双极性形成固定weak bank。 数值anchor距离tie在1e-12内按index稳定处理，stump cosine保留12decimal消除数值伪分裂，不作为机制或搜索参数。",
         "40轮选择weighted error最小的stump，alpha=.5log((1-error)/error)，更新reference weights。",
         "error>=.5则停止，error<1e-8截断并停止，空弱bank回退prototype。",
         "完整Q margin=sum alpha*stump(q dot anchor)，common.render fixed cut0。"
@@ -343,12 +343,14 @@
       "why_not_duplicate": "AdaBoost sequential error emphasis和prototype-score组合新完整决策，不是axis CART、参数变体或旧ridge改正则。",
       "counterexample": "少数nontransferable reference材质成为高权重error，boosting会追逐它；source100%分类正确仍可能query全错。",
       "first_evidence": "unit circle的多FG/BG模式构造与single stump/NN同render比较；负例source特有FG材质与QBG同形，记录boost rounds追逐该点的权重。",
-      "implementation_status": "complete API implementation; gradients/contract checks passed; constructive and real quality results pending",
+      "implementation_status": "complete fixed implementation and complete synthetic outputs; actual new native4 inference not yet run",
       "validation_evidence": {
         "implementation": "src/ics/cpu100/decision_risk_batch2.py",
         "gradient_checks": "reports/decision_risk/batch2_gradients.json",
         "contract_checks": "reports/decision_risk/batch2_contract_checks.json",
-        "review_decision": "accept_for_probe"
+        "review_decision": "accept_for_probe",
+        "synthetic": "reports/decision_risk/batch2_fixed_probes.json",
+        "synthetic_strongest_control_gain_witness": false
       }
     },
     {
@@ -376,12 +378,14 @@
       "why_not_duplicate": "重采样maxmargin多数是非线性committee，与DR05空间jackknife偏差纠正/guard不同；不把成员数/seed多计。",
       "counterexample": "所有source成员共享错identity时稳定全错；真正稀有的referenceFG多数bootstrap未见，会被抹掉。",
       "first_evidence": "source稀有support材质使single hard margin误判的构造；负例把该材质改为真实QFG，显示委员会可丢失合法少数模式。",
-      "implementation_status": "complete API implementation; gradients/contract checks passed; constructive and real quality results pending",
+      "implementation_status": "complete fixed implementation and complete synthetic outputs; actual new native4 inference not yet run",
       "validation_evidence": {
         "implementation": "src/ics/cpu100/decision_risk_batch2.py",
         "gradient_checks": "reports/decision_risk/batch2_gradients.json",
         "contract_checks": "reports/decision_risk/batch2_contract_checks.json",
-        "review_decision": "accept_for_probe"
+        "review_decision": "accept_for_probe",
+        "synthetic": "reports/decision_risk/batch2_fixed_probes.json",
+        "synthetic_strongest_control_gain_witness": true
       }
     },
     {
@@ -436,12 +440,14 @@
       "why_not_duplicate": "piecewise-affine ReLU组合监督拟合，与axis CART和DR09 adaptive weighted stumps的函数/优化规则不同；不以width/activation变体多计。",
       "counterexample": "fixed训练预算可未收敛；source可分但Q不在R模式中；网络可以记住MR context而不识别目标类别。",
       "first_evidence": "明确nonlinear FG模式完整unit例；必须同anchor线性control，negative source-only交互；记录loss下降、gradient norm和输出对init的假设范围，不搜索init。",
-      "implementation_status": "complete API implementation; gradients/contract checks passed; constructive and real quality results pending",
+      "implementation_status": "complete fixed implementation and complete synthetic outputs; actual new native4 inference not yet run",
       "validation_evidence": {
         "implementation": "src/ics/cpu100/decision_risk_batch2.py",
         "gradient_checks": "reports/decision_risk/batch2_gradients.json",
         "contract_checks": "reports/decision_risk/batch2_contract_checks.json",
-        "review_decision": "accept_for_probe"
+        "review_decision": "accept_for_probe",
+        "synthetic": "reports/decision_risk/batch2_fixed_probes.json",
+        "synthetic_strongest_control_gain_witness": false
       }
     },
     {
@@ -469,12 +475,14 @@
       "why_not_duplicate": "reference known-role LOO冲突导致support集合改变；历史DINO query候选二段过滤负例不自动等于此固定算法，但若同构必须count0。",
       "counterexample": "真正稀有合法FG appearance也会被多数BG邻域排除；同类孤立并不等于污染。",
       "first_evidence": "few noisy-looking FG token与manyBG邻近，QBG错匹配该token的构造；负例Q正是reference孤立合法FG，输出删真与强NN对照。",
-      "implementation_status": "complete API implementation; gradients/contract checks passed; constructive and real quality results pending",
+      "implementation_status": "complete fixed implementation and complete synthetic outputs; actual new native4 inference not yet run",
       "validation_evidence": {
         "implementation": "src/ics/cpu100/decision_risk_batch2.py",
         "gradient_checks": "reports/decision_risk/batch2_gradients.json",
         "contract_checks": "reports/decision_risk/batch2_contract_checks.json",
-        "review_decision": "accept_for_probe"
+        "review_decision": "accept_for_probe",
+        "synthetic": "reports/decision_risk/batch2_fixed_probes.json",
+        "synthetic_strongest_control_gain_witness": false
       }
     },
     {
@@ -502,12 +510,14 @@
       "why_not_duplicate": "支撑集由已知reference分类覆盖约束选取，与DR13删冲突点相反；不是仅快代码复写NN，Q输出必须实际可不同。",
       "counterexample": "label-conflicting相同feature没有可满足覆盖；容易保留所有noise点；training order会改变supports与Q，不保证de-noise。",
       "first_evidence": "reference大量重复且few necessary minority supports，报告完整mask/压缩成本；negative noisy边界使support几乎全保留，并验证若Q output同NN则只有成本证据不能冒称质量增益。",
-      "implementation_status": "complete API implementation; gradients/contract checks passed; constructive and real quality results pending",
+      "implementation_status": "complete fixed implementation and complete synthetic outputs; actual new native4 inference not yet run",
       "validation_evidence": {
         "implementation": "src/ics/cpu100/decision_risk_batch2.py",
         "gradient_checks": "reports/decision_risk/batch2_gradients.json",
         "contract_checks": "reports/decision_risk/batch2_contract_checks.json",
-        "review_decision": "accept_for_probe"
+        "review_decision": "accept_for_probe",
+        "synthetic": "reports/decision_risk/batch2_fixed_probes.json",
+        "synthetic_strongest_control_gain_witness": true
       }
     },
     {
@@ -535,12 +545,15 @@
       "why_not_duplicate": "优化class-owned prototype position的explicit role discrimination，与Rmask连通means/kmeans或query grouping不同；不以prototype K变体多计。",
       "counterexample": "原型移动追随source-specific appearance，损失Q合法外观；小分母造成优化不稳定，gradient cap使固定数值行为需核查。",
       "first_evidence": "reference density centers跨类近但class-risk可改变边界的unit构造；negative Q只呈reference低频被移动丢失的部位；独立finite-difference核对gradient。",
-      "implementation_status": "complete API implementation; gradients/contract checks passed; constructive and real quality results pending",
+      "implementation_status": "complete fixed implementation and complete synthetic outputs; actual new native4 inference not yet run",
       "validation_evidence": {
         "implementation": "src/ics/cpu100/decision_risk_batch2.py",
         "gradient_checks": "reports/decision_risk/batch2_gradients.json",
         "contract_checks": "reports/decision_risk/batch2_contract_checks.json",
-        "review_decision": "accept_for_probe"
+        "review_decision": "accept_for_probe",
+        "synthetic": "reports/decision_risk/batch2_fixed_probes.json",
+        "synthetic_strongest_control_gain_witness": true,
+        "counterexample_expectation_correction": "Intended high-end-negative did not fail; it improved +.0060 over best control. The low-end close-class case instead harms against best control by .1383. Do not rewrite observations to fit original story."
       }
     },
     {
@@ -569,17 +582,24 @@
       "why_not_duplicate": "监督triplet PSD风险与无labelnuisance投影/白化不同；不通过regularization/metric rank多计。已与invariance_support协调其无此构造。",
       "counterexample": "reference classdistortion随query变化；假nuisance轴实际是Q语义被metric抹去；class仅1token没有triplets。",
       "first_evidence": "R nuisance决定Euclidean邻近而合法roles定义另一轴的unit例；negative Q语义沿被压缩轴，记录错误方向而非自动再调rank；gradient finite-difference。",
-      "implementation_status": "complete API implementation; gradients/contract checks passed; constructive and real quality results pending",
+      "implementation_status": "complete fixed implementation and complete synthetic outputs; actual new native4 inference not yet run",
       "validation_evidence": {
         "implementation": "src/ics/cpu100/decision_risk_batch2.py",
         "gradient_checks": "reports/decision_risk/batch2_gradients.json",
         "contract_checks": "reports/decision_risk/batch2_contract_checks.json",
-        "review_decision": "accept_for_probe"
+        "review_decision": "accept_for_probe",
+        "synthetic": "reports/decision_risk/batch2_fixed_probes.json",
+        "synthetic_strongest_control_gain_witness": false
       }
     }
   ],
   "implemented_distinct_count": 15,
   "withdrawn_duplicate_ids": [
     "DR11"
-  ]
+  ],
+  "ready_for_root_snapshot": true,
+  "source_sha256": {
+    "src/ics/cpu100/decision_risk.py": "aef1516b39f2e7e1278c211bc71fc7953e50db9526ab619f81c74e3615ba5db9",
+    "src/ics/cpu100/decision_risk_batch2.py": "89ce21f6251988db499c91c1130d72022ff3a98c80e6c825e34fc58b04ad0182"
+  }
 }

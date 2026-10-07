@@ -137,6 +137,8 @@ def predict(ep: Episode, method_id: str = "local_001") -> Result:
         return correspondence(ep)
     if method_id == "local_003":
         return patch_reconstruction(ep)
+    if method_id == "local_005":
+        return patch_label_voting(ep)
     raise KeyError(method_id)
 
 
@@ -434,7 +436,98 @@ def patch_reconstruction(ep: Episode, arm="patch") -> Result:
         natural_segmentation_gain="unmeasured", wall_seconds=time.perf_counter() - started))
 
 
-METHODS = {"local_001": predict, "local_002": correspondence, "local_003": patch_reconstruction}
+def patch_label_voting(ep: Episode, arm="joint") -> Result:
+    """Dense local mask-pattern votes; the local geometric prior is explicit."""
+    started = time.perf_counter()
+    validate(ep)
+    if ep.wf.sum() == 0 or ep.wb.sum() == 0:
+        margin = np.full(len(ep.q), 1. if ep.wf.sum() else -1.)
+        margin[ep.q_valid <= 0] = -1
+        return Result(margin.reshape(ep.q_hw), dict(method_id="local_005", arm=arm,
+            inactive_reason="empty_original_reference_class", natural_segmentation_gain="unmeasured",
+            wall_seconds=time.perf_counter() - started))
+    q, r = unit(ep.q), unit(ep.r)
+    qi, qw = tensor_index(ep.q_hw, ep.q_valid)
+    ri, rw = tensor_index(ep.r_hw, ep.wvalid)
+    fraction = np.divide(ep.wf, ep.wvalid, out=np.zeros_like(ep.wf), where=ep.wvalid > 0)
+    valid = ep.wvalid > 0
+    fg, bg = np.flatnonzero(valid & (fraction >= .5)), np.flatnonzero(valid & (fraction < .5))
+    missing_majority = []
+    if not len(fg):
+        missing_majority.append("foreground")
+        fg = np.flatnonzero(valid & (fraction == fraction[valid].max()))
+    if not len(bg):
+        missing_majority.append("background")
+        bg = np.flatnonzero(valid & (fraction == fraction[valid].min()))
+    count = min(32, len(fg), len(bg))
+    fd, fa = tensor_dictionary(r, ri, rw, fg, count)
+    bd, ba = tensor_dictionary(r, ri, rw, bg, count)
+    descriptor = np.concatenate((fd, bd))
+    anchors = np.concatenate((fa, ba))
+    label = fraction[ri[anchors]]
+    endpoint_valid = rw[anchors].copy()
+    if arm == "permuted_noncentral":
+        order = np.concatenate(([0], 1 + np.random.default_rng(0).permutation(8)))
+        # Label and valid support travel together; the center, label multiset,
+        # and valid-weighted foreground-label sum are preserved per template.
+        label = label[:, order]
+        endpoint_valid = endpoint_valid[:, order]
+    d = distances2(descriptor, descriptor)
+    d[d <= 1e-12] = np.inf
+    closest = np.min(d, axis=1)
+    distinct = closest[np.isfinite(closest)]
+    if not len(distinct):
+        margin = np.zeros(len(q))
+        margin[ep.q_valid <= 0] = -1
+        return Result(margin.reshape(ep.q_hw), dict(method_id="local_005", arm=arm,
+            inactive_reason="no_distinct_reference_patch_descriptors", missing_majority_anchor=missing_majority,
+            natural_segmentation_gain="unmeasured", wall_seconds=time.perf_counter() - started))
+    h2 = float(np.median(distinct))
+    numerator, denominator = np.zeros(len(q)), np.zeros(len(q))
+    ties = 0
+    for start in range(0, len(q), CHUNK):
+        rows = np.arange(start, min(start + CHUNK, len(q)))
+        tensor = patch_rows(q, qi, qw, rows)
+        distance = distances2(tensor, descriptor)
+        kth = np.partition(distance, min(3, len(descriptor) - 1), axis=1)[:, min(3, len(descriptor) - 1)]
+        strict = distance < kth[:, None] - 1e-12
+        equal = np.abs(distance - kth[:, None]) <= 1e-12
+        slots = min(4, len(descriptor)) - strict.sum(1)
+        tie_fraction = slots / np.maximum(equal.sum(1), 1)
+        retain = strict.astype(float) + equal * tie_fraction[:, None]
+        # Uniform fractional cutoff ties preserve an exact four-match budget,
+        # without FG-first ordering or flooding one exact match with 63 ties.
+        ties += int((equal.sum(1) > slots).sum())
+        kernel = np.exp(-distance / h2) * retain
+        offsets = (0,) if arm in ("central_only", "generic_smoothing") else range(9)
+        for offset in offsets:
+            target = qi[rows, offset]
+            support = qw[rows, offset] * ep.q_valid[rows]
+            weight = np.sum(kernel * endpoint_valid[:, offset][None], axis=1) * support
+            foreground = np.sum(kernel * (endpoint_valid[:, offset] * label[:, offset])[None], axis=1) * support
+            np.add.at(numerator, target, foreground)
+            np.add.at(denominator, target, weight)
+    margin = np.divide(2 * numerator - denominator, denominator,
+                       out=np.zeros(len(q)), where=denominator > 1e-250)
+    if arm == "generic_smoothing":
+        # One fixed query stencil average of center-only margins; same support.
+        margin = np.sum(margin[qi] * qw, axis=1) / np.maximum(qw.sum(1), 1e-15)
+    margin[ep.q_valid <= 0] = -1
+    return Result(margin.reshape(ep.q_hw), dict(method_id="local_005", arm=arm,
+        atoms_per_class=count, foreground_anchor_ids=fa.tolist(), background_anchor_ids=ba.tolist(),
+        reference_patch_bandwidth_squared=h2, cutoff_tie_query_tokens=ties,
+        nearest_match_budget=4, cutoff_tie_policy="fractional_uniform_exact_budget",
+        missing_majority_anchor=missing_majority,
+        source_label_ceiling=float(fraction[valid].max()),
+        source_resolution_label_ceiling_below_foreground_threshold=bool(fraction[valid].max() <= .5),
+        unsupported_query_tokens=int((denominator <= 1e-250).sum()),
+        local_mask_motif_prior=True, global_silhouette_transferred=False,
+        query_ground_truth_used=False, query_seeds_used=False, new_encoder_forwards=0,
+        natural_segmentation_gain="unmeasured", wall_seconds=time.perf_counter() - started))
+
+
+METHODS = {"local_001": predict, "local_002": correspondence, "local_003": patch_reconstruction,
+           "local_005": patch_label_voting}
 CONTROLS = {
     "local_001.diagonal_control": lambda ep: _predict(ep, "diagonal"),
     "local_001.trace_control": lambda ep: _predict(ep, "trace"),
@@ -445,4 +538,7 @@ CONTROLS = {
     "local_003.nearest_patch_control": lambda ep: patch_reconstruction(ep, "nearest_patch"),
     "local_003.central_hull_control": lambda ep: patch_reconstruction(ep, "central_hull"),
     "local_003.permuted_order_control": lambda ep: patch_reconstruction(ep, "permuted_order"),
+    "local_005.central_only_control": lambda ep: patch_label_voting(ep, "central_only"),
+    "local_005.generic_smoothing_control": lambda ep: patch_label_voting(ep, "generic_smoothing"),
+    "local_005.permuted_noncentral_control": lambda ep: patch_label_voting(ep, "permuted_noncentral"),
 }

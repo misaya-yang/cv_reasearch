@@ -16,7 +16,34 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'src'))
 MODULES = ('reference_evidence', 'local_structure', 'query_partition',
            'cross_image_matching', 'rgb_complement', 'decision_risk', 'invariance_support',
-           'cross_image_matching_batch2', 'rgb_complement_extra')
+           'cross_image_matching_batch2', 'rgb_complement_extra', 'context_interventions')
+DEFAULT_MODULES = tuple(name for name in MODULES if name != 'context_interventions')
+_WORKER_CPU_ENCODER = None
+
+
+def required_encoder_modules(modules, selected_arms):
+    selected_arms = set(selected_arms)
+    required = []
+    for name in modules:
+        mod = importlib.import_module('ics.cpu100.' + name)
+        if (getattr(mod, 'ENCODER_REQUIRED', False)
+                and selected_arms & (set(mod.METHODS) | set(mod.CONTROLS))):
+            required.append(name)
+    return required
+
+
+def bind_episode_encoder(ep, modules, model_dir, threads):
+    global _WORKER_CPU_ENCODER
+    from ics.cpu100.encoder import get_cpu_encoder
+    first_binding = _WORKER_CPU_ENCODER is None
+    if first_binding:
+        _WORKER_CPU_ENCODER = get_cpu_encoder(model_dir, ep.producer,
+                                             threads=threads, max_cached_views=16)
+    _WORKER_CPU_ENCODER.validate_producer(ep.producer)
+    for name in modules:
+        importlib.import_module('ics.cpu100.' + name).configure_encoder(
+            _WORKER_CPU_ENCODER, _WORKER_CPU_ENCODER.binding)
+    return _WORKER_CPU_ENCODER, first_binding
 
 
 def write(path, data):
@@ -64,6 +91,8 @@ def registry(modules):
 
 
 def initialize(threads, frozen=None):
+    global _WORKER_CPU_ENCODER
+    _WORKER_CPU_ENCODER = None
     os.environ['CUDA_VISIBLE_DEVICES'] = ''
     for name in ('OPENBLAS_NUM_THREADS', 'OMP_NUM_THREADS', 'MKL_NUM_THREADS', 'VECLIB_MAXIMUM_THREADS'):
         os.environ[name] = str(threads)
@@ -71,7 +100,8 @@ def initialize(threads, frozen=None):
         frozen_imports(frozen)
 
 
-def one_episode(row, out, modules, selected, selected_controls):
+def one_episode(row, out, modules, selected, selected_controls,
+                encoder_model_dir=None, threads=1):
     import numpy as np
     from ics.cpu100.common import Result, load_episode, prototype_margin, render, sha
     start = time.monotonic()
@@ -80,12 +110,33 @@ def one_episode(row, out, modules, selected, selected_controls):
     arms = {k: methods[k] for k in selected}
     arms.update({k: controls[k] for k in selected_controls})
     arms['dino_prototype.control'] = lambda e: Result(prototype_margin(e), {'control': True})
+    required = required_encoder_modules(modules, list(arms))
+    encoder, encoder_error, encoder_setup, encoded_arms = None, None, None, set()
+    if required:
+        for module_name in required:
+            mod = importlib.import_module('ics.cpu100.' + module_name)
+            encoded_arms.update(set(arms) & (set(mod.METHODS) | set(mod.CONTROLS)))
+        wall, cpu = time.monotonic(), time.process_time()
+        try:
+            if encoder_model_dir is None:
+                raise ValueError('Selected encoder methods/controls require --encoder-model-dir')
+            encoder, first_binding = bind_episode_encoder(ep, required, encoder_model_dir, threads)
+            encoder_setup = dict(state='bound', first_adapter_binding_in_worker=first_binding,
+                                 binding=encoder.binding, required_modules=required)
+        except Exception as error:
+            encoder_error = error
+            encoder_setup = dict(state='failed', error=repr(error), required_modules=required)
+        encoder_setup.update(wall_seconds=time.monotonic()-wall,
+                             cpu_seconds=time.process_time()-cpu, threads=threads)
     case = Path(out) / row['id']
     case.mkdir()
     receipts = {}
     for name, function in arms.items():
         tick = time.monotonic()
+        before = encoder.stats() if name in encoded_arms and encoder is not None else None
         try:
+            if name in encoded_arms and encoder_error is not None:
+                raise encoder_error
             result = function(ep)
             # Every arm, including the shared baseline, uses exactly the same
             # known-padding rule before physical interpolation.
@@ -104,8 +155,18 @@ def one_episode(row, out, modules, selected, selected_controls):
             receipts[name] = dict(state='unavailable' if type(error).__name__ == 'RGBUnavailable' else 'failed',
                                   seconds=time.monotonic() - tick, error=repr(error),
                                   traceback=traceback.format_exc(), query_GT_read=False)
-        write(case / 'receipt.json', dict(id=row['id'], arms=receipts, source_sha256=row['sha256'],
-              producer=ep.producer, query_GT_read=False, elapsed=time.monotonic() - start))
+        if name in encoded_arms:
+            after = encoder.stats() if encoder is not None else None
+            delta = {key: after[key]-before[key] for key in (
+                'cache_hits', 'cache_misses', 'callback_forward_attempts', 'callback_successful_forwards',
+                'new_encoder_forwards', 'forward_cpu_seconds', 'forward_wall_seconds')
+                if before is not None and key in before and key in after}
+            receipts[name].update(encoder_before=before, encoder_after=after, encoder_delta=delta)
+        record = dict(id=row['id'], arms=receipts, source_sha256=row['sha256'],
+                      producer=ep.producer, query_GT_read=False, elapsed=time.monotonic()-start)
+        if encoder_setup is not None:
+            record['encoder_setup'] = encoder_setup
+        write(case / 'receipt.json', record)
     return dict(id=row['id'], arms=receipts, seconds=time.monotonic() - start,
                 producer=ep.producer, input_sha256=row['sha256'],
                 receipt_sha256=sha(case / 'receipt.json'))
@@ -118,7 +179,7 @@ def infer(args):
     if bound['schema'] != 'DINO_ONLY_FEATURE_INPUT_V1':
         raise ValueError('Native DINO input manifest required')
     methods, controls = registry(args.modules)
-    selected = list(methods) if args.methods == ['all'] else args.methods
+    selected = list(methods) if args.methods == ['all'] else ([] if args.methods == ['none'] else args.methods)
     selected_controls = list(controls) if args.controls == ['all'] else args.controls
     if not set(selected) <= set(methods):
         raise ValueError('Unknown method selection')
@@ -130,12 +191,17 @@ def infer(args):
         raise ValueError('Duplicate selected methods')
     if len(set(selected_controls)) != len(selected_controls):
         raise ValueError('Duplicate selected controls')
+    required = required_encoder_modules(args.modules, selected + selected_controls)
+    if required and args.encoder_model_dir is None:
+        raise ValueError('Selected encoder methods/controls require --encoder-model-dir')
+    model_dir = str(args.encoder_model_dir.resolve()) if args.encoder_model_dir is not None else None
     args.out.mkdir(parents=True, exist_ok=False)
     frozen = args.out / 'source'
     snapshots = {}
-    sources = list((ROOT / 'src/ics/cpu100').glob('*.py')) + [Path(__file__),
-        ROOT / 'src/ics/methods/direct_dino_features.py', ROOT / 'src/ics/experiment.py',
-        ROOT / 'src/ics/__init__.py', ROOT / 'src/ics/methods/__init__.py']
+    sources = (list((ROOT / 'src/ics/cpu100').glob('*.py'))
+               + list((ROOT / 'src/ics/methods').glob('*.py'))
+               + [Path(__file__), ROOT / 'src/ics/data.py', ROOT / 'src/ics/experiment.py',
+                  ROOT / 'src/ics/__init__.py'])
     for source in sources:
         relative = source.relative_to(ROOT)
         target = frozen / relative
@@ -145,6 +211,9 @@ def infer(args):
     config = dict(modules=args.modules, methods=selected, controls=selected_controls, workers=args.workers,
                   threads=args.threads, manifest_sha256=sha(args.manifest), input_rows=bound['rows'],
                   source_hashes=snapshots, quality_scored=False, query_GT_read=False,
+                  run_role='control_only_repair' if not selected else 'method_evaluation',
+                  encoder_model_dir=model_dir, encoder_required_modules=required,
+                  encoder_loaded_in_parent=False, encoder_max_cached_views=16,
                   protocol='raw native DINO, signed margin renderer, invalid query padding margin=-1 for every arm, no FoRIS scores/masks')
     write(args.out / 'config.json', config)
     write(args.out / 'manifest.json', bound)
@@ -155,7 +224,7 @@ def infer(args):
             mp_context=multiprocessing.get_context('spawn'),
             initializer=initialize, initargs=(args.threads, str(frozen))) as pool:
         futures = {pool.submit(one_episode, r, str(args.out), args.modules, selected,
-                               selected_controls): r['id'] for r in bound['rows']}
+                               selected_controls, model_dir, args.threads): r['id'] for r in bound['rows']}
         for future in concurrent.futures.as_completed(futures):
             try:
                 receipt = future.result()
@@ -282,6 +351,7 @@ def score(args):
         evaluation_rows_sha256=sha(args.evaluation_rows),
         exposure='reused development; not independent confirmation', original_resolution=True,
         quality_scope='descriptive activity probe' if len(rows) <= 4 else 'development measurement',
+        run_role=config.get('run_role', 'method_evaluation'),
         producer_resolution=sorted({r['producer']['model_input_side'] for r in sealed['receipts'] if 'producer' in r}),
         checkpoint_hashes=sorted({r['producer'].get('model_assets',r['producer'])['checkpoint_sha256']
             for r in sealed['receipts'] if 'producer' in r}),
@@ -298,12 +368,13 @@ def main():
     sub = p.add_subparsers(dest='stage', required=True)
     for stage in ('list', 'infer'):
         a = sub.add_parser(stage)
-        a.add_argument('--modules', nargs='+', choices=MODULES, default=list(MODULES))
+        a.add_argument('--modules', nargs='+', choices=MODULES, default=list(DEFAULT_MODULES))
         if stage == 'infer':
             a.add_argument('--manifest', type=Path, required=True)
             a.add_argument('--out', type=Path, required=True)
             a.add_argument('--methods', nargs='+', default=['all'])
             a.add_argument('--controls', nargs='+', default=['all'])
+            a.add_argument('--encoder-model-dir', type=Path)
             a.add_argument('--workers', type=int, default=3)
             a.add_argument('--threads', type=int, default=2)
     a = sub.add_parser('score')
