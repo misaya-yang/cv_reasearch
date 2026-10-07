@@ -23,7 +23,10 @@ _CACHE_STATS=dict(similarity_hits=0,similarity_misses=0,derived_hits=0,derived_m
 
 def array_identity(value):
     a=np.ascontiguousarray(value)
-    return (a.shape,a.dtype.str,hashlib.blake2b(memoryview(a).cast('B'),digest_size=16).hexdigest())
+    # NumPy exposes zero-length multidimensional buffers, but Python cannot
+    # cast a memoryview with a zero in its shape. Empty source banks are legal.
+    buffer=b'' if not a.size else memoryview(a).cast('B')
+    return (a.shape,a.dtype.str,hashlib.blake2b(buffer,digest_size=16).hexdigest())
 
 
 def cache_key(*values):

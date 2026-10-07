@@ -78,12 +78,17 @@ def resolve_path(value, base):
     return Path(base) / path
 
 
+def module_binding(name):
+    package, basename = ('pro30', name[6:]) if name.startswith('pro30.') else ('astra300', name)
+    if not SAFE_NAME.fullmatch(basename) or '.' in basename:
+        raise ValueError('Only explicit astra300/pro30 module basenames are allowed')
+    return 'ics.' + package + '.' + basename, 'src/ics/' + package + '/' + basename + '.py'
+
+
 def registry(modules):
     methods, controls = {}, {}
     for name in modules:
-        if not SAFE_NAME.fullmatch(name) or '.' in name:
-            raise ValueError('Only astra300 package module basenames are allowed')
-        module = importlib.import_module('ics.astra300.' + name)
+        module = importlib.import_module(module_binding(name)[0])
         for target, entries in ((methods, module.METHODS), (controls, module.CONTROLS)):
             if set(target) & set(entries):
                 raise ValueError('Duplicate arm IDs across modules: ' + repr(set(target) & set(entries)))
@@ -120,6 +125,8 @@ def verify_snapshots(run, hashes):
 
 def freeze_sources(out):
     sources = (list((ROOT / 'src/ics/astra300').glob('*.py'))
+               + list((ROOT / 'src/ics/pro30').glob('*.py'))
+               + list((ROOT / 'src/ics/cpu100').glob('*.py'))
                + list((ROOT / 'src/ics/methods').glob('*.py'))
                + [ROOT / 'src/ics/cpu100/common.py', ROOT / 'src/ics/cpu100/encoder.py',
                   ROOT / 'src/ics/cpu100/__init__.py', ROOT / 'src/ics/data.py',
@@ -267,9 +274,10 @@ def one_episode(row, row_binding, out, modules, selected, selected_controls, sou
     receipts = {}
     method_sources = {}
     for module_name in modules:
-        owner = importlib.import_module('ics.astra300.' + module_name)
+        import_name, source_name = module_binding(module_name)
+        owner = importlib.import_module(import_name)
         for name in set(owner.METHODS) | set(owner.CONTROLS):
-            method_sources[name] = source_hashes['src/ics/astra300/' + module_name + '.py']
+            method_sources[name] = source_hashes[source_name]
     for name, function in arms.items():
         wall, cpu = time.monotonic(), time.process_time()
         before_encoder = ep.provider.cache.get('encoder')
