@@ -1,0 +1,217 @@
+{
+  "occurrence_id": "000002",
+  "source_key": "2_0_74",
+  "inputs": {
+    "features": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/confirm1200_conditional_v1/inputs/reused_features/2_0_74.pt",
+    "feature_sha256": "d0b1e05f35e8572ccad40fb57b90dd9c2c5468c059c16f444c561487150fe0d9",
+    "packet_sha256": "6df98d1e593dafdb1ca5d22886fae8bf261baeb9529dce5ab520909d9d89f905"
+  },
+  "numerical_audit": {
+    "current_rcg_direct_max_field_error": 0.0,
+    "current_rcg_direct_mask_xor": 0,
+    "field_shapes": {
+      "rcg_field": [
+        64,
+        64
+      ],
+      "mean_field": [
+        64,
+        64
+      ],
+      "field": [
+        1024,
+        1024
+      ],
+      "full_cut_field": [
+        128,
+        128
+      ],
+      "same_unary_field": [
+        128,
+        128
+      ]
+    },
+    "direct_rcg_solver": {
+      "source_pure_tokens": 32,
+      "graph_undirected_edges": 30178,
+      "graph_components": 8,
+      "graph_isolated_tokens": 5,
+      "cg_iterations": 52,
+      "cg_relative_residual": 8.025500470128681e-08,
+      "weighted_mean_error": 2.4047969660045965e-06,
+      "maximum_principle_error": 0.0
+    },
+    "query_gt_opened": false,
+    "historical_rcg_mask_xor": 0,
+    "historical_rcg_prediction": {
+      "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen_subtoken1200_v1/predictions/2_0_74.npz",
+      "key": "rcg",
+      "sha256": "9a3eb7783860ff1c1acc2aaa9ee6fed03f0f5216c49dfc168542521722151258"
+    },
+    "historical_mask_parity_required": false
+  },
+  "rcg_recompute_seconds": 0.859139621257782,
+  "mean_recompute_seconds": 0.46288464218378067,
+  "rgb": {
+    "path": "/root/autodl-tmp/cvpr_prepared9_20261006_01a1100b/bound600_v1/rgb128/000000167668.npz",
+    "sha256": "de0e185d1eeb17d0785d745211b5168d99916a61efeb76f0fa3c2bcaaf180968",
+    "keys_read": [
+      "rgb"
+    ]
+  },
+  "simple_control": {
+    "recipe": {
+      "method": "locked_rcg_rgb_disagreement_proposal_v2",
+      "kind": "fixed_exploratory_composition",
+      "independent_method_increment": 0,
+      "base": "current ics.methods.rcg.predict(q,r,cov,rawscore), device=cpu",
+      "rgb": "unchanged mean_rgb_potts RGB128 energy, weight .25",
+      "proposal": "D=cut1024 XOR same128unary1024; final=where(D,cut1024,currentRCG1024)",
+      "field": "binary1024, not continuous probability",
+      "potts_optimality_claim": false,
+      "parameter_search": false,
+      "new_encoder_forwards": 0,
+      "query_gt_used": false,
+      "exposure": "reused public600 exploratory composition; not independent confirmation"
+    },
+    "rcg": {
+      "config": {
+        "arm": "RCG",
+        "alpha": 0.5,
+        "cross_image_k": 10,
+        "query_k": 20,
+        "source_purity": 0.9,
+        "lambda": 16.0,
+        "confidence_floor": 0.1,
+        "query_gt_in_inference": false,
+        "native_mask_in_inference": false,
+        "finalizer": "bilinear 1024, align_corners=False, >0.5; no re-minmax",
+        "parameter_provenance": "historical development-selected constants; fixed here; no new fold selection performed",
+        "dense_device": "caller-selected; GPU numerical parity not yet verified",
+        "cg_rtol": 1e-07,
+        "cg_atol": 1e-09,
+        "cg_maxiter": 300
+      },
+      "solver": {
+        "source_pure_tokens": 32,
+        "graph_undirected_edges": 30178,
+        "graph_components": 8,
+        "graph_isolated_tokens": 5,
+        "cg_iterations": 52,
+        "cg_relative_residual": 8.025500470128681e-08,
+        "weighted_mean_error": 2.4047969660045965e-06,
+        "maximum_principle_error": 0.0
+      }
+    },
+    "mean": {
+      "solver": {
+        "relative_residual": 7.545434911240514e-08,
+        "graph_storage_dtype": "float64",
+        "source": "locked_MEAN_original_sparse_dtype_then_CG_float64"
+      },
+      "pregraph": {
+        "source": "locked_MEAN_a0.25_l16_pregraph_reconstruction_cpu",
+        "edges": 30178,
+        "query_gt_used": false,
+        "new_encoder_forwards": 0,
+        "graph_storage_dtype": "float64",
+        "pregraph_build_seconds": 0.4436601549386978
+      }
+    },
+    "rgb": {
+      "config": {
+        "rgb_grid": [
+          128,
+          128
+        ],
+        "potts_weight": 0.25,
+        "minimum_edge_sigma": 0.0001,
+        "minimum_average_degree": 1e-08
+      },
+      "recipe": {
+        "method": "locked_MEAN_RGB128_boundary_Potts_control_v1",
+        "role": "strong simple complete readout control; not an original mechanism",
+        "unary": "ell=2*bilinear(MEAN64,RGB128)-1; no clipping or re-minmax",
+        "graph": "all undirected four-neighbor RGB128 grid edges",
+        "rgb_distance": "mean squared RGB channel difference, RGB in [0,1]",
+        "sigma": "max(median(all RGB edge distances),1e-4)",
+        "capacity": ".25*exp(-distance/sigma)/max(mean weighted degree,1e-8)",
+        "parameter_source": "Pro M4 Potts .25, median scale and normalization floors; no GT fitting",
+        "solver": "Pro M4 exact_potts_cut; float64 capacities, no integer quantization",
+        "field_semantics": "binary globally optimized cut, not continuous probability",
+        "renderer": "binary RGB128 -> bilinear1024 >.5 -> binary -> bilinear original >.5",
+        "extra_encoder_calls": 0,
+        "query_labels_in_inference": false
+      },
+      "graph": {
+        "rgb_grid": [
+          128,
+          128
+        ],
+        "vertices": 16384,
+        "undirected_edges": 32512,
+        "edge_sigma": 0.00016916570549788557,
+        "average_weighted_degree": 1.6905950191876904,
+        "pairwise_mass": 2048.0,
+        "zero_capacity_edges": 212,
+        "all_grid_edges_retained": true
+      },
+      "cut": {
+        "energy": 6120.708181157839,
+        "maximum_flow": 6120.708181157828,
+        "certificate_gap": 1.0913936421275139e-11,
+        "phases": 6,
+        "capacity_semantics": "floating point, no integer quantization"
+      },
+      "unary_only_energy": 6121.002639666262,
+      "grid_added_pixels": 8,
+      "grid_deleted_pixels": 2,
+      "graph_seconds": 0.0031174346804618835,
+      "cut_seconds": 1.0790423452854156,
+      "render_seconds": 0.0066740140318870544,
+      "wall_seconds": 1.1298552304506302,
+      "query_gt_used": false,
+      "new_encoder_forwards": 0,
+      "empty_reference": false,
+      "native_MEAN_cost_included": false,
+      "independent_mechanisms": 0,
+      "segmentation_benefit": "unmeasured",
+      "work_shape": [
+        1024,
+        1024
+      ],
+      "original_shape": [
+        640,
+        480
+      ],
+      "input_base_role": "current locked RCG field; generic RGB energy unchanged"
+    },
+    "proposal_baseline": "currentRCG",
+    "proposal": {
+      "disagreement_pixels": 640,
+      "changed_vs_baseline_pixels": 400,
+      "added_vs_baseline_pixels": 324,
+      "deleted_vs_baseline_pixels": 76,
+      "outside_disagreement_baseline_xor": 0,
+      "zero_disagreement_baseline_identity": null
+    },
+    "rcg_recompute_seconds": 0.859139621257782,
+    "mean_recompute_seconds": 0.46288464218378067,
+    "rgb_component_seconds": 1.1298871785402298,
+    "wall_seconds": 2.4656672552227974,
+    "query_gt_used": false,
+    "new_encoder_forwards": 0,
+    "independent_method_increment": 0,
+    "real_complete_quality": "unmeasured"
+  },
+  "prediction_sha256": "19c60018ea1cba22d65b6063232728545eaa1369965fa0acb66cbf13c349b487",
+  "field_sha256": "76fd7d1b8fd11be644a7610a7f1f8b7984ed8ddff324373551d1a463421d33ca",
+  "original_prediction_sha256": "b222c8451b3b3be6744f1f48fdff22642cdce8e8464aab81cf8c5a5d0f8a5c9b",
+  "wall_seconds": 3.3792308568954468,
+  "cpu_seconds": 5.531707140000002,
+  "process_peak_rss_bytes": 836710400,
+  "query_gt_opened": false,
+  "new_encoder_forwards": 0,
+  "independent_candidate_methods": 0,
+  "pid": 5960
+}

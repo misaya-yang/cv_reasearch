@@ -11,7 +11,8 @@ ProM2计算优化的四例六臂全场及两级mask逐值一致，平均单例14
 17项候选已准备（12本轮自主+5所给Pro），1000项和高质量目标尚未完成；对照不计独立候选数。
 Pro真实检查还包括：M1首4例负向活动筛查；M3固定600例低于native/MEAN；M4首4例、17次编码的完整分支低于缓存native；M5已修复实际CPU尾块数值偏差并完成固定四例全审核/评分，但原尺寸15.805910、同renderer MEAN 35.695213（−19.889303 pp），不支持分割收益。来源分别见[M1](../../evidence/local/research_20261006/pro_context_preparation_01a1100b/score4_v1/report.json)、[M3](../../evidence/local/research_20261006/pro_roles_preparation_01a1100b/public600_result_46466.md)、[M4](../../evidence/local/research_20261006/pro_environment_preparation_01a1100b/real_smoke4_46466/report.json)和[M5四例结果](../../evidence/local/research_20261006/pro_message_preparation_01a1100b/actual_smoke4_v1.md)。这些数据均为已暴露public/dev样本或缓存适配结果，不是独立确认。
 QK role-consensus v3为既有QK family修订、独立方法增量0；固定暴露smoke4已完成：agreement=33.822374，低于MEAN=35.684576（−1.862202 pp，描述性配对95%区间[−3.045823,−0.678582]），也低于direct H20=34.601188。仅4例/4照片簇，不作总体结论；不自动扩24/600，见[报告](../../evidence/local/research_20261006/qk_role_consensus_v3_preparation_01a1100b/score4_v1/report.md)。
-Object-crop CLS revision0与RCG+RGB组合目前是未评分代码/准备；独立方法增量均为0，不视为测得收益或自动加入待办。object-crop的既有toy负例/正例见[合同记录](../../evidence/local/research_20261006/object_cls_revision0_01a1100b/method.json)；本轮只做版本控制，没有执行其单例feasibility。
+本研究聊天chat01a1100b已完成RCG+RGB固定组合600例：**63.125362**，相对当前RCG +0.036362，配对95%区间[−0.015595,0.135117]；相对native +1.790048，未达+2目标，也低于fine16 63.464527。组合增量0，见[完整结果](../../evidence/local/research_20261006/rcg_rgb_composition_01a1100b/README.md)。Object-crop CLS revision0也已在本聊天授权下完成真实单例：57次新增128 RGB前向，46.09秒/3.239GB；主方法和同crop patch控制的完整IoU均0，无目标恢复，关闭固定修订，见[实际收据](../../evidence/local/research_20261006/object_cls_revision0_01a1100b/actual_result.md)。另一聊天commit-only范围没有执行这些实验，但不撤销本聊天既有CPU授权；其method.json范围文字保留，项目事实以带chat身份的实际收据为准。
+同上下文object-removal revision0真实单例已完成并关闭：59次真实128前向、51.078秒、峰值3.239GB。全部六行完整IoU0/新增TP0；CLS差响应弱于同信息patch差控制。相同原背景的Δ表示是不同数值量，但未获得类别恢复证据，计数0，不扩样/调参，见[结果](../../evidence/local/research_20261006/object_removal_revision0_01a1100b/actual_result.md)。局部拓扑核查未形成独立构造也已关闭。最新有限观察均结束，旧队列不恢复。
 新机制与改进版本分别记数，对照/参数不记数；首4例不能代替600例结论。
 
 ## 当前阶段
@@ -19,7 +20,7 @@ Object-crop CLS revision0与RCG+RGB组合目前是未评分代码/准备；独�
 当前按最新用户指令并行开发、审查、实际CPU验证和迭代。服务器32CPU/60GiB、无可见GPU；
 所有任务合计不超过30线程，使用现存缓存、RGB、标注和权重，不下载、不启动新实例。
 目前原九项推断304.025秒、峰值4.60GB、编码0。最新两批600例推断耗时916.4秒/峰值4.76GiB与478.6秒/峰值3.10GiB，均无额外编码；M4四例实测每例17次编码、约363–405秒、峰值约2.91GiB。这些成本只适用于各自报告的执行合同。
-已上传两个不可变源码快照，预测先封存再评分；历史MEAN producer单独作评价对照。
+各队列使用独立不可变源码快照，预测先封存再评分；历史MEAN producer单独作评价对照。原九项、两个扩展600批次及Pro有限检查均已结束。
 唯一后续清单见 [PLAN](../research/PLAN.md)，当前资产及哈希见 [SERVER](SERVER.md)。
 
 ## 已完成与未完成

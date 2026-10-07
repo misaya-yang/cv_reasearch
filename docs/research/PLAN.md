@@ -18,20 +18,35 @@
 - 新凸包机制、ProM2四状态关系、三体关系和布局局部修正版的固定600例批次已完成封存与评分：分别48.915345、60.632462、60.778988、62.308618；MEAN=62.931546，native=61.335314。除布局局部修正高于native约0.973pp外，其余均低于native；四项都低于MEAN。数据为复用公开开发集，非独立确认。完整配对区间、错误增删和执行成本见[报告](../../evidence/local/research_20261006/server_prepared_01a1100b/extensions_public600_v2/score/report.json)。
 - 后续固定600例批次已完成：参考锚点吸收37.821542，Gaussian密度修订61.949185，MEAN+RGB Potts对照62.903951；MEAN=62.931546、native=61.335314。Potts对MEAN差−0.027595，配对95%区间[−0.160435,0.032420]；Gaussian修订低于MEAN，吸收明显低于两基线。复用开发数据，非独立确认。见[报告](../../evidence/local/research_20261006/server_prepared_01a1100b/next_candidates_public600_v1/score/report.json)。
 - ProM2只改计算累加的四例优化核对中，六臂全场及两级掩码逐值一致，平均单例14.889秒降至2.938秒（5.067倍）；这是实现成本结果，不是质量增益，详见[记录](../../evidence/local/research_20261006/parallel_review_01a1100b/pro_relations_profile_v1/README.md)。
-- ProM1首4个已暴露例的四臂1024活动筛查为负：ctx=25.112759，native=36.316536、uniform=35.135329；仅是活动检查，不外推总体质量。见[评分报告](../../evidence/local/research_20261006/pro_context_preparation_01a1100b/score4_v1/report.json)；固定24是否值得运行尚未决定。
+- ProM1首4个已暴露例的四臂1024活动筛查为负：ctx=25.112759，native=36.316536、uniform=35.135329；仅是活动检查，不外推总体质量。见[评分报告](../../evidence/local/research_20261006/pro_context_preparation_01a1100b/score4_v1/report.json)；当前固定缓存宿主版本关闭，不扩24/600；不外推整个context机制不可能。
 - ProM3固定600例缓存适配版完整结果为负：heldout=59.563526，低于native=61.335314、stored MEAN=62.931530和同树zero=60.878311；这是复用缓存、1024工作空间结果，不含新编码或原尺寸第二段渲染。当前固定版本的质量主张收束，不自动开变体，见[报告](../../evidence/local/research_20261006/pro_roles_preparation_01a1100b/public600_result_46466.md)。
 - ProM4首4个暴露RGB例的六臂完整分支已评分：原尺寸paired=22.142373、class_lda=25.756491、ref_canvas=31.260366，缓存native变体=36.360804；每例17次编码、约363–405秒、峰值RSS约3.13GB。仅为小样本成本/活动检查，不是确认结果，见[报告](../../evidence/local/research_20261006/pro_environment_preparation_01a1100b/real_smoke4_46466/report.json)。
 - M1/M3/M4的负向结果均按各自完整范围、缓存/原图适配与数据暴露报告；不冒称完成统一协议确认。
 - M5同一v0在query-only尾块补齐dummy query后通过四例全部69 ROI×4 block的β=1审核，维持原5e−5容差；固定暴露smoke4已完整封存/评分：原尺寸15.805910，对MEAN 35.695213，差−19.889303 pp。该结果解决数值审核问题但质量明显为负；不自动扩24/600或开启变体。完整范围与成本见[报告](../../evidence/local/research_20261006/pro_message_preparation_01a1100b/actual_smoke4_v1.md)。
 - MEAN+RGB disagreement local proposal v2是已暴露public600上的posthoc读出修订：63.007428，对MEAN差+0.075882 pp，配对95%区间[−0.006268,0.135967]；对full RGB-cut比差+0.103477，区间[0.080924,0.177966]。这不是独立确认，不能把点估计或历史组件分数相加；登记为revision/控制变化，独立方法增量0，见[报告](../../evidence/local/research_20261006/mean_rgb_proposal_v2_01a1100b/server_replay600/score/report.json)。
 - QK role-consensus v3属于已有QK family修订、独立方法增量0；固定暴露smoke4已评分：agreement=33.822374，MEAN=35.684576，差−1.862202 pp，描述性配对95%区间[−3.045823,−0.678582]；direct H20=34.601188。它在这4例低于强简单对照，不是独立确认，也不支持自动扩24/600，详见[报告](../../evidence/local/research_20261006/qk_role_consensus_v3_preparation_01a1100b/score4_v1/report.md)。
+- RCG+RGB同固定局部分歧规则的唯一600例组合已完成：63.125362，对当前RCG +0.036362 [−0.015595,0.135117]；对fine16 −0.339165 [−0.504828,−0.283429]。native增益+1.790048未达+2，组合增量0，不加总旧收益，见[完整证据](../../evidence/local/research_20261006/rcg_rgb_composition_01a1100b/README.md)。
+- 本研究聊天Object-crop CLS revision0实际单例已封存/评分：57次128真实编码、46.09秒、3.239GB；主CLS和同crop patch控制均无目标恢复，所有完整IoU0。结合历史反证关闭版本，不扩4/24/600，增量0；见[实际结果](../../evidence/local/research_20261006/object_cls_revision0_01a1100b/actual_result.md)。这与另一聊天commit-only范围分开记录。
 - 原9、凸包、三体、吸收及所给Pro五项共17候选，修正版/控制不计。以上三类新增候选已在同一复用600批次完成，结果未显示稳定超越MEAN的收益；不得把公开开发集复用结果称作确认。
 - 继续开发新的实质机制，先固定方法/强简单对照和同合同CPU核对，再接入该复用600队列。
   保留失败完整输出和有效组件；改进版本与独立新机制分开计数，不通过组合枚举凑数。
 
+## 当前下一批有限候选（2026-10-06，本聊天1000目标继续）
+
+- 参考RGB空间频率/纹理：先核旧构造，固定同颜色不同空间组织的完整可实现正负例与颜色直方图/局部方差强控制；当前只本地准备，root核对后一次smoke4，不先占独立计数。
+- 灰度DINO视图：先核旧gray构造，同固定128整图RGB/gray参考与查询各一次真实前向（合计每例最多4），同R完整mask/同信息RGB强控制，完整有界MEAN残差与两级mask。固定首例只作真实接口/成本；若量非精确相同且无实现错误，以2CPU/8GiB完成预定first4统一封存后评分（最多16前向）。第一例历史全漏分不独立决定总体质量；真实收益未知，不预测mIoU，不自动24/600。
+- native表示轨迹：只读四例现有raw caches，核≥3真实同token时序state，判断曲率是否有两endpoint控制之外的量；1CPU/4GiB、不GT、不新encoder、不重放。若不存在不同量就关闭，不建立占位方法。
+
+三项均是用户本次持续并行开发授权内的明确委派，family修订/controls仍计0；具体合同与首个实测决定完成后替换本段。没有本段以外的自动参数/变体队列。
+
+## 最新有限观察已结束（本研究聊天执行）
+
+同上下文object-removal revision0已完成固定单例并关闭：59次真实128新前向，2CPU完整51.078秒、峰值3.239GB；ΔCLS与同信息patch差场最大差约0.022，但全部六行原尺寸/1024 IoU0、新增TP0，ΔCLS新增FP75/删FP790，弱于Δallpatch的0/1085及Δmasked的0/1333。不扩样/不调参，修订计0；见[实际结果](../../evidence/local/research_20261006/object_removal_revision0_01a1100b/actual_result.md)。原CLS在相同整图背景上margin0是常数控制，不能充当旧isolated CLS。单例不估计总体收益或所有移除响应机制。
+局部拓扑核查已结束：剩余路线仍是参考形状先验或边界/角色关系扩展，未找到满足独立机制要求的完整构造；本槽关闭、新增0、远端运行0，见[决定](../../evidence/local/research_20261006/directed_topology_closure_01a1100b/decision.json)。这是具体构造收束，不是所有拓扑方法不可能。三体相对自身zero仅+0.00536且区间跨0，不能将其完整MEAN差全部归因于三体项。
+
 资源：实际32 CPU、60GiB，无可见GPU；当前合计线程上限30，运行守卫受cgroup限制。
 本轮先完成以上已启动完整结果，再据真实得失迭代；详见[并行审查](../../evidence/local/research_20261006/parallel_review_01a1100b/)。
-唯一待办清单仍为本文件，旧授权/队列不自动恢复。本次用户明确要求提交并推送代码与工作区；该授权仅适用于本次操作。
+唯一待办清单仍为本文件，旧授权/队列不自动恢复。另一聊天提交/推送请求只适用于该聊天的版本控制操作；本研究聊天没有提交/推送授权，也没有执行Git写操作。
 
 ## 原九项准备记录（保留源码与当时边界）
 

@@ -1,0 +1,217 @@
+{
+  "occurrence_id": "000001",
+  "source_key": "1_0_73",
+  "inputs": {
+    "features": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/confirm1200_conditional_v1/inputs/reused_features/1_0_73.pt",
+    "feature_sha256": "c0d6925c2f3495eaa91a712e0001b1fcc17465836a17a2ba1b833cc586af94c9",
+    "packet_sha256": "c9e19ed1b107a6cad7538dee9a689fd60357d6c56b761c4a01da2eb0023a16ed"
+  },
+  "numerical_audit": {
+    "current_rcg_direct_max_field_error": 0.0,
+    "current_rcg_direct_mask_xor": 0,
+    "field_shapes": {
+      "rcg_field": [
+        64,
+        64
+      ],
+      "mean_field": [
+        64,
+        64
+      ],
+      "field": [
+        1024,
+        1024
+      ],
+      "full_cut_field": [
+        128,
+        128
+      ],
+      "same_unary_field": [
+        128,
+        128
+      ]
+    },
+    "direct_rcg_solver": {
+      "source_pure_tokens": 104,
+      "graph_undirected_edges": 29704,
+      "graph_components": 2,
+      "graph_isolated_tokens": 1,
+      "cg_iterations": 56,
+      "cg_relative_residual": 7.16447454305569e-08,
+      "weighted_mean_error": 2.1069570754761457e-06,
+      "maximum_principle_error": 0.0
+    },
+    "query_gt_opened": false,
+    "historical_rcg_mask_xor": 0,
+    "historical_rcg_prediction": {
+      "path": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/frozen_subtoken1200_v1/predictions/1_0_73.npz",
+      "key": "rcg",
+      "sha256": "6a90ef18d3f607fb269167107a833d30c7524b6c64050a23ab9f808d46cc9559"
+    },
+    "historical_mask_parity_required": false
+  },
+  "rcg_recompute_seconds": 0.8678436428308487,
+  "mean_recompute_seconds": 0.45410335063934326,
+  "rgb": {
+    "path": "/root/autodl-tmp/cvpr_prepared9_20261006_01a1100b/bound600_v1/rgb128/000000154095.npz",
+    "sha256": "7fb35190bd30293edf622904568fc3c16a41ffb9204ce5c9748918c0af8538cb",
+    "keys_read": [
+      "rgb"
+    ]
+  },
+  "simple_control": {
+    "recipe": {
+      "method": "locked_rcg_rgb_disagreement_proposal_v2",
+      "kind": "fixed_exploratory_composition",
+      "independent_method_increment": 0,
+      "base": "current ics.methods.rcg.predict(q,r,cov,rawscore), device=cpu",
+      "rgb": "unchanged mean_rgb_potts RGB128 energy, weight .25",
+      "proposal": "D=cut1024 XOR same128unary1024; final=where(D,cut1024,currentRCG1024)",
+      "field": "binary1024, not continuous probability",
+      "potts_optimality_claim": false,
+      "parameter_search": false,
+      "new_encoder_forwards": 0,
+      "query_gt_used": false,
+      "exposure": "reused public600 exploratory composition; not independent confirmation"
+    },
+    "rcg": {
+      "config": {
+        "arm": "RCG",
+        "alpha": 0.5,
+        "cross_image_k": 10,
+        "query_k": 20,
+        "source_purity": 0.9,
+        "lambda": 16.0,
+        "confidence_floor": 0.1,
+        "query_gt_in_inference": false,
+        "native_mask_in_inference": false,
+        "finalizer": "bilinear 1024, align_corners=False, >0.5; no re-minmax",
+        "parameter_provenance": "historical development-selected constants; fixed here; no new fold selection performed",
+        "dense_device": "caller-selected; GPU numerical parity not yet verified",
+        "cg_rtol": 1e-07,
+        "cg_atol": 1e-09,
+        "cg_maxiter": 300
+      },
+      "solver": {
+        "source_pure_tokens": 104,
+        "graph_undirected_edges": 29704,
+        "graph_components": 2,
+        "graph_isolated_tokens": 1,
+        "cg_iterations": 56,
+        "cg_relative_residual": 7.16447454305569e-08,
+        "weighted_mean_error": 2.1069570754761457e-06,
+        "maximum_principle_error": 0.0
+      }
+    },
+    "mean": {
+      "solver": {
+        "relative_residual": 7.823487100849509e-08,
+        "graph_storage_dtype": "float64",
+        "source": "locked_MEAN_original_sparse_dtype_then_CG_float64"
+      },
+      "pregraph": {
+        "source": "locked_MEAN_a0.25_l16_pregraph_reconstruction_cpu",
+        "edges": 29704,
+        "query_gt_used": false,
+        "new_encoder_forwards": 0,
+        "graph_storage_dtype": "float64",
+        "pregraph_build_seconds": 0.4393836036324501
+      }
+    },
+    "rgb": {
+      "config": {
+        "rgb_grid": [
+          128,
+          128
+        ],
+        "potts_weight": 0.25,
+        "minimum_edge_sigma": 0.0001,
+        "minimum_average_degree": 1e-08
+      },
+      "recipe": {
+        "method": "locked_MEAN_RGB128_boundary_Potts_control_v1",
+        "role": "strong simple complete readout control; not an original mechanism",
+        "unary": "ell=2*bilinear(MEAN64,RGB128)-1; no clipping or re-minmax",
+        "graph": "all undirected four-neighbor RGB128 grid edges",
+        "rgb_distance": "mean squared RGB channel difference, RGB in [0,1]",
+        "sigma": "max(median(all RGB edge distances),1e-4)",
+        "capacity": ".25*exp(-distance/sigma)/max(mean weighted degree,1e-8)",
+        "parameter_source": "Pro M4 Potts .25, median scale and normalization floors; no GT fitting",
+        "solver": "Pro M4 exact_potts_cut; float64 capacities, no integer quantization",
+        "field_semantics": "binary globally optimized cut, not continuous probability",
+        "renderer": "binary RGB128 -> bilinear1024 >.5 -> binary -> bilinear original >.5",
+        "extra_encoder_calls": 0,
+        "query_labels_in_inference": false
+      },
+      "graph": {
+        "rgb_grid": [
+          128,
+          128
+        ],
+        "vertices": 16384,
+        "undirected_edges": 32512,
+        "edge_sigma": 0.0005997693194925028,
+        "average_weighted_degree": 1.7416057779572505,
+        "pairwise_mass": 2048.0,
+        "zero_capacity_edges": 0,
+        "all_grid_edges_retained": true
+      },
+      "cut": {
+        "energy": 6129.085097736011,
+        "maximum_flow": 6129.0850977360615,
+        "certificate_gap": 5.002220859751105e-11,
+        "phases": 8,
+        "capacity_semantics": "floating point, no integer quantization"
+      },
+      "unary_only_energy": 6130.41452625892,
+      "grid_added_pixels": 16,
+      "grid_deleted_pixels": 10,
+      "graph_seconds": 0.003354467451572418,
+      "cut_seconds": 0.9775342270731926,
+      "render_seconds": 0.006287232041358948,
+      "wall_seconds": 1.0281629785895348,
+      "query_gt_used": false,
+      "new_encoder_forwards": 0,
+      "empty_reference": false,
+      "native_MEAN_cost_included": false,
+      "independent_mechanisms": 0,
+      "segmentation_benefit": "unmeasured",
+      "work_shape": [
+        1024,
+        1024
+      ],
+      "original_shape": [
+        375,
+        500
+      ],
+      "input_base_role": "current locked RCG field; generic RGB energy unchanged"
+    },
+    "proposal_baseline": "currentRCG",
+    "proposal": {
+      "disagreement_pixels": 1664,
+      "changed_vs_baseline_pixels": 1268,
+      "added_vs_baseline_pixels": 786,
+      "deleted_vs_baseline_pixels": 482,
+      "outside_disagreement_baseline_xor": 0,
+      "zero_disagreement_baseline_identity": null
+    },
+    "rcg_recompute_seconds": 0.8678436428308487,
+    "mean_recompute_seconds": 0.45410335063934326,
+    "rgb_component_seconds": 1.034453496336937,
+    "wall_seconds": 2.3721183612942696,
+    "query_gt_used": false,
+    "new_encoder_forwards": 0,
+    "independent_method_increment": 0,
+    "real_complete_quality": "unmeasured"
+  },
+  "prediction_sha256": "9825eab5038d07ebae0c9e4b92665bdcc6e27ef8e30b2ce01b0ca34d8369c0bc",
+  "field_sha256": "90ed639c5586d4e4046de9037b3184a987054c9cfab5570bcd0b7f0be123cd1f",
+  "original_prediction_sha256": "6e3421d4fba5ad787f9c5ca356ee1bfece5d2d838038f6d44dde53b79c2c66bf",
+  "wall_seconds": 3.302159734070301,
+  "cpu_seconds": 5.486476615999999,
+  "process_peak_rss_bytes": 836710400,
+  "query_gt_opened": false,
+  "new_encoder_forwards": 0,
+  "independent_candidate_methods": 0,
+  "pid": 5960
+}

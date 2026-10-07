@@ -1,0 +1,67 @@
+{
+  "root": "/root",
+  "backend": "fixed_rcg_rgb_exploratory_composition",
+  "primary": "rcg_rgb_proposal_v2",
+  "recipe": {
+    "method": "locked_rcg_rgb_disagreement_proposal_v2",
+    "kind": "fixed_exploratory_composition",
+    "independent_method_increment": 0,
+    "base": "current ics.methods.rcg.predict(q,r,cov,rawscore), device=cpu",
+    "rgb": "unchanged mean_rgb_potts RGB128 energy, weight .25",
+    "proposal": "D=cut1024 XOR same128unary1024; final=where(D,cut1024,currentRCG1024)",
+    "field": "binary1024, not continuous probability",
+    "potts_optimality_claim": false,
+    "parameter_search": false,
+    "new_encoder_forwards": 0,
+    "query_gt_used": false,
+    "exposure": "reused public600 exploratory composition; not independent confirmation"
+  },
+  "rcg_config": {
+    "arm": "RCG",
+    "alpha": 0.5,
+    "cross_image_k": 10,
+    "query_k": 20,
+    "source_purity": 0.9,
+    "lambda": 16.0,
+    "confidence_floor": 0.1,
+    "query_gt_in_inference": false,
+    "native_mask_in_inference": false,
+    "finalizer": "bilinear 1024, align_corners=False, >0.5; no re-minmax",
+    "parameter_provenance": "historical development-selected constants; fixed here; no new fold selection performed",
+    "dense_device": "caller-selected; GPU numerical parity not yet verified",
+    "cg_rtol": 1e-07,
+    "cg_atol": 1e-09,
+    "cg_maxiter": 300
+  },
+  "rgb_config": {
+    "rgb_grid": [
+      128,
+      128
+    ],
+    "potts_weight": 0.25,
+    "minimum_edge_sigma": 0.0001,
+    "minimum_average_degree": 1e-08
+  },
+  "numerical_audit": true,
+  "workers": 1,
+  "threads": 2,
+  "cpu_budget": 2,
+  "memory_budget_bytes": 4294967296,
+  "exposure": "reused public600 exploratory composition; no independent confirmation",
+  "source_manifest_sha256": "e192420eb01c89c456ca4516b34863f36bc38b47f3c515bd3ed4f821fe812d7f",
+  "code_sha256": {
+    "scripts/run_rcg_rgb_proposal.py": "8a9f8c78a1bc19f3dfeaed01b004d2500af6969d662041d2de14540fc3d88775",
+    "src/ics/methods/rcg_rgb_proposal.py": "f2059578d187439e5b66d468e1d2743e45fcf673d76fe7eeb1764b34d0f71eb2",
+    "src/ics/methods/mean_rgb_proposal.py": "4bce8581d1303461ab318bfbbac01be7971a6b2bf2c77626f9dd037db1e36f69",
+    "src/ics/methods/mean_rgb_potts.py": "7869c717102d00e2672850bc797a3d94f0426c586a647518d37de32ce574fb34",
+    "src/ics/methods/pro_paired_environment.py": "e1bcab23abfd518c753fd285109f75a2a0235aa69a9e985efa9b40470187fff3",
+    "src/ics/methods/huber_graph.py": "d9c0a3298cab8990c6ebb550989cf5f0f491f50239865c7fe900fe443122d7c9",
+    "src/ics/methods/prepared_cpu_bundle.py": "18c9873ece4ae737828cd02cc18dcefa612f1752061511f3b05aab977deaa96e",
+    "src/ics/methods/rcg.py": "d9d8e15a69c0b939eb06dc4e41967afb684f29731f9dcb00519e73d944963d98",
+    "src/ics/experiment.py": "d95459d0b59c7048618661e7a16999248990b02e92cd1269d4629a497f62f843"
+  },
+  "independent_methods": 0,
+  "novelty_claim": false,
+  "new_encoder_forwards": 0,
+  "evaluation_convention": "legacy paired 1024 masks; original masks also saved separately"
+}
