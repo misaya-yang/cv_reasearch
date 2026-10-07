@@ -33,7 +33,13 @@ def _source_features(ep,random=False):
 def infer_m09(ep,control=None):
     mid='PRO30_M09';deg=degenerate_margin(ep)
     if deg is not None:return _return(ep,deg[0],mid,deg[1])
-    started=time.perf_counter();r,q,info=_source_features(ep,random=control=='random_key_groups')
+    started=time.perf_counter()
+    if control=='final_LN_same12':
+        observed=prepare_last(ep);K=min(12,ep.r.shape[1]);P=np.linalg.qr(np.random.default_rng(9009).normal(size=(ep.r.shape[1],K)))[0][:,:K]
+        r=np.asarray(ep.r)@P;q=np.asarray(ep.q)@P
+        if K<12:r=np.pad(r,((0,0),(0,12-K)));q=np.pad(q,((0,0),(0,12-K)))
+        info={'control':'same12 auxiliary channels from final-LN only; identical necessary observation entry is charged but not used','actual_shared_observation':observed['receipt']}
+    else:r,q,info=_source_features(ep,random=control=='random_key_groups')
     if control=='mass_only':r=r[:,4:8];q=q[:,4:8]
     elif control in('total_same12','full_total','full_sources'):
         rm,ra,ri=source_statistics(ep,'r');qm,qa,qi=source_statistics(ep,'q');rt=rm.sum(axis=1);qt=qm.sum(axis=1)
@@ -55,7 +61,7 @@ METHODS['PRO30_M09']=infer_m09
 REQUIREMENTS['PRO30_M09']=['actual_native_last_attention_QKV_after_QKnorm_RoPE_scale_mask','actual_output_projection_weight','physical_patch_validity','native_RGB_and_frozen_cpu_encoder_if_internal_fields_not_cached']
 ASSUMPTIONS['PRO30_M09']=['A partially physical patch is a physical key; wholly padded keys form the separate padding group. All query rows receive full output, with renderer using exact q geometry.',
                            'Reference statistics use all legal valid-area weights; sources are grouped before output projection and exclude shared output bias and LayerScale.']
-for name,mode in [('total_same12','total_same12'),('random_key_groups','random_key_groups'),('mass_only','mass_only'),('full_total_concat_linear','full_total'),('full_sources_concat_linear','full_sources')]:
+for name,mode in [('total_same12','total_same12'),('random_key_groups','random_key_groups'),('mass_only','mass_only'),('full_total_concat_linear','full_total'),('full_sources_concat_linear','full_sources'),('final_LN_same12','final_LN_same12')]:
     CONTROLS['PRO30_control_M09_'+name]=(lambda ep,mode=mode:infer_m09(ep,mode))
 CONTROLS['PRO30_control_M09_B_R']=br_result
 
@@ -83,24 +89,30 @@ def infer_m10(ep,control=None):
         return _return(ep,z,mid,{'control':control,'fit':fit,'eta':eta.tolist(),'shared_observation':receipt})
     if rank==0:
         z,fit=br_margin(ep);return _return(ep,z,mid,{'inactive_reason':'no reference eta below.05','eta':eta.tolist(),'fit':fit,'shared_observation':receipt})
-    if control=='random_same_rank':Un=np.linalg.qr(np.random.default_rng(10).normal(size=(r.shape[1],rank)))[0][:,:rank]
+    original_Un=Un.copy();shrink=.5;matched_energy_info={}
+    if control in('random_same_rank','random_same_rank_removed_energy'):Un=np.linalg.qr(np.random.default_rng(10).normal(size=(r.shape[1],rank)))[0][:,:rank]
+    if control=='random_same_rank_removed_energy':
+        source_energy=float(np.sum((r@original_Un)**2*ep.wvalid[:,None])+np.sum((q@original_Un)**2*ep.q_valid[:,None]))
+        random_energy=float(np.sum((r@Un)**2*ep.wvalid[:,None])+np.sum((q@Un)**2*ep.q_valid[:,None]))
+        shrink=.5*np.sqrt(source_energy/max(random_energy,1e-300))
+        matched_energy_info={'removed_vector_energy_main':.25*source_energy,'removed_vector_energy_control':shrink**2*random_energy,'control_shrink_coefficient':shrink,'control_can_invert_random_directions':bool(shrink>1),'energy_definition':'valid-area-weighted squared norm of x-Px, before re-unit'}
     elif control=='PCA_same_rank':
         X=np.r_[r[ep.wvalid>0],q[ep.q_valid>0]];X=X-X.mean(axis=0)
         from scipy.sparse.linalg import svds
         if rank<min(X.shape):_,_,V=svds(X,k=rank,which='LM',tol=1e-6,v0=np.ones(min(X.shape)));Un=V[::-1].T
         else:Un=np.linalg.svd(X,full_matrices=False)[2][:rank].T
-    rr=r-.5*(r@Un)@Un.T;qq=q-.5*(q@Un)@Un.T
+    rr=r-shrink*(r@Un)@Un.T;qq=q-shrink*(q@Un)@Un.T
     if control!='no_reunit':rr=unit(rr);qq=unit(qq)
     # This full-rank source-defined metric uses the same exact B_R fit.
     z,fit=br_margin(ep,rr,qq)
-    return _return(ep,z,mid,{'register_singular_values':singular.tolist(),'eta':eta.tolist(),'selected_rank':rank,'metric_eigenvalues':[.5,1.],'fit':fit,'shared_observation':receipt,'control':control,'changed_native_margins_vs_BR':'record in scorer/software probe; not a quality assertion'})
+    return _return(ep,z,mid,{'register_singular_values':singular.tolist(),'eta':eta.tolist(),'selected_rank':rank,'metric_eigenvalues':[1-shrink,1.],'fit':fit,'shared_observation':receipt,'control':control,'changed_native_margins_vs_BR':'record in scorer/software probe; not a quality assertion',**matched_energy_info})
 
 
 METHODS['PRO30_M10']=infer_m10
 REQUIREMENTS['PRO30_M10']=['actual_final_LN_native_register_r_q_excluding_CLS','native_RGB_and_frozen_cpu_encoder_if_registers_not_cached']
 ASSUMPTIONS['PRO30_M10']=['Native final registers use the same actual final LayerNorm as the patch descriptor channel space; CLS is excluded, no invented prefix vector.',
                            'SVD directions below the ordinary shape-scaled floating-point rank tolerance are omitted; no patch/global centering is part of the main metric.']
-for name in('random_same_rank','PCA_same_rank','all_register_directions','no_reunit','append_register_scalars','register_means','swap_RQ_registers'):
+for name in('random_same_rank','random_same_rank_removed_energy','PCA_same_rank','all_register_directions','no_reunit','append_register_scalars','register_means','swap_RQ_registers'):
     CONTROLS['PRO30_control_M10_'+name]=(lambda ep,name=name:infer_m10(ep,name))
 CONTROLS['PRO30_control_M10_B_R']=br_result
 

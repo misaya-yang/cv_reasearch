@@ -340,7 +340,7 @@ def m29(ep,*,control=None):
         yy,xx=np.indices((128,128));ys=(yy+.5)*8;xs=(xx+.5)*8
         mapped=[sample_grid(a.reshape(64,64),(ys+sy)/16-.5,(xs+sx)/16-.5) for a,(sy,sx) in zip(observations,phases)]
         return _end(ep,np.mean(mapped,axis=0)-.5,mid,dict(host=host,measurement_calibration=calibration,control=control,phases=phases),start,rt)
-    field,solver=op.inverse_mask(observations,operators,valids,D,np.clip(b,0,1).ravel(),initial,data=control!='B_plus_TV',base_term=control!='data_only')
+    field,solver=op.inverse_mask(observations,operators,valids,D,np.clip(b,0,1).ravel(),initial,data=control!='B_plus_TV',base_term=control!='data_only',tv_term=control!='data_only')
     return _end(ep,field-.5,mid,dict(host=host,measurement_calibration=calibration,solver=solver,phases=phases,
         observed_phase_feature_hashes=[common.array_hash(q) for q in features],phase_APD=False,
         physical_fine_cell_pixels=8,phase_patch_origin='negative shift: phase8 covers original [-8,8] in first patch',

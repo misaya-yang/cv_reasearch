@@ -140,6 +140,9 @@ def verify_case(case, row, binding, expected_arms, sources, assets):
         raise ValueError('Case input row changed: ' + row['id'])
     assets.check(row['feature_pack'], row['sha256'])
     with np.load(row['feature_pack'], allow_pickle=False) as pack:
+        if set(pack.files) != {'q', 'r', 'foreground_weight', 'valid_weight',
+                               'query_geometry_json', 'producer_json'}:
+            raise ValueError('Unexpected feature-pack inputs: ' + row['id'])
         producer = json.loads(pack['producer_json'].item())
         if producer != record.get('producer'):
             raise ValueError('Case producer differs from actual feature pack: ' + row['id'])
@@ -277,6 +280,10 @@ def recover(args):
         # A changed/missing input is not a recoverable method failure: stop rather
         # than silently bind a different input, skip a case, or change the cohort.
         row, binding = runner.read_input(stub, config.get('input_base'))
+        assets.check(row['feature_pack'], row['sha256'])
+        for key in ('q_rgb', 'r_rgb', 'reference_mask'):
+            if key in row:
+                assets.check(row[key], row.get(key + '_sha256'))
         try:
             result = verify_case(original / identity, row, binding, arms, sources, assets)
         except (OSError, ValueError, KeyError, TypeError) as error:
@@ -437,6 +444,10 @@ def main():
         parser.error('--original and --out are required')
     if args.case_timeout is not None and args.case_timeout <= 0:
         parser.error('--case-timeout must be positive')
+    def interrupted(signum, _frame):
+        raise SystemExit(128 + signum)
+    signal.signal(signal.SIGTERM, interrupted)
+    signal.signal(signal.SIGHUP, interrupted)
     try:
         return recover(args)
     except BaseException:

@@ -200,7 +200,7 @@ def tv(value,edges,epsilon=1e-3):
     return float(norm.mean()),gradient
 
 
-def inverse_mask(observations,operators,valids,D,base,initial,hw=(128,128),*,data=True,base_term=True):
+def inverse_mask(observations,operators,valids,D,base,initial,hw=(128,128),*,data=True,base_term=True,tv_term=True):
     """Original M29 convex objective, scaled PG residual and actual certificates."""
     if len(observations)!=4 or len(operators)!=4 or len(valids)!=4:raise ValueError('Four real phases required')
     n=len(base);active=np.asarray(D.sum(axis=0)).ravel()>0;edges=fine_edges(hw,active)
@@ -215,26 +215,34 @@ def inverse_mask(observations,operators,valids,D,base,initial,hw=(128,128),*,dat
                 residual=op@u-a;energy+=.25*np.sum(w*residual**2)/count;gradient+=.5*(op.T@(w*residual))/count
         if base_term:
             residual=(D@u-base)*base_valid;energy+=.25*np.sum(residual**2)/n;gradient+=.5*(D.T@residual)/n
-        smooth,g=tv(u,edges);return float(energy+.02*smooth),gradient+.02*g
+        if tv_term:
+            smooth,g=tv(u,edges);energy+=.02*smooth;gradient+=.02*g
+        return float(energy),gradient
     infnorm=lambda x:float(np.asarray(np.abs(x).sum(axis=1)).max())
     L=(sum(.5*infnorm(op.T@sparse.diags(w)@op)/count for op,w,count in zip(operators,valids,counts)) if data else 0.)
-    L+=(.5*infnorm(D.T@D)/n if base_term else 0.)+.16/(len(edges)*1e-3)
+    L+=(.5*infnorm(D.T@D)/n if base_term else 0.)+(.16/(len(edges)*1e-3) if tv_term else 0.)
     eta=1/max(L,1e-8);u=np.clip(np.asarray(initial,float).ravel(),0,1);u[~active]=0
     initial_energy,initial_gradient=objective_gradient(u);scale=max(float(np.max(np.abs(initial_gradient))),1e-8);history=[initial_energy];stable=0;stop='maximum_iterations';backtracks=0;residual=None
     for iteration in range(100):
         energy,gradient=objective_gradient(u);accepted=False
         for _ in range(12):
-            proposal=np.clip(u-eta*gradient,0,1);proposal[~active]=0;step=proposal-u;next_energy,_=objective_gradient(proposal)
+            proposal=np.clip(u-eta*gradient,0,1);proposal[~active]=0;step=proposal-u;next_energy,next_gradient=objective_gradient(proposal)
             if next_energy<=energy+dot(gradient,step)+dot(step,step)/(2*eta)+1e-12:accepted=True;break
             eta*=.5;backtracks+=1
         if not accepted:stop='backtracking_failed_kept_last_accepted';break
-        residual=float(np.max(np.abs(step))/(eta*scale));u=proposal;history.append(next_energy)
+        u=proposal;history.append(next_energy)
+        projected=np.clip(u-eta*next_gradient,0,1);projected[~active]=0
+        residual=float(np.max(np.abs(u-projected))/(eta*scale))
         relative=abs(energy-next_energy)/max(abs(energy),1e-12);stable=stable+1 if relative<1e-6 else 0
         if residual<1e-3:stop='normalized_projected_gradient';break
         if stable>=3:stop='three_relative_objective_changes';break
+    returned_energy,returned_gradient=objective_gradient(u)
+    projected=np.clip(u-eta*returned_gradient,0,1);projected[~active]=0
+    residual=float(np.max(np.abs(u-projected))/(eta*scale))
     return u.reshape(hw),dict(iterations=len(history)-1,stop=stop,objective_history=history,initial_Lipschitz_bound=L,
         final_step=eta,normalized_projected_gradient_residual=residual,backtracks=backtracks,convex_descent_certificate=bool(np.all(np.diff(history)<=1e-10)),
-        data_term_enabled=data,base_term_enabled=base_term,invalid_fine_cells_excluded_from_TV=True,quality_guarantee=False)
+        data_term_enabled=data,base_term_enabled=base_term,TV_term_enabled=tv_term,residual_evaluated_at_returned_field=True,
+        returned_objective=returned_energy,invalid_fine_cells_excluded_from_TV=True,quality_guarantee=False)
 
 
 def expansion_potts(unary,graph,initial,*,rounds=10,scale_penalty=.02):
