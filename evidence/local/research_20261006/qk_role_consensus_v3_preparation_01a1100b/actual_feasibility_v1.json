@@ -1,0 +1,107 @@
+{
+  "state": "ACTUAL_PRE_ROPE_QK_V3_ONE_CASE_FEASIBILITY_SEALED_UNSCORED",
+  "case": "0_0_72",
+  "family_revision": "QK v3",
+  "independent_method_increment": 0,
+  "threads": 1,
+  "source": {
+    "source": "actual_block21.norm1/qkv/q_norm/k_norm before any RoPE",
+    "heads": 16,
+    "head_width": 64,
+    "prefix": 5,
+    "native_teacher_parameters_unchanged": true,
+    "inverse_RoPE": false,
+    "head_selection": false,
+    "layer_selection": false
+  },
+  "actual_teacher_block_load_seconds": 0.15787620842456818,
+  "actual_projection_extract_seconds": 1.1876522973179817,
+  "evidence_and_complete_controls_seconds": 3.8676787838339806,
+  "info": {
+    "config": {
+      "block_one_based": 21,
+      "role_temperature": 0.07,
+      "response_temperature": 0.07,
+      "residual_bound": 0.1,
+      "query_chunk": 256
+    },
+    "weights": {
+      "foreground_mass": 1693.62109375,
+      "background_mass": 2402.37890625
+    },
+    "all_heads_equal": true,
+    "query_gt_used": false,
+    "joint_positive": 367,
+    "joint_negative": 3520,
+    "disagreement": 209,
+    "zero_direction": 0,
+    "margin_forward_reverse_maxabs": 0.04111592844128609,
+    "evidence_seconds": 3.2487335056066513,
+    "external_semantic_information_added": false,
+    "field_max_changes": {
+      "agreement": 0.09426014870405197,
+      "forward": 0.09447731822729111,
+      "reverse": 0.09426014870405197,
+      "symmetric_logits": 0.09453615546226501,
+      "symmetric_margin": 0.09435609728097916,
+      "direct_H20": 0.09971291571855545,
+      "direct_final": 0.09964419156312943
+    },
+    "budget_applies": true,
+    "full_output": true,
+    "clamp": false,
+    "new_graph_solve": false,
+    "family": "QK substantial revision v3",
+    "independent_method_increment": 0,
+    "real_quality": "unmeasured",
+    "renderer": "bilinear grid->1024 >.5 then bilinear binary->original >.5"
+  },
+  "quality": "unmeasured; no query labels read in this run; case was exposed in prior tasks",
+  "native_producer": {
+    "native_source_sha256": "a8c9807ef5e8dabc725c1e2a89439760a900d6af6cdafefea18fc121173643a2",
+    "weights_sha256": "45172f209c9583c40538afc26b60a07033e6fcc2e8c30228338e6b2e932e7941",
+    "H20": "actual_after_block20",
+    "dtype": "float32",
+    "projection_gate": true,
+    "gate_source": "/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/confirm1200_conditional_v1/inputs/reused_features/0_0_72.pt",
+    "gate_feature_SHA256": "8702d9bcec69979d3fbdf8bea33611b8ce2061a0888ad0ec44f3f9583eda972b",
+    "input_key": "0_0_72",
+    "host_variant": "existing_FP16_conditional_cache_MEAN_graph_float64",
+    "host_field_sha256": "f0babdb9424fa8d62aef11cc645cd450a8a082352903c015873b38ede77fd1c3",
+    "old_cache_dtype": "torch.float16",
+    "projection_gate_recomputed": false
+  },
+  "host_variant": "existing_FP16_conditional_cache_MEAN_graph_float64",
+  "host_field_path": "/root/autodl-tmp/cvpr_prepared9_20261006_01a1100b/runs/nine_public600_v2/fields/000000.npz",
+  "host_sha256": "f0babdb9424fa8d62aef11cc645cd450a8a082352903c015873b38ede77fd1c3",
+  "native_pair_sha256": "b684144bc24735d5217ba29fb3672230197b5993ca645ccf3dc74998cb8cc5f3",
+  "native_pair_unchanged": true,
+  "native_encoding_performed_here": false,
+  "standalone_deployment_cost": "must include real R/Q rawH20 encoding, producer/code/basis and full host; cache feasibility does not establish encoder0 deployment",
+  "model_config_sha256": "a71f705b0074e173540d0bdbd3aa940fa8d7d3c6c7f020a683004c46ca605b24",
+  "actual_weights_sha256": "45172f209c9583c40538afc26b60a07033e6fcc2e8c30228338e6b2e932e7941",
+  "source_sha256": {
+    "method": "587fb9d0a43b53e4739bf519279e15e858029a0a083eb0c9a2feb229c993618f",
+    "runner": "4f64da2641a5d0286fa926d4f652429260447155e5923732278e609384b8994d"
+  },
+  "stage_exposure": "same first exposed case; not independent confirmation",
+  "query_GT_read": false,
+  "head_count": 16,
+  "changed_work_pixels_vs_host": {
+    "mean.control": 0,
+    "agreement": 2698,
+    "forward": 3774,
+    "reverse": 3464,
+    "symmetric_logits": 3381,
+    "symmetric_margin": 3389,
+    "direct_H20": 4404,
+    "direct_final": 4590
+  },
+  "wall_seconds": 10.05021107941866,
+  "ru_maxrss_linux_kib": 1182016,
+  "peak_sample_RSS_bytes": 1210384384,
+  "files_sha256": {
+    "fields.npz": "0305c1f9b607a58325ccc445cff89726cbaf2b0f5de4fa4c0dc69c12b9cedbec",
+    "masks.npz": "766fe65169ac3db0550c279cccc83138d594dc5a676da2526022d5700435ea6b"
+  }
+}

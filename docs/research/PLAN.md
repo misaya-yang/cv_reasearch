@@ -21,8 +21,10 @@
 - ProM1首4个已暴露例的四臂1024活动筛查为负：ctx=25.112759，native=36.316536、uniform=35.135329；仅是活动检查，不外推总体质量。见[评分报告](../../evidence/local/research_20261006/pro_context_preparation_01a1100b/score4_v1/report.json)；固定24是否值得运行尚未决定。
 - ProM3固定600例缓存适配版完整结果为负：heldout=59.563526，低于native=61.335314、stored MEAN=62.931530和同树zero=60.878311；这是复用缓存、1024工作空间结果，不含新编码或原尺寸第二段渲染。当前固定版本的质量主张收束，不自动开变体，见[报告](../../evidence/local/research_20261006/pro_roles_preparation_01a1100b/public600_result_46466.md)。
 - ProM4首4个暴露RGB例的六臂完整分支已评分：原尺寸paired=22.142373、class_lda=25.756491、ref_canvas=31.260366，缓存native变体=36.360804；每例17次编码、约363–405秒、峰值RSS约3.13GB。仅为小样本成本/活动检查，不是确认结果，见[报告](../../evidence/local/research_20261006/pro_environment_preparation_01a1100b/real_smoke4_46466/report.json)。
-- ProM5实际原生接口审核在完整预测封存前失败：第6个参考区域block22的beta=1 maxabs=0.000244140625；未打开GT、未评分，部分执行已超过60秒门槛。不得将toy核对视为实际方法结果，详见[审核记录](../../evidence/local/research_20261006/pro_message_preparation_01a1100b/actual_audit_v1.md)。
-  上述M1/M3/M4/M5均保留与原始Pro定义、缓存适配和样本暴露相符的边界，不冒称已完成统一协议验证。
+- M1/M3/M4的负向结果均按各自完整范围、缓存/原图适配与数据暴露报告；不冒称完成统一协议确认。
+- M5同一v0在query-only尾块补齐dummy query后通过四例全部69 ROI×4 block的β=1审核，维持原5e−5容差；固定暴露smoke4已完整封存/评分：原尺寸15.805910，对MEAN 35.695213，差−19.889303 pp。该结果解决数值审核问题但质量明显为负；不自动扩24/600或开启变体。完整范围与成本见[报告](../../evidence/local/research_20261006/pro_message_preparation_01a1100b/actual_smoke4_v1.md)。
+- MEAN+RGB disagreement local proposal v2是已暴露public600上的posthoc读出修订：63.007428，对MEAN差+0.075882 pp，配对95%区间[−0.006268,0.135967]；对full RGB-cut比差+0.103477，区间[0.080924,0.177966]。这不是独立确认，不能把点估计或历史组件分数相加；登记为revision/控制变化，独立方法增量0，见[报告](../../evidence/local/research_20261006/mean_rgb_proposal_v2_01a1100b/server_replay600/score/report.json)。
+- QK role-consensus v3属于已有QK family修订、独立方法增量0；数学/物理构造核对及一个已暴露真实case的无GT feasibility已封存，但未计分、未启动固定4例质量队列。它不是当前质量证据，也不因代码入库自动新增任务，见[报告](../../evidence/local/research_20261006/qk_role_consensus_v3_preparation_01a1100b/README.md)。
 - 原9、凸包、三体、吸收及所给Pro五项共17候选，修正版/控制不计。以上三类新增候选已在同一复用600批次完成，结果未显示稳定超越MEAN的收益；不得把公开开发集复用结果称作确认。
 - 继续开发新的实质机制，先固定方法/强简单对照和同合同CPU核对，再接入该复用600队列。
   保留失败完整输出和有效组件；改进版本与独立新机制分开计数，不通过组合枚举凑数。

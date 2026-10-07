@@ -1,6 +1,6 @@
 # Pro M5 可部署实现与真实绑定缺口
 
-已实现 `src/ics/methods/pro_message_extrapolation.py` 和独立CPU入口 `scripts/run_pro_message_extrapolation.py`。toy合同核对通过；随后在实际冻结DINO原生接口上做过一次CPU审核，但第6个参考区域的block22 beta=1差异0.000244140625，完整预测未封存，未读取GT或评分。实际部分运行已超过60秒继续门槛。当前源码随后有改动，尚未重审；质量结果仍未测。详见[审核记录](actual_audit_v1.md)。
+已实现 `src/ics/methods/pro_message_extrapolation.py` 和独立CPU入口 `scripts/run_pro_message_extrapolation.py`。最新状态见[固定四例真实结果](actual_smoke4_v1.md)：四例每例69个ROI beta=1四层误差0，完整输出统一封存并独立评分；原尺寸M5=15.8059、同renderer MEAN=35.6952（−19.8893 pp）。下文toy是最初本地准备证据，单例及失败轨迹另行保留。
 
 ## 已固定的执行合同
 
@@ -46,7 +46,7 @@ PYTHONPATH=/root/demo4_cache/env:<repo>/src <python> scripts/run_pro_message_ext
 
 实际输入包`producer`必须逐字段等于resolved assets的native_state_producer；weights/source hashes、after_block20、1024/64grid、FP32、projection_frozen被检查。建议绑定原RGB变换hash、Pi gate/basis、episode身份和MEAN host producer收据。这里不接受query GT作为算法输入，不进行评分；fields和work/original masks写出后生成seal，后续评测单独读GT。
 
-精确缺口：本地没有timm/实际DINO权重或真实状态包，因此未做真实load/forward/β1审核；根代理已确认服务器实际Eva资产存在且负责新CPU编码。仍需绑定每例原gate/身份、同producer complete MEAN输入场、参考完整mask与original query H/W；然后先做真实β1/native数值与一次成本检查。当前代码不是已获得完整成绩的结果。
+部署条件：本地没有timm/实际DINO权重，真实执行在新授权服务器完成。固定四例的原gate/身份、MEAN缓存宿主、参考完整mask与original query H/W均已绑定，真实β1与成本已核验；该有限机制屏结果明显负，不支持当前v0收益。未自动扩展24/600或方法变体。
 
 ## 本地必要检查
 

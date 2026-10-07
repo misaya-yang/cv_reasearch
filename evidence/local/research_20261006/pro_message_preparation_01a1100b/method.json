@@ -1,12 +1,31 @@
 {
   "method_id": "Pro_M5_fixed_native_QK_message_extrapolation_v0",
   "independent_methods": 1,
-  "state": "ACTUAL_NATIVE_AUDIT_FAILED_NO_COMPLETE_MASK_CURRENT_SOURCE_UNVERIFIED",
-  "actual_DINO_episodes": 1,
-  "complete_predictions_sealed": 0,
-  "complete_episodes_scored": 0,
-  "real_segmentation_benefit": "unmeasured",
-  "real_runtime": "partial one-episode attempt; actual capture plus partial replay lower bound 83.99 seconds; full prediction not sealed",
+  "state": "four_fixed_smoke_cases_complete_sealed_scored_native_parity_zero",
+  "actual_DINO_episodes": 4,
+  "complete_predictions_sealed": 4,
+  "complete_episodes_scored": 4,
+  "real_segmentation_benefit": {
+    "scope": "fixed reused public/dev4",
+    "work_mIoU": 15.795344798751707,
+    "original_mIoU": 15.805909722072094,
+    "original_delta_vs_MEAN_pp": -19.889303255243185
+  },
+  "real_runtime": {
+    "fresh_captures_seconds": [
+      47.80479225516319,
+      48.31804846227169,
+      47.164140082895756
+    ],
+    "all_branch_inference_seconds": [
+      132.56968671828508,
+      163.26843101531267,
+      180.75702419131994,
+      169.68367502093315
+    ],
+    "three_worker_group_seconds": 244.2984766960144,
+    "peak_group_RSS_bytes": 9124597760
+  },
   "reference": "user_supplied_Pro_report_lines779_914",
   "parameters": {
     "partition_counts": [
@@ -37,23 +56,33 @@
     "src/ics/methods/pro_message_extrapolation.py": "b9da3fd3b42c08a27c3634d86251b36e75269ff5414105d8408566dabe4c1653",
     "scripts/run_pro_message_extrapolation.py": "0f3409dce01adb565d08fe674d16738b3acc9fefc4310e1591a2a683d9cc2e18"
   },
-  "last_audited_module_sha256": "ead5aec2c9f9c2a835c07d93774e8ae39b86be16938f674c9b91fffdcd956d63",
-  "actual_audit": "actual_audit_v1.md; block22 beta1 mismatch 0.000244140625 at the sixth reference region; no complete mask or GT score; current module revision differs and remains unverified",
+  "last_audited_module_sha256": "b9da3fd3b42c08a27c3634d86251b36e75269ff5414105d8408566dabe4c1653",
+  "actual_audit": "all four cases each69 ROI block21-24 maxabs0; original5e-5 atol/rtol; unified seal then1CPUscore",
   "checks": "toy_check.json",
   "assets_template": "assets.template.json",
   "resource_gaps": [
-    "re-audit the current module revision if the user reopens this candidate",
-    "complete and seal a full prediction before any quality score",
-    "record the full CPU cost; the prior partial attempt exceeded the 60-second continuation threshold"
+    "shared_M1_M5_capture_API_joint_validation_pending",
+    "no_automatic_larger_cohort_expansion"
   ],
   "not_claimed": [
-    "actual DINO validation",
-    "segmentation improvement",
+    "cohort gain",
+    "stable_class_summed_mIoU_gain",
     "novelty",
-    "one-minute cohort runtime"
+    "one_minute_runtime",
+    "pure_FP32_host_parity"
   ],
   "no_SSH": false,
   "no_GPU": true,
   "no_download": true,
-  "no_large_experiment": true
+  "no_large_experiment": true,
+  "actual_evidence": "actual_smoke4_v1.json",
+  "native_all_ROI_count": 69,
+  "native_layer_maxabs": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "server_execution_authorized": true,
+  "current_result": "actual_smoke4_v1.md"
 }

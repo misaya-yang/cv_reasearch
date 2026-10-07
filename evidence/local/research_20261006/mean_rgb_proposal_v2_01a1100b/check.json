@@ -1,0 +1,103 @@
+{
+  "state": "SPECIFIED_V2_PROPERTIES_AND_COMPLETE_SIGNED_CASES_PASSED",
+  "recipe": {
+    "method": "mean_rgb_disagreement_local_proposal_v2",
+    "kind": "strong_simple_control_revision",
+    "independent_method_increment": 0,
+    "proposal_region": "D = RGBcut1024 XOR same128unary1024",
+    "finalizer": "Hfinal = where(D, RGBcut1024, originalMEAN1024)",
+    "output": "binary 1024 mask; original-size mask by bilinear/strict .5",
+    "zero_graph": "cut=unary implies exact original MEAN1024",
+    "parameter_search": false,
+    "query_gt_used": false,
+    "new_encoder_forwards": 0,
+    "potts_optimality_claim": false,
+    "exposure": "posthoc exploratory replay on reused public600; no independent confirmation"
+  },
+  "truth_tables": [
+    {
+      "bits": 0,
+      "outside_region_xor": 0,
+      "zero_graph_mean_xor": 0
+    },
+    {
+      "bits": 1,
+      "outside_region_xor": 0,
+      "zero_graph_mean_xor": 0
+    },
+    {
+      "bits": 2,
+      "outside_region_xor": 0,
+      "zero_graph_mean_xor": 0
+    },
+    {
+      "bits": 3,
+      "outside_region_xor": 0,
+      "zero_graph_mean_xor": 0
+    },
+    {
+      "bits": 4,
+      "outside_region_xor": 0,
+      "zero_graph_mean_xor": 0
+    },
+    {
+      "bits": 5,
+      "outside_region_xor": 0,
+      "zero_graph_mean_xor": 0
+    },
+    {
+      "bits": 6,
+      "outside_region_xor": 0,
+      "zero_graph_mean_xor": 0
+    },
+    {
+      "bits": 7,
+      "outside_region_xor": 0,
+      "zero_graph_mean_xor": 0
+    }
+  ],
+  "complete_examples": [
+    {
+      "sign": 1,
+      "disagreement_pixels": 2280,
+      "changed_vs_mean_pixels": 2280,
+      "added_vs_mean_pixels": 2280,
+      "deleted_vs_mean_pixels": 0,
+      "outside_disagreement_mean_xor": 0,
+      "zero_disagreement_mean_identity": null,
+      "work_shape": [
+        1024,
+        1024
+      ],
+      "original_shape": [
+        75,
+        109
+      ],
+      "direct_mean_xor": 0,
+      "renderer_xor": 0
+    },
+    {
+      "sign": -1,
+      "disagreement_pixels": 2280,
+      "changed_vs_mean_pixels": 2280,
+      "added_vs_mean_pixels": 0,
+      "deleted_vs_mean_pixels": 2280,
+      "outside_disagreement_mean_xor": 0,
+      "zero_disagreement_mean_identity": null,
+      "work_shape": [
+        1024,
+        1024
+      ],
+      "original_shape": [
+        75,
+        109
+      ],
+      "direct_mean_xor": 0,
+      "renderer_xor": 0
+    }
+  ],
+  "module_sha256": "4bce8581d1303461ab318bfbbac01be7971a6b2bf2c77626f9dd037db1e36f69",
+  "inherited_rgb_module_sha256": "7869c717102d00e2672850bc797a3d94f0426c586a647518d37de32ce574fb34",
+  "query_gt_opened": false,
+  "new_encoder_forwards": 0
+}

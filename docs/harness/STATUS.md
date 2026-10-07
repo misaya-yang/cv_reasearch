@@ -7,8 +7,10 @@
 
 凸包、ProM2四状态关系、三体关系和布局局部修正版的固定600例已封存并评分：分别为48.915345、60.632462、60.778988、62.308618，均低于同批MEAN 62.931546；布局局部修正版高于native 61.335314。参考锚点吸收、Gaussian密度修订和RGB Potts控制的另一固定600例批次也已完成：分别为37.821542、61.949185、62.903951；RGB Potts对MEAN差−0.027595，配对95%区间[−0.160435, 0.032420]，未显示超越MEAN。两批均复用开发数据，完整配对区间见[扩展结果](../../evidence/local/research_20261006/server_prepared_01a1100b/extensions_public600_v2/score/report.json)和[后续候选结果](../../evidence/local/research_20261006/server_prepared_01a1100b/next_candidates_public600_v1/score/report.json)。
 ProM2计算优化的四例六臂全场及两级mask逐值一致，平均单例14.889秒降至2.938秒（5.067倍），详见[记录](../../evidence/local/research_20261006/parallel_review_01a1100b/pro_relations_profile_v1/README.md)。
+后续RGB局部proposal v2是已暴露来源上的posthoc读出修订：600例63.007428，对MEAN的差为+0.075882 pp，配对95%区间[−0.006268, 0.135967]，不证明稳定提升，独立方法增量为0，详见[报告](../../evidence/local/research_20261006/mean_rgb_proposal_v2_01a1100b/server_replay600/score/report.json)。
 17项候选已准备（12本轮自主+5所给Pro），1000项和高质量目标尚未完成；对照不计独立候选数。
-Pro真实检查还包括：M1首4例负向活动筛查；M3固定600例低于native/MEAN；M4首4例、17次编码的完整分支低于缓存native；M5精确性审核在第6个参考区域失败且未产生完整mask。来源分别见[M1](../../evidence/local/research_20261006/pro_context_preparation_01a1100b/score4_v1/report.json)、[M3](../../evidence/local/research_20261006/pro_roles_preparation_01a1100b/public600_result_46466.md)、[M4](../../evidence/local/research_20261006/pro_environment_preparation_01a1100b/real_smoke4_46466/report.json)和[M5](../../evidence/local/research_20261006/pro_message_preparation_01a1100b/actual_audit_v1.md)。这些子集/适配版结果不等于独立确认或完整统一协议结论。
+Pro真实检查还包括：M1首4例负向活动筛查；M3固定600例低于native/MEAN；M4首4例、17次编码的完整分支低于缓存native；M5已修复实际CPU尾块数值偏差并完成固定四例全审核/评分，但原尺寸15.805910、同renderer MEAN 35.695213（−19.889303 pp），不支持分割收益。来源分别见[M1](../../evidence/local/research_20261006/pro_context_preparation_01a1100b/score4_v1/report.json)、[M3](../../evidence/local/research_20261006/pro_roles_preparation_01a1100b/public600_result_46466.md)、[M4](../../evidence/local/research_20261006/pro_environment_preparation_01a1100b/real_smoke4_46466/report.json)和[M5四例结果](../../evidence/local/research_20261006/pro_message_preparation_01a1100b/actual_smoke4_v1.md)。这些数据均为已暴露public/dev样本或缓存适配结果，不是独立确认。
+QK role-consensus v3为既有QK family修订、独立方法增量0；已封存一个真实teacher可行性case但未评分，不能当作质量结果，见[定义和边界](../../evidence/local/research_20261006/qk_role_consensus_v3_preparation_01a1100b/README.md)。
 新机制与改进版本分别记数，对照/参数不记数；首4例不能代替600例结论。
 
 ## 当前阶段

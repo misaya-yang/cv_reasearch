@@ -1,0 +1,33 @@
+{
+  "state": "FIXED_QK_V3_PHYSICAL_WITNESS_AND_ACTUAL_FIRST_CASE_FEASIBILITY_COMPLETE_UNSCORED",
+  "family": "QK substantial revision v3",
+  "independent_method_increment": 0,
+  "fixed_block_one_based": 21,
+  "heads": "all16 equal; no head/layer/source selfIoU selection",
+  "teacher": "actual norm1/qkv/q_norm/k_norm from real rawH20 before RoPE",
+  "role_temperature": 0.07,
+  "response_temperature": 0.07,
+  "residual_bound": 0.1,
+  "base": "bound complete MEAN field preserved with no graph recomputation",
+  "main": "sign-agree clipped weakest of tanh(forward/.07),tanh(reverse/.07); sign disagreement zero",
+  "controls": [
+    "forward",
+    "reverse",
+    "symmetric_logits",
+    "symmetric_margin",
+    "direct_H20",
+    "direct_final",
+    "mean.control"
+  ],
+  "source_sha256": {
+    "src/ics/methods/qk_role_consensus_v3.py": "587fb9d0a43b53e4739bf519279e15e858029a0a083eb0c9a2feb229c993618f",
+    "scripts/run_qk_role_consensus_v3.py": "77e80e3a5f8d9bef5ea8a09f73735fde1c788a0dbdf646946dd80676d938ff07"
+  },
+  "quality": "unscored; no new candidate GT access",
+  "legacy_source_gap": "old QK REPORT/diagnosis are available; full descriptor source not recovered; not an originality claim",
+  "old_results_not_transferred_to_new_pipeline": true,
+  "first_case_already_exposed_by_prior_tasks": true,
+  "authoring_entry_sha256_current": "2142c0c12b2e9efa9c2e77048c05b177127452af7d81047a0ea1a6b21eb8b2a8",
+  "toy_fixture_note": "Symmetric tie strengthened without any predictor/config change; original entry hash retained in source_sha256.",
+  "actual_feasibility": "actual_feasibility_v1.json"
+}
