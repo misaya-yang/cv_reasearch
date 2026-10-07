@@ -1,7 +1,7 @@
 {
   "goal_candidate_count": 1000,
-  "distinct_candidate_implementations": 17,
-  "own_candidates": 12,
+  "distinct_candidate_implementations": 19,
+  "own_candidates": 14,
   "user_supplied_candidates": 5,
   "not_counted": [
     "all controls",
@@ -14,7 +14,8 @@
     "RCG RGB fixed composition",
     "QK role-consensus v3",
     "object-crop CLS revision0",
-    "object-removal revision0 closed actual single1"
+    "object-removal revision0 closed actual single1",
+    "Gray RGB/native/H20/brightness controls and per-image forward count"
   ],
   "empirically_verified_positive_above_current_MEAN": 0,
   "entries": [
@@ -153,11 +154,42 @@
       "code_exists": true,
       "card": "evidence/local/research_20261006/pro_message_preparation_01a1100b",
       "real_status": "fixed_real_smoke4_complete_scored_negative_closed_no_expansion"
+    },
+    {
+      "id": "grayscaled_dino",
+      "origin": "own_project_candidate",
+      "source": "src/ics/methods/grayscaled_dino.py",
+      "code_exists": true,
+      "card": "evidence/local/research_20261006/grayscaled_dino_preparation_01a1100b",
+      "real_status": "complete_actual_first4_scored_full600_and_fresh_parity_not_launched_user_shutdown",
+      "candidate_increment": 1,
+      "scientific_originality": "unverified",
+      "root_count_basis": "Fixed physical chromatic collapse followed by frozen-DINO matching is a distinct full primary algorithm; RGB and other controls are not separate methods. It is not the prior CLS/region-removal/environment-covariance recipe.",
+      "source_sha256_at_review": "6cf47db241f9bd8a47dcc9075a5f6c27c2a80007c1b10dc13df4e36993981eb4",
+      "first4_run_source_sha256": "6cf47db241f9bd8a47dcc9075a5f6c27c2a80007c1b10dc13df4e36993981eb4",
+      "current_checkout_source_sha256": "62b6fcaff692022d7a2638dcf7922fada482dc60d7bf17a3ee4be63fbc778245",
+      "current_checkout_matches_first4_run_source": false,
+      "result_card": "evidence/local/research_20261006/grayscaled_dino_preparation_01a1100b/actual_result.md",
+      "first4_primary_original_miou": 36.979714,
+      "first4_same_RGB_original_miou": 37.205113,
+      "full600_launched": false
+    },
+    {
+      "id": "reference_texture",
+      "origin": "own_project_candidate",
+      "source": "src/ics/methods/reference_texture.py",
+      "code_exists": true,
+      "card": "evidence/local/research_20261006/reference_texture_01a1100b",
+      "candidate_increment": 1,
+      "real_status": "complete_local_algorithm_and_physical_RGB_checks_real_smoke4_not_run_server_user_shutdown",
+      "scientific_originality": "unverified",
+      "source_sha256_at_review": "779425b5faf11576d3401b88cd3d26f567831fab166c865d59d72c713c55d031",
+      "strong_control_result": "dominant band index+energy also solves synthetic positive; multi-band necessity not established"
     }
   ],
   "disclaimer": "Implementation preparation count is not scientific originality or proven quality. Reused public600 is not independent confirmation.",
   "distinct_candidates_with_complete_public600": 14,
-  "distinct_candidates_with_only_complete_smoke4": 3,
+  "distinct_candidates_with_only_complete_smoke4": 4,
   "attributed_execution_chat": "01a1100b-b957-7e43-8bf1-485916ea0b6b",
   "revision_results": [
     {
@@ -185,5 +217,8 @@
       "complete_process_seconds": 51.078,
       "quality": "DeltaCLS numerically distinct but worse than same-information patch difference controls on this episode"
     }
-  ]
+  ],
+  "distinct_candidates_prepared_awaiting_actual_first4": 1,
+  "execution_state": "REMOTE_WORK_STOPPED_USER_CONFIRMED_SERVER_SHUTDOWN",
+  "pending_remote_runs_can_auto_resume": false
 }

@@ -4,6 +4,7 @@
 [STATUS](STATUS.md)，唯一工作清单见 [PLAN](../research/PLAN.md)。
 2026-10-06 当前授权与操作以STATUS/PLAN为准。新入口已经用户明确授权并验证：
 `ssh -p 46466 root@connect.westb.seetacloud.com`，32 CPU、cgroup 60GiB、无可见GPU。
+**最新用户已确认关机，远端连接与实验安排已停止；下方路径只作资产导航，不自动授权开机或恢复作业。**
 当前命名空间 `/root/autodl-tmp/cvpr_prepared9_20261006_01a1100b`；
 旧缓存只作输入资产，不恢复旧PID/队列。
 

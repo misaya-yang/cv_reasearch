@@ -1,0 +1,51 @@
+{
+  "id": "reference_rgb_radial_power_texture_v1",
+  "state": "implemented_and_physical_RGB_checked; actual_smoke4_waiting_for_ssh_connection",
+  "independent_candidate_definition": 1,
+  "scientific_originality": "unverified",
+  "inputs": [
+    "original reference RGB",
+    "complete original binary reference mask",
+    "original query RGB",
+    "locked MEAN64 continuous field",
+    "observed query original H/W"
+  ],
+  "config": {
+    "rgb_size": 256,
+    "field_size": 64,
+    "windows": [
+      16,
+      32
+    ],
+    "radial_cuts": [
+      0.0625,
+      0.125,
+      0.25
+    ],
+    "color_bins": 8,
+    "minimum_reference_patches": 8,
+    "maximum_correction": 0.125,
+    "prototype_zero_tolerance": 1e-12,
+    "fft_batch": 256
+  },
+  "source": "src/ics/methods/reference_texture.py",
+  "source_sha256": "779425b5faf11576d3401b88cd3d26f567831fab166c865d59d72c713c55d031",
+  "runner": "scripts/run_reference_texture.py",
+  "readout": "MEAN+g/8; binary bilinear1024>.5 -> binary bilinear original>.5",
+  "controls": [
+    "same-ROI color histogram",
+    "same-ROI local variance",
+    "actual dominant radial band index and fraction",
+    "zero texture / MEAN",
+    "standalone .5+.5 main g with explicit abstention base fallback"
+  ],
+  "ring_definition": "sum power in radial ring / sum all non-DC power",
+  "positive": "actual uint8 RGB/PIL path; same color/variance prototypes; complete texture IoU.997887 vszero.232714",
+  "strong_control_boundary": "dominant-band control also solves positive, IoU.998140; multiband necessity not demonstrated",
+  "negatives": "same texture distractor and target texture shift harm correct weak base; unchanged method retained",
+  "cpu_cost": "two images x4096 patches xFFT16/FFT32, chunk256; no N^2 new graph or new encoder; base reconstruction separate",
+  "actual_resource_authorization": "only same46466 fixed first4,2workers x2threads,8GB; no600",
+  "actual_smoke4": "not started;3 connection-close failures after successful read-only asset-path verification",
+  "checks": "math_check.json, full independent two-worker CLI and unread object GT sentinel",
+  "actual_gain": "unmeasured"
+}
