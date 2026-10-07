@@ -97,7 +97,7 @@ def fit_a023(frame,transport=True):
         base,info=b0(frame,q);route=np.argmin(sqdist(q,f[active]),1)
         selected=active[route];hit=sqdist(q,f)[np.arange(len(q)),selected]<=radius[selected]
         base[hit]=np.sum(q[hit]*vectors[route[hit]],1)
-        return base,dict(info,normal_domain_points=int(hit.sum()),points=len(q))
+        return base,dict(info,normal_domain_points=int(hit.sum()),points=len(q),_fallback_mask=~hit)
     return predict,{"graph_nodes":len(f),"known_spatial_BG_normals":len(known),"transported_normals":transported,
         "loop_angle_rejections":loop_rejections,"tangent_rank_cap":4,"transport":transport}
 

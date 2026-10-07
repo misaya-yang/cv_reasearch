@@ -132,6 +132,7 @@ def fit_a026(frame,mode='combined',random_rows=False):
     rd=rr if mode=='attention' else (rm[:,None] if mode=='margin' else np.c_[rr,rm])
     qd=qq if mode=='attention' else (qm[:,None] if mode=='margin' else np.c_[qq,qm])
     if mode=='complete_profile_RBF':
+        if not len(frame.fids) or not len(frame.bids):return _plain(frame)
         basis=frame.x[frame.train]
         fi=fps(frame.x,frame.fids,64);bi=fps(frame.x,frame.bids,64);ids=np.r_[fi,bi]
         support=np.c_[rr[ids],frame.x[ids]@basis.T]
@@ -162,6 +163,7 @@ def fit_a032(frame,transitions=True,reverse=False,profiles=False):
     if reverse:r,q=r[::-1],q[::-1]
     if frame.wf.sum()<=0 or frame.wb.sum()<=0:return _plain(frame)
     if profiles:
+        if not len(frame.fids) or not len(frame.bids):return _plain(frame)
         anchor_ids=np.r_[fps(frame.x,frame.fids,64),fps(frame.x,frame.bids,64)]
         f=unit(np.sum(frame.x*frame.wf[:,None],0));b=unit(np.sum(frame.x*frame.wb[:,None],0))
         rd=np.c_[np.concatenate([r[k]@r[k,anchor_ids].T for k in range(4)],axis=1),frame.x@(f-b)]

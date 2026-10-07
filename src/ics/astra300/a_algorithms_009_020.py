@@ -103,7 +103,7 @@ def fit_a009(frame, grouping=True, wrong=False, ridge=False):
             failed[start:start+len(z)]=~good
             residuals.append(float(max(rf.max(initial=0),rb.max(initial=0)))); steps.append(max(nf,nb))
         return score, dict(base_info, failed_two_solve_points=int(failed.sum()), points=len(q),
-                          max_KKT=max(residuals,default=0),max_steps=max(steps,default=0))
+                          max_KKT=max(residuals,default=0),max_steps=max(steps,default=0),_fallback_mask=failed)
     return predict, {"shared_groups": len(pairs), "shared_columns": len(shared),
         "private_F_columns": len(pf),"private_B_columns":len(pb), "grouped":grouping,
         "wrong_groups":wrong,"two_objectives_not_three":True,"epsilon":1e-4}
@@ -518,7 +518,7 @@ def fit_a017(frame,domains=True):
             role_scores.append(score);hits.append(any_hit)
         active=hits[0]|hits[1]
         base[active]=(role_scores[0]-role_scores[1])[active]
-        return base,dict(info,qualified_domain_points=int(active.sum()),points=len(q))
+        return base,dict(info,qualified_domain_points=int(active.sum()),points=len(q),_fallback_mask=~active)
     return predict,{"qualified_FG":len(packets[0]),"qualified_BG":len(packets[1]),
         "reliabilities":[[r[2] for r in p] for p in packets],"domains":domains,
         "reliability_only_qualifies_not_multiplies_similarity":True}

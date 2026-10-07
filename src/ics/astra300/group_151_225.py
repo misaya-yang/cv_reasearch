@@ -276,7 +276,7 @@ def _d155_builder(ep,config):
     core=b&far&stable
     if core.sum()<8 or len(np.unique(dh.blocks(ep.r_hw)[core]))<2:
         return None,dict(core_points=int(core.sum()))
-    allhead=dh.head(ep,xr); corehead=dh.head(ep,xr,keep=f|core)
+    allhead=dh.head(ep,xr); corehead=dh.role_head(ep,xr,background=core)
     def score(x):
         z=dh.mm(x,p)
         return (1-strength)*dh.predict(allhead,z)+strength*dh.predict(corehead,z)
@@ -322,7 +322,7 @@ def _d156_builder(ep,config,control=False):
         pairs_r=ids[match]; pairs_q=qm[match]
         active=len(pairs_r)>=2 and _nonadjacent_pairs(ep,pairs_r,pairs_q,ep.q[pairs_q]-ep.r[pairs_r])
         chosen=np.zeros(len(ep.r),bool); chosen[ids]=True
-        model=dh.head(ep,xr,keep=f|chosen)
+        model=dh.role_head(ep,xr,background=chosen)
         experts.append((model,chosen,active,len(pairs_r)))
         recurrence.append(dict(type=int(group),mutual_pairs=len(pairs_r),active=bool(active)))
     def score(x):

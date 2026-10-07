@@ -285,7 +285,7 @@ def _a003(frame, domains=True, permute=False):
         support = np.maximum(1 - nearest_mean_distance(q, fbank) / 2, 0)
         for i in np.flatnonzero(hit_any):
             base[i] = float(np.median(diff[i, hit[i]])) * support[i]
-        return base, dict(info, domain_hit_points=int(hit_any.sum()), total_points=len(q))
+        return base, dict(info, domain_hit_points=int(hit_any.sum()), total_points=len(q),_fallback_mask=~hit_any)
     return predict, {"boundary_pairs": pairs, "domain": domains, "permuted_pairs": permute,
                      "paired_normal_is_algebraic_distance_difference": True}
 
@@ -581,7 +581,7 @@ def _a007(frame, continuous=False):
         db = np.array([np.min(np.sum((row[None] != cb) * weight, 1)) for row in codes])
         score = db - df; tied = np.abs(score) <= 1e-12
         base, _ = b0(frame, q[tied]); score[tied] = base
-        return score, {"Hamming_ties_B0": int(tied.sum()), "points": len(q)}
+        return score, {"Hamming_ties_B0": int(tied.sum()), "points": len(q),"_fallback_mask":tied}
     return predict, {"bits": len(delta), "pair_reliabilities": [r[2] for r in records], "continuous": False}
 
 
@@ -613,13 +613,15 @@ def _a008(frame, domain=True, permute=False, expert_cap=8):
         weights = np.exp(logweight - logsumexp(logweight, axis=1, keepdims=True))
         base, info = b0(frame, q)
         out, active = np.zeros(len(q)), np.zeros(len(q))
+        hit_any=np.zeros(len(q),bool)
         for k, (ff, bb, radius, responses) in enumerate(experts):
             hit = distance[:, k] <= radius if domain else np.ones(len(q), bool)
             score = (nearest_mean_distance(q, bb) - nearest_mean_distance(q, ff)) / 2
             out += weights[:, k] * np.where(hit, score, base)
             active += hit * weights[:, k]
+            hit_any|=hit
         return out, dict(info, local_expert_weight_mean=float(active.mean()) if len(q) else 0,
-                         any_domain_hit_points=int((active > 0).sum()))
+                         any_domain_hit_points=int(hit_any.sum()),_fallback_mask=~hit_any)
     return predict, {"FG_modes": len(centers), "expert_BG_counts": [len(e[1]) for e in experts],
         "FG_support_radius2": [e[2] for e in experts], "FG_to_BG_response_ranges": [e[3].tolist() for e in experts],
         "domain": domain, "BG_binding_permuted": permute}

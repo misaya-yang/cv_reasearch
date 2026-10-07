@@ -540,7 +540,9 @@ def _c116_descriptor(ctx,p,symmetric=False):
         initial=expit(ctx.u) if side==0 else 1-expit(ctx.u);field=initial.copy()
         for _ in range(20):field=.5*initial+.5*(T.T@field)
         signals.append(field)
-    return np.column_stack((ctx.u,signals[0]-signals[1],asym))
+    descriptor=np.column_stack((ctx.u,signals[0]-signals[1],asym))
+    descriptor[np.asarray(ctx.W.sum(axis=1)).ravel()<=0]=np.nan
+    return descriptor
 
 
 register('C116',point_method('C116',_c116_descriptor),
@@ -563,14 +565,16 @@ def _c117_descriptor(ctx,p,direct=False):
         dist,_,source=dijkstra(cost,directed=True,indices=anchors,min_only=True,return_predecessors=True)
         valid=source>=0;score=np.zeros(len(ctx.x))
         if np.any(valid):score[valid]=np.einsum('id,id->i',ctx.x[valid],ctx.x[source[valid]])*np.exp(-dist[valid])
-        if direct:score=dot(ctx.x,ctx.x[anchors]).max(axis=1)
         distances.append(dist);evidence.append(score)
     negative=np.zeros(len(ctx.x))
     if len(evidence):
         distance=np.array(distances);scores=np.array(evidence)
         chosen=np.argsort(distance,axis=0,kind='stable')[:4]
         negative=np.take_along_axis(scores,chosen,axis=0).max(axis=0)
-    positive=np.flatnonzero(ctx.positive)
+    if direct:
+        bank=np.flatnonzero(ctx.negative&~ctx.broad)
+        negative=dot(ctx.x,ctx.x[bank]).max(axis=1)if len(bank)else np.zeros(len(ctx.x))
+    positive=np.concatenate([a for a in ctx.atoms if np.any(ctx.positive[a])])if any(np.any(ctx.positive[a])for a in ctx.atoms)else np.empty(0,int)
     nearest=(dijkstra(cost,directed=True,indices=positive,min_only=True) if len(positive) else np.full(len(ctx.x),np.nan))
     nearest[~np.isfinite(nearest)]=np.nan
     return np.column_stack((ctx.u,negative,nearest))
@@ -584,7 +588,7 @@ CONTROLS['control_C117_direct_negative']=point_method('control_C117_direct_negat
 
 def _c119_descriptor(ctx,p,sum_paths=False):
     prototypes=ctx.role_prototypes(16)[0]
-    if not len(prototypes):return np.column_stack((ctx.u,np.zeros((len(ctx.x),3))))
+    if not len(prototypes):return np.full((len(ctx.x),4),np.nan)
     nearest=np.argmax(dot(ctx.x,prototypes),axis=1);messages=[]
     W=ctx.W.tocsr();i,j=W.nonzero();weight=np.asarray(W[i,j]).ravel()
     weight=weight* np.where(ctx.negative[j],expit(-4.),1.)
@@ -600,12 +604,13 @@ def _c119_descriptor(ctx,p,sum_paths=False):
                 else:np.maximum.at(new,j,weight*m[i])
                 m=new
             messages.append(m)
-    if not messages:return np.column_stack((ctx.u,np.zeros((len(ctx.x),3))))
+    if not messages:return np.full((len(ctx.x),4),np.nan)
     values=np.array(messages);count=np.count_nonzero(values>0,axis=0)
     maximum=values.max(axis=0)
     # Explicit bounded/truncated sum: clamp every per-source ticket at 4.
     average=np.divide(np.clip(values,0,4).sum(axis=0),count,out=np.zeros(len(ctx.x)),where=count>0)
-    return np.column_stack((ctx.u,average,maximum,count))
+    descriptor=np.column_stack((ctx.u,average,maximum,count));descriptor[count==0]=np.nan
+    return descriptor
 
 
 register('C119',point_method('C119',_c119_descriptor),
@@ -1750,7 +1755,7 @@ def _c121_fields(ctx,p,shuffle=False):
     for C,H in pairs:
         shell=np.setdiff1d(C,H,assume_unique=True)
         if not len(shell):continue
-        available=[d for d in donors if not np.intersect1d(C,d[0],assume_unique=True).size]
+        available=[d for d in donors if not np.intersect1d(H,d[0],assume_unique=True).size]
         if not available:continue
         profile=ctx.profile[H].mean(axis=0)
         chosen=min(enumerate(available),key=lambda item:(np.linalg.norm(profile-item[1][4]),int(item[1][0].min()),item[0]))[1]
@@ -1764,3 +1769,65 @@ register('C121',region_point_method('C121',_c121_fields),
          ['The same public tree parent-child relations define core H and its disjoint own shell C\\H; donor core and shell both require the independently prebuilt source K0 positive gate.',
           'All overlapping donor containers are excluded; a one-time nonoverlapping complete-profile nearest donor supplies Delta, and only the receiver own shell is scored.'])
 CONTROLS['control_C121_shuffle_paired_delta']=region_point_method('control_C121_shuffle_paired_delta',lambda c,p:_c121_fields(c,p,True))
+
+
+def _grounded_resistance(W,anchors):
+    from scipy.sparse.csgraph import connected_components
+    from scipy.sparse.linalg import splu
+    n=W.shape[0];_,cc=connected_components(W,directed=False);R=np.full(n,np.inf);factors={};component_of={}
+    degree=np.asarray(W.sum(axis=1)).ravel();L=sparse.diags(degree)-W
+    for component in np.unique(cc):
+        ids=np.flatnonzero(cc==component);ground=ids[anchors[ids]]
+        if not len(ground):continue
+        R[ground]=0;free=ids[~anchors[ids]]
+        if not len(free):continue
+        matrix=L[free][:,free].tocsc();factor=splu(matrix);position={int(i):k for k,i in enumerate(free)}
+        for start in range(0,len(free),64):
+            stop=min(start+64,len(free));rhs=np.zeros((len(free),stop-start));rhs[np.arange(start,stop),np.arange(stop-start)]=1
+            solution=factor.solve(rhs);R[free[start:stop]]=solution[np.arange(start,stop),np.arange(stop-start)]
+        factors[int(component)]=(free,position,factor)
+        for point in free:component_of[int(point)]=int(component)
+    return R,factors,component_of
+
+
+def _edge_resistance(W,anchors,baseline,factors,component_of,i,j,weight):
+    component=component_of.get(int(i),component_of.get(int(j)))
+    if component is None:return baseline.copy()
+    free,position,factor=factors[component];rhs=np.zeros(len(free))
+    if int(i)in position:rhs[position[int(i)]]+=1
+    if int(j)in position:rhs[position[int(j)]]-=1
+    response=factor.solve(rhs);denominator=1-weight*(rhs@response)
+    if denominator>1e-10:
+        changed=baseline.copy();changed[free]=baseline[free]+weight*response**2/denominator
+        return changed
+    edited=W.tolil();edited[i,j]=0;edited[j,i]=0;edited=edited.tocsr();edited.eliminate_zeros()
+    return _grounded_resistance(edited,anchors)[0]
+
+
+def _c120_descriptor(ctx,p,intervene=True):
+    atom_id=np.full(len(ctx.x),-1)
+    for k,a in enumerate(ctx.atoms):atom_id[a]=k
+    i,j=edges4(ctx.hw,ctx.valid);uncertain=~(ctx.positive|ctx.negative)
+    positive_weight=np.asarray(ctx.W[i,j]).ravel()>0
+    keep=(atom_id[i]!=atom_id[j])&(uncertain[i]|uncertain[j])&positive_weight;i,j=i[keep],j[keep]
+    out=np.full((len(ctx.x),5),np.nan)
+    if not len(i):return out
+    stats=np.zeros((len(ctx.x),4));covered=np.zeros(len(ctx.x),bool)
+    for role,anchors in enumerate((ctx.positive,ctx.negative)):
+        baseline,factors,component=_grounded_resistance(ctx.W,anchors)
+        for a,b in zip(i,j):
+            weight=float(ctx.W[a,b]);covered[[a,b]]=True
+            changed=_edge_resistance(ctx.W,anchors,baseline,factors,component,int(a),int(b),weight)if intervene and weight>0 else baseline
+            for point in(a,b):
+                disconnected=not np.isfinite(changed[point])
+                if np.isfinite(changed[point])and np.isfinite(baseline[point]):
+                    delta=np.log1p(changed[point])-np.log1p(baseline[point])
+                    stats[point,2*role]=max(stats[point,2*role],delta if intervene else np.log1p(baseline[point]))
+                stats[point,2*role+1]=max(stats[point,2*role+1],disconnected)
+    out[covered]=np.column_stack((ctx.u[covered],stats[covered]));return out
+
+
+register('C120',point_method('C120',_c120_descriptor),
+         ['Test edges are spatial atom-boundary edges with at least one point lacking a strong public identity anchor.',
+          'Effective resistance uses exact grounded Laplacian diagonal inverses; deletions use the exact rank-one inverse identity when nonsingular and explicitly recompute disconnected components otherwise.'])
+CONTROLS['control_C120_original_resistance']=point_method('control_C120_original_resistance',lambda c,p:_c120_descriptor(c,p,False))

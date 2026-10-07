@@ -182,6 +182,130 @@ def _one_gaussian(x):
     return H.DiagGMM(np.mean(x,axis=0,keepdims=True),np.maximum(np.var(x,axis=0,keepdims=True),1e-4),np.ones(1))
 
 
+def e226_visible_t_layers(problem,control=None):
+    ep=problem.ep;chains,ny,nx=C._contour_chains(ep.q_rgb)
+    if not chains:return problem.U.copy(),dict(status='fallback_no_RGB_T_junction')
+    skeleton=np.zeros(problem.U.shape,bool);skeleton.ravel()[np.unique(np.concatenate(chains))]=True
+    degree=ndimage.convolve(skeleton.astype(int),np.ones((3,3),int),mode='constant')-skeleton
+    centers=B._spread_rows(np.flatnonzero(skeleton&(degree==3)),128)
+    colour=np.asarray(ep.q_rgb,float).reshape(-1,3)/255.;nodes=[];links=[]
+    for center in centers:
+        y,x=divmod(int(center),problem.U.shape[1]);arms=[]
+        for dy in (-1,0,1):
+            for dx in (-1,0,1):
+                if not (dy or dx):continue
+                yy,xx=y+dy,x+dx
+                if 0<=yy<problem.U.shape[0] and 0<=xx<problem.U.shape[1] and skeleton[yy,xx]:
+                    arms.append(np.array([dy,dx],float)/np.hypot(dy,dx))
+        if len(arms)!=3:continue
+        pairs=[(a,b) for a in range(3) for b in range(a+1,3)];a,b=min(pairs,key=lambda t:float(arms[t[0]]@arms[t[1]]));stem=3-a-b
+        # Two local front/back orders plus unordered. No order means FG by
+        # definition; its semantic pixels are always free in the binary cut.
+        ends=[]
+        for arm in arms:
+            yy=int(np.clip(np.rint(y+4*arm[0]),0,problem.U.shape[0]-1));xx=int(np.clip(np.rint(x+4*arm[1]),0,problem.U.shape[1]-1));ends.append(yy*problem.U.shape[1]+xx)
+        bar=(ends[a],ends[b]);stem_pair=(int(center),ends[stem])
+        continuity_bar=float(np.sum((colour[bar[0]]-colour[bar[1]])**2))
+        continuity_stem=float(np.sum((colour[stem_pair[0]]-colour[stem_pair[1]])**2))
+        if abs(continuity_bar-continuity_stem)<H.EPS:continue
+        costs=np.array([0.,continuity_bar-continuity_stem,continuity_stem-continuity_bar])
+        nodes.append(dict(center=int(center),bar=bar,stem=stem_pair,cost=costs,
+                          direction=arms[stem],point=np.array([y,x],float)))
+    if not nodes:return problem.U.copy(),dict(status='fallback_T_direction_ambiguous')
+    for a in range(len(nodes)):
+        for b in range(a+1,len(nodes)):
+            if np.linalg.norm(nodes[a]['point']-nodes[b]['point'])<=8:links.append((a,b))
+    source=np.asarray(ep.r_rgb,float).reshape(-1,3)/255.;scale=max(float(np.median(np.var(source[problem.rvalid],axis=0))),1e-4)
+    for node in nodes:node['cost']/=scale
+    grid_edges,cap=H.rgb_edges(ep.q_rgb);U=problem.U.ravel();uc=np.clip(U,H.EPS,1-H.EPS);unary=np.log(uc/(1-uc))
+    from ics.methods.pro_paired_environment import exact_potts_cut
+    def pair_cost(node,state,y):
+        if state==0:return 0.
+        i,j=node['bar'] if state==1 else node['stem']
+        return float(y[i]!=y[j])
+    def full_energy(y,states):
+        value=float(np.sum(np.logaddexp(0,unary)-unary*y)+cap@(y[grid_edges[:,0]]!=y[grid_edges[:,1]]))
+        value+=sum(float(n['cost'][s])+pair_cost(n,s,y) for n,s in zip(nodes,states))
+        if control!='independent':
+            value+=sum(float(states[a]!=states[b])*.25 for a,b in links if states[a] and states[b])
+        return value
+    best=U>.5;bestcost=np.inf;cut_calls=0
+    for initial in range(3):
+        states=np.full(len(nodes),initial,int);y=U>.5
+        for _ in range(5):
+            for j,node in enumerate(nodes):
+                scores=node['cost'].copy()+np.array([pair_cost(node,k,y) for k in range(3)])
+                if control!='independent':
+                    for a,b in links:
+                        other=b if a==j else a if b==j else None
+                        if other is not None and states[other]:scores[1:]+=.25*(np.arange(1,3)!=states[other])
+                states[j]=int(np.argmin(scores))
+            extra=[]
+            for node,state in zip(nodes,states):
+                if state:extra.append(node['bar'] if state==1 else node['stem'])
+            edges=np.concatenate((grid_edges,np.asarray(extra,int).reshape(-1,2)))
+            capacity=np.r_[cap,np.ones(len(extra))]
+            y,certificate=exact_potts_cut(unary,edges,capacity);cut_calls+=1
+            value=full_energy(y,states)
+            if value<bestcost:bestcost=value;best=y.copy()
+    return best.reshape(problem.U.shape).astype(float),dict(status='ok',binary_optimizer=True,
+            T_junctions=len(nodes),compatibility_links=len(links),local_orders=3,cut_calls=cut_calls,
+            finite_outer_rounds=5,initializations=3,best_complete_energy=bestcost,
+            paid_compatibility_breaks_cycles_allowed=True,only_visible_pixels=True,control=control)
+
+
+def _laplacian_rgb(rgb):
+    value=np.asarray(rgb,float)/255.
+    scales=[ndimage.gaussian_filter(value,(s,s,0),mode='nearest') for s in (1,2,4,8)]
+    return [scales[j]-scales[j+1] for j in range(3)]
+
+
+def e234_laplacian_roles(problem,control=None):
+    ep=problem.ep;anchors=B._anchors(problem).ravel()
+    if not np.any(anchors==1) or not np.any(anchors==-1):return problem.U.copy(),dict(status='fallback_query_double_anchors_missing')
+    rp=_laplacian_rgb(ep.r_rgb);qp=_laplacian_rgb(ep.q_rgb);semantic=H.native_to_original(problem.u0.reshape(ep.q_hw),ep.original_shape,ep.query_geometry).ravel()
+    valid=problem.rvalid;lab=problem.labels;evidences=[];models=[];source_scales=[]
+    for r,q in zip(rp,qp):
+        rv=r.reshape(-1,3);qv=q.reshape(-1,3);f=fit_gmm(rv[valid&lab],2);b=fit_gmm(rv[valid&~lab],2)
+        if f is None or b is None:evidences.append(np.zeros(len(qv)));models.append(None);source_scales.append(0.);continue
+        rs=f.log_density(rv)-b.log_density(rv);scale=max(float(np.median(np.abs(rs[valid]))),H.EPS)
+        evidence=f.log_density(qv)-b.log_density(qv)
+        # Residuals with identical class explanations are not all added to FG.
+        if np.max(np.abs(rs[valid]),initial=0)<=H.EPS:evidence[:]=0
+        evidence/=scale
+        permitted=(np.abs(semantic-.5)<=.1)|(np.sign(evidence)==np.sign(semantic-.5))
+        evidence[~permitted]=0;evidences.append(evidence);models.append((f,b));source_scales.append(scale)
+    if not any(np.any(a) for a in evidences):return problem.U.copy(),dict(status='fallback_no_class_explainable_pyramid_residual')
+    if control=='direct_all_channels':
+        r=np.concatenate([v.reshape(-1,3) for v in rp],1);q=np.concatenate([v.reshape(-1,3) for v in qp],1)
+        head=H.fit_pixel_logistic(r,np.zeros((1,1)),np.zeros(len(r),int),lab,valid)
+        if head is None:return problem.U.copy(),dict(status='fallback_direct_head_missing_roles')
+        p=np.clip(head.predict(q,np.zeros((1,1)),np.zeros(len(q),int)),H.EPS,1-H.EPS)
+        evidence=np.log(p/(1-p));out,cert=C._cut(problem,evidence)
+        return out,dict(status='ok',binary_optimizer=True,control=control,fit=head.info,cut=cert)
+    current=problem.U.copy();total=np.zeros(problem.U.size);trace=[]
+    for j in (2,1,0):
+        total+=evidences[j]
+        out,cert=C._cut(problem,total);trace.append(dict(level=j,foreground_pixels=int(np.sum(out>.5)),cut_energy=cert['energy']))
+        current=out
+        if control=='fixed_models':continue
+        # Local appearance is refit only from initial direct anchors whose
+        # current labels agree. Newly changed pixels never authorize a class.
+        if models[j] is None:continue
+        q=qp[j].reshape(-1,3);fg=(anchors==1)&(out.ravel()>.5);bg=(anchors==-1)&(out.ravel()<=.5)
+        if fg.sum()>=8 and bg.sum()>=8:
+            f=fit_gmm(q[fg],2);b=fit_gmm(q[bg],2)
+            candidate=(f.log_density(q)-b.log_density(q))/source_scales[j]
+            permitted=(np.abs(semantic-.5)<=.1)|(np.sign(candidate)==np.sign(semantic-.5))
+            candidate[~permitted]=0
+            # Same level gets one bounded local-appearance update; all levels
+            # share coefficient1 rather than a hidden scale search.
+            total+=candidate-evidences[j];current,cert=C._cut(problem,total)
+    return current,dict(status='ok',binary_optimizer=True,pyramid_levels=3,RGB_sigmas=[1,2,4,8],
+            shared_residual_coefficient=1,source_evidence_scales=source_scales,coarse_to_fine_trace=trace,
+            semantic_counterevidence_gate=True,control=control)
+
+
 def e227_touching_split(problem,control=None):
     ep=problem.ep;labels,count=ndimage.label(problem.U>.5);x=H.texture_phi(ep.q_rgb)
     anchors=B._anchors(problem).ravel();groups=[];split=0;domains=[]
@@ -270,16 +394,21 @@ def e228_grouped_adaptation(problem,control=None):
 
 
 METHODS={
+ 'E226':lambda ep:B._call(ep,'E226',e226_visible_t_layers),
  'E227':lambda ep:B._call(ep,'E227',e227_touching_split),
  'E228':lambda ep:B._call(ep,'E228',e228_grouped_adaptation),
  'E229':lambda ep:B._call(ep,'E229',e229_subpatch_integral),
+ 'E234':lambda ep:B._call(ep,'E234',e234_laplacian_roles),
 }
 CONTROLS={
+ 'E226_independent_T_orders':lambda ep:B._call(ep,'E226',e226_visible_t_layers,control='independent'),
  'E227_no_split_GrabCut':lambda ep:B._call(ep,'E227',e227_touching_split,control='no_split'),
  'E227_same_components_global_F_GMM':lambda ep:B._call(ep,'E227',e227_touching_split,control='global'),
  'E228_same_islands_independent_cuts':lambda ep:B._call(ep,'E228',e228_grouped_adaptation,control='independent'),
  'E228_same_components_global_GMM':lambda ep:B._call(ep,'E228',e228_grouped_adaptation,control='global'),
  'E229_independent_line_states':lambda ep:B._call(ep,'E229',e229_subpatch_integral,control='independent'),
  'E229_same_coverage_pixel_quota':lambda ep:B._call(ep,'E229',e229_subpatch_integral,control='pixel_quota'),
+ 'E234_all_pyramid_channels_direct_head':lambda ep:B._call(ep,'E234',e234_laplacian_roles,control='direct_all_channels'),
+ 'E234_source_models_no_local_adaptation':lambda ep:B._call(ep,'E234',e234_laplacian_roles,control='fixed_models'),
 }
 RESOURCES={id:dict(final_native=True,original_rgb=True,complete_MR=True,mean_host=True,extra_encoder_forwards=0) for id in METHODS}

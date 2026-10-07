@@ -182,9 +182,7 @@ def _markov_model(sequences,order=2):
 def _chain_likelihood(words,model):
     if model.ndim==1:return float(model[words].mean())
     if len(words)<3:return -np.log(96.)
-    a=float(model[words[:-2],words[1:-1],words[2:]].mean())
-    rev=words[::-1];b=float(model[rev[:-2],rev[1:-1],rev[2:]].mean())
-    return .5*(a+b)
+    return float(model[words[:-2],words[1:-1],words[2:]].mean())
 
 
 def e239_ordered_contour(problem,control=None):
@@ -192,17 +190,18 @@ def e239_ordered_contour(problem,control=None):
     rsem=H.native_to_original(native.reshape(ep.r_hw),ep.r_rgb.shape[:2],ep.reference_geometry)
     chains,ny,nx=_contour_chains(ep.r_rgb);seq=[[],[],[]];training_valid=problem.rvalid
     for chain in chains:
-        words,l,r=_chain_words(chain,ep.r_rgb,rsem,ny,nx)
-        valid=training_valid[l]&training_valid[r]
-        left=problem.labels[l];right=problem.labels[r]
-        roles=np.where(left!=right,0,np.where(left,1,2))
-        # Only contiguous same-role runs make one sequence; unknown pixels
-        # never lend their GT role across the source holdout support.
-        for role in range(3):
-            runs,count=ndimage.label(valid&(roles==role))
-            for j in range(1,count+1):
-                selected=words[runs==j]
-                if len(selected)>=3:seq[role].append(selected)
+        for directed in (chain,chain[::-1]):
+            # Recompute turns for the reverse traversal. Reversing an already
+            # encoded word list would leave its signed turn codes unchanged.
+            words,l,r=_chain_words(directed,ep.r_rgb,rsem,ny,nx)
+            valid=training_valid[l]&training_valid[r]
+            left=problem.labels[l];right=problem.labels[r]
+            roles=np.where(left!=right,0,np.where(left,1,2))
+            for role in range(3):
+                runs,count=ndimage.label(valid&(roles==role))
+                for j in range(1,count+1):
+                    selected=words[runs==j]
+                    if len(selected)>=3:seq[role].append(selected)
     if not seq[0] or not (seq[1] or seq[2]):return problem.U.copy(),dict(status='fallback_missing_source_sequence_classes')
     if control=='shuffled':
         rng=np.random.default_rng(0);seq=[[rng.permutation(a) for a in group] for group in seq]
@@ -211,7 +210,8 @@ def e239_ordered_contour(problem,control=None):
     qsem=H.native_to_original(problem.u0.reshape(ep.q_hw),ep.original_shape,ep.query_geometry)
     for chain in qchains:
         words,l,r=_chain_words(chain,ep.q_rgb,qsem,qny,qnx)
-        ll=[_chain_likelihood(words,m) for m in models]
+        reverse,_,_=_chain_words(chain[::-1],ep.q_rgb,qsem,qny,qnx)
+        ll=[.5*(_chain_likelihood(words,m)+_chain_likelihood(reverse,m)) for m in models]
         strength=ll[0]-max(ll[1:]);direction=np.sign(qsem.ravel()[l]-qsem.ravel()[r])
         usable=direction!=0
         if strength>0 and usable.any():

@@ -408,9 +408,11 @@ def train_kernel(prepared, descriptor_fn, mode='region', base=False,excluded_fol
                 if not np.isfinite(row).any(): continue
                 center = c[len(c)//2]
                 if prepared.rb[center] != f: continue
+                label_support=c[~np.isin(prepared.rb[c],excluded_folds)]if excluded_folds else c
+                if not len(label_support):continue
                 descriptors.append(row)
-                labels.append(float(np.sum(prepared.ep.wf[c])/max(np.sum(prepared.rv[c]),1e-12)))
-                weights.append(float(np.mean(prepared.rv[c])))
+                labels.append(float(np.sum(prepared.ep.wf[label_support])/max(np.sum(prepared.rv[label_support]),1e-12)))
+                weights.append(float(np.mean(prepared.rv[label_support])))
         elif mode == 'point':
             if len(d) != len(ctx.x): raise ValueError('complete point descriptors required')
             ids = np.flatnonzero((prepared.rb == f) & (prepared.rv > 0))

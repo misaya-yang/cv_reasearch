@@ -470,7 +470,15 @@ def score(args):
             raise ValueError('Sealed inference-only row changed: ' + identity)
         records[identity] = record['arms']
     complete = set.intersection(*[{a for a, r in records[i].items() if r['state'] == 'complete'} for i in ids])
-    excluded = {a: sealed['arm_outcomes'][a] for a in sealed['expected_arms'] if a not in complete}
+    contract_excluded = set(getattr(args, 'exclude_arms', ()) or ())
+    exclusion_reason = getattr(args, 'exclusion_reason', None)
+    if not contract_excluded <= set(sealed['expected_arms']):
+        raise ValueError('Contract exclusions must identify actual sealed arms')
+    if contract_excluded and not exclusion_reason:
+        raise ValueError('Contract exclusions require an explicit source-review reason')
+    complete -= contract_excluded
+    excluded = {a: sealed['arm_outcomes'][a] for a in sealed['expected_arms']
+                if a not in complete and a not in contract_excluded}
     if excluded and not args.allow_partial:
         raise ValueError('Missing/unavailable requested arms; score refused unless --allow-partial: ' + repr(excluded))
     baseline = args.baseline or (config['controls'][0] if config['controls'] else None)
@@ -544,6 +552,8 @@ def score(args):
                   gain_vs_baseline={a:dict(gain=scores[a]-scores[baseline],ci95=np.percentile(samples[a]-samples[baseline],[2.5,97.5]).tolist()) for a in arrays},
                   requested_method_count=len(config['methods']), scored_method_count=len(set(config['methods']) & complete),
                   all_requested_arms_complete=not excluded, explicitly_excluded_incomplete_arms=excluded,
+                  explicitly_excluded_contract_arms=sorted(contract_excluded),
+                  contract_exclusion_reason=exclusion_reason,
                   original_resolution=True, renderer=config['renderer'], exposure='reused development; not independent confirmation',
                   quality_scope='synthetic/activity probe' if len(rows) <= 4 else 'fixed development measurement',
                   bootstrap=dict(draws=2000,unit='connected support/query photographs',rng='RandomState(0)',photo_groups=g),
@@ -573,6 +583,8 @@ def main():
     scoring.add_argument('--evaluation-rows', type=Path, required=True); scoring.add_argument('--data', type=Path, required=True)
     scoring.add_argument('--out', type=Path, required=True); scoring.add_argument('--baseline')
     scoring.add_argument('--allow-partial', action='store_true', help='Explicitly exclude arms incomplete on any fixed episode')
+    scoring.add_argument('--exclude-arms', nargs='+', default=[], help='Explicit source-contract invalid arms; does not filter episodes')
+    scoring.add_argument('--exclusion-reason', help='Source-review reason for excluding invalid algorithm versions')
     args = parser.parse_args()
     if args.stage == 'list':
         methods, controls = registry(args.modules); print(json.dumps(dict(methods=list(methods),controls=list(controls)),indent=2))

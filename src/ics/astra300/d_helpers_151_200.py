@@ -203,6 +203,16 @@ def head(ep, xr=None, *, extra=None, keep=None):
     return logistic(xr, y, weights, extra=extra)
 
 
+def role_head(ep,xr,*,foreground=None,background=None,extra=None):
+    """Select training ROLES independently at mixed tokens without relabeling."""
+    foreground=np.ones(len(ep.r)) if foreground is None else np.asarray(foreground)
+    background=np.ones(len(ep.r)) if background is None else np.asarray(background)
+    fm=ep.wf*foreground;bm=ep.wb*background
+    if min(float(fm.sum()),float(bm.sum()))<=EPS:return None
+    f=.5*fm/fm.sum();b=.5*bm/bm.sum();w=f+b
+    return logistic(xr,f/np.maximum(w,EPS),w,extra=extra)
+
+
 def predict(model, x):
     if model is None:
         raise ValueError('Absent temporary classifier')

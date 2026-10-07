@@ -136,34 +136,50 @@ def b0(frame, q):
     return (nearest_mean_distance(q, b) - nearest_mean_distance(q, f)) / 2, info
 
 
-def threshold(scores, wf, wb):
+def threshold(scores, wf, wb, fixed_positive=None):
     """Exact balanced soft-coverage absolute-error minimizer; strict score>t."""
     scores = np.asarray(scores, float)
     wf, wb = np.asarray(wf, float), np.asarray(wb, float)
     if wf.sum() <= 0 or wb.sum() <= 0 or not len(scores):
         return 0., None
-    # Literal source |binary_prediction - soft_coverage| under each role's
-    # half-balanced weighting; fractional-role FP/FN is a different objective.
+    # Literal source |binary_prediction - soft_coverage|. A B0 point has its
+    # fixed cut0 prediction even during reference threshold search; it is never
+    # allowed to change labels as t_R is scanned.
     weights = .5 * wf / wf.sum() + .5 * wb / wb.sum()
     coverage = np.divide(wf, wf + wb, out=np.zeros(len(wf)), where=(wf + wb) > 0)
-    order = np.argsort(scores, kind="stable")
-    s, weight, c = scores[order], weights[order], coverage[order]
-    unique, start = np.unique(s, return_index=True)
-    end = np.r_[start[1:] - 1, len(s) - 1]
-    cumulative = np.cumsum(weight * (2 * c - 1))
-    all_positive_error = np.sum(weight * (1 - c))
-    values = np.r_[np.nextafter(unique[0], -np.inf), unique, 0.]
-    losses = np.r_[all_positive_error, all_positive_error + cumulative[end],
-                   np.sum(weight * np.abs((s > 0).astype(float) - c))]
+    fixed = np.full(len(scores),-1,int) if fixed_positive is None else np.asarray(fixed_positive,int)
+    if fixed.shape!=scores.shape or not np.isin(fixed,(-1,0,1)).all():
+        raise ValueError("Fixed fallback predictions must be aligned -1/0/1")
+    active=scores[fixed<0]
+    if not len(active):
+        return 0.,float(np.sum(weights*np.abs(fixed-coverage)))
+    values=np.unique(np.r_[active,0.,np.nextafter(active.min(),-np.inf)])
+    # Direct canonical arithmetic matches the public literal C_R, including
+    # exact tie behavior. The finite budget is the observed source cut values.
+    losses=np.array([np.sum(weights*np.abs(np.where(fixed>=0,fixed,(scores>value).astype(int))-coverage))
+                     for value in values])
     best = min(range(len(values)), key=lambda k: (float(losses[k]), abs(float(values[k])), float(values[k])))
     return float(values[best]), float(losses[best])
+
+
+def fallback_scope(activity,fit_info,n,*,alpha_contract=False):
+    activity=dict(activity)
+    explicit=activity.pop('_fallback_mask',None)
+    whole=bool(activity.pop('_fallback_all',False) or fit_info.get('mechanism')=='A_B0_5NN')
+    mask=np.full(n,whole,bool) if explicit is None else np.asarray(explicit,bool)
+    if mask.shape!=(n,):raise ValueError('Fallback scope must align predicted points')
+    # The raw-alpha source cards already specify alpha=(s_B0+2)/4 and cut.5;
+    # their positive affine mapping must stay in the continuous alpha field.
+    if alpha_contract:mask[:]=False
+    activity['fallback_cut0_points']=int(mask.sum())
+    return mask,activity
 
 
 def infer_a(ep, method_id, fit, assumptions=(), fixed_threshold=None):
     validate(ep)
     start = time.perf_counter()
     full = Frame.make(ep)
-    folds, scores, weights_f, weights_b = [], [], [], []
+    folds, scores, weights_f, weights_b, fixed_predictions = [], [], [], [], []
     # Exactly one joint configuration is used unless the card's wrapper says otherwise.
     if fixed_threshold is None and full.wf.sum() > 0 and full.wb.sum() > 0:
         for block in range(4):
@@ -174,23 +190,31 @@ def infer_a(ep, method_id, fit, assumptions=(), fixed_threshold=None):
                 folds.append({"block": block, "effective": False}); continue
             predict, fit_info = fit(frame)
             s, activity = predict(frame.x[held], np.flatnonzero(held), "r")
+            fallback,activity=fallback_scope(activity,fit_info,len(s))
             if not np.isfinite(s).all():
                 raise ValueError(f"{method_id} produced non-finite reference scores")
             scores.extend(s.tolist()); weights_f.extend(ep.wf[held].tolist()); weights_b.extend(ep.wb[held].tolist())
+            fixed_predictions.extend(np.where(fallback,(s>0).astype(int),-1).tolist())
             folds.append({"block": block, "effective": True, "fit": fit_info, "activity": activity})
     if fixed_threshold is not None:
         cut, loss = float(fixed_threshold), None
     elif sum(x["effective"] for x in folds) >= 2:
-        cut, loss = threshold(scores, weights_f, weights_b)
+        cut, loss = threshold(scores, weights_f, weights_b,fixed_predictions)
     else:
         cut, loss = 0., None
     predict, fit_info = fit(full)
     valid = ep.q_valid > 0
     margin = np.full(len(ep.q), -1., float)
     score, activity = predict(np.asarray(ep.q[valid], float), np.flatnonzero(valid), "q")
+    fallback,activity=fallback_scope(activity,fit_info,len(score),alpha_contract=fixed_threshold is not None)
     if not np.isfinite(score).all():
         raise ValueError(f"{method_id} produced non-finite complete query scores")
     margin[valid] = score - cut
+    margin[np.flatnonzero(valid)[fallback]]=score[fallback]
+    if fallback.any():
+        native_fallback=np.zeros(len(ep.q),bool);native_fallback[np.flatnonzero(valid)[fallback]]=True
+        activity['fallback_native_bitmask_hex']=np.packbits(native_fallback,bitorder='little').tobytes().hex()
+        activity['fallback_native_bitmask_length']=len(ep.q)
     return Result(margin.reshape(ep.q_hw), info=jsonable({"method_id": method_id,
         "renderer": "A_U_continuous_original_then_strict_positive", "threshold": cut,
         "calibration": {"configurations": 1, "four_spatial_blocks": folds,
