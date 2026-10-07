@@ -348,8 +348,8 @@ def score(args):
         if run.resolve() in args.out.resolve().parents or run.resolve() == args.out.resolve():
             raise ValueError('Score output must be separate from every immutable original run')
     primary_config = load(args.run/'config.json')
-    if primary_config['controls'] or not primary_config['methods']:
-        raise ValueError('Primary run must contain actual methods and no selected controls')
+    if not primary_config['methods']:
+        raise ValueError('Primary run must contain actual methods')
     methods = args.methods or list(primary_config['methods'])
     if len(set(methods)) != len(methods) or not set(methods) <= set(primary_config['methods']):
         raise ValueError('Choose actual distinct primary methods, never a control')
