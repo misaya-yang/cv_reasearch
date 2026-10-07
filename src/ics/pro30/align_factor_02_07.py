@@ -79,7 +79,7 @@ def background_orthogonal(ep,mode='orthogonal'):
     validate(ep);start=time.perf_counter();mid='PRO30_M02' if mode=='orthogonal' else 'PRO30_M02__'+mode
     degeneration=degenerate_margin(ep)
     if degeneration is not None:return finish(ep,degeneration[0],mid,degeneration[1])
-    fitted=fit_br(ep);original=fitted.predict(ep.q);bank=_pair_anchors(ep)
+    fitted=fit_br(ep);original=fitted.predict(ep.q);original[ep.q_valid<=0]=-1.;bank=_pair_anchors(ep)
     info=dict(source_contract(2),BR=fitted.info,mode=mode,new_encoder_forwards=0)
     if bank is None:return finish(ep,original,mid,dict(info,inactive=True,inactive_reason='no source/query modes'))
     r,q,pairs,representatives,regions=bank
@@ -94,12 +94,13 @@ def background_orthogonal(ep,mode='orthogonal'):
         train=np.arange(len(pairs))%2==parity;held=~train
         basis,rotation=orthogonal_operator(ra[train],qa[train])
         predicted=np.array([transform(value,basis,rotation) for value in ra[held]])
-        before=float(np.median(np.sum((ra[held]-qa[held])**2,axis=1)))
-        after=float(np.median(np.sum((predicted-qa[held])**2,axis=1)))
+        before=float(np.median(np.linalg.norm(ra[held]-qa[held],axis=1)))
+        after=float(np.median(np.linalg.norm(predicted-qa[held],axis=1)))
         halves.append(dict(before=before,after=after,passed=before>EPS and after<=.9*before,
             foreground_direction=transform(foreground,basis,rotation)))
     foreground_cos=float(unit(halves[0]['foreground_direction'])@unit(halves[1]['foreground_direction']))
     info.update(rank=fullbasis.shape[1],odd_even_foreground_cosine=foreground_cos,
+        paired_residual_metric='Euclidean norm, median; reduce at least10%',
         odd_even_residuals=[{k:v for k,v in h.items() if k!='foreground_direction'} for h in halves],
         nearest_vs_hungarian_unused='anchors greedy one-to-one as source specifies')
     active=all(h['passed'] for h in halves) and foreground_cos>=.95

@@ -92,7 +92,20 @@ def host_B(ep):
     def build():
         from . import common
         if hasattr(common,'host_B'):value=common.host_B(ep)
-        else:value=artifact(ep,'pro30_host_B')
+        elif ep.producer.get('synthetic_contract_fixture'):
+            value=artifact(ep,'pro30_host_B')
+        else:
+            operator=artifact(ep,'pro30_B_operator')
+            if not callable(operator):raise ArtifactUnavailable('Actual full original FoRIS+MEAN16 B operator required')
+            output=operator(ep,reference=None,query=None,apd='native',fixed_native_gate=True)
+            if not isinstance(output,tuple)or len(output)!=2:raise ArtifactUnavailable('Source-bound B operator returns(field,execution identity/cost)')
+            field,producer=output
+            if not isinstance(producer,dict)or producer.get('complete_FoRIS_MEAN16')is not True or producer.get('native_gate_locked')is not True or producer.get('query_GT_read')is not False or not producer.get('source_sha256'):
+                raise ArtifactUnavailable('Complete original B execution identity and no-QGT binding required')
+            checkpoint=ep.producer.get('model_assets',ep.producer).get('checkpoint_sha256')
+            if not checkpoint or producer.get('checkpoint_sha256')!=checkpoint:raise ArtifactUnavailable('Actual B checkpoint differs from native episode')
+            producer=dict(producer,pro30_host='complete_original_FoRIS_plus_MEAN16')
+            value={'field':np.asarray(field).reshape(ep.q_hw),'producer':producer}
         if isinstance(value,Result):
             value={'field':value.field,'info':value.info}
         if not isinstance(value,dict):raise ArtifactUnavailable('Pro30 M13/M16 require complete original FoRIS+MEAN16 B field and source provenance')
