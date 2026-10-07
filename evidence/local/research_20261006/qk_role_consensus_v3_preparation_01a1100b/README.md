@@ -95,3 +95,45 @@ c_i=\begin{cases}
 模块：`src/ics/methods/qk_role_consensus_v3.py`；独立缓存入口：`scripts/run_qk_role_consensus_v3.py`。入口只打开rq/rk/qq/qk、cov/base、rawH20/final control features、原HW，绑定actual pre-RoPE producer/MEAN producer及input hash，拒绝无producer或包含未知teacher层位的packet。Toy强fixture改进不改预测模块/参数；真实feasibility绑定的method SHA与冻结contract一致。
 
 **后续仅由root判断是否授权固定有限4例（主＋所有同预算控制）。** 不按本case分歧率、预测面积或已知旧GT调τ、幅度、头/层、方向正负号或另开变体。若完整效果不胜最强单向/对称/H20/final对照，撤回一致性独立价值；若只有teacher特征对照有用，保留该简单组件。即便有限4有利，也不自动启动24/600或声称原问题解决。
+
+## 新授权固定smoke4已完成：完整输出未胜MEAN
+
+Root随后明确授权同smoke4固定质量测量。已复用M5真实native_pair的其余3例，无新编码；首例feas预测原样复用，没有改动代码SHA、参数、block21/16头或.1预算。全4与全部control按统一12文件hash、case/source/weight/teacher shape/patch5..4100/MEAN producer、完整renderer核验封存，再以独立1CPU读取GT。
+
+1024用同bound600_v2 evaluation manifest的packet.truth/native及storedMean/RCG/fine controls；原尺寸另用M5统一seal中合法annotation路径、class+1、实际JPEG H/W，并在解码GT前绑定SHA。原native/control比较行是缓存1024预测映射到原尺寸的共同最终renderer，不冒称另外重跑独立RGB-original native入口。
+
+| 固定完整行 | work1024 class-summed mIoU | original class-summed mIoU |
+|---|---:|---:|
+| agreement | 33.822374 | 33.810613 |
+| forward | 33.237763 | 33.248256 |
+| reverse | 33.694192 | 33.689376 |
+| symmetric logits | 33.386311 | 33.383195 |
+| symmetric margins | 33.393899 | 33.389982 |
+| direct rawH20 | 34.601188 | 34.602252 |
+| direct final(Pi) | 32.512259 | 32.520284 |
+| MEAN exact host | 35.684576 | 35.695213 |
+| native cached comparison | 36.316536 | 36.360804 |
+| RCG | 35.473585 | 35.484891 |
+| fine16 | 34.911639 | 34.937233 |
+| fine64 | 35.907872 | 35.931733 |
+
+首4 work agreement−MEAN **−1.862202 pp**，描述性照片簇配对95%区间[−3.045823,−0.678582]，0胜/3负/1平；agreement−directH20 −.778815（1胜/2负/1平）。虽然agreement比forward +.584611、reverse+.128181、symmetric logits+.436063，但仍低于强base和rawH20。
+
+相对MEAN的组件增删：work新增TP6646、新增FP60281、删除TP3、删除FP1525；原尺寸新增TP1192、新增FP11206、删除TP0、删除FP634。当前损失主要来自新增误检，不能把相对native的累计纠错当作QK组件本身的收益。完整I/U及全部baseline/照片簇2000 RN0区间见`score4_v1/report.json`，相对MEAN的原始像素账本见`component_edits_vs_mean.json`。
+
+一致性response逐点绝对幅度不大于单向或同号对称margin，分歧时又归零；因此比单向/对称损伤少可能只体现更保守的修正，而不是新增类别识别。没有在此活动4上新调alpha或添加matched-movement变体来解释/救分。4例/4类/4照片簇且此前已暴露，只是有限质量检查，不能概化关闭整个QK方向。
+
+### 当前缓存重放成本与真正producer成本分开
+
+| case | actual pre-QK抽取秒 | 全部field/control+render秒 | 本次是否重新做RGB编码 |
+|---|---:|---:|---|
+| 0_0_72 | 1.187652（已有） | 3.867679（已有） | 否，直接复用封存预测 |
+| 1_0_73 | 1.081858 | 2.969307 | 否，复用M5 native_pair |
+| 2_0_74 | 1.086953 | 2.982615 | 否，复用M5 native_pair |
+| 3_0_75 | 1.104158 | 3.002123 | 否，复用M5 native_pair |
+
+单worker1线程，块参数meta加载/strict load .137428秒；含cache读取/hash/权重身份、首例复制、三例推断/保存的新增batch wall19.023164秒，Linux peakRSS1226668KiB（约1.17GiB），4GiB守卫未触发。独立评分1线程2.767763秒，source、raw/host预处理和输出费用都分段记录。
+
+这些均为当前cached replay。继承的真实native R/Q producer此前分别耗52.76/47.80/48.32/47.16秒（4CPU），未包含本次1CPU时间，更未把两种线程口径机械相加成部署测量。独立RGB部署仍须计完整MEAN宿主和真实rawH20采集；本次没有重编码不等于该成本为零。
+
+本次任务至此完成：`actual_smoke4_seal_v1.json`、`score4_v1/pre_GT_audit.json`、`report.json/report.md`及逐例I/U均回本地。远端分别`runs/qk_role_v3_smoke4_v1`与`runs/qk_role_v3_score4_v1`。**未扩24/600、未改共享PLAN/Git或M5文件；QK-v3独立增量仍0，固定版本当前无完整增益。**

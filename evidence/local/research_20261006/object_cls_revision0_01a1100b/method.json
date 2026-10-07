@@ -1,0 +1,45 @@
+{
+  "id": "object_crop_CLS_symmetric_legal_Ward_revision0",
+  "revision": 0,
+  "independent_new_method_count": 0,
+  "state": "fixed_complete_contract_and_toy_positive_negative_checked; actual_quality_unmeasured",
+  "why_not_new_observable": "scripts/diagnose_object_cls_dev241.py:39-55,263-285 already extracts actual final-normalized Eva CLS index0 and contrasts known reference FG/BG crops. Global CLS and crop reencoding are not new mechanisms here.",
+  "existing_negative": "RESULTS.md:1342-1353: unchanged GT-privileged CLS1200 margin AUROC0.433959[0.340099,0.527200]; original natural-RGB FG-view intervention0.494905 unresolved. Cannot presume Ward/128 repairs it.",
+  "conditional_signal_and_boundary": "RESULTS.md:1716-1736 and cls_components_existing_01a1100b/report.md:26-67: different natural same-class photo-disjoint references give conditional AUC0.641561, but changed reference/crop/background and GT boxes, so neither a causal erasure repair nor complete legal segmentation gain.",
+  "specific_untested_revision": "Both R and Q candidates are isolated using their legal masks; no query GT boxes. Original-image physical aspect is retained in one fixed128 neutral canvas. Query Ward complete partitions4/8/16/32 cover every token, and actual same-crop patch descriptors are obtained in the exact same forward. The full output is a small bounded MEAN differential, not replacement.",
+  "inputs": ["one original RGB reference with complete binary target mask", "one original query RGB", "existing aligned native q/r4096x1024 cache", "same complete MEAN64 field", "frozen actual DINOv3-L128 encoder binding"],
+  "query_GT_in_inference": false,
+  "fixed_recipe": {
+    "query_proposals": "exact adjacent Ward using unit native q; cost |A||B|/(|A|+|B|)*squared distance between feature means; ties cost then minimum leaf IDs; cuts4,8,16,32, all four full partitions",
+    "known_BG": "reference pure BG64 cells from full-mask coverage<=0.1, Ward<=8 regions; RGB selected pixels are additionally intersected with exact original MR=0",
+    "known_FG": "all supplied original MR foreground, bbox and no context expansion; native centroid coverage>=0.9, maximum coverage fallback",
+    "crop": "map legal64 region mask nearest to original H/W; erase outside region to uint8 ImageNet-mean(124,116,104); bbox; aspect-preserving bilinear scale longest side128; centered neutral padding; mask alpha uses matching bilinear geometry",
+    "CLS": "model.forward_features(ImageNet-normalized128RGB) -> final-LN69x1024; index0 actual CLS, indices1..4 registers; no forward_head/global_pool substitution",
+    "strong_controls": "same physical view forwards return final-patch tokens5:69; both unit-patch all mean and mask-coverage-weighted unit-patch mean, unit normalized; identical reference FG/BG banks, margin and full differential readout",
+    "native_control": "unit native query-ROI mean versus same reference pure foreground/native BG-region prototypes; also a bounded native region-mean versus native pointwise-margin readout",
+    "margin": "cos(region,referenceFG)-max_j cos(region,knownReferenceBG_j)",
+    "complete_readout": "z_t(i)=MEAN_i+0.05*(average_K tanh(m_t(C_K(i))/0.07)-average_K tanh(m_native(C_K(i))/0.07)); each token receives exactly four region votes",
+    "native_ROI_control_readout": "MEAN_i+0.05*(average_K tanh(m_native(C_K(i))/0.07)-tanh(m_native(q_i)/0.07))",
+    "extra_foreground_only_row": "auxiliary uncalibrated foreground-only cosine through same differential channel; not a substitute for strong same-crop patch controls",
+    "bound": "absolute coarse-field edit<=0.1, and continuous bilinear1024 edit<=0.1 up to FP32 rounding; tokens outside[0.4,0.6] cannot flip. Therefore hard wrong/high-confidence or entirely very weak targets cannot be repaired by this revision.",
+    "renderer": "fieldFP32 bilinear64->1024 align_corners=False strict>0.5; binary1024 bilinear->original H/W strict>0.5; no minmax,clamp,area prior,largest component or CRF",
+    "missing_reference_class_or_pure_BG": "exact MEAN abstention, zero crop forwards"
+  },
+  "quality_expectation": "Unknown; no numeric gain forecast. Same-content domain symmetry is a testable gap but old severe discrimination failure remains. Global composition may differ from patch pooling; final patch tokens themselves already carry global context, so CLS advantage must be measured rather than assumed.",
+  "budget": {
+    "logical_new_images": "at most1 referenceFG+8 referenceBG+60 queryROIs=69",
+    "actual_forwards": "new physical128 forwards explicitly counted; exact repeated ROI/view RGB+coverage may be reused. Cached native q/r cannot replace these crop encodings.",
+    "tokens_per_view": "64 patches+5 prefix=69, final width1024, all24 frozen blocks",
+    "working_proxy": "all69 views contain4761 total tokens, about1.16 original1024 image token counts; this is a dense-layer work proxy, not a wall-clock bound, and small GEMM/dispatch can be inefficient",
+    "reference_and_query_context": "no extra training image/model or query label; derivatives of the one R/Q do add inference forwards",
+    "current_authorization": "The current commit/push request does not authorize a feasibility run; prior resource scope is historical only."
+  },
+  "checks": {
+    "report": "check.json",
+    "positive": "legal RGB two-tone target and opposite-order distractor with identical native/crop-patch descriptors; deterministic non-DINO global arrangement cue recovers64 weak target cells/deletes64 false cells; complete work output12996 true pixels",
+    "negative": "same-class180degree appearance change with unchanged contract deletes all64 previously correct target cells; complete work true pixels0",
+    "interpretation": "toy demonstrates legal data flow and ability/side effect of complete bounded readout; deliberately aliased toy patch vectors do not establish DINO CLS superiority"
+  },
+  "sources": ["src/ics/methods/object_crop_cls.py", "scripts/run_object_crop_cls.py"],
+  "first_actual_decision": "The previously proposed one-case feasibility has not been run in this task. Run only if the user explicitly reopens it; do not treat descriptor-only correlations as method gains."
+}

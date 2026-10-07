@@ -24,7 +24,7 @@
 - M1/M3/M4的负向结果均按各自完整范围、缓存/原图适配与数据暴露报告；不冒称完成统一协议确认。
 - M5同一v0在query-only尾块补齐dummy query后通过四例全部69 ROI×4 block的β=1审核，维持原5e−5容差；固定暴露smoke4已完整封存/评分：原尺寸15.805910，对MEAN 35.695213，差−19.889303 pp。该结果解决数值审核问题但质量明显为负；不自动扩24/600或开启变体。完整范围与成本见[报告](../../evidence/local/research_20261006/pro_message_preparation_01a1100b/actual_smoke4_v1.md)。
 - MEAN+RGB disagreement local proposal v2是已暴露public600上的posthoc读出修订：63.007428，对MEAN差+0.075882 pp，配对95%区间[−0.006268,0.135967]；对full RGB-cut比差+0.103477，区间[0.080924,0.177966]。这不是独立确认，不能把点估计或历史组件分数相加；登记为revision/控制变化，独立方法增量0，见[报告](../../evidence/local/research_20261006/mean_rgb_proposal_v2_01a1100b/server_replay600/score/report.json)。
-- QK role-consensus v3属于已有QK family修订、独立方法增量0；数学/物理构造核对及一个已暴露真实case的无GT feasibility已封存，但未计分、未启动固定4例质量队列。它不是当前质量证据，也不因代码入库自动新增任务，见[报告](../../evidence/local/research_20261006/qk_role_consensus_v3_preparation_01a1100b/README.md)。
+- QK role-consensus v3属于已有QK family修订、独立方法增量0；固定暴露smoke4已评分：agreement=33.822374，MEAN=35.684576，差−1.862202 pp，描述性配对95%区间[−3.045823,−0.678582]；direct H20=34.601188。它在这4例低于强简单对照，不是独立确认，也不支持自动扩24/600，详见[报告](../../evidence/local/research_20261006/qk_role_consensus_v3_preparation_01a1100b/score4_v1/report.md)。
 - 原9、凸包、三体、吸收及所给Pro五项共17候选，修正版/控制不计。以上三类新增候选已在同一复用600批次完成，结果未显示稳定超越MEAN的收益；不得把公开开发集复用结果称作确认。
 - 继续开发新的实质机制，先固定方法/强简单对照和同合同CPU核对，再接入该复用600队列。
   保留失败完整输出和有效组件；改进版本与独立新机制分开计数，不通过组合枚举凑数。
