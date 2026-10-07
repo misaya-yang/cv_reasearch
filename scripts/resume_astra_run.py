@@ -46,6 +46,19 @@ def load(path):
     return json.loads(Path(path).read_text())
 
 
+def exit_information(code):
+    """Decode observed subprocess status; safe to test using integer fixtures."""
+    number = -code if code < 0 else None
+    if number is None:
+        name = None
+    else:
+        try:
+            name = signal.Signals(number).name
+        except ValueError:
+            name = 'UNKNOWN_SIGNAL_' + str(number)
+    return dict(exitcode=code, signal=number, signal_name=name)
+
+
 def cpu_env():
     env = dict(os.environ, CUDA_VISIBLE_DEVICES='', PYTHONDONTWRITEBYTECODE='1',
                PYTHONUNBUFFERED='1', HF_HUB_OFFLINE='1')
@@ -251,6 +264,10 @@ def recover(args):
         target = out / 'source' / relative
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(path, target)
+    list(source_paths(out / 'source', config['source_hashes']))
+    if (load(out / 'config.json') != config or load(out / 'manifest.json') != manifest
+            or any(sha(out / name) != expected for name, expected in initial_hashes.items())):
+        raise ValueError('Original config/manifest changed while creating recovery snapshot')
     runner = saved_runner(out / 'source')
     runner.assert_inference_only(manifest)
     runner.assert_inference_only(config)
@@ -267,6 +284,7 @@ def recover(args):
                      original_config_sha256=initial_hashes['config.json'],
                      original_manifest_sha256=initial_hashes['manifest.json'],
                      driver_sha256=driver_sha, workers=workers, threads=1,
+                     python_executable=sys.executable, python_version=sys.version,
                      original_workers=config['workers'], max_case_attempts=2,
                      case_timeout_seconds=args.case_timeout,
                      config_and_source_preserved_byte_for_byte=True,
@@ -340,9 +358,7 @@ def recover(args):
                 item['stream'].close()
                 code = process.returncode
                 number, attempt = item['number'], item['attempt']
-                sig = -code if code < 0 else None
-                outcome = dict(id=identity, attempt=number, exitcode=code, signal=sig,
-                    signal_name=None if sig is None else signal.Signals(sig).name,
+                outcome = dict(id=identity, attempt=number, **exit_information(code),
                     timed_out=item['timed_out'], wall_seconds=time.monotonic()-item['start'],
                     retained_attempt=str(attempt), query_GT_read=False)
                 try:
@@ -386,8 +402,7 @@ def recover(args):
             process.wait()
             item['stream'].close()
             write(item['attempt'] / 'exit.json', dict(id=identity, attempt=item['number'],
-                  state='coordinator_interrupted', exitcode=process.returncode,
-                  signal=-process.returncode if process.returncode < 0 else None, query_GT_read=False))
+                  state='coordinator_interrupted', **exit_information(process.returncode), query_GT_read=False))
     runner.verify_snapshots(out, config['source_hashes'])
     list(source_paths(original / 'source', config['source_hashes']))
     assets.unchanged()
@@ -415,6 +430,8 @@ def recover(args):
         verified = verify_case(out / row['id'], row, binding, arms, sources, assets)
         if verified['receipt_sha256'] != ready[row['id']]['receipt_sha256']:
             raise ValueError('Final receipt changed before seal: ' + row['id'])
+    runner.verify_snapshots(out, config['source_hashes'])
+    assets.unchanged()
     outcomes = {arm: dict(complete=600, unavailable=0, failed=0, missing=0) for arm in arms}
     write(out / 'sealed.json', dict(state='sealed', receipts=[ready[row['id']] for row in rows],
           expected_arms=arms, evaluation_count=600, all_arms_complete=True, arm_outcomes=outcomes,
@@ -442,6 +459,8 @@ def main():
         return 0
     if args.original is None or args.out is None:
         parser.error('--original and --out are required')
+    if args.out.exists():
+        parser.error('--out must not already exist; existing runs are preserved')
     if args.case_timeout is not None and args.case_timeout <= 0:
         parser.error('--case-timeout must be positive')
     def interrupted(signum, _frame):
@@ -454,6 +473,8 @@ def main():
         if args.out.exists() and (args.out / 'recovery').is_dir():
             write(args.out / 'recovery' / 'coordinator_error.json',
                   dict(state='failed_unsealed', traceback=traceback.format_exc(), query_GT_read=False))
+            previous = load(args.out / 'status.json') if (args.out / 'status.json').exists() else {}
+            write(args.out / 'status.json', dict(previous, state='failed_unsealed', query_GT_read=False))
         raise
 
 

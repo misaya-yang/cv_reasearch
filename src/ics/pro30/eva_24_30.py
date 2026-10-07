@@ -17,6 +17,15 @@ from . import common
 _LOCK=threading.RLock()
 
 
+def parameter_array_hash(model):
+    """Actual learned parameter bytes; used once in the root software probe."""
+    h=hashlib.sha256()
+    for name,tensor in model.named_parameters():
+        value=tensor.detach().cpu().contiguous().numpy()
+        h.update(name.encode());h.update(value.dtype.str.encode());h.update(str(value.shape).encode());h.update(value.tobytes())
+    return h.hexdigest()
+
+
 def phase_neutral_attention(q,k,v,q_rotated,k_rotated,prefix,*,mask=None,causal=False):
     """Exact original four-interaction formula through one 3d SDPA."""
     import torch
@@ -118,6 +127,13 @@ class EvaRuntime:
             raise common.ArtifactUnavailable('Current actual timm Eva class is required')
         if any(m.training for m in self.model.modules()) or any(p.requires_grad for p in self.model.parameters()):
             raise common.ArtifactUnavailable('All deployed model weights must be frozen and eval')
+        self._weight_versions=tuple((id(p),p._version) for p in self.model.parameters())
+        original_check=self.check
+        def frozen_check():
+            original_check()
+            if tuple((id(p),p._version) for p in self.model.parameters())!=self._weight_versions:
+                raise common.ArtifactUnavailable('A learned encoder parameter changed during the frozen method')
+        self.check=frozen_check
         self.check();self.stats=dict(full_forwards=0,suffix_forwards=0,VJPs=0,suffix_backward_units=0,mask_only_backward_calls=0,full_forward_seconds=0.,suffix_forward_seconds=0.,VJP_seconds=0.,device='cpu',actual_model_execution=True)
         self.sessions={};self.audit={};self.ep=ep
 
@@ -144,7 +160,14 @@ class EvaRuntime:
                         if prefix_rope is None:raise common.ArtifactUnavailable('Explicit independently positioned prefix RoPE control asset required')
                         qr=torch.cat((apply_rope(q[...,:prefix,:],prefix_rope,half=module.rotate_half),qr[...,prefix:,:]),-2)
                         kr=torch.cat((apply_rope(k[...,:prefix,:],prefix_rope,half=module.rotate_half),kr[...,prefix:,:]),-2)
-                if mode=='neutral':output=phase_neutral_attention(q,k,v,qr,kr,prefix,mask=attn_mask,causal=is_causal)
+                if mode=='neutral_coordinate_shift':
+                    if getattr(self.model,'pos_embed',None) is not None or rope is None or rope.shape[-1]!=2*q.shape[-1] or rope.shape[-2]<2:
+                        raise common.ArtifactUnavailable('Pure origin audit requires the actual cat-cos/sin RoPE and no other absolute position input')
+                    c0,s0=rope[...,0:1,:].chunk(2,-1);c1,s1=rope[...,1:2,:].chunk(2,-1)
+                    delta=torch.cat((c1*c0+s1*s0,s1*c0-c1*s0),-1)
+                    qr=torch.cat((q[...,:prefix,:],apply_rope(qr[...,prefix:,:],delta,half=module.rotate_half)),-2)
+                    kr=torch.cat((k[...,:prefix,:],apply_rope(kr[...,prefix:,:],delta,half=module.rotate_half)),-2)
+                if mode in ('neutral','neutral_coordinate_shift'):output=phase_neutral_attention(q,k,v,qr,kr,prefix,mask=attn_mask,causal=is_causal)
                 else:
                     mask=attn_mask
                     if mode=='prefix_attenuation':
@@ -167,7 +190,7 @@ class EvaRuntime:
                     projected=module.proj.weight.T@head_direction
                     projected=projected.reshape(module.num_heads,-1)
                     response=(output[:,:,prefix:,:]*projected[None,:,None,:]).sum(-1)
-                    self._head_observations[index]=dict(response=response.detach().clone(),energy=(output[:,:,prefix:,:]**2).mean(dim=(0,2,3)).detach().clone())
+                    self._head_observations[index]=dict(response=response.detach().clone(),energy=(output**2).mean(dim=(0,2,3)).detach().clone())
                 if gates is not None and index>=21:
                     output=output*gates[index-21][None,:,None,None]
                 output=output.transpose(1,2).reshape(batch,n,dim)

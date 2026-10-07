@@ -69,10 +69,10 @@ def _ring_mean(x,hw,valid):
     return total/np.maximum(count[:,None],1)
 
 
-def differential(ep,mode='skew'):
+def differential(ep,mode='skew',*,renderer=finish):
     start=time.perf_counter();degeneration=degenerate_margin(ep)
     if degeneration is not None:
-        margin,info=degeneration;return finish(ep,margin,'PRO30_M06' if mode=='skew' else 'PRO30_M06__'+mode,info)
+        margin,info=degeneration;return renderer(ep,margin,'PRO30_M06' if mode=='skew' else 'PRO30_M06__'+mode,info)
     f,hit=_prepare(ep);q,r=f['q'],f['r'];k=f['K'];qi,qj=f['qi'],f['qj'];unary=f['s_B']
     if mode=='reverse':k=-k
     elif mode=='permuted_K':
@@ -105,7 +105,7 @@ def differential(ep,mode='skew'):
         divergence_norm=float(np.linalg.norm(divergence)),edge_norm=float(np.linalg.norm(edge)),
         K_skew_defect=float(np.max(np.abs(k+k.T))) if k.size else 0.,
         postprocess_seconds=time.perf_counter()-start,new_encoder_forwards=0,quality='unmeasured candidate')
-    return finish(ep,margin,'PRO30_M06' if mode=='skew' else 'PRO30_M06__'+mode,info)
+    return renderer(ep,margin,'PRO30_M06' if mode=='skew' else 'PRO30_M06__'+mode,info)
 
 
 def install(methods,controls,requirements,contracts):

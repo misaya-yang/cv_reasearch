@@ -33,6 +33,9 @@ def _episode(ep):
         raise common.ArtifactUnavailable('Original Pro30 internal cards need actual native DINOv3-L/16 1024, not processed or synthetic fixtures')
     mask=ep.reference_mask if ep.reference_mask is not None else common.artifact(ep,'reference_mask')
     if not ep.reference_geometry or not ep.query_geometry:raise common.ArtifactUnavailable('Actual physical resize/pad geometry required')
+    if ep.r_rgb is not None and np.asarray(mask).shape!=ep.r_rgb.shape[:2]:raise ValueError('MR and original R RGB dimensions differ')
+    if ep.reference_geometry.get('original_hw') is not None and tuple(ep.reference_geometry['original_hw'])!=tuple(np.asarray(mask).shape):
+        raise ValueError('MR pixels differ from recorded physical original geometry')
     area,valid=op.exact_footprint(mask,ep.r_hw,ep.reference_geometry)
     g=ep.query_geometry;side=float(g['view_side']);oy,ox=g['padding_top_left'];sh,sw=g['resized_hw']
     if side!=1024 or min(sh,sw)<=0 or min(oy,ox)<0 or oy+sh>side or ox+sw>side:raise ValueError('Recorded native1024 query geometry required')
@@ -70,6 +73,8 @@ def _end(ep,field,mid,info,start,rt=None,threshold=0.):
         metadata['actual_encoder_operations_in_bound_runtime']=dict(rt.stats)
         before=getattr(rt,'_pro30_call_start',{})
         metadata['actual_encoder_operations_this_call']={key:rt.stats[key]-before.get(key,0) for key in rt.stats if isinstance(rt.stats[key],(int,float)) and not isinstance(rt.stats[key],bool)}
+        metadata['original_native_input_extraction_cost_is_separate']=True
+        metadata['cold_end_to_end_requires_original_input_and_all_declared_extra_operations']=True
     field=np.asarray(field)
     if field.shape==(64,64):
         metadata['source_renderer_parity']='shared exact CPU100 physical64→1024 strict threshold→binary-original'
@@ -404,13 +409,25 @@ for name,mode,apd in [('native_APD','native','native'),('native_noAPD','native',
 for mid in CONTRACTS:CONTRACTS[mid]['controls']=[key for key in CONTROLS if key.startswith(mid+'__')]
 
 
-def probe_m26_real_software(ep):
+def probe_m26_real_software(ep,*,coordinate_check=False):
     """Root-owned actual single R software/cost audit, never automatically run."""
-    from .eva_24_30 import audit_observed_qk
+    from .eva_24_30 import audit_observed_qk,parameter_array_hash
     start=time.perf_counter();ep,_=_episode(ep);rt=_runtime(ep)
+    hash_start=time.perf_counter();before=parameter_array_hash(rt.model);hash_seconds=time.perf_counter()-hash_start
     rt.native('r',mode='native',audit=True)
     audit=audit_observed_qk(rt.audit)
+    coordinate=None
+    if coordinate_check:
+        fixed=_numpy(rt.native('r',mode='neutral'))
+        shifted=_numpy(rt.native('r',mode='neutral_coordinate_shift'))
+        coordinate=dict(max_feature_error=float(np.max(np.abs(fixed-shifted))),
+            content_and_RGB_unchanged=True,shift='native RoPE patch1 minus patch0, composed identically on all patch Q/K',
+            actual_image_translation_checked=False,extra_reference_forwards=2)
+    hash_start=time.perf_counter();after=parameter_array_hash(rt.model);hash_seconds+=time.perf_counter()-hash_start
+    if before!=after:raise common.ArtifactUnavailable('Actual encoder parameter hash changed in the software audit')
     return dict(scope='one actual native R forward and bounded exact-QK audit; no segmentation-quality result',
         checkpoint_sha256=rt.binding['model_assets']['checkpoint_sha256'],encoder_binding=rt.binding,
         actual_operations=dict(rt.stats),software_certificate=audit,total_seconds=time.perf_counter()-start,
+        parameter_array_sha256_before=before,parameter_array_sha256_after=after,parameter_hash_verification_seconds=hash_seconds,
+        coordinate_origin_check=coordinate,
         eligible_to_expand600=False,next='run one complete M26 and matched controls with bound B; compare measured cached and total costs to2s separately')
