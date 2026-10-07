@@ -64,10 +64,15 @@ def _retrieval(problem,dictionary,stride=2,control=None):
         rolecost=-(role[None]*np.log(u[start:start+len(q),None])+(1-role)[None]*np.log(1-u[start:start+len(q),None]))
         cost=rgb/scale+rolecost
         if control!='RGB_only':cost+=semantic
+        eligible=rgb<=support_radius
+        if control!='RGB_only':eligible &= dino[native_ids[start:start+len(q)]]>0
+        cost=np.where(eligible,cost,1e6)
         k=rows.shape[1];order=np.argsort(cost,axis=1,kind='stable')[:,:k]
         rows[start:start+len(q)]=order;costs[start:start+len(q)]=np.take_along_axis(cost,order,1)
-        supported[start:start+len(q)]=np.min(rgb,axis=1)<=support_radius
-    return centers,coords,rows,costs,supported,dict(stride=stride,source_colour_scale=scale,source_support_radius=support_radius)
+        supported[start:start+len(q)]=eligible.any(1)
+    return centers,coords,rows,costs,supported,dict(stride=stride,source_colour_scale=scale,source_support_radius=support_radius,
+          simultaneous_RGB_DINO_support=True,semantic_support_criterion='positive_actual_native_cosine',
+          at_most_eight_supported_candidates=True)
 
 
 def _overlap_pairs(coords,shape):

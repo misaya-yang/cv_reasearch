@@ -1906,3 +1906,68 @@ register('C131',_c131,
          ('final_unit_dino','q_layer_tokens_half_threequarter_final','r_layer_tokens_half_threequarter_final'))
 CONTROLS['control_C131_final_hole_profile']=lambda ep:result(ep,*dynamic_region_run(ep,lambda c,p:(lambda regions,d:(regions,d[:,[-1]]))(*_c131_samples(c,p)))[:1],'control_C131_final_hole_profile',{})
 CONTROLS['control_C131_all_layer_point_fields']=point_method('control_C131_all_layer_point_fields',lambda c,p:_layer_fields(c,p,'layer_tokens_half_threequarter_final')[0].T)
+
+
+def _edge_bands(ctx,box=None):
+    y0,x0,y1,x1=(0,0,ctx.hw[0],ctx.hw[1])if box is None else box
+    grid=np.arange(len(ctx.x)).reshape(ctx.hw);lines=[]
+    for side in range(4):
+        line=[]
+        if side in(0,1):
+            for x in range(x0,x1):
+                ys=range(y0,min(y0+3,y1))if side==0 else range(max(y0,y1-3),y1)
+                ids=np.array([grid[y,x]for y in ys],int);ids=ids[ctx.valid[ids]>0]
+                if len(ids):line.append(ids)
+        else:
+            for y in range(y0,y1):
+                xs=range(x0,min(x0+3,x1))if side==2 else range(max(x0,x1-3),x1)
+                ids=np.array([grid[y,x]for x in xs],int);ids=ids[ctx.valid[ids]>0]
+                if len(ids):line.append(ids)
+        if line:lines.append(line)
+    return lines
+
+
+def _band_rows(ctx,line):
+    out=[];previous=None
+    for ids in line:
+        profile=ctx.profile[ids].mean(axis=0)
+        change=0. if previous is None else np.linalg.norm(profile-previous)
+        out.append([ctx.u[ids].mean(),ctx.u[ids].min(),ctx.u[ids].max(),change]);previous=profile
+    return np.asarray(out)
+
+
+def _boundary_library(ctx,p):
+    rc=p.context(True,ctx.fold);h,w=rc.hw;ym,xm=(h+1)//2,(w+1)//2
+    boxes=[None,(0,0,ym,xm),(0,xm,ym,w),(ym,0,h,xm),(ym,xm,h,w)]
+    data=[];soft=[]
+    for box in boxes:
+        for line in _edge_bands(rc,box):
+            rows=_band_rows(rc,line)
+            for k in range(1,len(line)):
+                if ctx.fold is not None and(np.any(p.rb[line[k-1]]==ctx.fold)or np.any(p.rb[line[k]]==ctx.fold)):continue
+                data.append(np.r_[rows[k-1],rows[k]])
+                soft.append([np.sum(p.ep.wf[g])/max(p.rv[g].sum(),1e-12)for g in(line[k-1],line[k])])
+    return _PairStates(np.asarray(data).reshape(-1,8),np.asarray(soft).reshape(-1,2),emission_columns=(0,4))
+
+
+def _c134(ep,independent=False):
+    from dataclasses import replace
+    p=prepare(ep);deg=p.degenerate()
+    if deg is not None:return result(ep,deg[0],'C134',{'degenerate':deg[1]})
+    ctx=p.context();library=_boundary_library(ctx,p);sumfield=np.zeros(len(ctx.x));count=np.zeros(len(ctx.x))
+    for line in _edge_bands(ctx):
+        rows=_band_rows(ctx,line);ids=np.array([g[0]for g in line]);proxy=replace(ctx,u=ctx.u.copy());proxy.u[ids]=rows[:,0]
+        if len(line)>1 and not independent:
+            costs=-library.logs(np.array([np.r_[rows[k-1],rows[k]]for k in range(1,len(line))]))[:,[3,2,1,0]]
+            label=_first_order(proxy,ids,costs)
+        else:label=rows[:,0]>0
+        for station,foreground in zip(line,label):
+            sumfield[station]+=1 if foreground else-1;count[station]+=1
+    z=ctx.u.copy();covered=count>0;z[covered]=sumfield[covered]/count[covered];z[ctx.valid<=0]=-4
+    return result(ep,z,'C134',{'scope':'physical edge three-grid inward bands only','free_initial_final_states':True,'source_edges':'actual four image edges and four fixed quadrant crop edges'})
+
+
+register('C134',_c134,
+         ['Four fixed reference crop boxes are the absolute 2×2 image quadrants; their borders are pseudo-edges without re-encoding.',
+          'Every decoded station assigns its signed FG/BG label to its three inward tokens; overlapping corner stations are averaged, and all interior tokens retain u.'])
+CONTROLS['control_C134_independent_edge_stations']=lambda ep:_c134(ep,True)

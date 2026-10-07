@@ -106,6 +106,8 @@ def fit_a023(frame,transport=True):
 def _involution(frame,debug=None):
     debug={} if debug is None else debug
     f,b,fi,bi,_=frame.banks()
+    if len(frame.fids):
+        fi=fps(frame.x,frame.fids,32);f=frame.x[fi]
     if len(f)<8 or not len(b) or np.any(fi<0):
         debug["degeneration"]="insufficient_observed_pure_role_anchors";return None
     yy,xx=np.indices(frame.ep.r_hw);coords=np.c_[yy.ravel(),xx.ravel()]
@@ -173,6 +175,7 @@ def fit_a024(frame,random_involution=False):
     ff=np.r_[f,virtual]
     def predict(q,ids,role):return (nearest_mean_distance(q,b)-nearest_mean_distance(q,ff))/2,{"virtual_FG":len(virtual)}
     return predict,{"mirror_pairs":len(pairs),"difference_span_rank":u.shape[1],"virtual_FG":len(virtual),
+        "observed_FG_anchors":len(f),"total_FG_dictionary_atoms":len(ff),
         "orthogonal_error":float(np.linalg.norm(t.T@t-np.eye(len(t)))),"involution_error":float(np.linalg.norm(t@t-np.eye(len(t)))),
         "cross_block_validation_errors":errors,"random_involution":random_involution}
 
@@ -278,6 +281,7 @@ def install(register,requirements):
         "Implicit principal-angle minimalrotations, shortestnonrepeat graphpath; triangle-detour holonomy normalangle>30deg rejects; querynearestnormal onlywithinFGlocalNNradiusq.9.",),
         (("no_transport_direct_normals",lambda f:fit_a023(f,transport=False)),))
     register("A024",fit_a024,(
+        "32observedFPS FGanchors reservemax32virtualslots soobserved+virtual<=64; BG<=64, noadditionaldictionarycapacity hidden.",
         "Horizontal/vertical mirrors aboutFGcoordinatebbox center; mutualpositionpairs tolerance1patch AND mutualfeature8NN,>=4pairs across>=2blocks; orthogonalinvolution spectral sign ofsymcrosscov inpairdiffspan.",
         "Generate onlyunpairedFGanchor transforms, discardcloserBGexplanation; innerfourblock rebuildpairs/T/virtuals and permitonlynonincreasingzero-cut balanced error inEVERYeffectiveblock.",),
         (("same_rank_random_involution",lambda f:fit_a024(f,random_involution=True)),("original_5NN",_plain)))

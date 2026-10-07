@@ -27,22 +27,22 @@ def _d160_builder(ep,strength):
     if not f.any() or not b.any():
         return None,{}
     ra=_amplitude(ep,'r'); qa=_amplitude(ep,'q'); active=ra is not None and qa is not None and float(strength)>0
-    classes=[]; rr=dh.pair(ep,'rr'); assignment=dh.blocks(ep.r_hw)
+    classes=[]; rr=dh.pair(ep,'rr'); spatial=dh.folds(ep)
     for selected in (f,b):
         observed=ep.r[selected]; reps=dh.fps_rows(observed,16)
         member=np.argmax(dh.mm(observed,reps.T),axis=1)
         spatial_dist=[]
-        for group in range(4):
-            held=selected&(assignment==group); train=selected&(assignment!=group)
+        amplitude_pairs=[]
+        for training,heldout in spatial:
+            held=selected&heldout; train=selected&training
             if held.any() and train.any():
                 spatial_dist.extend(dh.nearest_distance(rr[held],train).tolist())
+                if active:amplitude_pairs.extend(np.abs(ra[held,None]-ra[None,train]).ravel().tolist())
         width=max(float(np.median(spatial_dist)) if spatial_dist else 1.,1e-5)
         amplitude_width=1.
         if active:
             # Source spatial pairs only; no query amplitude labels enter widths.
-            a=ra[selected]; bid=assignment[selected]
-            diff=np.abs(a[:,None]-a[None]); legal=bid[:,None]!=bid[None]
-            amplitude_width=max(float(np.median(diff[legal])) if legal.any() else 1.,1e-5)
+            amplitude_width=max(float(np.median(amplitude_pairs)) if amplitude_pairs else 1.,1e-5)
         classes.append((selected,reps,member,width,amplitude_width))
     def score(x,amplitude=None):
         values=[]

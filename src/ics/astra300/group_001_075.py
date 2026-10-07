@@ -647,3 +647,5 @@ for _mid in ("A009","A011","A012","A013","A014","A015","A016","A017","A018","A01
         assumptions=("Controlonly; complete legalR profiles includingALL trainingreference columns,64FPS supervisedhead pointsperrole, medianwidth,L2=1.",))
 from .a_observations_021_048 import install as _install_observations
 _install_observations(register,REQUIREMENTS,METHODS,CONTROLS,RECIPES)
+from .a_algorithms_034_050 import install as _install_034_050
+_install_034_050(register,REQUIREMENTS,METHODS,CONTROLS,RECIPES)

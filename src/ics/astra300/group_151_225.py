@@ -42,9 +42,12 @@ def _mixture_fit(q, anchors, variance, anchor_strength, count_penalty, proposed,
     """Free mixing masses, source-identified F centers, query-only BG births."""
     nf=len(anchors); means=np.asarray(anchors,float).copy(); weights=np.full(nf,1./nf)
     d=q.shape[1]; variance=max(float(variance),1e-5)
-    def fit(means, weights):
+    em_steps=0
+    def fit(means, weights,iterations):
+        nonlocal em_steps
         best=None
-        for _ in range(20):
+        for _ in range(iterations):
+            em_steps+=1
             distance=np.maximum(0.,np.sum(q*q,axis=1)[:,None]+np.sum(means*means,axis=1)-2*dh.mm(q,means.T))
             logs=np.log(np.maximum(weights,1e-12))-distance/(2*variance)-.5*d*np.log(2*np.pi*variance)
             ll=logsumexp(logs,axis=1); responsibilities=np.exp(logs-ll[:,None])
@@ -57,7 +60,9 @@ def _mixture_fit(q, anchors, variance, anchor_strength, count_penalty, proposed,
             updated[:nf]=(dh.mm(responsibilities[:,:nf].T,q)+anchor_strength*anchors)/(mass[:nf,None]+anchor_strength)
             means=updated; weights=np.maximum(mass,1e-12)/max(float(mass.sum()),1e-12)
         return best
-    incumbent=fit(means,weights); attempted=accepted=0
+    # One candidate has at most TWENTY EM updates in total. Four initialize the
+    # inherited model; each of up to eight birth proposals gets two updates.
+    incumbent=fit(means,weights,4); attempted=accepted=0
     remaining=list(range(len(proposed)))
     for _ in range(min(8,len(proposed))):
         # Largest currently unexplained Q cluster, with residual sum breaking
@@ -71,13 +76,14 @@ def _mixture_fit(q, anchors, variance, anchor_strength, count_penalty, proposed,
             break
         remaining.remove(j); attempted+=1
         newmeans=np.vstack((incumbent[1],proposed[j])); newweights=np.r_[incumbent[2]*(1.-1./len(newmeans)),1./len(newmeans)]
-        candidate=fit(newmeans,newweights)
+        candidate=fit(newmeans,newweights,2)
         if candidate[0]<incumbent[0]-1e-12:
             incumbent=candidate; accepted+=1
         if not remaining:
             break
     return incumbent,nf,dict(bg_proposals=attempted,bg_accepted=accepted,mixture_objective=incumbent[0],
-                              target_mixing_mass=float(incumbent[2][:nf].sum()),em_steps_per_fit=20)
+                              target_mixing_mass=float(incumbent[2][:nf].sum()),em_steps_total=em_steps,
+                              em_budget=20)
 
 
 def _d151_builder(ep,config):
@@ -137,7 +143,11 @@ def _d152_builder(ep,config,control=False):
     spatial=dh.folds(ep)
     if not len(valid) or not spatial:
         return None,{}
-    _,qgroup=dh.kmeans(ep.q[valid],16); authorized=[]; authorized_labels=[]; comparisons=[]
+    # K=16 is the requested cap. Underpopulated independent cluster hypotheses
+    # are deterministically pooled by reducing K until each has eight samples.
+    _,qgroup=dh.source_modes(ep.q[valid],16)
+    if not len(qgroup):return None,dict(reason='query_clusters_have_less_than_eight_samples')
+    authorized=[]; authorized_labels=[]; comparisons=[]
     for group in np.unique(qgroup):
         ids=valid[qgroup==group]; signs=[]
         if strength>0:
@@ -224,9 +234,9 @@ def _d153_builder(ep,config):
         ba=np.vstack((ba,dh.fps_rows(ep.q[negatives],k)))
     # The residual scale is measured on leave-block BG using only the other
     # source blocks' background dictionary, not in-sample reconstruction.
-    source=[]; assignment=dh.blocks(ep.r_hw)
-    for group in range(4):
-        train=b&(assignment!=group); test=b&(assignment==group)
+    source=[]
+    for training,held in dh.folds(ep):
+        train=b&training; test=b&held
         if train.any() and test.any():
             atom=dh.fps_rows(ep.r[train],k)
             source.extend(dh.sparse_cost(ep.r[test],atom,0.).tolist())

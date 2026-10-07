@@ -346,6 +346,8 @@ def e230_optical_boundary(problem,control=None):
         return problem.U.copy(),dict(status='fallback_no_source_optical_blur_evidence',source_PSFloss=loss.tolist())
     fg=np.median(flat[valid.ravel()&lab],0);bg=np.median(flat[valid.ravel()&~lab],0)
     noise=max(float(np.median(np.sum((flat-np.where(lab[:,None],fg,bg))**2,1)[valid.ravel()])),1e-4)
+    if control is None and loss[chosen]/folds>4*noise:
+        return problem.U.copy(),dict(status='fallback_source_two_colour_PSF_model_mismatch',source_PSFloss=loss.tolist(),source_RGB_noise=noise)
     initial=problem.U>.5;edge=initial!=ndimage.binary_erosion(initial)
     centers=B._spread_rows(np.flatnonzero(edge),128)
     if not len(centers):return problem.U.copy(),dict(status='fallback_no_current_boundary_segment')
@@ -365,7 +367,10 @@ def e230_optical_boundary(problem,control=None):
             rgb_cost=float(np.mean(np.sum((q[y0:y1,x0:x1]-prediction)**2,2))/noise)
             unary=float(np.mean(np.where(binary,-np.log(U[y0:y1,x0:x1]),-np.log(1-U[y0:y1,x0:x1]))))
             states.append(binary);statecost.append(rgb_cost+unary)
+        if control is None and min(statecost)>5:
+            continue
         patches.append(ids);options.append(states);costs.append(np.array(statecost))
+    if not patches:return problem.U.copy(),dict(status='fallback_query_PSF_model_mismatch_all_segments',source_PSFloss=loss.tolist())
     choices=np.full(len(patches),2,int)
     # Overlapping boundary windows are coordinated by the actual disagreement
     # on their shared original pixels, with no latent object shape completion.
@@ -545,5 +550,6 @@ CONTROLS={
  'E234_source_models_no_local_adaptation':lambda ep:B._call(ep,'E234',e234_laplacian_roles,control='fixed_models'),
  'E233_same_tree_without_persistence':lambda ep:B._call(ep,'E233',e233_scale_region_tree,control='no_persistence'),
  'E230_same_RGB_without_PSF':lambda ep:B._call(ep,'E230',e230_optical_boundary,control='no_blur'),
+ 'E230_ordinary_RGB_GMM':lambda ep:B._call(ep,'E230',B.e250_dichromatic,control='gmm'),
 }
 RESOURCES={id:dict(final_native=True,original_rgb=True,complete_MR=True,mean_host=True,extra_encoder_forwards=0) for id in METHODS}
