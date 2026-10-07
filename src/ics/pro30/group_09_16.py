@@ -16,9 +16,27 @@ class _Controls(dict):
 CONTROLS=_Controls()
 
 
+def prepare_m09_m10(ep,*,include_message_sources=True):
+    """Single honest X-field preparation entry; record its cost separately.
+
+    Call once for the actual single episode, then time the registered methods
+    using these shared derived caches. Cold extraction is not a2-second claim.
+    """
+    started=time.perf_counter();observed=prepare_last(ep)
+    fields={'final_register_r':observed['r']['register'],'final_register_q':observed['q']['register'],'observation_receipt':observed['receipt']}
+    if include_message_sources:
+        for role in('r','q'):
+            message,mass,info=source_statistics(ep,role)
+            fields['attention_source_statistics_'+role]={'projected_messages':message,'mean_head_mass':mass,'producer':info}
+    fields['preparation_seconds_this_call']=time.perf_counter()-started
+    fields['separate_actual_after_preparation_method_budget_seconds']=2.
+    return fields
+
+
 def _return(ep,z,mid,info,highres=False):
     info=dict(info,**source_contract(int(mid[-2:])),implementation_assumptions=ASSUMPTIONS.get(mid,[]))
-    return finish_highres(ep,np.asarray(z).reshape(ep.q_hw),mid,info)if highres else finish(ep,z,mid,info)
+    field=np.asarray(z,float).reshape(ep.q_hw).copy();field.ravel()[ep.q_valid<=0]=-1.
+    return finish_highres(ep,field,mid,info)if highres else finish(ep,field,mid,info)
 
 
 def _weighted_mean(x,w):return np.sum(x*w[:,None],axis=0)/max(float(np.sum(w)),1e-12)

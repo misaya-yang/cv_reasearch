@@ -14,6 +14,7 @@ from ics.cpu100.common import rgb_view
 from . import common
 from . import operators_24_30 as op
 from .eva_24_30 import runtime,F_unit,asset_header
+from .m29_render import finish_m29
 
 BUDGET_SECONDS=2.
 METHODS={};CONTROLS={};CONTRACTS={};REQUIREMENTS={}
@@ -75,15 +76,24 @@ def _end(ep,field,mid,info,start,rt=None,threshold=0.):
         metadata['actual_encoder_operations_this_call']={key:rt.stats[key]-before.get(key,0) for key in rt.stats if isinstance(rt.stats[key],(int,float)) and not isinstance(rt.stats[key],bool)}
         metadata['original_native_input_extraction_cost_is_separate']=True
         metadata['cold_end_to_end_requires_original_input_and_all_declared_extra_operations']=True
+    def complete(result):
+        total=time.perf_counter()-start
+        result.info.update(method_wall_seconds=total,cost_gate_pass=total<=BUDGET_SECONDS,whole_function_cost_includes_renderer=True)
+        return result
     field=np.asarray(field)
+    if mid.startswith('PRO30_M29') and field.shape==(128,128):
+        # Callers carry a zero-centered field; score casting occurs AFTER this
+        # conversion, exactly as the source's u128 -> FP32bilinear >.5 rule.
+        score=field if threshold==.5 else field-threshold+.5
+        return complete(finish_m29(ep,score,mid,metadata))
     if field.shape==(64,64):
         metadata['source_renderer_parity']='shared exact CPU100 physical64→1024 strict threshold→binary-original'
-        return common.finish(ep,field-threshold,mid,metadata)
+        return complete(common.finish(ep,field-threshold,mid,metadata))
     # The shared owner supplies the fine branch, without compressing128 to64.
     # Explicit review hold remains for the original card's1024/binary-original
     # wording versus the present shared continuous-original fine branch.
     metadata['source_renderer_parity']='fine branch needs common-owner work1024/binary-original parity review'
-    return common.finish_highres(ep,field,mid,metadata,threshold=threshold)
+    return complete(common.finish_highres(ep,field,mid,metadata,threshold=threshold))
 
 
 def _degenerate(ep,mid,start):
@@ -103,6 +113,11 @@ def _same_data_control(ep,mid,callback):
     if not isinstance(result,common.Result) or result.info.get('actual_same_budget_resources') is not True:
         raise common.ArtifactUnavailable('A supplied score or cheaper proxy cannot stand in for the full same-budget control')
     result.info.update(method_id=mid,counts_as_method=False,source=common.source_contract(int(mid.split('__')[0][-2:])))
+    if mid.startswith('PRO30_M29'):
+        if result.field is None or np.asarray(result.field).shape!=(128,128) or result.info.get('field_space')=='original':
+            raise common.ArtifactUnavailable('M29 matching fine control must provide an actual native-canvas128 continuous field')
+        score=np.asarray(result.field) if result.threshold==.5 else np.asarray(result.field)-result.threshold+.5
+        return finish_m29(ep,score,mid,result.info)
     return result
 
 
@@ -328,7 +343,7 @@ def m29(ep,*,control=None):
     degenerate=_degenerate(ep,mid,start)
     if degenerate is not None:return degenerate
     b,host=_B(ep)
-    if control=='same128_bilinear_B':return _end(ep,resize(b,(128,128))-.5,mid,dict(host=host,control=control,no64_compression=True),start)
+    if control=='same128_bilinear_B':return _end(ep,resize(b,(128,128)),mid,dict(host=host,control=control,no64_compression=True),start,threshold=.5)
     w=op.direction(ep.r,ep.wf,ep.wvalid,split.anchor,normalize=False) if split.adequate else None
     if w is None:return _end(ep,b-.5,mid,dict(host=host,inactive=True,fallback='A/C_insufficient_or_zero_direction'),start)
     beta,calibration=op.area_calibration(op.dot(ep.r,w),ep.wf,ep.wvalid,split)
@@ -344,12 +359,12 @@ def m29(ep,*,control=None):
     if control=='phase_uniform_average':
         yy,xx=np.indices((128,128));ys=(yy+.5)*8;xs=(xx+.5)*8
         mapped=[sample_grid(a.reshape(64,64),(ys+sy)/16-.5,(xs+sx)/16-.5) for a,(sy,sx) in zip(observations,phases)]
-        return _end(ep,np.mean(mapped,axis=0)-.5,mid,dict(host=host,measurement_calibration=calibration,control=control,phases=phases),start,rt)
+        return _end(ep,np.mean(mapped,axis=0),mid,dict(host=host,measurement_calibration=calibration,control=control,phases=phases),start,rt,threshold=.5)
     field,solver=op.inverse_mask(observations,operators,valids,D,np.clip(b,0,1).ravel(),initial,data=control!='B_plus_TV',base_term=control!='data_only',tv_term=control!='data_only')
-    return _end(ep,field-.5,mid,dict(host=host,measurement_calibration=calibration,solver=solver,phases=phases,
+    return _end(ep,field,mid,dict(host=host,measurement_calibration=calibration,solver=solver,phases=phases,
         observed_phase_feature_hashes=[common.array_hash(q) for q in features],phase_APD=False,
         physical_fine_cell_pixels=8,phase_patch_origin='negative shift: phase8 covers original [-8,8] in first patch',
-        no64_compression=True,identity_mainly_from_B=True,linear_area_model_is_unverified=True),start,rt)
+        no64_compression=True,identity_mainly_from_B=True,linear_area_model_is_unverified=True),start,rt,threshold=.5)
 
 
 def m30(ep,*,control=None):

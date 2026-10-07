@@ -74,3 +74,8 @@ def _m07_qp02_control(ep):
 CONTROLS['PRO30_M07__M03_shared_source_dictionary']=_m07_m03_control
 CONTROLS['PRO30_M07__historical_QP02']=_m07_qp02_control
 CONTRACTS['PRO30_M07']['controls'].extend(['PRO30_M07__M03_shared_source_dictionary','PRO30_M07__historical_QP02'])
+
+from .hough_05 import install as _install05
+_install05(METHODS,CONTROLS,REQUIREMENTS,CONTRACTS)
+from .certified_01 import install as _install01
+_install01(METHODS,CONTROLS,REQUIREMENTS,CONTRACTS)
