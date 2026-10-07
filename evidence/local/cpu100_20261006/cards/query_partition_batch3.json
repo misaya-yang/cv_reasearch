@@ -5,17 +5,38 @@
       "id": "QP08",
       "title": "查询地标响应上的完整参考条件决策树",
       "gap": "参考FG多模式围绕BG时单线性方向不能完整识别；query字典可以提供同一场景的多个局部响应轴，完整R标签允许选择非线性条件组合而无需qseed。",
-      "history_evidence": ["reference ridge和二次核已有负例，参考拟合不证明query迁移。", "ProM3角色树是R空间区域/角色留出并作宿主修正；本卡是query地标响应轴上的CART完整独立分类，若源码查得同决策则关闭。", "总结层/读出混淆：所有tree controls共享信息、输入geometry及readout，不能把query投影收益当tree本身。"],
+      "history_evidence": [
+        "reference ridge和二次核已有负例，参考拟合不证明query迁移。",
+        "ProM3角色树是R空间区域/角色留出并作宿主修正；本卡是query地标响应轴上的CART完整独立分类，若源码查得同决策则关闭。",
+        "总结层/读出混淆：所有tree controls共享信息、输入geometry及readout，不能把query投影收益当tree本身。"
+      ],
       "available_information": "直接unit DINO q/r、完整MR覆盖wf/wb、合法query字典/geometry，无QGT/host/seed/额外模型。",
       "new_observation_or_argument": "query球面字典的响应向量s(x)=x·Cq提供<=8维共享坐标；以完整R的平衡FG/BG覆盖在这些轴上贪心最小化Gini可得到非线性条件身份规则。它可在多模式环绕BG构造中改变单平面判决，是真正不同推断；query地标是否比reference地标有益须对照，不默认。",
-      "algorithm": ["1. QP01合法q字典<=8，形成所有R/q到中心余弦响应。", "2. 完整R行承载平衡FG/BG权重wf/sumwf、wb/sumwb，partial行可同时贡献两类。", "3. 每树节点枚举每响应轴上的不同R响应中点阈值；固定depth<=3，按最小加权Gini选split，tie轴/阈值升序。", "4. 仅正Gini改进split，无合法split或达到depth时leaf margin=(FGmass-BGmass)/(FGmass+BGmass)。", "5. 将所有q响应逐条件路由完整signed field，paddingBG，统一readout/空R类退化。"],
-      "expected_benefit": {"level": "hypothesized", "claim": "多模式R/Q支持合法非线性分离时可完整恢复两侧FG；不预测真实涨分。"},
-      "simplest_control": ["同Q响应FG/BG均值线性判别", "same CART但reference-only同预算球面字典", "same Q响应单层stump", "pointwise KDE、QP02及QP07同readout"],
+      "algorithm": [
+        "1. QP01合法q字典<=8，形成所有R/q到中心余弦响应。",
+        "2. 完整R行承载平衡FG/BG权重wf/sumwf、wb/sumwb，partial行可同时贡献两类。",
+        "3. 每树节点枚举每响应轴上的不同R响应中点阈值；固定depth<=3，按最小加权Gini选split，tie轴/阈值升序。",
+        "4. 仅正Gini改进split，无合法split或达到depth时leaf margin=(FGmass-BGmass)/(FGmass+BGmass)。",
+        "5. 将所有q响应逐条件路由完整signed field，paddingBG，统一readout/空R类退化。"
+      ],
+      "expected_benefit": {
+        "level": "hypothesized",
+        "claim": "多模式R/Q支持合法非线性分离时可完整恢复两侧FG；不预测真实涨分。"
+      },
+      "simplest_control": [
+        "同Q响应FG/BG均值线性判别",
+        "same CART但reference-only同预算球面字典",
+        "same Q响应单层stump",
+        "pointwise KDE、QP02及QP07同readout"
+      ],
       "why_not_duplicate": "不是Q字典独立hard票QP01、集合风险命名QP02或单连续平面QP07；条件tree可在字典内部和跨字典选择非线性区域。固定depth不扫树数凑方法。",
       "counterexample": "reference少样本轴阈值偶然分开两类而Q关系逆转则整块错；类条件响应强域偏移；query未出现的FG模式会被背景吸收。",
       "first_evidence": "单位向量两侧FG包围BG的完整非线性正例、Q/ref地标控制和域反转负例；若KDE/reference-tree同解不称Q地标独有价值。真实4例活动不评分。",
       "cpu_cost": "NumPy1CPU；R/q响应O((Nr+Nq)KD)，depth3每层排序O(KNr logNr)，空间O((Nr+Nq)K)，不newencoder。",
-      "limitations": "current reference标注用于episode内推断，非外部类标签训练；拟合risk不迁移保证，所有阈值来自单R不查询GT。失败区分响应方向不足/条件域失配/树过拟合，不扫depth。"
+      "limitations": "current reference标注用于episode内推断，非外部类标签训练；拟合risk不迁移保证，所有阈值来自单R不查询GT。失败区分响应方向不足/条件域失配/树过拟合，不扫depth。",
+      "implementation": "src/ics/cpu100/query_partition.py",
+      "review_decision": "accept_for_probe",
+      "implementation_status": "complete_API_and_bounded_probe_done; code_review_pending"
     }
   ]
 }

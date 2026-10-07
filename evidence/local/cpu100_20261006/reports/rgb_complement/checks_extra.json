@@ -1,0 +1,1612 @@
+{
+  "methods": [
+    "RGB06",
+    "RGB07",
+    "RGB09"
+  ],
+  "count": 3,
+  "no_natural_Q_truth_used": true,
+  "synthetic_only": true,
+  "balanced_reference_states": [
+    0,
+    3,
+    1,
+    1,
+    0,
+    3,
+    2,
+    0,
+    2,
+    3,
+    3,
+    1,
+    2,
+    0,
+    1,
+    2
+  ],
+  "reference_delta_counts": [
+    6,
+    6,
+    6,
+    6
+  ],
+  "construction_attempts": 75,
+  "reference_and_query_bins_actually_checked": true,
+  "single_modality_R_histograms_exactly_equal": true,
+  "mass_matching_actually_checked": true,
+  "exhaustive_quantized_solver_checks": 24,
+  "max_exhaustive_energy_excess": 0.0,
+  "missing_RGB_explicit_unavailable": {
+    "RGB06": true,
+    "RGB07": true,
+    "RGB09": true
+  },
+  "cases": [
+    {
+      "case": "joint_same_single_modality_bins",
+      "baseline_iou": 0.515625,
+      "arms": {
+        "RGB06": {
+          "iou": 1.0,
+          "seconds": 0.17870745799999999,
+          "finite_complete": true,
+          "actions": {
+            "aTP": 15872,
+            "aFP": 0,
+            "dTP": 0,
+            "dFP": 0
+          },
+          "info": {
+            "reference_cut_edges": 12,
+            "reference_same_edges": 12,
+            "method": "RGB06.primary",
+            "query_GT_used": false,
+            "new_encoder_calls": 0,
+            "natural_segmentation_benefit": "unmeasured",
+            "DINO_producer": {},
+            "reference_thresholds": [
+              [
+                0.0,
+                1.0,
+                2.0
+              ],
+              [
+                0.0,
+                0.17301038062283738,
+                0.34602076124567477
+              ]
+            ],
+            "reference_bin_sizes": [
+              4,
+              4
+            ],
+            "reference_likelihoods": {
+              "joint": {
+                "logratio": [
+                  1.9459101490553132,
+                  0.0,
+                  -1.9459101490553132,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -1.9459101490553132,
+                  0.0,
+                  1.9459101490553132,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "same_counts": [
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "cut_counts": [
+                  0.0,
+                  0.0,
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "dino": {
+                "logratio": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "same_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ],
+                "cut_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ]
+              },
+              "rgb": {
+                "logratio": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "same_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ],
+                "cut_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ]
+              }
+            },
+            "query_edge_bins": [
+              [
+                2,
+                2
+              ],
+              [
+                2,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "pairwise_mass": 0.9729550745276566,
+            "primary_pairwise_mass": 0.9729550745276566,
+            "cut_certificate": {
+              "energy": -0.04999999999999999,
+              "quantized_energy": -0.04999999999999999,
+              "capacity_scale": 1000000,
+              "quantized_objective_exact": true,
+              "unquantized_optimality_claim": false
+            },
+            "wall_seconds": 0.141316167,
+            "input_type": "actual RGB and known R edge labels plus direct DINO signed unary"
+          }
+        },
+        "RGB06.dino": {
+          "iou": 0.5,
+          "seconds": 0.02337083299999998,
+          "finite_complete": true,
+          "actions": {
+            "aTP": 0,
+            "aFP": 0,
+            "dTP": 512,
+            "dFP": 0
+          },
+          "info": {
+            "reference_cut_edges": 12,
+            "reference_same_edges": 12,
+            "zero_evidence_same_mass_uniform_fallback": true,
+            "method": "RGB06.dino",
+            "query_GT_used": false,
+            "new_encoder_calls": 0,
+            "natural_segmentation_benefit": "unmeasured",
+            "DINO_producer": {},
+            "reference_thresholds": [
+              [
+                0.0,
+                1.0,
+                2.0
+              ],
+              [
+                0.0,
+                0.17301038062283738,
+                0.34602076124567477
+              ]
+            ],
+            "reference_bin_sizes": [
+              4,
+              4
+            ],
+            "reference_likelihoods": {
+              "joint": {
+                "logratio": [
+                  1.9459101490553132,
+                  0.0,
+                  -1.9459101490553132,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -1.9459101490553132,
+                  0.0,
+                  1.9459101490553132,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "same_counts": [
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "cut_counts": [
+                  0.0,
+                  0.0,
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "dino": {
+                "logratio": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "same_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ],
+                "cut_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ]
+              },
+              "rgb": {
+                "logratio": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "same_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ],
+                "cut_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ]
+              }
+            },
+            "query_edge_bins": [
+              [
+                2,
+                2
+              ],
+              [
+                2,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "pairwise_mass": 0.9729550745276567,
+            "primary_pairwise_mass": 0.9729550745276566,
+            "cut_certificate": {
+              "energy": -0.02568164182411442,
+              "quantized_energy": -0.025681999999999983,
+              "capacity_scale": 1000000,
+              "quantized_objective_exact": true,
+              "unquantized_optimality_claim": false
+            },
+            "wall_seconds": 0.002031666000000043,
+            "input_type": "actual RGB and known R edge labels plus direct DINO signed unary"
+          }
+        },
+        "RGB06.rgb": {
+          "iou": 0.5,
+          "seconds": 0.02258558300000002,
+          "finite_complete": true,
+          "actions": {
+            "aTP": 0,
+            "aFP": 0,
+            "dTP": 512,
+            "dFP": 0
+          },
+          "info": {
+            "reference_cut_edges": 12,
+            "reference_same_edges": 12,
+            "zero_evidence_same_mass_uniform_fallback": true,
+            "method": "RGB06.rgb",
+            "query_GT_used": false,
+            "new_encoder_calls": 0,
+            "natural_segmentation_benefit": "unmeasured",
+            "DINO_producer": {},
+            "reference_thresholds": [
+              [
+                0.0,
+                1.0,
+                2.0
+              ],
+              [
+                0.0,
+                0.17301038062283738,
+                0.34602076124567477
+              ]
+            ],
+            "reference_bin_sizes": [
+              4,
+              4
+            ],
+            "reference_likelihoods": {
+              "joint": {
+                "logratio": [
+                  1.9459101490553132,
+                  0.0,
+                  -1.9459101490553132,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -1.9459101490553132,
+                  0.0,
+                  1.9459101490553132,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "same_counts": [
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "cut_counts": [
+                  0.0,
+                  0.0,
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "dino": {
+                "logratio": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "same_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ],
+                "cut_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ]
+              },
+              "rgb": {
+                "logratio": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "same_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ],
+                "cut_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ]
+              }
+            },
+            "query_edge_bins": [
+              [
+                2,
+                2
+              ],
+              [
+                2,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "pairwise_mass": 0.9729550745276567,
+            "primary_pairwise_mass": 0.9729550745276566,
+            "cut_certificate": {
+              "energy": -0.02568164182411442,
+              "quantized_energy": -0.025681999999999983,
+              "capacity_scale": 1000000,
+              "quantized_objective_exact": true,
+              "unquantized_optimality_claim": false
+            },
+            "wall_seconds": 0.0021032079999999675,
+            "input_type": "actual RGB and known R edge labels plus direct DINO signed unary"
+          }
+        },
+        "RGB06.uniform": {
+          "iou": 0.5,
+          "seconds": 0.021759333999999964,
+          "finite_complete": true,
+          "actions": {
+            "aTP": 0,
+            "aFP": 0,
+            "dTP": 512,
+            "dFP": 0
+          },
+          "info": {
+            "reference_cut_edges": 12,
+            "reference_same_edges": 12,
+            "method": "RGB06.uniform",
+            "query_GT_used": false,
+            "new_encoder_calls": 0,
+            "natural_segmentation_benefit": "unmeasured",
+            "DINO_producer": {},
+            "reference_thresholds": [
+              [
+                0.0,
+                1.0,
+                2.0
+              ],
+              [
+                0.0,
+                0.17301038062283738,
+                0.34602076124567477
+              ]
+            ],
+            "reference_bin_sizes": [
+              4,
+              4
+            ],
+            "reference_likelihoods": {
+              "joint": {
+                "logratio": [
+                  1.9459101490553132,
+                  0.0,
+                  -1.9459101490553132,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -1.9459101490553132,
+                  0.0,
+                  1.9459101490553132,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "same_counts": [
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "cut_counts": [
+                  0.0,
+                  0.0,
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "dino": {
+                "logratio": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "same_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ],
+                "cut_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ]
+              },
+              "rgb": {
+                "logratio": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "same_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ],
+                "cut_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ]
+              }
+            },
+            "query_edge_bins": [
+              [
+                2,
+                2
+              ],
+              [
+                2,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "pairwise_mass": 0.9729550745276567,
+            "primary_pairwise_mass": 0.9729550745276566,
+            "cut_certificate": {
+              "energy": -0.02568164182411442,
+              "quantized_energy": -0.025681999999999983,
+              "capacity_scale": 1000000,
+              "quantized_objective_exact": true,
+              "unquantized_optimality_claim": false
+            },
+            "wall_seconds": 0.0019565420000000056,
+            "input_type": "actual RGB and known R edge labels plus direct DINO signed unary"
+          }
+        },
+        "RGB06.zero": {
+          "iou": 0.5,
+          "seconds": 0.023769625000000016,
+          "finite_complete": true,
+          "actions": {
+            "aTP": 0,
+            "aFP": 0,
+            "dTP": 512,
+            "dFP": 0
+          },
+          "info": {
+            "reference_cut_edges": 12,
+            "reference_same_edges": 12,
+            "method": "RGB06.zero",
+            "query_GT_used": false,
+            "new_encoder_calls": 0,
+            "natural_segmentation_benefit": "unmeasured",
+            "DINO_producer": {},
+            "reference_thresholds": [
+              [
+                0.0,
+                1.0,
+                2.0
+              ],
+              [
+                0.0,
+                0.17301038062283738,
+                0.34602076124567477
+              ]
+            ],
+            "reference_bin_sizes": [
+              4,
+              4
+            ],
+            "reference_likelihoods": {
+              "joint": {
+                "logratio": [
+                  1.9459101490553132,
+                  0.0,
+                  -1.9459101490553132,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -1.9459101490553132,
+                  0.0,
+                  1.9459101490553132,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "same_counts": [
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "cut_counts": [
+                  0.0,
+                  0.0,
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "dino": {
+                "logratio": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "same_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ],
+                "cut_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ]
+              },
+              "rgb": {
+                "logratio": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "same_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ],
+                "cut_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ]
+              }
+            },
+            "query_edge_bins": [
+              [
+                2,
+                2
+              ],
+              [
+                2,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "pairwise_mass": 0.0,
+            "primary_pairwise_mass": 0.9729550745276566,
+            "cut_certificate": {
+              "energy": -0.35,
+              "quantized_energy": -0.35,
+              "capacity_scale": 1000000,
+              "quantized_objective_exact": true,
+              "unquantized_optimality_claim": false
+            },
+            "wall_seconds": 0.0019075000000000064,
+            "input_type": "actual RGB and known R edge labels plus direct DINO signed unary"
+          }
+        }
+      }
+    },
+    {
+      "case": "local_shading_positive",
+      "baseline_iou": 0.0,
+      "arms": {
+        "RGB07": {
+          "iou": 1.0,
+          "seconds": 0.023410584000000012,
+          "finite_complete": true,
+          "actions": {
+            "aTP": 32768,
+            "aFP": 0,
+            "dTP": 0,
+            "dFP": 0
+          },
+          "info": {
+            "invariance_scope": "positive scalar at a non-clipped observed RGB pixel or constant-color patch; resize-before-unit need not commute with arbitrary shading",
+            "empty_black_Q_cells": 0,
+            "discarded_information": "pixel brightness magnitude; achromatic class evidence may be lost",
+            "method": "RGB07.primary",
+            "query_GT_used": false,
+            "new_encoder_calls": 0,
+            "output_semantics": "complete signed margin, zero threshold; not probability",
+            "input_type": "actual RGB plus labeled R and supplied frozen DINO grid",
+            "source_id": "synthetic_RGB_extra",
+            "DINO_producer": {},
+            "correction_cap": 0.5,
+            "RGB_side": 256,
+            "valid_added_tokens": 32,
+            "valid_deleted_tokens": 0,
+            "wall_seconds": 0.0030449160000000086,
+            "natural_segmentation_benefit": "unmeasured"
+          }
+        },
+        "RGB07.raw": {
+          "iou": 0.3125,
+          "seconds": 0.023918542000000043,
+          "finite_complete": true,
+          "actions": {
+            "aTP": 10240,
+            "aFP": 0,
+            "dTP": 0,
+            "dFP": 0
+          },
+          "info": {
+            "invariance_scope": "positive scalar at a non-clipped observed RGB pixel or constant-color patch; resize-before-unit need not commute with arbitrary shading",
+            "empty_black_Q_cells": 0,
+            "discarded_information": "pixel brightness magnitude; achromatic class evidence may be lost",
+            "method": "RGB07.raw",
+            "query_GT_used": false,
+            "new_encoder_calls": 0,
+            "output_semantics": "complete signed margin, zero threshold; not probability",
+            "input_type": "actual RGB plus labeled R and supplied frozen DINO grid",
+            "source_id": "synthetic_RGB_extra",
+            "DINO_producer": {},
+            "correction_cap": 0.5,
+            "RGB_side": 256,
+            "valid_added_tokens": 8,
+            "valid_deleted_tokens": 0,
+            "wall_seconds": 0.0016540420000000222,
+            "natural_segmentation_benefit": "unmeasured"
+          }
+        },
+        "RGB07.gray": {
+          "iou": 0.265625,
+          "seconds": 0.023747499999999977,
+          "finite_complete": true,
+          "actions": {
+            "aTP": 8704,
+            "aFP": 0,
+            "dTP": 0,
+            "dFP": 0
+          },
+          "info": {
+            "invariance_scope": "positive scalar at a non-clipped observed RGB pixel or constant-color patch; resize-before-unit need not commute with arbitrary shading",
+            "empty_black_Q_cells": 0,
+            "discarded_information": "pixel brightness magnitude; achromatic class evidence may be lost",
+            "method": "RGB07.gray",
+            "query_GT_used": false,
+            "new_encoder_calls": 0,
+            "output_semantics": "complete signed margin, zero threshold; not probability",
+            "input_type": "actual RGB plus labeled R and supplied frozen DINO grid",
+            "source_id": "synthetic_RGB_extra",
+            "DINO_producer": {},
+            "correction_cap": 0.5,
+            "RGB_side": 256,
+            "valid_added_tokens": 8,
+            "valid_deleted_tokens": 0,
+            "wall_seconds": 0.0016401659999999985,
+            "natural_segmentation_benefit": "unmeasured"
+          }
+        },
+        "RGB07.global_affine": {
+          "iou": 0.3125,
+          "seconds": 0.023399583,
+          "finite_complete": true,
+          "actions": {
+            "aTP": 10240,
+            "aFP": 0,
+            "dTP": 0,
+            "dFP": 0
+          },
+          "info": {
+            "Q_background_anchors": 0,
+            "nuisance_assumption": "shared diagonal photometric transform and comparable BG composition",
+            "nuisance_fitted": false,
+            "nuisance_abstention": "fewer_than_8_Q_BG_anchors",
+            "method": "RGB01.primary",
+            "query_GT_used": false,
+            "new_encoder_calls": 0,
+            "output_semantics": "complete signed margin, zero threshold; not probability",
+            "input_type": "actual RGB plus labeled R and supplied frozen DINO grid",
+            "source_id": "synthetic_RGB_extra",
+            "DINO_producer": {},
+            "correction_cap": 0.5,
+            "RGB_side": 256,
+            "valid_added_tokens": 8,
+            "valid_deleted_tokens": 0,
+            "wall_seconds": 0.0016979169999999932,
+            "natural_segmentation_benefit": "unmeasured"
+          }
+        }
+      }
+    },
+    {
+      "case": "achromatic_information_discard_negative",
+      "baseline_iou": 0.0,
+      "arms": {
+        "RGB07": {
+          "iou": 0.0,
+          "seconds": 0.02252024999999991,
+          "finite_complete": true,
+          "actions": {
+            "aTP": 0,
+            "aFP": 0,
+            "dTP": 0,
+            "dFP": 0
+          },
+          "info": {
+            "invariance_scope": "positive scalar at a non-clipped observed RGB pixel or constant-color patch; resize-before-unit need not commute with arbitrary shading",
+            "empty_black_Q_cells": 0,
+            "discarded_information": "pixel brightness magnitude; achromatic class evidence may be lost",
+            "method": "RGB07.primary",
+            "query_GT_used": false,
+            "new_encoder_calls": 0,
+            "output_semantics": "complete signed margin, zero threshold; not probability",
+            "input_type": "actual RGB plus labeled R and supplied frozen DINO grid",
+            "source_id": "synthetic_RGB_extra",
+            "DINO_producer": {},
+            "correction_cap": 0.5,
+            "RGB_side": 256,
+            "valid_added_tokens": 0,
+            "valid_deleted_tokens": 0,
+            "wall_seconds": 0.00305687500000007,
+            "natural_segmentation_benefit": "unmeasured"
+          }
+        },
+        "RGB07.raw": {
+          "iou": 1.0,
+          "seconds": 0.022657083000000022,
+          "finite_complete": true,
+          "actions": {
+            "aTP": 32768,
+            "aFP": 0,
+            "dTP": 0,
+            "dFP": 0
+          },
+          "info": {
+            "invariance_scope": "positive scalar at a non-clipped observed RGB pixel or constant-color patch; resize-before-unit need not commute with arbitrary shading",
+            "empty_black_Q_cells": 0,
+            "discarded_information": "pixel brightness magnitude; achromatic class evidence may be lost",
+            "method": "RGB07.raw",
+            "query_GT_used": false,
+            "new_encoder_calls": 0,
+            "output_semantics": "complete signed margin, zero threshold; not probability",
+            "input_type": "actual RGB plus labeled R and supplied frozen DINO grid",
+            "source_id": "synthetic_RGB_extra",
+            "DINO_producer": {},
+            "correction_cap": 0.5,
+            "RGB_side": 256,
+            "valid_added_tokens": 32,
+            "valid_deleted_tokens": 0,
+            "wall_seconds": 0.0016120419999999802,
+            "natural_segmentation_benefit": "unmeasured"
+          }
+        }
+      }
+    },
+    {
+      "case": "reference_boundary_side_positive",
+      "baseline_iou": 0.0,
+      "arms": {
+        "RGB09": {
+          "iou": 1.0,
+          "seconds": 0.02384970799999997,
+          "finite_complete": true,
+          "actions": {
+            "aTP": 32768,
+            "aFP": 0,
+            "dTP": 0,
+            "dFP": 0
+          },
+          "info": {
+            "R_directed_cut_edges": 8,
+            "reference_polarity_direction": [
+              0.5773502691896257,
+              0.5773502691896257,
+              0.5773502691896257
+            ],
+            "within_R_RGB_scale": 0.00392156862745098,
+            "Q_components": 2,
+            "assumption": "foreground-side color contrast transfers despite absolute-color change; not a bright-target prior",
+            "method": "RGB09.primary",
+            "query_GT_used": false,
+            "new_encoder_calls": 0,
+            "output_semantics": "complete signed margin, zero threshold; not probability",
+            "input_type": "actual RGB plus labeled R and supplied frozen DINO grid",
+            "source_id": "synthetic_RGB_extra",
+            "DINO_producer": {},
+            "correction_cap": 0.5,
+            "RGB_side": 256,
+            "valid_added_tokens": 32,
+            "valid_deleted_tokens": 0,
+            "wall_seconds": 0.001865208000000007,
+            "natural_segmentation_benefit": "unmeasured"
+          }
+        },
+        "RGB09.pointwise": {
+          "iou": 0.390625,
+          "seconds": 0.023503584000000077,
+          "finite_complete": true,
+          "actions": {
+            "aTP": 12800,
+            "aFP": 0,
+            "dTP": 0,
+            "dFP": 0
+          },
+          "info": {
+            "R_directed_cut_edges": 8,
+            "reference_polarity_direction": [
+              0.5773502691896257,
+              0.5773502691896257,
+              0.5773502691896257
+            ],
+            "within_R_RGB_scale": 0.00392156862745098,
+            "Q_components": 64,
+            "assumption": "foreground-side color contrast transfers despite absolute-color change; not a bright-target prior",
+            "method": "RGB09.pointwise",
+            "query_GT_used": false,
+            "new_encoder_calls": 0,
+            "output_semantics": "complete signed margin, zero threshold; not probability",
+            "input_type": "actual RGB plus labeled R and supplied frozen DINO grid",
+            "source_id": "synthetic_RGB_extra",
+            "DINO_producer": {},
+            "correction_cap": 0.5,
+            "RGB_side": 256,
+            "valid_added_tokens": 8,
+            "valid_deleted_tokens": 0,
+            "wall_seconds": 0.0016880410000000845,
+            "natural_segmentation_benefit": "unmeasured"
+          }
+        },
+        "RGB09.symmetric_Potts": {
+          "iou": 0.0,
+          "seconds": 0.02339629200000004,
+          "finite_complete": true,
+          "actions": {
+            "aTP": 0,
+            "aFP": 0,
+            "dTP": 0,
+            "dFP": 0
+          },
+          "info": {
+            "method": "RGB09.symmetric_RGB_Potts_control",
+            "query_GT_used": false,
+            "input_type": "same actual Q RGB/native signed DINO unary/grid/readout",
+            "pairwise_mass": 7.999999999999998,
+            "cut_certificate": {
+              "energy": 0.0,
+              "quantized_energy": 0.0,
+              "capacity_scale": 1000000,
+              "quantized_objective_exact": true,
+              "unquantized_optimality_claim": false
+            },
+            "wall_seconds": 0.0012617499999999504
+          }
+        },
+        "RGB01": {
+          "iou": 0.5,
+          "seconds": 0.024832042,
+          "finite_complete": true,
+          "actions": {
+            "aTP": 32768,
+            "aFP": 32768,
+            "dTP": 0,
+            "dFP": 0
+          },
+          "info": {
+            "Q_background_anchors": 0,
+            "nuisance_assumption": "shared diagonal photometric transform and comparable BG composition",
+            "nuisance_fitted": false,
+            "nuisance_abstention": "fewer_than_8_Q_BG_anchors",
+            "method": "RGB01.primary",
+            "query_GT_used": false,
+            "new_encoder_calls": 0,
+            "output_semantics": "complete signed margin, zero threshold; not probability",
+            "input_type": "actual RGB plus labeled R and supplied frozen DINO grid",
+            "source_id": "synthetic_RGB_extra",
+            "DINO_producer": {},
+            "correction_cap": 0.5,
+            "RGB_side": 256,
+            "valid_added_tokens": 64,
+            "valid_deleted_tokens": 0,
+            "wall_seconds": 0.001677374999999981,
+            "natural_segmentation_benefit": "unmeasured"
+          }
+        }
+      }
+    },
+    {
+      "case": "role_context_reversal_negative",
+      "baseline_iou": 0.0,
+      "arms": {
+        "RGB09": {
+          "iou": 0.0,
+          "seconds": 0.02298170799999999,
+          "finite_complete": true,
+          "actions": {
+            "aTP": 0,
+            "aFP": 32768,
+            "dTP": 0,
+            "dFP": 0
+          },
+          "info": {
+            "R_directed_cut_edges": 8,
+            "reference_polarity_direction": [
+              0.5773502691896257,
+              0.5773502691896257,
+              0.5773502691896257
+            ],
+            "within_R_RGB_scale": 0.00392156862745098,
+            "Q_components": 2,
+            "assumption": "foreground-side color contrast transfers despite absolute-color change; not a bright-target prior",
+            "method": "RGB09.primary",
+            "query_GT_used": false,
+            "new_encoder_calls": 0,
+            "output_semantics": "complete signed margin, zero threshold; not probability",
+            "input_type": "actual RGB plus labeled R and supplied frozen DINO grid",
+            "source_id": "synthetic_RGB_extra",
+            "DINO_producer": {},
+            "correction_cap": 0.5,
+            "RGB_side": 256,
+            "valid_added_tokens": 32,
+            "valid_deleted_tokens": 0,
+            "wall_seconds": 0.0017530000000000046,
+            "natural_segmentation_benefit": "unmeasured"
+          }
+        },
+        "RGB09.pointwise": {
+          "iou": 0.0,
+          "seconds": 0.022826374999999954,
+          "finite_complete": true,
+          "actions": {
+            "aTP": 0,
+            "aFP": 12800,
+            "dTP": 0,
+            "dFP": 0
+          },
+          "info": {
+            "R_directed_cut_edges": 8,
+            "reference_polarity_direction": [
+              0.5773502691896257,
+              0.5773502691896257,
+              0.5773502691896257
+            ],
+            "within_R_RGB_scale": 0.00392156862745098,
+            "Q_components": 64,
+            "assumption": "foreground-side color contrast transfers despite absolute-color change; not a bright-target prior",
+            "method": "RGB09.pointwise",
+            "query_GT_used": false,
+            "new_encoder_calls": 0,
+            "output_semantics": "complete signed margin, zero threshold; not probability",
+            "input_type": "actual RGB plus labeled R and supplied frozen DINO grid",
+            "source_id": "synthetic_RGB_extra",
+            "DINO_producer": {},
+            "correction_cap": 0.5,
+            "RGB_side": 256,
+            "valid_added_tokens": 8,
+            "valid_deleted_tokens": 0,
+            "wall_seconds": 0.0016200829999999389,
+            "natural_segmentation_benefit": "unmeasured"
+          }
+        }
+      }
+    },
+    {
+      "case": "role_wrong_group_no_observable_boundary",
+      "baseline_iou": 0.0,
+      "arms": {
+        "RGB09": {
+          "iou": 0.0,
+          "seconds": 0.02382541699999996,
+          "finite_complete": true,
+          "actions": {
+            "aTP": 0,
+            "aFP": 0,
+            "dTP": 0,
+            "dFP": 0
+          },
+          "info": {
+            "R_directed_cut_edges": 8,
+            "reference_polarity_direction": [
+              0.5773502691896257,
+              0.5773502691896257,
+              0.5773502691896257
+            ],
+            "within_R_RGB_scale": 0.00392156862745098,
+            "Q_components": 1,
+            "assumption": "foreground-side color contrast transfers despite absolute-color change; not a bright-target prior",
+            "method": "RGB09.primary",
+            "query_GT_used": false,
+            "new_encoder_calls": 0,
+            "output_semantics": "complete signed margin, zero threshold; not probability",
+            "input_type": "actual RGB plus labeled R and supplied frozen DINO grid",
+            "source_id": "synthetic_RGB_extra",
+            "DINO_producer": {},
+            "correction_cap": 0.5,
+            "RGB_side": 256,
+            "valid_added_tokens": 0,
+            "valid_deleted_tokens": 0,
+            "wall_seconds": 0.0018287080000000122,
+            "natural_segmentation_benefit": "unmeasured"
+          }
+        }
+      }
+    },
+    {
+      "case": "wrong_identity_unary_negative",
+      "baseline_iou": 0.5,
+      "arms": {
+        "RGB06": {
+          "iou": 0.5,
+          "seconds": 0.023422334000000045,
+          "finite_complete": true,
+          "actions": {
+            "aTP": 0,
+            "aFP": 0,
+            "dTP": 0,
+            "dFP": 0
+          },
+          "info": {
+            "reference_cut_edges": 12,
+            "reference_same_edges": 12,
+            "method": "RGB06.primary",
+            "query_GT_used": false,
+            "new_encoder_calls": 0,
+            "natural_segmentation_benefit": "unmeasured",
+            "DINO_producer": {},
+            "reference_thresholds": [
+              [
+                0.0,
+                1.0,
+                2.0
+              ],
+              [
+                0.0,
+                0.17301038062283738,
+                0.34602076124567477
+              ]
+            ],
+            "reference_bin_sizes": [
+              4,
+              4
+            ],
+            "reference_likelihoods": {
+              "joint": {
+                "logratio": [
+                  1.9459101490553132,
+                  0.0,
+                  -1.9459101490553132,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -1.9459101490553132,
+                  0.0,
+                  1.9459101490553132,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "same_counts": [
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "cut_counts": [
+                  0.0,
+                  0.0,
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "dino": {
+                "logratio": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "same_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ],
+                "cut_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ]
+              },
+              "rgb": {
+                "logratio": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "same_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ],
+                "cut_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ]
+              }
+            },
+            "query_edge_bins": [
+              [
+                1,
+                2
+              ],
+              [
+                1,
+                0
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "pairwise_mass": 0.0,
+            "primary_pairwise_mass": 0.0,
+            "cut_certificate": {
+              "energy": -2.9711254108328293,
+              "quantized_energy": -2.971124,
+              "capacity_scale": 1000000,
+              "quantized_objective_exact": true,
+              "unquantized_optimality_claim": false
+            },
+            "wall_seconds": 0.0020307080000000477,
+            "input_type": "actual RGB and known R edge labels plus direct DINO signed unary"
+          }
+        },
+        "RGB06.uniform": {
+          "iou": 0.5,
+          "seconds": 0.02429199999999998,
+          "finite_complete": true,
+          "actions": {
+            "aTP": 0,
+            "aFP": 0,
+            "dTP": 0,
+            "dFP": 0
+          },
+          "info": {
+            "reference_cut_edges": 12,
+            "reference_same_edges": 12,
+            "method": "RGB06.uniform",
+            "query_GT_used": false,
+            "new_encoder_calls": 0,
+            "natural_segmentation_benefit": "unmeasured",
+            "DINO_producer": {},
+            "reference_thresholds": [
+              [
+                0.0,
+                1.0,
+                2.0
+              ],
+              [
+                0.0,
+                0.17301038062283738,
+                0.34602076124567477
+              ]
+            ],
+            "reference_bin_sizes": [
+              4,
+              4
+            ],
+            "reference_likelihoods": {
+              "joint": {
+                "logratio": [
+                  1.9459101490553132,
+                  0.0,
+                  -1.9459101490553132,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -1.9459101490553132,
+                  0.0,
+                  1.9459101490553132,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "same_counts": [
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "cut_counts": [
+                  0.0,
+                  0.0,
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  6.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "dino": {
+                "logratio": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "same_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ],
+                "cut_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ]
+              },
+              "rgb": {
+                "logratio": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "same_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ],
+                "cut_counts": [
+                  6.0,
+                  0.0,
+                  6.0,
+                  0.0
+                ]
+              }
+            },
+            "query_edge_bins": [
+              [
+                1,
+                2
+              ],
+              [
+                1,
+                0
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "pairwise_mass": 0.0,
+            "primary_pairwise_mass": 0.0,
+            "cut_certificate": {
+              "energy": -2.9711254108328293,
+              "quantized_energy": -2.971124,
+              "capacity_scale": 1000000,
+              "quantized_objective_exact": true,
+              "unquantized_optimality_claim": false
+            },
+            "wall_seconds": 0.001926917000000028,
+            "input_type": "actual RGB and known R edge labels plus direct DINO signed unary"
+          }
+        }
+      }
+    }
+  ],
+  "source_sha256": "947abb93258a5ab7d02202dd0de6640103c91ea600355bab094e88e59e03e3e7",
+  "peak_RSS_bytes": 175407104,
+  "natural_quality": "unknown; extra batch not yet real scored"
+}

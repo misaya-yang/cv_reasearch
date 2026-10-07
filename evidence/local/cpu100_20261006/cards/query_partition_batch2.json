@@ -35,7 +35,9 @@
       "first_evidence": "unit多模态FG匹配区域与点wise正值但分布不相容干扰完整构造，强control和部位比例反例；4真实例仅活动/成本不评分。",
       "cpu_cost": "NumPy1线程；R代表128上限，q窗口<=16，O(Nq*128*D+Nr*128*D)，不稠密q²，不encoder。",
       "limitations": "完整参考标注不保证同类实例组成相同；真实收益未测。失败记相容性不可迁移/窗口混类/有限样本，不扫kernel温度凑方法。",
-      "review_decision": "accept_for_probe"
+      "review_decision": "accept_for_probe",
+      "implementation": "src/ics/cpu100/query_partition.py",
+      "implementation_status": "complete_API_and_bounded_probe_done; code_review_pending"
     },
     {
       "id": "QP06",
@@ -69,7 +71,9 @@
       "first_evidence": "两不相邻对象+弱内部正例，斜细目标反例、完整DP对tiny全树枚举；4例活动不评分。",
       "cpu_cost": "NumPy1线程；tree O(Nq)节点，DP O(Nq)及KDE成本，不q²；4096轻量。",
       "limitations": "显式几何编码先验，不新身份来源；编码尺度以nativetoken计，128与1024输出区别需记；不扫tree编码常数。",
-      "review_decision": "accept_for_probe"
+      "review_decision": "accept_for_probe",
+      "implementation": "src/ics/cpu100/query_partition.py",
+      "implementation_status": "complete_API_and_bounded_probe_done; code_review_pending"
     },
     {
       "id": "QP07",
@@ -104,7 +108,9 @@
       "first_evidence": ">=3中心且QP02整组label与平面非等价完整构造，同简单控制和环绕负例；4例活动不评分。",
       "cpu_cost": "1线程NumPy，<=56方向，O((Nq+Nr)KD*12+56(Nr+Nq)D)，可矩阵batch，不额外encoder。",
       "limitations": "候选方向受query样本组成影响，reference风险最优只在候选域；单平面局限/真实质量未知，不扫方向库凑更多。",
-      "review_decision": "accept_for_probe"
+      "review_decision": "accept_for_probe",
+      "implementation": "src/ics/cpu100/query_partition.py",
+      "implementation_status": "complete_API_and_bounded_probe_done; code_review_pending"
     }
   ],
   "rejected_cards": [

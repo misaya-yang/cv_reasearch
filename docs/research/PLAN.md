@@ -4,9 +4,9 @@
 
 最新用户明确重开方法开发：持续推进、学习Opus会话总结、多代理并行，始终保留一个只审查的reviewer；交付100个有逻辑、收益依据、失败反思的CPU可运行完整方法。数量替换旧1000目标。方法卡、实现、构造证据、真实运行、质量收益分别计数；参数、控制、修正版和重复机制不充数，也不承诺未测方法均涨分。
 
-当前执行：七组拥有完整候选从依据到实现/证据；专职 `summary_reviewer` 只读总结及结果审查，不写算法或跑实验。独立性/失败范围/强简单控制先审，放行只代表可测，不代表有效。源码与交付证据在 `src/ics/cpu100/` 和 [CPU100记录](../../evidence/local/cpu100_20261006/)。本节是当前待办，目录内卡片和报告是证据，不另建待办清单。
+当前执行：七组拥有完整候选从依据到实现/证据；专职 `summary_reviewer` 只读总结及结果审查，不写算法或跑实验。两批卡片审查分别接受29项与24项进入固定probe；重复项及需修订项按记录关闭/修订，放行只代表可测，不代表有效。源码与交付证据在 `src/ics/cpu100/` 和 [CPU100记录](../../evidence/local/cpu100_20261006/)。本节是当前待办，目录内卡片和报告是证据，不另建待办清单。
 
-已知输入：本地四例真实原生DINOv3 RGB128 final-LN单位特征、完整参考面积权重；64 tokens不等于RGB1024的4096 tokens。另有独立CPU100任务完成4例native FP32 DINO1024（4096 tokens）推断：30个完整方法臂及所有对照封存并由独立scorer评分，全部完整；样本为复用开发例，仅作描述性活动探针，不是独立确认或总体收益。最高原始分数40.4669的`inv_huber_reference_readout`低于其声明的Huber-ridge对照40.5636；其他方法在小样本上有正负差异，尚无稳定正收益结论。见[四例汇总](../../evidence/local/cpu100_20261006/server/probe29_native4_v2/methods_summary.md)和[完整配对报告](../../evidence/local/cpu100_20261006/server/probe29_native4_v2/methods29_native4_v2/score/report.json)，100方法目标未完成。
+已知输入：本地四例真实原生DINOv3 RGB128 final-LN单位特征、完整参考面积权重；另有native FP32 DINO1024的4例活动probe及200例/74类开发集筛查。200例筛查的12臂及所有对照均完成；最高方法`inv_huber_reference_readout=52.373390`，对Huber-ridge差+0.710854 pp，照片组配对95%区间[0.135326,1.001446]。候选在此前4例上经posthoc选择，200例复用开发集；不能把该差值或区间当作独立确认，且区间未校正选择偏差。100方法目标未完成。见[200例汇总](../../evidence/local/cpu100_20261006/server/screen12_native200_v3/methods_summary.md)、[完整配对报告](../../evidence/local/cpu100_20261006/server/screen12_native200_v3/screen12_native200_v3/score/report.json)、[四例报告](../../evidence/local/cpu100_20261006/server/probe29_native4_v2/methods_summary.md)和两批[审查记录](../../evidence/local/cpu100_20261006/reviews/)。
 
 资源边界（2026-10-06用户授权的CPU100任务）：当时准备并授权 `ssh -p 56464 root@connect.westc.seetacloud.com`；新连接核实32CPU/cgroup60GiB，使用独占命名空间 `cpu100_20261006_01a1100b`。该任务复用已有资产，不下载、不使用GPU、不切端点或开新实例；此处记录不构成后续运行授权。
 

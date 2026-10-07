@@ -1,0 +1,509 @@
+{
+  "scope": "4 exposed actual raw1024 DINO pairs; descriptive probe, not independent confirmation or stable positive",
+  "source_path": "evidence/local/cpu100_20261006/server/probe29_native4_v2/methods_summary.json",
+  "source_sha256": "4476f579ab4b00dd715de7b3551e4a0e87394ebc791f53e2725522b1f2184b2c",
+  "frozen_method_source_sha256": "027897bcc10137258fd1020207bfc1624a31a9bf6da13fd451a245e38d11fb1b",
+  "methods": [
+    {
+      "id": "RGB01",
+      "observed": "Both aligned and unaligned RGB correction lose strongly to direct DINO on these four outputs. Alignment vs unaligned +2.260 is descriptive with a wide interval; it cannot establish a domain-correction cause. Simpler median primary beats complex Laplace here, validating the prior simplification.",
+      "interpretation_not_causal_proof": "Transferred FG/BG color evidence is not sufficiently class-specific on these image pairs, not necessarily an alignment numeric error. 134976 false additions vs6230 true additions and28170 true deletions show the correction is not conservative identity evidence.",
+      "failure_or_unresolved_learning": "Retain fixed negative version and BG-composition / color-class-swap counterexamples; no weight/anchor threshold scan. This does not disprove all color observations.",
+      "four_action_budget": {
+        "add_TP": 6230,
+        "add_FP": 134976,
+        "delete_TP": 28170,
+        "delete_FP": 34095
+      },
+      "per_class_exact_gain": {
+        "72": {
+          "add_TP": 5934,
+          "add_FP": 84636,
+          "delete_TP": 0,
+          "delete_FP": 13115,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 5934,
+          "final_U": 126071,
+          "gain": 4.706871524775721,
+          "exact_formula_gain": 4.706871524775722
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 21399,
+          "delete_TP": 0,
+          "delete_FP": 540,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 9303,
+          "final_U": 60210,
+          "gain": -8.190154691863526,
+          "exact_formula_gain": -8.190154691863526
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 21886,
+          "delete_TP": 91,
+          "delete_FP": 19,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 10958,
+          "final_U": 48140,
+          "gain": -19.29180550941015,
+          "exact_formula_gain": -19.29180550941015
+        },
+        "75": {
+          "add_TP": 296,
+          "add_FP": 7055,
+          "delete_TP": 28079,
+          "delete_FP": 20421,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 25093,
+          "final_U": 91878,
+          "gain": -22.930126875899266,
+          "exact_formula_gain": -22.93012687589927
+        }
+      },
+      "actual_score": 17.55794639653726,
+      "strong_control_gains": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": -11.426303888099305,
+          "ci95": [
+            -21.110966192654708,
+            -1.7416415835439025
+          ]
+        },
+        "RGB01.unaligned": {
+          "score": 15.297934702980076,
+          "gain": 2.2600116935571855,
+          "ci95": [
+            -7.759152434019402,
+            12.27917582113377
+          ]
+        },
+        "RGB01.prototype": {
+          "score": 17.55794639653726,
+          "gain": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "RGB01.laplace": {
+          "score": 8.24762339491916,
+          "gain": 9.310323001618102,
+          "ci95": [
+            1.6281949547313168,
+            16.992451048504883
+          ]
+        },
+        "RGB01.rgb_only": {
+          "score": 4.731382543105604,
+          "gain": 12.826563853431658,
+          "ci95": [
+            4.454439181441319,
+            21.198688525421993
+          ]
+        }
+      }
+    },
+    {
+      "id": "RGB02",
+      "observed": "Ordinal correction +3.891 pp vs direct DINO, but only +0.196 vs full-power control with broad crossing-zero interval. Novel observable separated in synthetic witness; necessity beyond full-power in natural data is not established.",
+      "interpretation_not_causal_proof": "36050 false deletions vs2104 true deletions are the main useful action here; additions are12908 false vs1423 true. This observed version acts primarily as distractor deletion, not reliable target recovery.",
+      "failure_or_unresolved_learning": "Preserve deletion benefit with its harms and compare full-power on the same fixed finite validation. Do not multiply the 4-case point gain into a population or combine it with historical RCG gains.",
+      "four_action_budget": {
+        "add_TP": 1423,
+        "add_FP": 12908,
+        "delete_TP": 2104,
+        "delete_FP": 36050
+      },
+      "per_class_exact_gain": {
+        "72": {
+          "add_TP": 0,
+          "add_FP": 6722,
+          "delete_TP": 0,
+          "delete_FP": 10860,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 0,
+          "final_U": 50412,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 4449,
+          "delete_TP": 1676,
+          "delete_FP": 24002,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 7627,
+          "final_U": 19798,
+          "gain": 14.88301687710664,
+          "exact_formula_gain": 14.883016877106636
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 0,
+          "delete_FP": 0,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 11049,
+          "final_U": 26273,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "75": {
+          "add_TP": 1423,
+          "add_FP": 1737,
+          "delete_TP": 428,
+          "delete_FP": 1188,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 53871,
+          "final_U": 105793,
+          "gain": 0.6797945250195947,
+          "exact_formula_gain": 0.6797945250195925
+        }
+      },
+      "actual_score": 32.87495313516813,
+      "strong_control_gains": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": 3.890702850531561,
+          "ci95": [
+            0.0,
+            7.781405701063115
+          ]
+        },
+        "RGB02.color": {
+          "score": 27.001730798620006,
+          "gain": 5.873222336548121,
+          "ci95": [
+            -0.44999660281435894,
+            12.196441275910594
+          ]
+        },
+        "RGB02.variance": {
+          "score": 22.74470836515412,
+          "gain": 10.130244770014006,
+          "ci95": [
+            -2.9059635531439163,
+            23.16645309317192
+          ]
+        },
+        "RGB02.full_power": {
+          "score": 32.67872680628254,
+          "gain": 0.19622632888558655,
+          "ci95": [
+            -6.067822519007201,
+            6.46027517677836
+          ]
+        },
+        "RGB02.radial_power": {
+          "score": 27.82294954412895,
+          "gain": 5.052003591039178,
+          "ci95": [
+            -0.07387300714678702,
+            10.177880189225128
+          ]
+        }
+      }
+    },
+    {
+      "id": "RGB03",
+      "observed": "Phase primary −0.279 vsDINO and−4.170 vsordinal; its homometric unique-observer construction succeeds but has not transferred to these natural pairs.",
+      "interpretation_not_causal_proof": "False additions34399 versus472 true dominate additions; phase coupling may be scene/pattern alignment specific. The aggregate negative alone does not identify phase instability as the unique causal explanation.",
+      "failure_or_unresolved_learning": "Record this mismatch as failure of the fixed cross-instance phase-transfer hypothesis on the smoke; no FFT triplet/scale variants and no global impossibility claim.",
+      "four_action_budget": {
+        "add_TP": 472,
+        "add_FP": 34399,
+        "delete_TP": 951,
+        "delete_FP": 13595
+      },
+      "per_class_exact_gain": {
+        "72": {
+          "add_TP": 209,
+          "add_FP": 23707,
+          "delete_TP": 0,
+          "delete_FP": 3135,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 209,
+          "final_U": 75122,
+          "gain": 0.27821410505577593,
+          "exact_formula_gain": 0.27821410505577593
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 10208,
+          "delete_TP": 386,
+          "delete_FP": 10030,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 8917,
+          "final_U": 39529,
+          "gain": -1.0829545804570462,
+          "exact_formula_gain": -1.0829545804570475
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 0,
+          "delete_TP": 0,
+          "delete_FP": 0,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 11049,
+          "final_U": 26273,
+          "gain": 0.0,
+          "exact_formula_gain": 0.0
+        },
+        "75": {
+          "add_TP": 263,
+          "add_FP": 484,
+          "delete_TP": 565,
+          "delete_FP": 430,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 52574,
+          "final_U": 105298,
+          "gain": -0.31257034864791144,
+          "exact_formula_gain": -0.3125703486479144
+        }
+      },
+      "actual_score": 28.70492257862427,
+      "strong_control_gains": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": -0.27932770601229606,
+          "ci95": [
+            -0.6977624645524756,
+            0.13910705252789057
+          ]
+        },
+        "RGB03.full_power": {
+          "score": 32.67872680628254,
+          "gain": -3.9738042276582703,
+          "ci95": [
+            -9.314042887006742,
+            1.3664344316902017
+          ]
+        },
+        "RGB03.ordinal": {
+          "score": 32.87495313516813,
+          "gain": -4.170030556543857,
+          "ci95": [
+            -8.47916816561559,
+            0.13910705252789057
+          ]
+        }
+      }
+    },
+    {
+      "id": "RGB04",
+      "observed": "Nearest patch dictionary +0.378 vsDINO with wide crossing-zero interval, but−2.622 vs same-window ordinal control. Multimodal retention wins a precise construction yet extra dictionary complexity has no measured natural advantage here.",
+      "interpretation_not_causal_proof": "False additions54184 versus1774 true are much larger than useful additions. Pixel arrangement/view/scale transfer is an explicit plausible weakness; preservation of modes alone does not certify identity.",
+      "failure_or_unresolved_learning": "Keep same-descriptor-mean and ordinal controls, especially the simple observer outperforming the dictionary. No mode-count/patch-size search; record natural-transfer uncertainty rather than claim sparse coding solved identity.",
+      "four_action_budget": {
+        "add_TP": 1774,
+        "add_FP": 54184,
+        "delete_TP": 2536,
+        "delete_FP": 13860
+      },
+      "per_class_exact_gain": {
+        "72": {
+          "add_TP": 202,
+          "add_FP": 25501,
+          "delete_TP": 0,
+          "delete_FP": 1814,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 202,
+          "final_U": 78237,
+          "gain": 0.25818985901811164,
+          "exact_formula_gain": 0.25818985901811164
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 16840,
+          "delete_TP": 7,
+          "delete_FP": 2655,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 9296,
+          "final_U": 53536,
+          "gain": -6.2770597292535815,
+          "exact_formula_gain": -6.277059729253582
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 779,
+          "delete_TP": 938,
+          "delete_FP": 8313,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 10111,
+          "final_U": 18739,
+          "gain": 11.902407351388412,
+          "exact_formula_gain": 11.902407351388419
+        },
+        "75": {
+          "add_TP": 1572,
+          "add_FP": 11064,
+          "delete_TP": 1591,
+          "delete_FP": 1078,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 52857,
+          "final_U": 115230,
+          "gain": -4.370476962865554,
+          "exact_formula_gain": -4.37047696286556
+        }
+      },
+      "actual_score": 29.362515414208413,
+      "strong_control_gains": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": 0.3782651295718473,
+          "ci95": [
+            -5.323768346059563,
+            6.080298605203261
+          ]
+        },
+        "RGB04.mean": {
+          "score": 28.526627103852476,
+          "gain": 0.8358883103559371,
+          "ci95": [
+            -4.034363251739055,
+            5.706139872450933
+          ]
+        },
+        "RGB04.color": {
+          "score": 19.85478164543814,
+          "gain": 9.507733768770272,
+          "ci95": [
+            -2.675632975330789,
+            21.69110051287133
+          ]
+        },
+        "RGB04.variance": {
+          "score": 16.20660768628232,
+          "gain": 13.155907727926092,
+          "ci95": [
+            -0.9061521042448071,
+            27.217967560096984
+          ]
+        },
+        "RGB04.full_power": {
+          "score": 30.64061232213072,
+          "gain": -1.2780969079223077,
+          "ci95": [
+            -5.691677325804967,
+            3.1354835099603378
+          ]
+        },
+        "RGB04.ordinal": {
+          "score": 31.984985012715768,
+          "gain": -2.6224695985073545,
+          "ci95": [
+            -4.4216689999555605,
+            -0.823270197059152
+          ]
+        }
+      }
+    },
+    {
+      "id": "RGB05",
+      "observed": "Coupling −6.053 vsDINO; only−0.256 versus permuted-pairing control with crossing-zero interval. Paired relationship had exact synthetic observer benefit but no causal natural-pair attribution has been established.",
+      "interpretation_not_causal_proof": "124787 false additions versus3685 true and6203 true deletions show this local scene dependence is not a safe class readout here. Beating the weaker uncoupled histogram control does not make the overall algorithm useful.",
+      "failure_or_unresolved_learning": "Keep wrong-class same joint relation and scene-shadow negative. Do not repair by more coupling coefficients; require a genuinely different available identity argument before reopening the fixed mechanism.",
+      "four_action_budget": {
+        "add_TP": 3685,
+        "add_FP": 124787,
+        "delete_TP": 6203,
+        "delete_FP": 28523
+      },
+      "per_class_exact_gain": {
+        "72": {
+          "add_TP": 2431,
+          "add_FP": 79124,
+          "delete_TP": 0,
+          "delete_FP": 5662,
+          "baseline_I": 0,
+          "baseline_U": 54550,
+          "final_I": 2431,
+          "final_U": 128012,
+          "gain": 1.899040714932975,
+          "exact_formula_gain": 1.899040714932975
+        },
+        "73": {
+          "add_TP": 0,
+          "add_FP": 24311,
+          "delete_TP": 1950,
+          "delete_FP": 15356,
+          "baseline_I": 9303,
+          "baseline_U": 39351,
+          "final_I": 7353,
+          "final_U": 48306,
+          "gain": -8.419364877032725,
+          "exact_formula_gain": -8.419364877032725
+        },
+        "74": {
+          "add_TP": 0,
+          "add_FP": 18066,
+          "delete_TP": 348,
+          "delete_FP": 5129,
+          "baseline_I": 11049,
+          "baseline_U": 26273,
+          "final_I": 10701,
+          "final_U": 39210,
+          "gain": -14.763073479742793,
+          "exact_formula_gain": -14.763073479742792
+        },
+        "75": {
+          "add_TP": 1254,
+          "add_FP": 3286,
+          "delete_TP": 3905,
+          "delete_FP": 2376,
+          "baseline_I": 52876,
+          "baseline_U": 105244,
+          "final_I": 50225,
+          "final_U": 106154,
+          "gain": -2.928006697546776,
+          "exact_formula_gain": -2.928006697546779
+        }
+      },
+      "actual_score": 22.931399199789237,
+      "strong_control_gains": {
+        "dino_prototype.control": {
+          "score": 28.984250284636566,
+          "gain": -6.05285108484733,
+          "ci95": [
+            -11.59121917838776,
+            -0.5144829913069024
+          ]
+        },
+        "RGB05.uncoupled": {
+          "score": 11.153536313887132,
+          "gain": 11.777862885902104,
+          "ci95": [
+            1.6385503765707572,
+            21.917175395233443
+          ]
+        },
+        "RGB05.permuted": {
+          "score": 23.18716832921871,
+          "gain": -0.25576912942947416,
+          "ci95": [
+            -1.4118437000077257,
+            0.9003054411487739
+          ]
+        }
+      }
+    }
+  ]
+}

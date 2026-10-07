@@ -339,10 +339,17 @@
         "level": "hypothesized",
         "claim": "当合法MR描述非线性多模态而单决策错误可被另一anchor纠正，boosted分界可救回目标/删错背景；仅hypothesized。"
       },
-      "simplest_control": "同anchor最佳单stump、same-input nearestreference、sameanchor linear ridge、raw prototype。",
+      "simplest_control": "同anchor最佳单stump、same-input nearestreference、sameanchor linear ridge、raw prototype。 另与same-anchor ridge/logistic及all-legal-MR平均logistic对照(均为control，不增加method count)。",
       "why_not_duplicate": "AdaBoost sequential error emphasis和prototype-score组合新完整决策，不是axis CART、参数变体或旧ridge改正则。",
       "counterexample": "少数nontransferable reference材质成为高权重error，boosting会追逐它；source100%分类正确仍可能query全错。",
-      "first_evidence": "unit circle的多FG/BG模式构造与single stump/NN同render比较；负例source特有FG材质与QBG同形，记录boost rounds追逐该点的权重。"
+      "first_evidence": "unit circle的多FG/BG模式构造与single stump/NN同render比较；负例source特有FG材质与QBG同形，记录boost rounds追逐该点的权重。",
+      "implementation_status": "complete API implementation; gradients/contract checks passed; constructive and real quality results pending",
+      "validation_evidence": {
+        "implementation": "src/ics/cpu100/decision_risk_batch2.py",
+        "gradient_checks": "reports/decision_risk/batch2_gradients.json",
+        "contract_checks": "reports/decision_risk/batch2_contract_checks.json",
+        "review_decision": "accept_for_probe"
+      }
     },
     {
       "history_evidence": "总结§3.2/3.10说明均值与错误种子不能普遍辨身份；RESULTS:157-166 full-vector reference ridge49.72低于FoRIS58.56但比meancontrast42.86高，说明reference拟合可改变排序也会有严重转移副作用。新构造不以raw/cache转换冒充新机制，不重开旧ridge固定读出；与其完整控制比较。",
@@ -365,10 +372,17 @@
         "level": "hypothesized",
         "claim": "若support-vector异常出现率低于委员会多数，可能避免单hull误删/误增；稀有合法FG也可能被bootstrap丢失。"
       },
-      "simplest_control": "全reference DR08、同样16bootstrap的prototype voting、DR04 trimmed risk、raw NN。",
+      "simplest_control": "全reference DR08、同样16bootstrap的prototype voting、DR04 trimmed risk、raw NN。 另与same-anchor ridge/logistic及all-legal-MR平均logistic对照(均为control，不增加method count)。",
       "why_not_duplicate": "重采样maxmargin多数是非线性committee，与DR05空间jackknife偏差纠正/guard不同；不把成员数/seed多计。",
       "counterexample": "所有source成员共享错identity时稳定全错；真正稀有的referenceFG多数bootstrap未见，会被抹掉。",
-      "first_evidence": "source稀有support材质使single hard margin误判的构造；负例把该材质改为真实QFG，显示委员会可丢失合法少数模式。"
+      "first_evidence": "source稀有support材质使single hard margin误判的构造；负例把该材质改为真实QFG，显示委员会可丢失合法少数模式。",
+      "implementation_status": "complete API implementation; gradients/contract checks passed; constructive and real quality results pending",
+      "validation_evidence": {
+        "implementation": "src/ics/cpu100/decision_risk_batch2.py",
+        "gradient_checks": "reports/decision_risk/batch2_gradients.json",
+        "contract_checks": "reports/decision_risk/batch2_contract_checks.json",
+        "review_decision": "accept_for_probe"
+      }
     },
     {
       "history_evidence": "Actual current source checked after card draft: src/ics/methods/reference_quadratic.py line1 and predict use solve_kernel(((1+cosine_gram)*.5)**2,labels,weights,ridge). PLAN completed public600 quadratic=51.607. My initial card incorrectly inferred density/QDA from filename; now corrected before implementation.",
@@ -401,7 +415,7 @@
       "history_evidence": "总结§3.2/3.10说明均值与错误种子不能普遍辨身份；RESULTS:157-166 full-vector reference ridge49.72低于FoRIS58.56但比meancontrast42.86高，说明reference拟合可改变排序也会有严重转移副作用。新构造不以raw/cache转换冒充新机制，不重开旧ridge固定读出；与其完整控制比较。",
       "available_information": "只有冻结native DINO q/r、known完整MR area coverage和几何；所有episode-local监督来自该MR，不使用queryGT、其他image/class labels或预训练额外头。",
       "cpu_cost": "1 BLAS thread；合法R类均匀cap64各类(<=128)、anchors<=16、Q block128；全部输出完整native margin再common.render。没有新编码，真实4096token成本须由root实测。",
-      "limitations": "仅accept_for_probe候选；任何真实正收益均未验证。失败必须区分reference fit改判确实成功但query不可迁移、同信息简单control已足够、优化未收敛、成本过高，不自动参数搜索。",
+      "limitations": "仅accept_for_probe候选；任何真实正收益均未验证。失败必须区分reference fit改判确实成功但query不可迁移、同信息简单control已足够、优化未收敛、成本过高，不自动参数搜索。 明确是episode内200步临时ReLU分类器参数优化；冻结DINO、不外部训练、无Q标签，不称完全无参数拟合。",
       "id": "DR12",
       "title": "参考原型相似坐标的固定小ReLU判别",
       "gap": "reference身份需要多条件组合时，单线性方向只有一个平面，不能表达分离的合法FG模式。",
@@ -418,10 +432,17 @@
         "level": "hypothesized",
         "claim": "多模态reference逻辑延续到Q时，多个局部平面可能减少mean方向冲突；比NN/核方法更好的收益未知。"
       },
-      "simplest_control": "同anchor linear logistic/ridge、DR09 boosted stumps、nearestreference、raw prototype。",
+      "simplest_control": "同anchor linear logistic/ridge、DR09 boosted stumps、nearestreference、raw prototype。 另与same-anchor ridge/logistic及all-legal-MR平均logistic对照(均为control，不增加method count)。",
       "why_not_duplicate": "piecewise-affine ReLU组合监督拟合，与axis CART和DR09 adaptive weighted stumps的函数/优化规则不同；不以width/activation变体多计。",
       "counterexample": "fixed训练预算可未收敛；source可分但Q不在R模式中；网络可以记住MR context而不识别目标类别。",
-      "first_evidence": "明确nonlinear FG模式完整unit例；必须同anchor线性control，negative source-only交互；记录loss下降、gradient norm和输出对init的假设范围，不搜索init。"
+      "first_evidence": "明确nonlinear FG模式完整unit例；必须同anchor线性control，negative source-only交互；记录loss下降、gradient norm和输出对init的假设范围，不搜索init。",
+      "implementation_status": "complete API implementation; gradients/contract checks passed; constructive and real quality results pending",
+      "validation_evidence": {
+        "implementation": "src/ics/cpu100/decision_risk_batch2.py",
+        "gradient_checks": "reports/decision_risk/batch2_gradients.json",
+        "contract_checks": "reports/decision_risk/batch2_contract_checks.json",
+        "review_decision": "accept_for_probe"
+      }
     },
     {
       "history_evidence": "总结§3.2/3.10说明均值与错误种子不能普遍辨身份；RESULTS:157-166 full-vector reference ridge49.72低于FoRIS58.56但比meancontrast42.86高，说明reference拟合可改变排序也会有严重转移副作用。新构造不以raw/cache转换冒充新机制，不重开旧ridge固定读出；与其完整控制比较。",
@@ -444,10 +465,17 @@
         "level": "hypothesized",
         "claim": "孤立nontransferable FG/BG表征在reference多数邻域中冲突时，删掉它可减少nearest-match错误；hypothesized。"
       },
-      "simplest_control": "同pure samples unfiltered NN、仅coverage-purity过滤NN、DR06pair rank、prototype。",
+      "simplest_control": "同pure samples unfiltered NN、仅coverage-purity过滤NN、DR06pair rank、prototype。 另与same-anchor ridge/logistic及all-legal-MR平均logistic对照(均为control，不增加method count)。",
       "why_not_duplicate": "reference known-role LOO冲突导致support集合改变；历史DINO query候选二段过滤负例不自动等于此固定算法，但若同构必须count0。",
       "counterexample": "真正稀有合法FG appearance也会被多数BG邻域排除；同类孤立并不等于污染。",
-      "first_evidence": "few noisy-looking FG token与manyBG邻近，QBG错匹配该token的构造；负例Q正是reference孤立合法FG，输出删真与强NN对照。"
+      "first_evidence": "few noisy-looking FG token与manyBG邻近，QBG错匹配该token的构造；负例Q正是reference孤立合法FG，输出删真与强NN对照。",
+      "implementation_status": "complete API implementation; gradients/contract checks passed; constructive and real quality results pending",
+      "validation_evidence": {
+        "implementation": "src/ics/cpu100/decision_risk_batch2.py",
+        "gradient_checks": "reports/decision_risk/batch2_gradients.json",
+        "contract_checks": "reports/decision_risk/batch2_contract_checks.json",
+        "review_decision": "accept_for_probe"
+      }
     },
     {
       "history_evidence": "总结§3.2/3.10说明均值与错误种子不能普遍辨身份；RESULTS:157-166 full-vector reference ridge49.72低于FoRIS58.56但比meancontrast42.86高，说明reference拟合可改变排序也会有严重转移副作用。新构造不以raw/cache转换冒充新机制，不重开旧ridge固定读出；与其完整控制比较。",
@@ -470,10 +498,17 @@
         "level": "hypothesized",
         "claim": "冗余reference细节被压缩时有成本收益，某些Q泛化可能减少偶然极值；mIoU收益待证，source覆盖不是Qextent保证。"
       },
-      "simplest_control": "unfiltered NN、same-size fixed/random support NN、class kmeans同K、global prototype。",
+      "simplest_control": "unfiltered NN、same-size fixed/random support NN、class kmeans同K、global prototype。 另与same-anchor ridge/logistic及all-legal-MR平均logistic对照(均为control，不增加method count)。",
       "why_not_duplicate": "支撑集由已知reference分类覆盖约束选取，与DR13删冲突点相反；不是仅快代码复写NN，Q输出必须实际可不同。",
       "counterexample": "label-conflicting相同feature没有可满足覆盖；容易保留所有noise点；training order会改变supports与Q，不保证de-noise。",
-      "first_evidence": "reference大量重复且few necessary minority supports，报告完整mask/压缩成本；negative noisy边界使support几乎全保留，并验证若Q output同NN则只有成本证据不能冒称质量增益。"
+      "first_evidence": "reference大量重复且few necessary minority supports，报告完整mask/压缩成本；negative noisy边界使support几乎全保留，并验证若Q output同NN则只有成本证据不能冒称质量增益。",
+      "implementation_status": "complete API implementation; gradients/contract checks passed; constructive and real quality results pending",
+      "validation_evidence": {
+        "implementation": "src/ics/cpu100/decision_risk_batch2.py",
+        "gradient_checks": "reports/decision_risk/batch2_gradients.json",
+        "contract_checks": "reports/decision_risk/batch2_contract_checks.json",
+        "review_decision": "accept_for_probe"
+      }
     },
     {
       "history_evidence": "总结§3.2/3.10说明均值与错误种子不能普遍辨身份；RESULTS:157-166 full-vector reference ridge49.72低于FoRIS58.56但比meancontrast42.86高，说明reference拟合可改变排序也会有严重转移副作用。新构造不以raw/cache转换冒充新机制，不重开旧ridge固定读出；与其完整控制比较。",
@@ -496,10 +531,17 @@
         "level": "hypothesized",
         "claim": "reference跨类混淆需移动判别原型而非密度中心，可能改善接近类别分界的Q；真实质量unknown。"
       },
-      "simplest_control": "same2 kmeans不risk更新、nearestreference、DR08hard margin、raw prototype。",
+      "simplest_control": "same2 kmeans不risk更新、nearestreference、DR08hard margin、raw prototype。 另与same-anchor ridge/logistic及all-legal-MR平均logistic对照(均为control，不增加method count)。",
       "why_not_duplicate": "优化class-owned prototype position的explicit role discrimination，与Rmask连通means/kmeans或query grouping不同；不以prototype K变体多计。",
       "counterexample": "原型移动追随source-specific appearance，损失Q合法外观；小分母造成优化不稳定，gradient cap使固定数值行为需核查。",
-      "first_evidence": "reference density centers跨类近但class-risk可改变边界的unit构造；negative Q只呈reference低频被移动丢失的部位；独立finite-difference核对gradient。"
+      "first_evidence": "reference density centers跨类近但class-risk可改变边界的unit构造；negative Q只呈reference低频被移动丢失的部位；独立finite-difference核对gradient。",
+      "implementation_status": "complete API implementation; gradients/contract checks passed; constructive and real quality results pending",
+      "validation_evidence": {
+        "implementation": "src/ics/cpu100/decision_risk_batch2.py",
+        "gradient_checks": "reports/decision_risk/batch2_gradients.json",
+        "contract_checks": "reports/decision_risk/batch2_contract_checks.json",
+        "review_decision": "accept_for_probe"
+      }
     },
     {
       "history_evidence": "总结§3.2/3.10说明均值与错误种子不能普遍辨身份；RESULTS:157-166 full-vector reference ridge49.72低于FoRIS58.56但比meancontrast42.86高，说明reference拟合可改变排序也会有严重转移副作用。新构造不以raw/cache转换冒充新机制，不重开旧ridge固定读出；与其完整控制比较。",
@@ -517,16 +559,27 @@
         "200步最小within-target距离+max(0,1+d_A(i,target)-d_A(i,hardest negative))+.001||A||²。",
         "rate.02，gradient norm cap5；每步重新选nearest wrongrole impostor，triplet labels只来自MR。",
         "完整Q按learned A坐标的nearest knownFG/BG距离gap输出margin。",
-        "common.render；pureclass<2 baseline；无global whitening/外部fit。"
+        "common.render；任一pure class<2则pure-reference NN回退；无global whitening/外部fit。"
       ],
       "expected_benefit": {
         "level": "hypothesized",
         "claim": "有稳定class-separating reference directions时，label-aware metric可能保留语义而压制source内部noise；跨图效果未知。"
       },
-      "simplest_control": "sameanchor identity metricNN、rawfeature NN、referenceLDA、blind whitening(已负族控制)、DR08。",
+      "simplest_control": "sameanchor identity metricNN、rawfeature NN、referenceLDA、blind whitening(已负族控制)、DR08。 另与same-anchor ridge/logistic及all-legal-MR平均logistic对照(均为control，不增加method count)。",
       "why_not_duplicate": "监督triplet PSD风险与无labelnuisance投影/白化不同；不通过regularization/metric rank多计。已与invariance_support协调其无此构造。",
       "counterexample": "reference classdistortion随query变化；假nuisance轴实际是Q语义被metric抹去；class仅1token没有triplets。",
-      "first_evidence": "R nuisance决定Euclidean邻近而合法roles定义另一轴的unit例；negative Q语义沿被压缩轴，记录错误方向而非自动再调rank；gradient finite-difference。"
+      "first_evidence": "R nuisance决定Euclidean邻近而合法roles定义另一轴的unit例；negative Q语义沿被压缩轴，记录错误方向而非自动再调rank；gradient finite-difference。",
+      "implementation_status": "complete API implementation; gradients/contract checks passed; constructive and real quality results pending",
+      "validation_evidence": {
+        "implementation": "src/ics/cpu100/decision_risk_batch2.py",
+        "gradient_checks": "reports/decision_risk/batch2_gradients.json",
+        "contract_checks": "reports/decision_risk/batch2_contract_checks.json",
+        "review_decision": "accept_for_probe"
+      }
     }
+  ],
+  "implemented_distinct_count": 15,
+  "withdrawn_duplicate_ids": [
+    "DR11"
   ]
 }

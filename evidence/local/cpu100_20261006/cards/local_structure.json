@@ -168,7 +168,11 @@
       ],
       "first_evidence": "Reviewer acceptance then two full query regions with equal centroid and same bag of unit leaf features but different nested groups; require complete tree-method output to beat same-tree centroid and leaf-bag controls. A deformed spatial layout preserving nesting is positive only if the actual feature hierarchy builder retains it. A changed nesting true target and same-hierarchy distractor are negatives. Native4 only activity/cost.",
       "cpu_cost": "One CPU thread. Spatial hierarchy O(ElogE), all node centroid storage O((Nr+Nq)*D). Compressed candidate trees <=15nodes use shared centroid indices, not copied Nq*15*D tensors. At most2 FG+2 BG templates. Per query node alignment <=225 scalar DP states/template, total <=8191*4*225~7.4M states for4096 query patches. Recursion depth<=15 after compression. Native4096x1024 actual cost unknown; bounded cost probe precedes quality claims.",
-      "limitations": "Now fully defined restricted branch-pruning recurrence and root-only normalization; pending reviewer acceptance, not counted or implemented yet. Query proposal absence, material/view merge-order change, two-template truncation and skip penalties can delete extent. No general deformation invariance or real gain claimed. If same-tree centroid or leaf-bag control solves the witness equally well, report no nested hierarchy evidence; failure reflection separates those causes and cost."
+      "limitations": "Closed before native/full-cost probing. In the fixed constructed witness, whole-tree output IoU 0.429 lost to same-tree centroid 0.514 and leaf-bag 0.500. Restricted alignment can prune a query branch while the whole-node reward labels its full valid extent, so partial alignment does not justify full foreground extent. This closes the fixed readout only; no natural DINO quality was measured and other tree methods are not ruled out.",
+      "implementation_status": "closed_fixed_readout_before_native_or_full_cost_probe; independent method count 0",
+      "implementation_source": "src/ics/cpu100/local_structure_tree.py",
+      "implementation_sha256": "2dd191125820f4e717cc7ccecfca7c89960c4fef9de53b9eb6d7029f717024d4",
+      "closure_evidence": "reports/local_structure/local_004_closure.json"
     },
     {
       "id": "local_005",

@@ -58,7 +58,9 @@ def _anchors(x, weights, cap=16):
     while len(chosen) < min(cap, len(x)):
         distance = 1 - (x @ x[chosen].T).max(axis=1)
         distance[chosen] = -1
-        j = int(np.argmax(distance))
+        # Coincident/symmetric vectors should not reorder anchor coordinates
+        # when a BLAS implementation changes the last rounding bit.
+        j = int(np.flatnonzero(distance >= distance.max() - 1e-12)[0])
         if distance[j] < 1e-12:
             break
         chosen.append(j)
@@ -78,6 +80,7 @@ def pure_nearest(ep):
 
 
 def _stump_bank(z):
+    z = np.round(z, 12)
     bank, columns = [], []
     for col in range(z.shape[1]):
         values = np.unique(np.quantile(z[:, col], np.linspace(0, 1, 17)))
@@ -113,7 +116,7 @@ def boosted_prototype_stumps(ep):
             break
     if not chosen:
         return _finish(ep, _nearest_margin(ep.q, x, y), "DR09", state="weak_bank_uninformative_fallback")
-    zq, margin = ep.q @ anchors.T, np.zeros(len(ep.q))
+    zq, margin = np.round(ep.q @ anchors.T, 12), np.zeros(len(ep.q))
     for j, alpha in zip(chosen, alphas):
         col, cut, polarity = bank[j]
         margin += alpha * polarity * np.where(zq[:, col] > cut, 1., -1.)
@@ -132,7 +135,7 @@ def best_prototype_stump(ep):
     if not bank:
         return _finish(ep, _nearest_margin(ep.q, x, y), "DR_control_best_stump", state="no_stump")
     col, cut, polarity = bank[int(np.argmin(a @ (h != y[:, None])))]
-    return _finish(ep, polarity * np.where(ep.q @ anchors[col] > cut, 1., -1.), "DR_control_best_stump")
+    return _finish(ep, polarity * np.where(np.round(ep.q @ anchors[col], 12) > cut, 1., -1.), "DR_control_best_stump")
 
 
 def _bootstrap_members(ep, prototype=False):
@@ -215,6 +218,38 @@ def anchor_linear_ridge(ep):
     coeff = np.linalg.solve(z.T @ (a[:, None] * z) + .1 * np.eye(z.shape[1]), z.T @ (a * y))
     return _finish(ep, np.c_[ep.q @ anchors.T, np.ones(len(ep.q))] @ coeff,
                    "DR_control_anchor_ridge")
+
+
+def anchor_linear_logistic(ep):
+    fallback, data = _start(ep, "DR_control_anchor_logistic")
+    if fallback:
+        return fallback
+    x, y, a, _ = data
+    anchors = _anchors(x, a)
+    z = x @ anchors.T
+    w, bias = np.zeros(len(anchors)), 0.
+    for _ in range(200):
+        logits = z @ w + bias
+        coeff = -a * y / (1 + np.exp(np.clip(y * logits, -50, 50)))
+        w -= .05 * (z.T @ coeff + .001 * w)
+        bias -= .05 * coeff.sum()
+    return _finish(ep, (ep.q @ anchors.T) @ w + bias, "DR_control_anchor_logistic", steps=200)
+
+
+def anchor_lda(ep):
+    fallback, data = _start(ep, "DR_control_anchor_LDA")
+    if fallback:
+        return fallback
+    x, y, a, _ = data
+    anchors = _anchors(x, a)
+    z = x @ anchors.T
+    f = np.average(z[y > 0], axis=0, weights=a[y > 0])
+    b = np.average(z[y < 0], axis=0, weights=a[y < 0])
+    residual = z - np.where((y > 0)[:, None], f[None, :], b[None, :])
+    covariance = residual.T @ (a[:, None] * residual)
+    direction = np.linalg.solve(covariance + .05 * np.eye(len(anchors)), f - b)
+    return _finish(ep, (ep.q @ anchors.T) @ direction - .5 * float((f + b) @ direction),
+                   "DR_control_anchor_LDA")
 
 
 def edited_reference(ep):
@@ -411,5 +446,7 @@ CONTROLS = {"DR_control_pure_nearest": pure_nearest,
             "DR_control_best_stump": best_prototype_stump,
             "DR_control_bootstrap_prototype": bootstrap_prototype,
             "DR_control_anchor_ridge": anchor_linear_ridge,
+            "DR_control_anchor_logistic": anchor_linear_logistic,
+            "DR_control_anchor_LDA": anchor_lda,
             "DR_control_two_class_kmeans": class_kmeans,
             "DR_control_anchor_metric_identity": anchor_metric_identity}

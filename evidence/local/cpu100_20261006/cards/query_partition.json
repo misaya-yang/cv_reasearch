@@ -3,7 +3,7 @@
   "source": "user-provided Opus session summary (local-only source, not included in repository)",
   "count_requested_max": 14,
   "count_proposed": 2,
-  "quality_status": "hypothesized; reviewer pending; no quality claim",
+  "quality_status": "QP01/QP02 native1024 reused4 measured; no stable gain; reflection probes/query_partition/native4_reflection.json",
   "cards": [
     {
       "id": "QP01",
@@ -38,7 +38,10 @@
       "counterexample": "query目标和干扰共享同一外观字典项时，所有两区必须获得相同标签；小目标对应中心未被K字典保留时会被大背景吞并；跨图偏移使参考FG落在错误query中心时整组误选。错种子负例中本方法没有输入seed，仍需证明支持错落时不会自称识别成功。",
       "first_evidence": "1线程运行单位DINO可实现的正构造及均值匹配干扰反例；必须报告四臂完整输出差异、若KDE/池化同样解决不能宣称计数独有价值。随后现有4例直接128DINO仅活动/成本/输出检查，无queryGT无质量评分。",
       "cpu_cost": "NumPy，最多8中心/12轮；时间O((Nq+Nr)KD)，额外空间O((Nq+Nr)K+KD)，4096x1024输入1线程；无稠密Nq^2图、无额外编码。",
-      "limitations": "字典包含前景节点不保证节点被参考标签正确命名；参考映射错位、粒度混合、query类别多时信息不足；固定K不按GT/类别/面积调。若负例显示问题在字典则记范围失配；若字典纯但票支持错则记身份迁移失配；不把失败归结为需要扫K或换阈值。"
+      "limitations": "字典包含前景节点不保证节点被参考标签正确命名；参考映射错位、粒度混合、query类别多时信息不足；固定K不按GT/类别/面积调。若负例显示问题在字典则记范围失配；若字典纯但票支持错则记身份迁移失配；不把失败归结为需要扫K或换阈值。",
+      "implementation": "src/ics/cpu100/query_partition.py",
+      "review_decision": "accept_for_probe",
+      "implementation_status": "complete_API_and_bounded_probe_done; code_review_pending"
     },
     {
       "id": "QP02",
@@ -73,7 +76,10 @@
       "counterexample": "reference中局部BG偶然像query目标、域偏移逆转距离时，最低reference风险可选错完整query身份。已知query有多个同类实例时不限制只选一组，但未被reference解释的外观模式仍可能全删。",
       "first_evidence": "合法unit向量构造必须验证QP01最邻票不足而联合风险可命名的差异，同时报告均值/KDE是否已经解决；再加明确跨图语义逆转负例。4真实直接128例只输出/成本检查、不GT不质量宣称。",
       "cpu_cost": "NumPy 1线程，构建O(Nq*K*D*12+Nr*K*D)，枚举O(2^K*Nr*K)上限254集合；空间O((Nq+Nr)K+KD)，4096tokens不Nq²，不新encoding。",
-      "limitations": "离散query原型标签的有限reference风险拟合不等于新无标签信号；需要匹配control观察过拟合。失败反思要区分字典目标不存在、参照角色混淆、反向风险泛化失配，不扫温度/标签集合数来改名计数。"
+      "limitations": "离散query原型标签的有限reference风险拟合不等于新无标签信号；需要匹配control观察过拟合。失败反思要区分字典目标不存在、参照角色混淆、反向风险泛化失配，不扫温度/标签集合数来改名计数。",
+      "implementation": "src/ics/cpu100/query_partition.py",
+      "review_decision": "accept_for_probe",
+      "implementation_status": "complete_API_and_bounded_probe_done; code_review_pending"
     }
   ],
   "closed_before_implementation": [

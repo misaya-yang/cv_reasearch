@@ -1,0 +1,128 @@
+{
+  "method_id": "local_004",
+  "state": "CLOSED_FIXED_READOUT_BEFORE_NATIVE_OR_FULL_COST_PROBE",
+  "registered_in_METHODS": false,
+  "eligible_independent_method_count": 0,
+  "source_sha256": "2dd191125820f4e717cc7ccecfca7c89960c4fef9de53b9eb6d7029f717024d4",
+  "checks": {
+    "scalar_leaf": 0.15,
+    "one_leaf_to_binary_root": 0.2,
+    "swapped_binary": 0.0,
+    "forest_decoder_antichain_enumeration": 2.4000000000000004,
+    "antichains_examined": 128
+  },
+  "complete_counterexample": {
+    "tree": {
+      "iou": 0.42857142857142855,
+      "selected": 84,
+      "info": {
+        "method_id": "local_004",
+        "arm": "tree",
+        "valid_query_tokens": 84,
+        "query_nodes": 167,
+        "query_roots": 1,
+        "reference_templates": 2,
+        "omitted_reference_components": [
+          0,
+          0
+        ],
+        "node_evidence_roundoff_tolerance": 1e-12,
+        "maximum_compressed_terminals": 8,
+        "restricted_alignment_states": 23910,
+        "decoder_optimum": 9.000442576882278,
+        "query_ground_truth_used": false,
+        "new_encoder_forwards": 0,
+        "natural_segmentation_gain": "unmeasured",
+        "wall_seconds": 0.031745582999999994
+      }
+    },
+    "centroid": {
+      "iou": 0.5142857142857142,
+      "selected": 70,
+      "info": {
+        "method_id": "local_004",
+        "arm": "centroid",
+        "valid_query_tokens": 84,
+        "query_nodes": 167,
+        "query_roots": 1,
+        "reference_templates": 2,
+        "omitted_reference_components": [
+          0,
+          0
+        ],
+        "node_evidence_roundoff_tolerance": 1e-12,
+        "maximum_compressed_terminals": 8,
+        "restricted_alignment_states": 0,
+        "decoder_optimum": 11.447921012673186,
+        "query_ground_truth_used": false,
+        "new_encoder_forwards": 0,
+        "natural_segmentation_gain": "unmeasured",
+        "wall_seconds": 0.004399500000000001
+      }
+    },
+    "leaf_bag": {
+      "iou": 0.5,
+      "selected": 72,
+      "info": {
+        "method_id": "local_004",
+        "arm": "leaf_bag",
+        "valid_query_tokens": 84,
+        "query_nodes": 167,
+        "query_roots": 1,
+        "reference_templates": 2,
+        "omitted_reference_components": [
+          0,
+          0
+        ],
+        "node_evidence_roundoff_tolerance": 1e-12,
+        "maximum_compressed_terminals": 8,
+        "restricted_alignment_states": 0,
+        "decoder_optimum": 21.31093223568745,
+        "query_ground_truth_used": false,
+        "new_encoder_forwards": 0,
+        "natural_segmentation_gain": "unmeasured",
+        "wall_seconds": 0.008244209000000002
+      }
+    },
+    "rewired": {
+      "iou": 0.42857142857142855,
+      "selected": 84,
+      "info": {
+        "method_id": "local_004",
+        "arm": "rewired",
+        "valid_query_tokens": 84,
+        "query_nodes": 167,
+        "query_roots": 1,
+        "reference_templates": 2,
+        "omitted_reference_components": [
+          0,
+          0
+        ],
+        "node_evidence_roundoff_tolerance": 1e-12,
+        "maximum_compressed_terminals": 8,
+        "restricted_alignment_states": 23910,
+        "decoder_optimum": 6.300833911104923,
+        "query_ground_truth_used": false,
+        "new_encoder_forwards": 0,
+        "natural_segmentation_gain": "unmeasured",
+        "wall_seconds": 0.03268124999999997
+      }
+    },
+    "prototype": {
+      "iou": 0.4492753623188406,
+      "selected": 64,
+      "info": {}
+    }
+  },
+  "observed_failure": "Complete tree output selects all84 query pixels (IoU0.429), below same-tree centroid0.514 and leafbag0.5. Reference/query structure matching has not supplied incremental value in the intended witness.",
+  "contract_gap": "The restricted alignment may prune a query branch, yet whole-node reward uses full valid mass and labels the entire unpruned node foreground. Partial alignment does not justify that complete foreground extent. This is an explicit risk of the defined operator, not proof that all trees or structure methods fail.",
+  "future_revision_not_started": "Only deleting reference branches while forcing query coverage would change the alignment contract; any such change must remain the same family with countzero and preserve this counterexample. No such revision is implemented or scheduled here.",
+  "avoided_work": {
+    "native4_quality_runs": 0,
+    "native4096_cost_probe": 0,
+    "new_encoder_forwards": 0,
+    "SSH_actions": 0,
+    "parameter_sweeps": 0
+  },
+  "reviewer": "summary_reviewer explicitly agreed to current fixed-version closure; prior accept_for_probe was not a delivery-quality pass"
+}

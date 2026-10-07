@@ -1,5 +1,9 @@
 # 当前状态
 
+## CPU100的200例筛查（2026-10-07）
+
+native FP32 DINO1024输出上，12个方法臂及全部对照在200个复用开发样本、74类上均完成评分。`inv_huber_reference_readout`为该筛查最高方法，class-summed mIoU为52.373390；Huber-ridge对照为51.662537，差+0.710854 pp，按关联照片组配对bootstrap的95%区间为[0.135326, 1.001446]。这些方法此前按4例probe作过posthoc选择，200例又来自复用开发集；该结果及区间均不是独立确认，区间没有校正方法选择。见[可读汇总](../../evidence/local/cpu100_20261006/server/screen12_native200_v3/methods_summary.md)和[完整配对报告](../../evidence/local/cpu100_20261006/server/screen12_native200_v3/screen12_native200_v3/score/report.json)。第二批审查接受24张卡进入固定probe，3项重复关闭、1项需修订；其后`local_004`在构造见证中低于centroid/leaf-bag对照，已在原生/完整成本探测前关闭，独立方法计数0，见[闭合记录](../../evidence/local/cpu100_20261006/reports/local_structure/local_004_closure.json)。review记录的稳定正收益计数仍为0，100方法目标未完成，见[审查记录](../../evidence/local/cpu100_20261006/reviews/batch02.json)。
+
 ## CPU100首批运行记录（2026-10-07）
 
 reviewer首批审查为29张卡 `accept_for_probe`、1张需修订、2项重复关闭；放行不代表有效。随后30个完整方法臂及全部对照在4个复用开发样本上完成native FP32 DINO1024推断，并由独立scorer读取QGT评分，所有请求臂完整。该结果是描述性四例活动探针，不是独立确认或总体结论；最高方法分数`inv_huber_reference_readout=40.4669`，其声明的Huber-ridge对照为`40.5636`。其他臂在这4例上有正负差异，未建立稳定正收益；100方法目标仍未完成。见[四例汇总](../../evidence/local/cpu100_20261006/server/probe29_native4_v2/methods_summary.md)、[完整配对报告](../../evidence/local/cpu100_20261006/server/probe29_native4_v2/methods29_native4_v2/score/report.json)和[审查记录](../../evidence/local/cpu100_20261006/reviews/batch01.md)。

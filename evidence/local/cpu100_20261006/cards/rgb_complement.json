@@ -1,6 +1,6 @@
 {
   "owner": "rgb_complement",
-  "phase": "first5_implemented_second4_cards_for_review",
+  "phase": "8_complete_CPU_implementations_plus_RGB08_algebraic_closure",
   "count": 0,
   "candidate_count": 9,
   "rejected_reopens": [
@@ -57,7 +57,13 @@
       "counterexample": "Q background is a different scene color or DINO confident BG contains target: nuisance map is not illumination and can invert identity; target changes color across instances.",
       "first_evidence": "Witness where Q target/distractor DINO margins tie but known-background anchors have m<=−0.25, R RGB classes separate and Q undergoes a shared-channel affine illumination transform; negative: absent anchors, different BG composition and FG/BG RGB appearance swap. Compare all simple controls.",
       "failure_reflection": "If aligned prototype ties primary, retain the simpler control; if nuisance harms while unaligned wins, background composition/seed contamination rather than lack of color evidence is diagnosed.",
-      "revision_note": "Same mechanism/inputs, reduced classifier complexity after same-information control; no new method count."
+      "revision_note": "Same mechanism/inputs, reduced classifier complexity after same-information control; no new method count.",
+      "implementation": {
+        "source": "src/ics/cpu100/rgb_complement.py",
+        "sha256": "027897bcc10137258fd1020207bfc1624a31a9bf6da13fd451a245e38d11fb1b",
+        "controls_not_counted": true,
+        "natural_smoke_evidence": "reports/rgb_complement/failure_reflections.json"
+      }
     },
     {
       "history_evidence": [
@@ -103,7 +109,13 @@
       "why_not_duplicate": "RGB local ordinal order is not query color-path propagation or existing radial Fourier power. If no witness beats existing power controls, reviewer should reject as unsupported texture variant.",
       "counterexample": "DINO-target and non-target have same local ordinal texture, or texture scale is changed/blurred in Q; repeated ordinal texture on background causes coherent FP.",
       "first_evidence": "Seek one deterministic same-color/power-tied local-order witness and preserve a matched texture wrong-category negative. No synthetic success => remain unverified, not counted as positive.",
-      "failure_reflection": "A win over color but tie/loss to power means local order is unnecessary on that setting; domain texture change separates transfer failure from implementation error."
+      "failure_reflection": "A win over color but tie/loss to power means local order is unnecessary on that setting; domain texture change separates transfer failure from implementation error.",
+      "implementation": {
+        "source": "src/ics/cpu100/rgb_complement.py",
+        "sha256": "027897bcc10137258fd1020207bfc1624a31a9bf6da13fd451a245e38d11fb1b",
+        "controls_not_counted": true,
+        "natural_smoke_evidence": "reports/rgb_complement/failure_reflections.json"
+      }
     },
     {
       "history_evidence": [
@@ -149,7 +161,13 @@
       "why_not_duplicate": "Bispectral phase relations are absent from existing radial power candidate. Distinctness requires an amplitude-identical witness and stronger power control; cannot count just another FFT ring.",
       "counterexample": "Texture has unstable local phase or isotropic noise; patch translation with nonperiodic crop changes observations; identical bispectra/class textures give no identity.",
       "first_evidence": "Periodic amplitude-identical FG/BG RGB fixtures with prescribed phase triples, cyclic translation check, wrong-category identical texture and scale-change negatives.",
-      "failure_reflection": "If phase witness works but natural input does not, diagnose cross-instance phase transfer; if ordinal histogram ties, higher-order complexity may be unnecessary even if distinct observable exists."
+      "failure_reflection": "If phase witness works but natural input does not, diagnose cross-instance phase transfer; if ordinal histogram ties, higher-order complexity may be unnecessary even if distinct observable exists.",
+      "implementation": {
+        "source": "src/ics/cpu100/rgb_complement.py",
+        "sha256": "027897bcc10137258fd1020207bfc1624a31a9bf6da13fd451a245e38d11fb1b",
+        "controls_not_counted": true,
+        "natural_smoke_evidence": "reports/rgb_complement/failure_reflections.json"
+      }
     },
     {
       "history_evidence": [
@@ -194,7 +212,13 @@
       "why_not_duplicate": "Existing texture computes two descriptor means after radial aggregation, not nearest labeled pixel-arrangement exemplars. This is a different decision and observation, not extra texture scales.",
       "counterexample": "Viewpoint/rotation makes pixel arrangements incomparable, nearest dictionary mistakes accidental background pattern, or reference FG support is too small.",
       "first_evidence": "Two FG patch modes equidistant around a BG mean, shuffled same-color negative and rotated-query transfer failure; complete query masks with m tied.",
-      "failure_reflection": "If RGB mean matches dictionary, multimodality hypothesis absent; if dictionary wins witness but fails RGB real inputs, patch alignment/transfer is the limitation, not evidence for DINO ceiling."
+      "failure_reflection": "If RGB mean matches dictionary, multimodality hypothesis absent; if dictionary wins witness but fails RGB real inputs, patch alignment/transfer is the limitation, not evidence for DINO ceiling.",
+      "implementation": {
+        "source": "src/ics/cpu100/rgb_complement.py",
+        "sha256": "027897bcc10137258fd1020207bfc1624a31a9bf6da13fd451a245e38d11fb1b",
+        "controls_not_counted": true,
+        "natural_smoke_evidence": "reports/rgb_complement/failure_reflections.json"
+      }
     },
     {
       "history_evidence": [
@@ -240,7 +264,13 @@
       "why_not_duplicate": "Neither query color smoothing nor reference Fourier power uses correspondence of DINO and RGB neighborhood changes. Distinct cross-modal dependence observer, no fixed color identity.",
       "counterexample": "FG itself has weak/no RGB–DINO coupling, DINO context couples shadows instead of class, or class and distractor have identical joint relation.",
       "first_evidence": "Deterministic local permutation fixtures preserving separate RGB and DINO pairwise-distance marginal distributions but changing coupling; appearance-matched wrong-class negative.",
-      "failure_reflection": "If uncoupled descriptors win equally, relation term unnecessary; coupling failure under Q domain change shows it is scene-dependent evidence rather than semantic identity."
+      "failure_reflection": "If uncoupled descriptors win equally, relation term unnecessary; coupling failure under Q domain change shows it is scene-dependent evidence rather than semantic identity.",
+      "implementation": {
+        "source": "src/ics/cpu100/rgb_complement.py",
+        "sha256": "027897bcc10137258fd1020207bfc1624a31a9bf6da13fd451a245e38d11fb1b",
+        "controls_not_counted": true,
+        "natural_smoke_evidence": "reports/rgb_complement/failure_reflections.json"
+      }
     },
     {
       "history_evidence": [
@@ -287,7 +317,14 @@
       "counterexample": "Reference has too few pure cut edges, Q boundary appearance changes, or wrong DINO identity seeds are strengthened; boundary fitting cannot identify an entirely wrong object.",
       "first_evidence": "Construct R with balanced binary DINO/RGB bits A/B, known class L=A xor B, edge transition counts n00=n11 and n01=n10. Individual edge histograms then exactly tie while joint cut/same dependency differs. A tiny label direction defines the actual DINO unary without altering double-precision edge-distance bins. Q hole/cut complete-mask witness plus exhaustive small-graph energy check; wrong-identity seed negative.",
       "failure_reflection": "If joint method equals one-modality control, reject extra dependency complexity; if cut corrects holes but wrong identity grows, isolate readout benefit from identity failure.",
-      "revision_note": "Joint observation, not merely extra RGB weight. Comparator API and exact signed energy now match existing boundary control; same mass zero-evidence fallback explicit."
+      "revision_note": "Joint observation, not merely extra RGB weight. Comparator API and exact signed energy now match existing boundary control; same mass zero-evidence fallback explicit.",
+      "implementation": {
+        "source": "src/ics/cpu100/rgb_complement_extra.py",
+        "sha256": "947abb93258a5ab7d02202dd0de6640103c91ea600355bab094e88e59e03e3e7",
+        "controls_not_counted": true,
+        "evidence": "reports/rgb_complement/checks_extra.json",
+        "natural_quality": "unmeasured"
+      }
     },
     {
       "history_evidence": [
@@ -312,7 +349,7 @@
       "output_contract": "Return complete field/token mask and fixed half-pixel bilinear original-size binary mask, plus exact same readout for controls. RGB observation capped as signed correction to direct FG–BG DINO prototype margin, not FoRIS score. Empty known FG => empty; all FG => full; absent or uninformative RGB observation => direct DINO control.",
       "evidence_level": "hypothesized; true-data quality unknown; witness/CPU measurements pending",
       "cpu_cost": "NumPy/Pillow CPU only; single BLAS thread, RGB <=256 squared, patches in blocks <=128; no N² DINO matrix, 512 MiB incremental target. Real timings must be measured, not inferred.",
-      "limitations": "Appearance is not semantic identity. Cross-instance color/texture changes and shared distractor appearance can violate transfer; no general gain is guaranteed.",
+      "limitations": "Appearance is not semantic identity. Cross-instance color/texture changes and shared distractor appearance can violate transfer; no general gain is guaranteed. Achromatic shading invariance applies to observed non-clipped physical pixels/constant-color patches; resize-before-unit mixing and partial neutral-padding mixing can break it. Current native1024 stretch has no padding.",
       "failure_accounting": "Report aTP/aFP/dTP/dFP and per-class exact IoU delta only if legitimately available Q GT in a separate scorer. Without Q GT, report activity/cost and synthetic witnesses only. Wrong-seed/appearance-swap cases are negative evidence, never oracle-method proof.",
       "count_rule": "Candidate only until reviewer approves distinct complete mechanism and implementation/checks; controls and parameter variations count zero.",
       "id": "RGB07",
@@ -322,7 +359,7 @@
       "algorithm": [
         "Validate physical uint8 RGB and complete R mask; use RGB256 recorded physical transform.",
         "At each physical pixel form unit RGB chromatic direction; zero black pixels abstain.",
-        "Average unit chromatic directions within each native DINO cell, excluding padding.",
+        "Average observed unit-RGB directions within each recorded native encoder-view cell, including known neutral canvas pixels in partial-valid cells; only wholly invalid Q cells receive no correction. No exclusion of partial padding is claimed.",
         "Known R FG/BG weights fit unit class mean directions; Q h=(uQ dot uF - uQ dot uB)/2.",
         "Output complete native margin m+0.5*h with fixed shared renderer; empty/all FG obey shared contract.",
         "Controls: raw RGB median prototype, RGB01 global affine aligned prototype, grayscale intensity prototype, RGB-only chromaticity."
@@ -332,7 +369,14 @@
       "why_not_duplicate": "RGB01 estimates one global per-channel affine map from Q BG anchors; RGB07 removes a per-pixel scalar without any Q seeds. The nuisance group and decisions differ; if reviewer calls it color-feature variation, count0 accepted.",
       "counterexample": "Achromatic FG/BG, colored illumination, clipped channels or same chromaticity distractor; eliminating intensity can remove class evidence.",
       "first_evidence": "Spatially alternating shade multipliers per Q native cell while target and BG albedos have distinct chromaticity; negative achromatic classes where raw intensity succeeds but quotient fails.",
-      "failure_reflection": "Raw-only wins on achromatic class => discarded intensity carried semantics. Colored-light failure => scalar shading model broken. Do not infer general lighting invariance."
+      "failure_reflection": "Raw-only wins on achromatic class => discarded intensity carried semantics. Colored-light failure => scalar shading model broken. Do not infer general lighting invariance.",
+      "implementation": {
+        "source": "src/ics/cpu100/rgb_complement_extra.py",
+        "sha256": "947abb93258a5ab7d02202dd0de6640103c91ea600355bab094e88e59e03e3e7",
+        "controls_not_counted": true,
+        "evidence": "reports/rgb_complement/checks_extra.json",
+        "natural_quality": "unmeasured"
+      }
     },
     {
       "history_evidence": [
@@ -426,7 +470,16 @@
       "why_not_duplicate": "Query color-bottleneck inherits DINO FG/BG seeds and symmetric RGB Potts has no FG-side reference role. RGB06 fits same/cut dependency but is symmetric. This instead uses directed FG-to-BG reference contrast to supply a region identity hypothesis.",
       "counterexample": "Q surrounding context reverses contrast, internal texture partitions object or merges target/background, one target borders several incompatible colors, same relational contrast distractor.",
       "first_evidence": "Uniform bright-offset R/Q foreground/background with tied DINO target identity and no confident BG anchors, where absolute colors fail but ordered local contrast persists; role inversion and wrong-context negatives.",
-      "failure_reflection": "If pointwise role matches components, propagation unnecessary. If sign reverses under new context, a background-role transfer assumption failed; do not call the learned reference relation semantic identity guarantee."
+      "failure_reflection": "If pointwise role matches components, propagation unnecessary. If sign reverses under new context, a background-role transfer assumption failed; do not call the learned reference relation semantic identity guarantee.",
+      "implementation": {
+        "source": "src/ics/cpu100/rgb_complement_extra.py",
+        "sha256": "947abb93258a5ab7d02202dd0de6640103c91ea600355bab094e88e59e03e3e7",
+        "controls_not_counted": true,
+        "evidence": "reports/rgb_complement/checks_extra.json",
+        "natural_quality": "unmeasured"
+      }
     }
-  ]
+  ],
+  "implemented_count": 8,
+  "stable_positive_count": 0
 }
