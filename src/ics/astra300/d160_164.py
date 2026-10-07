@@ -2,7 +2,7 @@
 from __future__ import annotations
 import numpy as np
 from scipy.special import logsumexp
-from .common import ArtifactUnavailable, artifact
+from .common import ArtifactUnavailable, artifact, fps
 from . import d_helpers_151_200 as dh
 
 
@@ -81,6 +81,49 @@ def d160(ep):
 
 def d160_control(ep):
     return dh.calibrate(ep,'D160_control_same_angle_density',_d160_builder,(0.,))
+
+
+def _d160_norm_builder(ep,c,standardized=False):
+    rh=np.asarray(artifact(ep,'r_pre_final_ln'),float);qh=np.asarray(artifact(ep,'q_pre_final_ln'),float)
+    ra=_amplitude(ep,'r') if standardized else np.log(np.linalg.norm(rh,axis=1)+1e-6)
+    qa=_amplitude(ep,'q') if standardized else np.log(np.linalg.norm(qh,axis=1)+1e-6)
+    if ra is None or qa is None:return None,{}
+    model=dh.head(ep,ra[:,None])
+    def score(x):
+        ids=np.argmax(dh.mm(x,ep.r.T),axis=1)
+        return dh.predict(model,(qa if x is ep.q else ra[ids])[:,None])
+    score.source_score=lambda ids:dh.predict(model,ra[ids,None])
+    return score,dict(actual_pre_final_norm=True,standardized_per_image=standardized,steps=100)
+
+
+def d160_norm_control(ep):
+    return dh.calibrate(ep,'D160_control_actual_log_norm_only',_d160_norm_builder,((4,2,1.),))
+
+
+def _d160_joint_builder(ep,c):
+    rh=np.asarray(artifact(ep,'r_pre_final_ln'),float);qh=np.asarray(artifact(ep,'q_pre_final_ln'),float)
+    f,b,_=dh.pure(ep);ids=[]
+    for selected in (f,b):
+        _,index=fps(ep.r[selected],16,ids=np.flatnonzero(selected));ids.extend(index.tolist())
+    ids=np.unique(ids)
+    if not len(ids):return None,{}
+    r=np.concatenate((rh,ep.r),axis=1);q=np.concatenate((qh,ep.q),axis=1);anchors=r[ids]
+    distance=np.maximum(0.,np.sum(anchors*anchors,axis=1)[:,None]+np.sum(anchors*anchors,axis=1)-2*dh.mm(anchors,anchors.T))
+    values=distance[np.triu_indices(len(ids),1)];sigma2=max(float(np.median(values)) if len(values) else 1.,1e-6)
+    def kernel(z):
+        distance=np.maximum(0.,np.sum(z*z,axis=1)[:,None]+np.sum(anchors*anchors,axis=1)-2*dh.mm(z,anchors.T))
+        return np.exp(-distance/(2*sigma2))
+    model=dh.head(ep,kernel(r))
+    def score(x):
+        if x is ep.q:return dh.predict(model,kernel(q))
+        index=np.argmax(dh.mm(x,ep.r.T),axis=1);return dh.predict(model,kernel(r[index]))
+    score.source_score=lambda index:dh.predict(model,kernel(r[index]))
+    return score,dict(actual_pre_final_h_plus_final_unit_x=True,observed_anchor_count=len(ids),bandwidth_squared=sigma2,
+                      bandwidth_source='training_observed_anchor_pair_median',steps=100)
+
+
+def d160_joint_control(ep):
+    return dh.calibrate(ep,'D160_control_actual_h_x_RBF',_d160_joint_builder,((4,2,1.),))
 
 
 def _matched(ep,selected):
@@ -330,5 +373,6 @@ def d164_control(ep):
 
 METHODS={'D160':d160,'D161':d161,'D162':d162,'D163':d163,'D164':d164}
 CONTROLS={'D160_control_same_angle_density':d160_control,'D161_control_same_pairs_mean_shift':d161_control,
+          'D160_control_actual_log_norm_only':d160_norm_control,'D160_control_actual_h_x_RBF':d160_joint_control,
           'D162_control_same_pairs_single_shrunk_map':d162_control,'D163_control_same_initial_modes_free_shifts':d163_control,
           'D164_control_same_layers_zscore':d164_control}

@@ -92,10 +92,11 @@ def fit_a023(frame,transport=True):
             if valid:normals[target]=unit(normal);transported+=1
             else:loop_rejections+=1
     active=np.array([i for i,n in enumerate(normals) if n is not None],int)
-    vectors=np.array([normals[i] for i in active])
+    vectors=np.zeros_like(f);vectors[active]=np.array([normals[i] for i in active])
+    available=np.zeros(len(f),bool);available[active]=True
     def predict(q,ids,role):
-        base,info=b0(frame,q);route=np.argmin(sqdist(q,f[active]),1)
-        selected=active[route];hit=sqdist(q,f)[np.arange(len(q)),selected]<=radius[selected]
+        base,info=b0(frame,q);distance_to_all=sqdist(q,f);route=np.argmin(distance_to_all,1)
+        hit=available[route]&(distance_to_all[np.arange(len(q)),route]<=radius[route])
         base[hit]=np.sum(q[hit]*vectors[route[hit]],1)
         return base,dict(info,normal_domain_points=int(hit.sum()),points=len(q),_fallback_mask=~hit)
     return predict,{"graph_nodes":len(f),"known_spatial_BG_normals":len(known),"transported_normals":transported,
@@ -178,23 +179,27 @@ def fit_a024(frame,random_involution=False):
 
 def fit_a025(frame,remove=True):
     f,b,fi,bi,_=frame.banks()
-    if len(frame.fids)<3 or len(frame.bids)<3 or np.any(fi<0) or np.any(bi<0):return _plain(frame)
+    inside=np.flatnonzero(frame.train&(frame.c>.5));outside=np.flatnonzero(frame.train&(frame.c<=.5))
+    if len(inside)<3 or len(outside)<3 or frame.wf.sum()<=0 or frame.wb.sum()<=0:return _plain(frame)
     yy,xx=np.indices(frame.ep.r_hw);coords=np.c_[yy.ravel(),xx.ravel()]
     # Distance to nearest KNOWN opposite side, not held-out cells treated as BG.
     depth=np.zeros(len(frame.x))
-    depth[frame.fids]=np.sqrt(cdist(coords[frame.fids],coords[frame.bids],'sqeuclidean').min(1))
-    depth[frame.bids]=-np.sqrt(cdist(coords[frame.bids],coords[frame.fids],'sqeuclidean').min(1))
-    def curve_coeff(ids):
+    depth[inside]=np.sqrt(cdist(coords[inside],coords[outside],'sqeuclidean').min(1))
+    depth[outside]=-np.sqrt(cdist(coords[outside],coords[inside],'sqeuclidean').min(1))
+    def curve_coeff(ids,weights):
         d=depth[ids];design=np.c_[np.ones(len(ids)),d,d*d]
-        return np.linalg.solve(design.T@design+np.eye(3),design.T@frame.x[ids])
-    cf,cb=curve_coeff(frame.fids),curve_coeff(frame.bids)
+        return np.linalg.solve(design.T@(weights[:,None]*design)+np.eye(3),design.T@(weights[:,None]*frame.x[ids]))
+    cf,cb=curve_coeff(inside,frame.wf[inside]),curve_coeff(outside,frame.wb[outside])
     shared=np.zeros_like(cf);accepted=[]
     for power in (1,2):
         cosine=float(unit(cf[power])@unit(cb[power]))
         if cosine>=.95 and remove:shared[power]=(cf[power]+cb[power])/2;accepted.append(power)
     def trend(d):return np.c_[np.ones(len(d)),d,d*d]@shared
-    ff=f-trend(depth[fi]);bb=b-trend(depth[bi])
-    samples=[np.quantile(depth[ids],[.1,.3,.5,.7,.9]) for ids in (frame.fids,frame.bids)]
+    def corrected_bank(bank,ids,weights):
+        if np.all(ids>=0):return bank-trend(depth[ids])
+        return unit(np.sum((frame.x-trend(depth))*weights[:,None],0))[None]
+    ff=corrected_bank(f,fi,frame.wf);bb=corrected_bank(b,bi,frame.wb)
+    samples=[np.quantile(depth[ids],[.1,.3,.5,.7,.9]) for ids in (inside,outside)]
     def predict(q,ids,role):
         scores=[]
         for bank,quantiles in zip((ff,bb),samples):
@@ -203,7 +208,8 @@ def fit_a025(frame,remove=True):
         return scores[0]-scores[1],{"integrated_depth_values":5,"shared_curve_powers":accepted}
     return predict,{"shared_curve_powers":accepted,"shared_coeff_norms":np.linalg.norm(shared,axis=1).tolist(),
         "FG_depth_quantiles":samples[0].tolist(),"BG_depth_quantiles":samples[1].tolist(),
-        "shared_intercept_always_zero":True,"remove_shared_term":remove}
+        "shared_intercept_always_zero":True,"remove_shared_term":remove,"inside_coverage_cut":.5,
+        "curve_rows_include_known_mixed":True,"mixed_curve_rows":int(np.sum(frame.train&(frame.c>0)&(frame.c<1)))}
 
 
 def _pure_branch_filtration(bank,labels,blocks):
@@ -276,7 +282,7 @@ def install(register,requirements):
         "Generate onlyunpairedFGanchor transforms, discardcloserBGexplanation; innerfourblock rebuildpairs/T/virtuals and permitonlynonincreasingzero-cut balanced error inEVERYeffectiveblock.",),
         (("same_rank_random_involution",lambda f:fit_a024(f,random_involution=True)),("original_5NN",_plain)))
     register("A025",fit_a025,(
-        "Maskdepth isnearestKNOWN opposite-pure-side grid distance withFGpositivesign; noheldout-asBG EDT; rolecurve degree2 ridge1.",
+        "Knowncoverage insidec>.5/outsidec<=.5 forms signeddistance toknownopposite cells; held staysunknown; includeknownmixedrows weightedwf inside/wb outside, degree2 ridge1.",
         "Shared powers1/2 onlyif rolecoefficientcos>=.95, meanvector, nointercept removal; integrateq.1/.3/.5/.7/.9 eachroledepth byequalmeanexp(-distance2/.07), outputlogratio.",),
         (("same_depth_no_shared_removal",lambda f:fit_a025(f,remove=False)),("original_5NN",_plain)))
     register('A027',fit_a027,(

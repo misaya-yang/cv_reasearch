@@ -1831,3 +1831,78 @@ register('C120',point_method('C120',_c120_descriptor),
          ['Test edges are spatial atom-boundary edges with at least one point lacking a strong public identity anchor.',
           'Effective resistance uses exact grounded Laplacian diagonal inverses; deletions use the exact rank-one inverse identity when nonsingular and explicitly recompute disconnected components otherwise.'])
 CONTROLS['control_C120_original_resistance']=point_method('control_C120_original_resistance',lambda c,p:_c120_descriptor(c,p,False))
+
+
+def _layers(ctx,p,name):
+    role='r'if ctx.source else'q';a=np.asarray(artifact(p.ep,role+'_'+name))
+    if a.ndim!=3 or a.shape[1:]!=ctx.x.shape or not np.isfinite(a).all():raise ValueError('actual aligned per-layer native patch states required')
+    a=unit(a)
+    if not np.allclose(a[-1],ctx.x,atol=2e-5,rtol=2e-5):raise ArtifactUnavailable('Actual final-layer artifact does not match the bound native unit episode')
+    return a
+
+
+def _layer_fields(ctx,p,name):
+    q=_layers(ctx,p,name);r=np.asarray(artifact(p.ep,'r_'+name));r=unit(r)
+    if r.ndim!=3 or r.shape[1:]!=p.r.shape or q.shape[0]!=r.shape[0]:raise ValueError('reference/query actual layers differ')
+    fields=[]
+    excluded=()if ctx.fold is None else((ctx.fold,)if isinstance(ctx.fold,(int,np.integer))else tuple(ctx.fold))
+    eligible=(p.rv>0)&~np.isin(p.rb,excluded)
+    for layer in range(len(r)):
+        affinity=dot(r[layer],r[layer]);oof=[]
+        for block in range(16):
+            held=np.flatnonzero(eligible&(p.rb==block));bank=np.flatnonzero(eligible&(p.rb!=block))
+            fg=bank[p.c[bank]>=.9];bg=bank[p.c[bank]<=.1]
+            if len(held)and len(fg)and len(bg):oof.extend((affinity[np.ix_(held,fg)].max(axis=1)-affinity[np.ix_(held,bg)].max(axis=1)).tolist())
+        scale=max(float(np.subtract(*np.percentile(oof,[75,25])))if oof else 0,.01)
+        profile=dot(q[layer],r[layer,ctx.bank_ids]);m=profile[:,ctx.fg].max(axis=1)-profile[:,ctx.bg].max(axis=1)
+        fields.append(np.clip(m/scale,-4,4))
+    return np.array(fields),q
+
+
+def _closed_holes(ctx,foreground):
+    from scipy.ndimage import label
+    structure=np.array([[0,1,0],[1,1,1],[0,1,0]])
+    mask=foreground.reshape(ctx.hw)&(ctx.valid.reshape(ctx.hw)>0)
+    fg,fc=label(mask,structure);bg,bc=label(~mask&(ctx.valid.reshape(ctx.hw)>0),structure)
+    holes=[]
+    physical=ctx.valid.reshape(ctx.hw)>0
+    boundary=np.zeros(ctx.hw,bool);boundary[[0,-1],:]=True;boundary[:,[0,-1]]=True
+    boundary|=physical&binary_dilation(~physical,structure=structure)
+    for component in range(1,bc+1):
+        hole=bg==component
+        if np.any(hole&boundary):continue
+        ring=binary_dilation(hole,structure=structure)&~hole
+        neighbors=np.unique(fg[ring]);neighbors=neighbors[neighbors>0]
+        if len(neighbors)==1:holes.append(np.flatnonzero(hole.ravel()))
+    return holes
+
+
+def _c131_samples(ctx,p):
+    fields,layers=_layer_fields(ctx,p,'layer_tokens_half_threequarter_final')
+    if len(fields)!=3:raise ValueError('C131 requires actual half, three-quarter and final layers')
+    holes=_closed_holes(ctx,fields[-1]>0);d=[]
+    for H in holes:
+        ring=_ring(ctx,H,1)
+        if not len(ring):d.append([np.nan]*7);continue
+        closed=[np.all(fields[layer,ring]>0)for layer in range(3)]
+        closure=next((layer for layer,value in enumerate(closed)if value),3)
+        inner=fields[:,H].mean(axis=1);outer=fields[:,ring].mean(axis=1)
+        distance=[]
+        for layer in range(3):
+            a=unit(layers[layer,H].mean(axis=0));b=unit(layers[layer,ring].mean(axis=0));distance.append(1-a@b)
+        d.append([np.mean(fields[0,H]>0),np.mean(fields[1,H]>0),closure,
+                  (inner[-1]-inner[0])-(outer[-1]-outer[0]),distance[1]-distance[0],distance[2]-distance[1],inner[-1]])
+    return holes,np.asarray(d).reshape(-1,7)
+
+
+def _c131(ep):
+    z,info=dynamic_region_run(ep,_c131_samples)
+    return result(ep,z,'C131',info)
+
+
+register('C131',_c131,
+         ['Hole candidates are final predicted BG components enclosed by one physical four-connected FG component, excluding the real image border.',
+          'Closure time is the first observed layer with a wholly positive one-grid outside ring; embedding-distance changes use actual per-layer hole/ring mean cosines, with each layer independently source-scaled.'],
+         ('final_unit_dino','q_layer_tokens_half_threequarter_final','r_layer_tokens_half_threequarter_final'))
+CONTROLS['control_C131_final_hole_profile']=lambda ep:result(ep,*dynamic_region_run(ep,lambda c,p:(lambda regions,d:(regions,d[:,[-1]]))(*_c131_samples(c,p)))[:1],'control_C131_final_hole_profile',{})
+CONTROLS['control_C131_all_layer_point_fields']=point_method('control_C131_all_layer_point_fields',lambda c,p:_layer_fields(c,p,'layer_tokens_half_threequarter_final')[0].T)

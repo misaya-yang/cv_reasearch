@@ -162,8 +162,11 @@ def fit_a010(frame, no_error=False):
     return predict,{"lambda_atom":.01,"lambda_e":lam,"coordinate_cap_fraction":.1,"precheck_passed":not no_error}
 
 
-def _matching_pursuit(q,bank,max_atoms=8,quantization=None,sigma=1.):
+def _matching_pursuit(q,bank,max_atoms=8,quantization=None,sigma=1.,shortest=True):
     residual=q.copy(); index=np.zeros((len(q),max_atoms),int); coef=np.zeros((len(q),max_atoms))
+    bits=float(np.ceil(np.log2(max(len(bank),1)))+8)
+    best_cost=.5*np.sum(residual*residual,1)/(sigma*sigma*np.log(2))
+    best_residual=residual.copy();best_coefficient=coef.copy();best_used=np.zeros(len(q),int)
     for j in range(max_atoms):
         response=residual@bank.T
         idx=np.argmax(np.abs(response),1)
@@ -173,9 +176,15 @@ def _matching_pursuit(q,bank,max_atoms=8,quantization=None,sigma=1.):
             value=lo+np.rint(np.clip((value-lo)/max(hi-lo,EPS),0,1)*255)*(hi-lo)/255
         index[:,j]=idx;coef[:,j]=value
         residual-=value[:,None]*bank[idx]
+        used=np.count_nonzero(np.abs(coef)>1e-8,1)
+        prefix_cost=.5*np.sum(residual*residual,1)/(sigma*sigma*np.log(2))+used*bits
+        improved=prefix_cost<best_cost
+        best_cost[improved]=prefix_cost[improved];best_residual[improved]=residual[improved]
+        best_coefficient[improved]=coef[improved];best_used[improved]=used[improved]
     cost=.5*np.sum(residual*residual,1)/(sigma*sigma*np.log(2))
     used=np.count_nonzero(np.abs(coef)>1e-8,1)
     cost+=used*(np.ceil(np.log2(max(len(bank),1)))+8)
+    if shortest:return best_cost,best_residual,best_coefficient,best_used
     return cost,residual,coef,used
 
 
@@ -189,19 +198,21 @@ def fit_a011(frame, bits=True):
         sf,sb,*_=source.banks()
         for ids,bank in ((frame.fids[frame.blocks[frame.fids]==block],sf),(frame.bids[frame.blocks[frame.bids]==block],sb)):
             if len(ids) and len(bank):
-                _,res,c,_=_matching_pursuit(frame.x[ids],bank)
+                # Noise/range estimates use the full eight-atom training fit,
+                # not its sigma=1 code-length stopping rule.
+                _,res,c,_=_matching_pursuit(frame.x[ids],bank,shortest=False)
                 coefficients.extend(c.ravel().tolist());errors.extend(np.sum(res*res,1).tolist())
     if not coefficients or not errors:
         return _plain(frame)
     lo,hi=map(float,np.quantile(coefficients,[.005,.995]))
     sigma=max(float(np.sqrt(np.mean(errors)/frame.x.shape[1])),1e-4)
     def predict(q,ids,role):
-        cf,rf,af,nf=_matching_pursuit(q,f,quantization=(lo,hi),sigma=sigma)
-        cb,rb,ab,nb=_matching_pursuit(q,b,quantization=(lo,hi),sigma=sigma)
+        cf,rf,af,nf=_matching_pursuit(q,f,quantization=(lo,hi),sigma=sigma,shortest=bits)
+        cb,rb,ab,nb=_matching_pursuit(q,b,quantization=(lo,hi),sigma=sigma,shortest=bits)
         if not bits:
             cf=np.sum(rf*rf,1);cb=np.sum(rb*rb,1)
         return cb-cf,{"FG_atoms_mean":float(nf.mean()) if len(q) else 0,
-                      "BG_atoms_mean":float(nb.mean()) if len(q) else 0,"max_atoms":8}
+                      "BG_atoms_mean":float(nb.mean()) if len(q) else 0,"max_atoms":8,"shortest_prefix_over_0_to_8":bits}
     return predict,{"coefficient_99pct_range":[lo,hi],"quantization_bins":256,"pooled_Gaussian_sigma":sigma,
                     "description_length_bits":bits,"Gaussian_role_common_constant_cancels":True}
 
@@ -359,7 +370,10 @@ def fit_a014(frame,global_metric=False,diagonal=False):
     for group in groups:
         same,cross=_metric_pairs(frame,group)
         metrics.append(_learn_metric(same,cross,u,diagonal))
-    f,b,*_=frame.banks()
+    f,b,fi,bi,_=frame.banks()
+    local_banks=[]
+    for group in groups:
+        local_banks.append((f[np.isin(fi,group)],b[np.isin(bi,group)]))
     def metric_distance(q,bank,d,c):
         # Exact diag+lowrank quadratic distance; no D×D materialization.
         sd=np.sqrt(d);qv=q@u;bv=bank@u
@@ -367,16 +381,20 @@ def fit_a014(frame,global_metric=False,diagonal=False):
         out+=np.einsum('ni,ij,nj->n',qv,c,qv)[:,None]+np.einsum('ni,ij,nj->n',bv,c,bv)[None,:]-2*qv@c@bv.T
         return np.maximum(out,0)
     def predict(q,ids,role):
-        route=np.argmin(sqdist(q,centers),1);score=np.zeros(len(q))
+        route=np.argmin(sqdist(q,centers),1);score,_=b0(frame,q);fallback=np.zeros(len(q),bool)
         for k,(d,c,loss,steps) in enumerate(metrics):
             selected=route==k
             if not selected.any():continue
-            df=metric_distance(q[selected],f,d,c);db=metric_distance(q[selected],b,d,c)
-            kf,kb=min(5,len(f)),min(5,len(b))
+            lf,lb=local_banks[k]
+            if not len(lf) or not len(lb) or not steps:
+                fallback[selected]=True;continue
+            df=metric_distance(q[selected],lf,d,c);db=metric_distance(q[selected],lb,d,c)
+            kf,kb=min(5,len(lf)),min(5,len(lb))
             score[selected]=(np.partition(db,kb-1,axis=1)[:,:kb].mean(1)-np.partition(df,kf-1,axis=1)[:,:kf].mean(1))/2
-        return score,{"domain_point_counts":np.bincount(route,minlength=len(centers)).tolist()}
+        return score,{"domain_point_counts":np.bincount(route,minlength=len(centers)).tolist(),"_fallback_mask":fallback}
     return predict,{"domains":len(centers),"PCA_rank":u.shape[1],"objectives":[m[2] for m in metrics],
-        "iterations":[m[3] for m in metrics],"diagonal":diagonal,"global_metric":global_metric}
+        "iterations":[m[3] for m in metrics],"domain_FG_BG_pool_counts":[[len(f),len(b)] for f,b in local_banks],
+        "diagonal":diagonal,"global_metric":global_metric,"unsupported_domain_policy":"point_B0_cut0"}
 
 
 def _hull_projection(target,points,initial):
@@ -404,6 +422,10 @@ def fit_a015(frame,move=True,medoids=False):
     for role,sel in zip((frame.fids,frame.bids),selected):
         route=np.argmin(sqdist(frame.x[role],frame.x[sel]),1)
         groups.extend([frame.x[role[route==j]] for j in range(len(sel))])
+    supported=np.array([len(points)>0 for points in groups],bool)
+    unsupported=int((~supported).sum())
+    prototypes=prototypes[supported];labels=labels[supported];groups=[points for points,keep in zip(groups,supported) if keep]
+    if not np.any(labels>0) or not np.any(labels<0):return _plain(frame)
     train=np.r_[frame.fids,frame.bids];x=frame.x[train];y=np.r_[np.ones(len(frame.fids)),-np.ones(len(frame.bids))]
     weights=np.where(y>0,.5/len(frame.fids),.5/len(frame.bids))
     best=prototypes.copy();bestloss=np.inf;visited=[]
@@ -435,27 +457,38 @@ def fit_a015(frame,move=True,medoids=False):
         return (nearest_mean_distance(q,b,1)-nearest_mean_distance(q,f,1))/2,{}
     return predict,{"FG_prototypes":len(f),"BG_prototypes":len(b),"iterations":len(visited),
         "best_GL VQ_objective":bestloss,"objectives":visited,"move":move,"medoids":medoids,
-        "convex_hull_feasibility_by_construction":True}
+        "convex_hull_feasibility_by_construction":True,"unsupported_prototypes_deleted":unsupported}
 
 
 def fit_a016(frame,aggregation="worstthird",continuous=False):
     f,b,fi,bi,_=frame.banks()
     if not len(f) or not len(b):
         return _plain(frame)
-    cross=sqdist(f,b);candidates=unit(f-b[np.argmin(cross,1)])
-    directions=[]
-    for direction in candidates:
-        if directions and np.max(np.abs(np.array(directions)@direction))>.95:continue
-        errors=[]
-        for block in range(4):
-            train=frame.train&(frame.blocks!=block);held=frame.train&(frame.blocks==block)
-            if frame.wf[train].sum()<=0 or frame.wb[train].sum()<=0 or frame.wf[held].sum()<=0 or frame.wb[held].sum()<=0:continue
+    protocols=[]
+    # A protocol is the k-th fixed FPS FG/nearest-BG direction. Its anchors AND
+    # direction are independently rebuilt in every reliability held block.
+    # No vector generated with that block's labels is scored as its own OOF one.
+    for block in range(4):
+        train=frame.train&(frame.blocks!=block);held=frame.train&(frame.blocks==block)
+        if frame.wf[train].sum()<=0 or frame.wb[train].sum()<=0 or frame.wf[held].sum()<=0 or frame.wb[held].sum()<=0:continue
+        inner=Frame.make(frame.ep,train);ff,bb,*_=inner.banks()
+        candidate=unit(ff-bb[np.argmin(sqdist(ff,bb),1)])
+        records=[]
+        for direction in candidate:
             cut,_=threshold(frame.x[train]@direction,frame.wf[train],frame.wb[train])
             positive=frame.x[held]@direction>cut
             error=.5*(frame.wf[held][~positive].sum()/frame.wf[held].sum()+frame.wb[held][positive].sum()/frame.wb[held].sum())
-            errors.append(error)
-        if errors and max(errors)<.5:directions.append(direction)
-        if len(directions)>=32:break
+            records.append((direction,float(error)))
+        protocols.append(records)
+    directions=[];reliability=[]
+    if len(protocols)>=2:
+        for k in range(min(map(len,protocols))):
+            vectors=np.array([fold[k][0] for fold in protocols]);errors=[fold[k][1] for fold in protocols]
+            if max(errors)>=.5 or np.min(vectors@vectors.T)<.8:continue
+            direction=unit(vectors.mean(0))
+            if directions and np.max(np.abs(np.array(directions)@direction))>.95:continue
+            directions.append(direction);reliability.append(errors)
+            if len(directions)>=32:break
     if not directions:return _plain(frame)
     u=np.array(directions).T
     pf,pb=frame.x[frame.fids]@u,frame.x[frame.bids]@u
@@ -478,7 +511,8 @@ def fit_a016(frame,aggregation="worstthird",continuous=False):
         score=np.partition(margin,k-1,axis=1)[:,:k].mean(1) if aggregation=="worstthird" else (margin.mean(1) if aggregation=="mean" else margin.max(1))
         score=np.minimum(score,(radius-nearest_mean_distance(q,f))/max(radius,EPS))
         return score,{}
-    return predict,{"directions":u.shape[1],"interval_quantiles":[.05,.95],"FG_support_radius2":radius,"aggregation":aggregation}
+    return predict,{"directions":u.shape[1],"interval_quantiles":[.05,.95],"FG_support_radius2":radius,
+        "aggregation":aggregation,"direction_reliability_fold_errors":reliability,"direction_rebuilt_without_held_labels":True}
 
 
 def fit_a017(frame,domains=True):
@@ -509,16 +543,13 @@ def fit_a017(frame,domains=True):
             for i in np.flatnonzero(any_hit):
                 z=response[i,hit[i]]/.07
                 score[i]=.07*(np.log(np.exp(z-z.max()).mean())+z.max())
-            # One empty role uses its ORIGINAL fullbank response; only both
-            # empty yields exactly B0. Reliability is never a global multiplier.
-            z=q@bank.T/.07
-            maximum=z.max(1)
-            fallback=.07*(np.log(np.exp(z-maximum[:,None]).mean(1))+maximum)
-            score[~any_hit]=fallback[~any_hit]
             role_scores.append(score);hits.append(any_hit)
-        active=hits[0]|hits[1]
+        # Source has no one-role-empty readout. Resolve it explicitly as point
+        # B0; unqualified anchors cannot silently return through an empty role.
+        active=hits[0]&hits[1]
         base[active]=(role_scores[0]-role_scores[1])[active]
-        return base,dict(info,qualified_domain_points=int(active.sum()),points=len(q),_fallback_mask=~active)
+        return base,dict(info,qualified_domain_points=int(active.sum()),single_role_empty_points=int((hits[0]^hits[1]).sum()),
+            points=len(q),_fallback_mask=~active)
     return predict,{"qualified_FG":len(packets[0]),"qualified_BG":len(packets[1]),
         "reliabilities":[[r[2] for r in p] for p in packets],"domains":domains,
         "reliability_only_qualifies_not_multiplies_similarity":True}
@@ -540,7 +571,7 @@ def _curvature_profile(q,bank):
         vectors=initial.copy()
         for _ in range(10):vectors=np.linalg.qr(multiply(vectors))[0][:,:rank]
         small=vectors.T@multiply(vectors)
-        top[i]=np.maximum(np.linalg.eigvalsh((small+small.T)/2),0).sum()
+        top[i]=np.maximum(np.linalg.eigvalsh((small+small.T)/2),0).max(initial=0.)
     return score,top
 
 
@@ -556,7 +587,7 @@ def fit_a018(frame,curvature=True):
     def predict(q,ids,role):
         z=descriptors(q)
         return z@coef[:-1]+coef[-1],{"Hessian_power_steps":10,"Hessian_top_rank":min(3,len(f)-1,len(b)-1,q.shape[1])}
-    return predict,{"features":"LSE margin + sum top3 FG/BG Hessian eigenvalue difference" if curvature else "LSE_margin_only",
+    return predict,{"features":"LSE margin + largest FG/BG Hessian eigenvalue difference" if curvature else "LSE_margin_only",
                     "T":.07,"head_L2":1.,"block_power_steps":10,"actual_Hessian_no_state_iteration":True}
 
 
@@ -648,11 +679,18 @@ def fit_a020(frame,unconstrained=False):
     for role,other in ((frame.fids,frame.bids),(frame.bids,frame.fids)):
         selected=fps(frame.x,role,32)
         if len(selected)<2:continue
-        d=sqdist(frame.x[selected],frame.x[selected]);np.fill_diagonal(d,np.inf)
         opposite=fps(frame.x,other,32)
-        neg=np.argmin(sqdist(frame.x[selected],frame.x[opposite]),1)
         for k,index in enumerate(selected):
-            pairs.extend([(int(index),int(selected[np.argmin(d[k])])),(int(index),int(opposite[neg[k]]))])
+            positive_candidates=role[frame.blocks[role]!=frame.blocks[index]]
+            negative_candidates=opposite[frame.blocks[opposite]!=frame.blocks[index]]
+            if not len(positive_candidates) or not len(negative_candidates):continue
+            # Each known source point's classification endpoints exclude its
+            # spatial block. Labels train the finite reference transform; this
+            # is a reference meta-objective, not independent validation evidence.
+            positive_candidates=fps(frame.x,positive_candidates,32)
+            positive=int(positive_candidates[np.argmin(sqdist(frame.x[index:index+1],frame.x[positive_candidates])[0])])
+            negative=int(negative_candidates[np.argmin(sqdist(frame.x[index:index+1],frame.x[negative_candidates])[0])])
+            pairs.extend([(int(index),positive),(int(index),negative)])
             weights.extend([1.,-1.])
     if not pairs:return _plain(frame)
     pairs=np.array(pairs);type_=np.array(weights)
@@ -694,7 +732,8 @@ def fit_a020(frame,unconstrained=False):
             "nonzero_support_points":int((gate>0).sum()),"points":len(q),"outside_exact_identity":True}
     return predict,{"rank":rank,"support_h":h,"whole_residual_Lipschitz_bound":certificate,
         "invertibility_constraint_active":not unconstrained,"steps":30,"objectives":history,
-        "best_objective":bestloss,"W2_norm":float(np.linalg.norm(w2))}
+        "best_objective":bestloss,"W2_norm":float(np.linalg.norm(w2)),
+        "classification_endpoint_excludes_point_block":True,"reference_meta_objective_not_independent_evidence":True}
 
 
 def install(register,requirements):
@@ -709,7 +748,7 @@ def install(register,requirements):
         (("no_error_SRC",lambda f:fit_a010(f,no_error=True)),))
     requirements["A010"]=["A010_coordinate_sparse_cross_image_evidence"]
     register("A011",fit_a011,(
-        "Ordered matchingpursuit8atoms; one-role source-fold coefficient pooledq.005/.995 range,256bins,sharedGaussian sigma frompooledcrossblock reconstruction residual, floor1e-4.",
+        "Evaluateeveryordered matchingpursuit prefix0..8 andselectshortestactualresidual+index+coefficientcode, preferfirstprefix ties. Coef99%/Gaussian sigma fromfull8-atom sourcefold trainingfit, floor1e-4.",
         "Indexceil(log2K)+8bits eachnonzeroquantizedatom; Gaussian residual negative-log-density rolecommon constant cancels.",),
         (("same_quantized_dictionary_residual",lambda f:fit_a011(f,bits=False)),))
     register("A012",fit_a012,(
@@ -722,24 +761,24 @@ def install(register,requirements):
         (("unbounded_BG_local_space",lambda f:fit_a013(f,unbounded=True)),("original_two_role_5NN",_plain)))
     register("A014",fit_a014,(
         "8sphericalreferencefeaturedomains, globalunlabeledPCA rank16 from64FPS trainingR; domainpairs32FPS perrole nearestsame/opposite.",
-        "30projected-gradient steps.01, d>=1e-4,C PSD, L2=1 normalizeddiagonal andFrobeniusC; crosshingetarget=sourcecrossdistance median, minvisitedobjective.",),
+        "30projected-gradient steps.01, d>=1e-4,C PSD, L2=1; routeddomain ownsubsetoftheglobal64perrolebanks. Empty/unsupporteddualrole domain=>pointB0cut0, neverglobalmetricbankunderlocalsignature.",),
         (("same_pairs_global_metric",lambda f:fit_a014(f,global_metric=True)),("local_diagonal_only",lambda f:fit_a014(f,diagonal=True))))
     register("A015",fit_a015,(
-        "8FPS prototypes perrole, owninitialVoronoi cluster convexhull; balancedGLVQsigmoid relative-distance loss,30steps at.1, minvisitedobjective.",
+        "8FPS prototypes perrole, deleteunsupportedVoronoi prototypes withID tiesbeforetraining; owninitiallabeledclusterhull, GLVQsigmoid30steps.1,minvisitedobjective.",
         "Eachprojection uses30FrankWolfe line-search convexcombination updates, alwaysfeasible; does not claim an exact hullprojection optimum.",),
         (("same_initial_FPS",lambda f:fit_a015(f,move=False)),("same_cluster_medoids",lambda f:fit_a015(f,move=False,medoids=True))))
     register("A016",fit_a016,(
-        "Nearestcrossrole64anchor directions, requireeachsourcefoldbalancederror<.5, removeabs-cos>.95 redundantdirs, cap32.",
+        "Everyinnerfold rebuilds64FPS nearestcrossrole directions; alignkth-FPS protocols, requireallOOFerrors<.5 andcrossfold directionalcos>=.8, averageacceptedvectors, nonredundancyabs-cos>.95, cap32.",
         "Roleprojectionintervals q.05/.95, outside-interval distanceBG−FG; meanworstceil(B/3), minFGcrossblock95%5NNsupportmargin.",),
         (("same_directions_mean",lambda f:fit_a016(f,aggregation="mean")),("same_directions_max",lambda f:fit_a016(f,aggregation="max")),
          ("same_directions_RBF",lambda f:fit_a016(f,continuous=True))))
     register("A017",fit_a017,(
         "Each64 FPS roleanchor supportball uses nearest8 same-role othertrainingblock distanceq.9; qualification iff crossblock truehit-rate>falsehit-rate.",
-        "Reliabilityqualifies notgloballyweights; two-role eligibleanchor logmeanexpT.07; emptyrole uses ordinaryfullrole LSE, bothempty exactlysourceB0.",),
+        "Reliabilityqualifies notgloballyweights; two-role eligibleanchor logmeanexpT.07; sourceone-role-empty gap resolvedasexplicit pointB0, no unqualifiedanchor reentry.",),
         (("qualified_without_domain",lambda f:fit_a017(f,domains=False)),("original_5NN",_plain)))
     register("A018",fit_a018,(
         "Hessian=(softmax weighted secondmoment−mean outermean)/T,T=.07; deterministicrank3 blockpower10 perrole andquerypoint.",
-        "2Dreadoutuses LSEmargin andSUM top3 eigenvalueFG−BGdifference; balancedridgeL2=1, fixedhead refitinsideeveryouterfold.",),
+        "Compute top3 Hessian eigenvalues;2Dreadoutuses LSEmargin andLARGEST eigenvalueFG−BGdifference, balancedridgeL2=1, refitinsideeachouterfold.",),
         (("same_LSE_margin_only",lambda f:fit_a018(f,curvature=False)),))
     register("A019",fit_a019,(
         "Actualall-valid R8NN reciprocalcrosspurelabel edges cap64 bydistance/ID. Removebothendpoint sameclasslocalPC directions fromedge contrast.",
@@ -747,7 +786,7 @@ def install(register,requirements):
         "Endpointball radiiq.9 sameclassneighbor distances; overlap metricincrementsmean, outsideincrementexact0, recompute5NNdistance.",),
         (("same_edges_random_U",lambda f:fit_a019(f,random=True)),("same_edges_global_route",lambda f:fit_a019(f,global_route=True))))
     register("A020",fit_a020,(
-        "Reference-spanrank16;W1=.1I,W2=0;30manualgradientsteps.01, samepairdistance+oppositehinge target1.05sourcecrossmedian and.1pairdistance-distortion.",
+        "Reference-spanrank16;W1=.1I,W2=0; eachtrainingpoint's same/oppositeclassendpoints excludeitsblock;30steps.01 ofRmeta-classificationhinge+pairdistortion, notindependentheldevidence.",
         "supporta=max(0,1−nearestanchorEuclideandist/h), hsourcecrossblock sameclass nearest-distanceq.9; exactidentityoutside.",
         "Eachstep projectW2 tobound||W2||2(√rank/h+||W1||2)<.5 via.499 margin; preservebothW1/W2 learning, minvisitedobjective.",),
         (("same_head_without_invertibility_constraint",lambda f:fit_a020(f,unconstrained=True)),("original_5NN",_plain)))
