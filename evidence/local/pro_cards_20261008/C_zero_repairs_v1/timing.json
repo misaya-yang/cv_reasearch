@@ -1,0 +1,95 @@
+{
+  "state": "TIMING_PASS",
+  "config_sha256": "f491f82cdf304ccefeeb09f9167dd480b21f4004d990d0230501a24fcba1cdab",
+  "fixed_first5_keys": [
+    "0_60_40",
+    "0_61_52",
+    "0_62_60",
+    "0_63_0",
+    "0_64_60"
+  ],
+  "workers": 16,
+  "threads_per_worker": 2,
+  "available_CPUs": 32,
+  "first5_max_active_workers": 5,
+  "observed_pool": {
+    "wall_seconds": 6.224972732365131,
+    "newly_computed_cases": 5,
+    "reused_complete_cases": 0
+  },
+  "estimates": {
+    "card1.mode_return": {
+      "first5_case_wall_seconds": [
+        1.3295481130480766,
+        1.2372302263975143,
+        1.3093619719147682,
+        1.3602329865098,
+        1.2924557849764824
+      ],
+      "first5_case_CPU_seconds": [
+        2.338852881,
+        2.1882488359999996,
+        2.3092283260000004,
+        2.374649778,
+        2.24870043
+      ],
+      "projected600_CPU_seconds": 1375.16163012,
+      "projected600_wall_seconds": 57.91382621973753
+    },
+    "card1.global.control": {
+      "first5_case_wall_seconds": [
+        1.3437891006469727,
+        1.2300747856497765,
+        1.312084473669529,
+        1.3802651762962341,
+        1.3192315995693207
+      ],
+      "first5_case_CPU_seconds": [
+        2.3655516949999997,
+        2.1728395149999997,
+        2.318455877,
+        2.4188685440000004,
+        2.302163057
+      ],
+      "projected600_CPU_seconds": 1389.34544256,
+      "projected600_wall_seconds": 58.67504943162203
+    },
+    "card2.pure_bg.control": {
+      "first5_case_wall_seconds": [
+        1.40171679854393,
+        1.2791284620761871,
+        1.3615176603198051,
+        1.4187996983528137,
+        1.323359102010727
+      ],
+      "first5_case_CPU_seconds": [
+        2.480776369999999,
+        2.2695752870000003,
+        2.41584664,
+        2.4893132620000005,
+        2.310419537999999
+      ],
+      "projected600_CPU_seconds": 1435.91173164,
+      "projected600_wall_seconds": 60.13936126977205
+    }
+  },
+  "cost_gate": {
+    "card1_with_required_global_control": {
+      "projected600_wall_seconds": 116.58887565135956,
+      "within20minutes": true
+    },
+    "card2_zero_encoding_control": {
+      "projected600_wall_seconds": 60.13936126977205,
+      "within20minutes": true
+    }
+  },
+  "active_arms": [
+    "card1.mode_return",
+    "card1.global.control",
+    "card2.pure_bg.control"
+  ],
+  "skipped_arms": [],
+  "uncertainty": "600 projections from fixed5, not measured600 cost; content/parallel contention unknown; max observed per-case wave and CPU-capacity bound plus cold pool cost",
+  "timing_case_fields_reused_in_full_inference": true,
+  "new_encoder_forwards": 0
+}

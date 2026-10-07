@@ -69,27 +69,15 @@ secrets*.json
 # Third-party checkouts stay local. A text result too large to version gets its own line below.
 **/sources/
 
-
 # New experiment outputs are generated; promote only compact evidence deliberately.
 /outputs/
 
-# Date-stamped run artifacts stay local; preserve supplied method source packages.
-evidence/local/astra300_*/
-!evidence/local/astra300_*/
+# Closed batch workspaces stay local; current numerical evidence remains tracked.
 evidence/local/astra300_*/**
-!evidence/local/astra300_*/source/
-!evidence/local/astra300_*/source/astra300.md
-!evidence/local/astra300_*/source/methods300.json
 
-evidence/local/pro30_*/
-!evidence/local/pro30_*/
 evidence/local/pro30_*/**
-!evidence/local/pro30_*/source/
-!evidence/local/pro30_*/source/**
 
 # CPU100 run folders keep only their hand-maintained result summary in Git.
-evidence/local/cpu100_*/
-!evidence/local/cpu100_*/
 evidence/local/cpu100_*/**
 !evidence/local/cpu100_*/METHODS_AND_FAILURES.md
 

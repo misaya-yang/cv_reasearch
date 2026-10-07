@@ -1,0 +1,45 @@
+{
+  "sample": "0_60_40",
+  "operation": "PLAN step3 acceptance1 real first sample; saved score->unchanged rcg.predict CPU",
+  "seconds": 0.9802901595830917,
+  "shape": [
+    64,
+    64
+  ],
+  "max_abs_error": 0.003534749150276184,
+  "mean_abs_error": 7.602589175803587e-05,
+  "FP16_storage_rounding_bound_exceeded_tokens": 1345,
+  "round_to_FP16_different_tokens": 1389,
+  "cut_0p5_mask_different_tokens": 0,
+  "stored_positive_tokens": 59,
+  "replay_positive_tokens": 59,
+  "rcg_config": {
+    "arm": "RCG",
+    "alpha": 0.5,
+    "cross_image_k": 10,
+    "query_k": 20,
+    "source_purity": 0.9,
+    "lambda": 16.0,
+    "confidence_floor": 0.1,
+    "query_gt_in_inference": false,
+    "native_mask_in_inference": false,
+    "finalizer": "bilinear 1024, align_corners=False, >0.5; no re-minmax",
+    "parameter_provenance": "historical development-selected constants; fixed here; no new fold selection performed",
+    "dense_device": "caller-selected; GPU numerical parity not yet verified",
+    "cg_rtol": 1e-07,
+    "cg_atol": 1e-09,
+    "cg_maxiter": 300
+  },
+  "solver": {
+    "source_pure_tokens": 2476,
+    "graph_undirected_edges": 29996,
+    "graph_components": 4,
+    "graph_isolated_tokens": 2,
+    "cg_iterations": 54,
+    "cg_relative_residual": 8.347808444518777e-08,
+    "weighted_mean_error": 8.24885287409316e-07,
+    "maximum_principle_error": 0.0
+  },
+  "query_GT_read": false,
+  "rcg_source_sha256": "d9d8e15a69c0b939eb06dc4e41967afb684f29731f9dcb00519e73d944963d98"
+}
