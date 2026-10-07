@@ -211,7 +211,9 @@ def renderer_label(arm, info, source_hashes, run, cache):
         if (info.get('contract') != 'Pro30_B_R_exact_CPU100_reference_fit' or info.get('Huber') is not True) and info.get('degeneration') not in (
                 'empty_reference_target', 'full_foreground_reference_single_class_support'):
             raise ValueError('B_R baseline is not the source-defined Huber/degenerate readout')
-    return dict(label=label, evidence='sealed per-arm execution receipt')
+    return dict(label=label, evidence='sealed per-arm execution receipt',
+                recorded_geometry={key: info[key] for key in ('work_mask_shape', 'original_mask_shape',
+                                   'output_field_hw', 'field_space', 'source_renderer_parity') if key in info})
 
 
 def verify_run(run, selected, checked, packs):

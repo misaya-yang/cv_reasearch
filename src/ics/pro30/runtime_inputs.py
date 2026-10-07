@@ -111,7 +111,38 @@ class _SharedB:
     def _finish_system(self, captured, producer):
         import torch
         import torch.nn.functional as F
+        from . import b_operator as source
+        from .certified_01 import _episode_identity, _system_integrity
+        from ics.methods import mean_graph
         ep = self.operator.ep
+        op = self.operator
+        identity = _episode_identity(ep)
+        raw_binding = op.bundle['raw_binding']
+        source_binding = producer.get('native_feature_pack_binding')
+        model = ep.producer.get('model_assets', ep.producer)
+        expected_kinds = {'current_native_complete_FoRIS_Part1_Part2_Part3_Part4_MEAN16_system',
+                          'current_native_complete_FoRIS_Part1_Part2_Part3_Part4_plus_MEAN_a025_l16_FP32'}
+        source_verified = (
+            producer.get('kind') in expected_kinds
+            and all(mean_graph.CONFIG.get(k) == v for k, v in dict(alpha=.25,
+                query_k=20, graph_lambda=16., fidelity_floor=.1, reference_purity=.9).items())
+            and producer.get('checkpoint_sha256') == model.get('checkpoint_sha256')
+            and producer.get('config_sha256') == model.get('config_sha256', model.get('model_config_sha256'))
+            and raw_binding.get('source_image_hashes') == identity['source_image_hashes']
+            and raw_binding.get('decoded_original_files_and_mask_weights_verified') is True
+            and raw_binding.get('reference_mask_sha256') == ep.producer.get('reference_mask_sha256')
+            and source_binding == raw_binding
+            and op.closure.get('released_archive_sha256') == identity['locked_host_source_archive_sha256']
+            and op.closure.get('released_FoRIS_member_sha256', {}).get('foris/models/foris.py') == source.released.SOURCE_HASHES['foris/models/foris.py']
+            and producer.get('native_APD_gate') == op.native_gate
+            and producer.get('APD_applied') == op.native_gate
+            and (producer.get('native_gate_locked') is True
+                 or producer.get('gate_locked_to_original_native_R_Q_MR') is True)
+            and producer.get('positional_basis') == op.bundle['basis_binding']
+            and producer.get('positional_basis_producer') == op.basis_producer
+            and captured.get('solver_options') == dict(rtol=1e-7, atol=1e-9, maxiter=300))
+        if not source_verified:
+            raise ArtifactUnavailable('M01 system source must be the actual locked native B/verified RQ/MR/basis')
         def work_continuous(z):
             value = torch.from_numpy(np.asarray(z, np.float32).reshape(64, 64))[None, None]
             with torch.inference_mode():
@@ -127,11 +158,20 @@ class _SharedB:
                             a=readonly(np.asarray(captured['H'].sum(1)).ravel()),
                             work_continuous=work_continuous, final_mask=final_mask,
                             valid_work=np.ones((1024, 1024), bool),
-                            producer=dict(producer, complete_locked_host=True,
+                            producer=dict(producer, complete_locked_host=source_verified,
                                 source_image_hashes=ep.producer['source_image_hashes'],
                                 actual_finalizer='B no-CRF FP32continuous→1024>.5→binary-original>.5',
                                 exact_system_source='unchanged ics.methods.mean_graph._run CG arguments',
+                                system_binding=identity,
+                                verified_source_binding=dict(native_pack_sha256=raw_binding['sha256'],
+                                    source_image_hashes=raw_binding['source_image_hashes'],
+                                    original_MR_byte_sha256=raw_binding['reference_mask_sha256'],
+                                    original_MR_array_sha256=identity['original_MR_array_sha256'],
+                                    released_source_archive_sha256=op.closure['released_archive_sha256'],
+                                    native_gate_locked_to_verified_original_R_Q_MR=True,
+                                    positional_basis_sha256=op.bundle['basis_binding']['sha256']),
                                 preparation_receipt=self.receipt))
+        self._system['producer']['system_payload_integrity'] = _system_integrity(self._system)
 
     def system(self):
         if self._system is not None:
@@ -174,7 +214,8 @@ class _SharedB:
                 MEAN_graph_descriptor_array_sha256={k: array_hash(v) for k, v in descriptors.items()},
                 host_config={k: v for k, v in config.items() if k != 'encoder'},
                 validated_paired_feature_map_reads=encoder.calls, actual_new_encoder_forwards=0,
-                query_GT_read=False, full_convergence_solver_prepaid=False)
+                query_GT_read=False, full_convergence_solver_prepaid=False,
+                MEAN_config=dict(mean_graph.CONFIG), CRF=False, post_solve_minmax=False)
             self._finish_system(captured, producer)
         return self._system
 

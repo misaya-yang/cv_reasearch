@@ -18,7 +18,7 @@ from .common import (EPS,validate,Result,readonly,require_artifact,ArtifactUnava
 _SYSTEM=None
 
 
-def _episode_identity(ep):
+def _episode_identity(ep,*,renderer='sourceRCG_FP32_1024_threshold_half_then_B_noCRF_binary_original'):
     assets=ep.producer.get('model_assets',ep.producer)
     images=ep.producer.get('source_image_hashes')
     if not isinstance(images,list) or len(images)!=2 or not all(images) or ep.reference_mask is None:
@@ -33,7 +33,7 @@ def _episode_identity(ep):
         checkpoint_sha256=checkpoint,config_sha256=config,
         locked_host_source_archive_sha256='0ab1e809f5a753b4af67b54d158b799e4b2c3beff217f8fc8b1c8b6e50fe294f',
         MEAN_constants={'alpha':.25,'mutual20NN':20,'lambda':16,'confidence_floor':.1},
-        renderer='sourceRCG_FP32_1024_threshold_half_then_locked_FoRIS_CRForiginal')
+        renderer=renderer)
 
 
 def _system_integrity(system):
@@ -110,7 +110,7 @@ def _actual_system(ep):
             original_FoRIS_field_finalizer_deferred_to_MEAN_field=True)
         system=dict(H=matrix.tocsr(),rhs=rhs,y=y,a=a,native_hw=(64,64),work_continuous=work_continuous,
             final_mask=final_mask,producer=producer,valid_work=np.ones((1024,1024),bool))
-        producer.update(system_binding=_episode_identity(ep),system_payload_integrity=_system_integrity(system))
+        producer.update(system_binding=_episode_identity(ep,renderer='sourceRCG_FP32_1024_threshold_half_then_locked_FoRIS_CRForiginal'),system_payload_integrity=_system_integrity(system))
     h=system['H'].tocsr();n=int(np.prod(system['native_hw']))
     if h.shape!=(n,n) or np.asarray(system['rhs']).shape!=(n,) or np.asarray(system['y']).shape!=(n,):
         raise ArtifactUnavailable('M01 exact system shapes must align the complete native field')
