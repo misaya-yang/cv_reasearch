@@ -1,0 +1,38 @@
+/root/autodl-tmp/part_probe.py:16: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at /pytorch/torch/csrc/utils/tensor_numpy.cpp:213.)
+  x = torch.from_numpy(np.asarray(Image.open(path).convert("RGB").resize((1024, 1024), Image.BICUBIC))).to(dev).permute(2, 0, 1).float() / 255
+Error importing huggingface_hub.hf_api: No module named 'httpcore2'
+load <All keys matched successfully>
+basis keys ['state', 'source_input', 'source', 'basis', 'rank', 'dimension']
+basis (1024, 500)
+
+PACO-Part: n=599, classes=264  (token-level class mIoU; B = stored RCG field cut 0.5)
+  B       42.77   vs B  +0.00 [+0.00, +0.00]
+  L4      36.53   vs B  -6.24 [-7.40, -4.72]
+  NN      37.01   vs B  -5.76 [-7.38, -4.58]
+  B&NN    40.78   vs B  -1.99 [-3.46, -1.00]
+  B&NN5   41.05   vs B  -1.72 [-3.17, -0.57]
+  tokens deleted from B by the NN rule: true 59965 (15.4% of truth), false 127578 (49.6% of B's false area); purity of deletion 68%
+
+PASCAL-Part: n=598, classes=56  (token-level class mIoU; B = stored RCG field cut 0.5)
+  B       54.10   vs B  +0.00 [+0.00, +0.00]
+  L4      44.58   vs B  -9.52 [-11.70, -7.86]
+  NN      46.82   vs B  -7.28 [-9.86, -5.62]
+  B&NN    51.36   vs B  -2.74 [-4.59, -1.42]
+  B&NN5   52.11   vs B  -2.00 [-4.05, -0.63]
+  tokens deleted from B by the NN rule: true 41936 (7.1% of truth), false 39392 (37.8% of B's false area); purity of deletion 48%
+
+SUIM: n=582, classes=7  (token-level class mIoU; B = stored RCG field cut 0.5)
+  B       61.82   vs B  +0.00 [+0.00, +0.00]
+  L4      57.52   vs B  -4.30 [-6.32, -2.04]
+  NN      55.44   vs B  -6.38 [-8.88, -3.81]
+  B&NN    57.32   vs B  -4.50 [-6.38, -2.58]
+  B&NN5   57.85   vs B  -3.97 [-5.90, -2.09]
+  tokens deleted from B by the NN rule: true 72123 (12.3% of truth), false 60403 (31.3% of B's false area); purity of deletion 46%
+
+COCO fresh600: n=600, classes=80  (token-level class mIoU; B = stored RCG field cut 0.5)
+  B       64.52   vs B  +0.00 [+0.00, +0.00]
+  L4      53.17   vs B -11.35 [-13.59, -9.23]
+  NN      46.55   vs B -17.97 [-20.59, -15.49]
+  B&NN    61.76   vs B  -2.75 [-4.78, -1.74]
+  B&NN5   61.94   vs B  -2.57 [-4.44, -1.48]
+  tokens deleted from B by the NN rule: true 21761 (7.9% of truth), false 15757 (23.2% of B's false area); purity of deletion 42%

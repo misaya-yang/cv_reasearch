@@ -1,0 +1,23 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>10例范围删除研究</title><style>body{font:16px/1.65 system-ui,sans-serif;background:#f5f6f2;color:#182722;max-width:1500px;margin:32px auto;padding:0 20px}header{position:sticky;top:0;background:#f5f6f2ee;padding:12px 0}nav a{display:inline-block;margin-right:14px;color:#285846}article{background:white;padding:20px;margin:24px 0;border:1px solid #dce1d9;border-radius:10px}img{width:100%;height:auto}small{color:#516258}h2{margin:0}</style><header><h1>10例：哪些能删，哪些不能靠删</h1><nav>
+<a href="#case1">01</a>
+<a href="#case2">02</a>
+<a href="#case3">03</a>
+<a href="#case4">04</a>
+<a href="#case5">05</a>
+<a href="#case6">06</a>
+<a href="#case7">07</a>
+<a href="#case8">08</a>
+<a href="#case9">09</a>
+<a href="#case10">10</a>
+<a href="REVIEW.md">逐例分析</a></nav><small>6例PACO开发集 + 4例COCO；有意选取失败与成功对照，不代表总体比例。绿：命中，红：错圈，蓝：漏检；青：删假，品红：删真。</small></header>
+<article id="case1"><h2>01 · 侧面控制区与底部横条：部件角色对应需要跨布局，C1全删。</h2><a href="case01/comparison.png"><img loading="lazy" alt="第1例对照" src="case01/comparison.png"></a><p><a href="case01/reference.png">参考原图</a> · <a href="case01/query.png">查询原图</a> · <a href="case01/meta.json">来源与计数</a></p></article>
+<article id="case2"><h2>02 · 细小自行车部位：C1仅留下3个错误位置，非空保护不足。</h2><a href="case02/comparison.png"><img loading="lazy" alt="第2例对照" src="case02/comparison.png"></a><p><a href="case02/reference.png">参考原图</a> · <a href="case02/query.png">查询原图</a> · <a href="case02/meta.json">来源与计数</a></p></article>
+<article id="case3"><h2>03 · 杯底漏检：B与真目标无交集，纯删除不能修复。</h2><a href="case03/comparison.png"><img loading="lazy" alt="第3例对照" src="case03/comparison.png"></a><p><a href="case03/reference.png">参考原图</a> · <a href="case03/query.png">查询原图</a> · <a href="case03/meta.json">来源与计数</a></p></article>
+<article id="case4"><h2>04 · 篮筐下沿漏检：B与真目标无交集，纯删除不能修复。</h2><a href="case04/comparison.png"><img loading="lazy" alt="第4例对照" src="case04/comparison.png"></a><p><a href="case04/reference.png">参考原图</a> · <a href="case04/query.png">查询原图</a> · <a href="case04/meta.json">来源与计数</a></p></article>
+<article id="case5"><h2>05 · 狗鼻成功对照：删假68，仅删真1。</h2><a href="case05/comparison.png"><img loading="lazy" alt="第5例对照" src="case05/comparison.png"></a><p><a href="case05/reference.png">参考原图</a> · <a href="case05/query.png">查询原图</a> · <a href="case05/meta.json">来源与计数</a></p></article>
+<article id="case6"><h2>06 · 电视上沿成功对照：删假784，删真8。</h2><a href="case06/comparison.png"><img loading="lazy" alt="第6例对照" src="case06/comparison.png"></a><p><a href="case06/reference.png">参考原图</a> · <a href="case06/query.png">查询原图</a> · <a href="case06/meta.json">来源与计数</a></p></article>
+<article id="case7"><h2>07 · 餐桌小目标：已命中的61个真位置被全部删除。</h2><a href="case07/comparison.png"><img loading="lazy" alt="第7例对照" src="case07/comparison.png"></a><p><a href="case07/reference.png">参考原图</a> · <a href="case07/query.png">查询原图</a> · <a href="case07/meta.json">来源与计数</a></p></article>
+<article id="case8"><h2>08 · 画面边缘截断椅子：96个真位置被全部删除。</h2><a href="case08/comparison.png"><img loading="lazy" alt="第8例对照" src="case08/comparison.png"></a><p><a href="case08/reference.png">参考原图</a> · <a href="case08/query.png">查询原图</a> · <a href="case08/meta.json">来源与计数</a></p></article>
+<article id="case9"><h2>09 · 蛋糕主体与给定真值范围不一致，原始标注待核对。</h2><a href="case09/comparison.png"><img loading="lazy" alt="第9例对照" src="case09/comparison.png"></a><p><a href="case09/reference.png">参考原图</a> · <a href="case09/query.png">查询原图</a> · <a href="case09/meta.json">来源与计数</a></p></article>
+<article id="case10"><h2>10 · 胡萝卜成功对照：删假1505，仅删真2。</h2><a href="case10/comparison.png"><img loading="lazy" alt="第10例对照" src="case10/comparison.png"></a><p><a href="case10/reference.png">参考原图</a> · <a href="case10/query.png">查询原图</a> · <a href="case10/meta.json">来源与计数</a></p></article>
+</html>

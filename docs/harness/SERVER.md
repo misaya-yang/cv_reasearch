@@ -1,10 +1,13 @@
 # 环境与资产
 
-最新已记录端点：`ssh -p 25142 root@connect.westb.seetacloud.com`（2026-10-07晚，32核，无显卡）。
-本轮未连接服务器。以下记录不代表当前在线或新资源授权。
+最新实测端点：`ssh -p 48002 root@connect.westd.seetacloud.com`，E58实例`rs9ve2du7q-61300576`。
+2026-10-07本轮已按用户要求完成无卡准备→关机→Chrome启动GPU→实验/分析→关机；控制台已核实“已关机”。
+GPU模式实测12核、RTX4080 SUPER 32760MiB。两小时备用关机自动化已取消，未保留待执行队列。
+报告、代码、日志在`/root/autodl-tmp/astra_granularity_20261008/`；[本地报告](../../evidence/local/astra_granularity_20261008/REPORT.md)、[关机确认](../../evidence/local/astra_granularity_20261008/server_stopped.png)。以下旧资产记录不代表当前在线或新授权。
 
 | 资产 | 最新已记录位置/状态 |
 |---|---|
+| 本轮PACO599/COCO fresh600 FP16特征 | `/root/autodl-tmp/astra_granularity_20261008/cache/`，1199例、20.12GB，保留；缓存完成后剩7.76GB |
 | 约19GB、1200唯一例FP16特征 | `/root/autodl-tmp/cvpr_single_ref_20261005_01a10ba9/outputs/confirm1200_conditional_v1/inputs`；目录1201项不等于唯一例数 |
 | fresh600与固定600 | 重叠305例；固定清单`/root/autodl-tmp/cpu100_20261006_01a1100b/fixed600_evaluation_rows.json` |
 | fresh600缓存 | `/root/claude_store/fresh600_cache`已换符号链接；原始固定600的FP32缓存已删 |

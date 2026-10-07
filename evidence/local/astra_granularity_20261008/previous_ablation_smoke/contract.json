@@ -1,0 +1,21 @@
+{
+  "source_sha256": "cc27ac0668e3ba1dfd7e7c0ddb4a6a79e206fbca35589ae1f89a63636f17d017",
+  "packs": [
+    "suim"
+  ],
+  "limit_per_pack": 5,
+  "candidate": "rank(FG_CSLS - BG_CSLS), alpha=.5, pureFG>=.9, pureBG<=.1; no BG -> RCG guide",
+  "fixed": "mutual20 graph, lambda16, confidence .1+abs(2s-1), CPU FP16-rounded features",
+  "controls": [
+    "native CRF",
+    "pre",
+    "rerank",
+    "smooth",
+    "rcg",
+    "mean_a.25"
+  ],
+  "render": "continuous64->bilinear1024->>.5->binary1024 bilinear original->>.5",
+  "query_gt_in_inference": false,
+  "early_stop_for_quality": false,
+  "exposure": "same previously evaluated cross-dataset packs; development re-use"
+}
