@@ -4,6 +4,10 @@
 `cv_data/a/official_foris_20261008/USER_STOPPED.json`是停止标记；控制器主动拒绝自动重启。下方官方活动描述仅为历史。
 6000例dev子集PID24974未被停止，不能把它当官方全量。未来全量先满足成熟开发领先及已实现/验证的可复用原始DINO缓存，约400GB容量应通过范围和去重设计处理。
 
+原始FP32缓存的五集首例完整读回检查通过，含R/Q的O24、Q/K16/24及四个移位Q的O24；FoRIS/RCG/fine/MEAN连续场、原图与CLI掩码逐位一致，CPU编码器调用0。
+实际报告：`cv_data/a/raw_feature_cache_complete5_20261008_v2/report.json`。C1可用`--raw-cache-profile <profile.json> --device cpu`读取，缺特征即失败；实际候选仍受表示前提门控。
+这仅完成五例实现检查，完整清单所需缓存与候选领先尚未完成，不满足新增全量的启动条件。
+
 600例探索已完成并评分：`cv_data/a/explore600_20261008_v1/run`；结果见其上一级的`SUMMARY.md`和`scores.csv`。
 每集120例，seed0，复用已就绪资产；两个进程均退出0，不重复启动或改变这批已封存的统计口径。
 后续按Pro最新完整修订版推进seed1开发2000/集、seed2验证2000/集和seed0官方全长；数据不足只等待对应任务。

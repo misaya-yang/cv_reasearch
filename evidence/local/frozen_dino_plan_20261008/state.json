@@ -1,8 +1,8 @@
 {
-  "status": "进行中",
-  "active_task": "dev6000 remains active; official full runs stopped by user, raw feature caching required before any future full evaluation",
+  "status": "\u8fdb\u884c\u4e2d",
+  "active_task": "dev6000 active; raw FP32 cache and encoder-free complete/C1 c0 replay verified on five probes; official full runs remain stopped",
   "run": "../cv_data/a/representation_premise_20261008/dev6000",
-  "updated_utc": "2026-10-08T22:41:12.474348+00:00",
+  "updated_utc": "2026-10-08T23:11:52.248589+00:00",
   "goal_reached": false,
   "completed": [
     "source identity audit",
@@ -37,12 +37,16 @@
     "Pro reread around21:19 UTC, no new revision",
     "conditional real C2 self-reference entry prepared; failed prerequisite gate verifies no model/reference work",
     "gated complete C1 runner and same-form last-O control prepared; no model work on failed prerequisite",
-    "real CPU1024 fixed C1 c0 probe passed: actual parent CG/coarse/fine and original/CLI masks exactly unchanged; no query labels read"
+    "real CPU1024 fixed C1 c0 probe passed: actual parent CG/coarse/fine and original/CLI masks exactly unchanged; no query labels read",
+    "lossless raw FP32 vector cache implemented: input/model/preprocess identities, branch coverage, hashes/readback, missing/corrupt rejection",
+    "five real development cache probes: R/Q O24+QK16/24 and four shifted Q O24, complete FoRIS/RCG/fine/MEAN fields and both metric-frame masks exactly equal, zero replay encodes",
+    "actual C1 CPU cache-only entry verified on five c0 probes: live baselines and both C1 identity controls exact, zero encodes and no query GT",
+    "Pro reread after22:56 UTC, source updatedAt and complete8305 character reply unchanged"
   ],
   "pending": [
-    "complete or steer existing dev6000 per user; preserve outputs",
-    "design and validate reusable raw feature cache before any future full run",
-    "candidate development evidence before full evaluation",
+    "complete existing dev6000 without duplicate restart; preserve outputs",
+    "qualify candidate using frozen development prerequisites and complete score evidence",
+    "extend verified raw cache coverage to required candidate inputs/branches before any future full run",
     "official/full runs remain stopped; never auto-restart"
   ],
   "plan_source": "6ac73cac-72d4-83e9-a64b-bead949e068f; complete revised reply 2c9768c9-af0a-488c-bdb4-eff695430de9 (8305 chars)",
@@ -50,7 +54,7 @@
   "process_id": 24974,
   "tool_session": 25177,
   "exploration": {
-    "state": "完成",
+    "state": "\u5b8c\u6210",
     "n": 600,
     "summary": "../cv_data/a/explore600_20261008_v1/SUMMARY.md",
     "official_goal_reached": false,
@@ -65,7 +69,7 @@
   "inference_code_commit": "e7b9ce3",
   "rough_wall_hours": 26,
   "official_baseline": {
-    "state": "用户停止",
+    "state": "\u7528\u6237\u505c\u6b62",
     "controller_session": null,
     "root": "../cv_data/a/official_foris_20261008",
     "current_dataset": "coco",
@@ -101,5 +105,26 @@
     "future_candidates_prefer_cpu_replay": true,
     "storage_available_about_gb": 400,
     "no_new_full_run": true
+  },
+  "raw_feature_cache": {
+    "state": "five-probe implementation validation complete",
+    "full_manifest_coverage": false,
+    "raw_storage": "lossless float32, unprojected/un-unitized vectors",
+    "branches": [
+      "O/24",
+      "Q/16",
+      "K/16",
+      "Q/24",
+      "K/24"
+    ],
+    "shifted_query_branches": [
+      "O/24"
+    ],
+    "unique_inputs": 30,
+    "payload_bytes": 1091592462,
+    "replay_encoder_calls": 0,
+    "complete_report": "../cv_data/a/raw_feature_cache_complete5_20261008_v2/report.json",
+    "c1_identity_report": "../cv_data/a/raw_cache_c1_identity5_20261008/identity_report.json",
+    "candidate_gain_proven": false
   }
 }

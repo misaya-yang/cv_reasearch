@@ -61,6 +61,9 @@ def infer_episode(host, row, assets, device, choice, basis, identity_only):
     original_extract = host._extract_features
     def extract(imgs):
         if imgs.shape[0]*imgs.shape[1] == 2:
+            if hasattr(host.encoder, 'cache'):
+                bank.update(host.encoder.raw(imgs.reshape(-1,*imgs.shape[2:]),(f'{branch}/{layer}',)))
+                return original_extract(imgs)
             with observe_branches(host.encoder, layers=(int(layer),), branches=branch) as tapped:
                 output = original_extract(imgs)
             bank.update(tapped)
@@ -133,6 +136,8 @@ def main():
     p.add_argument('--device', choices=['mps', 'cpu'], default='mps')
     p.add_argument('--split', choices=['smoke', 'dev', 'val'], required=True)
     p.add_argument('--identity-only', action='store_true')
+    p.add_argument('--raw-cache-profile', type=Path,
+                   help='Existing profile.json; replay on CPU with no encoder or missing-feature fallback')
     a = p.parse_args()
     a.assets, a.out = a.assets.resolve(), a.out.resolve()
     if a.identity_only:
@@ -145,6 +150,19 @@ def main():
         choice = qualified_choice(json.loads(a.decision.read_text()))
         if choice is None:
             print('C1 prerequisite failed; no model/reference work', flush=True);return
+    cache_adapter=None
+    if a.raw_cache_profile:
+        if a.device!='cpu':
+            p.error('Raw-cache replay requires --device cpu')
+        from cached_dino import CachedDINO,dino_profile
+        from raw_feature_cache import RawFeatureCache,canonical_hash
+        profile=json.loads(a.raw_cache_profile.read_text())
+        if profile!=dino_profile(a.assets,profile['producer_device']):
+            raise ValueError('Raw cache model/preprocess/encoder identity differs from current implementation')
+        if a.raw_cache_profile.parent.name!=canonical_hash(profile):
+            raise ValueError('Raw-cache profile directory identity differs')
+        cache_adapter=CachedDINO(RawFeatureCache(a.raw_cache_profile.parent.parent,profile),
+                                 pair_branches=('/'.join(choice.split('/')[:2]),))
     rows = read_rows(a.manifest)
     prepared = json.loads((a.manifest.parent/'prepared.json').read_text())
     if not a.identity_only and (prepared.get('state') != 'FRESH_MANIFEST_FROZEN' or prepared.get('split_role') != a.split):
@@ -158,6 +176,10 @@ def main():
                   weights_sha256=file_hash(a.assets/'demo4_cache/models/dinov3-vitl16-timm/model.safetensors'),
                   native_basis_sha256=file_hash(a.assets/'native_assets/positional_basis.pt'),
                   query_mask_in_inference=False, frozen_math='C1 linear p/c; actual parent H/A/CG; unchanged fine/0.5')
+    if cache_adapter:
+        config['raw_cache_profile_sha256']=file_hash(a.raw_cache_profile)
+        config['raw_cache_profile']=str(a.raw_cache_profile.resolve())
+        config['replay_encoder_fallback']=False
     config['branch'] = subprocess.check_output(['git','-C',str(REPO),'branch','--show-current'],text=True).strip()
     config['commit'] = subprocess.check_output(['git','-C',str(REPO),'rev-parse','HEAD'],text=True).strip()
     source_files = [Path(__file__), REPO/'scripts/frozen_unary_candidates.py', REPO/'scripts/run_insid3_baseline.py',
@@ -165,6 +187,8 @@ def main():
                     *sorted((REPO/'src/ics').rglob('*.py')),
                     *sorted((a.assets/'third_party/foris_official').rglob('*.py')),
                     *sorted((a.assets/'third_party/crf_source/src/CRF').glob('*.py'))]
+    if cache_adapter:
+        source_files += [REPO/'scripts/cached_dino.py',REPO/'scripts/raw_feature_cache.py']
     native_source=a.assets/'third_party/crf_source/src/PermutohedralFiltering/source/cpu'
     source_files += sorted(native_source.rglob('*.cpp'))+sorted(native_source.rglob('*.h'))
     config['source_sha256'] = {str(f):file_hash(f) for f in source_files}
@@ -189,7 +213,11 @@ def main():
                 raise ValueError('Implementation changed during candidate snapshot')
         for directory in ('predictions', 'fields'):
             (a.out/directory).mkdir()
-        host = build_model(a.assets, a.device, baseline='foris')
+        if cache_adapter:
+            from cached_dino import cache_host
+            host=cache_host(a.assets,cache_adapter)
+        else:
+            host = build_model(a.assets, a.device, baseline='foris')
         with torch.inference_mode(), (a.out/'inference.jsonl').open('w', buffering=1) as log:
             for row in rows:
                 started=time.monotonic();payload,shape,fields,details=infer_episode(host,row,a.assets,a.device,choice,basis,a.identity_only)
@@ -198,6 +226,11 @@ def main():
                 record=dict(episode_id=row['episode_id'],prediction_file=file,
                             prediction_sha256=file_hash(a.out/'predictions'/file),fields_sha256=file_hash(a.out/'fields'/file),
                             inference_seconds=time.monotonic()-started,**details)
+                if cache_adapter:
+                    if cache_adapter.encoder_calls!=0 or cache_adapter.encoder is not None:
+                        raise ValueError('CPU cache replay attempted encoding')
+                    record['raw_cache_entries']=cache_adapter.used_entries.copy()
+                    record['replay_encoder_calls']=0
                 log.write(json.dumps(record)+'\n');print(json.dumps(dict(episode_id=row['episode_id'],seconds=record['inference_seconds'],identity=a.identity_only)),flush=True)
         write(a.out/'sealed.json',dict(state='ALL_PREDICTIONS_SEALED',n=len(rows),
               manifest_sha256=file_hash(a.out/'manifest.json'),config_sha256=file_hash(a.out/'config.json'),
