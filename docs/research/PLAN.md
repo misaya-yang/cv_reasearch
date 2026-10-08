@@ -42,6 +42,21 @@ RCG+fine 的条件episode区间在COCO/PACO为正、LVIS/PASCAL为负、SUIM跨�
 控制器在全部预测封存后自动运行分半AUC评分，结果保存同级`premise/decision.json`；失败留日志，只修复实现或继续实际句柄，不重复启动。
 所有推断只读R、参考mask、Q；全部margin与父预测封存后，才读取开发query GT做AUC。验证集与官方候选尚未开分。
 
+### 官方基线与统一口径
+
+INSID3完整源码已核到官方commit`0c165a10cf52ab91f335883d06260de86854adbe`，40个文件SHA一致；无需重复下载。
+其CLI默认bilinear、CRF关闭、1024输出帧，query GT直接nearest到预测帧。五集各一固定开发例已跑通，仅作实现检查。
+`scripts/run_insid3_baseline.py`支持完整INSID3和完整FoRIS（含原CRF）单基线；FoRIS独立入口的原图/CLI预测与既有完整流程逐数组一致。
+`scripts/score_sealed_baselines.py`已实现相同冻结输入的多运行配对、两帧各自直接映射GT、照片分组区间、四项编辑及GT面积比例。
+原图与CLI主口径由完整官方FoRIS复现和README主表的0.5点容差确定：仅一个匹配就用它、两个匹配取原图、均不匹配暂用CLI并挂起该集最终协议结论。
+相关几何/配对/口径检查通过；未完成官方复现前，开发评分明确用CLI临时口径，不看候选表现换口径。
+
+官方seed0全长清单已固定49318例：COCO4000、LVIS23000、PASCAL-Part8459（2500/959/2500/2500）、PACO-Part10000、SUIM3859，保留所有合法重复和尺寸差异。
+完整FoRIS于2026-10-08 20:53 UTC启动：`cv_data/a/official_foris_20261008/`，控制器工具会话25937；当前COCO实际PID30718。
+按COCO→PACO→PASCAL→SUIM→LVIS逐集推断、封存、双帧评分并冻结该集口径；一集结果不等待其他四集。
+它与dev6000并行，共享MPS/CPU；计时应标记并行上下文，不当作隔离的效率比较。26小时是此前25例单任务外推，当前实际耗时可能更长。
+以上是基线复现，不是候选官方开分，也没有达到五集涨分目标。INSID3/B0剩余全量对照和候选仍待推进。
+
 所有后续实验在 `codex_m4` 分支进行；分支从 `main` 的 `f24e6fc` 创建。
 用户已启动持续 goal，授权自主思考、实现、验证和改进方法；本机完整基线与首个组合候选已开始验证。
 以 **Strong 为主，涨分是唯一研究目标**。用户在“核对工作 Mac 实验配置”chat的最新目标已直接核读：

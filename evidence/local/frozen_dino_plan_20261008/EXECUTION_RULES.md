@@ -37,7 +37,11 @@ B0预测封存但暂不计分；该旧入口行为不作为新seed1/2验证方�
 分支位置基、真实提取检查和前提测量产物在`cv_data/a/representation_premise_20261008/`。
 25例推断已完成，未读query标签；一个完整父流程与带提取运行的预测/字段逐数组相同。
 活动6000例推断在`.../dev6000`，实际PID24974、工具会话25177；先查实际活性及`activity.json`/`infer_dev6000.log`，不重复启动。
+另一个活动任务为`cv_data/a/official_foris_20261008/`，官方FoRIS控制器会话25937，当前COCO PID30718。
+该控制器逐数据集封存与双口径评分；49,318例官方清单已准备完成。进度读同目录`activity.json`和当前数据集日志，不能仅凭旧PID判断后续数据集停止。
+两个任务共享MPS/CPU；当前耗时有并行影响，不作独立效率结论。官方FoRIS是允许提前读取的基线，候选官方尚未开分。
 使用`--representation-basis .../branch_basis --no-score`；推断代码及src源文件保持不变，避免未完成运行恢复时混入不同实现。
+新单基线入口为`run_insid3_baseline.py --baseline insid3|foris`；多运行配对与双帧统计使用`score_sealed_baselines.py`，不能合并不同输入或不完整运行。
 前提margin采用实际FoRIS stage2二值FG、源20%困难BG、等权均值，并在配置明确记录RCG没有该BG规则；不能写成未经核实的B0面积权重。
 完整开发前提为COCO/PASCAL/PACO各2000例；封存全部字段后，运行`score_representation_premise.py`。选择半扫描，复核半只读选择，不能根据复核换表示。
 旧官方减开发的确认方案已被Pro完整修订版取代；不继续扩展旧重叠审计。现有`confirm`入口仍禁用，不能冒充新验证入口。

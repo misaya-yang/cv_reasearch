@@ -1,8 +1,8 @@
 {
   "status": "进行中",
-  "active_task": "full fresh seed1 6000-episode COCO/PASCAL/PACO representation premise inference; sealed fields then automatic one-time half selection/verification",
+  "active_task": "dev6000 representation premise and per-dataset complete official FoRIS reproduction running concurrently",
   "run": "../cv_data/a/representation_premise_20261008/dev6000",
-  "updated_utc": "2026-10-08T20:24:43.634371+00:00",
+  "updated_utc": "2026-10-08T21:06:07.364226+00:00",
   "goal_reached": false,
   "completed": [
     "source identity audit",
@@ -27,12 +27,16 @@
     "real paired MPS1024 encoder/tap output differences both exactly zero",
     "meaningful source roles/photo grouping/AUC selection-verification checks passed",
     "25 real representation probes complete (5 per dataset); 194 finite margins each; no query labels opened",
-    "full FoRIS/RCG/fine/MEAN parent predictions and fields exactly equal with/without taps on fresh COCO draw"
+    "full FoRIS/RCG/fine/MEAN parent predictions and fields exactly equal with/without taps on fresh COCO draw",
+    "complete INSID3 upstream default/commit verified; five fixed dataset implementation probes passed",
+    "single public FoRIS-only entry predictions exactly match prior full entry in both frames",
+    "paired dual-frame scorer/GT geometry/photo-group/bootstrap/gross normalization checks passed",
+    "official seed0 full manifest frozen: 49318 episodes, original lengths/repeats retained"
   ],
   "pending": [
-    "complete active dev6000 inference and automatically score the frozen half-selection premise",
-    "per-dataset main metric selection and INSID3 baseline entry",
-    "five official baseline reproduction",
+    "complete active dev6000 and automatically score frozen half selection",
+    "complete per-dataset official FoRIS reproduction/metric policy (active)",
+    "remaining complete INSID3/B0 baselines",
     "candidate implementation after corresponding prerequisites"
   ],
   "plan_source": "6ac73cac-72d4-83e9-a64b-bead949e068f; complete revised reply 2c9768c9-af0a-488c-bdb4-eff695430de9 (8305 chars)",
@@ -53,5 +57,17 @@
   "inference_log": "../cv_data/a/representation_premise_20261008/infer_dev6000.log",
   "started_utc": "2026-10-08T20:23:55Z",
   "inference_code_commit": "e7b9ce3",
-  "rough_wall_hours": 26
+  "rough_wall_hours": 26,
+  "official_baseline": {
+    "state": "进行中",
+    "controller_session": 25937,
+    "root": "../cv_data/a/official_foris_20261008",
+    "current_dataset": "coco",
+    "pid": 30718,
+    "started_utc": "2026-10-08T20:53:13Z",
+    "manifest": "../cv_data/a/official_s0_manifest_20261008/manifest.json",
+    "n": 49318,
+    "official_goal_reached": false
+  },
+  "timing_context": "dev6000 and official FoRIS share MPS/CPU; 26-hour estimate was from isolated25 probes, actual wall time can be longer"
 }
