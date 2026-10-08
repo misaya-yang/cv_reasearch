@@ -1,0 +1,36 @@
+{
+  "model": "frozen DINOv3-L/16, same timm converted server checkpoint",
+  "image_size": 1024,
+  "patch_grid": [
+    64,
+    64
+  ],
+  "shots": 1,
+  "seed_per_fold": 0,
+  "loader_source_commit": "1aa02a11ef5f6673ed7a8a666ccf7d5586998d9e",
+  "official_lengths": {
+    "coco": "4 x 1000",
+    "lvis": "10 x 2300",
+    "pascal_part": "4 x min(len(img_metadata),2500)",
+    "paco_part": "4 x 2500",
+    "suim": "official seven-class nonempty-mask pool length, no fold"
+  },
+  "primary_metric": "per-class pooled original-query-size I/U, class mean, then fold mean",
+  "secondary_metric": "same predictions at 1024 with official nearest-resized GT",
+  "query_geometry": "official loader crop where applicable",
+  "ignore": "official five loaders return no ignore map; COCO non-target pixels including 255 become background",
+  "crf": "unchanged original Frank-Wolfe 10 iterations/parameters, repaired CPU NHWC float32 binding",
+  "encoder": "MPS FP32",
+  "postprocess": "CPU",
+  "inference_interface": [
+    "reference RGB",
+    "reference binary mask",
+    "query RGB"
+  ],
+  "query_labels": "protocol preparation may materialize masks; candidate inference never reads query masks; score after seal",
+  "baseline_B0": "FoRIS evidence -> fixed RCG -> historical fine (sigma1.25, tau0.15, window2) -> threshold0.5, no size/cut fitting",
+  "bootstrap": "100000 paired episode draws within fold/class, independent RandomState(0), conditional on image pool",
+  "final_target": "all five official datasets exceed complete FoRIS with paired 95% CI lower bound >0",
+  "full_baseline_tolerance_pp": 0.5,
+  "candidates": "not opened before stage0 and prerequisites"
+}
