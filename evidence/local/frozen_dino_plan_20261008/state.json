@@ -2,7 +2,7 @@
   "status": "\u8fdb\u884c\u4e2d",
   "active_task": "dev6000 active; raw FP32 cache and encoder-free complete/C1 c0 replay verified on five probes; official full runs remain stopped",
   "run": "../cv_data/a/representation_premise_20261008/dev6000",
-  "updated_utc": "2026-10-08T23:11:52.248589+00:00",
+  "updated_utc": "2026-10-08T23:20:58.217304+00:00",
   "goal_reached": false,
   "completed": [
     "source identity audit",
@@ -41,7 +41,8 @@
     "lossless raw FP32 vector cache implemented: input/model/preprocess identities, branch coverage, hashes/readback, missing/corrupt rejection",
     "five real development cache probes: R/Q O24+QK16/24 and four shifted Q O24, complete FoRIS/RCG/fine/MEAN fields and both metric-frame masks exactly equal, zero replay encodes",
     "actual C1 CPU cache-only entry verified on five c0 probes: live baselines and both C1 identity controls exact, zero encodes and no query GT",
-    "Pro reread after22:56 UTC, source updatedAt and complete8305 character reply unchanged"
+    "Pro reread after22:56 UTC, source updatedAt and complete8305 character reply unchanged",
+    "C2 minimum context cache-only inference and sealed half-AUC scorer prepared; representation/self gates, raw-to-CLI geometry, single-label N/A and six paired macro gates passed; actual measurement not run"
   ],
   "pending": [
     "complete existing dev6000 without duplicate restart; preserve outputs",
@@ -90,11 +91,13 @@
   "candidate_preparation": {
     "state": "prepared, not admitted",
     "C1": "gated full runner and last-O control prepared; one real CPU c0 complete-parent identity passed, actual candidate not run",
-    "C2": "minimum score and gated five-dataset real self runner prepared, not executed; representation/real self/minimum AUC prerequisites pending",
+    "C2": "minimum/self and cache-only context-AUC entries prepared; actual representation, self and context prerequisites pending; full C2 not implemented or admitted",
     "C3": "not implemented",
     "edit_balance": "exact classwise counter reconstruction checked",
     "self_command": "python scripts/check_c2_self_reference.py --manifest ../cv_data/a/fresh_manifests_20261008/dev_s1_all/manifest.json --decision ../cv_data/a/representation_premise_20261008/premise/decision.json --basis ../cv_data/a/representation_premise_20261008/branch_basis --out ../cv_data/a/representation_premise_20261008/c2_min_self",
-    "c1_identity_report": "../cv_data/a/c1_c0_complete_identity_20261008/identity_report.json"
+    "c1_identity_report": "../cv_data/a/c1_c0_complete_identity_20261008/identity_report.json",
+    "context_command": "python scripts/run_c2_context_premise.py --parent-run <sealed dev6000> --decision <frozen representation decision> --self-run <passed25 self checks> --basis <own bases> --raw-cache-profile <profile.json> --out <fresh context run>; prepared only; passed prerequisites and complete cache coverage pending",
+    "context_score_command": "python scripts/score_c2_context_premise.py --run <sealed context run> --out <frozen score directory>"
   },
   "full_evaluation_gate": {
     "user_required": true,
