@@ -35,7 +35,9 @@ B0预测封存但暂不计分；该旧入口行为不作为新seed1/2验证方�
 `prepare --split dev`固定seed1，`prepare --split val`固定seed2，每集2000例；COCO/PASCAL/PACO每折500、LVIS每折200、SUIM无折2000。
 五集两个集合均已固定，开发与验证各10000例；新集合主区间为10,000次查询照片分组，旧600结果不回写。
 分支位置基、真实提取检查和前提测量产物在`cv_data/a/representation_premise_20261008/`。
-活动25例推断使用`--representation-basis .../branch_basis --no-score`；源文件在推断期间保持不变，不重复启动。
+25例推断已完成，未读query标签；一个完整父流程与带提取运行的预测/字段逐数组相同。
+活动6000例推断在`.../dev6000`，实际PID24974、工具会话25177；先查实际活性及`activity.json`/`infer_dev6000.log`，不重复启动。
+使用`--representation-basis .../branch_basis --no-score`；推断代码及src源文件保持不变，避免未完成运行恢复时混入不同实现。
 前提margin采用实际FoRIS stage2二值FG、源20%困难BG、等权均值，并在配置明确记录RCG没有该BG规则；不能写成未经核实的B0面积权重。
 完整开发前提为COCO/PASCAL/PACO各2000例；封存全部字段后，运行`score_representation_premise.py`。选择半扫描，复核半只读选择，不能根据复核换表示。
 旧官方减开发的确认方案已被Pro完整修订版取代；不继续扩展旧重叠审计。现有`confirm`入口仍禁用，不能冒充新验证入口。

@@ -35,7 +35,11 @@ RCG+fine 的条件episode区间在COCO/PACO为正、LVIS/PASCAL为负、SUIM跨�
 
 实现口径补充已向用户提出可选澄清：Pro写FG/困难BG/覆盖权重沿用B0，但真实RCG没有困难BG；目前使用**实际FoRIS stage2的二值FG与20%困难BG，源代码每token等权均值**，全表示固定同一成员。
 该口径明确记录在配置中，不声称B0原本拥有困难BG或源代码使用面积权重。当前只做开发前提，不预设涨分。
-25例（每集首5例）的真实计时/字段检查在`cv_data/a/representation_premise_20261008/smoke25`；随后推进COCO/PASCAL/PACO各2000例的完整开发前提。
+25例（每集首5例）的真实计时/字段检查已完成，均有194条有限margin；完整流程约15–16秒，新增表示读出约1.0–1.2秒。
+另一个完整COCO父流程的FoRIS/RCG/fine/MEAN原图及CLI预测、全部字段，与带提取的运行逐数组完全相同；没有读query GT。
+完整开发前提于2026-10-08 20:23:55 UTC启动，COCO/PASCAL/PACO各2000例，共6000；活动目录`cv_data/a/representation_premise_20261008/dev6000`。
+实际推理PID24974、控制器工具会话25177；状态见同级`activity.json`，推理日志`infer_dev6000.log`。按25例计时约26小时，成本只报告。
+控制器在全部预测封存后自动运行分半AUC评分，结果保存同级`premise/decision.json`；失败留日志，只修复实现或继续实际句柄，不重复启动。
 所有推断只读R、参考mask、Q；全部margin与父预测封存后，才读取开发query GT做AUC。验证集与官方候选尚未开分。
 
 所有后续实验在 `codex_m4` 分支进行；分支从 `main` 的 `f24e6fc` 创建。
