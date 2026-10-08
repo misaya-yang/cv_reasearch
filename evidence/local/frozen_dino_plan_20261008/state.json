@@ -2,7 +2,7 @@
   "status": "进行中",
   "active_task": "dev6000 representation premise and per-dataset complete official FoRIS reproduction running concurrently",
   "run": "../cv_data/a/representation_premise_20261008/dev6000",
-  "updated_utc": "2026-10-08T21:24:29.660499+00:00",
+  "updated_utc": "2026-10-08T21:36:46.758611+00:00",
   "goal_reached": false,
   "completed": [
     "source identity audit",
@@ -34,7 +34,8 @@
     "official seed0 full manifest frozen: 49318 episodes, original lengths/repeats retained",
     "prepared fixed C1 unary and C2 minimum scorer; independent scalar/dense checks passed, candidates not enabled",
     "prepared classwise add/delete/full IoU profit accounting; direct edited-mask checks passed",
-    "Pro reread around21:19 UTC, no new revision"
+    "Pro reread around21:19 UTC, no new revision",
+    "conditional real C2 self-reference entry prepared; failed prerequisite gate verifies no model/reference work"
   ],
   "pending": [
     "complete active dev6000 and automatically score frozen half selection",
@@ -76,8 +77,9 @@
   "candidate_preparation": {
     "state": "prepared, not admitted",
     "C1": "fixed unary and inherited solve; real final-mask identity still pending",
-    "C2": "minimum score only; real self-reference and AUC prerequisites pending",
+    "C2": "minimum score and gated five-dataset real self runner prepared, not executed; representation/real self/minimum AUC prerequisites pending",
     "C3": "not implemented",
-    "edit_balance": "exact classwise counter reconstruction checked"
+    "edit_balance": "exact classwise counter reconstruction checked",
+    "self_command": "python scripts/check_c2_self_reference.py --manifest ../cv_data/a/fresh_manifests_20261008/dev_s1_all/manifest.json --decision ../cv_data/a/representation_premise_20261008/premise/decision.json --basis ../cv_data/a/representation_premise_20261008/branch_basis --out ../cv_data/a/representation_premise_20261008/c2_min_self"
   }
 }
