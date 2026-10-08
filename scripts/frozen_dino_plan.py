@@ -228,6 +228,10 @@ def run_config(a):
         arms=['foris.crf', 'rcg', 'rcg.fine', 'mean'],
         bootstrap_unit='query_photo' if fresh else 'episode',
         bootstrap_repetitions=10000 if fresh else 100000,
+        representation_basis=(str(a.representation_basis) if a.representation_basis else None),
+        representation_reference_rule=('actual FoRIS stage2 Boolean FG, uniform token means, '
+                                       'source top20% hard BG fixed across branches; RCG defines no BG'
+                                       if a.representation_basis else None),
         official_score_arms=['foris.crf'],
         official_B0_predictions='computed and sealed, withheld from official reproduction scores until the audited single B0 confirmation look',
         metric='original loader query size; 1024 CLI metric retained separately',
@@ -298,6 +302,18 @@ def _infer(a):
                       weights=str(a.assets/'demo4_cache/models/dinov3-vitl16-timm'))
     host.encoder.to(a.encoder_device)
     encoder_times = []
+    representation_bank, branch_bases = {}, {}
+    if a.representation_basis:
+        from ics.representations import observe_branches, branch_margins, source_reference_roles
+        complete = json.loads((a.representation_basis/'complete.json').read_text())
+        if complete['n'] != 96 or complete['config']['weights_sha256'] != config['weights_sha256']:
+            raise ValueError('Require all matching 96 own-branch black bases')
+        for key, entry in complete['bases'].items():
+            path = a.representation_basis/entry['path']
+            if file_hash(path) != entry['sha256']:
+                raise ValueError('Branch basis changed')
+            branch_bases[key] = torch.load(path, weights_only=True, map_location='cpu')['basis'].to(a.encoder_device)
+        (a.out/'representations').mkdir(exist_ok=True)
 
     def sync():
         if a.encoder_device == 'mps':
@@ -306,8 +322,13 @@ def _infer(a):
     def extract(imgs):
         sync(); started = time.monotonic()
         b, t = imgs.shape[:2]
-        maps = host.encoder.get_intermediate_layers(
-            imgs.reshape(b*t, *imgs.shape[2:]).to(a.encoder_device), n=1, reshape=True)[0]
+        inputs = imgs.reshape(b*t, *imgs.shape[2:]).to(a.encoder_device)
+        if a.representation_basis and b*t == 2:
+            with observe_branches(host.encoder) as bank:
+                maps = host.encoder.get_intermediate_layers(inputs, n=1, reshape=True)[0]
+            representation_bank.update(bank)
+        else:
+            maps = host.encoder.get_intermediate_layers(inputs, n=1, reshape=True)[0]
         sync()
         result = maps.cpu().reshape(b, t, *maps.shape[1:])
         encoder_times.append(time.monotonic()-started)
@@ -368,7 +389,18 @@ def _infer(a):
             destination = a.out/'predictions'/filename
             np.savez_compressed(destination, original_hw=np.array(shape), **payload)
             np.savez_compressed(a.out/'fields'/filename, score=score, rcg=z, rcg_fine=fine, mean=mf)
+            representation_receipt = {}
+            if a.representation_basis:
+                at = time.monotonic()
+                fi, bi = source_reference_roles(got['reference_features'][0, 0], got['reference_fg'][0])
+                fields, validity = branch_margins(representation_bank, branch_bases, fi, bi, device=a.encoder_device)
+                np.savez_compressed(a.out/'representations'/filename, **fields)
+                representation_receipt = dict(representation_file=filename,
+                    representation_sha256=file_hash(a.out/'representations'/filename),
+                    representation_validity=validity, reference_fg_count=len(fi), hard_bg_count=len(bi),
+                    representation_seconds=time.monotonic()-at)
             record = dict(episode_id=row['episode_id'], dataset=row['dataset'], fold=row['fold'],
+                **representation_receipt,
                 prediction_file=filename, prediction_sha256=file_hash(destination),
                 fields_sha256=file_hash(a.out/'fields'/filename), timing_probe=row['episode_id'] in timing_ids,
                 foris_seconds=native_seconds, paired_encoding_seconds=paired_encoding_seconds,
@@ -526,9 +558,15 @@ def main():
     p.add_argument('--threads', type=int, default=2)
     p.add_argument('--resume', action='store_true')
     p.add_argument('--no-score', action='store_true')
+    p.add_argument('--representation-basis', type=Path,
+                   help='Collect prescribed 24-layer margins using each branch own black basis (development only)')
     a = p.parse_args()
     a.assets, a.out = a.assets.resolve(), a.out.resolve()
     a.datasets = a.datasets.split(',')
+    if a.representation_basis is not None:
+        a.representation_basis = a.representation_basis.resolve()
+        if a.split not in ('dev', 'smoke'):
+            p.error('Representation choices use development data only')
     from ics.official_data import FOLDS
     if set(a.datasets)-set(FOLDS):
         p.error('Unknown dataset')

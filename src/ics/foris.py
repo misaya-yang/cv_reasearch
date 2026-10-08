@@ -6,7 +6,7 @@ arms, zooms, oracle selection and synthetic experiment CLI are not included.
 import sys
 from contextlib import contextmanager
 
-HOOKS = dict(_extract_features="raw", _part1_positional_debias="deb", _part2_background_suppression="s2",
+HOOKS = dict(_extract_features="raw", _part1_positional_debias="deb", _reference_contrastive_prototypes="reference_prototypes", _part2_background_suppression="s2",
              _part3_clustering="s3", _binarize_response="pre")
 
 @contextmanager
@@ -16,6 +16,11 @@ def observe(host):
 
     def wrap(name, fn):
         def call(*a, **k):
+            if name == '_reference_contrastive_prototypes':
+                # The last call is source stage 2: retain its actual reference
+                # token set and Boolean mask for the representation controls.
+                got['reference_features'] = a[0]
+                got['reference_fg'] = a[1]
             out = fn(*a, **k)
             if name == "_binarize_response":
                 got["score"] = a[0] if a else k["score_hw"]
