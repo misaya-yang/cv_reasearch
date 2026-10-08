@@ -46,7 +46,7 @@ def run_foris(host, ref_img, ref_mask, tgt_img):
 
 
 
-def build_host(man, device="cuda", foris_root=None):
+def build_host(man, device="cuda", foris_root=None, *, weights=None, mask_refiner="crf"):
     import torch
     sys.path.insert(0, str(foris_root or man["foris_root"]))
     import models.foris as foris
@@ -60,7 +60,7 @@ def build_host(man, device="cuda", foris_root=None):
     if device == "cuda":
         import os
         torch.cuda.set_per_process_memory_fraction(float(os.environ.get("DEMO4_GPU_FRAC", 0.3)))
-    encoder = TimmDINOv3().to(device).eval().requires_grad_(False)
+    encoder = TimmDINOv3(weights).to(device).eval().requires_grad_(False)
     with reuse_native_basis(foris.FoRIS, man.get("projection_basis")):
-        return foris.FoRIS(encoder=encoder, image_size=1024, svd_components=500, tau=0.6, mask_refiner="crf",
+        return foris.FoRIS(encoder=encoder, image_size=1024, svd_components=500, tau=0.6, mask_refiner=mask_refiner,
                            resize_to_orig_size=False, device=device).eval().requires_grad_(False)

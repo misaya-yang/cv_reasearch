@@ -3,7 +3,7 @@
 ## 当前任务：M4 Max 本机持续分割研究（2026-10-08）
 
 所有后续实验在 `codex_m4` 分支进行；分支从 `main` 的 `f24e6fc` 创建。
-用户已启动持续 goal，授权自主思考、实现、验证和改进方法；当前尚未启动新的科学实验。
+用户已启动持续 goal，授权自主思考、实现、验证和改进方法；本机完整基线与首个组合候选已开始验证。
 以 **Strong 为主，涨分是唯一研究目标**：在相同输入、骨干、标签使用与评测协议下，提高最终完整掩码的 class mIoU，
 以完整 FoRIS、MEAN 等现有强基线为主要参照。INSID3/FoRIS 的部件粒度、误认和漏检弱点是研究切入点。
 理论解释、机制诊断和耗时记录用于帮助改进方法，不成为额外成功门槛。Fast 作为后续方向，不要求先完成双版本。
@@ -28,7 +28,18 @@
 本机是 arm64、36 GiB 统一内存的 M4 Max。`aidemo` 的 Python 3.13.11、PyTorch 2.10.0、
 torchvision 0.25.0 已实测，MPS 可用且矩阵运算通过；已补齐 timm 1.0.30、scikit-learn 1.9.1、
 einops 0.8.2、pycocotools 2.0.11、termcolor 3.3.0，`pip check` 通过。
-完整 DINOv3 编码、两套基线和 CRF 的本机运行尚未验证。
+已通过当前权重 strict load 与 MPS 配对256px前向检查。完整1024px FoRIS（含适配 CRF）、RCG、MEAN
+已在一个真实 PACO episode 跑通；FoRIS本身约7.36秒，其中MPS编码3.54秒，仅为单例运行记录。
+Mac CRF 保留原优化器与参数，修正旧 CPU binding 的 NHWC 元数据和 float/double 指针不匹配；
+常量保持、线性、颜色边界及小图求解检查通过。CUDA 数值一致性仍未验证。
+
+当前完整 PACO599 图像/二值标注已下载并逐文件核验；两套大特征缓存仍在下载。
+`run_m4_baselines.py` 正在完成 f0 的149例原图基线，原图 score 与64×64位置分数分开。
+首个固定组合用 RSRM 的参考标签选择/融合 attention 分支，替换 MEAN 的 guide；原 FoRIS score、查询图和常数保持。
+主候选为 SAFR FG-BG，控制为 SAFR FG 与末层 raw FG-BG；同一完整读出。
+作者默认为 ViT-B，本机适配到当前 ViT-L/24层；完整编码输出一致性已实测最大差0，原 MEAN guide 对照逐位复现。
+当前只有一张已选 PACO 例的实现检查，SAFR FG-BG 39.18 vs MEAN50.50、RCG61.48；不能估计整个数据集涨分。
+完整149例结果出来后据实决定该组合是否继续，暂不把公开组件的收益归为原创共享上下文机制。
 
 资产统一放在仓库外 `/Users/misaya.yanghejazfs.com.au/paper_project/cv_data`。
 Luna 负责从 `ssh -p 48002 root@connect.westd.seetacloud.com` 下载、断点续传和逐文件 SHA256 校验，

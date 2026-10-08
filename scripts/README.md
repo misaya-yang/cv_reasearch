@@ -5,6 +5,9 @@
 | 要做什么 | 入口 |
 |---|---|
 | 完整基线 | [run_foris.py](run_foris.py)、[run_insid3_complete.py](run_insid3_complete.py) |
+| M4 本机完整 FoRIS/RCG/MEAN | [run_m4_baselines.py](run_m4_baselines.py)；MPS 编码、CPU 原流程与适配 CRF，二值 mask pack，推理/评分分离 |
+| M4 SAFR 组合候选 | [run_m4_safr.py](run_m4_safr.py)；基于封存基线比较 SAFR 正负原型 guide 与同图读出，ViT-L 适配，不冒充作者默认 ViT-B 结果 |
+| Mac CRF 适配检查 | [check_m4_crf.py](check_m4_crf.py)；原 CPU lattice 的 FP32/NHWC 绑定与滤波/求解检查 |
 | 固定L4/s2证据与错图记录 | [bench_evidence.py](bench_evidence.py)、[score_reverse_landing.py](score_reverse_landing.py)；原CLI仍为64×64筛选台，不是尚未实现的原图L4+投票完整runner |
 | 原始起点、两套基线的阶段增删 | [run_stage_bank.py](run_stage_bank.py)；原始NN独立实现位于`ics.methods.raw_reference_origin` |
 | 既有强方法的细读出与评分 | [run_frozen_subtoken4000.py](run_frozen_subtoken4000.py)、[score_frozen_subtoken4000.py](score_frozen_subtoken4000.py) |
