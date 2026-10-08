@@ -1,8 +1,8 @@
 {
   "status": "进行中",
-  "active_task": "dev6000 representation premise and per-dataset complete official FoRIS reproduction running concurrently",
+  "active_task": "dev6000 remains active; official full runs stopped by user, raw feature caching required before any future full evaluation",
   "run": "../cv_data/a/representation_premise_20261008/dev6000",
-  "updated_utc": "2026-10-08T21:55:31.065901+00:00",
+  "updated_utc": "2026-10-08T22:41:12.474348+00:00",
   "goal_reached": false,
   "completed": [
     "source identity audit",
@@ -40,10 +40,10 @@
     "real CPU1024 fixed C1 c0 probe passed: actual parent CG/coarse/fine and original/CLI masks exactly unchanged; no query labels read"
   ],
   "pending": [
-    "complete active dev6000 and automatically score frozen half selection",
-    "complete per-dataset official FoRIS reproduction/metric policy (active)",
-    "remaining complete INSID3/B0 baselines",
-    "candidate implementation after corresponding prerequisites"
+    "complete or steer existing dev6000 per user; preserve outputs",
+    "design and validate reusable raw feature cache before any future full run",
+    "candidate development evidence before full evaluation",
+    "official/full runs remain stopped; never auto-restart"
   ],
   "plan_source": "6ac73cac-72d4-83e9-a64b-bead949e068f; complete revised reply 2c9768c9-af0a-488c-bdb4-eff695430de9 (8305 chars)",
   "research_goal": "score improvement only; known weak points motivate candidates, not a presumed advantage",
@@ -65,15 +65,22 @@
   "inference_code_commit": "e7b9ce3",
   "rough_wall_hours": 26,
   "official_baseline": {
-    "state": "进行中",
-    "controller_session": 25937,
+    "state": "用户停止",
+    "controller_session": null,
     "root": "../cv_data/a/official_foris_20261008",
     "current_dataset": "coco",
-    "pid": 30718,
+    "pid": null,
     "started_utc": "2026-10-08T20:53:13Z",
     "manifest": "../cv_data/a/official_s0_manifest_20261008/manifest.json",
     "n": 49318,
-    "official_goal_reached": false
+    "official_goal_reached": false,
+    "completed_coco_episodes": 533,
+    "stopped_pids": [
+      30717,
+      30718
+    ],
+    "pid_exit_confirmed": true,
+    "no_automatic_restart": true
   },
   "timing_context": "dev6000 and official FoRIS share MPS/CPU; 26-hour estimate was from isolated25 probes, actual wall time can be longer",
   "candidate_preparation": {
@@ -84,5 +91,15 @@
     "edit_balance": "exact classwise counter reconstruction checked",
     "self_command": "python scripts/check_c2_self_reference.py --manifest ../cv_data/a/fresh_manifests_20261008/dev_s1_all/manifest.json --decision ../cv_data/a/representation_premise_20261008/premise/decision.json --basis ../cv_data/a/representation_premise_20261008/branch_basis --out ../cv_data/a/representation_premise_20261008/c2_min_self",
     "c1_identity_report": "../cv_data/a/c1_c0_complete_identity_20261008/identity_report.json"
+  },
+  "full_evaluation_gate": {
+    "user_required": true,
+    "mature_method_with_statistically_supported_development_lead": true,
+    "verified_reusable_raw_DINO_features_required": true,
+    "cache_covers_required_reference_query_images_and_layers": true,
+    "identity_model_preprocess_hashes_and_readback_check": true,
+    "future_candidates_prefer_cpu_replay": true,
+    "storage_available_about_gb": 400,
+    "no_new_full_run": true
   }
 }
