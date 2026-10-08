@@ -11,6 +11,8 @@ from pathlib import Path
 import random
 import sys
 import glob
+import ast
+from functools import lru_cache
 from types import SimpleNamespace
 
 import numpy as np
@@ -36,6 +38,39 @@ def array_hash(array):
     h = hashlib.sha256(json.dumps([list(x.shape), x.dtype.str]).encode())
     h.update(x.tobytes())
     return h.hexdigest()
+
+
+@lru_cache(maxsize=2)
+def legacy_cap(assets):
+    """The actual old exporter's cap(), isolated without running its sampler."""
+    source = Path(assets)/'setup/suim_pack_audit/decision_transfer_pack.py'
+    tree = ast.parse(source.read_text())
+    node = next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == 'cap')
+    namespace = {}
+    exec(compile(ast.Module(body=[node], type_ignores=[]), str(source), 'exec'), namespace)
+    return namespace['cap'], file_hash(source)
+
+
+def legacy_export_view(reference, reference_mask, query, query_mask, assets):
+    """Hash the old SUIM export view to recognize resized copies of an episode.
+
+    This is manifest auditing, never a new inference preprocessing path.
+    The old exporter rejects mismatched dimensions and very small references.
+    """
+    masks = [np.asarray(reference_mask, dtype=np.uint8), np.asarray(query_mask, dtype=np.uint8)]
+    images = [reference, query]
+    if any(m.shape != (im.height, im.width) for im, m in zip(images, masks)):
+        return None
+    if masks[0].sum() < 16 or masks[1].sum() < 1:
+        return None
+    cap, digest = legacy_cap(str(Path(assets).resolve()))
+    view = dict(source_sha256=digest, limit_side=1600, operation='actual old cap(): RGB BILINEAR, mask NEAREST')
+    for role, image, mask in zip(('reference', 'query'), images, masks):
+        rgb, binary, resized = cap(image.convert('RGB'), Image.fromarray(mask), 1600)
+        view[role+'_rgb_hash'] = array_hash(np.asarray(rgb))
+        view[role+'_mask_hash'] = array_hash((np.asarray(binary) > 0).astype(np.uint8))
+        view[role+'_resized'] = resized
+    return view
 
 
 def reset_sampling_seed(seed=0):
@@ -191,8 +226,7 @@ def record_episode(ds, index, fold, assets, mask_root, hash_cache=None):
         record[role+'_size_hw'] = [actual.height, actual.width]
     for role, tensor in [('reference', batch['ref_masks'][0]), ('query', batch['tgt_mask'])]:
         mask = (tensor.numpy() > 0).astype(np.uint8)
-        if list(mask.shape) != record[role+'_size_hw']:
-            raise ValueError('Official image/mask geometry differs')
+        record[role+'_mask_size_hw'] = list(mask.shape)
         digest = array_hash(mask)
         destination = mask_root/role/(digest+'.png')
         destination.parent.mkdir(parents=True, exist_ok=True)
@@ -201,6 +235,11 @@ def record_episode(ds, index, fold, assets, mask_root, hash_cache=None):
         record[role+'_mask_hash'] = digest
         record[role+'_mask_path'] = str(destination)
     record['ignore_policy'] = 'official five loaders return no tgt_ignore_idx; COCO non-target including 255 becomes background'
+    record['gt_alignment'] = 'official inference.py nearest-resizes raw GT directly to each prediction frame, including source size mismatches'
+    if ds.benchmark == 'suim':
+        view = legacy_export_view(batch['ref_imgs'][0], batch['ref_masks'][0].numpy() > 0,
+                                  batch['tgt_img'], batch['tgt_mask'].numpy() > 0, assets)
+        record['legacy_export_views'] = {} if view is None else {'claude_pack_cap1600': view}
     return record
 
 

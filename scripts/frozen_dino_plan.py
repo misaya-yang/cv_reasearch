@@ -108,6 +108,57 @@ def prepare(a):
     print(json.dumps(dict(task='prepare', n=len(all_rows), state='SMOKE_ONLY' if a.smoke else 'FROZEN')), flush=True)
 
 
+def prepare_dev(a):
+    from ics.development_data import prepare_development
+    from ics.official_data import file_hash
+    if a.out.exists() and any(a.out.iterdir()):
+        raise FileExistsError('Development preparation requires a fresh output directory')
+    rows, audit = prepare_development(a.assets, a.datasets, a.out/'masks')
+    write(a.out/'manifest.json', rows)
+    write(a.out/'prepared.json', dict(state='DEVELOPMENT_MANIFEST_FROZEN', split_role='dev',
+        n=len(rows), manifest_sha256=file_hash(a.out/'manifest.json'), datasets=audit,
+        labels='hashes/identities prepared here; query labels excluded from inference',
+        historical_exposure='reused development; legacy original photo/object IDs partly missing'))
+    print(json.dumps(dict(task='prepare-dev', n=len(rows), datasets=audit)), flush=True)
+
+
+def overlap(a):
+    from ics.development_data import exclude_development
+    from ics.official_data import file_hash
+    if a.manifest is None or a.dev_manifest is None:
+        raise ValueError('overlap requires --manifest (official) and --dev-manifest')
+    original_prepared = json.loads((a.manifest.parent/'prepared.json').read_text())
+    if original_prepared['state'] != 'OFFICIAL_MANIFEST_FROZEN':
+        raise ValueError('A smoke cannot define the official confirmation set')
+    if file_hash(a.manifest) != original_prepared['manifest_sha256']:
+        raise ValueError('Official frozen manifest changed')
+    development_prepared = json.loads((a.dev_manifest.parent/'prepared.json').read_text())
+    if development_prepared['state'] != 'DEVELOPMENT_MANIFEST_FROZEN':
+        raise ValueError('Require frozen development identities')
+    if file_hash(a.dev_manifest) != development_prepared['manifest_sha256']:
+        raise ValueError('Development frozen manifest changed')
+    if a.out.exists() and any(a.out.iterdir()):
+        raise FileExistsError('Overlap audit requires a fresh output directory')
+    expected = defaultdict(dict)
+    for key, value in original_prepared['folds'].items():
+        name, fold = key.split('/')
+        expected[name][fold] = value['expected_class_ids']
+    confirm, audit = exclude_development(read_rows(a.manifest), read_rows(a.dev_manifest), expected)
+    write(a.out/'manifest.json', confirm)
+    audit.update(official_manifest_sha256=file_hash(a.manifest),
+                 development_manifest_sha256=file_hash(a.dev_manifest),
+                 confirm_manifest_sha256=file_hash(a.out/'manifest.json'),
+                 development_preparation=development_prepared['datasets'])
+    write(a.out/'overlap_report.json', audit)
+    write(a.out/'prepared.json', dict(state='CONFIRM_MANIFEST_AUDITED' if audit['eligible_for_confirmation']
+        else 'PROTOCOL_IDENTITY_UNRESOLVED', n=len(confirm), folds=original_prepared['folds'],
+        manifest_sha256=audit['confirm_manifest_sha256'],
+        overlap_audit_sha256=file_hash(a.out/'overlap_report.json'),
+        eligible_for_confirmation=audit['eligible_for_confirmation']))
+    print(json.dumps({k: audit[k] for k in ('official_n', 'development_n', 'confirm_n',
+                     'excluded_official_draws', 'empty_confirm_classes', 'eligible_for_confirmation')}), flush=True)
+
+
 def prediction_file(row):
     from hashlib import sha256
     return sha256(row['episode_id'].encode()).hexdigest()+'.npz'
@@ -336,7 +387,8 @@ def _score(a):
     bases = tuple(b for b in ('foris.crf', 'rcg', 'rcg.fine') if b in score_arms)
     rows = read_rows(a.out/'manifest.json')
     index = {r['episode_id']: r for r in read_rows(a.out/'inference.jsonl')}
-    ledger_path = REPO/'evidence/local/frozen_dino_plan_20261008/ledger.jsonl'
+    ledger_path = (a.out.parent/'ledger.jsonl' if config['split_role'] == 'explore'
+                   else REPO/'evidence/local/frozen_dino_plan_20261008/ledger.jsonl')
     ledger_path.parent.mkdir(parents=True, exist_ok=True)
     ledger = read_rows(ledger_path) if ledger_path.exists() else []
     identity = dict(candidate_id=config['candidate_id'], config_sha256=seal['config_sha256'],
@@ -360,13 +412,18 @@ def _score(a):
             if file_hash(path) != index[row['episode_id']]['prediction_sha256']:
                 raise ValueError('Prediction changed')
             with Image.open(row['query_mask_path']) as im:
-                truth = (np.asarray(im.convert('L')) > 0).astype(np.uint8)
-            if array_hash(truth) != row['query_mask_hash']:
+                truth_source = (np.asarray(im.convert('L')) > 0).astype(np.uint8)
+            if array_hash(truth_source) != row['query_mask_hash']:
                 raise ValueError('Frozen query annotation changed')
             shape = tuple(row['query_size_hw'])
-            if truth.shape != shape:
-                raise ValueError('Query annotation geometry differs')
-            truth_cli = F.interpolate(torch.from_numpy(truth)[None, None].float(),
+            if 'query_mask_size_hw' in row and truth_source.shape != tuple(row['query_mask_size_hw']):
+                raise ValueError('Frozen source annotation geometry changed')
+            # Match the public evaluator even when the original BMP/image
+            # sizes disagree. Map raw GT directly to each frame, never via a
+            # second nearest-resize through the other metric's frame.
+            truth_tensor = torch.from_numpy(truth_source)[None, None].float()
+            truth = F.interpolate(truth_tensor, shape, mode='nearest')[0, 0].numpy() > .5
+            truth_cli = F.interpolate(truth_tensor,
                                       (1024, 1024), mode='nearest')[0, 0].numpy() > .5
             with np.load(path, allow_pickle=False) as z:
                 masks = {kind: {arm: np.unpackbits(z[kind+'/'+arm], count=int(np.prod(hw))).reshape(hw).astype(bool)
@@ -374,7 +431,9 @@ def _score(a):
                          for kind, hw in [('original', shape), ('cli', (1024, 1024))]}
             r = dict(episode_id=row['episode_id'], dataset=row['dataset'], fold=row['fold'],
                      class_id=row['loader_class_id'], global_class_id=row['global_class_id'],
-                     truth_pixels=int(truth.sum()), iu={}, cli_iu={}, gross_edits={})
+                     truth_pixels=int(truth.sum()), source_truth_pixels=int(truth_source.sum()),
+                     source_mask_size_hw=list(truth_source.shape), evaluation_size_hw=list(shape),
+                     iu={}, cli_iu={}, gross_edits={})
             for arm in score_arms:
                 r['iu'][arm] = counts(masks['original'][arm], truth)
                 r['cli_iu'][arm] = counts(masks['cli'][arm], truth_cli)
@@ -418,14 +477,15 @@ def score(a):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('mode', choices=['prepare', 'evaluate', 'score'])
+    p.add_argument('mode', choices=['prepare', 'prepare-dev', 'overlap', 'evaluate', 'score'])
     p.add_argument('--assets', type=Path, default=REPO.parent/'cv_data')
     p.add_argument('--datasets', default='coco,lvis,pascal_part,paco_part,suim')
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--manifest', type=Path)
+    p.add_argument('--dev-manifest', type=Path)
     p.add_argument('--fold', type=int)
     p.add_argument('--smoke', action='store_true')
-    p.add_argument('--split', choices=['smoke', 'dev', 'official', 'confirm'], default='smoke')
+    p.add_argument('--split', choices=['smoke', 'dev', 'explore', 'official', 'confirm'], default='smoke')
     p.add_argument('--encoder-device', choices=['mps', 'cpu'], default='mps')
     p.add_argument('--threads', type=int, default=2)
     p.add_argument('--resume', action='store_true')
@@ -440,8 +500,14 @@ def main():
         p.error('evaluate requires a frozen --manifest')
     if a.manifest is not None:
         a.manifest = a.manifest.resolve()
+    if a.dev_manifest is not None:
+        a.dev_manifest = a.dev_manifest.resolve()
     if a.mode == 'prepare':
         prepare(a)
+    elif a.mode == 'prepare-dev':
+        prepare_dev(a)
+    elif a.mode == 'overlap':
+        overlap(a)
     elif a.mode == 'score':
         score(a)
     else:
