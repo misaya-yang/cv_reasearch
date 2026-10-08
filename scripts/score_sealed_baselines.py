@@ -46,7 +46,7 @@ def open_run(path):
                 config=json.loads((path/'config.json').read_text()))
 
 
-def score_runs(paths, out, unit='query_photo', metric_policy=None):
+def score_runs(paths, out, unit='query_photo', metric_policy=None, baselines=None):
     out.mkdir(parents=True, exist_ok=True)
     runs = [open_run(path.resolve()) for path in paths]
     first = runs[0]
@@ -59,12 +59,15 @@ def score_runs(paths, out, unit='query_photo', metric_policy=None):
     arms = [arm for run in runs for arm in run['config']['arms']]
     if len(set(arms)) != len(arms):
         raise ValueError('Ambiguous duplicated method names')
-    baselines = tuple(a for a in ('foris.crf', 'rcg.fine', 'rcg', 'insid3') if a in arms)
+    baselines = (tuple(baselines) if baselines is not None else
+                 tuple(a for a in ('foris.crf', 'rcg.fine', 'rcg', 'insid3') if a in arms))
     if not baselines:
         baselines = (arms[0],)
+    if len(set(baselines))!=len(baselines) or set(baselines)-set(arms):
+        raise ValueError('Requested paired baseline names must be unique existing arms')
     config = dict(runs={str(r['path']):file_hash(r['path']/'sealed.json') for r in runs},
                   scorer_sha256=file_hash(Path(__file__)), bootstrap_unit=unit,
-                  metric_policy=metric_policy, repetitions=10000)
+                  metric_policy=metric_policy, repetitions=10000,paired_baselines=list(baselines))
     if (out/'config.json').exists() and json.loads((out/'config.json').read_text()) != config:
         raise ValueError('Output belongs to different predictions/scoring policy')
     (out/'config.json').write_text(json.dumps(config, indent=2)+'\n')
@@ -103,6 +106,8 @@ def score_runs(paths, out, unit='query_photo', metric_policy=None):
                        for arm, mask in predictions[frame].items()})
         items.append(item)
     report = dict(split_role=first['config']['split_role'], n=len(items), arms=arms, datasets={},
+                  sampling_seed=(first['config'].get('prepared_protocol') or {}).get('seed'),
+                  prepared_state=(first['config'].get('prepared_protocol') or {}).get('state'),
                   edit_order=['add_TP', 'add_FP', 'delete_TP', 'delete_FP'],
                   label_frames='raw annotation nearest-resized directly to each prediction frame',
                   official_goal_reached=False)
@@ -142,10 +147,11 @@ def main():
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--unit', choices=['query_photo', 'episode'], default='query_photo')
     p.add_argument('--metric-policy', type=Path)
+    p.add_argument('--baselines',nargs='+',help='Include the accepted parent B when it has a new arm name')
     p.add_argument('--freeze-official-metric-policy', action='store_true')
     a = p.parse_args()
     policy = json.loads(a.metric_policy.read_text()) if a.metric_policy else None
-    report = score_runs(a.runs, a.out, a.unit, policy)
+    report = score_runs(a.runs, a.out, a.unit, policy,a.baselines)
     if a.freeze_official_metric_policy:
         if report['split_role'] != 'official' or 'foris.crf' not in report['arms']:
             raise ValueError('Metric choice requires complete official FoRIS reproduction')

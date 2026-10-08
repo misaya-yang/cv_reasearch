@@ -54,6 +54,9 @@ def main():
         assert report['frames']['cli']['miou']['insid3'] < 100.
         assert report['primary_policy']['primary'] == 'cli'
         assert report['frames']['cli']['gross_edits']['insid3']['foris.crf']['percent_of_gt_area'][1] > 0
+        custom=score_runs(runs,root/'custom_parent',baselines=['insid3'])['datasets']['coco']['primary']
+        assert set(custom['paired'])=={'insid3'}
+        assert custom['paired']['insid3']['foris.crf']['delta_pp']>0
         other = dict(row, query_rgb_hash='changed')
         (runs[1]/'manifest.json').write_text(json.dumps([other]))
         seal = json.loads((runs[1]/'sealed.json').read_text());seal['manifest_sha256']=file_hash(runs[1]/'manifest.json')
