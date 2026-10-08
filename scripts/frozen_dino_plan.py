@@ -71,41 +71,66 @@ def prepare(a):
     receipt = json.loads((a.assets/'setup/download_receipt.json').read_text())
     verified = {x['id'] for x in receipt['assets'] if x['status'] == 'VERIFIED'}
     required = {'coco2014' if name == 'coco' else 'ics_datasets' for name in a.datasets}
-    if not a.smoke and required-verified:
+    fresh = a.split in ('dev', 'val')
+    seed = {'dev': 1, 'val': 2}.get(a.split, 0)
+    # Fresh manifests use the unchanged metadata-driven sampling pools. A
+    # missing selected input fails that dataset; it is never replaced. SUIM
+    # separately requires its complete mask-derived pool in build_dataset().
+    if not a.smoke and not fresh and required-verified:
         raise FileNotFoundError('Official full-pool SHA receipt pending: '+str(sorted(required-verified)))
     if a.out.exists() and any(a.out.iterdir()):
         raise FileExistsError('Frozen preparation requires a fresh directory')
     a.out.mkdir(parents=True, exist_ok=True)
-    hashes, all_rows, metadata = {}, [], {}
+    hashes, all_rows, metadata, pending = {}, [], {}, {}
     for name in a.datasets:
         folds = [a.fold] if a.fold is not None else ([FOLDS[name][0]] if a.smoke else FOLDS[name])
+        dataset_rows, dataset_metadata = [], {}
+        try:
+            for fold in folds:
+                reset_sampling_seed(seed)
+                ds = build_dataset(name, fold, a.assets)
+                if a.smoke:
+                    n = min(len(ds), 1)
+                elif fresh:
+                    n = 200 if name == 'lvis' else 2000 if name == 'suim' else 500
+                else:
+                    n = len(ds)
+                key = f'{name}/{fold}'
+                dataset_metadata[key] = dict(official_length=len(ds), expected_class_ids=list(ds.class_ids),
+                                            selected_length=n, smoke=a.smoke)
+                for index in range(n):
+                    row = record_episode(ds, index, fold, a.assets, a.out/'masks', hashes)
+                    if fresh:
+                        row['episode_id'] = f'{a.split}_s{seed}/'+row['episode_id']
+                    dataset_rows.append(row)
+                    if (index+1) % 100 == 0:
+                        print(json.dumps(dict(task='prepare', dataset=name, fold=fold, n=index+1, total=n)), flush=True)
+        except FileNotFoundError as error:
+            if not fresh:
+                raise
+            pending[name] = str(error)
+            print(json.dumps(dict(task='prepare', dataset=name, state='WAITING_INPUT', error=str(error))), flush=True)
+            continue
+        # Only completed datasets enter the replay manifest. Other datasets
+        # proceed independently; partially sampled datasets are not scored.
         for fold in folds:
-            reset_sampling_seed(0)
-            ds = build_dataset(name, fold, a.assets)
-            n = min(len(ds), 1) if a.smoke else len(ds)
-            key = f'{name}/{fold}'
-            metadata[key] = dict(official_length=len(ds), expected_class_ids=list(ds.class_ids),
-                                 selected_length=n, smoke=a.smoke)
-            rows = []
-            for index in range(n):
-                r = record_episode(ds, index, fold, a.assets, a.out/'masks', hashes)
-                rows.append(r)
-                if (index+1) % 100 == 0:
-                    print(json.dumps(dict(task='prepare', dataset=name, fold=fold, n=index+1, total=n)), flush=True)
+            rows = [r for r in dataset_rows if r['fold'] == fold]
             dest = a.out/'manifests'/name/f'fold_{fold}.jsonl'
             dest.parent.mkdir(parents=True, exist_ok=True)
             dest.write_text(''.join(json.dumps(r)+'\n' for r in rows))
-            all_rows.extend(rows)
+        all_rows.extend(dataset_rows)
+        metadata.update(dataset_metadata)
     write(a.out/'manifest.json', all_rows)
     source = a.assets/'third_party/foris_official'
-    write(a.out/'prepared.json', dict(state='SMOKE_ONLY' if a.smoke else 'OFFICIAL_MANIFEST_FROZEN',
-        seed=0, shots=1, shuffle=False, num_workers=0, folds=metadata, n=len(all_rows),
+    write(a.out/'prepared.json', dict(state='SMOKE_ONLY' if a.smoke else 'FRESH_MANIFEST_FROZEN' if fresh else 'OFFICIAL_MANIFEST_FROZEN',
+        seed=seed, split_role=a.split if fresh else 'official', pending_datasets=pending,
+        shots=1, shuffle=False, num_workers=0, folds=metadata, n=len(all_rows),
         manifest_sha256=file_hash(a.out/'manifest.json'),
         loader_sha256={n: file_hash(source/'datasets'/(n+'.py')) for n in a.datasets},
         query_label_role='protocol preparation, not candidate scoring',
         duplicates='official legal draws retained',
         rng='official loaders use NumPy; inference must leave its RNG unchanged'))
-    print(json.dumps(dict(task='prepare', n=len(all_rows), state='SMOKE_ONLY' if a.smoke else 'FROZEN')), flush=True)
+    print(json.dumps(dict(task='prepare', n=len(all_rows), state='SMOKE_ONLY' if a.smoke else 'FROZEN', pending=pending)), flush=True)
 
 
 def prepare_dev(a):
@@ -181,6 +206,11 @@ def run_config(a):
         raise ValueError('Official evaluation requires the complete prepared official manifest')
     if a.split == 'confirm':
         raise ValueError('Confirmation disabled until development overlap/exposure audit is frozen')
+    fresh = prepared is not None and prepared.get('state') == 'FRESH_MANIFEST_FROZEN'
+    if a.split == 'val' and not fresh:
+        raise ValueError('Validation requires fresh seed2 official-loader manifests')
+    if fresh and prepared.get('split_role') != a.split:
+        raise ValueError('Prepared development/validation split differs')
     return dict(candidate_id='B0', parent_baseline_id='complete FoRIS',
         split_role=a.split, datasets=a.datasets, branch=subprocess.check_output(
             ['git', '-C', str(REPO), 'branch', '--show-current'], text=True).strip(),
@@ -196,6 +226,8 @@ def run_config(a):
         mask_refiner='original CRF CPU lattice/solver, 10 iterations',
         rcg=rcg.CONFIG, fine_readout=fine_readout.CONFIG,
         arms=['foris.crf', 'rcg', 'rcg.fine', 'mean'],
+        bootstrap_unit='query_photo' if fresh else 'episode',
+        bootstrap_repetitions=10000 if fresh else 100000,
         official_score_arms=['foris.crf'],
         official_B0_predictions='computed and sealed, withheld from official reproduction scores until the audited single B0 confirmation look',
         metric='original loader query size; 1024 CLI metric retained separately',
@@ -431,6 +463,7 @@ def _score(a):
                          for kind, hw in [('original', shape), ('cli', (1024, 1024))]}
             r = dict(episode_id=row['episode_id'], dataset=row['dataset'], fold=row['fold'],
                      class_id=row['loader_class_id'], global_class_id=row['global_class_id'],
+                     query_photo_id=row.get('query_photo_id'),
                      truth_pixels=int(truth.sum()), source_truth_pixels=int(truth_source.sum()),
                      source_mask_size_hw=list(truth_source.shape), evaluation_size_hw=list(shape),
                      iu={}, cli_iu={}, gross_edits={})
@@ -449,13 +482,16 @@ def _score(a):
                   prediction_seal_sha256=file_hash(a.out/'sealed.json'))
     for name, items in grouped.items():
         expected = None
-        if config['split_role'] == 'official':
+        if config['split_role'] == 'official' or config['prepared_protocol'] and config['prepared_protocol'].get('state') == 'FRESH_MANIFEST_FROZEN':
             expected = {key.split('/')[1]: meta['expected_class_ids']
                         for key, meta in config['prepared_protocol']['folds'].items()
                         if key.startswith(name+'/')}
         s = summarize(items, baselines=bases,
-                      repetitions=1 if config['split_role'] == 'official' else 100000,
-                      expected_classes=expected)
+                      repetitions=1 if config['split_role'] == 'official' else config.get('bootstrap_repetitions', 100000),
+                      expected_classes=expected, unit=config.get('bootstrap_unit', 'episode'))
+        if config.get('bootstrap_unit') == 'query_photo':
+            s['episode_bootstrap_appendix'] = summarize(items, baselines=bases, repetitions=10000,
+                                                       expected_classes=expected)['paired']
         cli = [dict(r, iu=r['cli_iu']) for r in items]
         s['cli_miou'] = summarize(cli, baselines=('foris.crf',), repetitions=1,
                                   expected_classes=expected)['miou']
@@ -485,7 +521,7 @@ def main():
     p.add_argument('--dev-manifest', type=Path)
     p.add_argument('--fold', type=int)
     p.add_argument('--smoke', action='store_true')
-    p.add_argument('--split', choices=['smoke', 'dev', 'explore', 'official', 'confirm'], default='smoke')
+    p.add_argument('--split', choices=['smoke', 'dev', 'val', 'explore', 'official', 'confirm'], default='smoke')
     p.add_argument('--encoder-device', choices=['mps', 'cpu'], default='mps')
     p.add_argument('--threads', type=int, default=2)
     p.add_argument('--resume', action='store_true')
