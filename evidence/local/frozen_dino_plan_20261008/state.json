@@ -2,7 +2,7 @@
   "status": "进行中",
   "active_task": "dev6000 representation premise and per-dataset complete official FoRIS reproduction running concurrently",
   "run": "../cv_data/a/representation_premise_20261008/dev6000",
-  "updated_utc": "2026-10-08T21:36:46.758611+00:00",
+  "updated_utc": "2026-10-08T21:55:31.065901+00:00",
   "goal_reached": false,
   "completed": [
     "source identity audit",
@@ -35,7 +35,9 @@
     "prepared fixed C1 unary and C2 minimum scorer; independent scalar/dense checks passed, candidates not enabled",
     "prepared classwise add/delete/full IoU profit accounting; direct edited-mask checks passed",
     "Pro reread around21:19 UTC, no new revision",
-    "conditional real C2 self-reference entry prepared; failed prerequisite gate verifies no model/reference work"
+    "conditional real C2 self-reference entry prepared; failed prerequisite gate verifies no model/reference work",
+    "gated complete C1 runner and same-form last-O control prepared; no model work on failed prerequisite",
+    "real CPU1024 fixed C1 c0 probe passed: actual parent CG/coarse/fine and original/CLI masks exactly unchanged; no query labels read"
   ],
   "pending": [
     "complete active dev6000 and automatically score frozen half selection",
@@ -76,10 +78,11 @@
   "timing_context": "dev6000 and official FoRIS share MPS/CPU; 26-hour estimate was from isolated25 probes, actual wall time can be longer",
   "candidate_preparation": {
     "state": "prepared, not admitted",
-    "C1": "fixed unary and inherited solve; real final-mask identity still pending",
+    "C1": "gated full runner and last-O control prepared; one real CPU c0 complete-parent identity passed, actual candidate not run",
     "C2": "minimum score and gated five-dataset real self runner prepared, not executed; representation/real self/minimum AUC prerequisites pending",
     "C3": "not implemented",
     "edit_balance": "exact classwise counter reconstruction checked",
-    "self_command": "python scripts/check_c2_self_reference.py --manifest ../cv_data/a/fresh_manifests_20261008/dev_s1_all/manifest.json --decision ../cv_data/a/representation_premise_20261008/premise/decision.json --basis ../cv_data/a/representation_premise_20261008/branch_basis --out ../cv_data/a/representation_premise_20261008/c2_min_self"
+    "self_command": "python scripts/check_c2_self_reference.py --manifest ../cv_data/a/fresh_manifests_20261008/dev_s1_all/manifest.json --decision ../cv_data/a/representation_premise_20261008/premise/decision.json --basis ../cv_data/a/representation_premise_20261008/branch_basis --out ../cv_data/a/representation_premise_20261008/c2_min_self",
+    "c1_identity_report": "../cv_data/a/c1_c0_complete_identity_20261008/identity_report.json"
   }
 }
