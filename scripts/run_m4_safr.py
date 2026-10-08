@@ -40,11 +40,12 @@ def infer(a):
     net=TimmDINOv3(str(model_dir)).to(config['encoder_device']).eval().requires_grad_(False)
     select,source=selector(assets/'third_party/RSRM/model/rsrm.py')
     config=dict(config,candidate='SAFR FG-BG guide, fixed alpha .25 and original MEAN graph',
+        branch=base.git('branch','--show-current'),commit=base.git('rev-parse','HEAD'),baseline_commit=config['commit'],
         primary='mean.safr_fg_bg',controls=['mean.safr_fg','mean.raw_fg_bg'],rsrm_source=source,
         parent_seal_sha256=sha(a.base/'sealed.json'),
         selection='RSRM reference-only original methods; explicit MEAN fallback when undefined',
         added_encoder_forwards='one paired forward in this composition experiment; same-backbone observational hooks',
-        source_sha256={str(p):sha(p) for p in [Path(__file__),REPO/'src/ics/safr.py']})
+        source_sha256={str(p):sha(p) for p in [Path(__file__),REPO/'src/ics/safr.py',REPO/'scripts/run_m4_baselines.py']})
     a.out.mkdir(parents=True);(a.out/'predictions').mkdir();(a.out/'features').mkdir()
     base.write(a.out/'manifest.json',rows);base.write(a.out/'config.json',config)
     transform=transforms.Compose([transforms.Resize((1024,1024)),transforms.ToTensor(),
