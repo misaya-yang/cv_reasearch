@@ -1,8 +1,8 @@
 {
   "status": "进行中",
-  "active_task": "Paired FoRIS1400 from archived scores;8 CPU workers resumed existing predictions; no DINO/frontend",
+  "active_task": "FoRIS1400 paired comparison complete: CLI45.948 vs MEAN45.986, latest600 MEAN-1.351; Strong method research continues",
   "run": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_foris1400_score_reuse_20261009/run",
-  "updated_utc": "2026-10-09T07:48:22.535261+00:00",
+  "updated_utc": "2026-10-09T08:00:23.187461+00:00",
   "goal_reached": false,
   "completed": [
     "source identity audit",
@@ -51,11 +51,11 @@
     "Third MEAN-only200 new query photos sealed and scored50.763; pooled60044.942 verified independently, zero re-encodes",
     "LVIS requested MEAN-only200 new query photos/classes sealed and scored46.263; parameter/code/model identity matches PACO",
     "same LVIS200 cached FoRIS46.680 vs MEAN46.263, delta-0.417; all200 frontend fields exact, zero encodes",
-    "Requested LVIS600 sealed/scored47.581 and pooled80047.151; controller complete, no extra experiments"
+    "Requested LVIS600 sealed/scored47.581 and pooled80047.151; controller complete, no extra experiments",
+    "Full FoRIS matched LVIS1400 from archived scores, no DINO/front-end; cumulative point tie, latest600 MEAN-1.351, independent I/U verification"
   ],
   "pending": [
-    "complete explicitly authorized FoRIS1400 CRF-only run and same1400 paired scoring",
-    "Strong/MEAN simplification research; implementation identity5 already passed",
+    "Strong method improvement and MEAN simplification research; existing1400 does not establish LVIS gain",
     "next LVIS600 prepared only, no automatic launch",
     "existing ISIC asset finalizer",
     "old6000 and official full stay stopped"
@@ -97,7 +97,7 @@
     "pid_exit_confirmed": true,
     "no_automatic_restart": true
   },
-  "timing_context": "CRF99.7% of measured time; concurrency increased4->8, completed921 preserved, unchanged CRF function AST",
+  "timing_context": "FoRIS1400 complete;8-worker steady throughput1.76x four workers; no live model/CRF job",
   "candidate_preparation": {
     "state": "prepared, not admitted",
     "C1": "gated full runner and last-O control prepared; one real CPU c0 complete-parent identity passed, actual candidate not run",
@@ -298,7 +298,7 @@
     "mean_minus_foris_cli": -0.4172496341111227,
     "summary": "../cv_data/a/lvis_foris200_cached_20261008/summary.json"
   },
-  "controller_process_id": 40061,
+  "controller_process_id": null,
   "lvis_mean600_new": {
     "state": "COMPLETE",
     "n": 600,
@@ -412,21 +412,12 @@
     "default_entry_unchanged": true
   },
   "lvis_foris1400_score_reuse": {
-    "state": "CRF_ONLY",
+    "state": "COMPLETE",
     "n": 1400,
     "root": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_foris1400_score_reuse_20261009",
-    "controller_pid": 40061,
-    "worker_pids": [
-      40063,
-      40064,
-      40065,
-      40066,
-      40067,
-      40068,
-      40069,
-      40070
-    ],
-    "completed": 1178,
+    "controller_pid": null,
+    "worker_pids": [],
+    "completed": 1400,
     "existing_predictions_reused": 218,
     "new_crf_tasks": 1182,
     "encoder_calls": 0,
@@ -437,7 +428,74 @@
     "no_auto_scale": true,
     "worker_count": 8,
     "resized_preserved": 921,
-    "CRF_equation_AST_unchanged": true
+    "CRF_equation_AST_unchanged": true,
+    "frames": {
+      "original": {
+        "foris": 46.10528220181145,
+        "mean": 46.05627603234552,
+        "mean_minus_foris_pp": -0.049006169465926064
+      },
+      "cli": {
+        "foris": 45.94806614606419,
+        "mean": 45.9864512898383,
+        "mean_minus_foris_pp": 0.03838514377410718
+      }
+    },
+    "batches": {
+      "lvis_mean200_20261008": {
+        "n": 200,
+        "frames": {
+          "cli": {
+            "foris": 46.67998418290914,
+            "mean": 46.262734548798015,
+            "mean_minus_foris_pp": -0.4172496341111227
+          },
+          "original": {
+            "foris": 46.84456650643817,
+            "mean": 46.32981440703368,
+            "mean_minus_foris_pp": -0.5147520994044896
+          }
+        }
+      },
+      "lvis_mean600_new_20261008": {
+        "n": 600,
+        "frames": {
+          "cli": {
+            "foris": 47.61956871154465,
+            "mean": 47.58087950349717,
+            "mean_minus_foris_pp": -0.03868920804747944
+          },
+          "original": {
+            "foris": 47.779371001459836,
+            "mean": 47.68495293603093,
+            "mean_minus_foris_pp": -0.09441806542890419
+          }
+        }
+      },
+      "lvis_mean600_batch3_20261009": {
+        "n": 600,
+        "frames": {
+          "cli": {
+            "foris": 47.22333691527603,
+            "mean": 45.87276703922264,
+            "mean_minus_foris_pp": -1.3505698760533917
+          },
+          "original": {
+            "foris": 47.40282838823862,
+            "mean": 45.94114389376711,
+            "mean_minus_foris_pp": -1.4616844944715055
+          }
+        }
+      }
+    },
+    "summary": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_foris1400_score_reuse_20261009/SUMMARY.md",
+    "independent_points_verified": true,
+    "timing": {
+      "old4_stable_cases_per_minute": 48.688969380084934,
+      "new8_stable_cases_per_minute": 85.80062014190548,
+      "method": "prediction completion mtimes; discard first/last10% of each phase",
+      "factor": 1.7622188605413402
+    }
   },
   "lvis_foris600_batch3_cached": {
     "state": "SUPERSEDED_TO_SAVED_SCORE_REUSE",
