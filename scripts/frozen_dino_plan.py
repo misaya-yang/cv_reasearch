@@ -198,6 +198,8 @@ def run_config(a):
             *sorted((REPO/'src/ics').rglob('*.py')),
             *sorted((a.assets/'third_party/foris_official').rglob('*.py')),
             *sorted((a.assets/'third_party/crf_source/src/CRF').glob('*.py'))]
+    if a.raw_cache_root:
+        code += [REPO/'scripts/cached_dino.py', REPO/'scripts/raw_feature_cache.py']
     code += sorted((a.assets/'third_party/crf_source/src/PermutohedralFiltering/source/cpu').rglob('*.cpp'))
     code += sorted((a.assets/'third_party/crf_source/src/PermutohedralFiltering/source/cpu').rglob('*.h'))
     prepared_path = a.manifest.parent/'prepared.json'
@@ -223,9 +225,10 @@ def run_config(a):
         weights_sha256=file_hash(a.assets/'demo4_cache/models/dinov3-vitl16-timm/model.safetensors'),
         basis_sha256=file_hash(a.assets/'native_assets/positional_basis.pt'),
         encoder_device=a.encoder_device, encoder_dtype='float32', threads=a.threads,
-        mask_refiner='original CRF CPU lattice/solver, 10 iterations',
+        mask_refiner=('original CRF CPU lattice/solver, 10 iterations' if 'foris.crf' in a.baseline_arms
+                      else 'bilinear native finalizer; native mask unused, controls inherit pre-CRF score'),
         rcg=rcg.CONFIG, fine_readout=fine_readout.CONFIG,
-        arms=['foris.crf', 'rcg', 'rcg.fine', 'mean'],
+        arms=a.baseline_arms,
         bootstrap_unit='query_photo' if fresh else 'episode',
         bootstrap_repetitions=10000 if fresh else 100000,
         representation_basis=(str(a.representation_basis) if a.representation_basis else None),
@@ -235,7 +238,9 @@ def run_config(a):
         official_score_arms=['foris.crf'],
         official_B0_predictions='computed and sealed, withheld from official reproduction scores until the audited single B0 confirmation look',
         metric='original loader query size; 1024 CLI metric retained separately',
-        query_mask_in_inference=False, feature_archive=False)
+        query_mask_in_inference=False, feature_archive=bool(a.raw_cache_root),
+        raw_cache_root=str(a.raw_cache_root) if a.raw_cache_root else None,
+        raw_cache_branches=['O/24'] if a.raw_cache_root else [])
 
 
 def _infer(a):
@@ -258,7 +263,10 @@ def _infer(a):
         old = json.loads((a.out/'config.json').read_text())
         requested = dict(assets=str(a.assets), manifest_sha256=file_hash(a.manifest),
                          datasets=a.datasets, split_role=a.split,
-                         encoder_device=a.encoder_device, threads=a.threads)
+                         encoder_device=a.encoder_device, threads=a.threads,
+                         arms=a.baseline_arms)
+        if a.raw_cache_root or old.get('raw_cache_root'):
+            requested['raw_cache_root'] = str(a.raw_cache_root) if a.raw_cache_root else None
         if not a.resume or any(old[k] != v for k, v in requested.items()):
             raise ValueError('A sealed run is immutable; require --resume with the original inputs')
         print('Predictions already sealed; using their archived implementation and score phase', flush=True)
@@ -296,11 +304,24 @@ def _infer(a):
     (a.out/'fields').mkdir(exist_ok=True)
     torch.set_num_threads(a.threads)
     init_begin = time.monotonic()
-    _, backend = install(a.assets/'third_party/crf_source', a.assets/'runtime/macos/crf')
+    native_refiner = 'crf' if 'foris.crf' in a.baseline_arms else 'bilinear'
+    backend = None
+    if native_refiner == 'crf':
+        _, backend = install(a.assets/'third_party/crf_source', a.assets/'runtime/macos/crf')
     host = build_host({'projection_basis': str(a.assets/'native_assets/positional_basis.pt')},
                       'cpu', str(a.assets/'third_party/foris_official'),
-                      weights=str(a.assets/'demo4_cache/models/dinov3-vitl16-timm'))
+                      weights=str(a.assets/'demo4_cache/models/dinov3-vitl16-timm'),
+                      mask_refiner=native_refiner)
     host.encoder.to(a.encoder_device)
+    cache_adapter = None
+    if a.raw_cache_root:
+        from cached_dino import CachedDINO, dino_profile
+        from raw_feature_cache import RawFeatureCache
+        cache = RawFeatureCache(a.raw_cache_root, dino_profile(a.assets, a.encoder_device))
+        cache_adapter = CachedDINO(cache, host.encoder, a.encoder_device)
+        host.encoder = cache_adapter
+        write(a.out/'raw_cache.json', dict(profile_path=str(cache.folder/'profile.json'),
+              branches=['O/24'], storage_dtype='float32', role='unprojected raw model outputs'))
     encoder_times = []
     representation_bank, branch_bases = {}, {}
     if a.representation_basis:
@@ -359,6 +380,11 @@ def _infer(a):
                 continue
             sync(); start = time.monotonic(); encoder_times.clear(); refinement_times.clear()
             rgb, gold, query = load_inputs(row, a.assets)
+            cache_calls_before = cache_adapter.encoder_calls if cache_adapter else 0
+            if cache_adapter:
+                cache_adapter.provenance = dict(episode_id=row['episode_id'],
+                    reference_rgb_hash=row['reference_rgb_hash'], query_rgb_hash=row['query_rgb_hash'],
+                    reference_crop=row.get('reference_crop'), query_crop=row.get('query_crop'))
             rng_before = np.random.get_state()
             native, got, transformed, target = run_foris(host, rgb, gold, query)
             native_seconds = time.monotonic()-start
@@ -368,27 +394,40 @@ def _infer(a):
             q, r = (processed[i].flatten(1).T.half().contiguous() for i in (1, 0))
             cov = F.interpolate(transformed[None, None].float(), (64, 64), mode='area')[0, 0].numpy()
             score = got['score'].float().numpy()
-            at = time.monotonic(); z, solver = rcg.predict(q, r, cov, score)
-            rcg_seconds = time.monotonic()-at
-            at = time.monotonic(); mf, _ = mean_control.predict(q, r, cov, score)
-            mean_seconds = time.monotonic()-at
-            at = time.monotonic()
-            debiased = bool((F.normalize(got['raw'][0].float(), dim=1)-got['deb'][0]).abs().max() > 1e-4)
-            fine_features = fine_readout.shifted_features(host, target, debiased)
-            fine = fine_readout.field(fine_features, q, z)
-            sync(); fine_seconds = time.monotonic()-at
-            del fine_features
+            masks, fields = {}, dict(score=score)
+            if 'foris.crf' in a.baseline_arms:
+                masks['foris.crf'] = native.numpy()
+            rcg_seconds = mean_seconds = fine_seconds = 0.0
+            solver = None
+            if 'rcg' in a.baseline_arms or 'rcg.fine' in a.baseline_arms:
+                at = time.monotonic(); z, solver = rcg.predict(q, r, cov, score)
+                rcg_seconds = time.monotonic()-at
+                fields['rcg'] = z
+                if 'rcg' in a.baseline_arms:
+                    masks['rcg'] = rcg.mask_from_field(z)
+            if 'mean' in a.baseline_arms:
+                at = time.monotonic(); mf, _ = mean_control.predict(q, r, cov, score)
+                mean_seconds = time.monotonic()-at
+                fields['mean'] = mf
+                masks['mean'] = rcg.mask_from_field(mf)
+            if 'rcg.fine' in a.baseline_arms:
+                at = time.monotonic()
+                debiased = bool((F.normalize(got['raw'][0].float(), dim=1)-got['deb'][0]).abs().max() > 1e-4)
+                fine_features = fine_readout.shifted_features(host, target, debiased)
+                fine = fine_readout.field(fine_features, q, z)
+                sync(); fine_seconds = time.monotonic()-at
+                del fine_features
+                fields['rcg_fine'] = fine
+                masks['rcg.fine'] = fine_readout.mask(fine)
             if not all(np.array_equal(x, y) for x, y in zip(rng_before, np.random.get_state())):
                 raise RuntimeError('Inference consumed official NumPy sampling RNG; record a joint official sample stream')
-            masks = {'foris.crf': native.numpy(), 'rcg': rcg.mask_from_field(z),
-                     'rcg.fine': fine_readout.mask(fine), 'mean': rcg.mask_from_field(mf)}
             shape = (query.height, query.width)
             payload = {kind+'/'+arm: np.packbits(m if kind == 'cli' else render(m, shape))
                        for arm, m in masks.items() for kind in ('cli', 'original')}
             filename = prediction_file(row)
             destination = a.out/'predictions'/filename
             np.savez_compressed(destination, original_hw=np.array(shape), **payload)
-            np.savez_compressed(a.out/'fields'/filename, score=score, rcg=z, rcg_fine=fine, mean=mf)
+            np.savez_compressed(a.out/'fields'/filename, **fields)
             representation_receipt = {}
             if a.representation_basis:
                 at = time.monotonic()
@@ -408,7 +447,8 @@ def _infer(a):
                 mean_head_seconds=mean_seconds, fine_head_seconds=fine_seconds,
                 B0_inference_upper_bound_seconds=native_seconds-refined_seconds+rcg_seconds+fine_seconds,
                 combined_pipeline_seconds=time.monotonic()-start, solver=solver,
-                official_sampling_rng_unchanged=True)
+                official_sampling_rng_unchanged=True,
+                encoder_calls=(cache_adapter.encoder_calls-cache_calls_before if cache_adapter else None))
             log.write(json.dumps(record)+'\n'); completed[row['episode_id']] = record
             print(json.dumps(dict(n=len(completed), total=len(selected), last=row['episode_id'],
                                   B0_seconds=record['B0_inference_upper_bound_seconds'])), flush=True)
@@ -525,7 +565,7 @@ def _score(a):
             s['episode_bootstrap_appendix'] = summarize(items, baselines=bases, repetitions=10000,
                                                        expected_classes=expected)['paired']
         cli = [dict(r, iu=r['cli_iu']) for r in items]
-        s['cli_miou'] = summarize(cli, baselines=('foris.crf',), repetitions=1,
+        s['cli_miou'] = summarize(cli, baselines=bases, repetitions=1,
                                   expected_classes=expected)['miou']
         s['gross_edits'] = {arm: {base: np.sum([r['gross_edits'][arm][base] for r in items], axis=0).tolist()
                                  for base in bases} for arm in score_arms}
@@ -558,11 +598,23 @@ def main():
     p.add_argument('--threads', type=int, default=2)
     p.add_argument('--resume', action='store_true')
     p.add_argument('--no-score', action='store_true')
+    p.add_argument('--baseline-arms', default='foris.crf,rcg,rcg.fine,mean',
+                   help='Fixed baseline subset; omit rcg.fine to avoid four shifted encodes')
+    p.add_argument('--raw-cache-root', type=Path,
+                   help='Record/reuse lossless raw O24 features for the selected inputs')
     p.add_argument('--representation-basis', type=Path,
                    help='Collect prescribed 24-layer margins using each branch own black basis (development only)')
     a = p.parse_args()
     a.assets, a.out = a.assets.resolve(), a.out.resolve()
     a.datasets = a.datasets.split(',')
+    a.baseline_arms = a.baseline_arms.split(',')
+    if (len(set(a.baseline_arms)) != len(a.baseline_arms) or
+            set(a.baseline_arms)-{'foris.crf', 'rcg', 'rcg.fine', 'mean'} or not a.baseline_arms):
+        p.error('Require nonempty unique known baseline arms')
+    if a.raw_cache_root:
+        a.raw_cache_root = a.raw_cache_root.resolve()
+        if a.representation_basis:
+            p.error('Raw O24 cache and all-layer representation collection are separate modes')
     if a.representation_basis is not None:
         a.representation_basis = a.representation_basis.resolve()
         if a.split not in ('dev', 'smoke'):

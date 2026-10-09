@@ -1,8 +1,8 @@
 {
-  "status": "\u8fdb\u884c\u4e2d",
-  "active_task": "6000 stopped; COCO952 exploratory score complete, use actual result before any bounded candidate screen",
-  "run": "../cv_data/a/representation_premise_20261008/dev6000",
-  "updated_utc": "2026-10-09T01:28:43.528126+00:00",
+  "status": "进行中",
+  "active_task": "User-requested PACO-Part MEAN-only200 complete: CLI mIoU44.543; no automatic scale-up",
+  "run": "../cv_data/a/paco_mean200_20261008/run",
+  "updated_utc": "2026-10-09T02:03:35.498191+00:00",
   "goal_reached": false,
   "completed": [
     "source identity audit",
@@ -45,19 +45,19 @@
     "C2 minimum context cache-only inference and sealed half-AUC scorer prepared; representation/self gates, raw-to-CLI geometry, single-label N/A and six paired macro gates passed; actual measurement not run",
     "fixed dev/val promotion helper prepared: full fresh five datasets, grouped paired intervals, B/B0 no-drop, frozen max-gain primary/ties and distinct validation threshold checked; actual candidates not run",
     "raw-cache branch extension now reclaims only verified superseded payloads under reader/writer locks; concurrent merge/held reader checks and one real complete C1 cached c0 regression passed with all arrays exact and zero encodes",
-    "sealed dual-frame scorer integrated per-class only-add/only-delete/full accounting and profit/purity thresholds; complete mIoU consistency, independent pixel edits and zero-edit N/A checked; no candidate result"
+    "sealed dual-frame scorer integrated per-class only-add/only-delete/full accounting and profit/purity thresholds; complete mIoU consistency, independent pixel edits and zero-edit N/A checked; no candidate result",
+    "PACO-Part user-requested MEAN-only200 sealed and scored; raw O24 cache saved, first-case output identity exact"
   ],
   "pending": [
-    "assess completed COCO952 exploratory result and choose a small candidate test",
-    "screen about1000 total before increasing scope; no automatic large run",
-    "do not restart6000 or official full runs"
+    "assess MEAN200 result; no further run arranged",
+    "6000 and official full remain stopped"
   ],
   "plan_source": "6ac73cac-72d4-83e9-a64b-bead949e068f; complete revised reply 2c9768c9-af0a-488c-bdb4-eff695430de9 (8305 chars)",
   "research_goal": "score improvement only; known weak points motivate candidates, not a presumed advantage",
   "process_id": null,
   "tool_session": null,
   "exploration": {
-    "state": "\u5b8c\u6210",
+    "state": "完成",
     "n": 600,
     "summary": "../cv_data/a/explore600_20261008_v1/SUMMARY.md",
     "official_goal_reached": false,
@@ -72,7 +72,7 @@
   "inference_code_commit": "e7b9ce3",
   "rough_wall_hours": 26,
   "official_baseline": {
-    "state": "\u7528\u6237\u505c\u6b62",
+    "state": "用户停止",
     "controller_session": null,
     "root": "../cv_data/a/official_foris_20261008",
     "current_dataset": "coco",
@@ -136,7 +136,7 @@
     "storage_regression_report": "../cv_data/a/raw_cache_compaction_identity1_20261008/identity_report.json"
   },
   "dev6000": {
-    "state": "\u7528\u6237\u505c\u6b62",
+    "state": "用户停止",
     "stopped_pids": [
       24973,
       24974
@@ -159,7 +159,7 @@
   "screening_run": "../cv_data/a/stopped_coco952_screen_20261009/run",
   "screening_score": "../cv_data/a/stopped_coco952_screen_20261009/score",
   "screening_result": {
-    "state": "\u5b8c\u6210",
+    "state": "完成",
     "n": 952,
     "dataset": "coco",
     "folds": [
@@ -176,5 +176,25 @@
     },
     "fine_minus_mean_pp": 0.00027953312257977814,
     "scope": "stopped prefix exploration; not five datasets or Pro candidate result"
+  },
+  "bounded_mean200": {
+    "dataset": "paco_part",
+    "arms": [
+      "mean"
+    ],
+    "n": 200,
+    "fold_counts": {
+      "0": 50,
+      "1": 50,
+      "2": 50,
+      "3": 50
+    },
+    "sampling": "first50 frozen seed1 draws per fold, no score-based selection",
+    "raw_cache": "../cv_data/a/paco_mean200_20261008/raw_cache",
+    "state": "COMPLETE",
+    "no_auto_scale": true,
+    "miou_cli": 44.54304110770325,
+    "miou_original": 44.53102482034196,
+    "summary": "../cv_data/a/paco_mean200_20261008/summary.json"
   }
 }
