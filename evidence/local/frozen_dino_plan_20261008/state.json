@@ -1,8 +1,8 @@
 {
   "status": "进行中",
-  "active_task": "LVIS requested600 complete47.581, cumulative80047.151; ISIC/iSAID downloads active with independent finalizer; rank controls prepared only",
-  "run": "../cv_data/a/lvis_mean600_new_20261008/run",
-  "updated_utc": "2026-10-09T05:19:45.813371+00:00",
+  "active_task": "User requested another LVIS MEAN600, batch3 running; auto score and pool saved I/U into1400; no new FoRIS",
+  "run": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_mean600_batch3_20261009/run",
+  "updated_utc": "2026-10-09T06:03:41.727213+00:00",
   "goal_reached": false,
   "completed": [
     "source identity audit",
@@ -54,13 +54,14 @@
     "Requested LVIS600 sealed/scored47.581 and pooled80047.151; controller complete, no extra experiments"
   ],
   "pending": [
-    "follow existing iSAID/ISIC download finalizer through validation",
-    "four readout controls prepared but real data comparison not launched",
+    "complete explicitly requested LVIS batch3 MEAN600, score and pooled1400",
+    "follow existing ISIC download finalizer through validation",
+    "four readout controls prepared but real comparison not launched",
     "old6000 and official full remain stopped"
   ],
   "plan_source": "6ac73cac-72d4-83e9-a64b-bead949e068f; complete revised reply 2c9768c9-af0a-488c-bdb4-eff695430de9 (8305 chars)",
   "research_goal": "score improvement only; known weak points motivate candidates, not a presumed advantage",
-  "process_id": null,
+  "process_id": 14030,
   "tool_session": null,
   "exploration": {
     "state": "完成",
@@ -72,8 +73,8 @@
   "fresh_manifest_root": "../cv_data/a/fresh_manifests_20261008",
   "representation_root": "../cv_data/a/representation_premise_20261008",
   "reference_rule": "actual FoRIS stage2 binary FG; fixed source top20% hard BG; uniform token weights, explicitly recorded rather than claiming RCG coverage weighting",
-  "controller_activity": "../cv_data/a/representation_premise_20261008/activity.json",
-  "inference_log": "../cv_data/a/representation_premise_20261008/infer_dev6000.log",
+  "controller_activity": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_mean600_batch3_20261009/activity.json",
+  "inference_log": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_mean600_batch3_20261009/INFERENCE.log",
   "started_utc": "2026-10-08T20:23:55Z",
   "inference_code_commit": "e7b9ce3",
   "rough_wall_hours": 26,
@@ -95,7 +96,7 @@
     "pid_exit_confirmed": true,
     "no_automatic_restart": true
   },
-  "timing_context": "6000 ended by user; no live MPS inference; CPU scoring of sealed COCO952 only",
+  "timing_context": "MPS MEAN-only LVIS600; raw O24 archive continues; downloads run independently",
   "candidate_preparation": {
     "state": "prepared, not admitted",
     "C1": "gated full runner and last-O control prepared; one real CPU c0 complete-parent identity passed, actual candidate not run",
@@ -296,7 +297,7 @@
     "mean_minus_foris_cli": -0.4172496341111227,
     "summary": "../cv_data/a/lvis_foris200_cached_20261008/summary.json"
   },
-  "controller_process_id": null,
+  "controller_process_id": 14029,
   "lvis_mean600_new": {
     "state": "COMPLETE",
     "n": 600,
@@ -336,5 +337,22 @@
     "checks": "../cv_data/a/mean_rank_theory_preparation_20261009/checks.json",
     "real_miou_measured": false,
     "new_encoder_calls": 0
+  },
+  "lvis_mean600_batch3": {
+    "state": "INFERENCE",
+    "n": 600,
+    "cumulative_n_after_completion": 1400,
+    "root": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_mean600_batch3_20261009",
+    "manifest": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_mean600_batch3_20261009/prepared/manifest.json",
+    "controller_pid": 14029,
+    "worker_pid": 14030,
+    "algorithm_unchanged": true,
+    "new_query_photos": 600,
+    "prior_query_overlap": 0,
+    "auto_score": true,
+    "auto_merge_saved_iu": true,
+    "no_new_foris": true,
+    "no_auto_scale": true,
+    "previous800_cli": 47.1512294811
   }
 }
