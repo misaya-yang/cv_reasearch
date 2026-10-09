@@ -6,6 +6,12 @@
 ## 当前任务：M4 Max 本机持续分割研究（2026-10-08）
 
 **用户明确追加一轮新的LVIS600，并要求后台运行约一小时。** 十折各60例，共600个不同类别、600张新查询照片，排除此前LVIS200、PACO600及已知旧探索的查询照片和RGB哈希；方法参数与之前MEAN一致，继续保存无损O24 FP32原始特征。运行在`cv_data/a/lvis_mean600_new_20261008/`；`run_lvis600.py`控制器已启动，完成推理后自动评分，并以已存I/U合并LVIS800，不重推理。实际状态以同级`activity.json`和`INFERENCE.log`为准；不得重复启动。此前LVIS200的完整FoRIS CPU缓存对照继续运行，600控制器在该对照已封存时自动做同批配对评分。这600由本chat用户直接指定，覆盖此前“仅各组200”的旧安排；不自动追加超过本轮600或重启旧6000/官方全量。
+**新LVIS600已在2026-10-09 00:26（America/New_York）完成：MEAN47.581，合并800为47.151。** 控制器正常退出，600预测封存、评分及I/U合并完成；原图分别47.685/47.244。新600没有同批FoRIS读数，已知同200仍为FoRIS46.680对MEAN46.263。
+
+最新Pro10362字符回复把MEAN的rank差解释为参考排序违约损失的次梯度，并提出graph-only、flat、普通排序迁移融合、MEAN四个固定读出。已独立用小数组核验秩/并列、次梯度、反序对损失和图误差恒等式；CDF秩及MEAN unary与锁定实现逐位一致，并证实固定0.25步长可增大排序损失。只准备`scripts/mean_rank_controls.py`和[说明](MEAN_RANK_PREPARATION_20261009.md)，无新模型前向、真实数据预测或mIoU。Pro引用旧remote commit89d13d2的表格漏了本机最新同200负差和600完成，不能原样当最新证据。
+
+iSAID/ISIC下载继续，独立收尾控制器`cv_data/setup/asset_downloads/finalize_controller.log`已启动；以其state和各range progress为准，保持原下载器运行。每套完成后分别CRC/SHA、布局准备与引用校验，未就绪不启动新数据集实验。
+**iSAID已于2026-10-09 01:24（America/New_York）就绪。** 6363图像、6363原始掩码、三折10063条引用（3108/3657/3298）全部对齐，归档CRC和SHA及提取文件身份通过。收据在`cv_data/setup/asset_downloads/iSAID/isaid_extract_receipt.json`；另以未经修改的官方loader核对每折首例的二维掩码、非空前景、图mask尺寸，仅作数据加载检查，无模型前向或预测。ISIC约2.85/11.17GB仍在下载，独立控制器继续收尾；未启动新数据集实验。
 
 **用户询问LVIS与FoRIS比较，以及后续是否可直接复用原始特征。** 直接使用同一冻结LVIS200清单、已有O24无损FP32缓存，计算完整FoRIS（含原CRF）对照；运行在`cv_data/a/lvis_foris200_cached_20261008/`。新增`--raw-cache-profile ... --encoder-device cpu`入口不创建DINO且没有缺失缓存的编码兜底。首5例重放的CRF前连续分数与此前MEAN记录逐位一致，模型初始化及前向均为0；完成后与MEAN做同批配对评分。现有完整参考/查询缓存覆盖已测PACO600及LVIS200的末层O24；新增层、裁剪或尺度需另补对应特征，不能将O24缓存声称为全部层/全部尺度。
 **同批LVIS200比较已完成：完整FoRIS46.680，MEAN46.263，MEAN低0.417点。** 200例全部CRF前字段逐位一致，DINO初始化和前向为0；收据在`cv_data/a/lvis_foris200_cached_20261008/cache_replay_receipt.json`。不能将对官方另一批42.8的数值差当成此处方法提升。每类仅一张查询照片，类内照片bootstrap退化，不宣称显著。已授权的新LVIS600仍继续，未因这次读数改变其方法或规模。

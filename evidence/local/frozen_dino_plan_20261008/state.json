@@ -1,8 +1,8 @@
 {
   "status": "进行中",
-  "active_task": "User explicitly requested unattended new LVIS MEAN600; running ten folds60 each, auto-scoring and cumulative800 after completion; FoRIS200 cache-only comparison continues",
+  "active_task": "LVIS requested600 complete47.581, cumulative80047.151; ISIC/iSAID downloads active with independent finalizer; rank controls prepared only",
   "run": "../cv_data/a/lvis_mean600_new_20261008/run",
-  "updated_utc": "2026-10-09T03:35:05.939625+00:00",
+  "updated_utc": "2026-10-09T05:19:45.813371+00:00",
   "goal_reached": false,
   "completed": [
     "source identity audit",
@@ -50,17 +50,18 @@
     "Second MEAN-only200 new query photos sealed and scored; pooled40043.710 verified independently, zero re-encodes",
     "Third MEAN-only200 new query photos sealed and scored50.763; pooled60044.942 verified independently, zero re-encodes",
     "LVIS requested MEAN-only200 new query photos/classes sealed and scored46.263; parameter/code/model identity matches PACO",
-    "same LVIS200 cached FoRIS46.680 vs MEAN46.263, delta-0.417; all200 frontend fields exact, zero encodes"
+    "same LVIS200 cached FoRIS46.680 vs MEAN46.263, delta-0.417; all200 frontend fields exact, zero encodes",
+    "Requested LVIS600 sealed/scored47.581 and pooled80047.151; controller complete, no extra experiments"
   ],
   "pending": [
-    "follow explicitly requested LVIS600 background controller",
-    "iSAID and ISIC public-source downloads/preparation delegated to Luna",
-    "Pro proposals archived, new-view experiments not launched; old full runs remain stopped"
+    "follow existing iSAID/ISIC download finalizer through validation",
+    "four readout controls prepared but real data comparison not launched",
+    "old6000 and official full remain stopped"
   ],
   "plan_source": "6ac73cac-72d4-83e9-a64b-bead949e068f; complete revised reply 2c9768c9-af0a-488c-bdb4-eff695430de9 (8305 chars)",
   "research_goal": "score improvement only; known weak points motivate candidates, not a presumed advantage",
-  "process_id": 2596,
-  "tool_session": 13501,
+  "process_id": null,
+  "tool_session": null,
   "exploration": {
     "state": "完成",
     "n": 600,
@@ -224,9 +225,9 @@
     "summary": "../cv_data/a/paco_mean200_new_20261008/summary.json"
   },
   "latest_pro_revision": {
-    "turn_id": "12791eda-4d5b-4b92-aa57-32d5c432777d",
-    "characters": 7799,
-    "role": "reference: MEAN fixed-point reorganization and task-weighted global/local descriptor proposal; no real mIoU proof"
+    "turn_id": "69af35e1-1dd3-49a8-8a47-9431eb7bc89a",
+    "characters": 10362,
+    "role": "rank-violation interpretation and four fixed unary controls; latest Pro table omits local paired200/600 completion"
   },
   "bounded_mean200_batch3": {
     "state": "COMPLETE",
@@ -295,9 +296,9 @@
     "mean_minus_foris_cli": -0.4172496341111227,
     "summary": "../cv_data/a/lvis_foris200_cached_20261008/summary.json"
   },
-  "controller_process_id": 2594,
+  "controller_process_id": null,
   "lvis_mean600_new": {
-    "state": "RUNNING",
+    "state": "COMPLETE",
     "n": 600,
     "arms": [
       "mean"
@@ -323,6 +324,17 @@
     "activity_path": "../cv_data/a/lvis_mean600_new_20261008/activity.json",
     "automatic_scoring": true,
     "automatic_cumulative800": true,
-    "no_auto_scale_beyond_requested600": true
+    "no_auto_scale_beyond_requested600": true,
+    "miou_cli": 47.58087950349717,
+    "miou_original": 47.68495293603093,
+    "merged800_cli": 47.15122948106034,
+    "summary": "../cv_data/a/lvis_mean600_new_20261008/summary.json"
+  },
+  "rank_theory_preparation": {
+    "helper": "scripts/mean_rank_controls.py",
+    "note": "docs/research/MEAN_RANK_PREPARATION_20261009.md",
+    "checks": "../cv_data/a/mean_rank_theory_preparation_20261009/checks.json",
+    "real_miou_measured": false,
+    "new_encoder_calls": 0
   }
 }
