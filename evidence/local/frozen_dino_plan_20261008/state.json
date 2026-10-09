@@ -1,6 +1,6 @@
 {
   "status": "进行中",
-  "active_task": "Strong research: fixed100 erasure experiment complete and failed; no active model run, no larger cohort queued; preserve exact errors and source evidence for next mechanism",
+  "active_task": "Strong main line: tail-rank fixed100 complete and audited; candidate failed matched control, no active run; reference covariance hypothesis reviewed only, not executed",
   "run": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_foris1400_score_reuse_20261009/run",
   "updated_utc": "2026-10-09T10:19:00.063760+00:00",
   "goal_reached": false,
@@ -679,5 +679,76 @@
       4.256948
     ]
   },
-  "download_notification_preference": "No healthy download progress messages; notify once on full completion or a serious blocker needing human action"
+  "download_notification_preference": "No healthy download progress messages; notify once on full completion or a serious blocker needing human action",
+  "tail_signal1400": {
+    "state": "COMPLETE_LABEL_DIAGNOSTIC_ONLY",
+    "root": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_tail_signal1400_20261009",
+    "n": 1400,
+    "new_encoder_calls": 0,
+    "new_prediction_masks": 0,
+    "global_guide_auc": 0.9545931789160543,
+    "in_FoRIS_final_mask_guide_auc": 0.7434539690120449,
+    "in_FoRIS_final_mask_score_auc": 0.7362682547210807,
+    "scope": "episode macro weighted token ordering conditional on existing masks; not mIoU",
+    "token_proposal_report": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_tail_signal1400_20261009/token_proposal_report.json",
+    "token_proposal_small_query_guide_auc": 0.7957574755643027,
+    "token_proposal_small_query_score_auc": 0.7724834177826937
+  },
+  "tail_rank100": {
+    "state": "COMPLETE",
+    "n": 100,
+    "root": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_tail_rank100_20261009",
+    "script": "scripts/lvis_tail_rank_pilot.py",
+    "new_encoder_calls": 0,
+    "source": "same frozen exposed100; existing parent H/A/s/y and guide",
+    "candidate": "ROI conditional rank",
+    "controls": [
+      "no tail reference",
+      "centered global correction with same L1 amplitude"
+    ],
+    "coefficients": {
+      "alpha": 0.25,
+      "lambda": 16,
+      "G_threshold": 0.5
+    },
+    "new_query_photos": 0,
+    "pid": null,
+    "exec_session_id": 92519,
+    "completed_at_last_check": 100,
+    "follow_existing_only": true,
+    "source_config": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_tail_rank100_20261009/config.json",
+    "exec_session_closed": true,
+    "n_completed": 100,
+    "cli_miou": {
+      "foris.crf": 47.70402923750694,
+      "mean": 47.10937039005823,
+      "mean.graph_only": 46.53177282043286,
+      "foris.fg_anchor.crf": 50.04721587825203,
+      "mean.tail_rank": 47.1874672344107,
+      "mean.no_tail_reference": 47.11263065326976,
+      "mean.tail_global_amplitude": 47.47302159219571
+    },
+    "original_miou": {
+      "foris.crf": 47.873899215399234,
+      "mean": 47.18250754756989,
+      "mean.graph_only": 46.62789492652987,
+      "foris.fg_anchor.crf": 50.18267969992973,
+      "mean.tail_rank": 47.26661474551628,
+      "mean.no_tail_reference": 47.185972769763524,
+      "mean.tail_global_amplitude": 47.55118883669737
+    },
+    "report": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_tail_rank100_20261009/report.json",
+    "independent_audit": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_tail_rank100_20261009/reviews/independent_audit.json",
+    "execution_receipt": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_tail_rank100_20261009/execution_receipt.json",
+    "conclusion": "Localized CDF fails equal-L1 centered-amplitude control and FoRIS; amplitude control improves MEAN0.364 but is still below FoRIS0.231",
+    "new_candidates_expanded_beyond100": false
+  },
+  "reference_discriminant_preparation": {
+    "state": "MECHANISM_REVIEW_ONLY_NO_INFERENCE",
+    "path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_discriminant100_20261009_preparation/mechanism_review.md",
+    "encoder_calls": 0,
+    "new_masks": 0,
+    "definition": "class-balanced FG/BG within-reference covariance, lambda=trace/C; matched precision mean contrast control required",
+    "not_default_component": true
+  }
 }
