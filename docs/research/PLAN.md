@@ -349,3 +349,15 @@ FoRIS低成本配置必须进入效率比较：作者报告512px为59.5、258ms�
 依据是L4直接读出优于s2、但图后优势未站住；本次回答这一简化能否转成完整输出的INSID3优势，不预填预计分数。
 当前以 Strong 为主，资产下载中；未实现或执行该简化实验。
 `bench_evidence.py`原CLI仍是位置级旧筛选台，不充当 Strong 的完整原图比较入口。
+
+## 2026-10-09 goal续轮：源头参考证据
+
+同100完整reference保护校准完成：48.284，对同L1 uniform49.834低1.550；虽然anchor的9个零交集减少到5，却恢复了大量干扰。独立审阅所有字段、mask与I/U闭合、预算最大相对误差5.44e−8。找回TP/FP的p均值.833/.829，不能把它当可靠正确概率，具体保护机制未通过。完整报告`evidence/local/m4/lvis_reference_protected100_20261009.md`。
+
+进一步在同100生成匹配负例cloud，参考Krr只按全矩阵共同尺度、排除diag；ω=(1−c)*(Krr@c)/Σc，BGdensity按ω归一化、FGcloud保持原样，τ=.07不扫。全部p_global复现旧字段逐位一致，字段封存后才标签诊断。原anchor争议区宏AUC .5850→.6143，新reference额外FG区 .5540→.6046；改善有限、存在广告牌严重反例，只是前提不是涨分。源在`src/ics/methods/matched_background_role.py`，可复现字段/诊断在`cv_data/a/lvis_matched_background100_20261009/`。
+
+基于这个有限前提，同100完整匹配背景reference校准与其L1 uniform控制已完成。算子、原CRF、样本和全部系数保持原保护实验定义，只替换source p。CLI reference48.961873、uniform49.633312，差−0.671439；原图49.109783、49.765735，差−0.655952。虽然比原FoRIS高1.257844，仍低于同预算uniform与FG-anchor50.047216，因此没有证明该参考关系产生额外收益。入口`lvis_reference_protected_pilot.py ... --matched-background`，root `cv_data/a/lvis_matched_background_calibration100_20261009/`，原完成producer脚本按记录SHA已存旧root/source。全部预测先封存再评分，无新增照片或编码。
+
+DeepGlobe200输入已齐：400不同图像/800图mask，各项解码/尺寸/字节校验通过，主代理独立复核800 SHA。清单明确EXPLORATORY200_MANIFEST，非公开论文精确episode复现。道路宽度中位数10px、query覆盖率中位数2.45%，仅输入几何诊断，DINO/模型调用0。健康下载过程不再播报；只完成或需人行动的严重阻塞通知。
+
+下一项仍只用已授权固定100：在原1024归一化参考图中擦除真实FG，以及两轴各roll512的同面积mask；仅补编码这两种缺失的参考视图，原始R/Q O24复用。保留原APD决策与query坐标，FP32求full−view，以同一完整c/(1−c)加权角色差构造guide。比较真实擦除、移位擦除、原始FG−BG三种guide；锁定原MEAN的s/H/A、rank系数.25、λ16、CG和双线性>.5读出，不新增CRF或参数搜索。移位mask可能与FG重叠，记录实际面积，擦除delta不预称纯目标属性。编码前的无标签检查通过：coverage、原处理R、原MEAN场和读出均逐位复现，零delta/空角色有显式回退。代码`scripts/lvis_reference_erasure_pilot.py`，产物`cv_data/a/lvis_reference_erasure100_20261009/`。所有预测封存后再独立评分；这是已暴露100上的开发实验，不是新样本确认。

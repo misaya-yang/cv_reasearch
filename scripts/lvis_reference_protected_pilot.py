@@ -16,7 +16,10 @@ sys.path.insert(0,str(Path(__file__).resolve().parent))
 from lvis_atomic_study import ASSETS, DEFAULT_OUT, REPO, point, sha, write
 
 SOURCE=DEFAULT_OUT/'pilot100'
-ROOT=ASSETS/'a/lvis_reference_protected100_20261009'
+MATCHED_BACKGROUND='--matched-background' in sys.argv
+ROLE_SOURCE=ASSETS/'a/lvis_matched_background100_20261009' if MATCHED_BACKGROUND else None
+ROOT=ASSETS/('a/lvis_matched_background_calibration100_20261009' if MATCHED_BACKGROUND
+            else 'a/lvis_reference_protected100_20261009')
 ARMS=['foris.crf','mean','foris.fg_anchor.crf','calibration.reference.crf','calibration.uniform.crf']
 
 
@@ -24,12 +27,22 @@ def prepare():
     seal=json.loads((SOURCE/'sealed.json').read_text());assert seal['n']==100
     for file,key in [('manifest.json','manifest_sha256'),('config.json','config_sha256'),('inference.jsonl','inference_index_sha256')]:
         assert sha(SOURCE/file)==seal[key]
+    role_seal=None
+    if ROLE_SOURCE:
+        role_seal=json.loads((ROLE_SOURCE/'sealed.json').read_text())
+        assert role_seal['state']=='ALL_FIELDS_SEALED' and role_seal['n']==100
+        for file,key in [('config.json','config_sha256'),('manifest.json','manifest_sha256'),('inference.jsonl','inference_index_sha256')]:
+            assert sha(ROLE_SOURCE/file)==role_seal[key]
+        assert json.loads((ROLE_SOURCE/'manifest.json').read_text())==json.loads((SOURCE/'manifest.json').read_text())
     config=dict(n=100,arms=ARMS,source_seal_sha256=sha(SOURCE/'sealed.json'),
         cohort='same previously frozen first10 per LVIS fold; no new cases',
         hypothesis='reference FG/BG tendency can preserve some true foreground during calibration',
         formula='bilinear1024 native/anchor/p first; low=min(native,anchor),gap=abs(native-anchor); role=low+p*gap',
         control='uniform=low+gamma*gap; gamma=sum(p*gap)/sum(gap), same pixel L1 upward correction budget',
-        source_role='previous sealed reference coverage-weighted FG/BG kernel density tau .07; no re-encoding',
+        source_role=('sealed matched-background cloud tau .07, reference self-excluded global-scaled kernel; no re-encoding'
+                     if ROLE_SOURCE else 'previous sealed reference coverage-weighted FG/BG kernel density tau .07; no re-encoding'),
+        role_source=str(ROLE_SOURCE) if ROLE_SOURCE else None,
+        role_source_seal_sha256=sha(ROLE_SOURCE/'sealed.json') if ROLE_SOURCE else None,
         prediction='>0.5 then original10-iterationCRF, original bool-to-image interpolation',
         source_sha256={str(p):sha(p) for p in [Path(__file__),REPO/'src/ics/methods/reference_protected_calibration.py',
              ASSETS/'third_party/foris_official/utils/refinement.py',REPO/'src/ics/m4_crf.py']},
@@ -40,11 +53,15 @@ def prepare():
     write(ROOT/'config.json',config)
     write(ROOT/'manifest.json',json.loads((SOURCE/'manifest.json').read_text()))
     (ROOT/'predictions').mkdir();(ROOT/'fields').mkdir()
+    (ROOT/'source').mkdir()
+    for path,digest in config['source_sha256'].items():
+        origin=Path(path);dest=ROOT/'source'/origin.name
+        dest.write_bytes(origin.read_bytes());assert sha(dest)==digest
     write(ROOT/'activity.json',dict(state='FROZEN',n=100))
 
 
 def initialize():
-    global NP,TORCH,IMAGE,PROTECTED,RCG,RENDER,CRF,BAND,CORE,TRANSFORM,REFINE
+    global NP,TORCH,IMAGE,PROTECTED,RCG,RENDER,CRF,BAND,CORE,TRANSFORM,REFINE,ROLE_INDEX
     import numpy as np
     import torch
     from PIL import Image
@@ -61,6 +78,8 @@ def initialize():
     CRF,BAND,CORE=init_crf(1024,'cpu');CRF.eval().requires_grad_(False)
     NP,TORCH,IMAGE,PROTECTED,RCG,RENDER,TRANSFORM,REFINE=(np,torch,Image,
         reference_protected_calibration,rcg,render,build_transform(1024),crf_refine)
+    ROLE_INDEX=({r['episode_id']:r for r in map(json.loads,(ROLE_SOURCE/'inference.jsonl').read_text().splitlines())}
+                if ROLE_SOURCE else {})
 
 
 def one(task):
@@ -68,6 +87,14 @@ def one(task):
     field=SOURCE/'fields'/name;assert sha(field)==old['fields_sha256']
     with NP.load(field) as saved:
         anchor,p=(saved[k].copy() for k in ['foreground_anchor_normalized_score','role_probability'])
+    role_hash=old['fields_sha256']
+    if ROLE_SOURCE:
+        rec=ROLE_INDEX[row['episode_id']];role_file=ROLE_SOURCE/'fields'/rec['filename']
+        assert sha(role_file)==rec['fields_sha256']
+        with NP.load(role_file) as saved:
+            assert NP.array_equal(saved['p_global'],p)
+            p=saved['p_matched'].copy()
+        role_hash=rec['fields_sha256']
     original=DEFAULT_OUT/'fields'/name;assert sha(original)==atomic['field_sha256']
     with NP.load(original) as saved:native=RCG.minmax(saved['score'])
     at=time.monotonic();result=PROTECTED.predict(native,anchor,p)
@@ -92,7 +119,7 @@ def one(task):
     destination=ROOT/'predictions'/name;NP.savez_compressed(destination,**packed)
     fields=ROOT/'fields'/name;NP.savez_compressed(fields,reference=result['protected'],uniform=result['uniform'])
     return dict(episode_id=row['episode_id'],filename=name,prediction_sha256=sha(destination),
-        fields_sha256=sha(fields),encoder_calls=0,source_role_sha256=old['fields_sha256'],
+        fields_sha256=sha(fields),encoder_calls=0,source_role_sha256=role_hash,
         readout_seconds=readout_seconds,crf_seconds=times,diagnostics=result['info'],seconds=time.monotonic()-start)
 
 
@@ -175,5 +202,6 @@ def score():
 
 
 if __name__=='__main__':
-    if len(sys.argv)!=2 or sys.argv[1] not in ['infer','score']:raise SystemExit('Use infer or score')
+    if len(sys.argv)<2 or sys.argv[1] not in ['infer','score'] or set(sys.argv[2:])-{'--matched-background'}:
+        raise SystemExit('Use infer or score, optionally --matched-background')
     infer() if sys.argv[1]=='infer' else score()
