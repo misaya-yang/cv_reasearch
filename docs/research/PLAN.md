@@ -429,3 +429,17 @@ DeepGlobe200输入已齐：400不同图像/800图mask，各项解码/尺寸/字�
 保真固定100已COMPLETE并独立审查通过：CLI candidate46.268881、matched45.935585、MEAN47.109370、FoRIS47.704029，原图46.374766/46.034884/47.182508/47.873899。candidate虽较matched+.333296，仍较MEAN−.840490、FoRIS−1.435148。零交集MEAN7→candidate1（matched2），却补真291522、补假625189，pixel precision .640786→.607350、recall .686082→.725393；相对MEAN精确CLI补真+3.599458、补假−4.451327、删真−.006685、删假+.018064，新增假前景代价超过召回收益。40小目标组较MEAN−.282679，另60例−.927406，完整结果失败。
 
 全部100 G/rank/FP64 degree/Δa、200实际H差量和同步RHS、全部field equation/mask/IU/基线与编辑通过。总Δa误差max3.64e−12，100例都不匹配ΣΔa*y；不以较uniform正差宣称身份贡献。封存后补真区域的global guide rank面积加权均值.799694，补假.893074；高guide错误响应同样被保住。controller PID77992/session16165及新增区域诊断30512均exit0；模型0、推理图像解码0，8worker逐例合计4.373秒，日志创建到report5.533秒。代码默认入口不变，不扫强度、不自动叠加graph gate或扩N。下一研究回到前景/背景目标粒度判别的信息来源。详细证据`evidence/local/m4/lvis_reference_fidelity100_20261009.md`。
+
+## 2026-10-09 goal续轮：单个固定中间层的参考角色信息
+
+保真未能分清新增FP，检验一次实际表征变化，而非继续调整原g幅度。仅同已曝光固定100，指定24块模型的第12块norm=True O输出，保持64²/1024channels；不把中间层称天然更细或更准，不扫layers。官方DINOv3 segmentation实现允许均匀取层，ViT-L示例包含0-based11（本次one-based12）；这是可用接口与研究动机，不是本任务有效性证明：[官方实现](https://github.com/facebookresearch/dinov3/blob/main/dinov3/eval/segmentation/models/__init__.py)。已有[层选择研究](https://arxiv.org/abs/2602.07550)也区分中间表示的潜力与可靠选择，不能把oracle层收益转记给固定O12。
+
+新guide由同层R12/Q12计算完整c/(1-c)加权FG/BG均值之差的单位向量；R12保留FP32，Q12按原parent recipe先保存处理后FP16再升FP32单位化，以匹配已实测O24 raw contrast的精度政策。仅沿用原O24的APD flag；需要debias时使用已经存在的own O12黑图basis，绝不套U24。O24控制用原native U24和原parent q，须逐位复现已封存raw contrast guide/field/mask47.024882。原H/A/s与rank.25/graph16/CG/两帧renderer不变，不叠加新图门控/保真或CRF。只增加一个candidate，完整FoRIS、MEAN和O24 contrast为必要控制。
+
+实际O12缺缓存才补原100 R/Q输入的MPS FP32 B2前向，无新照片或裁剪；同步捕获O24并核对原始cache逐位身份。新增原始O12/O24写独立root/profile，绝不向旧cache merge（旧write会替换并删旧payload，破坏封存证据）。原始输入、模型/权重/预处理/observer/basis、cache payload/tensor、前向次数/字节/耗时留存；缺O12不能称CPU零前向复用。全100预测先封存再读取query GT评分。负结果只判此固定cue/readout，不自动扫描其它层或恢复C1–C3/dev6000/官方全量。
+
+O12同100已COMPLETE并独立核查通过：CLI46.616389，O24匹配控制47.024882、MEAN47.109370、FoRIS47.704029；原图46.680704/47.132327/47.182508/47.873899。较O24−.408494，4折涨6折跌，零交集10 vs6；相对控制补真35234、补假53939、删真163629、删假394098，精确CLI+.088485−.063295−2.380345+1.946662。误删真前景没有回本。40小目标组较O24−.187969、MEAN−.742340；没有涨分证据。
+
+全部100首/末层同步身份、200角色cache/profile/payload/tensor、固定U12处理与原控制、最终字段/mask/IU/编辑核对一致。补取100次真实MPS B2、200输入角色199unique；两层原始FP32独立缓存6215802519字节（约5.79GiB），旧cache write0。首例27395/PID79950、主56609/PID80079及cue诊断61352均exit0；主恢复log创建到report611.485秒（剩余99及评分），100例累计615.820秒，encode/cache累计548.609秒，非纯模型时间。metadata hash自动检查缺口由独立冻结快照、结束hash和全部processed tensor重建补核，没有实际basis混用；不修改已启动源码。1个重复输入的provenance追加通过200历史entry快照闭合，raw数组未变。
+
+封存后实际FoRIS mask内99有效例guide排序宏AUC O12 .595611 vsO24 .773993，全图.828516/.963065；小目标39有效mask内.655991/.816300。不是mIoU，不证明所有O12信息都无效；只表明该固定均值cue没有新增可迁移判别优势。默认入口不变，不扫下一层或自动叠加组件。下一步仅独立数学准备参考图跨角色cut的转移，需防止它退化成两个unary posterior乘积或纯不确定性削边；尚未冻结实际候选/运行数量。详情`evidence/local/m4/lvis_midlayer12_100_20261009.md`。
