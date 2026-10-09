@@ -393,3 +393,21 @@ DeepGlobe200输入已齐：400不同图像/800图mask，各项解码/尺寸/字�
 源参考正则化判别目标相对raw中位提高3.381倍（最小1.548），不是源图分类准确率；查询整体token AUC raw.963065→fisher.943016，原FoRIS最终mask内raw.773993→.738614；40个query<1%案例的39个有效mask内.816300→.778689。低方差参考方向没有在这批query稳定迁移，单位方向与raw夹角较大（余弦中位.500）。不把源目标优化当新信息或已涨分。新模型/图像解码0，8worker逐例时间总56.634秒、cov solve总11.468秒，实际日志创建到完整report10.310秒（含启动/评分）；PID70573/session74730及诊断43319均退出，不重启。
 
 解释澄清：原1400 BG转移42.810→35.064的桥，是将child前缀用parent FG的读出bounds与child自己的minmax bounds分别评估；没有替换BG归一化函数，也不能当“改BG模块就能涨7.745”的因果证据。FG-anchor100才是已实测的完整读出干预，仍存在零交集增加和收益集中。后续从实际共享上下文和前景粒度不足找机制，避免继续按单参考低方差推断可迁移语义。
+
+## 2026-10-09 goal续轮：保持语义信号，限制跨判别排序的图传播
+
+单参考covariance改变方向导致query排序与mIoU下降，因此本轮保留原MEAN g/y/a，只改graph。已封存1400中小目标pre零交集28→graph_only62；actual token G中小目标guide AUC .795757、final score .772483。旧kernel role graph的posterior刻度在目标/干扰都很高，实际平均edge衰减约2.56%，并未过FoRIS。排序读出也未胜同L1控制，不能因此认定条件CDF作为unary有效；这轮独立检验它是否能避免同父对象semantic query edges淹没参考意图。
+
+固定同100，G=(s>.5)，所有Q节点u_i=conditionalCDF_G(g_i)，ties半分，G内等于locked average rank。仅E={至少一端在G}连边乘1−|u_i−u_j|。对照在相同E统一乘η，使相同位置的总edge mass匹配，E外完全原W；不重归一化。nG<2或G guide常数时两臂原H/field identity。无需模型、图像、q/R重解码，只读现成parent H/A/y/g/s。
+
+恢复W=−H_off/16，并用Hnew=Hparent+16*(diag(sum ΔW)−ΔW)；不从W重新构建原H，以免改变原degree计算精度/顺序。y/a、λ16、CG x0/rtol/atol/maxiter和bilinear>.5不变。两新臂与原完整FoRIS/MEAN/graph_only/FG-anchor及旧role/uniform_graph同100结果配对。全部100预测先封存再评分，source/权重/η/CDF/Δdegree/solver留存。产物`cv_data/a/lvis_context_rank_graph100_20261009/`，经典bilateral rank regularizer，不预称新信息或已涨分，不扩N/参数/新dataset。
+
+独立首case盲算：G355，E4988/总59684 directed edges，E内η=.921261，整体权重保留.993644；parent场与CDF_G locked rank逐位一致，同量误差4.55e−13。该例native H rowSum−a仅9.3e−15，不能声称已观察到明显float32 degree误差；保留native H仍避免任何重建顺序变化。实际干预可能偏弱，只以同100终点评价，不据此自行加gate强度或新参数。
+
+两臂同100已执行并封存评分，session70181 exit0，无活动推理。CLI context-rank graph47.701403，localized mass matched47.472579，原MEAN47.109370、FoRIS47.704029；candidate较MEAN+.592033、较matched+.228825、较FoRIS−.002626。原图47.789883/47.573653/47.182508/47.873899，candidate较matched+.216230，但仍低FoRIS.084016。CLI较MEAN7折增3折降，较matched6折增4折降；zero-IU均由MEAN7降到candidate/control6，FoRIS仍1。该观察支持继续检查图传播不足，不构成超过完整FoRIS或新样本泛化的证据。
+
+封存后分层诊断：query面积<1%的40例，按原fold/class聚合candidate21.439、MEAN20.425、matched21.056、FoRIS22.139；candidate较MEAN+1.014、较matched+.383，仍落后FoRIS.700。其余60例candidate较MEAN+.136、较matched+.064。子组沿用fold/class权重，不能将两个子组分数按例数平均还原全体结果。实际全图边权保留中位.995259，E质量占全图中位.041801，E内η中位.871383；干预有限但终点有变化。固定的是E外边权及unary，最终CG场会在G外变化，不能称预测被限制在G内。
+
+推理编码/图像解码0、只在封存后的score打开100 query mask。8worker逐例累计7.753秒，日志创建到report5.369秒（启动/推理/评分），未把并发累计当wall time。源码默认入口未改，100标签此前已暴露。独立审查正在核对全部图数组/H差量、输入不变、baseline I/U及编辑账本；结果留`cv_data/a/lvis_context_rank_graph100_20261009/`。不追加新样本、不恢复全量，不根据单批弱收益自动叠加组件。
+
+独立审查已通过：全部100 CDF直接计数/半ties、原字段不变、同E权重、200个实际Hdiff逐位一致、场方程、全部基线/最终mask/IU及编辑。总边权匹配最大误差4.55e−13，父图对角残差保持误差1.42e−14。candidate较matched的CLI精确收支补真+.432754、补假−.207758、删真−.120871、删假+.124700；较MEAN补真+.911474、补假−.358272、删真−.148723、删假+.187555。主要收益为补真，但候选仍有6个zero-IU，FoRIS只有1。结果不能当作Strong成功；下一步研究应面对小目标漏检和可迁移参考粒度，不能仅因正差就堆叠组件或扩样本。详情`evidence/local/m4/lvis_context_rank_graph100_20261009.md`。
