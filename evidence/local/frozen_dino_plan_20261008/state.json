@@ -1,8 +1,8 @@
 {
   "status": "\u8fdb\u884c\u4e2d",
-  "active_task": "dev6000 active; raw FP32 cache and encoder-free complete/C1 c0 replay verified on five probes; official full runs remain stopped",
+  "active_task": "6000 stopped; COCO952 exploratory score complete, use actual result before any bounded candidate screen",
   "run": "../cv_data/a/representation_premise_20261008/dev6000",
-  "updated_utc": "2026-10-09T00:36:45.978477+00:00",
+  "updated_utc": "2026-10-09T01:28:43.528126+00:00",
   "goal_reached": false,
   "completed": [
     "source identity audit",
@@ -48,15 +48,14 @@
     "sealed dual-frame scorer integrated per-class only-add/only-delete/full accounting and profit/purity thresholds; complete mIoU consistency, independent pixel edits and zero-edit N/A checked; no candidate result"
   ],
   "pending": [
-    "complete existing dev6000 without duplicate restart; preserve outputs",
-    "qualify candidate using frozen development prerequisites and complete score evidence",
-    "extend verified raw cache coverage to required candidate inputs/branches before any future full run",
-    "official/full runs remain stopped; never auto-restart"
+    "assess completed COCO952 exploratory result and choose a small candidate test",
+    "screen about1000 total before increasing scope; no automatic large run",
+    "do not restart6000 or official full runs"
   ],
   "plan_source": "6ac73cac-72d4-83e9-a64b-bead949e068f; complete revised reply 2c9768c9-af0a-488c-bdb4-eff695430de9 (8305 chars)",
   "research_goal": "score improvement only; known weak points motivate candidates, not a presumed advantage",
-  "process_id": 24974,
-  "tool_session": 25177,
+  "process_id": null,
+  "tool_session": null,
   "exploration": {
     "state": "\u5b8c\u6210",
     "n": 600,
@@ -90,7 +89,7 @@
     "pid_exit_confirmed": true,
     "no_automatic_restart": true
   },
-  "timing_context": "dev6000 and official FoRIS share MPS/CPU; 26-hour estimate was from isolated25 probes, actual wall time can be longer",
+  "timing_context": "6000 ended by user; no live MPS inference; CPU scoring of sealed COCO952 only",
   "candidate_preparation": {
     "state": "prepared, not admitted",
     "C1": "gated full runner and last-O control prepared; one real CPU c0 complete-parent identity passed, actual candidate not run",
@@ -135,5 +134,47 @@
     "candidate_gain_proven": false,
     "superseded_payload_reclamation": "only after exact merged readback, per-entry reader/writer locks; old unreferenced historical blobs not mass-deleted",
     "storage_regression_report": "../cv_data/a/raw_cache_compaction_identity1_20261008/identity_report.json"
+  },
+  "dev6000": {
+    "state": "\u7528\u6237\u505c\u6b62",
+    "stopped_pids": [
+      24973,
+      24974
+    ],
+    "both_exited": true,
+    "committed": 954,
+    "coverage": {
+      "coco": 952,
+      "pascal_part": 1,
+      "paco_part": 1
+    },
+    "no_automatic_restart": true
+  },
+  "screening_policy": {
+    "user_required": true,
+    "initial_total_about1000": true,
+    "Pro_plan_is_reference_not_authority": true,
+    "score_gain_before_scale": true
+  },
+  "screening_run": "../cv_data/a/stopped_coco952_screen_20261009/run",
+  "screening_score": "../cv_data/a/stopped_coco952_screen_20261009/score",
+  "screening_result": {
+    "state": "\u5b8c\u6210",
+    "n": 952,
+    "dataset": "coco",
+    "folds": [
+      0,
+      1
+    ],
+    "query_photo_groups": 919,
+    "frame": "cli",
+    "scores": {
+      "foris": 63.61097771953964,
+      "mean": 64.4960503031105,
+      "rcg": 64.16376120948024,
+      "fine": 64.49632983623307
+    },
+    "fine_minus_mean_pp": 0.00027953312257977814,
+    "scope": "stopped prefix exploration; not five datasets or Pro candidate result"
   }
 }
