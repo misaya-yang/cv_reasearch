@@ -11,7 +11,11 @@
 
 **固定100同批：完整FoRIS47.704、MEAN47.109；参考完整FG/BG密度条件图47.386，同总边权uniform控制47.226；最终场以前景原场极值标定+原CRF为50.047，相对FoRIS+2.343，原图+2.309。** `scripts/lvis_atomic_pilot.py`在评分前冻结一个role-graph候选和两个机制控制；一百新增CRF，原mask/场复用，DINO0，原MEAN重放全部逐位一致。独立审阅1200 I/U、3600编辑量、600原图renderer、100anchor方程均一致。anchor 52例增47例降、六折增四折降，fold3净增13.624，收益集中；四项pp为补真+.106、补假−.171、删真−6.143、删假+8.552，完全漏检1→9。它仅是最终校准不足的初步正控制，不能称独立原创或稳定泛化；role图只比MEAN+.277且未过FoRIS，不为旧MEAN叙事护航。默认入口不改、没有新候选扩到1400。报告`evidence/local/m4/lvis_atomic1400_pilot100_20261009.md`，完整数据与图在同级`cv_data/a/lvis_atomic1400_20261009/`。
 
+**用户明确要求下载代理停止中途播报，下载与校验完成后再报告；可自动恢复的网络问题仅写状态文件，严重需人行动的阻塞才通知。** 主代理继续算法涨分研究，健康下载进度不打断主线。
+
 **用户另明确授权独立子代理准备最低分DeepGlobe200例并研究输入为何难。** Luna `/root/download_deepglobe`只下载/整理图mask、固定可复现清单及几何诊断，不启动新数据集模型实验。十集按公开同法1-shot最低分排序：DeepGlobe13.3/INSID3 7.2、Fundus19.7/12.3、PACO42.3/38.7、LVIS42.8/41.8；已补齐[排序](BENCHMARK_DIFFICULTY_20261009.md)。当前官方FoRIS主源码无DeepGlobe loader/split，公开论文只说明road细长结构1024²/末层，缺精确配对细节；下载继续，必要将200清单明确标为自定探索而非完整官方复现。初步发现RSRM six-class land-cover loader不属于本次road任务，不复用该错误协议。资产产物`cv_data/a/deepglobe200_preparation_20261009/`，未完成即不假称READY。
+
+**goal续轮在原100内继续检验参考证据能否保护标定时的真目标，不新增样例。** `scripts/lvis_reference_protected_pilot.py`与`src/ics/methods/reference_protected_calibration.py`在`cv_data/a/lvis_reference_protected100_20261009/`，先把原native/FG-anchor坐标和封存参考FG/BG倾向p按原双线性读到1024，再令low=min(native,anchor)、gap=abs(native−anchor)，candidate=low+p*gap；同量控制uniform=low+γgap，γ=Σpgap/Σgap，匹配像素侧L1总校正。两臂只在这100执行原CRF，原FoRIS/MEAN/anchor完整终点直接复用，编码0、不扫阈值或系数。p全1/0对应CRF前初始两mask并/交，不能称native/anchor身份；先插值再包络避免另加粗网格非线性。独立小数组、常数p、100原native初始mask逐位一致及并/交端点和校正量检查通过，前提收据在同名preparation目录。旧100标签已曝光，本轮为继续开发，不是确认；p未当成正确概率，不能救两个初始读出都漏掉的位置。旧删真区域p的episode内AUC约.585，信号弱，实际是否减少误删且赢过uniform/完整FoRIS必须按完整结果判断；不以更漂亮的解释宣称涨分。
 
 **用户最新明确扩大为：对所有已完成LVIS1400计算同批完整FoRIS，并直接复用MEAN保存的原FoRIS连续场。** 运行在`cv_data/a/lvis_foris1400_score_reuse_20261009/`；`run_foris1400.py`八个CPU进程、每进程两线程，仅执行原二值化及原CRF，DINO与FoRIS前端均不再执行。合并三个已封存MEAN运行的1400预测供配对评分，保持图像、类别、权重、位置基、核心源码、参数及两帧口径；最后必须复算MEAN1400等于已记录45.986。现有200及刚完成的18个FoRIS预测直接复用，共218；其余1182只补CRF。三例已实测直接score+CRF与完整FoRIS两帧mask逐位相同，收据`score_reuse_identity3.json`。完成后自动报告总1400及三个原批次的FoRIS/MEAN/点差，不需要新查询照片。不启动batch4或官方23000。
 

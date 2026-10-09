@@ -1,8 +1,8 @@
 {
   "status": "进行中",
-  "active_task": "LVIS1400 exact atomic diagnosis and fixed100 preliminary interventions complete; DeepGlobe200 asset preparation delegated",
+  "active_task": "Reference protected calibration failed versus equal-budget control; matched-background source evidence premise on same100, no extra cases; DeepGlobe200 input ready",
   "run": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_foris1400_score_reuse_20261009/run",
-  "updated_utc": "2026-10-09T08:49:05.083806+00:00",
+  "updated_utc": "2026-10-09T10:19:00.063760+00:00",
   "goal_reached": false,
   "completed": [
     "source identity audit",
@@ -545,11 +545,57 @@
     "not_official_or_confirmation": true
   },
   "deepglobe200_preparation": {
-    "state": "DELEGATED_PROTOCOL_AND_ASSET_PREPARATION",
+    "state": "EXPLORATORY200_READY",
     "agent": "/root/download_deepglobe",
     "n": 200,
     "models_or_candidate_experiments_authorized": false,
     "source": "DeepGlobe aerial road extraction; exact published protocol requires source clarification",
-    "root": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/deepglobe200_preparation_20261009"
+    "root": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/deepglobe200_preparation_20261009",
+    "download_pid": null,
+    "download_session": null,
+    "workers": 2,
+    "latest_observed_complete_files": 800,
+    "expected_files": 800,
+    "HTTP429_recovered": true,
+    "receipt": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/deepglobe200_preparation_20261009/preparation_receipt.json",
+    "independent_all800_SHA_checked": true,
+    "query_GT_coverage_median": 0.02448272705078125,
+    "road_width_median_px": 10.0,
+    "model_inference_calls": 0,
+    "official_paper_episode_reproduction": false
+  },
+  "reference_protected100": {
+    "state": "COMPLETE",
+    "n": 100,
+    "root": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_protected100_20261009",
+    "script": "scripts/lvis_reference_protected_pilot.py",
+    "same_original_frozen100": true,
+    "new_arms": 2,
+    "encoder_calls": 0,
+    "source_role_reused": true,
+    "query_GT_in_inference": false,
+    "old100_development_labels_previously_exposed": true,
+    "new_cases": 0,
+    "no_auto_scale": true,
+    "tool_session": 80003,
+    "worker_pids": [],
+    "controller_pid": null,
+    "report": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_protected100_20261009/report.json",
+    "miou_cli": {
+      "foris.crf": 47.70402923750694,
+      "mean": 47.10937039005823,
+      "foris.fg_anchor.crf": 50.04721587825203,
+      "calibration.reference.crf": 48.28420654543742,
+      "calibration.uniform.crf": 49.834391333098345
+    },
+    "zero_intersection_cli": {
+      "foris.crf": 1,
+      "mean": 7,
+      "foris.fg_anchor.crf": 9,
+      "calibration.reference.crf": 5,
+      "calibration.uniform.crf": 8
+    },
+    "reference_minus_uniform_cli": -1.5501847876609247,
+    "mechanism_supported": false
   }
 }
