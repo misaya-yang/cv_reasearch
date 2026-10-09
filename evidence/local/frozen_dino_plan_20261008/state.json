@@ -1,6 +1,6 @@
 {
   "status": "进行中",
-  "active_task": "Strong same frozen100 reference erasure experiment running via original session70922/PID66689; no additional query cases",
+  "active_task": "Strong research: fixed100 erasure experiment complete and failed; no active model run, no larger cohort queued; preserve exact errors and source evidence for next mechanism",
   "run": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_foris1400_score_reuse_20261009/run",
   "updated_utc": "2026-10-09T10:19:00.063760+00:00",
   "goal_reached": false,
@@ -624,7 +624,7 @@
     "independent_audit": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_matched_background_calibration100_20261009/reviews/independent_audit.json"
   },
   "reference_erasure100": {
-    "state": "INFERENCE",
+    "state": "COMPLETE",
     "n": 100,
     "root": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_erasure100_20261009",
     "script": "scripts/lvis_reference_erasure_pilot.py",
@@ -634,13 +634,50 @@
     "query_encoder_calls": 0,
     "full_reference_encoder_calls": 0,
     "no_GT_preparation": true,
-    "pid": 66689,
+    "pid": null,
     "exec_session_id": 70922,
     "started_at_utc": "2026-10-09T11:18:05.065308+00:00",
     "follow_existing_only": true,
     "completed_at_last_check": 21,
     "source_config": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_erasure100_20261009/config.json",
-    "log": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_erasure100_20261009/run.log"
+    "log": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_erasure100_20261009/run.log",
+    "exec_session_closed": true,
+    "n_completed": 100,
+    "report": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_erasure100_20261009/report.json",
+    "execution_receipt": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_erasure100_20261009/execution_receipt.json",
+    "cli_miou": {
+      "foris.crf": 47.70402923750694,
+      "mean": 47.10937039005823,
+      "mean.reference_erasure": 46.56029096489131,
+      "mean.reference_erasure_shift": 46.33538432832751,
+      "mean.raw_reference_contrast": 47.02488226936461
+    },
+    "original_miou": {
+      "foris.crf": 47.873899215399234,
+      "mean": 47.18250754756989,
+      "mean.reference_erasure": 46.70737780559019,
+      "mean.reference_erasure_shift": 46.35488119475987,
+      "mean.raw_reference_contrast": 47.13232699385895
+    },
+    "new_reference_encoder_calls": 100,
+    "new_reference_view_inputs": 200,
+    "inference_wall_seconds": 486.96640408295207,
+    "conclusion": "FG erasure does not improve original MEAN or raw FG-BG guide; no demonstrated Strong gain",
+    "source_diagnostic": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_erasure100_20261009/source_diagnostics.json",
+    "independent_audit": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_erasure100_20261009/reviews/independent_audit.json",
+    "all_100_parent_H_independently_bit_exact": true,
+    "zero_intersection_cli": {
+      "mean": 7,
+      "raw": 6,
+      "true": 12,
+      "shift": 16
+    },
+    "true_vs_raw_four_contributions_cli_pp": [
+      0.10625,
+      -0.223612,
+      -4.604178,
+      4.256948
+    ]
   },
   "download_notification_preference": "No healthy download progress messages; notify once on full completion or a serious blocker needing human action"
 }
