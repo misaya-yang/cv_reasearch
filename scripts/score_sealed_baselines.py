@@ -15,6 +15,7 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO/'src'))
 from ics.official_data import FOLDS, array_hash, file_hash
 from ics.metrics import counts, gross_edits, summarize
+from edit_balance import summarize_edits
 
 IDENTITY = ('dataset', 'fold', 'loader_class_id', 'reference_rgb_hash', 'reference_mask_hash',
             'query_rgb_hash', 'query_mask_hash', 'reference_size_hw', 'query_size_hw',
@@ -67,7 +68,8 @@ def score_runs(paths, out, unit='query_photo', metric_policy=None, baselines=Non
         raise ValueError('Requested paired baseline names must be unique existing arms')
     config = dict(runs={str(r['path']):file_hash(r['path']/'sealed.json') for r in runs},
                   scorer_sha256=file_hash(Path(__file__)), bootstrap_unit=unit,
-                  metric_policy=metric_policy, repetitions=10000,paired_baselines=list(baselines))
+                  metric_policy=metric_policy, repetitions=10000,paired_baselines=list(baselines),
+                  edit_balance_sha256=file_hash(Path(__file__).with_name('edit_balance.py')))
     if (out/'config.json').exists() and json.loads((out/'config.json').read_text()) != config:
         raise ValueError('Output belongs to different predictions/scoring policy')
     (out/'config.json').write_text(json.dumps(config, indent=2)+'\n')
@@ -119,7 +121,7 @@ def score_runs(paths, out, unit='query_photo', metric_policy=None, baselines=Non
         expected = {k.split('/')[1]:v['expected_class_ids'] for k,v in prepared.get('folds', {}).items() if k.startswith(name+'/')} or None
         summaries = {}
         for frame in ('original', 'cli'):
-            metric_rows = [dict(r, iu=r['frames'][frame]['iu']) for r in records]
+            metric_rows = [dict(r, iu=r['frames'][frame]['iu'],edits=r['frames'][frame]['edits']) for r in records]
             summaries[frame] = summarize(metric_rows, baselines=baselines, repetitions=10000,
                                         expected_classes=expected, unit=unit)
             if unit == 'query_photo':
@@ -127,12 +129,20 @@ def score_runs(paths, out, unit='query_photo', metric_policy=None, baselines=Non
                     metric_rows, baselines=baselines, repetitions=10000, expected_classes=expected)['paired']
             area = sum(r['frames'][frame]['truth_pixels'] for r in records)
             summaries[frame]['gross_edits'] = {}
+            summaries[frame]['edit_balance'] = {}
             for arm in arms:
                 summaries[frame]['gross_edits'][arm] = {}
+                summaries[frame]['edit_balance'][arm] = {}
                 for base in baselines:
                     pixels = np.sum([r['frames'][frame]['edits'][arm][base] for r in records], axis=0).tolist()
                     summaries[frame]['gross_edits'][arm][base] = dict(pixels=pixels,
                         percent_of_gt_area=[100*p/area if area else None for p in pixels])
+                    if arm!=base:
+                        balance=summarize_edits(metric_rows,base,arm,expected_classes=expected)
+                        if (not np.isclose(balance['miou']['parent'],summaries[frame]['miou'][base],atol=1e-10,rtol=0)
+                                or not np.isclose(balance['miou']['full'],summaries[frame]['miou'][arm],atol=1e-10,rtol=0)):
+                            raise ValueError('Classwise edit balance differs from complete mIoU')
+                        summaries[frame]['edit_balance'][arm][base]=balance
         policy = (metric_policy or {}).get(name, dict(primary='cli', reason='CLI development fallback pending complete official FoRIS reproduction', final_protocol_claim_on_hold=True))
         report['datasets'][name] = dict(primary_policy=policy, primary=summaries[policy['primary']], frames=summaries)
     (out/'episode_metrics.jsonl').write_text(''.join(json.dumps(r)+'\n' for r in items))

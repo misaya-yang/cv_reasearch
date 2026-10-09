@@ -12,6 +12,7 @@ import torch.nn.functional as F
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'src'))
 from ics.official_data import array_hash, file_hash
+from ics.metrics import counts
 from score_sealed_baselines import choose_metric, score_runs
 
 
@@ -54,6 +55,12 @@ def main():
         assert report['frames']['cli']['miou']['insid3'] < 100.
         assert report['primary_policy']['primary'] == 'cli'
         assert report['frames']['cli']['gross_edits']['insid3']['foris.crf']['percent_of_gt_area'][1] > 0
+        balance=report['frames']['cli']['edit_balance']['insid3']['foris.crf']
+        for mode,mask in [('add_only',cli|wrong),('delete_only',cli&wrong),('full',wrong)]:
+            intersection,union=counts(mask,cli)
+            assert np.isclose(balance['miou'][mode],100*intersection/union)
+        unchanged=report['frames']['original']['edit_balance']['insid3']['foris.crf']['per_class']['0:0']
+        assert unchanged['addition']['profit'] is None and unchanged['deletion']['profit'] is None
         custom=score_runs(runs,root/'custom_parent',baselines=['insid3'])['datasets']['coco']['primary']
         assert set(custom['paired'])=={'insid3'}
         assert custom['paired']['insid3']['foris.crf']['delta_pp']>0
@@ -67,7 +74,7 @@ def main():
             raise AssertionError('Different paired inputs accepted')
         except ValueError as error:
             assert 'Paired frozen inputs differ' in str(error)
-    print('PASS: independent raw-label frames, paired pixel identity before labels, gross normalization, metric choice and fallback')
+    print('PASS: raw-label frames, paired identity, metric choice, gross normalization and classwise only-add/only-delete/full accounting')
 
 
 if __name__ == '__main__':
