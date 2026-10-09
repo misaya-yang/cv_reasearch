@@ -198,7 +198,7 @@ def run_config(a):
             *sorted((REPO/'src/ics').rglob('*.py')),
             *sorted((a.assets/'third_party/foris_official').rglob('*.py')),
             *sorted((a.assets/'third_party/crf_source/src/CRF').glob('*.py'))]
-    if a.raw_cache_root:
+    if a.raw_cache_root or a.raw_cache_profile:
         code += [REPO/'scripts/cached_dino.py', REPO/'scripts/raw_feature_cache.py']
     code += sorted((a.assets/'third_party/crf_source/src/PermutohedralFiltering/source/cpu').rglob('*.cpp'))
     code += sorted((a.assets/'third_party/crf_source/src/PermutohedralFiltering/source/cpu').rglob('*.h'))
@@ -238,9 +238,12 @@ def run_config(a):
         official_score_arms=['foris.crf'],
         official_B0_predictions='computed and sealed, withheld from official reproduction scores until the audited single B0 confirmation look',
         metric='original loader query size; 1024 CLI metric retained separately',
-        query_mask_in_inference=False, feature_archive=bool(a.raw_cache_root),
+        query_mask_in_inference=False, feature_archive=bool(a.raw_cache_root or a.raw_cache_profile),
         raw_cache_root=str(a.raw_cache_root) if a.raw_cache_root else None,
-        raw_cache_branches=['O/24'] if a.raw_cache_root else [])
+        raw_cache_profile=str(a.raw_cache_profile) if a.raw_cache_profile else None,
+        raw_cache_profile_sha256=file_hash(a.raw_cache_profile) if a.raw_cache_profile else None,
+        encoder_initialized=not bool(a.raw_cache_profile),
+        raw_cache_branches=['O/24'] if a.raw_cache_root or a.raw_cache_profile else [])
 
 
 def _infer(a):
@@ -267,6 +270,8 @@ def _infer(a):
                          arms=a.baseline_arms)
         if a.raw_cache_root or old.get('raw_cache_root'):
             requested['raw_cache_root'] = str(a.raw_cache_root) if a.raw_cache_root else None
+        if a.raw_cache_profile or old.get('raw_cache_profile'):
+            requested['raw_cache_profile'] = str(a.raw_cache_profile) if a.raw_cache_profile else None
         if not a.resume or any(old[k] != v for k, v in requested.items()):
             raise ValueError('A sealed run is immutable; require --resume with the original inputs')
         print('Predictions already sealed; using their archived implementation and score phase', flush=True)
@@ -308,20 +313,35 @@ def _infer(a):
     backend = None
     if native_refiner == 'crf':
         _, backend = install(a.assets/'third_party/crf_source', a.assets/'runtime/macos/crf')
-    host = build_host({'projection_basis': str(a.assets/'native_assets/positional_basis.pt')},
-                      'cpu', str(a.assets/'third_party/foris_official'),
-                      weights=str(a.assets/'demo4_cache/models/dinov3-vitl16-timm'),
-                      mask_refiner=native_refiner)
-    host.encoder.to(a.encoder_device)
     cache_adapter = None
+    if a.raw_cache_profile:
+        from cached_dino import CachedDINO, cache_host, dino_profile
+        from raw_feature_cache import RawFeatureCache
+        profile = json.loads(a.raw_cache_profile.read_text())
+        if profile != dino_profile(a.assets, profile['producer_device']):
+            raise ValueError('Recorded model/preprocessing profile differs from this baseline implementation')
+        cache = RawFeatureCache(a.raw_cache_profile.parent.parent, profile)
+        if cache.folder/'profile.json' != a.raw_cache_profile:
+            raise ValueError('Raw-cache profile folder differs from its identity')
+        cache_adapter = CachedDINO(cache)
+        torch.manual_seed(0)
+        host = cache_host(a.assets, cache_adapter, mask_refiner=native_refiner)
+    else:
+        host = build_host({'projection_basis': str(a.assets/'native_assets/positional_basis.pt')},
+                          'cpu', str(a.assets/'third_party/foris_official'),
+                          weights=str(a.assets/'demo4_cache/models/dinov3-vitl16-timm'),
+                          mask_refiner=native_refiner)
+        host.encoder.to(a.encoder_device)
     if a.raw_cache_root:
         from cached_dino import CachedDINO, dino_profile
         from raw_feature_cache import RawFeatureCache
         cache = RawFeatureCache(a.raw_cache_root, dino_profile(a.assets, a.encoder_device))
         cache_adapter = CachedDINO(cache, host.encoder, a.encoder_device)
         host.encoder = cache_adapter
+    if cache_adapter:
         write(a.out/'raw_cache.json', dict(profile_path=str(cache.folder/'profile.json'),
-              branches=['O/24'], storage_dtype='float32', role='unprojected raw model outputs'))
+              branches=['O/24'], storage_dtype='float32', role='unprojected raw model outputs',
+              encoder_initialized=cache_adapter.encoder is not None))
     encoder_times = []
     representation_bank, branch_bases = {}, {}
     if a.representation_basis:
@@ -602,6 +622,8 @@ def main():
                    help='Fixed baseline subset; omit rcg.fine to avoid four shifted encodes')
     p.add_argument('--raw-cache-root', type=Path,
                    help='Record/reuse lossless raw O24 features for the selected inputs')
+    p.add_argument('--raw-cache-profile', type=Path,
+                   help='CPU replay from an existing raw cache; no DINO construction or missing-entry fallback')
     p.add_argument('--representation-basis', type=Path,
                    help='Collect prescribed 24-layer margins using each branch own black basis (development only)')
     a = p.parse_args()
@@ -615,6 +637,10 @@ def main():
         a.raw_cache_root = a.raw_cache_root.resolve()
         if a.representation_basis:
             p.error('Raw O24 cache and all-layer representation collection are separate modes')
+    if a.raw_cache_profile:
+        a.raw_cache_profile = a.raw_cache_profile.resolve()
+        if a.raw_cache_root or a.representation_basis or a.encoder_device != 'cpu':
+            p.error('Cache-only replay requires CPU, no producer root and no all-layer collection')
     if a.representation_basis is not None:
         a.representation_basis = a.representation_basis.resolve()
         if a.split not in ('dev', 'smoke'):

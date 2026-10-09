@@ -95,7 +95,7 @@ class CachedDINO(torch.nn.Module):
         return [raw.reshape(len(inputs),64,64,1024).permute(0,3,1,2).contiguous()]
 
 
-def cache_host(assets, adapter):
+def cache_host(assets, adapter, mask_refiner='crf'):
     """Construct the original CPU FoRIS without constructing DINO for replay."""
     import sys
     from ics.native_basis import reuse_native_basis
@@ -103,10 +103,11 @@ def cache_host(assets, adapter):
     assets=Path(assets)
     sys.path.insert(0,str(assets/'third_party/foris_official'))
     from models.foris import FoRIS
-    install(assets/'third_party/crf_source',assets/'runtime/macos/crf')
+    if mask_refiner == 'crf':
+        install(assets/'third_party/crf_source',assets/'runtime/macos/crf')
     with reuse_native_basis(FoRIS,assets/'native_assets/positional_basis.pt'):
         host=FoRIS(encoder=adapter,image_size=1024,svd_components=500,tau=.6,
-                   mask_refiner='crf',resize_to_orig_size=False,device='cpu').eval().requires_grad_(False)
+                   mask_refiner=mask_refiner,resize_to_orig_size=False,device='cpu').eval().requires_grad_(False)
     # FoRIS moves all registered children to its host device during init.
     if adapter.encoder is not None:
         adapter.encoder.to(adapter.producer_device)
