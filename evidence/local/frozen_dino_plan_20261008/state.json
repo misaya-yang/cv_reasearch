@@ -1,6 +1,6 @@
 {
   "status": "进行中",
-  "active_task": "Strong main line: tail-rank fixed100 complete and audited; candidate failed matched control, no active run; reference covariance hypothesis reviewed only, not executed",
+  "active_task": "Strong research: reference covariance100 complete, failed transfer and matched control; no active job or extra cohort queued",
   "run": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_foris1400_score_reuse_20261009/run",
   "updated_utc": "2026-10-09T10:19:00.063760+00:00",
   "goal_reached": false,
@@ -750,5 +750,57 @@
     "new_masks": 0,
     "definition": "class-balanced FG/BG within-reference covariance, lambda=trace/C; matched precision mean contrast control required",
     "not_default_component": true
-  }
+  },
+  "reference_discriminant100": {
+    "state": "COMPLETE",
+    "n": 100,
+    "root": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_discriminant100_20261009",
+    "script": "scripts/lvis_reference_discriminant_pilot.py",
+    "source": "same original FP32 R/APD and parent q/H/A/s as erasure100",
+    "new_encoder_calls": 0,
+    "new_query_photos": 0,
+    "candidate": "class-balanced within-role covariance discriminant",
+    "covariance_ridge": "trace(Sigma)/C, C=1024",
+    "graph_lambda": 16,
+    "rank_alpha": 0.25,
+    "controls": [
+      "same-FP32 coverage-weighted raw mean contrast",
+      "original MEAN",
+      "FoRIS",
+      "FG-anchor"
+    ],
+    "new_variants": 1,
+    "parameter_search": false,
+    "pid": null,
+    "exec_session_id": 74730,
+    "follow_existing_only": true,
+    "source_config": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_discriminant100_20261009/config.json",
+    "preparation_receipt": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_discriminant100_20261009_preparation/receipt.json",
+    "completed_at_last_check": 100,
+    "exec_session_closed": true,
+    "completed": 100,
+    "cli_miou": {
+      "foris.crf": 47.70402923750694,
+      "mean": 47.10937039005823,
+      "foris.fg_anchor.crf": 50.04721587825203,
+      "mean.raw_reference_contrast": 47.02488226936461,
+      "mean.reference_discriminant": 46.42708581852099
+    },
+    "original_miou": {
+      "foris.crf": 47.873899215399234,
+      "mean": 47.18250754756989,
+      "foris.fg_anchor.crf": 50.18267969992973,
+      "mean.raw_reference_contrast": 47.13232699385895,
+      "mean.reference_discriminant": 46.512628321627616
+    },
+    "report": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_discriminant100_20261009/report.json",
+    "execution_receipt": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_discriminant100_20261009/execution_receipt.json",
+    "independent_audit": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_discriminant100_20261009/reviews/independent_audit.json",
+    "source_transfer_diagnostics": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_discriminant100_20261009/source_transfer_diagnostics.json",
+    "conclusion": "Reference covariance weighting damages query ordering and final mIoU; fails matched raw contrast and MEAN/FoRIS",
+    "reference_objective_ratio_median": 3.381369033048497,
+    "raw_query_tail_auc": 0.7739930281221019,
+    "fisher_query_tail_auc": 0.7386144355589305
+  },
+  "normalization_bridge_interpretation": "BG transition42.810→35.064 is child prefix rendered using parent-FG bounds versus its own minmax bounds, not a measured replacement of background normalization and not a guaranteed final gain"
 }

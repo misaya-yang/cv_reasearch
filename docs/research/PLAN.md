@@ -379,3 +379,17 @@ DeepGlobe200输入已齐：400不同图像/800图mask，各项解码/尺寸/字�
 实际token proposal诊断也完成：全1400 G内guide .754260、score .755306；设计1300 .752404/.754744，不能说guide普遍更强。小目标组563有效例中 .795757/.772483，28例G无真目标另列。G大小中位165，小目标65；小目标G内global guide/score秩跨度中位.06348/.015625，存在全图排序压缩。幅度控制明确先去global校正均值，避免局部候选仅恢复净unary质量占优；candidate因原FP32相加产生的微小净质量舍入误差只记录、不再引入求根或额外方案。
 
 局部rank固定100已COMPLETE：CLI local47.187467、no-tail-reference47.112631、centered global amplitude47.473022；原MEAN47.109370、FoRIS47.704029、FG-anchor50.047216。local较MEAN+.078097，仍较同L1幅度控制−.285554、FoRIS−.516562；3折增7折降。原图local47.266615、amplitude47.551189、MEAN47.182508、FoRIS47.873899，结论相同。actual model0，100原parent场/mask逐位复现，预算max误差1.42e−14；外G仅unary保持，图解可传播到外G，不称最终mask外G固定。单次PID68969/session92519已退出，不重启。推断逐例时间合计3.179秒，日志创建到完整report10.301秒（含导入/评分）；无新样本、视图或图构造。独立完整审查通过，源码/预算/IU/所有baseline闭合。具体局部CDF未证明收益；幅度控制的+.364仍未过FoRIS，不作为Strong成功。下一机制仍需找到可迁移的参考判别信息，而非仅给既有guide重排。
+
+## 2026-10-09 goal续轮：参考类内变化结构
+
+局部rank未过同量控制后，测试一个源特征统计，而非追加读出组合。固定同100，原始R FP32 O24从已封存erasure的原reference cache key/profile/payload/tensor身份链读取；按原APD flag/U500处理，parent q保持原FP16舍入后FP32单位化，校对source hash。原R/Q不解码重编码，不构造encoder，缺原始cache直接失败。
+
+前景/背景均值与δ仍用原FP32 full coverage计算，须逐位复现已有raw FG−BG guide及其47.024882完整结果。使用同μ32中心的FP64类内二阶矩：Σ=.5*(Σ_F+Σ_B)，ridge=trace(Σ)/C（C=1024），解(Σ+ridge I)v=δ32.double，单位化方向生成q_parent@v。Σ由同完整c与1-c加权，无BG筛选、对角变体或新超参grid。ridge零回退raw，空角色/零δ显式回退。固定同parent H/A/s、α.25、graph λ16和原CG/双线性>.5，不叠加tail/amp/CRF。
+
+只新增这一candidate，同精度同权重raw mean contrast与原MEAN/FoRIS/FG-anchor作完整比较；全部100预测先封存再评分。保存covariance/mean/direction/λ/residual、原始身份和CPU时间。类内方向是经典正则化线性判别，不称新关系或最优收缩；单参考的低方差也可能是不能迁移的颜色/位置/混合噪声。源码准备由hard_cases_review完成，主代理检查后单次启动。产物`cv_data/a/lvis_reference_discriminant100_20261009/`，旧100标签已暴露，未获新样本泛化证据，不恢复旧全量或其他dataset模型任务。
+
+协方差方向同100已COMPLETE：CLI46.427086，raw47.024882、MEAN47.109370、FoRIS47.704029、FG-anchor50.047216；原图46.512628/raw47.132327/MEAN47.182508/FoRIS47.873899，同样失败。相对raw−.597796，2折增8折降，零交集9 vs raw6。精确CLI贡献补真+.187600、补假−.283994、删真−1.139833、删假+.638431，主要是删真代价未回本。原始/profile/payload/tensor与q/R、原μ/δ/guide、原MEAN和raw两帧mask全部100身份通过；3个Σ独立重建一致、100方向方程最大残差2.49e−15。同H/A/s/CG与完整评分审查通过。
+
+源参考正则化判别目标相对raw中位提高3.381倍（最小1.548），不是源图分类准确率；查询整体token AUC raw.963065→fisher.943016，原FoRIS最终mask内raw.773993→.738614；40个query<1%案例的39个有效mask内.816300→.778689。低方差参考方向没有在这批query稳定迁移，单位方向与raw夹角较大（余弦中位.500）。不把源目标优化当新信息或已涨分。新模型/图像解码0，8worker逐例时间总56.634秒、cov solve总11.468秒，实际日志创建到完整report10.310秒（含启动/评分）；PID70573/session74730及诊断43319均退出，不重启。
+
+解释澄清：原1400 BG转移42.810→35.064的桥，是将child前缀用parent FG的读出bounds与child自己的minmax bounds分别评估；没有替换BG归一化函数，也不能当“改BG模块就能涨7.745”的因果证据。FG-anchor100才是已实测的完整读出干预，仍存在零交集增加和收益集中。后续从实际共享上下文和前景粒度不足找机制，避免继续按单参考低方差推断可迁移语义。
