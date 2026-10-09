@@ -1,8 +1,8 @@
 {
   "status": "进行中",
-  "active_task": "Requested LVIS MEAN200 complete: CLI46.263; same method as PACO60044.942, no further batch arranged",
-  "run": "../cv_data/a/lvis_mean200_20261008/run",
-  "updated_utc": "2026-10-09T03:17:48.885926+00:00",
+  "active_task": "User explicitly requested unattended new LVIS MEAN600; running ten folds60 each, auto-scoring and cumulative800 after completion; FoRIS200 cache-only comparison continues",
+  "run": "../cv_data/a/lvis_mean600_new_20261008/run",
+  "updated_utc": "2026-10-09T03:35:05.939625+00:00",
   "goal_reached": false,
   "completed": [
     "source identity audit",
@@ -52,13 +52,14 @@
     "LVIS requested MEAN-only200 new query photos/classes sealed and scored46.263; parameter/code/model identity matches PACO"
   ],
   "pending": [
-    "assess completed PACO600/LVIS200 MEAN exploratory results; no further batch arranged",
-    "6000 and official full remain stopped"
+    "follow current requested LVIS600 via activity.json and actual handle; automatic score/cumulative800 already scheduled",
+    "FoRIS200 cache-only comparison continues; controller scores paired200 when available",
+    "6000 and official full remain stopped; no additional experiment arranged"
   ],
   "plan_source": "6ac73cac-72d4-83e9-a64b-bead949e068f; complete revised reply 2c9768c9-af0a-488c-bdb4-eff695430de9 (8305 chars)",
   "research_goal": "score improvement only; known weak points motivate candidates, not a presumed advantage",
-  "process_id": null,
-  "tool_session": null,
+  "process_id": 2596,
+  "tool_session": 13501,
   "exploration": {
     "state": "完成",
     "n": 600,
@@ -222,9 +223,9 @@
     "summary": "../cv_data/a/paco_mean200_new_20261008/summary.json"
   },
   "latest_pro_revision": {
-    "turn_id": "26dcc3f0-27ed-495d-aedc-933542a782ae",
-    "characters": 2435,
-    "role": "research reference; fine/C1-C3 no automatic expansion; current MEAN formula unchanged"
+    "turn_id": "12791eda-4d5b-4b92-aa57-32d5c432777d",
+    "characters": 7799,
+    "role": "reference: MEAN fixed-point reorganization and task-weighted global/local descriptor proposal; no real mIoU proof"
   },
   "bounded_mean200_batch3": {
     "state": "COMPLETE",
@@ -273,5 +274,48 @@
     "miou_cli": 46.262734548798015,
     "miou_original": 46.32981440703368,
     "summary": "../cv_data/a/lvis_mean200_20261008/summary.json"
+  },
+  "lvis_foris200_cached": {
+    "state": "RUNNING",
+    "n": 200,
+    "arms": [
+      "foris.crf"
+    ],
+    "same_cohort_as": "lvis_mean200_20261008",
+    "encoder_initialized": false,
+    "encoder_calls": 0,
+    "complete_original_crf": true,
+    "process_id": 96645,
+    "tool_session": 92680
+  },
+  "controller_process_id": 2594,
+  "lvis_mean600_new": {
+    "state": "RUNNING",
+    "n": 600,
+    "arms": [
+      "mean"
+    ],
+    "fold_counts": {
+      "0": 60,
+      "1": 60,
+      "2": 60,
+      "3": 60,
+      "4": 60,
+      "5": 60,
+      "6": 60,
+      "7": 60,
+      "8": 60,
+      "9": 60
+    },
+    "prior_query_photo_overlap": 0,
+    "unique_query_photos": 600,
+    "sampled_class_count": 600,
+    "controller_pid": 2594,
+    "worker_pid": 2596,
+    "tool_session": 13501,
+    "activity_path": "../cv_data/a/lvis_mean600_new_20261008/activity.json",
+    "automatic_scoring": true,
+    "automatic_cumulative800": true,
+    "no_auto_scale_beyond_requested600": true
   }
 }
