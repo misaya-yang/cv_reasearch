@@ -411,3 +411,21 @@ DeepGlobe200输入已齐：400不同图像/800图mask，各项解码/尺寸/字�
 推理编码/图像解码0、只在封存后的score打开100 query mask。8worker逐例累计7.753秒，日志创建到report5.369秒（启动/推理/评分），未把并发累计当wall time。源码默认入口未改，100标签此前已暴露。独立审查正在核对全部图数组/H差量、输入不变、baseline I/U及编辑账本；结果留`cv_data/a/lvis_context_rank_graph100_20261009/`。不追加新样本、不恢复全量，不根据单批弱收益自动叠加组件。
 
 独立审查已通过：全部100 CDF直接计数/半ties、原字段不变、同E权重、200个实际Hdiff逐位一致、场方程、全部基线/最终mask/IU及编辑。总边权匹配最大误差4.55e−13，父图对角残差保持误差1.42e−14。candidate较matched的CLI精确收支补真+.432754、补假−.207758、删真−.120871、删假+.124700；较MEAN补真+.911474、补假−.358272、删真−.148723、删假+.187555。主要收益为补真，但候选仍有6个zero-IU，FoRIS只有1。结果不能当作Strong成功；下一步研究应面对小目标漏检和可迁移参考粒度，不能仅因正差就堆叠组件或扩样本。详情`evidence/local/m4/lvis_context_rank_graph100_20261009.md`。
+
+## 2026-10-09 goal续轮：1400目标粒度与图误删
+
+`scripts/lvis_resolution_loss_diagnostic.py`只读已封存1400的原字段/预测及query mask，所有query hash、既有交集及graph逐例gross edits核对；GT与实际像素区域相交后再16² pooling，不把pool后乘积当交集。输出`cv_data/a/lvis_resolution_loss1400_20261009/`，编码/新预测/新mIoU均0，8worker实际3.839秒，session79360 exit0。纯token是geometry描述，不是可识别性或mIoU上限。
+
+95个MEAN zero-IU互斥分解：51个rank仍hit后在graph全失，3个pre hit后在rank全失，33个FG前缀hit后在前端全失，8个FG前缀已无hit。设计1300对应45/2/33/8。query<1%591对应38/2/22/5。该前端分解是按当前前缀交集定义，不等于原始encoder在8例没有任何信息。
+
+小目标591例中graph删真194012、补真14783、添假1418065；删真区域的guide全图rank面积加权均值.974942，s.659260、y.661373→z.453442。73.6%删真区域位于query coverage<.9的token，但剩余26.4%纯token也会被删，不能仅归因分辨率。全1400 query无coverage≥.9 token的173例均在小目标组；这组MEAN zero31/173，其余64/1227；全体最终FN仍有80.9%质量位于纯token，geometry不是全局漏检的唯一解释。
+
+图会同时补真与添假，不能从删真量直接推断关闭graph能涨分。下一候选先检查原参考guide支持的positive-unary节点fidelity，保留原guide/unary/图，与同位置/同总fidelity增量控制分离；数学定义独立审阅后才冻结同100。无新样本、视图、编码或候选grid，不叠加上一轮图门控。
+
+1400标签侧诊断独立核查已通过全部交集、graph edits、token质量与六组归并，并独立逐像素分块与若干逐块枚举。没有新的mIoU或预测。下一同100单候选冻结定义：G=(原s>.5)&(原y>.5)，u是guide在G的locked FP32 half-tie rank；实际degree从原FP64 H offdiag恢复。Δa_i=16*d_i*u_i，仅G；Hnew=Hparent+diagΔa，rhs=(a+Δa)*原y，原图W/guide/y不变。degree-weighted统一对照Δa_i=16*d_i*η，仅G，η=Σ_Gd_i*u_i/Σ_Gd_i，匹配同G总Δa，不声称每节点Δa或RHS质量相同。nG<2、G guide常数或degree质量0，两臂identity；不归一化new A、不clip/unary、不叠加context图门控。16直接沿用原graph尺度，无新强度扫描。
+
+这是经典fidelity重加权，不引入参考新信息或新特征；高guide假前景也可能被保住。无标签100系数检查（无solve/mask/GT）：各case G内局部a/(a+16d)中位的宏中位.051990，候选.360675、对照.361391；是方程系数比例，不是预测概率。必须完整同100两帧评分、全部预测先封存，再检查相对uniform与完整FoRIS及误删/添假收支。最终源码由主代理完成独立helper/runner，准备检查及数学审阅通过后单次运行。产物`cv_data/a/lvis_reference_fidelity100_20261009/`，不增加query照片或恢复全量。
+
+保真固定100已COMPLETE并独立审查通过：CLI candidate46.268881、matched45.935585、MEAN47.109370、FoRIS47.704029，原图46.374766/46.034884/47.182508/47.873899。candidate虽较matched+.333296，仍较MEAN−.840490、FoRIS−1.435148。零交集MEAN7→candidate1（matched2），却补真291522、补假625189，pixel precision .640786→.607350、recall .686082→.725393；相对MEAN精确CLI补真+3.599458、补假−4.451327、删真−.006685、删假+.018064，新增假前景代价超过召回收益。40小目标组较MEAN−.282679，另60例−.927406，完整结果失败。
+
+全部100 G/rank/FP64 degree/Δa、200实际H差量和同步RHS、全部field equation/mask/IU/基线与编辑通过。总Δa误差max3.64e−12，100例都不匹配ΣΔa*y；不以较uniform正差宣称身份贡献。封存后补真区域的global guide rank面积加权均值.799694，补假.893074；高guide错误响应同样被保住。controller PID77992/session16165及新增区域诊断30512均exit0；模型0、推理图像解码0，8worker逐例合计4.373秒，日志创建到report5.533秒。代码默认入口不变，不扫强度、不自动叠加graph gate或扩N。下一研究回到前景/背景目标粒度判别的信息来源。详细证据`evidence/local/m4/lvis_reference_fidelity100_20261009.md`。

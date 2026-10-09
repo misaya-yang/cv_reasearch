@@ -1,8 +1,8 @@
 {
   "status": "进行中",
-  "active_task": "Context-rank graph fixed100 complete and audited; main research remains small-target miss and reference-granularity transfer, no running job or added cohort",
+  "active_task": "Fidelity same100 completed and audited: recall recovery fails net mIoU due FP; continue target-versus-distractor information research, no running experiment or queued samples",
   "run": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_foris1400_score_reuse_20261009/run",
-  "updated_utc": "2026-10-09T14:24:30.275283+00:00",
+  "updated_utc": "2026-10-09T15:04:51.000083+00:00",
   "goal_reached": false,
   "completed": [
     "source identity audit",
@@ -53,7 +53,9 @@
     "same LVIS200 cached FoRIS46.680 vs MEAN46.263, delta-0.417; all200 frontend fields exact, zero encodes",
     "Requested LVIS600 sealed/scored47.581 and pooled80047.151; controller complete, no extra experiments",
     "Full FoRIS matched LVIS1400 from archived scores, no DINO/front-end; cumulative point tie, latest600 MEAN-1.351, independent I/U verification",
-    "Same fixed100 conditional-CDF graph gating and localized equal-mass control sealed, scored and independently audited; candidate improves MEAN but does not exceed full FoRIS"
+    "Same fixed100 conditional-CDF graph gating and localized equal-mass control sealed, scored and independently audited; candidate improves MEAN but does not exceed full FoRIS",
+    "All1400 geometry/graph-loss label diagnostic independently audited without model or new predictions",
+    "Same100 reference fidelity/control sealed scored and audited; fails MEAN/FoRIS despite zero-IU rescue"
   ],
   "pending": [
     "Strong method improvement and MEAN simplification research; existing1400 does not establish LVIS gain",
@@ -859,5 +861,90 @@
     "log_birth_to_report_seconds": 5.368640184402466,
     "case_seconds_sum": 7.753062660107389,
     "next_focus": "Understand remaining target misses and transferable reference granularity; no automatic additional samples or component stacking"
+  },
+  "resolution_loss1400": {
+    "state": "COMPLETE_AND_INDEPENDENTLY_AUDITED",
+    "root": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_resolution_loss1400_20261009",
+    "session_id": 79360,
+    "exit_code": 0,
+    "n": 1400,
+    "encoder_calls": 0,
+    "new_predictions": 0,
+    "new_miou": 0,
+    "elapsed_seconds": 3.8390064999694005,
+    "zero_mean_breakdown": {
+      "lost_at_graph_after_rank_hit": 51,
+      "lost_in_frontend_after_FG_hit": 33,
+      "no_FG_prefix_hit": 8,
+      "lost_at_rank_after_pre_hit": 3
+    },
+    "query_without_pure_token": 173,
+    "small_graph_deleted_TP": 194012,
+    "small_graph_added_TP": 14783,
+    "small_graph_added_FP": 1418065,
+    "limitations": "Token purity is not a representation or mIoU upper bound. Token centers can disagree with bilinear pixel decisions. GT groups are not inference rules. No candidate chosen from these labels.",
+    "independent_audit": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_resolution_loss1400_20261009/reviews/independent_audit.json"
+  },
+  "reference_fidelity100": {
+    "state": "COMPLETE_AND_INDEPENDENTLY_AUDITED",
+    "n": 100,
+    "root": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_fidelity100_20261009",
+    "new_encoder_calls": 0,
+    "new_query_photos": 0,
+    "new_arms": 2,
+    "group": "G=(parent s>.5)&(parent y>.5)",
+    "candidate": "deltaA=16*actualDegree*locked FP32 conditional rank guide in G",
+    "matched": "sameG deltaA=16*actualDegree*eta; eta matches total deltaA",
+    "H_update": "Hparent+diag(deltaA), RHS=(parent A+deltaA)*original y",
+    "parent_graph_guide_unary_preserved": true,
+    "no_parameter_search": true,
+    "coefficient_diagnostic": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_fidelity100_20261009_preparation/coefficient_diagnostic.json",
+    "claim": "Classic fidelity reweighting, no new feature/reference information or presumed gain",
+    "session_id": 16165,
+    "controller_pid": 77992,
+    "exit_code": 0,
+    "cli": {
+      "foris.crf": 47.70402923750694,
+      "mean": 47.10937039005823,
+      "mean.graph_only": 46.53177282043286,
+      "foris.fg_anchor.crf": 50.04721587825203,
+      "mean.role_graph": 47.38608084208515,
+      "mean.uniform_graph": 47.22623941933997,
+      "mean.context_rank_graph": 47.70140336522889,
+      "mean.context_rank_matched": 47.47257881967101,
+      "mean.reference_fidelity": 46.26888076160476,
+      "mean.reference_fidelity_matched": 45.935584781336956
+    },
+    "original": {
+      "foris.crf": 47.873899215399234,
+      "mean": 47.18250754756989,
+      "mean.graph_only": 46.62789492652987,
+      "foris.fg_anchor.crf": 50.18267969992973,
+      "mean.role_graph": 47.46125695907402,
+      "mean.uniform_graph": 47.293643154619815,
+      "mean.context_rank_graph": 47.78988345626513,
+      "mean.context_rank_matched": 47.57365325632192,
+      "mean.reference_fidelity": 46.37476577558739,
+      "mean.reference_fidelity_matched": 46.03488417803475
+    },
+    "report": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_fidelity100_20261009/report.json",
+    "postseal_diagnostics": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_fidelity100_20261009/postseal_diagnostics.json",
+    "execution_receipt": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_fidelity100_20261009/execution_receipt.json",
+    "conclusion": "Candidate beats matched control but falls below original MEAN and FoRIS; positive protection retains too much FP; no gain or default component",
+    "independent_audit": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_fidelity100_20261009/reviews/independent_audit.json",
+    "new_component_accepted": false,
+    "added_region_diagnostic": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_reference_fidelity100_20261009/added_region_diagnostic.json",
+    "zero_intersection_cli": {
+      "candidate": 1,
+      "matched": 2,
+      "mean": 7,
+      "foris": 1
+    },
+    "candidate_vs_mean_cli": -0.8404896284534686,
+    "candidate_vs_matched_cli": 0.33329598026780616,
+    "candidate_vs_foris_cli": -1.4351484759021744,
+    "log_birth_to_report_seconds": 5.53339409828186,
+    "case_seconds_sum": 4.372568005230278,
+    "next_focus": "Need target-versus-distractor information; high existing guide also protects FP, so neither zero-IU rescue nor control gain proves Strong success"
   }
 }
