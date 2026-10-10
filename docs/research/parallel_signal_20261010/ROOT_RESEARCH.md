@@ -60,3 +60,28 @@ Deep新增区APD ridge local4的AP .3667（P0 .2389），TPR@5%FPR .5338（P0 .3
 scene selector没有证明必要性：Deep平均local权重.267、55例选全global；PACO平均.100、86例选全global。它在Deep明显低于固定local，在PACO仅比固定global高.0772。未将它设成默认方案，也不凭最高单组分数挑数据集专用规则。两组均无空参考校准角色回退/非正分离度。生成200例18.31秒，评分2.07秒；这是共享查询字段后的CPU/IO增量，不是冷端到端时间。
 
 供融合/身份/数据差异线整合：`candidate_reference_v1/report.json`、`scored_episodes.jsonl`、`sealed.json`（含每例reference threshold、尺度、local权重）、`predictions/`已可读取。若需要对应h，可从`raw/fields`的APD ridge score按receipt中的threshold/separation重建clip值；不要改写本候选。根据信号选择的下一改动必须解释：怎样保住Deep已有局部九窗收益，同时保留PACO的整图身份优势，而非强制global/local平均。
+
+## 固定规则的额外开发验证已完成
+
+已固定沿用`anchor.local4`及更简单`anchor.global`观察控制，不带入未证明必要的scene selector，不改参数或校准规则。对既有PACO600中未用于本轮200诊断/候选设计的剩余500做缓存推断，原100输出复用，再用逐例I/U合并600；这500以前的其它方法/诊断已曝光，不能叫未曝光独立确认。
+
+入口`validate_paco.py`，产物`paco_remaining500/`。输入映射/原始请求/完整FoRIS、MEAN、快九窗、旧whole竞争/代码已经封存。第一条重算的pilot样本作为跨入口逐位同法检查；其余pilot复制封存预测。新增500仍只用真实whole R/Q+四角现存O24、2CPU，无DINO/MPS/raw写入。所有600预测封存后统一评分，主表保留官方303槽位，也单列观察类和原pilot100。
+
+已有200的统计边界：PACO100有78/87个photo/class单例strata，因此沿旧分层bootstrap得到的窄区间只是在固定类/照片池内的重复抽样，不能作跨照片泛化证据。故现在用剩余500实际检验；不以该窄区间替代新输出。
+
+实际结果（原图、官方303槽位，各行自己的同批I/U聚合，不能跨行直接相减）：
+
+|范围|FoRIS|MEAN|旧whole竞争|新global|新local4|
+|---|---:|---:|---:|---:|---:|
+|剩余500|36.251571|36.898130|37.164222|37.956865|37.833442|
+|累计600|38.460868|39.352045|39.640268|40.774944|40.629884|
+
+累计600 global相对FoRIS+2.314076、MEAN+1.422899、旧whole+1.134676；local相对三者+2.169015/+1.277838/+.989616。剩余500也为正：global对FoRIS+1.705294、对MEAN+1.058735、对旧whole+.792643；local分别+1.581871/+.935311/+.669219。没有按这500结果改变规则。
+
+新推断500+1个sentinel，另99个pilot复制已封存mask；sentinel两臂和reference校准元数据完全一致，全部原始输入/payload/tensor身份核对通过。所有600预测先封存再评分，reference空角色回退0。推断239.84秒，输入与raw核验逐例合计151.85秒，评分1.29秒；都是现有缓存条件下增量，不是完整冷输入速度。`paco_remaining500/report.json`、`scored_episodes.jsonl`、`sealed.json`已可用。PACO观察类264与官方303缺类口径均保存；原pilot100的87观察类分数重现前表。
+
+02线收到一次MD路径唤醒，正在按`COCO_VALIDATION_REQUEST.md`检验同一冻结global公式于现有COCO200；不新增视图/编码/参数。全局任务与本线累计600运行不重叠写入。
+
+## 真实FoRIS/快九窗冲突区域
+
+`disagreement/report.json`已完成，对同200既有B/M输出的真实冲突区做新的固定ROI评价。APD ridge条件AUC：Deep global .5755/local .7354，PACO global .7273/local .6343；方向与之前P0新增区一致。Deep native-only区local .7029，whole-only区local .7005；PACO对应global .6917/.7113。它证明新信号在真实方法冲突中有区分力，但尚未证明reference阈值或query可靠性规则能正确利用；不能用GT逐例挑两种视图。

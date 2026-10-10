@@ -1,6 +1,6 @@
 # 04 数据集差异研究任务
 
-状态：执行中。只写本目录和 `evidence/local/parallel_signal_20261010/04_dataset_differences/`；原始输入只读，数值计算单 CPU，不构建编码器或新 raw，不派生子代理。
+状态：完成。详见本目录 `REPORT.md`。只写本目录和 `evidence/local/parallel_signal_20261010/04_dataset_differences/`；原始输入只读，数值计算单 CPU，不构建编码器或新 raw，不派生子代理。
 
 ## 可回答问题
 

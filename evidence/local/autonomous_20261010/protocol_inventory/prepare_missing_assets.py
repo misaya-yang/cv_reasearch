@@ -60,13 +60,44 @@ def chest_source(root):
 
 def fundus_source(root):
     archive = root / "FIVES_v1.rar"
-    if not archive.exists():
-        return None
     meta = json.loads((root / "source_figshare_metadata.json").read_text())
     expected = meta["files"][0]
-    if archive.stat().st_size != expected["size"] or digest(archive, "md5") != expected["computed_md5"]:
-        raise ValueError("Official FIVES original archive MD5/size mismatch")
-    names = subprocess.check_output(["bsdtar", "-tf", str(archive)], text=True).splitlines()
+    complete_archive = archive.exists()
+    prefix_receipt = None
+    if complete_archive:
+        if archive.stat().st_size != expected["size"] or digest(archive, "md5") != expected["computed_md5"]:
+            raise ValueError("Official FIVES original archive MD5/size mismatch")
+        source_archive = archive
+        names = subprocess.check_output(["bsdtar", "-tf", str(archive)], text=True).splitlines()
+    else:
+        # Original source ordering puts the complete test cohort before train.
+        # Verify all needed RAR members independently, just as Chest verifies
+        # selected original ZIP members without downloading duplicate data.
+        parts = []
+        prefix = 0
+        for part in sorted((root / "range_chunks").glob("*.part")):
+            lo, hi = map(int, part.stem.split("-"))
+            if lo != prefix or part.stat().st_size != hi - lo + 1:
+                break
+            parts.append(part)
+            prefix = hi + 1
+        if prefix < 512 << 20:
+            return None
+        source_archive = root / "verified_contiguous_source_prefix.rar"
+        if not source_archive.exists() or source_archive.stat().st_size != prefix:
+            temporary = source_archive.with_suffix(".rar.tmp")
+            with temporary.open("wb") as output:
+                for part in parts:
+                    with part.open("rb") as source:
+                        shutil.copyfileobj(source, output, 8 << 20)
+            temporary.replace(source_archive)
+        listing = subprocess.run(["bsdtar", "-tf", str(source_archive)], capture_output=True, text=True)
+        if listing.returncode != 0 and "Truncated input file" not in listing.stderr:
+            raise RuntimeError(listing.stderr)
+        names = listing.stdout.splitlines()
+        prefix_receipt = dict(path=str(source_archive.relative_to(ASSETS)), bytes=prefix,
+            sha256=digest(source_archive), transport="Exact validated HTTP ranges of fixed Figshare file34969398",
+            whole_archive_supplied_md5_verified=False)
     (root / "archive_members.txt").write_text("\n".join(names) + "\n")
     selected = []
     for name in names:
@@ -77,10 +108,14 @@ def fundus_source(root):
             if part == "test" and len(parts) == i + 3 and parts[i + 1].lower() in ("original", "ground truth") and parts[-1].endswith(".png"):
                 selected.append(name)
     if len(selected) != 400:
+        if not complete_archive:
+            return None
         raise ValueError("FIVES original test cohort must contain 200 image/mask pairs: " + str(len(selected)))
     extract = root / "source_extracted"
     extract.mkdir(exist_ok=True)
-    subprocess.run(["bsdtar", "-xf", str(archive), "-C", str(extract), *selected], check=True)
+    # -q exits once every specifically named test member has been read and
+    # CRC-validated; unneeded, incomplete train data is never interpreted.
+    subprocess.run(["bsdtar", "-q", "-xf", str(source_archive), "-C", str(extract), *selected], check=True)
     stage = root / "prepared/Fundus"
     for name in selected:
         original = extract / name
@@ -99,10 +134,14 @@ def fundus_source(root):
         dataset_paper="https://doi.org/10.1038/s41597-022-01564-3",
         protocol_identification="FoRIS Appendix F cites Jin2022 FIVES; pinned fundus.py defaults to original test split with same-name PNG image/mask pairs",
         license=meta["license"], original_archive=dict(path=str(archive.relative_to(ASSETS)),
-            bytes=archive.stat().st_size, md5=digest(archive, "md5"), sha256=digest(archive),
-            supplied_md5=expected["computed_md5"], supplied_md5_passed=True),
+            expected_bytes=expected["size"], bytes=archive.stat().st_size if complete_archive else None,
+            md5=digest(archive, "md5") if complete_archive else None,
+            sha256=digest(archive) if complete_archive else None,
+            supplied_md5=expected["computed_md5"], supplied_md5_passed=complete_archive,
+            verification_pending=None if complete_archive else "Background full archive fetch and publisher MD5; pool uses complete selected original RAR member CRC and SHA validation"),
+        original_source_prefix=prefix_receipt,
         extraction="Original test200 pairs only, bsdtar/RAR checksum verification; filename casing relocated to loader Ground truth; PNG bytes unchanged; no resize/crop",
-        downloaded_full_archive=True, default_split="test", original_train_split_count=600,
+        downloaded_full_archive=complete_archive, default_split="test", original_train_split_count=600,
         test_pool_count=200)
 
 
