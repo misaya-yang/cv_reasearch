@@ -1,6 +1,6 @@
 # 02：目标身份与 query 上下文
 
-状态：研究进行中；仅写本目录和对应 `evidence/local/parallel_signal_20261010/02_task_identity/`。
+状态：研究已完成；见 `REPORT.md`。只写本目录和对应 `evidence/local/parallel_signal_20261010/02_task_identity/`，新增单个候选900例完整验证后关闭，未采用。
 
 问题：PACO600 whole FG/BG 竞争相对完整 FoRIS 的 +1.179400 点，具体来自哪些目标修复与干扰删除？该证据在 COCO200、Deep100 哪些困难区域失效？LVIS query-context presence 的已知正结果是否支持同一种身份机制？
 
