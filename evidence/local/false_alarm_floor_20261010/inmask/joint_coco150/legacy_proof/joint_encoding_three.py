@@ -1,9 +1,9 @@
-"""Real manifest-prefix encodes: separate R/Q versus one horizontal joint canvas.
+"""Three real COCO encodes: separate R/Q versus one horizontal joint canvas.
 
 Each arm uses frozen DINOv3 O24 at the same side/device and identical evidence
 rules, without positional debias. Native unnormalized FP32 outputs and exact
 inputs are saved losslessly before deriving unit tokens. No masked arm is part
-of this probe. Side768 passed the protected three-episode smoke probe.
+of this probe. Side768 capacity is unverified until the real protected run.
 The documented MPS budget is reinstated at0.4 of recommended memory; an OOM
 stops the probe with a receipt, without a retry or a larger memory allowance.
 """
@@ -94,13 +94,13 @@ def deny_query_labels(rows, assets, attempts):
 def joint_fields(args):
     source, out = base.opened(args)
     assets, grid = Path(args.assets).resolve(), args.side // 16
-    assert args.cohort and args.name and args.limit and 0 < args.limit <= len(source.rows) and args.shard == '0/1'
+    assert args.cohort and Path(source.where).resolve() == assets / 'a/coco_role_competition200_20261010'
+    assert args.name == 'joint_coco_try' and args.limit == 3 and args.shard == '0/1'
     assert args.side == 768 and args.device == 'mps' and args.encoder == 'dinov3' and not args.masked
     assert torch.backends.mps.is_available()
     assert not any(os.environ.get(k) == '0.0' or os.environ.get(k) == '0' for k in ('PYTORCH_MPS_HIGH_WATERMARK_RATIO', 'PYTORCH_MPS_LOW_WATERMARK_RATIO'))
     assert not (out / 'OOM.json').exists() and not (out / 'FAILED.json').exists(), 'A stopped probe is not retried'
-    rows = source.rows[:args.limit]
-    n = len(rows)
+    rows = source.rows[:3]
     out.mkdir(parents=True, exist_ok=True)
     sys.path[:0] = [str(base.REPO / 'src'), str(base.REPO / 'scripts')]
     from raw_feature_cache import RawFeatureCache, tensor_hash
@@ -121,27 +121,12 @@ def joint_fields(args):
             input='FP32 CHW; separate768x768 or unmasked horizontal R/Q768x1536'),
         mps_memory_fraction=.4, mps_recommended_max_bytes=recommended, mps_requested_cap_bytes=int(.4 * recommended))
     cache = RawFeatureCache(out / 'raw_cache', profile)
-    caches, legacy, legacy_root = {cache.profile_id:cache}, None, base.ROOT / 'inmask/joint_coco_try'
-    legacy_receipt = None
-    if legacy_root != out and (legacy_root / 'raw_replay.json').exists():
-        old_plan = base.read(legacy_root / 'joint_plan.json')
-        old_profile = base.read(old_plan['profile_path'])
-        compatible = all(old_profile.get(k) == v for k,v in profile.items() if k != 'source_sha256')
-        compatible &= all(old_profile['source_sha256'].get(p) == h for p,h in source_hashes.items() if p != str(Path(__file__).resolve()))
-        assert compatible, 'Existing three-episode raw profile must match the actual encoder/input recipe'
-        legacy = RawFeatureCache(Path(old_plan['profile_path']).parent.parent, old_profile)
-        caches[legacy.profile_id] = legacy
-        legacy_receipt = dict(root=str(legacy_root), profile_id=legacy.profile_id, compatible=True,
-            exception='Producer loop/count SHA changed; encoder, weights, transform, helper, runtime and actual tensor identity unchanged',
-            files={str(legacy_root / leaf):base.sha(legacy_root / leaf) for leaf in ['joint_plan.json','raw_bindings.json','raw_replay.json','sealed.json','SUCCESS.json','report.json']})
-        base.write(out / 'legacy_reuse.json', legacy_receipt)
     plan = dict(state='FROZEN_BEFORE_ENCODING_OR_QUERY_GT', arguments=vars(args),
         git_head=subprocess.run(['git','rev-parse','HEAD'], cwd=base.REPO, capture_output=True, text=True, check=True).stdout.strip(),
         ids=[source.describe(r)['id'] for r in rows], manifest_sha256=base.sha(Path(source.where) / 'manifest.json'),
         prefix_rows=rows, profile_id=cache.profile_id, profile_path=str(cache.folder / 'profile.json'),
         profile_sha256=base.sha(cache.folder / 'profile.json'), source_sha256=source_hashes,
-        arms=['separate', 'joint'], expected_encoder_requests=3*n, normal_mps_memory_protection=True,
-        legacy_reuse=legacy_receipt,
+        arms=['separate', 'joint'], expected_encoder_requests=9, normal_mps_memory_protection=True,
         mps_memory_fraction=.4, recommended_max_memory_bytes=recommended, requested_cap_bytes=int(.4 * recommended),
         mps_environment={k:v for k,v in os.environ.items() if k.startswith('PYTORCH_MPS_')},
         query_GT_reads=0, joint_features='actual full-canvas encoder output; never synthesized from separate features')
@@ -171,21 +156,16 @@ def joint_fields(args):
     @torch.inference_mode()
     def tokens(x, operation, row):
         array = x[0].numpy()
-        active = cache
-        if legacy is not None and (legacy.folder / legacy.key(array) / 'entry.json').exists():
-            active = legacy
-        key = active.key(array)
-        input_path = (legacy_root if active is legacy else out) / 'raw_inputs' / (key + '.npy')
-        if active is legacy:
-            assert input_path.exists(), 'Existing proof inputs are reused read-only'
+        key = cache.key(array)
+        input_path = out / 'raw_inputs' / (key + '.npy')
         if input_path.exists():
             assert tensor_hash(np.load(input_path, allow_pickle=False)) == tensor_hash(array)
         else:
             with input_path.open('xb') as handle:
                 np.save(handle, array, allow_pickle=False)
         gh, gw = array.shape[1] // 16, array.shape[2] // 16
-        info_path = active.folder / key / 'entry.json'
-        metrics, live = dict(state='LEGACY_RAW_REUSE' if active is legacy else 'CACHE_HIT', synchronized_forward_seconds=0., encoder_calls=0), None
+        info_path = cache.folder / key / 'entry.json'
+        metrics, live = dict(state='CACHE_HIT', synchronized_forward_seconds=0., encoder_calls=0), None
         if not info_path.exists():
             sampled = ObservedMemory()
             started = time.monotonic()
@@ -209,21 +189,18 @@ def joint_fields(args):
                 raise
             metrics = dict(state='REAL_ENCODER_SUCCESS', synchronized_forward_seconds=forward_seconds,
                 encode_and_cpu_copy_seconds=time.monotonic()-started, encoder_calls=1, **sampled.finish())
-            with active._locked(array, True):
+            with cache._locked(array, True):
                 assert not info_path.exists(), 'One producer owns this fresh raw cache'
-                active._write(array, {'O/24':live}, dict(episode_id=row['episode_id'], operation=operation,
+                cache._write(array, {'O/24':live}, dict(episode_id=row['episode_id'], operation=operation,
                     encoder_device='mps', encoder_dtype='float32', batch=1, actual_full_canvas=operation == 'joint.canvas'))
-        raw = active.read(array, ('O/24',))['O/24']
+        raw = cache.read(array, ('O/24',))['O/24']
         assert raw.shape == (gh * gw, 1024)
         unit = F.normalize(torch.from_numpy(raw.reshape(gh,gw,1024)), dim=2)
         if live is not None:
             assert np.array_equal(raw, live)
             assert torch.equal(unit, F.normalize(torch.from_numpy(live.reshape(gh,gw,1024)), dim=2))
         info = base.read(info_path)
-        if operation == 'joint.canvas':
-            assert any(p.get('actual_full_canvas') for p in info['provenance']), 'Joint raw must be from an actual joint forward'
         request = dict(episode_id=row['episode_id'], operation=operation, key=key, input_path=str(input_path),
-            profile_id=active.profile_id, profile_path=str(active.folder / 'profile.json'), reused_legacy=active is legacy,
             input_file_sha256=base.sha(input_path), input_tensor_hash=info['input_tensor_hash'], input_shape=list(array.shape),
             entry_path=str(info_path), entry_sha256=base.sha(info_path), payload_path=str(info_path.parent / info['file']),
             payload_sha256=info['file_sha256'], raw_shape=list(raw.shape), raw_tensor_sha256=info['features']['O/24']['tensor_sha256'],
@@ -268,33 +245,32 @@ def joint_fields(args):
     with deny_query_labels(source.rows, assets, attempts):
         base.make_fields(args, compute=compute, grid=grid)
     assert not attempts
-    records = [base.read(out / 'records' / f'{i:06d}.json') for i in range(n)]
+    records = [base.read(out / 'records' / f'{i:06d}.json') for i in range(3)]
     assert [r['id'] for r in records] == base.read(out / 'config.json')['ids'] == plan['ids']
     for i, record in enumerate(records):
         assert base.sha(out / 'fields' / f'{i:06d}.npz') == record['sha256']
     all_requests = [r for rec in records for r in rec['raw_requests']]
     for request in all_requests:
         array = np.load(request['input_path'],allow_pickle=False)
-        raw = caches[request['profile_id']].read(array, ('O/24',))['O/24']
+        raw = cache.read(array, ('O/24',))['O/24']
         assert tensor_hash(raw) == request['raw_tensor_sha256']
         gh,gw = array.shape[1]//16, array.shape[2]//16
         assert tensor_hash(F.normalize(torch.from_numpy(raw.reshape(gh,gw,1024)),dim=2).numpy()) == request['unit_tensor_sha256']
-    base.write(out / 'raw_replay.json', dict(state='PASS_SERIALIZED_RAW_AND_UNIT_FEATURE_PARITY', n=n, requests=len(all_requests),
+    base.write(out / 'raw_replay.json', dict(state='PASS_SERIALIZED_RAW_AND_UNIT_FEATURE_PARITY', n=3, requests=len(all_requests),
         raw_bindings_sha256=base.sha(out / 'raw_bindings.json'), profile_sha256=base.sha(cache.folder / 'profile.json'),
         encoder_calls=0, query_GT_reads=0))
-    base.write(out / 'sealed.json', dict(n=n, fields={r['id']:r['sha256'] for r in records}, query_GT_read=False,
+    base.write(out / 'sealed.json', dict(n=3, fields={r['id']:r['sha256'] for r in records}, query_GT_read=False,
         config_sha256=base.sha(out / 'config.json'),
         encoder_calls=sum(r['telemetry']['encoder_calls'] for r in all_requests), script_sha256=sorted({r['script_sha256'] for r in records}),
         joint_plan_sha256=base.sha(out / 'joint_plan.json'), raw_replay_sha256=base.sha(out / 'raw_replay.json')))
     peaks = [r['telemetry']['observed_peak'] for r in all_requests if r['telemetry']['encoder_calls']]
-    base.write(out / 'SUCCESS.json', dict(state='REAL_FIELDS_SEALED', n=n, actual_encoder_calls=len(peaks),
-        reused_legacy_requests=sum(r['reused_legacy'] for r in all_requests),
+    base.write(out / 'SUCCESS.json', dict(state='REAL_THREE_EPISODE_FIELDS_SEALED', n=3, actual_encoder_calls=len(peaks),
         unique_raw_inputs=len({r['key'] for r in all_requests}), profile_id=cache.profile_id, query_GT_reads=0,
         query_label_attempts=0, requested_cap_bytes=int(.4*recommended), recommended_max_memory_bytes=recommended,
         observed_peak={k:max(p[k] for p in peaks) for k in ('allocated_bytes','driver_bytes','rss_peak_bytes')},
-        exact_allocator_peak=False, mps_memory_fraction=.4, no_memory_limit_relaxation=True,
+        exact_allocator_peak=False, mps_memory_fraction=.4, no_memory_limit_override=True,
         sealed_sha256=base.sha(out / 'sealed.json')))
-    print(dict(state='REAL_FIELDS_SEALED', n=n, encoder_calls=len(peaks)), flush=True)
+    print(dict(state='REAL_THREE_EPISODE_FIELDS_SEALED', n=3, encoder_calls=len(peaks)), flush=True)
 
 
 if __name__ == '__main__':
