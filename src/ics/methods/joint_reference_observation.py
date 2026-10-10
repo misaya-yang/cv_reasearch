@@ -155,6 +155,64 @@ def _update(bank: dict[str, torch.Tensor], start: int, end: int, role: int,
     bank['joint'][start:end, role] = score
 
 
+def _merge_candidate_banks(global_bank: dict[str, torch.Tensor],
+                           local_bank: dict[str, torch.Tensor],
+                           joint_bank: dict[str, torch.Tensor],
+                           expected_counts: Sequence[int] | torch.Tensor,
+                           merge_chunk: int = 4096) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    """Integer-only global4/local4/joint8 merge, retaining exact source scores.
+
+    Only the first occurrence of each valid patch is selected, in discovery
+    order; the first eight unique patches fill each role. Global/local flags
+    are combined even when they discover the same patch. Duplicate joint
+    discoveries add no flag. No floating-point arithmetic or reranking.
+    """
+    n = global_bank['patch'].shape[0]
+    counts = torch.as_tensor(expected_counts, dtype=torch.int64)
+    if tuple(counts.shape) != (2,) or not bool(((counts >= 0) & (counts <= 8)).all()) or merge_chunk < 1:
+        raise ValueError('Require two valid role counts within8 and positive merge chunk')
+    for bank,k in ((global_bank,4),(local_bank,4),(joint_bank,8)):
+        if bank['patch'].device.type != 'cpu' or bank['patch'].dtype != torch.int64 or tuple(bank['patch'].shape) != (n,2,k):
+            raise ValueError('Candidate patch bank must be CPU int64 [N,2,K]')
+        if bank['joint'].device.type != 'cpu' or bank['joint'].dtype != torch.float32 or tuple(bank['joint'].shape) != (n,2,k):
+            raise ValueError('Candidate score bank must be CPU FP32 [N,2,K]')
+    selected_patch = torch.full((n,16),-1,dtype=torch.int64)
+    selected_score = torch.full((n,16),-torch.inf)
+    sources = torch.zeros((n,16),dtype=torch.uint8)
+    earlier = torch.tril(torch.ones((16,16),dtype=torch.bool),diagonal=-1)
+    position = torch.arange(16,dtype=torch.int64)[None]
+    for role in range(2):
+        for start in range(0,n,merge_chunk):
+            end = min(start+merge_chunk,n)
+            gp = global_bank['patch'][start:end,role]
+            lp = local_bank['patch'][start:end,role]
+            ids = torch.cat((gp,lp,joint_bank['patch'][start:end,role]),dim=1)
+            values = torch.cat((global_bank['joint'][start:end,role],
+                                local_bank['joint'][start:end,role],
+                                joint_bank['joint'][start:end,role]),dim=1)
+            duplicate = ((ids[:,:,None] == ids[:,None,:]) & earlier[None]).any(dim=2)
+            first = (ids >= 0) & ~duplicate
+            keep = first & (first.cumsum(dim=1) <= 8)
+            # Valid positions are unique integers, so padding ties cannot
+            # affect selected order. All padded values are canonicalized below.
+            keys = torch.where(keep,position,16)
+            kept_position,order = torch.topk(keys,8,dim=1,largest=False,sorted=True)
+            valid = kept_position < 16
+            if not bool((valid.sum(dim=1) == counts[role]).all()):
+                raise AssertionError('Candidate union no longer matches role coverage')
+            chosen = ids.gather(1,order)
+            score = values.gather(1,order)
+            from_global = (chosen[:,:,None] == gp[:,None,:]).any(dim=2)
+            from_local = (chosen[:,:,None] == lp[:,None,:]).any(dim=2)
+            flags = from_global.to(torch.uint8) | (from_local.to(torch.uint8)*2)
+            flags = torch.where(flags > 0,flags,4).to(torch.uint8)
+            output = slice(role*8,(role+1)*8)
+            selected_patch[start:end,output] = torch.where(valid,chosen,-1)
+            selected_score[start:end,output] = torch.where(valid,score,-torch.inf)
+            sources[start:end,output] = torch.where(valid,flags,0)
+    return selected_patch,selected_score,sources
+
+
 @torch.inference_mode()
 def build_observation(reference_o24: Any, reference_mask_canvas1024: Any,
                       query_global_o24: Any, native4_o24: Sequence[Any], *,
@@ -218,39 +276,8 @@ def build_observation(reference_o24: Any, reference_mask_canvas1024: Any,
                 _update(global_bank,q0,q1,role,global_scores,joint_scores,patches,eligible)
                 _update(local_bank,q0,q1,role,local_scores,joint_scores,patches,eligible)
                 _update(joint_bank,q0,q1,role,joint_scores,joint_scores,patches,eligible)
-    selected_patch = torch.full((16384,16),-1,dtype=torch.int64)
-    selected_score = torch.full((16384,16),-torch.inf)
-    sources = torch.zeros((16384,16),dtype=torch.uint8)
-    # Merge in the specified discovery order, not by an implicit final rerank.
-    for role in range(2):
-        expected_count = min(8,int(atoms['valid'][:,role].sum()))
-        gp,gscore = global_bank['patch'][:,role].tolist(),global_bank['joint'][:,role].tolist()
-        lp,lscore = local_bank['patch'][:,role].tolist(),local_bank['joint'][:,role].tolist()
-        jp,jscore = joint_bank['patch'][:,role].tolist(),joint_bank['joint'][:,role].tolist()
-        rows_patch,rows_score,rows_source = [],[],[]
-        for i in range(16384):
-            chosen,score,flags,index = [],[],[],{}
-            for ids,values,source in ((gp[i],gscore[i],1),(lp[i],lscore[i],2)):
-                for patch,value in zip(ids,values):
-                    if patch < 0:
-                        continue
-                    if patch in index:
-                        flags[index[patch]] |= source
-                    else:
-                        index[patch]=len(chosen);chosen.append(patch);score.append(value);flags.append(source)
-            for patch,value in zip(jp[i],jscore[i]):
-                if len(chosen) == 8:
-                    break
-                if patch >= 0 and patch not in index:
-                    index[patch]=len(chosen);chosen.append(patch);score.append(value);flags.append(4)
-            assert len(chosen) == expected_count
-            padding = 8-len(chosen)
-            rows_patch.append(chosen+[-1]*padding)
-            rows_score.append(score+[-torch.inf]*padding)
-            rows_source.append(flags+[0]*padding)
-        selected_patch[:,role*8:(role+1)*8] = torch.tensor(rows_patch,dtype=torch.int64)
-        selected_score[:,role*8:(role+1)*8] = torch.tensor(rows_score,dtype=torch.float32)
-        sources[:,role*8:(role+1)*8] = torch.tensor(rows_source,dtype=torch.uint8)
+    selected_patch,selected_score,sources = _merge_candidate_banks(
+        global_bank,local_bank,joint_bank,atoms['valid'].sum(dim=0).clamp_max(8))
     roles = torch.cat((torch.zeros(8,dtype=torch.int64),torch.ones(8,dtype=torch.int64)))[None].expand(16384,-1).clone()
     valid = selected_patch >= 0
     safe_patch = selected_patch.clamp_min(0)
