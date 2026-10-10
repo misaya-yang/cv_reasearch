@@ -1,6 +1,6 @@
 # 05：旧参考判别读出与当前困难区域排序复核
 
-2026-10-10。状态：执行中。写入范围仅本目录及对应的 `evidence/local/parallel_signal_20261010/05_reference_readouts/`；1 CPU、无新编码、无MPS、无进程池、无子代理。旧资产及主代理字段只读。
+2026-10-10。状态：完成，无阻塞；结论见本目录 `REPORT.md`。写入范围仅本目录及对应的 `evidence/local/parallel_signal_20261010/05_reference_readouts/`；1 CPU、无新编码、无MPS、无进程池、无子代理。旧资产及主代理字段只读。
 
 ## 可回答问题
 
