@@ -1,0 +1,128 @@
+{
+  "status": "PASSED_NO_GT_INDEPENDENT_STATIC_AND_SYNTHETIC_REVIEW",
+  "blocking_findings": [],
+  "nonblocking_provenance_gap": {
+    "location": "scripts/autonomous_scene_reconstruction.py:139",
+    "fact": "Config does not bind all imported external CRF Python/C++ sources or the compiled native binary.",
+    "observed_output_defect": false,
+    "correction": "At output validation, bind imported CRF source/backend receipts; or extend a future runner freeze."
+  },
+  "contrast_scope": "Complete query-mixture representation versus source-mixture representation; centers and occupancies both change.",
+  "complement_symmetry_scope": "Fixed caller-normalized features; legal foreground-dependent APD may change after raw-mask complement.",
+  "source_sha256": {
+    "src/ics/methods/autonomous_context_transport.py": "8e7e068d629d744c5e2f8a5fac162e57fa78d4af99609b2318d170c5b8781d06",
+    "scripts/autonomous_scene_reconstruction.py": "65f43a91133a21fc35fd8849579c311ff48d1577eeddcec2cc3d5e7d699cb2ba"
+  },
+  "fixture_source_sha256": "6ff008181e5b4b6adf0897f229ae424389230d1db85fd03ec59df2b12ed56bcd",
+  "math": {
+    "scene": {
+      "primal_coefficient_max_error": 4.773959005888173e-15,
+      "primal_intercept_error": 1.8485213360008856e-14,
+      "original_collapsed_loss_error": 1.1102230246251565e-16,
+      "occupancy_sum_error": 1.1102230246251565e-16,
+      "responsibility_row_sum_max_error": 4.440892098500626e-16,
+      "scene_norm_identity_error": 8.881784197001252e-16,
+      "min_occupancy": 0.0125,
+      "components": 80
+    },
+    "source_kernel": {
+      "primal_coefficient_max_error": 5.689893001203927e-16,
+      "primal_intercept_error": 3.6914915568786455e-15,
+      "original_collapsed_loss_error": 0.0,
+      "occupancy_sum_error": 0.0,
+      "responsibility_row_sum_max_error": 1.3322676295501878e-15,
+      "scene_norm_identity_error": 0.0,
+      "min_occupancy": 0.010416666666666666,
+      "components": 96
+    },
+    "support_ridge": {
+      "primal_coefficient_max_error": 5.551115123125783e-16,
+      "primal_intercept_error": 3.469446951953614e-17
+    },
+    "field_properties": {
+      "byte_identical_repeat": {
+        "scene": true,
+        "source_kernel": true,
+        "support_ridge": true
+      },
+      "complement_max_sign_error": {
+        "scene": 0.0,
+        "source_kernel": 0.0,
+        "support_ridge": 0.0
+      },
+      "input_not_mutated": true,
+      "json_allow_nan_false": true,
+      "field_sha256": {
+        "scene": "ed4d687062ace5799aa0139bb4226e0df6bf3e061d6e3c74863ec28f7efe9914",
+        "source_kernel": "a366bdbd53de4d91fc255a2387343fe4182c55808e1c5013e86c0d812e1962fa",
+        "support_ridge": "d16fb2b6b2a4c6f304bd6198de9d41906d9f71e0782e11d8d2e3eef9272185d1"
+      }
+    },
+    "renderer": {
+      "original_size_helper_exact": true,
+      "crf_result_shape": [
+        31,
+        23
+      ],
+      "crf_result_bool": true,
+      "backend_executed": false,
+      "strict_zero_interpolation": "runner uses continuous signed field to1024 before >0; no minmax"
+    }
+  },
+  "prepared_input_metadata": {
+    "experiment_prepared": true,
+    "query_GT_reads": 0,
+    "real_prediction_arrays_read": 0,
+    "real_feature_arrays_read": 0,
+    "n": 600,
+    "task_n": 600,
+    "datasets": {
+      "deepglobe_road": 100,
+      "paco_part": 100,
+      "coco": 200,
+      "lvis": 200
+    },
+    "baseline_manifest_fields": [
+      "episode_id",
+      "reference_rgb_hash",
+      "query_rgb_hash",
+      "reference_mask_hash",
+      "reference_crop",
+      "query_crop",
+      "reference_size_hw",
+      "query_size_hw"
+    ],
+    "baseline_input_mismatches": [],
+    "frozen_source_matches": {
+      "scripts/autonomous_scene_reconstruction.py": true,
+      "src/ics/__init__.py": true,
+      "src/ics/methods/__init__.py": true,
+      "src/ics/methods/autonomous_context_transport.py": true,
+      "src/ics/official_data.py": true,
+      "src/ics/metrics.py": true,
+      "scripts/raw_feature_cache.py": true,
+      "scripts/cached_dino.py": true,
+      "src/ics/native_basis.py": true,
+      "src/ics/m4_crf.py": true,
+      "src/ics/m4_crf_cached.py": true
+    },
+    "live_method_matches_frozen": true,
+    "live_runner_matches_frozen": true,
+    "manifest_hash_matches": true,
+    "task_hash_matches": true,
+    "profile_hash_matches": true,
+    "basis_hash_matches": true
+  },
+  "runtime": {
+    "python": "3.13.11 | packaged by Anaconda, Inc. | (main, Dec 10 2025, 21:21:08) [Clang 20.1.8 ]",
+    "torch": "2.10.0",
+    "numpy": "2.4.2",
+    "cpu_threads": 2
+  },
+  "elapsed_seconds": 0.3341489999997975,
+  "limitations": [
+    "No real feature inference or scoring run by this validator.",
+    "CRF lattice parity and actual-sample determinism await sealed-output validation.",
+    "Synthetic checks do not establish novelty, generalization, accuracy, or practical end-to-end latency."
+  ]
+}

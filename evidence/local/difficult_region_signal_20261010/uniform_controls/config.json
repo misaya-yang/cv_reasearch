@@ -1,0 +1,11 @@
+{
+  "generator_sha256": "02417c471c1c2dc614be30f53928e6b73ccf143c51e0e9bd83fe59dcbf1ad2a9",
+  "inputs_sha256": "58997dbee5c6a147a9e01696feaaac6b427c7510b9ff9af4825dab83886a9ac5",
+  "controls": {
+    "uniform.full_bg": "h=-1: full allowed background perturbation, no reference needed",
+    "uniform.matched_global": "h=-mean_original(abs(h_global)): same per-image original-pixel L1 evidence budget",
+    "uniform.matched_local4": "h=-mean_original(abs(h_local4)): same per-image original-pixel L1 evidence budget"
+  },
+  "readout": "same g0+.5*h, strict>0, exact tie inherits FoRIS; no parameter sweep/query GT",
+  "purpose": "Separate task-direction benefit from simply reducing uncertain foreground."
+}

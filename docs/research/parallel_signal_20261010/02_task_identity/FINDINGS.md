@@ -43,3 +43,19 @@
 |Deep100道路总I/U|29.377542|29.529416|29.862274|30.096967|
 
 新规则相对FoRIS +.026757/−.155301/+.719425。PACO失去旧whole的绝大部分收益；COCO仍低于FoRIS和MEAN64.006821；Deep仍远低于快九窗37.344028，且相对source_pre仅+.234693。排序诊断的优势不能直接推出固定零点的一致性门是正确读出。这一候选关闭，不调整或延伸。产物 `evidence/local/parallel_signal_20261010/02_task_identity/source_agreement/`。
+
+## 追加 COCO ridge：实现身份已通过，正在生成固定200
+
+按 `COCO_VALIDATION_REQUEST.md` 原样迁移主线 `anchor.global`，配置和源代码冻结在 `ridge_coco_validation/`。只读400个whole R/Q请求、396唯一key，不读任何九窗。
+
+PACO pilot固定首例 `dev_s1/paco_part/0/0` 已在单CPU重放：原图mask逐字节相同，reference calibration字典完全相同，省略Huber后的ridge系数/bias与冻结完整核心逐值相同。新query ridge字段与旧保存字段最大差3.1086244689504383e−15，完整mask不变；该极小FP64差保留在sentinel收据，未把它写成field逐位相同。
+
+COCO所有新mask封存后才评分；尚未根据COCO新结果作任何公式调整。最终结果另写 `COCO_RIDGE_REPORT.md`，旧REPORT与source agreement结果保持原记录。
+
+### COCO ridge全部完成：没有跨到COCO
+
+固定 `anchor.global` 原图 **62.459822**，完整FoRIS63.358900、MEAN64.006821、旧whole60.895815。对FoRIS−.899078，10000次照片组分层配对区间[−2.464037,+.355781]；对MEAN−1.546999，[−3.203799,−.234389]；对旧whole+1.564006，[−.176297,+3.126504]。不改公式或按COCO另调参数。
+
+补真150,909、补假511,506、删真301,062、删假346,452：净少TP150,153、净多FP165,054。所有200零h还原完整FoRIS，600组旧I/U一致；400次raw请求/396唯一输入全部通过实际输入key、profile、payload及tensor SHA校验。APD198/200，reference校准回退0，非正分离度0。生成50.97秒，其中输入/校验13.12秒、ridge/APD等计算35.66秒；单CPU，无新编码/CRF/窗口。最终报告补充逐类与代价解释。
+
+追加输出已另行全部200从保存field/source重建并逐位一致。新ridge在mutable BG宏AUC .713156（旧h .644093；198有效）有排序改善，但已有FG内 .749689（旧h .749789；196有效）没有改善；标定h对已有TP42.68%为负，已有FN仅20.87%为正。合法reference零点没有获得稳定的跨图读出，anchor也不能区分可改区域里的错误h。详见已完成 `COCO_RIDGE_REPORT.md`；所有本线进程退出，不再改变规则。
