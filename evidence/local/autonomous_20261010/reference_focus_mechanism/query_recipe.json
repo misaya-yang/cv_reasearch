@@ -1,0 +1,26 @@
+{
+  "source_seal_sha256": "5416b45396ae745af2cafe88432f8dbfbddb5a54b53b16628d1490b278602231",
+  "reference_diagnostics_sha256": "cd5f0c69b708d9c8648ea48abad98d7277620970c2f86e0b0b56cd113c0f2d4d",
+  "fields": [
+    "actual.global",
+    "actual.local4",
+    "actual.equal",
+    "derived.global",
+    "derived.local4",
+    "derived.equal"
+  ],
+  "rois": [
+    "all",
+    "FoRIS_foreground",
+    "actual_derived_equal_crf_disagreement"
+  ],
+  "metric": "fixed fine128 scores, foreground/background pixel mass inside canonical1024 ROI; macro episode AUC/AP/TPR. Zero-sign errors are node-sign diagnostics, not full rendered mask mIoU.",
+  "truth": "torch nearest original query binary mask to1024; exact same score frame",
+  "query_features_read": false,
+  "new_masks": 0,
+  "encoder_calls": 0,
+  "raw_writes": 0,
+  "no_threshold_search": true,
+  "bias_decomposition": "actual-minus-derived field score difference minus frozen source intercept difference; diagnostic only",
+  "preregistration": "Post-hoc development diagnosis, frozen transform before this script reads query GT; not untouched confirmation"
+}
