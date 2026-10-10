@@ -12,3 +12,15 @@
 除第4轨实际所需reference原特征读取，其余优先使用已保存字段。统一aidemo、codex_m4；每个数值进程最多2CPU线程，不构造DINO、不重新编码、不补缺视图、不下载、不改默认方法或其他聊天的冻结运行。允许封存GT评价，禁止用query GT选择生产公式或参数。源配置、输入及结果身份单独保存，旧6000/官方全量/已失败队列不恢复。
 
 结果要回答可操作的问题：大幅误检是否来自基本排序无效、参考身份本身混淆、跨视图证据不一致，或.5读出与分数不相容。结论以实际缓存证据区分；在明确规则前，不把另一套完整求解器作为下一步。最终研究目标仍是同条件完整mIoU涨分及可用成本，本轮这些诊断不是目标已达成。
+
+## 四轨完成后的具体对照
+
+四轨均已完成，汇总见`cv_data/a/cache_mechanism_study_20261010/SYNTHESIS.md`。原unary的逐例全图AUC为Deep .9155/PACO .9036，固定.5预测面积是真实目标6.938/3.094倍；几何只改约.6%/.8%像素。全图AUC不替代困难区域区分能力，oracle阈值不作为部署参数。实际reference自回放LOO发现原角色密度BG误报7.786%，直接max又因mixed双角色tie大量漏掉道路。共享逆重复度固定对照84.61秒完成，在Deep连续FN和PACO纯BG FPR各有退步，停止该候选于reference诊断，不进行其query试验。
+
+以这些证据落实一个最简单的读出检验：仅原reference LOO分数与合法reference mask确定连续coverage的balanced-risk最小阈值；使用完整score组与strict>规则。首次冻结/输出前经独立审阅将最优风险tie明确为实际参考概率FP64阈值theta距离.5最小，.5已最优即保留，不强制区间中点；完整概率ties整组，区间端点在概率FP64下nextafter，不先在logit nextafter再sigmoid。同距离取较高theta。原200已保存query P0先按原策略bilinear至原帧，再用FP64 theta直接strict>输出；代码、阈值及全部200预测封存后才读query GT评分。不重新编码、不新样本、不接density或BP、不改变默认方法。它检验参考阈值能否迁移，允许失败；不是预设采用，也不把参考自拟合当成query有效。产物`reference_calibrated_readout/`。
+
+独立dense_role_unary只准备去掉候选/BP的同unary接口，五组合成输入与原字段逐字节一致；尚未测实际加速。新density模块列序FG/BG，而head为BG/FG，将来接入必须显式重排并记录身份；目前未接入。
+
+## 本轮完成结果
+
+唯一参考校准查询对照200/200完成，Deep18.5684/PACO38.1495，虽比原P0增加5.9377/8.9121，仍比同批FoRIS低10.8091/7.4144。真实读取既存概率→参考阈值→200封存输出→GT评分共3.78575秒，新增DINO/BP/raw读取0；不是冷端到端。全部来源/阈值/预测和I/U收据保留，不采用、不扩跑。计划四轨与该单一实际对照已结束，目标未达成；未排队下一批。最新实际状态以`reference_calibrated_readout/COMPLETE.json`、`result.json`及`SYNTHESIS.md`为准。

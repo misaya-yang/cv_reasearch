@@ -1,0 +1,220 @@
+{
+  "results": {
+    "paco": {
+      "miou": {
+        "foris.crf": 38.46086822874081,
+        "region.fast": 34.97140267295664,
+        "source_agreement": 38.48762554817007,
+        "source_pre": 37.934416186142464,
+        "task.anchored": 32.13466255217226,
+        "task.competitive": 39.64026766588468,
+        "task.global": 35.1441251564533
+      },
+      "candidate_pairs": {
+        "foris.crf": {
+          "delta_pp": 0.02675731942926518,
+          "ci95_pp": [
+            -0.01780880443530588,
+            0.06101818581624412
+          ]
+        },
+        "task.competitive": {
+          "delta_pp": -1.1526421177146062,
+          "ci95_pp": [
+            -1.4591652795597094,
+            -0.6944817871268842
+          ]
+        },
+        "source_pre": {
+          "delta_pp": 0.5532093620276086,
+          "ci95_pp": [
+            0.5024222289286187,
+            0.6366008678995735
+          ]
+        }
+      },
+      "bootstrap": {
+        "unit": "query photo within fold and class",
+        "repetitions": 10000,
+        "seed": 0,
+        "rng": "RandomState",
+        "repeats": "retained with draw weight",
+        "scope": "conditional on the given image pool; not unseen-photo uncertainty"
+      },
+      "query_photo_count": 570,
+      "singleton_photo_strata": 98
+    },
+    "coco": {
+      "miou": {
+        "foris.crf": 63.358900092540765,
+        "mean": 64.00682066147232,
+        "source_agreement": 63.20359949839048,
+        "source_pre": 62.62914244278754,
+        "task.competitive": 60.8958153191734
+      },
+      "candidate_pairs": {
+        "foris.crf": {
+          "delta_pp": -0.1553005941502832,
+          "ci95_pp": [
+            -0.3498543404677667,
+            -0.008106135328030386
+          ]
+        },
+        "task.competitive": {
+          "delta_pp": 2.30778417921708,
+          "ci95_pp": [
+            0.43585645377724036,
+            4.20280567580703
+          ]
+        },
+        "source_pre": {
+          "delta_pp": 0.5744570556029416,
+          "ci95_pp": [
+            0.4134879027429402,
+            0.7937619758599505
+          ]
+        }
+      },
+      "bootstrap": {
+        "unit": "query photo within fold and class",
+        "repetitions": 10000,
+        "seed": 0,
+        "rng": "RandomState",
+        "repeats": "retained with draw weight",
+        "scope": "conditional on the given image pool; not unseen-photo uncertainty"
+      },
+      "query_photo_count": 199,
+      "singleton_photo_strata": 2
+    },
+    "deep": {
+      "miou": {
+        "foris.crf": 29.37754198192857,
+        "region.fast": 37.34402767737843,
+        "region.original": 37.023712105455395,
+        "source_agreement": 30.0969669662993,
+        "source_pre": 29.862273618473512,
+        "task.competitive": 29.529416344422604
+      },
+      "candidate_pairs": {
+        "foris.crf": {
+          "delta_pp": 0.719424984370729,
+          "ci95_pp": [
+            0.12504137055141806,
+            1.2491377330304847
+          ]
+        },
+        "task.competitive": {
+          "delta_pp": 0.5675506218766948,
+          "ci95_pp": [
+            -0.7822225913441422,
+            1.979829854087763
+          ]
+        },
+        "source_pre": {
+          "delta_pp": 0.234693347825786,
+          "ci95_pp": [
+            -0.3684114230021288,
+            0.8175673484189375
+          ]
+        }
+      },
+      "bootstrap": {
+        "unit": "query photo within fold and class",
+        "repetitions": 10000,
+        "seed": 0,
+        "rng": "RandomState",
+        "repeats": "retained with draw weight",
+        "scope": "conditional on the given image pool; not unseen-photo uncertainty"
+      },
+      "query_photo_count": 100,
+      "singleton_photo_strata": 0
+    },
+    "paco_parent_ranks": {
+      "h": {
+        "n": 584,
+        "macro_auc": 0.6910987214112063
+      },
+      "source": {
+        "n": 584,
+        "macro_auc": 0.7159339270226
+      },
+      "best_fg": {
+        "n": 584,
+        "macro_auc": 0.6172163443036218
+      },
+      "best_bg": {
+        "n": 584,
+        "macro_auc": 0.4115361217749819
+      }
+    },
+    "lvis_pooled_window_rank": {
+      "reference_margin": {
+        "fg": 22325421.0,
+        "bg": 36591781.0,
+        "auc": 0.8563095480575575,
+        "ap": 0.765284221428831,
+        "tpr_fpr05": 0.4892626212961449
+      },
+      "context_margin": {
+        "fg": 22325421.0,
+        "bg": 36591781.0,
+        "auc": 0.8735923868052471,
+        "ap": 0.7290564009562143,
+        "tpr_fpr05": 0.23034418925403466
+      }
+    },
+    "lvis_pooled_component_rank": {
+      "margin": {
+        "fg": 22325421.0,
+        "bg": 36591781.0,
+        "auc": 0.8742745979112703,
+        "ap": 0.7272168050171033,
+        "tpr_fpr05": 0.23782776593552257
+      },
+      "agreement": {
+        "fg": 22325421.0,
+        "bg": 36591781.0,
+        "auc": 0.8939563738012806,
+        "ap": 0.795393870492159,
+        "tpr_fpr05": 0.3854466619016949
+      }
+    },
+    "paco_corrected_BG_competition": {
+      "miou": {
+        "paired_bg": 35.14412515645327,
+        "competitive": 39.640267665884686
+      },
+      "edit_shapley_pp": [
+        0.0,
+        0.0,
+        -3.753781123956426,
+        8.249923633387791
+      ],
+      "observed_classes": 264,
+      "official_slots": 303,
+      "episode_win_tie_loss": [
+        413,
+        4,
+        183
+      ],
+      "class_win_tie_loss": [
+        184,
+        2,
+        78
+      ],
+      "edits": [
+        0,
+        0,
+        223851,
+        1267271
+      ]
+    }
+  },
+  "independent_point_and_shapley_checks": 21,
+  "script_sha256": "4c21453ea78dbab137829e82dc4c7ec8d07cbfb4b142cc18a051998266516a8e",
+  "helper_sha256": "94bc7740b77bce2adb392c599cf2e11d885b21ce1b1abe05136a7838abb90c6d",
+  "seconds": 0.6141397500177845,
+  "new_masks": 0,
+  "threads": 1,
+  "processes": 1
+}

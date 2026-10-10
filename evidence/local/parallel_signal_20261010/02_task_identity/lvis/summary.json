@@ -1,0 +1,464 @@
+{
+  "n": 200,
+  "comparisons": {
+    "foris.crf -> presence.query_context": {
+      "miou": {
+        "foris.crf": 45.8091995508574,
+        "presence.query_context": 48.49793375184902
+      },
+      "edit_shapley_pp": [
+        2.5016465848012714,
+        -3.5777568034247085,
+        -4.202549943031539,
+        7.967394362646546
+      ],
+      "observed_classes": 200,
+      "official_slots": 200,
+      "episode_win_tie_loss": [
+        122,
+        9,
+        69
+      ],
+      "class_win_tie_loss": [
+        122,
+        9,
+        69
+      ],
+      "edits": [
+        85471,
+        260550,
+        286703,
+        822771
+      ]
+    },
+    "foris.crf -> component.query_context": {
+      "miou": {
+        "foris.crf": 45.8091995508574,
+        "component.query_context": 50.53399663141662
+      },
+      "edit_shapley_pp": [
+        2.6232081550462,
+        -2.6678226999242542,
+        -3.423137068449471,
+        8.192548693886733
+      ],
+      "observed_classes": 200,
+      "official_slots": 200,
+      "episode_win_tie_loss": [
+        128,
+        10,
+        62
+      ],
+      "class_win_tie_loss": [
+        128,
+        10,
+        62
+      ],
+      "edits": [
+        80972,
+        200942,
+        279079,
+        816538
+      ]
+    },
+    "presence.reference -> presence.query_context": {
+      "miou": {
+        "presence.reference": 38.229693416950624,
+        "presence.query_context": 48.49793375184902
+      },
+      "edit_shapley_pp": [
+        0.18539548049378482,
+        -0.48526691140779665,
+        -1.7119290143954127,
+        12.280040780207775
+      ],
+      "observed_classes": 200,
+      "official_slots": 200,
+      "episode_win_tie_loss": [
+        100,
+        83,
+        17
+      ],
+      "class_win_tie_loss": [
+        100,
+        83,
+        17
+      ],
+      "edits": [
+        1777,
+        36863,
+        54075,
+        1083588
+      ]
+    },
+    "presence.query_context -> component.query_context": {
+      "miou": {
+        "presence.query_context": 48.49793375184902,
+        "component.query_context": 50.53399663141662
+      },
+      "edit_shapley_pp": [
+        1.122490407120904,
+        -0.6261549591945132,
+        -0.047571929086921545,
+        1.5872993607281711
+      ],
+      "observed_classes": 200,
+      "official_slots": 200,
+      "episode_win_tie_loss": [
+        69,
+        107,
+        24
+      ],
+      "class_win_tie_loss": [
+        69,
+        107,
+        24
+      ],
+      "edits": [
+        9296,
+        22743,
+        6171,
+        76118
+      ]
+    },
+    "component.global_agreement_budget -> component.query_context": {
+      "miou": {
+        "component.global_agreement_budget": 49.80417599958116,
+        "component.query_context": 50.53399663141662
+      },
+      "edit_shapley_pp": [
+        0.0965524314778871,
+        -0.5074194142280638,
+        -0.39024911759421127,
+        1.5309367321798415
+      ],
+      "observed_classes": 200,
+      "official_slots": 200,
+      "episode_win_tie_loss": [
+        47,
+        120,
+        33
+      ],
+      "class_win_tie_loss": [
+        47,
+        120,
+        33
+      ],
+      "edits": [
+        1076,
+        12066,
+        31595,
+        124613
+      ]
+    }
+  },
+  "ranks": {
+    "window_rank": {
+      "reference_margin": {
+        "auc": {
+          "n": 196,
+          "mean": 0.8014055517604797
+        },
+        "ap": {
+          "n": 196,
+          "mean": 0.6176599510754658
+        },
+        "tpr_fpr05": {
+          "n": 196,
+          "mean": 0.4101714688476058
+        }
+      },
+      "context_margin": {
+        "auc": {
+          "n": 196,
+          "mean": 0.7992238644581537
+        },
+        "ap": {
+          "n": 196,
+          "mean": 0.6131328257610814
+        },
+        "tpr_fpr05": {
+          "n": 196,
+          "mean": 0.4062189220434023
+        }
+      }
+    },
+    "component_rank": {
+      "margin": {
+        "auc": {
+          "n": 196,
+          "mean": 0.8093464960750651
+        },
+        "ap": {
+          "n": 196,
+          "mean": 0.6356634699919264
+        },
+        "tpr_fpr05": {
+          "n": 196,
+          "mean": 0.4532660608357991
+        }
+      },
+      "agreement": {
+        "auc": {
+          "n": 196,
+          "mean": 0.7878761847241433
+        },
+        "ap": {
+          "n": 196,
+          "mean": 0.61233191528908
+        },
+        "tpr_fpr05": {
+          "n": 196,
+          "mean": 0.40994964881447615
+        }
+      }
+    }
+  },
+  "window_transition": {
+    "reference=False,query=False": {
+      "n": 180,
+      "tp": 7114,
+      "fp": 8648546,
+      "empty_gt_windows": 168,
+      "zero_tp_windows": 170
+    },
+    "reference=False,query=True": {
+      "n": 34,
+      "tp": 6701,
+      "fp": 777670,
+      "empty_gt_windows": 24,
+      "zero_tp_windows": 25
+    },
+    "reference=True,query=False": {
+      "n": 442,
+      "tp": 453605,
+      "fp": 14108049,
+      "empty_gt_windows": 352,
+      "zero_tp_windows": 375
+    },
+    "reference=True,query=True": {
+      "n": 1144,
+      "tp": 21858001,
+      "fp": 13057516,
+      "empty_gt_windows": 230,
+      "zero_tp_windows": 265
+    }
+  },
+  "component_conditions": {
+    "no_guide_overlap": {
+      "n": 11010,
+      "tp": 179093,
+      "fp": 23149732,
+      "accepted_n": 2387,
+      "accepted_tp": 56378,
+      "accepted_fp": 997516
+    },
+    "has_guide_overlap": {
+      "n": 4431,
+      "tp": 22146328,
+      "fp": 13442049,
+      "accepted_n": 4129,
+      "accepted_tp": 21832646,
+      "accepted_fp": 12093244
+    },
+    "window_rejected": {
+      "n": 7158,
+      "tp": 460719,
+      "fp": 22756595,
+      "accepted_n": 470,
+      "accepted_tp": 67427,
+      "accepted_fp": 359523
+    },
+    "window_accepted": {
+      "n": 8283,
+      "tp": 21864702,
+      "fp": 13835186,
+      "accepted_n": 6046,
+      "accepted_tp": 21821597,
+      "accepted_fp": 12731237
+    }
+  },
+  "guide_recall_groups": {
+    "guide_recall_lt20": {
+      "miou": {
+        "foris.crf": 3.440565235088906,
+        "window.native": 15.370790302294534,
+        "presence.reference": 15.439767440174247,
+        "presence.global_agreement_budget": 4.329140288823353,
+        "presence.query_context": 4.493281240666874,
+        "presence.reference_query": 4.493281240666874,
+        "component.query_context": 4.731745704846845,
+        "component.global_agreement_budget": 8.019634922592953
+      },
+      "edit_shapley_pp": [
+        2.746756540301408,
+        -0.6429295259521293,
+        -1.1366376408602648,
+        0.323991096268926
+      ],
+      "observed_classes": 17,
+      "official_slots": 17,
+      "episode_win_tie_loss": [
+        4,
+        10,
+        3
+      ],
+      "class_win_tie_loss": [
+        4,
+        10,
+        3
+      ],
+      "n": 17,
+      "gate": {
+        "window.native": {
+          "tp": 319485,
+          "fp": 3508690
+        },
+        "presence.reference": {
+          "tp": 319213,
+          "fp": 2707426
+        },
+        "presence.query_context": {
+          "tp": 93174,
+          "fp": 2032426
+        },
+        "presence.reference_query": {
+          "tp": 93174,
+          "fp": 1800331
+        },
+        "component.query_context": {
+          "tp": 89493,
+          "fp": 1834717
+        },
+        "component.global_agreement_budget": {
+          "tp": 167272,
+          "fp": 2206084
+        }
+      }
+    },
+    "guide_recall_20to50": {
+      "miou": {
+        "foris.crf": 16.56319507610023,
+        "window.native": 13.523784111366119,
+        "presence.reference": 20.159825481714073,
+        "presence.global_agreement_budget": 23.89424106435399,
+        "presence.query_context": 24.895858293401165,
+        "presence.reference_query": 24.90136729494823,
+        "component.query_context": 21.521125480052316,
+        "component.global_agreement_budget": 22.296139428621707
+      },
+      "edit_shapley_pp": [
+        10.666475536822771,
+        -2.882067033716821,
+        -3.5261921941746057,
+        0.6997140950207464
+      ],
+      "observed_classes": 9,
+      "official_slots": 9,
+      "episode_win_tie_loss": [
+        6,
+        0,
+        3
+      ],
+      "class_win_tie_loss": [
+        6,
+        0,
+        3
+      ],
+      "n": 9,
+      "gate": {
+        "window.native": {
+          "tp": 1481459,
+          "fp": 1852106
+        },
+        "presence.reference": {
+          "tp": 1479529,
+          "fp": 997124
+        },
+        "presence.query_context": {
+          "tp": 1376694,
+          "fp": 767107
+        },
+        "presence.reference_query": {
+          "tp": 1376580,
+          "fp": 653884
+        },
+        "component.query_context": {
+          "tp": 1367017,
+          "fp": 661032
+        },
+        "component.global_agreement_budget": {
+          "tp": 1471788,
+          "fp": 793938
+        }
+      }
+    },
+    "guide_recall_ge50": {
+      "miou": {
+        "foris.crf": 51.43227949587961,
+        "window.native": 36.216768211352715,
+        "presence.reference": 41.58211734410077,
+        "presence.global_agreement_budget": 53.23267450055748,
+        "presence.query_context": 53.847033147262785,
+        "presence.reference_query": 54.023830803235306,
+        "component.query_context": 56.24418575266636,
+        "component.global_agreement_budget": 55.0637334018318
+      },
+      "edit_shapley_pp": [
+        2.0432104011100836,
+        -2.8969322966567663,
+        -3.608608267093282,
+        9.27423641942673
+      ],
+      "observed_classes": 174,
+      "official_slots": 174,
+      "episode_win_tie_loss": [
+        118,
+        0,
+        56
+      ],
+      "class_win_tie_loss": [
+        118,
+        0,
+        56
+      ],
+      "n": 174,
+      "gate": {
+        "window.native": {
+          "tp": 20524477,
+          "fp": 31230985
+        },
+        "presence.reference": {
+          "tp": 20512864,
+          "fp": 23461015
+        },
+        "presence.query_context": {
+          "tp": 20394834,
+          "fp": 11035653
+        },
+        "presence.reference_query": {
+          "tp": 20388247,
+          "fp": 10603301
+        },
+        "component.query_context": {
+          "tp": 20432514,
+          "fp": 10595011
+        },
+        "component.global_agreement_budget": {
+          "tp": 20452314,
+          "fp": 12492844
+        }
+      }
+    }
+  },
+  "checks": {
+    "window_key_identity": 200,
+    "query_mask_hash": 200,
+    "original_IU": 1600,
+    "component_partition_sizes": 1800,
+    "canvas_reconstruction": 1200,
+    "original_reconstruction": 1200
+  },
+  "seconds": 12.819243166944943,
+  "limits": "Saved source masks/decisions reconstructed, no raw descriptors recomputed. Component/window TP/FP are overlapping proposal occurrences. GT groups only diagnose existing decisions; they do not select inference."
+}

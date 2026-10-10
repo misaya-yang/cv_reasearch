@@ -1,0 +1,19 @@
+{
+  "manifest_sha256": "9763fe19263b0a30b00798c4dbc9a07645625a177e83d94facb45a46496c9971",
+  "raw_seal_sha256": "d6a8cfc0c698224ab251e161edd4771c5c9f02867248be1265aa9885bc860127",
+  "signal_math_sha256": "4386b244e63637cc9437d8066268f3eed71a3b91eb2729a94b1f3bc3e499479f",
+  "generator_sha256": "4e929738fd07a3cc123598c8a6770e4b1e8d230630f1bdedf34778ef15e9da4d",
+  "diagnostic_sha256": "1937f68c3bfd275dc0bc94111056ef868051c7d6607bc82a297049981584a803",
+  "signal": "source_apd.ridge from frozen raw study; same source APD branch for all views",
+  "calibration": "strict-threshold source IoU on reference patches outside fit subset; full-reference fallback only if a role is empty",
+  "bounded_evidence": "clip((ridge_score-reference_threshold)/reference_class_mean_separation, -1,1); zero if nonpositive separation",
+  "scene_mixture": "closed-form alpha in [0,1] minimizing balanced confidence-weighted squared error to existing query FoRIS labels; no query GT",
+  "anchor": "g0 + .5*h, original full FoRIS sign and minmax source response magnitude; exact tie inherits baseline",
+  "controls": [
+    "unshifted zero threshold global/local",
+    "reference-calibrated standalone global/local",
+    "anchor global/local/fixed_mean/scene_selected"
+  ],
+  "query_GT_in_prediction": false,
+  "note": "Exploratory development; ROI evidence motivated selection before this complete-output evaluation."
+}
