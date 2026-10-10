@@ -1,0 +1,70 @@
+
+== COCO-D  n=600  fixed 0.5: 63.99  best level per episode: +7.14
+  missed episodes by target share <1% / 1-5% / 5-20% / >20%: 17.9% of 39 / 8.3% of 228 / 3.3% of 210 / 0.8% of 123
+  empty mask on missed episodes: +2.15   (their predicted/true area, median: 4.9x)
+  best pooled level by target share, found episodes: 0.61 / 0.60 / 0.47 / 0.39
+  level whose area equals the true area: +6.85;  with log-normal error sd 0.3 / 0.5 / 0.7 / 1.0: +2.92 / +0.50 / -1.41 / -3.98
+  log(area at 0.5 / true area): median +0.02, robust sd 0.22; over 2x too big 13% of episodes, over 2x too small 7%
+  true-area level only where too big: +3.34;  only where too small: +1.49;  only the rest: +1.93
+  within-class sd of log target share: 1.05 (79 classes with >= 3 episodes, small-sample corrected)
+
+== PASCAL-Part  n=598  fixed 0.5: 53.63  best level per episode: +8.32
+  missed episodes by target share <1% / 1-5% / 5-20% / >20%: 29.6% of 27 / 17.0% of 112 / 4.2% of 216 / 2.1% of 243
+  empty mask on missed episodes: +1.91   (their predicted/true area, median: 2.5x)
+  best pooled level by target share, found episodes: 0.53 / 0.59 / 0.49 / 0.36
+  level whose area equals the true area: +7.31;  with log-normal error sd 0.3 / 0.5 / 0.7 / 1.0: +4.05 / +1.66 / -0.39 / -2.91
+  log(area at 0.5 / true area): median +0.01, robust sd 0.39; over 2x too big 13% of episodes, over 2x too small 10%
+  true-area level only where too big: +3.11;  only where too small: +1.15;  only the rest: +2.77
+  within-class sd of log target share: 0.66 (56 classes with >= 3 episodes, small-sample corrected)
+
+== SUIM  n=582  fixed 0.5: 61.67  best level per episode: +8.12
+  missed episodes by target share <1% / 1-5% / 5-20% / >20%: 43.8% of 32 / 17.2% of 128 / 12.1% of 174 / 1.6% of 248
+  empty mask on missed episodes: +4.05   (their predicted/true area, median: 5.7x)
+  best pooled level by target share, found episodes: 0.51 / 0.54 / 0.53 / 0.34
+  level whose area equals the true area: +9.72;  with log-normal error sd 0.3 / 0.5 / 0.7 / 1.0: +5.60 / +3.50 / +1.47 / -0.47
+  log(area at 0.5 / true area): median +0.01, robust sd 0.30; over 2x too big 15% of episodes, over 2x too small 10%
+  true-area level only where too big: +3.33;  only where too small: +3.39;  only the rest: +2.57
+  within-class sd of log target share: 1.04 (7 classes with >= 3 episodes, small-sample corrected)
+
+== PACO-Part  n=599  fixed 0.5: 42.16  best level per episode: +12.30
+  missed episodes by target share <1% / 1-5% / 5-20% / >20%: 37.5% of 16 / 29.7% of 145 / 13.4% of 284 / 3.2% of 154
+  empty mask on missed episodes: +1.06   (their predicted/true area, median: 4.8x)
+  best pooled level by target share, found episodes: 0.68 / 0.65 / 0.62 / 0.38
+  level whose area equals the true area: +9.37;  with log-normal error sd 0.3 / 0.5 / 0.7 / 1.0: +7.08 / +5.11 / +3.43 / +1.33
+  log(area at 0.5 / true area): median +0.35, robust sd 0.66; over 2x too big 34% of episodes, over 2x too small 9%
+  true-area level only where too big: +4.69;  only where too small: +1.82;  only the rest: +2.46
+  within-class sd of log target share: 0.69 (96 classes with >= 3 episodes, small-sample corrected)
+
+== LVIS  n=599  fixed 0.5: 45.09  best level per episode: +9.90
+  missed episodes by target share <1% / 1-5% / 5-20% / >20%: 33.8% of 275 / 15.1% of 172 / 3.6% of 111 / 2.4% of 41
+  empty mask on missed episodes: +2.22   (their predicted/true area, median: 10.3x)
+  best pooled level by target share, found episodes: 0.61 / 0.68 / 0.50 / 0.39
+  level whose area equals the true area: +8.31;  with log-normal error sd 0.3 / 0.5 / 0.7 / 1.0: +5.10 / +3.14 / +1.20 / -0.97
+  log(area at 0.5 / true area): median +0.19, robust sd 0.69; over 2x too big 34% of episodes, over 2x too small 10%
+  true-area level only where too big: +4.87;  only where too small: +1.18;  only the rest: +1.94
+
+== screened-Poisson model of the graph solve on an ideal disk, rho = radius / operator width
+  level that lands on the true edge: rho 0.5: 0.69, rho 1: 0.60, rho 1.5: 0.54, rho 2: 0.50, rho 3: 0.47, rho 4: 0.46, rho 8: 0.47
+
+== found episodes: rank correlation of the best level with field statistics (background median, inside median, mask share) and true share
+  COCO-D      +0.06 +0.19 -0.13 -0.30
+  PASCAL-Part -0.19 +0.21 -0.18 -0.45
+  SUIM        -0.10 +0.30 -0.10 -0.35
+  PACO-Part   -0.05 +0.24 +0.06 -0.34
+  LVIS        +0.05 +0.27 -0.01 -0.18
+
+== simulation: an independent size estimate used one way only. Shrink to the estimated area when the 0.5 mask exceeds k times the estimate.
+   estimate = true area x log-normal error, sd 0.7 / 1.0 / 1.4; gain over fixed 0.5, mean of 20 draws
+  COCO-D      k=2: +1.29 / +0.33 / -0.86   k=4: +1.58 / +0.97 / +0.04
+  PASCAL-Part k=2: +1.38 / +0.00 / -0.83   k=4: +1.50 / +0.86 / -0.00
+  SUIM        k=2: +1.18 / +0.09 / -1.39   k=4: +2.29 / +1.48 / +0.26
+  PACO-Part   k=2: +2.94 / +1.98 / +1.27   k=4: +2.01 / +1.46 / +1.07
+  LVIS        k=2: +3.07 / +1.86 / +1.37   k=4: +2.73 / +2.27 / +1.50
+
+== same-class resampling: the size estimate is the true share of ANOTHER episode of the same class (what a reference of that class would give).
+   Unlike the log-normal simulation above this keeps the link between a target being unusually small and being over-covered. Mean of 50 draws.
+  COCO-D      episodes with a same-class partner 100%; sd of log(estimate/true) 1.49; area matched to estimate -11.11; one-way k=2 -4.89, k=4 -3.27 (k=4 fires on 20% of episodes, 19% of them truly over 2x too big); AUC of mask/estimate for 'over 2x too big' 0.61, for 'missed' 0.49
+  PASCAL-Part episodes with a same-class partner 100%; sd of log(estimate/true) 0.93; area matched to estimate -2.86; one-way k=2 -0.26, k=4 +0.52 (k=4 fires on 9% of episodes, 46% of them truly over 2x too big); AUC of mask/estimate for 'over 2x too big' 0.76, for 'missed' 0.49
+  SUIM        episodes with a same-class partner 100%; sd of log(estimate/true) 1.46; area matched to estimate -8.68; one-way k=2 -4.97, k=4 -3.01 (k=4 fires on 16% of episodes, 23% of them truly over 2x too big); AUC of mask/estimate for 'over 2x too big' 0.65, for 'missed' 0.53
+  PACO-Part   episodes with a same-class partner 86%; sd of log(estimate/true) 0.98; area matched to estimate +0.62; one-way k=2 +0.90, k=4 +0.42 (k=4 fires on 17% of episodes, 61% of them truly over 2x too big); AUC of mask/estimate for 'over 2x too big' 0.75, for 'missed' 0.56
+  LVIS        episodes with a same-class partner 77%; sd of log(estimate/true) 1.80; area matched to estimate -1.95; one-way k=2 -0.31, k=4 -0.49 (k=4 fires on 23% of episodes, 55% of them truly over 2x too big); AUC of mask/estimate for 'over 2x too big' 0.74, for 'missed' 0.62

@@ -1,0 +1,127 @@
+
+1. nine local windows: lvis_original600  n=600
+   arm                               score | recall | sumF/sumg (vs FoRIS) | F=0 ceiling | no-miss | F>g  | rho(F,g) rho(r,g) rho(F,r)
+   foris                             47.78 |  79.6% |  0.649  (x1.00)    |  81.61      |  55.97  | 43.5% | +0.06    +0.11    -0.02
+   unfiltered                        34.13 |  75.2% |  0.964  (x1.49)    |  81.25      |  41.40  | 61.2% | -0.07    -0.02    +0.01
+   geometry                          49.74 |  74.4% |  0.466  (x0.72)    |  79.67      |  60.66  | 38.8% | +0.00    -0.00    -0.06
+   region                            52.01 |  73.9% |  0.426  (x0.66)    |  79.36      |  63.48  | 35.5% | +0.05    -0.00    -0.05
+   restore.whole                     47.36 |  82.0% |  0.719  (x1.11)    |  85.77      |  53.27  | 45.8% | +0.02    +0.02    -0.05
+   restore.accepted                  50.68 |  78.8% |  0.530  (x0.82)    |  82.70      |  59.19  | 40.0% | +0.03    +0.01    -0.07
+
+1. nine local windows: paco_fast600  n=600
+   arm                               score | recall | sumF/sumg (vs FoRIS) | F=0 ceiling | no-miss | F>g  | rho(F,g) rho(r,g) rho(F,r)
+   foris                             44.02 |  74.3% |  0.750  (x1.00)    |  76.80      |  57.87  | 35.7% | +0.18    -0.11    +0.05
+   unfiltered                        33.84 |  64.5% |  0.845  (x1.13)    |  65.34      |  53.13  | 42.7% | +0.12    -0.08    +0.17
+   region                            40.11 |  61.8% |  0.547  (x0.73)    |  62.84      |  64.87  | 27.5% | +0.14    -0.08    +0.11
+   restore.whole                     43.23 |  77.4% |  0.868  (x1.16)    |  79.81      |  54.70  | 40.0% | +0.16    -0.13    +0.07
+   restore.accepted                  42.93 |  71.6% |  0.703  (x0.94)    |  72.76      |  59.32  | 34.3% | +0.14    -0.09    +0.08
+
+1. nine local windows: deep_original100  n=100
+   arm                               score | recall | sumF/sumg (vs FoRIS) | F=0 ceiling | no-miss | F>g  | rho(F,g) rho(r,g) rho(F,r)
+   foris                             29.38 |  45.9% |  0.564  (x1.00)    |  45.95      |  63.94  | 30.0% | +0.29    -0.36    +0.24
+   unfiltered                        34.75 |  56.2% |  0.618  (x1.10)    |  56.22      |  61.82  | 41.0% | +0.02    -0.42    +0.19
+   geometry                          35.75 |  53.7% |  0.501  (x0.89)    |  53.66      |  66.63  | 34.0% | +0.21    -0.42    +0.04
+   region                            37.02 |  53.6% |  0.447  (x0.79)    |  53.58      |  69.09  | 27.0% | +0.32    -0.42    +0.03
+   restore.whole                     33.40 |  57.6% |  0.724  (x1.28)    |  57.58      |  58.01  | 43.0% | +0.31    -0.45    +0.06
+   restore.accepted                  36.10 |  55.9% |  0.548  (x0.97)    |  55.86      |  64.61  | 33.0% | +0.31    -0.44    +0.04
+
+1. nine local windows: deep_fast100  n=100
+   arm                               score | recall | sumF/sumg (vs FoRIS) | F=0 ceiling | no-miss | F>g  | rho(F,g) rho(r,g) rho(F,r)
+   foris                             29.38 |  45.9% |  0.564  (x1.00)    |  45.95      |  63.94  | 30.0% | +0.29    -0.36    +0.24
+   unfiltered                        35.04 |  60.4% |  0.723  (x1.28)    |  60.38      |  58.03  | 46.0% | -0.01    -0.49    +0.16
+   geometry                          36.54 |  57.0% |  0.559  (x0.99)    |  56.98      |  64.13  | 37.0% | +0.25    -0.46    -0.01
+   region                            37.34 |  56.9% |  0.524  (x0.93)    |  56.92      |  65.61  | 36.0% | +0.31    -0.47    -0.01
+   restore.whole                     33.72 |  60.3% |  0.789  (x1.40)    |  60.32      |  55.90  | 51.0% | +0.30    -0.48    +0.02
+   restore.accepted                  36.35 |  58.9% |  0.622  (x1.10)    |  58.95      |  61.66  | 43.0% | +0.30    -0.49    +0.01
+
+2. role competition and presence arms: paco  n=600
+   arm                               score | recall | sumF/sumg (vs FoRIS) | F=0 ceiling | no-miss | F>g  | rho(F,g) rho(r,g) rho(F,r)
+   foris.crf                         44.02 |  74.3% |  0.750  (x1.00)    |  76.80      |  57.87  | 35.7% | +0.18    -0.11    +0.05
+   region.fast                       40.11 |  61.8% |  0.547  (x0.73)    |  62.84      |  64.87  | 27.5% | +0.14    -0.08    +0.11
+   task.global                       40.18 |  80.3% |  1.106  (x1.47)    |  82.66      |  48.96  | 48.2% | +0.20    -0.10    +0.07
+   task.anchored                     36.71 |  82.8% |  1.410  (x1.88)    |  85.11      |  43.66  | 56.8% | +0.22    -0.10    +0.14
+   task.competitive                  45.36 |  72.0% |  0.638  (x0.85)    |  74.31      |  61.28  | 30.3% | +0.26    -0.06    +0.02
+
+2. role competition and presence arms: lvis  n=200
+   arm                               score | recall | sumF/sumg (vs FoRIS) | F=0 ceiling | no-miss | F>g  | rho(F,g) rho(r,g) rho(F,r)
+   foris.crf                         45.81 |  79.8% |  0.570  (x1.00)    |  79.87      |  54.71  | 47.5% | -0.02    +0.09    -0.01
+   window.native                     33.26 |  74.7% |  0.968  (x1.70)    |  80.78      |  39.87  | 64.0% | -0.06    -0.02    -0.06
+   presence.reference                38.23 |  74.6% |  0.740  (x1.30)    |  79.89      |  46.33  | 56.0% | -0.03    -0.01    -0.04
+   presence.global_agreement_budget  47.90 |  72.6% |  0.365  (x0.64)    |  77.02      |  61.45  | 38.5% | -0.04    +0.02    +0.08
+   presence.query_context            48.50 |  72.7% |  0.373  (x0.65)    |  77.89      |  61.63  | 38.5% | -0.03    -0.01    +0.06
+   presence.reference_query          48.64 |  72.7% |  0.360  (x0.63)    |  77.32      |  63.30  | 35.5% | +0.02    -0.00    +0.13
+   component.query_context           50.53 |  72.8% |  0.354  (x0.62)    |  79.28      |  62.26  | 38.0% | -0.03    -0.03    -0.00
+   component.global_agreement_budget 49.80 |  73.9% |  0.394  (x0.69)    |  79.44      |  60.75  | 39.5% | -0.05    -0.02    -0.05
+
+2. role competition and presence arms: coco  n=200
+   arm                               score | recall | sumF/sumg (vs FoRIS) | F=0 ceiling | no-miss | F>g  | rho(F,g) rho(r,g) rho(F,r)
+   foris.crf                         64.98 |  77.7% |  0.237  (x1.00)    |  80.66      |  79.92  | 15.0% | +0.26    -0.12    -0.08
+   mean                              65.65 |  77.1% |  0.211  (x0.89)    |  80.10      |  81.95  | 11.5% | +0.28    -0.14    +0.06
+   task.competitive                  62.47 |  80.2% |  0.355  (x1.49)    |  82.52      |  75.19  | 18.0% | +0.25    -0.06    +0.04
+
+2. role competition and presence arms: deep  n=100
+   arm                               score | recall | sumF/sumg (vs FoRIS) | F=0 ceiling | no-miss | F>g  | rho(F,g) rho(r,g) rho(F,r)
+   foris.crf                         29.38 |  45.9% |  0.564  (x1.00)    |  45.95      |  63.94  | 30.0% | +0.29    -0.36    +0.24
+   region.original                   37.02 |  53.6% |  0.447  (x0.79)    |  53.58      |  69.09  | 27.0% | +0.32    -0.42    +0.03
+   region.fast                       37.34 |  56.9% |  0.524  (x0.93)    |  56.92      |  65.61  | 36.0% | +0.31    -0.47    -0.01
+   task.competitive                  29.53 |  54.0% |  0.829  (x1.47)    |  54.02      |  54.67  | 52.0% | +0.37    -0.29    +0.24
+
+3. reference ridge and bounded anchor arms: paco_part  n=100
+   arm                               score | recall | sumF/sumg (vs FoRIS) | F=0 ceiling | no-miss | F>g  | rho(F,g) rho(r,g) rho(F,r)
+   role.unary                        29.24 |  90.8% |  2.185  (x3.53)    |  89.81      |  34.05  | 75.0% | +0.27    -0.11    +0.29
+   role.joint                        29.27 |  90.8% |  2.181  (x3.53)    |  89.75      |  34.10  | 74.0% | +0.27    -0.12    +0.29
+   foris.crf                         45.56 |  77.2% |  0.618  (x1.00)    |  75.28      |  60.76  | 33.0% | +0.30    -0.05    +0.03
+   region.fast                       40.96 |  61.9% |  0.510  (x0.82)    |  62.04      |  66.80  | 23.0% | +0.20    -0.02    +0.14
+   task.competitive                  47.58 |  76.7% |  0.492  (x0.80)    |  73.72      |  64.79  | 26.0% | +0.38    +0.03    +0.05
+   mean                              46.69 |  78.4% |  0.617  (x1.00)    |  76.52      |  61.88  | 36.0% | +0.31    -0.00    +0.04
+   ridge.zero.global                 39.09 |  52.1% |  0.211  (x0.34)    |  50.94      |  83.37  |  6.0% | +0.34    +0.16    +0.68
+   reference_iou.global              24.30 |  35.1% |  0.100  (x0.16)    |  29.37      |  92.53  |  4.0% | +0.29    +0.31    +0.77
+   ridge.zero.local4                 31.58 |  47.6% |  0.163  (x0.26)    |  40.18      |  87.38  |  5.0% | +0.37    +0.26    +0.76
+   reference_iou.local4              18.92 |  30.3% |  0.084  (x0.14)    |  22.69      |  94.54  |  3.0% | +0.27    +0.31    +0.80
+   anchor.global                     49.23 |  73.4% |  0.360  (x0.58)    |  69.42      |  70.35  | 17.0% | +0.38    +0.07    +0.02
+   anchor.local4                     48.92 |  72.5% |  0.336  (x0.54)    |  67.49      |  71.91  | 14.0% | +0.39    +0.09    +0.03
+   anchor.fixed_mean                 49.17 |  73.0% |  0.347  (x0.56)    |  68.51      |  71.13  | 18.0% | +0.38    +0.08    +0.02
+   anchor.scene_selected             49.30 |  73.4% |  0.360  (x0.58)    |  69.46      |  70.40  | 17.0% | +0.38    +0.07    +0.02
+
+3. reference ridge and bounded anchor arms: deepglobe_road  n=100
+   arm                               score | recall | sumF/sumg (vs FoRIS) | F=0 ceiling | no-miss | F>g  | rho(F,g) rho(r,g) rho(F,r)
+   role.unary                        12.63 |  89.0% |  6.048  (x10.72)    |  89.02      |  14.19  | 98.0% | +0.47    -0.20    +0.02
+   role.joint                        12.60 |  88.9% |  6.059  (x10.74)    |  88.92      |  14.17  | 98.0% | +0.47    -0.20    +0.03
+   foris.crf                         29.38 |  45.9% |  0.564  (x1.00)    |  45.95      |  63.94  | 30.0% | +0.29    -0.36    +0.24
+   region.fast                       37.34 |  56.9% |  0.524  (x0.93)    |  56.92      |  65.61  | 36.0% | +0.31    -0.47    -0.01
+   task.competitive                  29.53 |  54.0% |  0.829  (x1.47)    |  54.02      |  54.67  | 52.0% | +0.37    -0.29    +0.24
+   region.original                   37.02 |  53.6% |  0.447  (x0.79)    |  53.58      |  69.09  | 27.0% | +0.32    -0.42    +0.03
+   mean                              26.47 |  37.7% |  0.425  (x0.75)    |  37.72      |  70.17  | 19.0% | +0.19    -0.23    +0.45
+   ridge.zero.global                 20.73 |  24.5% |  0.181  (x0.32)    |  24.47      |  84.71  |  2.0% | +0.29    +0.14    +0.93
+   reference_iou.global              28.30 |  40.1% |  0.419  (x0.74)    |  40.15      |  70.49  | 20.0% | +0.40    -0.01    +0.74
+   ridge.zero.local4                 24.16 |  27.7% |  0.148  (x0.26)    |  27.73      |  87.13  |  4.0% | +0.24    +0.03    +0.91
+   reference_iou.local4              31.21 |  41.5% |  0.329  (x0.58)    |  41.49      |  75.22  | 16.0% | +0.28    -0.16    +0.71
+   anchor.global                     32.01 |  46.8% |  0.462  (x0.82)    |  46.82      |  68.38  | 25.0% | +0.42    -0.27    +0.30
+   anchor.local4                     34.29 |  48.6% |  0.419  (x0.74)    |  48.64      |  70.49  | 23.0% | +0.37    -0.33    +0.27
+   anchor.fixed_mean                 33.14 |  47.5% |  0.435  (x0.77)    |  47.55      |  69.70  | 22.0% | +0.39    -0.31    +0.28
+   anchor.scene_selected             32.64 |  47.6% |  0.459  (x0.81)    |  47.63      |  68.54  | 25.0% | +0.42    -0.31    +0.25
+
+4. What the nine windows change, by target share of the query image (pooled inside a bin)
+   LVIS600
+     <1%    n=264 | FoRIS recall  80.1% F/g  7.977 IoU   8.9 | all windows recall  82.5% F/g 13.280 | with acceptance recall  81.1% F/g  5.076 IoU  13.3
+     1-5%   n=185 | FoRIS recall  84.1% F/g  1.333 IoU  36.1 | all windows recall  83.2% F/g  2.071 | with acceptance recall  80.2% F/g  0.971 IoU  40.7
+     5-20%  n=110 | FoRIS recall  83.0% F/g  0.390 IoU  59.7 | all windows recall  79.8% F/g  0.522 | with acceptance recall  78.9% F/g  0.245 IoU  63.4
+     >20%   n= 41 | FoRIS recall  75.4% F/g  0.099 IoU  68.6 | all windows recall  68.4% F/g  0.061 | with acceptance recall  67.3% F/g  0.054 IoU  63.9
+   PACO600
+     <1%    n= 17 | FoRIS recall  87.5% F/g  6.554 IoU  11.6 | all windows recall  85.6% F/g  8.948 | with acceptance recall  85.6% F/g  3.968 IoU  17.2
+     1-5%   n=135 | FoRIS recall  76.2% F/g  3.412 IoU  17.3 | all windows recall  75.0% F/g  4.304 | with acceptance recall  70.9% F/g  2.724 IoU  19.0
+     5-20%  n=262 | FoRIS recall  73.5% F/g  0.932 IoU  38.0 | all windows recall  69.1% F/g  0.992 | with acceptance recall  65.9% F/g  0.663 IoU  39.6
+     >20%   n=186 | FoRIS recall  74.4% F/g  0.197 IoU  62.2 | all windows recall  60.0% F/g  0.175 | with acceptance recall  57.7% F/g  0.126 IoU  51.2
+   Deep100
+     <1%    n= 17 | FoRIS recall  70.9% F/g  1.816 IoU  25.2 | all windows recall  78.3% F/g  2.966 | with acceptance recall  77.7% F/g  1.434 IoU  31.9
+     1-5%   n= 57 | FoRIS recall  56.7% F/g  0.947 IoU  29.1 | all windows recall  66.6% F/g  1.143 | with acceptance recall  63.8% F/g  0.773 IoU  36.0
+     5-20%  n= 25 | FoRIS recall  39.8% F/g  0.365 IoU  29.2 | all windows recall  50.1% F/g  0.304 | with acceptance recall  48.3% F/g  0.278 IoU  37.8
+
+5. Reference geometry against the query (reference mask only on the left side of each pair)
+   cohort            n | target mass in tokens covered >= 90%: reference / query median | rho(reference share, query share) | within a factor 2
+   Deep100           100 | 0.02 / 0.02 | -0.08 | 42%
+   PACO600           600 | 0.86 / 0.86 | +0.52 | 51%
+   LVIS600           600 | 0.66 / 0.67 | +0.50 | 30%
+   COCO200           200 | 0.82 / 0.84 | +0.38 | 41%
+   PASCAL120_legacy  120 | 0.91 / 0.92 | +0.72 | 60%
+   SUIM120_legacy    120 | 0.86 / 0.85 | +0.51 | 47%

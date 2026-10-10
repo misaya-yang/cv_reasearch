@@ -1,0 +1,50 @@
+
+== LVIS n=599
+  mask size in tokens, percentiles 1 / 5 / 25 / 50:  FoRIS 2 / 9 / 45 / 149;  RCG at 0.5 0 / 1 / 35 / 128;  truth 1 / 2 / 14 / 49
+  share of episodes with truth below 10 tokens: 19%;  FoRIS mask below 10 tokens: 6%
+  targets below 1%: log(FoRIS mask) = 0.28 x log(truth) + 3.16   (slope 1 would mean the mask follows the target size)
+  bin       level 0.30: recall>=.5, precision(med), mask/truth(med) |  level 0.50  |  level 0.70  | best level at the 0.70 cap
+  <0.2%     85%,   1%, 66.55x  |   49%,   2%,  3.39x  |   14%,   0%,  0.00x  |   10%
+  0.2-1%    94%,   7%, 12.07x  |   77%,  43%,  1.48x  |   40%,  16%,  0.63x  |   12%
+  1-5%      94%,  20%,  4.23x  |   83%,  55%,  1.33x  |   59%,  90%,  0.85x  |   19%
+  5-20%     96%,  64%,  1.53x  |   87%,  91%,  1.04x  |   68%,  98%,  0.81x  |    9%
+  >20%      95%,  91%,  1.09x  |   90%,  97%,  0.97x  |   63%,  99%,  0.66x  |    7%
+
+== PACO-Part n=599
+  mask size in tokens, percentiles 1 / 5 / 25 / 50:  FoRIS 53 / 117 / 331 / 715;  RCG at 0.5 28 / 77 / 296 / 681;  truth 33 / 53 / 190 / 378
+  share of episodes with truth below 10 tokens: 0%;  FoRIS mask below 10 tokens: 0%
+  bin       level 0.30: recall>=.5, precision(med), mask/truth(med) |  level 0.50  |  level 0.70  | best level at the 0.70 cap
+  0.2-1%   100%,   3%, 27.24x  |   88%,  18%,  4.29x  |   44%,  22%,  1.17x  |   19%
+  1-5%      95%,  10%,  8.50x  |   81%,  27%,  2.29x  |   55%,  50%,  0.88x  |   23%
+  5-20%     94%,  26%,  3.59x  |   81%,  51%,  1.43x  |   58%,  76%,  0.79x  |   23%
+  >20%      93%,  62%,  1.45x  |   73%,  81%,  1.05x  |   50%,  91%,  0.60x  |    9%
+
+== COCO-D n=600
+  mask size in tokens, percentiles 1 / 5 / 25 / 50:  FoRIS 27 / 46 / 125 / 318;  RCG at 0.5 20 / 38 / 111 / 302;  truth 31 / 37 / 87 / 255
+  share of episodes with truth below 10 tokens: 0%;  FoRIS mask below 10 tokens: 0%
+  targets below 1%: log(FoRIS mask) = 0.16 x log(truth) + 3.89   (slope 1 would mean the mask follows the target size)
+  bin       level 0.30: recall>=.5, precision(med), mask/truth(med) |  level 0.50  |  level 0.70  | best level at the 0.70 cap
+  0.2-1%    97%,   8%, 12.36x  |   85%,  56%,  1.51x  |   54%,  70%,  0.86x  |   15%
+  1-5%      97%,  27%,  3.60x  |   87%,  80%,  1.10x  |   63%,  95%,  0.78x  |   14%
+  5-20%     97%,  63%,  1.51x  |   91%,  92%,  1.01x  |   74%,  97%,  0.82x  |   11%
+  >20%      97%,  88%,  1.08x  |   85%,  95%,  0.91x  |   56%,  98%,  0.63x  |    3%
+
+== PASCAL-Part n=598
+  mask size in tokens, percentiles 1 / 5 / 25 / 50:  FoRIS 40 / 105 / 308 / 654;  RCG at 0.5 30 / 64 / 267 / 597;  truth 14 / 49 / 226 / 614
+  share of episodes with truth below 10 tokens: 1%;  FoRIS mask below 10 tokens: 0%
+  targets below 1%: log(FoRIS mask) = 0.03 x log(truth) + 4.40   (slope 1 would mean the mask follows the target size)
+  bin       level 0.30: recall>=.5, precision(med), mask/truth(med) |  level 0.50  |  level 0.70  | best level at the 0.70 cap
+  0.2-1%   100%,   6%, 17.81x  |   91%,  39%,  2.39x  |   27%,  13%,  0.27x  |    9%
+  1-5%      96%,  15%,  6.17x  |   86%,  47%,  1.71x  |   50%,  69%,  0.71x  |   19%
+  5-20%     95%,  45%,  1.99x  |   81%,  81%,  1.02x  |   56%,  94%,  0.63x  |    9%
+  >20%      95%,  80%,  1.17x  |   81%,  94%,  0.93x  |   50%,  98%,  0.53x  |    5%
+
+== SUIM n=582
+  mask size in tokens, percentiles 1 / 5 / 25 / 50:  FoRIS 20 / 48 / 212 / 761;  RCG at 0.5 7 / 43 / 199 / 765;  truth 12 / 39 / 167 / 638
+  share of episodes with truth below 10 tokens: 1%;  FoRIS mask below 10 tokens: 0%
+  targets below 1%: log(FoRIS mask) = -0.45 x log(truth) + 5.74   (slope 1 would mean the mask follows the target size)
+  bin       level 0.30: recall>=.5, precision(med), mask/truth(med) |  level 0.50  |  level 0.70  | best level at the 0.70 cap
+  0.2-1%   100%,   4%, 25.14x  |   82%,  69%,  1.28x  |   36%,   1%,  0.53x  |   11%
+  1-5%      95%,  40%,  2.21x  |   82%,  86%,  1.05x  |   69%,  96%,  0.77x  |    4%
+  5-20%     93%,  50%,  1.78x  |   82%,  89%,  1.05x  |   62%,  96%,  0.80x  |    7%
+  >20%      97%,  84%,  1.15x  |   84%,  94%,  0.98x  |   52%,  99%,  0.58x  |    5%
