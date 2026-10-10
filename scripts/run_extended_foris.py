@@ -108,6 +108,10 @@ def prepare(args):
     manifest = read(args.prepared / 'manifest.json')
     if len(manifest) != prepared['n'] or len({r['episode_id'] for r in manifest}) != len(manifest):
         raise ValueError('Prepared episode count/identity differs')
+    if validation['episodes'] != dict(Counter(r['dataset'] for r in manifest)):
+        raise ValueError('Legal input/draw validation does not cover the exact manifest')
+    if any(pool['state'] != 'COMPLETE_POOL_SHA_VERIFIED' for pool in prepared['pools'].values()):
+        raise ValueError('Complete verified sampling pool is required before encoding')
     if args.out.exists() and any(args.out.iterdir()):
         raise FileExistsError('Use a fresh output; infer resumes only its frozen run')
     args.out.mkdir(parents=True)
@@ -166,7 +170,11 @@ def prepare(args):
         image_size=1024, svd_components=500, tau=.6, resize_to_orig_size=False,
         query_annotation_access='Denied via builtins.open, io.open and PIL.Image.open during producer and CPU inference',
         metric='released CLI1024: fold mean of expected-class pooled I/U; original frame separately; direct nearest GT/ignore per frame',
-        scope=prepared['pilot_scope'], pending_benchmarks=prepared['pending_datasets'],
+        scope=('released seed0 full200 Fundus test draws; verified original FIVES v1 test pool'
+               if set(r['dataset'] for r in manifest) == {'fundus'} else
+               'released seed0 full600 Chest X-ray lung draws; complete original CXR/mask pool verified'
+               if set(r['dataset'] for r in manifest) == {'lung'} else prepared['pilot_scope']),
+        pending_benchmarks=prepared['pending_datasets'],
         unique_rgb_inputs=len({r[role + '_rgb_hash'] for r in manifest for role in ('reference', 'query')}))
     write(args.out / 'config.json', cfg)
     for folder in ('predictions', 'fields', 'records', 'producer_records'):
@@ -395,10 +403,10 @@ def score(out):
                 per_class_iu={f'{f}/{c}': iu for (f, c), iu in sorted(totals[dataset][frame].items())})
         reports[dataset] = dict(n=cfg['datasets'][dataset], frames=frames,
             scope='first20 sequential draws/fold; incomplete class coverage; pilot only' if dataset == 'isaid'
-                else 'released default seed0 full600 draws; original duplicate draws retained')
+                else f"released default seed0 full{cfg['datasets'][dataset]} draws; original duplicate draws retained")
     write(out / 'episode_metrics.json', details)
     report = dict(state='SCORED_AFTER_FULL_SEAL', n=cfg['n'], datasets=reports,
-        metric=cfg['metric'], query_label_role='scoring only after all660 outputs sealed',
+        metric=cfg['metric'], query_label_role=f"scoring only after all{cfg['n']} outputs sealed",
         ignore_preserved=True, sealed_sha256=sha(out / 'sealed.json'), timing=seal,
         unavailable_benchmarks=cfg['pending_benchmarks'])
     write(out / 'report.json', report)
