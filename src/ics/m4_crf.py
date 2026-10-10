@@ -52,7 +52,8 @@ def install(crf_source, runtime):
 '''
     source = source.replace(anchor, anchor + guards)
     derived = runtime / 'LatticeFilterKernel_m4.cpp'
-    derived.write_text(source)
+    if not derived.exists() or derived.read_text() != source:
+        derived.write_text(source)
     os.environ['PATH'] = str(Path(sys.executable).parent) + os.pathsep + os.environ.get('PATH', '')
     os.environ.setdefault('MAX_JOBS', '2')
     backend = load(name='ics_permutohedral_m4', sources=[str(derived)],

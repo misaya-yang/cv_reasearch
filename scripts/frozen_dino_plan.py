@@ -213,7 +213,8 @@ def run_config(a):
         raise ValueError('Validation requires fresh seed2 official-loader manifests')
     if fresh and prepared.get('split_role') != a.split:
         raise ValueError('Prepared development/validation split differs')
-    return dict(candidate_id='B0', parent_baseline_id='complete FoRIS',
+    raw_ablation = 'foris.raw.crf' in a.baseline_arms
+    return dict(candidate_id='FoRIS.raw.crf' if raw_ablation else 'B0', parent_baseline_id='complete FoRIS',
         split_role=a.split, datasets=a.datasets, branch=subprocess.check_output(
             ['git', '-C', str(REPO), 'branch', '--show-current'], text=True).strip(),
         commit=subprocess.check_output(['git', '-C', str(REPO), 'rev-parse', 'HEAD'], text=True).strip(),
@@ -230,7 +231,9 @@ def run_config(a):
         rcg=rcg.CONFIG, fine_readout=fine_readout.CONFIG,
         arms=a.baseline_arms,
         bootstrap_unit='query_photo' if fresh else 'episode',
-        bootstrap_repetitions=10000 if fresh else 100000,
+        bootstrap_repetitions=1 if raw_ablation else 10000 if fresh else 100000,
+        positional_ablation=('paired complete FoRIS; candidate bypasses Part1 positional projection only; '
+                              'same raw O24, other stages and original CRF' if raw_ablation else None),
         representation_basis=(str(a.representation_basis) if a.representation_basis else None),
         representation_reference_rule=('actual FoRIS stage2 Boolean FG, uniform token means, '
                                        'source top20% hard BG fixed across branches; RCG defines no BG'
@@ -417,6 +420,23 @@ def _infer(a):
             masks, fields = {}, dict(score=score)
             if 'foris.crf' in a.baseline_arms:
                 masks['foris.crf'] = native.numpy()
+            raw_ablation_seconds = 0.0
+            apd_applied = bool(host.should_debiass)
+            if 'foris.raw.crf' in a.baseline_arms:
+                at = time.monotonic()
+                original_part1, original_extract = host._part1_positional_debias, host._extract_features
+                try:
+                    # Reuse the same observed raw tensor; no second cache read
+                    # or encoder call. Only the Part1 projection is bypassed.
+                    host._extract_features = lambda imgs: got['raw']
+                    host._part1_positional_debias = lambda values, masks, refs: values
+                    raw_mask, raw_got, _, _ = run_foris(host, rgb, gold, query)
+                    masks['foris.raw.crf'] = raw_mask.numpy()
+                    fields['raw_score'] = raw_got['score'].float().numpy()
+                finally:
+                    host._part1_positional_debias = original_part1
+                    host._extract_features = original_extract
+                raw_ablation_seconds = time.monotonic()-at
             rcg_seconds = mean_seconds = fine_seconds = 0.0
             solver = None
             if 'rcg' in a.baseline_arms or 'rcg.fine' in a.baseline_arms:
@@ -467,6 +487,7 @@ def _infer(a):
                 mean_head_seconds=mean_seconds, fine_head_seconds=fine_seconds,
                 B0_inference_upper_bound_seconds=native_seconds-refined_seconds+rcg_seconds+fine_seconds,
                 combined_pipeline_seconds=time.monotonic()-start, solver=solver,
+                apd_applied=apd_applied, raw_ablation_seconds=raw_ablation_seconds,
                 official_sampling_rng_unchanged=True,
                 encoder_calls=(cache_adapter.encoder_calls-cache_calls_before if cache_adapter else None))
             log.write(json.dumps(record)+'\n'); completed[row['episode_id']] = record
@@ -631,8 +652,10 @@ def main():
     a.datasets = a.datasets.split(',')
     a.baseline_arms = a.baseline_arms.split(',')
     if (len(set(a.baseline_arms)) != len(a.baseline_arms) or
-            set(a.baseline_arms)-{'foris.crf', 'rcg', 'rcg.fine', 'mean'} or not a.baseline_arms):
+            set(a.baseline_arms)-{'foris.crf', 'foris.raw.crf', 'rcg', 'rcg.fine', 'mean'} or not a.baseline_arms):
         p.error('Require nonempty unique known baseline arms')
+    if 'foris.raw.crf' in a.baseline_arms and ('foris.crf' not in a.baseline_arms or not a.raw_cache_profile):
+        p.error('Raw positional ablation requires paired foris.crf and an existing raw-cache profile')
     if a.raw_cache_root:
         a.raw_cache_root = a.raw_cache_root.resolve()
         if a.representation_basis:

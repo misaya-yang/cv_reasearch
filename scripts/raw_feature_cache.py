@@ -109,11 +109,11 @@ class RawFeatureCache:
         handle=tempfile.NamedTemporaryFile(dir=folder,suffix='.npz',delete=False);temporary=Path(handle.name)
         try:
             with handle:
-                np.savez_compressed(handle,**arrays)
+                np.savez(handle,**arrays)
             digest=file_hash(temporary);payload=folder/(digest+'.npz')
             temporary.replace(payload)
             info=dict(profile_id=self.profile_id,input_tensor_hash=tensor_hash(model_input),
-                      file=payload.name,file_sha256=digest,storage='lossless NPZ ZIP, float32',
+                      file=payload.name,file_sha256=digest,storage='lossless NPZ ZIP_STORED, float32',
                       features={name:dict(shape=list(x.shape),dtype=str(x.dtype),tensor_sha256=tensor_hash(x)) for name,x in arrays.items()},
                       provenance=history+[provenance])
             pending=folder/'entry.tmp';pending.write_text(json.dumps(info,indent=2)+'\n');pending.replace(old)
