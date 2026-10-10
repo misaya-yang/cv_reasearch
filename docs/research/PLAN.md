@@ -575,3 +575,13 @@ wholeQ的完整FoRIS pseudo角色只对局部参考场调幅`e=hR*(.75+.25*hR*hQ
 该100已COMPLETE：新版29.529416 /FoRIS29.377542（+.151874，区间[−1.696357,+1.906032]），低于快九窗37.344028达7.814611，低于原九窗37.023712达7.494296。PACO正增益未迁移为道路收益，不能采用新版替代DeepGlobe快九窗。净多TP363798同时净多FP1195724，局部收益未被whole-only判别接住，尚不把差距全归给某一个分辨率/布局因素。
 
 缓存推理29.089008秒＋评分.911162秒，DINO构造/前向、native9、CRF、raw写入全0。whole R/Q共200个真实缓存请求，新判别/融合均.032584秒/例，源整图CPU头均.597563秒一次性补齐100score；`fields/*.npz`与`source_score_index.json`保留这些响应，后续读出不再补该头。含输出均.741621秒，不是冷端到端。报告与逐例结果保存，不自动追加样本/参数或纯计时任务。
+
+最新人类要求研究时试COCO：固定同PACO正版公式，另取已经完成的COCO旧开发前缀fold0/1各前100，共200，199query照片，按40个官方类别/twofold pooled I/U比较完整FoRIS与已存MEAN。旧停止952和官方4000只读保存结果，不重启。COCO原始O24缓存不齐（六个首例12输入仅2命中），因此单MPS FP32 B2仅补缺失whole R/Q；不编码native9、不下载新资产。新缓存持久化，源整图CPU响应也补一次并保存；全部200预测封存后评分。权重SHA与旧基线和共享profile一致，首例加入一次完整FoRIS finalizer身份核对。产物`coco_role_competition200_20261010/`，跟随exec句柄86829及activity.json，不重复启动。scope不是四折官方全量。
+
+Deep100已保存mask/field的6.27秒诊断进一步说明：相对快九窗TP少130953、FP多1374908；精确两轴收支的7.814611点差距中FP解释6.067663点、TP解释1.746948点。新增FP52.47%距标注道路≤16像素、36.97%超过32像素，不只是宽边界。reference FG质量在≥90%FG占地token内的比例：Deep10016.0806%、PACO60090.4424%，COCO200参考侧事前90.5150%。它是几何采样纯度证据，不是直接DINO语义纯度或尺度因果消融。`analysis/WHY.md`、diagnosis.json与两个图例保留，新方法没有按GT调参。
+
+最新人类提供Pro独立对应/角色联合推断方法并明确授权并行评估。附件为`2c67286f-6d04-4be4-bb71-60255e7346da/已粘贴的文本.txt`：fullQ+四真512象限，reference patch角色/质心，16候选、双端共享similarity J、截断geometry、BP4+4与Procrustes，FoRIS仅作对照。该文档是待核查设计，不把其中十集/固定控制数量当扩跑授权。三个既有研究子代理并行数学/求解器反例、资产/观测/成本、原始先例/信息增量审阅，产物`pro_joint_correspondence_review_20261010/`；COCO原句柄继续。当前whole-only+FoRISanchor只是正负开发对照，不设为完整新方法必须保留的前提。
+
+COCO200已完成，原图完整FoRIS63.358900、保存MEAN64.006821、新whole-only60.895815；对同份原始source响应的完整FoRIS−2.463085，区间[−4.479684,−.537261]。未泛化到COCO，不采用。只补缺失383份whole原O24，199MPS调用、编码656.988秒、raw写24.238秒，总推理694.761秒；保存原始缓存及200source score/h，后续不用重编码/源前端。旧停止队列未重启。初次首例identity audit CHW/BCHW调用错误导致差异误报，已复现纠正；另用保存score/h的CPU末端重放87.223秒，全200完整FoRIS原图/CLI逐位等于旧mask，两组分数均不变，未新编码/源前端。matched_raw/与audit_correction.json、FINAL_RECEIPT.json为最终收据，原快照保留。
+
+Pro并行审阅已完成，主判断`pro_joint_correspondence_review_20261010/ASSESSMENT.md`：参考正负角色与真实位置共同对应有潜在新增身份证据，但当前规格有廉价同atom塌缩（σ1 d=1/256）和纠错力度边界（标准exp−E、λ1下odds最多改e倍，P0>.731/<.269不能翻转）。12项合成检查验证限制/反例而非真实涨分。BP温度/阻尼、真实edge belief及含w的γ必须唯一规定；正确γ时截断Procrustes可为MM更新，不能误说公式全不成立。PACO/Deep/LVIS现有whole+四角原O24 metadata缺0，真实load仍SHA核验，不新下载/编码。真实纯R/Q2.903＋四角5.591秒给两倍目标非编码约2.81秒预算，未实测新法。最接近原文先例已核对label transfer/joint dense correspondence/GDSP，框架不单独承担原创性；保留单mask角色结构净纠错的具体命题。四控制是评估设计，Pro真实分割/十集尚未启动。
