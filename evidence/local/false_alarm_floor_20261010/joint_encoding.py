@@ -115,7 +115,7 @@ def joint_fields(args):
         weights_sha256=base.sha(mdir / 'model.safetensors'), model_config_sha256=base.sha(mdir / 'config.json'),
         source_sha256=source_hashes, torch_version=str(torch.__version__), timm_version=importlib.metadata.version('timm'),
         torchvision_version=importlib.metadata.version('torchvision'), producer_device=args.device,
-        encoder_dtype='float32', storage_dtype='float32', branch='O/24', output='native normalized final block; no token L2 or positional projection',
+        encoder_dtype='float32', storage_dtype='float32', branch='O/24', output='model.norm final block output; no token L2 or positional projection',
         preprocessing=dict(source_sha256=base.sha(assets / 'third_party/foris_official/utils/data.py'),
             rgb=True, side=args.side, mean=[.485,.456,.406], std=[.229,.224,.225],
             input='FP32 CHW; separate768x768 or unmasked horizontal R/Q768x1536'),
@@ -175,7 +175,9 @@ def joint_fields(args):
                 maps = encoder.get_intermediate_layers(device_input, n=1, reshape=True)[0]
                 torch.mps.synchronize()
                 forward_seconds = time.monotonic() - tick
-                live = maps[0].float().cpu().permute(1,2,0).contiguous().numpy().reshape(-1,1024)
+                assert maps.device.type == 'mps' and maps.dtype == torch.float32
+                assert tuple(maps.shape) == (1,1024,gh,gw)
+                live = maps[0].cpu().permute(1,2,0).contiguous().numpy().reshape(-1,1024)
                 assert live.shape == (gh * gw, 1024) and live.dtype == np.float32
                 del maps, device_input
             except RuntimeError as error:

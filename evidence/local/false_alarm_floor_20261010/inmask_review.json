@@ -1,0 +1,54 @@
+{
+  "instrument_sha256": "ba73a7b1d79ba5e03ad21e3a6fbd4fea192f92e9b521d2f168417d81e939da2e",
+  "scope": "Read-only current Cohort cached false-alarm-floor route; synthetic only, no actual samples, no query GT, no encoding.",
+  "blocking_findings": [],
+  "tests": {
+    "existing_selftest": "PASS",
+    "back_auc_tie_midrank_vs_pairwise": {
+      "PASS": true,
+      "columns": 729,
+      "max_error": 0.0,
+      "all_ties": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    },
+    "canonical_reference_coverage": {
+      "PASS": true,
+      "original_shape": [
+        32,
+        32
+      ],
+      "half_fg_token_count": 2048
+    },
+    "abstention_full_preGT_mask_mass": "PASS; full [90,10] retains positive token; masked [90,1] would abstain and is not used for the rule",
+    "original_frame_fixed_grid_rule_pixel_counts": {
+      "PASS": true,
+      "frame": [
+        11,
+        13
+      ],
+      "grid": 4,
+      "hit": 13,
+      "false_alarm": 29
+    },
+    "query_truth_guard_and_restore": {
+      "PASS": true,
+      "blocked_synthetic_paths": 2
+    },
+    "undefined_spearman_json_null": "PASS"
+  },
+  "static_verified": [
+    "Canonical reference coverage is nearest original->1024 followed by 16x16 area coverage; original-frame pixel counts remain in their stored frame.",
+    "All field-file hashes, generator/instrument/dependency/profile identities and single prediction frame are checked before the first query truth read.",
+    "Rules use the full original FoRIS mask mass for preGT abstention; ignore pixels only affect diagnostic and rule I/U accounting.",
+    "Missing fields retain baseline behavior; actual macro delta uses per-class pooled I/U, not the pooled exchange surrogate."
+  ],
+  "nonblocking_scope_limits": [
+    "Paired episode bootstrap can omit strata and resamples the exposed class/photo composition; it is descriptive, not a conditional class-stratified CI or independent confirmation.",
+    "Observed fold/class slots are the reported macro denominator; absent benchmark slots are not added.",
+    "The pooled h/k exchange identity is not a sufficient guarantee for a positive macro class-mIoU change.",
+    "LVIS and PASCAL exposed sources are development transfer checks; no independent confirmation claim."
+  ]
+}

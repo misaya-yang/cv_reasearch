@@ -1,0 +1,97 @@
+{
+  "state": "SEALED_INPUTS_CHECKED_BEFORE_THIS_AUDIT_GT_READ",
+  "audit_sha256": "5f54c28988d282a68ed8e5b0395292ff1f09c8b08eff3818865a20f4fed4c205",
+  "helper_sha256": "ba73a7b1d79ba5e03ad21e3a6fbd4fea192f92e9b521d2f168417d81e939da2e",
+  "mask_rule": "score > 0 (back_auc names > .5); abstain to complete FoRIS if raw kept pixels < .1 * complete FoRIS area BEFORE GT/ignore",
+  "missing_field": "unchanged complete FoRIS TP/FP per episode",
+  "projection": "original pixel (y,x) belongs to floor(y*grid/H), floor(x*grid/W); no resized output mask",
+  "physical_episodes": {
+    "coco": "all200",
+    "joint_coco_try": "all3",
+    "paco": [
+      0,
+      149,
+      150,
+      299,
+      300,
+      449,
+      450,
+      599
+    ],
+    "lvis": [],
+    "existing_zoom_crossdataset40": [
+      80,
+      89,
+      100,
+      119
+    ]
+  },
+  "selection_sha256": "f305b05ad86a3ec36e5c6fca92022b9e2828698d800d0e37d62598c40530dbef",
+  "aggregation": "all observed fold:class pooled I/U; equal-fold and declared fixed slots separately identified",
+  "sources": {
+    "coco": {
+      "config_sha256": "c470b7bd429475c4f6d3185ab10cbb6d6658aa08824cce087635415198b3315a",
+      "seal_sha256": "e45ae89eacbe89660f22ffb53aab1b6fc9f160c70a71254e6d345fafdcb2ff2e",
+      "report_sha256": "e8c8ccfd02152edcc8db2039fe14e6403502c7d2b58edd919a6e54bb434623a3"
+    },
+    "joint_coco_try": {
+      "config_sha256": "162185f293461233851d74a92bac3275f600e19b0daeefddb8e517d925106de1",
+      "seal_sha256": "7721b36eb56fd148e1e8338b660628805b8a9ee9d89c5fc1039aa560c7d20de7",
+      "report_sha256": "c022c6aae713cef1e3b475b2528ad5a2d4b7deb6fb39fe62ead90ccab1040ab7"
+    },
+    "paco": {
+      "config_sha256": "e34f56412c6c484bbf340cf08b9b1aa327960e7a54ba3ca8497e23f27c07d984",
+      "seal_sha256": "1f93363fde12757d1cad99c2e2fc3ae9acd956afbacb3d0fd702bb23a4c1c89f",
+      "report_sha256": "a407738246c41d7b952976fe6f9c8a496b80ca9237466096141c6017a4eed0c1"
+    },
+    "lvis": {
+      "config_sha256": "af7156aae582ca18bf3aaef741105f31afd55d32b6b239c36bdbe98a74c969bc",
+      "seal_sha256": "551587aaa06ab77be0356fa3421b4c9e4cf9acdd6c73ceca1ba1f61a00b7ea00",
+      "report_sha256": "71c87a7cdf554d4f15315c6776009cf481fab317b2f236f3197a5463de388c0e"
+    },
+    "existing_zoom_crossdataset40": {
+      "config_sha256": "67cfddbdcb624064e4938e694963b2070fa1ef4ca8d557e05580133c9b5c0823",
+      "seal_sha256": "d80435de1b7eb732ca7e7c8955515210655a13d53fd1fdc38ae2cca118388b02",
+      "report_sha256": "8e4d7914d2197d1bf5cb2db82a33e73b58535ac24e6c3cb78bd9c3bd2ab04dca"
+    }
+  },
+  "pre_GT_errors": [],
+  "pre_GT_checks": {
+    "live_helper_pin": 1,
+    "manifest_hash": 5,
+    "baseline_index_hash": 5,
+    "helper_pin": 5,
+    "generator_hash": 5,
+    "profile_hash": 5,
+    "seal_config_hash": 5,
+    "seal_report_hash": 5,
+    "seal_gt_gate": 5,
+    "seal_count": 5,
+    "episode_order": 5,
+    "manifest_order": 5,
+    "frame": 5,
+    "grid": 5,
+    "field_record_hash": 1203,
+    "field_seal_hash": 1203,
+    "record_source_pin": 1203,
+    "record_id": 1203,
+    "record_frame": 1203,
+    "class_binding": 1203,
+    "dataset_binding": 1203,
+    "baseline_old_ledger_I": 1003,
+    "baseline_old_ledger_U": 1003,
+    "lvis_archived_prediction_hash": 200,
+    "lvis_archived_input_binding": 800,
+    "lvis_archived_predicted_area": 200,
+    "mixed_original_manifest": 1,
+    "mixed_original_index": 1,
+    "mixed_original_seal": 1,
+    "mixed_archived_prediction_hash": 200,
+    "mixed_source_prediction_hash": 200,
+    "mixed_source_mask_bitexact": 200,
+    "mixed_archived_predicted_area": 200,
+    "selection_hash": 1,
+    "selection_design_report": 2,
+    "selection_rule_pin": 1
+  }
+}

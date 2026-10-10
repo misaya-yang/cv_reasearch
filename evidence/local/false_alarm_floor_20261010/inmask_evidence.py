@@ -31,9 +31,12 @@ import os
 for _key in ('OMP_NUM_THREADS', 'OPENBLAS_NUM_THREADS', 'VECLIB_MAXIMUM_THREADS'):
     os.environ.setdefault(_key, '2')
 from collections import defaultdict
+from contextlib import contextmanager
 import argparse
+import builtins
 import hashlib
 import json
+import io
 from pathlib import Path
 import re
 import sys
@@ -67,6 +70,44 @@ def token_mass(binary, grid=64):
     h, w = binary.shape
     index = (np.arange(h) * grid // h)[:, None] * grid + (np.arange(w) * grid // w)[None, :]
     return np.bincount(index.ravel(), weights=binary.ravel().astype(np.float64), minlength=grid * grid)
+
+
+def reference_coverage(mask, grid=64, side=1024):
+    """Lawful reference labels in the actual square encoder's16pixel footprints.
+
+    Original-frame token_mass is appropriate for scoring stored pixels, but is
+    not the encoder's supervision when the source is smaller than the grid.
+    """
+    assert side % grid == 0
+    tensor = torch.from_numpy(np.ascontiguousarray(mask, dtype=np.float32))[None, None]
+    canvas = F.interpolate(tensor, (side, side), mode='nearest')[0, 0]
+    cell = side // grid
+    return canvas.reshape(grid, cell, grid, cell).mean((1, 3)).reshape(-1)
+
+
+@contextmanager
+def no_query_truth(source):
+    """Enforce the plan's prediction/probe boundary, including indirect opens."""
+    denied = set()
+    for row in source.rows:
+        if source.kind == 'run':
+            denied.add(str((source.assets / 'episodes/claude_packs' / row['pack'] / 'ann' / row['query']).resolve()))
+        for key in ('query_mask_path', 'query_ignore_mask_path'):
+            if key in row:
+                path = Path(row[key])
+                denied.update((str(path.resolve()), str((source.assets / path).resolve())))
+    original = builtins.open, io.open
+    def guarded(opener):
+        def opened(file, *args, **kwargs):
+            if isinstance(file, (str, bytes, os.PathLike)) and str(Path(os.fsdecode(file)).resolve()) in denied:
+                raise PermissionError('Query truth is forbidden during probe/field generation')
+            return opener(file, *args, **kwargs)
+        return opened
+    builtins.open, io.open = (guarded(opener) for opener in original)
+    try:
+        yield
+    finally:
+        builtins.open, io.open = original
 
 
 def official_transform(assets, side=1024):
@@ -106,9 +147,22 @@ def ridge(R, positive, negative, lam=.01, cap=256):
 
 def back_auc(S, positive, negative):
     """Each query token as a probe on the labelled image: does it rank the reference target above the negatives?"""
-    rank = torch.cat((S[positive], S[negative])).argsort(0).argsort(0).double() + 1
     p, n = int(positive.sum()), int(negative.sum())
-    return (rank[:p].mean(0) - (p + 1) / 2) / n
+    assert p > 0 and n > 0
+    result = torch.empty(S.shape[1], dtype=torch.float64)
+    # Independent query columns; chunking bounds temporary sorting memory.
+    for begin in range(0, S.shape[1], 512):
+        selected = torch.cat((S[positive, begin:begin+512], S[negative, begin:begin+512]))
+        value, order = selected.sort(dim=0)
+        rows = torch.arange(1, p+n+1)[:, None].expand_as(order)
+        first = torch.cat((torch.ones_like(value[:1], dtype=torch.bool), value[1:] != value[:-1]))
+        last = torch.cat((value[:-1] != value[1:], torch.ones_like(value[:1], dtype=torch.bool)))
+        low = torch.where(first, rows, 0).cummax(dim=0).values
+        high = torch.where(last, rows, p+n+1).flip(0).cummin(dim=0).values.flip(0)
+        mean_rank = (low+high).double()*.5
+        sum_positive_rank = (mean_rank*(order < p)).sum(0)
+        result[begin:begin+512] = (sum_positive_rank-p*(p+1)/2)/(p*n)
+    return result
 
 
 def clusters(X, k=8, rounds=10):
@@ -254,7 +308,8 @@ def interval(I0, U0, I1, U1, cls, draws=1000, seed=0):
 def rank_correlation(a, b):
     try:
         from scipy.stats import spearmanr
-        return float(spearmanr(a, b)[0])
+        value = float(spearmanr(a, b)[0])
+        return value if np.isfinite(value) else None
     except ImportError:
         return float(np.corrcoef(np.argsort(np.argsort(a)), np.argsort(np.argsort(b)))[0, 1])
 
@@ -402,11 +457,18 @@ class Cohort:
         else:
             raise FileNotFoundError(f'No inference.jsonl or inference.json in {self.foris}; name the folder of the FoRIS masks with --foris')
         self.index = {r['episode_id']: r for r in records}
+        assert len(self.index) == len(records), 'Duplicate episode IDs in the FoRIS index'
         absent = [r['episode_id'] for r in self.rows if r['episode_id'] not in self.index]
         assert not absent, f'{len(absent)} manifest episodes have no FoRIS mask in {self.foris} (first {absent[:3]})'
         self.profile = self._profile(args.profile)
+        if (self.foris / 'manifest.json').exists():
+            paired = {r['episode_id']: r for r in read(self.foris / 'manifest.json')}
+            for row in self.rows:
+                for key in ('reference_rgb_hash', 'query_rgb_hash', 'reference_mask_hash', 'query_mask_hash'):
+                    assert row[key] == paired[row['episode_id']][key], f'Cross-run input differs: {row["episode_id"]}/{key}'
         self.scores = read(self.foris / 'source_score_index.json') if (self.foris / 'source_score_index.json').exists() else {}
         self.ready, self.memo = False, {}
+        self.frame_by_id = {}
 
     def _root(self, name, marker):
         root = Path(name) if Path(name).is_absolute() else self.assets / name
@@ -421,8 +483,11 @@ class Cohort:
                     found += [document.get(k) for k in keys] if isinstance(document, dict) else []
         found.append(self.assets / SHARED_PROFILE)
         for path in found:
-            if path and Path(path).is_file():
-                return Path(path)
+            if path:
+                options = [Path(path)] if Path(path).is_absolute() else [self.assets / path, Path(path)]
+                for option in options:
+                    if option.is_file():
+                        return option.resolve()
         raise FileNotFoundError('No raw-cache profile.json found for this cohort; pass --profile')
 
     def _prepare(self):
@@ -434,6 +499,17 @@ class Cohort:
         self.load_inputs, self.decoded_rgb, self.array_hash = load_inputs, decoded_rgb, array_hash
         self.cache = RawFeatureCache(self.profile.parent.parent, read(self.profile))
         assert self.cache.folder == self.profile.parent, 'profile.json does not sit in the folder named by its own hash'
+        profile = self.cache.profile
+        assert profile['model'] == 'DINOv3-L/16' and profile['storage_dtype'] == 'float32'
+        assert profile['preprocessing']['resize'] == [1024, 1024]
+        assert sha(self.assets / 'third_party/foris_official/utils/data.py') == profile['preprocessing']['source_sha256']
+        for folder in (self.folder, self.foris, self.folder.parent, self.foris.parent):
+            if (folder / 'config.json').exists():
+                config = read(folder / 'config.json')
+                expected = config.get('weights_sha256')
+                assert expected is None or expected == profile['weights_sha256'], 'Baseline/cache model identity differs'
+                expected = config.get('raw_profile_sha256', config.get('profile_sha256'))
+                assert expected is None or expected == sha(self.profile), 'Declared/shared cache profile differs'
         self.transform = official_transform(self.assets)
         if self.branch == 'O/24':
             basis = torch.load(self.assets / 'native_assets/positional_basis.pt', map_location='cpu', weights_only=True)['basis'].float()
@@ -450,7 +526,7 @@ class Cohort:
             x = self.transform(image).numpy()
             assert (self.cache.folder / self.cache.key(x) / 'entry.json').exists(), 'This input has no entry in the raw cache; the instrument adds no encoding'
             array = self.cache.read(x, (self.branch,))[self.branch]
-            assert array.ndim == 2 and len(array) == 4096, array.shape
+            assert array.ndim == 2 and len(array) == 4096 and array.dtype == np.float32, (array.shape, array.dtype)
             if len(self.memo) >= 6:
                 self.memo.pop(next(iter(self.memo)))
             self.memo[identity] = F.normalize(torch.from_numpy(array.astype(np.float32)), dim=1)
@@ -469,7 +545,7 @@ class Cohort:
 
     def _coverage(self, row):
         value = self._mask(row, 'reference')
-        return torch.from_numpy(token_mass(value) / np.maximum(token_mass(np.ones_like(value)), 1)).float()
+        return reference_coverage(value)
 
     def _file(self, row):
         record = self.index[row['episode_id']]
@@ -520,10 +596,12 @@ class Cohort:
     def prediction(self, row):
         with np.load(self._file(row), allow_pickle=False) as z:
             if 'original/foris.crf' in z.files:
+                self.frame_by_id[row['episode_id']] = 'original'
                 h, w = (int(v) for v in (z['original_hw'] if 'original_hw' in z.files else row['query_size_hw']))
                 return np.unpackbits(z['original/foris.crf'], count=h * w).reshape(h, w).astype(bool)
             key = next((k for k in ('cli/foris.crf', 'cli1024/foris.crf') if k in z.files), None)
             assert key, f'No complete FoRIS mask among {z.files}'
+            self.frame_by_id[row['episode_id']] = 'cli1024'
             return np.unpackbits(z[key], count=1024 ** 2).reshape(1024, 1024).astype(bool)
 
     def truth(self, row, shape):
@@ -563,8 +641,9 @@ def opened(args):
 def probe(args):
     """What this source looks like to the readers, for the first episodes. Opens no query mask and writes nothing."""
     source, out = opened(args)
-    print(json.dumps(dict(kind=source.kind, where=source.where, output=str(out), episodes=len(source.rows),
-                          row_keys=sorted(source.rows[0]), **source.inspect()), indent=2, ensure_ascii=False))
+    with no_query_truth(source):
+        print(json.dumps(dict(kind=source.kind, where=source.where, output=str(out), episodes=len(source.rows),
+                              row_keys=sorted(source.rows[0]), **source.inspect()), indent=2, ensure_ascii=False))
 
 
 def standard_fields(source, rows, described, i):
@@ -587,7 +666,17 @@ def make_fields(args, compute=standard_fields, grid=64):
     assert not (out / 'sealed.json').exists(), 'Sealed fields are not extended; use --name for a new folder'
     rows = source.rows[:args.limit] if args.limit else source.rows
     described = [source.describe(r) for r in rows]
-    plan = dict(kind=source.kind, where=source.where, branch=getattr(source, 'branch', 'O/24 after FoRIS Part 1'), grid=grid, ids=[d['id'] for d in described])
+    plan = dict(kind=source.kind, where=source.where, branch=getattr(source, 'branch', 'O/24 after FoRIS Part 1'), grid=grid, ids=[d['id'] for d in described],
+                instrument_sha256=sha(__file__), generator_sha256=sha(sys.argv[0]),
+                generator_path=str(Path(sys.argv[0]).resolve()), threads=args.threads,
+                exposure='Previously exposed development queues; confirm means development transfer verification, not independent confirmation')
+    if source.kind == 'cohort':
+        plan.update(foris=str(source.foris), profile=str(source.profile), profile_sha256=sha(source.profile),
+                    manifest_sha256=sha(source.folder / 'manifest.json'),
+                    foris_index_sha256=sha(source.foris / ('inference.jsonl' if (source.foris / 'inference.jsonl').exists() else 'inference.json')),
+                    dependency_sha256={rel: sha(REPO / rel) for rel in ('scripts/raw_feature_cache.py', 'src/ics/official_data.py')},
+                    transform_sha256=sha(source.assets / 'third_party/foris_official/utils/data.py'),
+                    basis_sha256=sha(source.assets / 'native_assets/positional_basis.pt'))
     if (out / 'config.json').exists():
         assert read(out / 'config.json') == plan, 'This folder was started with other episodes; use --name'
     else:
@@ -597,9 +686,18 @@ def make_fields(args, compute=standard_fields, grid=64):
     for i, (row, info) in enumerate(zip(rows, described)):
         record = out / 'records' / f'{i:06d}.json'
         if i % of != shard or record.exists():
+            if record.exists():
+                prior = read(record)
+                assert prior['id'] == info['id'] and prior['script_sha256'] == version
+                assert sha(out / 'fields' / f'{i:06d}.npz') == prior['sha256']
             continue
         started = time.monotonic()
-        fields, note = compute(source, rows, described, i)
+        with no_query_truth(source):
+            fields, note = compute(source, rows, described, i)
+        if source.kind == 'cohort':
+            note['prediction_frame'] = source.frame_by_id[row['episode_id']]
+        else:
+            note['prediction_frame'] = 'original'
         np.savez_compressed(out / 'fields' / f'{i:06d}.npz', **{k: v.astype(np.float32) for k, v in fields.items()})
         write(record, dict(index=i, **info, sha256=sha(out / 'fields' / f'{i:06d}.npz'), script_sha256=version,
                            seconds=round(time.monotonic() - started, 2), **note))
@@ -613,15 +711,33 @@ def evaluate(args):
     fixtures()
     source, out = opened(args)
     plan = read(out / 'config.json')
+    assert plan['instrument_sha256'] == sha(__file__), 'Instrument changed after field freeze'
+    assert sha(plan['generator_path']) == plan['generator_sha256'], 'Generator changed after field freeze'
+    if source.kind == 'cohort':
+        assert plan['where'] == str(source.folder) and plan['foris'] == str(source.foris)
+        assert plan['profile'] == str(source.profile) and plan['profile_sha256'] == sha(source.profile)
+        assert plan['manifest_sha256'] == sha(source.folder / 'manifest.json')
+        assert plan['foris_index_sha256'] == sha(source.foris / ('inference.jsonl' if (source.foris / 'inference.jsonl').exists() else 'inference.json'))
+        for rel, digest in plan['dependency_sha256'].items():
+            assert sha(REPO / rel) == digest
+        assert plan['transform_sha256'] == sha(source.assets / 'third_party/foris_official/utils/data.py')
+        assert plan['basis_sha256'] == sha(source.assets / 'native_assets/positional_basis.pt')
     rows, grid = source.rows[:len(plan['ids'])], plan.get('grid', 64)
     missing = [i for i in range(len(rows)) if not (out / 'records' / f'{i:06d}.json').exists()]
     assert not missing, f'{len(missing)} episodes have no fields yet (first {missing[:5]}); finish every shard first'
     records = [read(out / 'records' / f'{i:06d}.json') for i in range(len(rows))]
     assert [r['id'] for r in records] == plan['ids'] == [source.describe(r)['id'] for r in rows]
+    assert all(r['script_sha256'] == plan['generator_sha256'] for r in records), 'Mixed generator source versions'
+    frames = sorted({r['prediction_frame'] for r in records})
+    assert len(frames) == 1, 'Mixed original/CLI predictions must be scored as separate sources'
+    for i, rec in enumerate(records):
+        assert sha(out / 'fields' / f'{i:06d}.npz') == rec['sha256']
     if not (out / 'sealed.json').exists():                    # every field is fixed before a query mask is opened
         write(out / 'sealed.json', dict(n=len(records), fields={r['id']: r['sha256'] for r in records}, query_GT_read=False,
-                                        encoder_calls=0, script_sha256=sorted({r['script_sha256'] for r in records})))
+                                        encoder_calls=sum(r.get('encoder_calls', 0) for r in records),
+                                        config_sha256=sha(out / 'config.json'), script_sha256=[plan['generator_sha256']]))
     seal = read(out / 'sealed.json')
+    assert seal['config_sha256'] == sha(out / 'config.json')
     episodes = []
     for i, (row, rec) in enumerate(zip(rows, records)):
         path = out / 'fields' / f'{i:06d}.npz'
@@ -629,6 +745,7 @@ def evaluate(args):
         with np.load(path, allow_pickle=False) as z:
             fields = {k: z[k].astype(np.float64) for k in z.files}
         mask = source.prediction(row)
+        predicted_for_rule = token_mass(mask, grid)
         truth, ignore = source.truth(row, mask.shape)
         valid = np.ones(mask.shape, bool) if ignore is None else ~ignore       # ignored pixels count on neither side
         mask, truth = mask & valid, truth & valid
@@ -639,7 +756,7 @@ def evaluate(args):
         for k, v in fields.items():
             if k.startswith('aux.'):
                 continue
-            keep = rule(v, ZERO(k), predicted)
+            keep = rule(v, ZERO(k), predicted_for_rule)
             item['fields'][k] = dict(**separation(v, hit, false_alarm), **recovery(v, missed, rest), rule_hit=float(hit[keep].sum()),
                                      rule_false_alarm=float(false_alarm[keep].sum()), changed=bool((predicted[~keep] > 0).any()))
         if 'aux.foreign_response' in fields:                  # where another concept's upper half falls
@@ -655,7 +772,9 @@ def evaluate(args):
         g, I, Fa = (np.array([e[k] for e in part]) for k in ('g', 'hit', 'false_alarm'))
         ok = g > 0
         base = macro(I, g + Fa, cls)
-        floor = dict(episodes=len(part), foris=base, recall=float(I.sum() / g.sum()), false_alarm_per_target=float(Fa.sum() / g.sum()),
+        floor = dict(episodes=len(part), observed_fold_class_slots=len(np.unique(cls)),
+                     class_metric='observed fold/class pooled I/U; absent benchmark slots not added',
+                     foris=base, recall=float(I.sum() / g.sum()), false_alarm_per_target=float(Fa.sum() / g.sum()),
                      false_alarm_share_of_union=float(Fa.sum() / (g.sum() + Fa.sum())), no_false_alarm=macro(I, g, cls), no_miss=macro(g, g + Fa, cls),
                      rho_F_g=rank_correlation(Fa[ok], g[ok]), rho_r_g=rank_correlation(I[ok] / g[ok], g[ok]), rho_F_r=rank_correlation(Fa[ok], I[ok] / g[ok]),
                      confusable_found=float(np.mean([(e['confusable'] or 0) >= 4 for e in part])))
@@ -685,9 +804,10 @@ def evaluate(args):
                 miss_at_1pct=total(out_side, 'miss_at_1pct') / total(out_side, 'missed') if out_side else None)
         report[dataset] = dict(floor=floor, fields=table)
         f = floor
+        rho = lambda value: f'{value:+.2f}' if value is not None else 'N/A'
         print(f"\n== {out.name}/{dataset}  n={f['episodes']}  FoRIS {f['foris']:.2f} | recall {100 * f['recall']:.1f}% | sum F / sum g {f['false_alarm_per_target']:.3f}"
               f" | false-alarm share of union {f['false_alarm_share_of_union']:.3f} | no false alarm {f['no_false_alarm']:.2f} | no miss {f['no_miss']:.2f}"
-              f" | rho(F,g) {f['rho_F_g']:+.2f} rho(r,g) {f['rho_r_g']:+.2f} rho(F,r) {f['rho_F_r']:+.2f} | confusables found in {100 * f['confusable_found']:.0f}%")
+              f" | rho(F,g) {rho(f['rho_F_g'])} rho(r,g) {rho(f['rho_r_g'])} rho(F,r) {rho(f['rho_F_r'])} | confusables found in {100 * f['confusable_found']:.0f}%")
         if foreign:
             x = f['foreign_upper_half']
             print(f"   another concept's upper half holds {100 * x['false_alarm_inside']:.1f}% of FoRIS false alarms and {100 * x['hit_inside']:.1f}% of its hits; its size is {x['tokens_against_own']:.2f} of the own one")
@@ -697,7 +817,8 @@ def evaluate(args):
             print(f"   {k:25s} {v['present']:5.2f}   {show(v['auc'], '.3f')}  {show(v['kept95'], '.2f')}   {show(v['kept90'], '.2f')}  |      {v['hits_kept']:.3f}  {v['false_alarms_kept']:.3f}"
                   f"        {show(v['exchange'], '.3f')}     {v['changed']:.2f}   |  {v['rule']:6.2f}    {v['delta']:+5.2f} [{v['interval'][0]:+.2f}, {v['interval'][1]:+.2f}]   |"
                   f"   {show(v['miss_auc'], '.3f')}    {show(v['miss_at_1pct'], '.3f')}")
-    write(out / 'report.json', dict(frame='original pixels where the prediction was stored at original size, else the 1024 canvas; tokens are the grid of the squashed input', grid=grid,
+    write(out / 'report.json', dict(frame=frames[0], frame_note='Tokens are the grid of the squashed input; one stored prediction frame per source', grid=grid,
+                                    exposure=plan['exposure'], interval_scope='Paired episode bootstrap over exposed class/photo composition; not independent confirmation',
                                     source=plan['where'], datasets=report, seal_sha256=sha(out / 'sealed.json'), evaluator_sha256=sha(__file__)))
 
 
