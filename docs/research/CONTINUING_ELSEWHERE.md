@@ -1,8 +1,6 @@
 # 在另一台机器接续研究
 
-回家继续实验需要同时准备研究记录、代码、数据集、模型权重、所需缓存和运行环境。文档、源码与小型数值证据通过Git同步，大文件通过独立传输准备在 `cv_data`。资产外置只是存储方式，资产准备和同步仍属于跨机器接续工作。
-
-当前Mac已经存有数据、DINOv3权重和实验缓存；目标机器是否齐全、路径和环境是否适配，以及目标实验能否运行，尚未核实。之前的Git提交完成了文档和代码同步，尚未完成目标机器的实验准备。
+本分支携带研究记录、代码与小型数值证据。数据集和模型需要时正常下载、准备，大文件不进Git。
 
 ## 先了解研究并复算已有结果
 
@@ -25,7 +23,7 @@ python -B scripts/read_research_results.py
 ```text
 paper_project/
   cv_reasearch/                 # Git：代码、研究记录、精简证据
-  cv_data/                     # 实验交付的一部分，通过独立传输同步
+  cv_data/                     # 按需下载、准备的数据与模型，不进Git
     demo4_cache/               # 基础数据/模型路径
     datasets/ics/              # 扩展数据、标注与协议数据
     native_assets/             # 原位置基等固定资产
@@ -43,17 +41,15 @@ paper_project/
 |重放完整FoRIS/MEAN或新缓存实验|对应raw O24与entry/profile、原图/Mask、数据几何、basis及FoRIS/CRF运行时|
 |从RGB开始编码|上述资产加DINO权重和匹配的编码环境|
 
-同名目录不代表同一缓存；输入/crop/权重/层/精度身份需与现有manifest相符。接续时先复用目标机器已有的数据与模型，补传缺少的资产；可重建缓存也可从匹配的原图、权重和配置重新生成。所需清单、获取方式、路径适配和目标入口验证都是仍需完成的准备工作。
+按所做实验下载、准备数据与模型，也可复用已有资产。缓存可从匹配的原图、权重和配置重新生成。复用已有缓存时，输入/crop/权重/层/精度需与其manifest相符。
 
-当前Mac的源资产位于仓库同级的 `../cv_data`：DINOv3权重在 `demo4_cache/models/dinov3-vitl16-timm/`，基础COCO数据在 `demo4_cache/data/COCO2014/`，扩展数据在 `datasets/ics/`，固定位置基在 `native_assets/positional_basis.pt`，FoRIS/INSID3/CRF源码在 `third_party/`。具体缓存按上表的目标实验选取。下载历史见 `setup/download_receipt.json`，它不能代替目标机器上的文件检查。
+默认资产根为仓库同级的 `../cv_data`：DINOv3权重在 `demo4_cache/models/dinov3-vitl16-timm/`，基础COCO数据在 `demo4_cache/data/COCO2014/`，扩展数据在 `datasets/ics/`，固定位置基在 `native_assets/positional_basis.pt`，FoRIS/INSID3/CRF源码在 `third_party/`。具体依赖按上表的目标实验选取。
 
-`cv_data/setup/download_assets.py` 是旧AutoDL迁移脚本，包含已退休的缓存任务，且会依据旧收据跳过部分核验；不能直接作为完整的新机器准备入口。跨机器同步尚未执行，需根据目标机器已有资产补齐传输或下载方式。
+## 路径与运行环境
 
-## 位置迁移的实际限制
+`lab.py` 的仓库根和 `cv_data` 根按相对位置定位，但已有manifest的 `payload_path`、Mask路径和 `source_sha256` 键仍可能包含生成机器的绝对路径。使用这类已有缓存时，按本机实际位置适配路径。
 
-`lab.py` 的仓库根和 `cv_data` 根按相对位置定位，但已有manifest的 `payload_path`、Mask路径和 `source_sha256` 键仍可能包含生成机器的绝对路径。复制所需资产后，还需适配这些路径并验证目标实验入口，才能确认实验准备完成。
-
-迁移时保留原始manifest与seal，另做显式路径映射/派生manifest，映射前后对应文件内容身份不变；不能对封存文件批量替换字符串后仍称原SHA。新运行写新的 `cv_data/a/<run>/`，不覆盖当前会话输出。CPU/MPS插值的边界差异已有实测记录，重放须以原封存输出和对应实现为准。
+复用已有封存结果时，保留原始manifest与seal；路径变化可用显式映射或派生manifest处理，不能修改封存文件后仍称原SHA。新运行写新的 `cv_data/a/<run>/`，不覆盖当前会话输出。CPU/MPS插值的边界差异已有实测记录，重放须以原封存输出和对应实现为准。
 
 环境版本见[本机环境快照](../../evidence/research/environment_snapshot.json)，它是已观察环境，不是Linux可直接安装的锁文件。轻量结果复算无这些包依赖；完整M4与CUDA入口及平台差异见[scripts说明](../../scripts/README.md)。
 
