@@ -1,28 +1,21 @@
-# 主线代码
+# 科研代码：当前执行、完成研究与高价值负结果
 
-[目标与状态](../docs/research/PLAN.md) · [结果](../evidence/local/RESULTS.md)。共27个脚本；下一项固定实验见PLAN。
+保留标准是研究价值及可解释/可复现性。当前执行闭包只是其中一部分；重要失败、理论诊断和成功强控的代码同样随分支保留。完整选择与理由见[保留清单](../evidence/research/retained_work.json)。
 
-| 要做什么 | 入口 |
-|---|---|
-| 完整基线 | [run_foris.py](run_foris.py)、[run_insid3_complete.py](run_insid3_complete.py) |
-| M4 本机完整 FoRIS/RCG/MEAN | [run_m4_baselines.py](run_m4_baselines.py)；MPS 编码、CPU 原流程与适配 CRF，二值 mask pack，推理/评分分离 |
-| M4 SAFR 组合候选 | [run_m4_safr.py](run_m4_safr.py)；基于封存基线比较 SAFR 正负原型 guide 与同图读出，ViT-L 适配，不冒充作者默认 ViT-B 结果 |
-| Mac CRF 适配检查 | [check_m4_crf.py](check_m4_crf.py)；原 CPU lattice 的 FP32/NHWC 绑定与滤波/求解检查 |
-| 固定L4/s2证据与错图记录 | [bench_evidence.py](bench_evidence.py)、[score_reverse_landing.py](score_reverse_landing.py)；原CLI仍为64×64筛选台，不是尚未实现的原图L4+投票完整runner |
-| 原始起点、两套基线的阶段增删 | [run_stage_bank.py](run_stage_bank.py)；原始NN独立实现位于`ics.methods.raw_reference_origin` |
-| 既有强方法的细读出与评分 | [run_frozen_subtoken4000.py](run_frozen_subtoken4000.py)、[score_frozen_subtoken4000.py](score_frozen_subtoken4000.py) |
-| 固定增删/残差组合 | [run_mean_fine_bit_transfer4000.py](run_mean_fine_bit_transfer4000.py)、[run_mean_fine_residual_transfer4000.py](run_mean_fine_residual_transfer4000.py) |
-| 强简单对照 | [run_direct_mean_fine4000.py](run_direct_mean_fine4000.py) |
-| 已有尺寸切分配方 | [run_uniform_tau15_sizecut4000.py](run_uniform_tau15_sizecut4000.py)、[replay_size_cut_composition_v1.py](replay_size_cut_composition_v1.py)；其标签暴露见RESULTS |
-| 已有完整掩码库与固定配方比较 | [build_complete_mask_library_v1.py](build_complete_mask_library_v1.py)、[build_dev241_shared4000_library_v1.py](build_dev241_shared4000_library_v1.py)、[run_exact_family_selection.py](run_exact_family_selection.py)、[run_exact_family_crossfold.py](run_exact_family_crossfold.py) |
-| 必要输入与错误输出 | [export_confirm_cache.py](export_confirm_cache.py)、[score_error_budget.py](score_error_budget.py)、[render_failures.py](render_failures.py) |
+|用途|主要入口|状态读法|
+|---|---|---|
+|当前R1/R2/R3|[r1_reliability_graph.py](x1012/r1_reliability_graph.py)、[r2_within_patch.py](x1012/r2_within_patch.py)、[r3_compose.py](x1012/r3_compose.py)|由当前实验会话维护；不覆盖其修复|
+|独立基座完整P0/A/B/C suite|[x1012/](x1012/)、[对应报告](../docs/research/x1012_tasks/)|保留完成研究的完整实现，不重建旧输出目录|
+|范围/排序诊断|x1012的d/e/dump脚本|有限经验边界；TOKEN旧总论已被B1限定|
+|完整基线与强控|[run_m4_baselines.py](run_m4_baselines.py)、[run_foris.py](run_foris.py)、[run_insid3_complete.py](run_insid3_complete.py)、[MEAN](../src/ics/methods/mean_control.py)|保留精确对照和实际预算|
+|任务可辨识性/源空间|[audit_task_identifiability.py](audit_task_identifiability.py)、[task_transfer_source_span_audit.py](task_transfer_source_span_audit.py)|理论与oracle诊断，不能冒充部署方法|
+|任务核/context/层级等负结果|[方法库](../src/ics/methods/)、对应run与score入口|固定构造与反例保留，失败不等于整个方向无解|
+|S阶段/错误恢复机制|sol_strong、sol_negative、sol_restored等选定脚本|必要的阶段归因；不恢复成批重复verify或旧队列|
+|仅用仓库复算核心表|[read_research_results.py](read_research_results.py)|Python标准库，无GT/图像/特征/GPU依赖|
+|工作树大产物检查|[check_repository.py](check_repository.py)|包含ignored文件，防GB级产物回流|
 
-依赖脚本：[run_frozen_subtoken1200.py](run_frozen_subtoken1200.py)、[run_fine_mean1200.py](run_fine_mean1200.py)、
-[benchmark_part1_producer.py](benchmark_part1_producer.py)、[run_fused_tau15_sizecut4000.py](run_fused_tau15_sizecut4000.py)。
-这些名称中的1200/fused沿用既有来源身份；本轮保留代码字节，不重命名或改算法。
-bench_evidence封存源码还读取 [run_order_tokens.py](run_order_tokens.py)、[run_rcg2.py](run_rcg2.py)、[score_order_tokens.py](score_order_tokens.py)、[score_size_threshold.py](score_size_threshold.py)，四者随入口恢复。
+实际运行依赖的模型、图像/Mask、raw O24、basis、FoRIS/CRF及平台二进制在仓库外 `../cv_data`。本机环境只是版本快照；跨机器布局、绝对路径绑定和Git同步边界见[接续说明](../docs/research/CONTINUING_ELSEWHERE.md)。
 
-共享代码仅9个文件：数据/完整FoRIS适配/位置基底、统一统计与读出、原始NN、阶段拆分和RCG。
-`launch/part1_producer_two_pair_v1/snapshot`仅保留10个不可变运行来源，供残差转移的prefix哈希绑定；已无启动plan。
-direct mean中的uniform `state.json`是可选历史失败信号，本机此前就缺失；旧启动包已退役，输出seal检查保留。
-旧runner与其他快照从[历史记录](../docs/archive/2026-10-07-cleanup.md)恢复。完整运行仍需[外部资产](../docs/harness/SERVER.md)。
+恢复历史源码保留原字节；只有不存在的文件从归档复制，当前R2等已修改版本没有被覆盖。保留旧CLI是为了研究可检查，不保证在缺资产的新机器直接执行，也不自动重跑它的默认输出目录。
+
+R2使用的像素描述子源码在 `evidence/local/autonomous_20261010/physical_pixel_evidence/frozen/diagnose.py`，部分冻结producer也以原路径保留。这里是小型源码，不是恢复大批生成物。新运行输出统一写 `../cv_data/a/<run>/`。

@@ -1,0 +1,1254 @@
+{
+  "schema_version": 1,
+  "purpose": "Frozen scientific definitions needed to interpret selected positive and negative results; these are historical method specifications, not active execution commands.",
+  "not_an_active_experiment_queue": true,
+  "specs": {
+    "source_query_identifiability": {
+      "original_path": "evidence/local/task_transfer_core_20261010/identifiability/config.json",
+      "source_sha256": "d4c72ddecb53bf3aab1d4d2d552ac4ecf9274f953ba0f64e2c5f34131f13d109",
+      "source_bytes": 1778,
+      "retention": "full_original_JSON_content",
+      "purpose": "Original task-family, representation and spatial-fold oracle definition.",
+      "projection": {
+        "rule": "full",
+        "retained_top_keys": null,
+        "dropped_key_names": [],
+        "omitted_keys": []
+      },
+      "content": {
+        "n_pairs": 60,
+        "real_tasks_per_pair": 2,
+        "representations": [
+          "unit_raw",
+          "fixed_position_projection"
+        ],
+        "source_sha256": "882aefa9890e32bf08cf2edd223ab0b20ac16bf7b488b0feeaf400892da43599",
+        "pairs_sha256": "c28337e82e3cffd123254a5aed25ebc4eb1794a7b2b08c4cf5be75422b4126c3",
+        "origin_pairs_sha256": "c28337e82e3cffd123254a5aed25ebc4eb1794a7b2b08c4cf5be75422b4126c3",
+        "query_truth_sha256": "39cf90b4a4ac9a23d7cd7bf3b56cda2091064e685a73ea5f6963ce2db6dfce45",
+        "basis_sha256": "9b9b20755a796cbda11bb7220d246ee540106e40cb024e249a5f63f884b6a116",
+        "lambda_": 0.01,
+        "samples_per_role": 128,
+        "spatial_split": "two checkerboard folds of8x8-token blocks; fixed before labels",
+        "target": "balanced binary pixel risk from continuous mask coverage; exact128 occurrences per role",
+        "purpose": "Distinguish missing native representation, support-to-query transfer, and failure to identify an existing shared rule",
+        "primary_comparisons": [
+          "R->R versus R->Q",
+          "R->Q versus Q->Q",
+          "joint->Q versus Q->Q",
+          "joint->R versus R->R"
+        ],
+        "additional": "R->Q with threshold fit on query training blocks: explicitly query-label oracle calibration",
+        "no_FoRIS": true,
+        "no_pseudo_masks": true,
+        "no_new_DINO": true,
+        "oracle_warning": "Query and joint probes use query GT; they are diagnostics, never deployable methods or benchmark scores",
+        "limits": "Within-image contextual dependence remains despite blocked holdout; these are exposed development tasks; finite ridge capacity is not an impossibility proof",
+        "full_source_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/task_transfer_identifiability60_20261010/config.json",
+        "full_source_sha256": "b1d84e69c8ca571a1372a585a6bbafa1983e2dde05f841cac919991e79bd5c45"
+      }
+    },
+    "strong_stage": {
+      "original_path": "evidence/local/strong_stage600_20261011/protocol.json",
+      "source_sha256": "667c74d9adf6184404dfe6b7a7f6fbbe70d8d2766c23dfa536ec3e324ee474d3",
+      "source_bytes": 5610,
+      "retention": "full_original_JSON_content",
+      "purpose": "Historical S stage accounting and exact frame/metric definition.",
+      "projection": {
+        "rule": "full",
+        "retained_top_keys": null,
+        "dropped_key_names": [],
+        "omitted_keys": []
+      },
+      "content": {
+        "state": "FROZEN_POSTSEAL_SAVED_STRONG_STAGE_DIAGNOSIS",
+        "n": 600,
+        "inventory_sha256": "3ed7e6d1f482a3234ec7d26f0b667d6edfab394da2969b72d6d5910842f11a85",
+        "source_sha256": {
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong600_conflict_alignment_20261011/membership.json": "f38ac3cdf32c7deaa6ba432d0d6c4eee2616c39776fa50d452fb0a3003a54af9",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/score_bindings.jsonl": "92e79d934b2192e8e0f1da62fbe1e57bd4f6237e4d3f74ce30ea3a5cb0d1f037",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/inputs.jsonl": "6704d3ddc2bfd5cc16c47287dacebb9f5b2aeb46705dd0e079aafcb5dddbde0c",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/sol_strong_stage600.py": "ef72b1e25d0ff3d483c0678ca17f735d87b19c956e6dbafda2481bc197117e85",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/run_m4_baselines.py": "6f054ce1d484ecfe7f6f89f8700aa60c60578f19407a7a03702d8d8853deff2a",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/reference_background_conflict6200_20261011/score_and_verify.py": "7e70e0075fb14c5f66f666e061464dc4566ada0e1affc4e06ab582d47858906d",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_component_presence200_20261009/inference.jsonl": "824498af7f12ba6d344963ab8b3cc9ef42f38313a4447cc0f2f0f6e43df98238",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_fixedwindows200_20261009/inference.jsonl": "cfdda89d3298375a781eef832278949fc289f56051e8c842fcb59839c77aa0ab",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_fixedwindows200_20261009/manifest.json": "57cd20e1433b1a985cba91b49344150ed80f3397a24362975f761e3727656fd6",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_component_presence200_20261009/sealed.json": "ef918e31df9f9346f6abf1303ffd71c59c996373b5aaf1e76b13eccf26a22b56",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_fixedwindows200_20261009/sealed.json": "c90531a268513c27c4ae8627c9721901a9b23b246aceb80c404e332354c66d42",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_component_replication200_20261009/component/inference.jsonl": "ce16ce546d91b9194aa8cbd0d83039b2cecf7c1c6e3671b47841cf22d568857c",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_component_replication200_20261009/inference.jsonl": "c09545a040f2129b278bd37ce4fe303930295f5f52a3eb214cbd9f304035015e",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_component_replication200_20261009/manifest.json": "610eec3278018b0c350cd6a140dd8e599e7971d47bac9dd8ef69b0ee96da9591",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_component_replication200_20261009/component/sealed.json": "e1ad1cffb3191792aa858b35886dcb3e6a462ae2db73b2b13329d619ddfa85f3",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_component_replication200_20261009/sealed.json": "183e3ab19fc3304cd33d66a854710da142e1cd6b48239b089ca69f692e6a2baf",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_component_completion600_20261009/component/inference.jsonl": "e9a792e345c6f09293dc7e47d0649553300a736ad4d03972e1c2d0a46c84fe5c",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_component_completion600_20261009/inference.jsonl": "8e4be68d7d685e3d101eb04ffd47c11cb28235e17ebacece4343344033835b67",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_component_completion600_20261009/manifest.json": "e4ed105ec4b076429166653f1ae04785eaffbc2103d0d3786147366a524238b8",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_component_completion600_20261009/component/sealed.json": "35759684d60288a9d90b2028657fd16f48be38cedc1e93d90b9cfce7992bf630",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_component_completion600_20261009/sealed.json": "60d4ad7a650a5afea6b38a01c6ad5bf48b3ac5d84d3bf983c42746f1f6155435",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_component_presence200_20261009/run_component_presence.py": "7c95df8f137a7fe2047a4e808d984cc9285de3253a198c78066e4740764f3b50",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_fixedwindows200_20261009/run_windows.py": "f761c9733e177e94c3ac290f4c4ca6e5028e930b0fb1b400c77b604b846e4b33",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_component_replication200_20261009/run_replication.py": "239f5aea5934c14b9e24f2b5599ab1f67fd13df6074d4fda1d0d11d7be1e76aa",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_component_completion600_20261009/run_complete600.py": "9ae308c951efe2104f60e07eff7c07c5a6c17d4db12437d7c71db467ef813592"
+        },
+        "gate": "Use historical selections and strict margin>0; never refit or recalculate descriptors",
+        "fusion": "2*votes>all_view_coverage; ties BG; historical float32 bilinear align_corners=False >.5",
+        "attribution": "B&~S: no_any_native_support; positive_views_fail_raw_majority; raw_majority_but_gate_veto. Monotone stages, each independently rendered to each frame.",
+        "role": "Necessary saved-mask counterfactual diagnosis only, not a new candidate or data-selected repair. Local observation includes reference crop, FoRIS and CRF; these are not separated.",
+        "constraints": {
+          "new_encoder": 0,
+          "new_features": 0,
+          "new_FoRIS": 0,
+          "new_CRF": 0,
+          "new_views": 0,
+          "new_candidates": 0,
+          "dense_writes": 0
+        }
+      }
+    },
+    "strong_witness_three_cases": {
+      "original_path": "evidence/local/strong600_witness_provenance3_20261011/protocol.frozen.json",
+      "source_sha256": "02a7cd0716f6fd0fb4129b7ab4c9afc502bd5183fe803e72990c9919fe561727",
+      "source_bytes": 2047,
+      "retention": "full_original_JSON_content",
+      "purpose": "Frozen three-case selection and provenance binding; necessary to interpret chosen counterexamples.",
+      "projection": {
+        "rule": "full",
+        "retained_top_keys": null,
+        "dropped_key_names": [],
+        "omitted_keys": []
+      },
+      "content": {
+        "state": "FIXED3_PROVENANCE_BEFORE_RAW_CONSUMPTION",
+        "n": 3,
+        "selection": [
+          {
+            "role": "max_IoU_harm",
+            "index": 348,
+            "source_index": 1348,
+            "episode_id": "dev_s1/lvis/5/74"
+          },
+          {
+            "role": "max_false_restoration",
+            "index": 295,
+            "source_index": 1295,
+            "episode_id": "dev_s1/lvis/4/85"
+          },
+          {
+            "role": "max_IoU_gain",
+            "index": 526,
+            "source_index": 1526,
+            "episode_id": "dev_s1/lvis/8/77"
+          }
+        ],
+        "source_sha256": {
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong600_case_conflicts_20261011/protocol.frozen.json": "9a1ac320fac53e5886d0c3d2911ebcfc187d3b25f1361a60839e6c259bb2ce73",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/inputs.jsonl": "6704d3ddc2bfd5cc16c47287dacebb9f5b2aeb46705dd0e079aafcb5dddbde0c",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/score_bindings.jsonl": "92e79d934b2192e8e0f1da62fbe1e57bd4f6237e4d3f74ce30ea3a5cb0d1f037",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong600_conflict_alignment_20261011/membership.json": "f38ac3cdf32c7deaa6ba432d0d6c4eee2616c39776fa50d452fb0a3003a54af9",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong_host_repair600_20261011/core.py": "ae330faa83d670db1c06bc53771b6d703067a79cfdd855106c8b27f926b2b5eb",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong_host_repair600_20261011/sealed.json": "715e748fc6e0eeddf78621b7a54c317cec3725f721a2befa6bb33f5b2850d49a",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/sol_strong600_witness_provenance3.py": "7ed14f11b8d2c76d96fbf657fe409725225ca975b0cbea15f30fe4fa9c5219aa"
+        },
+        "diagnostic_only": "Winning sourceFG coverage and omitted sourceBG counterevidence on already sealed M additions; no new predictions or selection rule"
+      }
+    },
+    "tangent": {
+      "original_path": "../cv_data/a/task_tangent_kernel60_20261010/config.json",
+      "source_sha256": "5ed6c4a7c6eb6f5eaade10bd16ab3c0f5f8310768f00a1986eacb22937a09db8",
+      "source_bytes": 2852,
+      "retention": "full_original_JSON_content",
+      "purpose": "Kernel/cotangent formulas, supervision and matched controls.",
+      "projection": {
+        "rule": "full",
+        "retained_top_keys": null,
+        "dropped_key_names": [],
+        "omitted_keys": []
+      },
+      "content": {
+        "n_pairs": 60,
+        "variants": [
+          "A",
+          "B"
+        ],
+        "arms": [
+          "o24_ridge",
+          "o24_position_ridge",
+          "hidden_ridge",
+          "task_tangent",
+          "mean_tangent"
+        ],
+        "primary": "task_tangent",
+        "source_sha256": {
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/run_task_tangent_kernel.py": "2d7f5ca738659544018ea3e74010bbf939da63678961824571bf5a3fdc0f0ba8",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/src/ics/methods/task_tangent_kernel.py": "23374c97fbd32a63b0e4d4de2c667f7b251a93afa8cc3c11b2f950ce0a5e8105",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/task_transfer_identifiability.py": "882aefa9890e32bf08cf2edd223ab0b20ac16bf7b488b0feeaf400892da43599",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/prepare_task_tangent_features.py": "b20317f026179d654b86e8b30d57eb811265aa7297d2a424c7936fb97066ba3a"
+        },
+        "pairs_sha256": "c28337e82e3cffd123254a5aed25ebc4eb1794a7b2b08c4cf5be75422b4126c3",
+        "controls_sha256": "3a6223ee31e7bd02c0c1f77537f1001d1156128548b9f8a5c5f9d741f5d2220a",
+        "feature_complete_sha256": "a2c8d8113551f86dd98e9566cc7693caf5e3449bde76ecf0c9a07b201a06677a",
+        "parameters_sha256": "fddd4b5d9f326a4e76211a08906611f918b7d11f9163d57200ca90a4c0a5ae1f",
+        "basis_sha256": "9b9b20755a796cbda11bb7220d246ee540106e40cb024e249a5f63f884b6a116",
+        "formula": "normalized finite kernel of last fc1/fc2 weights+bias for a fixed mask-defined unit-output scalar task",
+        "cotangents": "task: fullR area-weighted FG-BG unit-output mean contrast; control: wholeR mean; stop-gradient through cotangent choice",
+        "supervision": "same128 role-area occurrences per FG/BG, duplicated positions collapsed, centered weighted kernel ridge lambda=.01",
+        "controls": "same-forward rawO24, position-projectedO24, newMLP hidden feature, same-cost mask-free tangent",
+        "renderer": "signed64 bilinear1024 strict>0; direct complete mask, no CRF; original binary bilinear>0.5",
+        "positions": "only o24_position_ridge projects the existing frozen500-dimensional positional basis; tangent is exact raw-output task differential",
+        "no_FoRIS_input": true,
+        "query_GT_in_inference": false,
+        "encoder_updates": 0,
+        "old_O24_bit_exact_for_all_inputs": true,
+        "comparisons": [
+          "task_tangent - hidden_ridge",
+          "task_tangent - mean_tangent",
+          "task_tangent - o24_position_ridge",
+          "task_tangent - o24_ridge",
+          "task_tangent - complete native FoRIS"
+        ],
+        "exposure": "same60 already-exposed task-switch development pairs, not official full protocol or untouched confirmation",
+        "statistic": "mean of the two task IoUs per query photo; bootstrap linked reference/query-photo components",
+        "novelty": "finite tangent transfer is prior art; mask-defined kernel requires both matched mechanism and complete performance evidence"
+      }
+    },
+    "context": {
+      "original_path": "../cv_data/a/task_context_compatibility120_20261012/config.json",
+      "source_sha256": "e1d7348425bef302337c765315743d0123e72fd2e5cfe2dfb4d81f4aafb054e4",
+      "source_bytes": 1968,
+      "retention": "full_original_JSON_content",
+      "purpose": "Reference-conditioned nonlinear/linear/null context definitions and readout.",
+      "projection": {
+        "rule": "full",
+        "retained_top_keys": null,
+        "dropped_key_names": [],
+        "omitted_keys": []
+      },
+      "content": {
+        "kind": "frozen final-block conditional context compatibility; exploratory mechanism",
+        "n_pairs": 60,
+        "n_tasks": 120,
+        "n_unique_x23": 119,
+        "domains": [
+          "coco",
+          "paco_part",
+          "suim"
+        ],
+        "producer_sha256": "578617fd17805257af181a834878a804003079bfd532f3a01ec08f4faa6c8e62",
+        "method_sha256": "90fcc3ef23b818ae81420b5566c18ac64a5e8c14b339805c97e7fb59068337a2",
+        "pairs_sha256": "c28337e82e3cffd123254a5aed25ebc4eb1794a7b2b08c4cf5be75422b4126c3",
+        "feature_seal_sha256": "de40ef9bf6614beec5c84c15a9874eacdfc8855b80cc5a04887dd5789a28f19b",
+        "external_controls_sha256": "e637acf789cd61762d31c4ffe60147dc89cdf638f6dd6a20d75b66202cb864bc",
+        "weights": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/demo4_cache/models/dinov3-vitl16-timm/model.safetensors",
+        "weights_sha256": "45172f209c9583c40538afc26b60a07033e6fcc2e8c30228338e6b2e932e7941",
+        "mix": 0.5,
+        "query_chunk": 256,
+        "prefix": 5,
+        "cross_relation": "actual pre-RoPE last-block Q/K; head dim64, scale1/8",
+        "native_query_relation": "actual unmodified RoPE64 within-image attention",
+        "reference_roles": "exact1024 pixel area coverage on64 grid; all4096 locations",
+        "decoder": "mean unit-O24 context compatibility difference; no fitting",
+        "arms": [
+          "context",
+          "linear_context",
+          "null_context",
+          "qk_density",
+          "o24_density"
+        ],
+        "render": [
+          "zero",
+          "minmax"
+        ],
+        "primary": "context/zero",
+        "null_seed": 0,
+        "evaluation": "complete1024 masks, per-photo A/B mean; connected R/Q photo groups",
+        "label_policy": "deny all parent query labels until all outputs sealed",
+        "resource": {
+          "device": "mps",
+          "precision": "FP32",
+          "cpu_threads": 2,
+          "mps_allocation_limit_bytes": 20000000000
+        },
+        "no_new_photos": true,
+        "new_full_encoder_calls": 0,
+        "parameter_updates": 0,
+        "caveat": "Reference memory injection is a counterfactual inference intervention, not native inter-image attention or demonstrated originality."
+      }
+    },
+    "hierarchy": {
+      "original_path": "../cv_data/a/task_semantic_hierarchy_five1000_20261012/config.json",
+      "source_sha256": "d3efd19cca48491b5506777d5e7c1959d6d99733fe59d712a9d355a74150a7d5",
+      "source_bytes": 3648,
+      "retention": "full_original_JSON_content",
+      "purpose": "Hierarchical partition, role mass, priors, readout and fixed controls.",
+      "projection": {
+        "rule": "full",
+        "retained_top_keys": null,
+        "dropped_key_names": [],
+        "omitted_keys": []
+      },
+      "content": {
+        "state": "FROZEN_FIVE_DOMAIN_CACHE_ONLY_METHOD",
+        "n": 1000,
+        "domains": [
+          "coco",
+          "lvis",
+          "pascal_part",
+          "paco_part",
+          "suim"
+        ],
+        "per_domain": 200,
+        "arms": [
+          "adaptive",
+          "flat",
+          "density",
+          "null"
+        ],
+        "primary": "adaptive/cli",
+        "frames": [
+          "cli",
+          "original"
+        ],
+        "sources": {
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/run_task_semantic_hierarchy.py": "2196e15af3cd0a232262d1a6fbcbde680096e70ccd8fe978b99b730eb3e125e5",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/src/ics/methods/task_semantic_hierarchy.py": "5fded67812104ba6bdd4434c7a2ff4736418d8d3eebe2e126827945219c208ec",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/run_task_context_compatibility.py": "578617fd17805257af181a834878a804003079bfd532f3a01ec08f4faa6c8e62",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/opus55_reference_mask_trace.py": "8b61556c9771024f903a91c2c645323a74766c18745abec44eb97e0afa042710",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/raw_feature_cache.py": "ecc92da501a781faf1f056f28cd68e3d94611810a6271ed566c1c397450a9ea9",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/src/ics/official_data.py": "9927dd33f9a8c88ad47d323928e17953d6a4a65baa1576531acae4ce3d9295f5",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/src/ics/native_basis.py": "8ac26ef78d601f3d10318043c6cd73a05fe9dc2ac8d8ea4eabefc6a8289cb80c",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/third_party/foris_official/utils/data.py": "37211b2f55391694023cad806cdc9ec210944d32346ac1de0f9502df39731b53"
+        },
+        "atlas_sha256": "35e04a5964e299f93078d6a45757544ad80c788190aa944f825ec919605460a3",
+        "bindings_sha256": "1b301d5d44d7416ea11afda414d97e2d7e74f7723c6bf357f493134309fa1ac1",
+        "manifest_sha256": "3ab41814f1a5c32b460764dfb8ae22588046162da99231266b6bbd01ab1f58fa",
+        "expected_classes_sha256": "8f1513b86003e237e5835d40244b65cd67fddf481fffa272b43fc1521b2cd8a1",
+        "expected_source_sha256": {
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/consensus_supported_foreground2380_v2_20261011/expected_classes.json": "2fb86fc8ab80299427a8a140081c98ce458439d7b89b9a6a51c19a26e68d9e7f",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/consensus_official_pascal_suim4000_v1_20261011/pascal_part/composition/expected_classes.json": "e437d57a1b344544b3e58d73bdbbde5bcefcc8e4aacc42e3fcfaf56d6c081116",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/consensus_official_pascal_suim4000_v1_20261011/suim/composition/expected_classes.json": "b95cb0493ea1758ed7c55047066438f105b5bf2bc3f9240cea3405659323365f"
+        },
+        "basis_sha256": "9b9b20755a796cbda11bb7220d246ee540106e40cb024e249a5f63f884b6a116",
+        "spec_snapshot_sha256": "1b5e16b6f6b22f891e89ddab0b3e907f96961d16bdddbfcf647174662ae5ea20",
+        "depth": 7,
+        "lloyd_steps": 10,
+        "prior_mass": 0.5,
+        "density_tau": 0.07,
+        "preprocessing": "unit native O24; same source-ridge conditional native APD then unit",
+        "role_mass": "all4096 true1024 soft reference coverage, no sampling",
+        "readout": "FP64 direct bilinear to each actual frame; strictly>0; no CRF/minmax",
+        "exposure": "previously exposed atlas development; no independent confirmation",
+        "new_encoder_calls": 0,
+        "new_raw_writes": 0,
+        "parameter_updates": 0,
+        "query_labels": "deny all manifest query Mask paths until all8000 full masks sealed",
+        "device": "mps",
+        "precision": "FP32 geometry and similarities; CPU FP64 coding/render",
+        "mps_allocation_limit_bytes": 20000000000,
+        "cpu_threads": 2
+      }
+    },
+    "A6": {
+      "original_path": "../cv_data/a/x1012_A6/config.json",
+      "source_sha256": "3de0f3c7ac1c7811363ef88118a48717e64fd27c042aed73331e515ed6a0cc13",
+      "source_bytes": 2430,
+      "retention": "full_original_JSON_content",
+      "purpose": "Region geometry and exact oracle gate definition.",
+      "projection": {
+        "rule": "full",
+        "retained_top_keys": null,
+        "dropped_key_names": [],
+        "omitted_keys": []
+      },
+      "content": {
+        "state": "FROZEN",
+        "cohort": "explore",
+        "n": 11477,
+        "complete_plan_cohort": true,
+        "domains": {
+          "coco": 562,
+          "paco_part": 1778,
+          "lvis": 4641,
+          "pascal_part": 1951,
+          "suim": 1280,
+          "lung": 177,
+          "isaid": 138,
+          "isic": 630,
+          "fundus": 210,
+          "deepglobe_road": 110
+        },
+        "threads": 4,
+        "device": "CPU",
+        "geometries": [
+          "kmeans16",
+          "kmeans32",
+          "kmeans64",
+          "kmeans128",
+          "kmeans256",
+          "average_tau0.5",
+          "average_tau0.6",
+          "average_tau0.7",
+          "spatial64"
+        ],
+        "features": [
+          "mean_c",
+          "max_c",
+          "mean_log_e",
+          "relative_mean_log_e",
+          "log_area_fraction",
+          "log1p_mnn_count",
+          "mnn_fraction",
+          "log1p_fg_mnn_mass",
+          "log_max_region_kernel_fg",
+          "log_max_region_kernel_bg",
+          "region_kernel_fg_bg_contrast",
+          "neighbor_mean_c",
+          "neighbor_max_c"
+        ],
+        "temperature": 0.05,
+        "region_readout": "constant binary region labels, nearest to CLI1024; no bilinear/minmax",
+        "cluster_inputs": "unit positionally debiased O/24; independent of reference",
+        "reference_regions": "kmeans64 iters6; soft mask-weighted exact token-pair mean kernels",
+        "split": "SHA256(seed20261012, original query photograph path) parity; original crops grouped",
+        "logistic": "train-only standardization; soft BCE; valid region area / episode valid area; L2 1e-4",
+        "source_sha256": {
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/a6_regions.py": "7f4543a6257c455410dfa226eb49f981d4bf768e7090b4dd95867ceb43cca1c4",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/a6_helpers.py": "e89ecffbeace9c58843caa29e07c837b120ab564977e49adcf0d41b1ea7dc128",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/plan_common.py": "79705a79918243c55e39d67d8dbddbac9f8db483ef13a3f3705de5cf77d8b1fc",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/plan_report.py": "d3802785a3c352daa532e66d0d1b288caa7b430522916016c4cd85bce489ef53",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/lab.py": "392f3d18eb0a4d0d5031c3653387e3d1ed460c0c041baac408253123ad394d48"
+        },
+        "algorithm_signature": "6a67e49580a7ec3703df1e5641dfdc47d2fb9a86990ed2ed2030260a278a8f6d",
+        "manifest_sha256": "396f5d3cf9bff979b16031aa3165171661b6ef5dfd73f4ac4d2771ca07e77c84",
+        "query_GT_in_inference": false,
+        "new_encoder_calls": 0
+      }
+    },
+    "B1": {
+      "original_path": "../cv_data/a/x1012_B1/config.json",
+      "source_sha256": "caa082857f653f040519f082aceb3a460da91eb2d2e367ed6e8b9a3d2b391704",
+      "source_bytes": 2591,
+      "retention": "full_original_JSON_content",
+      "purpose": "Nested reference counts, normalization, natural rule and common-query comparison.",
+      "projection": {
+        "rule": "full",
+        "retained_top_keys": null,
+        "dropped_key_names": [],
+        "omitted_keys": []
+      },
+      "content": {
+        "state": "FROZEN",
+        "task": "B1",
+        "n": 5881,
+        "device": "mps",
+        "entrypoint": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/b1_kshot_mps.py",
+        "cpu_threads": 4,
+        "query_block": 256,
+        "K": [
+          1,
+          2,
+          3,
+          5
+        ],
+        "temperature": 0.05,
+        "reference_weights": "uniform 1/K; common token-count normalisation; no separate FG/BG-area normalisation",
+        "centre": ".5*(mean_k(mean_tokens(R_k))+mean_tokens(Q))",
+        "natural_rule": "K64 query regions; FP32 bilinear1024, minmax, strict >.5",
+        "MPS_shape_policy": "Q blocks exactly256; four finite reference sizes4096*K; fixed N*64 region membership weights",
+        "control": "same pair K1 FoRIS complete; cached exact pair or own host_cpu/CRF replay",
+        "FoRIS_device": "cpu",
+        "score_device": "cpu",
+        "mps_jobs": 1,
+        "kshot_manifest_sha256": "eeecb5b55a0f66f4b22f2b0bdb289c54866003d19d1d89114001b6f9efc18be1",
+        "source_sha256": {
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/b1_kshot.py": "97a80967f375e39923ea18b1ef5bf580c265aab9f5c0f37885c63379f328dceb",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/plan_common.py": "79705a79918243c55e39d67d8dbddbac9f8db483ef13a3f3705de5cf77d8b1fc",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/plan_report.py": "d3802785a3c352daa532e66d0d1b288caa7b430522916016c4cd85bce489ef53",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/lab.py": "392f3d18eb0a4d0d5031c3653387e3d1ed460c0c041baac408253123ad394d48",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/native_assets/positional_basis.pt": "9b9b20755a796cbda11bb7220d246ee540106e40cb024e249a5f63f884b6a116",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/raw_feature_cache.py": "ecc92da501a781faf1f056f28cd68e3d94611810a6271ed566c1c397450a9ea9",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/b1_kshot_mps.py": "960f5ac211a6ec78d59d120059c2bcd7f91034bea37f955380d1c7a6008e0089",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/cached_dino.py": "0d655c87de407d7e8595d0c6f249e525efa8e12da8c483b848cb9136c3fbd595",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/src/ics/foris.py": "2df299522804ef03aa8720831b701bf78d4653c5d22bee1de5171b48f669c0ac",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/p0_manifest.py": "702d82a6e55666685e77973e2c2eb947aefd10fb1bb89c32fd65df246faceb16"
+        },
+        "new_encoder_calls": 0,
+        "query_GT_reads": 0
+      }
+    },
+    "C1": {
+      "original_path": "../cv_data/a/x1012_C1/config.json",
+      "source_sha256": "0ac212a67a636967c86d6ba7ffdd8756bcf040fac08ff08789865a134d89b0f5",
+      "source_bytes": 19695,
+      "retention": "full_original_JSON_content",
+      "purpose": "Frozen single candidate and confirmation rule before scoring.",
+      "projection": {
+        "rule": "full",
+        "retained_top_keys": null,
+        "dropped_key_names": [],
+        "omitted_keys": []
+      },
+      "content": {
+        "state": "FROZEN_BEFORE_CONFIRM_GT",
+        "task": "C1",
+        "candidate": {
+          "kind": "b4",
+          "source_arm": "VP_thin09",
+          "base_arm": "VP",
+          "decision_basis": "K64_region_mean",
+          "evidence_modulation": "A4_max_J_continuous",
+          "lineage_source_arm": "VP_thin09",
+          "underlying_source_arm": "VP",
+          "active_score_terms": [
+            "V",
+            "P"
+          ],
+          "dependencies": [
+            "V",
+            "P"
+          ],
+          "FoRIS_stage_count": 2,
+          "common_crf": false,
+          "dataset_branch": false,
+          "ten_domains_ge_minus_05_in_explore": false,
+          "explore_delta_pp": {
+            "coco": -2.28886948820071,
+            "lvis": -1.8148945937241407,
+            "pascal_part": -0.26601093073374926,
+            "paco_part": 3.776558106522934,
+            "suim": 0.2403485278447235,
+            "isaid": 2.5337944962345205,
+            "isic": -2.480850327393057,
+            "lung": -0.42843934070194223,
+            "fundus": 15.04071248746762,
+            "deepglobe_road": 0.9005585023046159
+          },
+          "selection_rule": "max worst-domain delta; tie max ten-domain equal mean; tie fewer stages; no automatic CRF",
+          "reference_rho_gate": 0.9,
+          "reference_rho_fallback": "raw_T",
+          "triggered_FoRIS_stage_count": 0,
+          "triggered_common_crf": false
+        },
+        "n": 2136,
+        "per_domain_n": {
+          "coco": 360,
+          "deepglobe_road": 10,
+          "fundus": 10,
+          "isaid": 75,
+          "isic": 30,
+          "lung": 10,
+          "lvis": 161,
+          "paco_part": 1051,
+          "pascal_part": 369,
+          "suim": 60
+        },
+        "confirm_manifest_at_freeze_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_P0/confirm.json",
+        "confirm_manifest_at_freeze_sha256": "bba8ea8a253554066cebedb220cda1ecaa2cd3245953b26fe24c2eb7741be1c1",
+        "confirm_input_digest": "87f1ea1062e860eb4daf06f3264137f3d3ab3aa5a96690d0d7441692c492b0f4",
+        "manifest_sha256": "bba8ea8a253554066cebedb220cda1ecaa2cd3245953b26fe24c2eb7741be1c1",
+        "source_B4_method": {
+          "state": "METHOD_FROZEN_BEFORE_ASSEMBLY_GT",
+          "main_evidence": "c_mod = P0 c32 * minmax(P0 FP16 sim_max cast to FP32)**A4 sealed selected_s",
+          "geometry_features": "unconditionally IND-debiased unit R/Q O24, no new encoder",
+          "readout": "A4 selected_field32 + same K64 region_mean(sum(active additions)); bilinear1024 -> minmax -> >.5",
+          "zero_step": "byte-exact A4 sealed J_continuous mask and selected_field32; original A4 endpoint overrides retained",
+          "background_native_FG": "first official center-bilinear mask64 >.5, no fallback/invented FG for B; absent FG or BG gives zero B",
+          "background": "unit(mean native R FG); top20% R BG by similarity; unit hard-negative mean; orthogonalize against FG; -.55*Q dot; no FG clustering",
+          "vote": "direct source _locate_candidates, preserving reference normalization axis and source mask fallback",
+          "prior": "direct source _build_seed_cluster_prior with source V candidate | [::2,::2] grid and transformed query RGB; P requires V",
+          "K_semantics": {
+            "prob": "sf=original c32, sbn=1-original c32",
+            "minmax": "sf=minmax(original c32), sbn=1-minmax(original c32)",
+            "note": "Original sealed K additions are unchanged independent side information; neither c_mod nor B/V/P updates their adapter."
+          },
+          "coefficients": {
+            "background": 0.55,
+            "vote": 0.2,
+            "prior": 0.25,
+            "K_fg_boost": 0.2,
+            "K_conflict_suppress": 0.18,
+            "K_neg_cap": 0.12,
+            "tau": 0.6
+          },
+          "candidates": {
+            "VP": {
+              "active_score_terms": [
+                "V",
+                "P"
+              ],
+              "computed_dependencies": [
+                "V",
+                "P"
+              ],
+              "FoRIS_stage_count": 2,
+              "functions": {
+                "V": [
+                  "FoRIS._locate_candidates",
+                  "utils.data.downsample_mask"
+                ],
+                "P": [
+                  "FoRIS._build_seed_cluster_prior",
+                  "utils.data.downsample_mask",
+                  "utils.clustering.agglomerative_clustering",
+                  "utils.clustering.compute_cluster_prototypes"
+                ]
+              },
+              "CRF_counted_in_two_step_budget": false,
+              "source_arm": "VP",
+              "base_arm": "VP",
+              "common_crf": false
+            },
+            "VP_thin09": {
+              "active_score_terms": [
+                "V",
+                "P"
+              ],
+              "computed_dependencies": [
+                "V",
+                "P"
+              ],
+              "FoRIS_stage_count": 2,
+              "functions": {
+                "V": [
+                  "FoRIS._locate_candidates",
+                  "utils.data.downsample_mask"
+                ],
+                "P": [
+                  "FoRIS._build_seed_cluster_prior",
+                  "utils.data.downsample_mask",
+                  "utils.clustering.agglomerative_clustering",
+                  "utils.clustering.compute_cluster_prototypes"
+                ]
+              },
+              "CRF_counted_in_two_step_budget": false,
+              "source_arm": "VP_thin09",
+              "base_arm": "VP",
+              "common_crf": false,
+              "underlying_source_arm": "VP",
+              "reference_rho_gate": 0.9,
+              "reference_rho_fallback": "raw_T",
+              "triggered_FoRIS_stage_count": 0,
+              "triggered_common_crf": false
+            }
+          },
+          "excluded": [
+            "B+P needs B,V,P=3",
+            "P+K needs V,P,K=3",
+            "penalty requires V,P,penalty=3"
+          ],
+          "common_CRF_enabled": false,
+          "common_CRF": "original A7/FoRIS crf_refine and host parameters; excluded from two-step budget",
+          "controls": "Only score reads original B4 separately sealed complete FoRIS/MEAN; never natural inputs",
+          "dataset_branch": false,
+          "per_case_component_selection": false,
+          "source_sha256": {
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/b4_minimal.py": "a0e88070ed33616774fd3be83fb2101b4938ee5e37b10163ac6bfa5148b95453",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/a2_exchange.py": "a0448f1d8f1f5ec53c69d4cec4026e5a45401677bf636abaa6d35cc978fd4a55",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/plan_common.py": "79705a79918243c55e39d67d8dbddbac9f8db483ef13a3f3705de5cf77d8b1fc",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/lab.py": "392f3d18eb0a4d0d5031c3653387e3d1ed460c0c041baac408253123ad394d48",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/plan_report.py": "d3802785a3c352daa532e66d0d1b288caa7b430522916016c4cd85bce489ef53",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/repo_methods.py": "23eac671911e3c2fe9c484c61902bc0aa9900a47ea3587f2c016a9f67298495c",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/src/ics/methods/mean_control.py": "d73daa3bbeaeed1bead21e8e896dce48cfc9ecd374e1e555893e3f97b24ceb97",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/src/ics/m4_crf_cached.py": "25704e5520cb818e84320779178ba4e7d6d9e91c52063c9f5f87c5cceb1f175f",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/third_party/foris_official/models/foris.py": "982cf4aa91ac90370151c353efb37240d7d4d5c35a0dfe9cc9509cd554c85fa9",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/third_party/foris_official/utils/data.py": "37211b2f55391694023cad806cdc9ec210944d32346ac1de0f9502df39731b53",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/third_party/foris_official/utils/clustering.py": "9a005f19542c719ecf734e942adc65829b71fc6c4dcf8f07b2c9922cb137dd74",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/third_party/foris_official/utils/refinement.py": "038c68fe04ea5cdc127da50b926e3dd2ef16ffd400873eea356fbffc66fc188c",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_A1/borrow_step_effects.json": "13e39a6ab067b6c168c5814701457cbf11d95586595acc6759d85b4a78fedc6a",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/b4_modulated_basis.py": "199543e6e4a0fb7ba6cec573b5b6a614f21e96a33e6c79fc7c2fafb00e7f2def",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/a4_modulation.py": "c74ffb5e62deaeb7d2c065620a9def7d3cb3a033b098762e32c8c673e1541e3a",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/b4_graph_basis.py": "7f6e762fcb55da5a0d11ae2f3dcdd1c9c2ceea3c44f8a7dd1d9b78d3179bbd9c",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_B4/seed150/sealed.json": "6966d53231251e436325b663d7a9dbd7b58c15e8a875f9f34098b51df0a5f50f",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_B4/seed150/method.freeze.json": "a88228a3900ee688431732835837f5cf6a756522b42ff293d2ff546b152130df",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_B4/seed150/config.json": "75f78f18e93dda459d8636e752961f1a851e47307e8f42d301178fcc841782bf",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_B4/seed150/manifest.json": "67eb807f3afc9c6a1615eba6b1aa5c0a5645253653118ba5f01053fea6137c72",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_A4/modulation/sealed.json": "a274dbb788d67bf8dda69b80be4371d6c9febd6073a30d1eb9978515eca921c1",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_A4/modulation/config.json": "8ac8f0f882c3a138dcbe76e33c9ae4ba8d4117e8f4eedfe36f68846ae0a2bc01",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_A4/modulation/manifest.json": "67eb807f3afc9c6a1615eba6b1aa5c0a5645253653118ba5f01053fea6137c72",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/b4_thin_assembly.py": "1b296ba4dd50b3fb24cc3d69768c9ac43e61e018c5823065ce5eab24e4122426",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_B4_modulated/region/seed150/report.json": "3648c23f1302f338e1951641a050f77ba92e87e3dc4b70a0d1e0a07f346f4790",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_B4_modulated/region/seed150/config.json": "f4cb5d76fbe96d8c7eba08fdb844da12bb3b022838ad50c1fd69f69403873c32",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_B4_modulated/region/seed150/sealed.json": "7d5fefd6ddbd687c3314c0e8bee4347812cf5ac40c26a2b6280a8085902e850d",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_B4_modulated/region/seed150/manifest.json": "67eb807f3afc9c6a1615eba6b1aa5c0a5645253653118ba5f01053fea6137c72",
+            "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_B4_modulated/region/seed150/method.freeze.json": "b13d38b4e0dbb1f53ac522237421da581ef76d30974dda0691cdb450fd84fb78"
+          },
+          "basis_sha256": "9b9b20755a796cbda11bb7220d246ee540106e40cb024e249a5f63f884b6a116",
+          "decision_basis": "K64_region_mean",
+          "evidence_modulation": "A4_max_J_continuous",
+          "evidence_selection": {
+            "s_grid": [
+              0.0,
+              0.125,
+              0.25,
+              0.375,
+              0.5,
+              0.625,
+              0.75,
+              0.875,
+              1.0
+            ],
+            "selection": "GT-free A4 quality J maximum; lower s wins ties",
+            "endpoint_J_masks": "s=0 uses FP32 original IND0 mask; s=1 uses FP32/raw-novelty original INDN mask",
+            "continuous_field": "FP16 sim_max novelty for every s, including endpoints",
+            "query_GT_used": false,
+            "source_A4_root": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_A4/modulation",
+            "source_A4_seal_sha256": "a274dbb788d67bf8dda69b80be4371d6c9febd6073a30d1eb9978515eca921c1"
+          },
+          "per_case_evidence_modulation": true,
+          "source_B4_method_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_B4/seed150/method.freeze.json",
+          "source_B4_method_sha256": "a88228a3900ee688431732835837f5cf6a756522b42ff293d2ff546b152130df",
+          "C1_compatible": true,
+          "assembly": "one root-selected source arm vs same arm with fixed reference-only raw-T fallback",
+          "root_selected_source_arm": "VP",
+          "source_report_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_B4_modulated/region/seed150/report.json",
+          "source_report_sha256": "3648c23f1302f338e1951641a050f77ba92e87e3dc4b70a0d1e0a07f346f4790",
+          "reference_rho_definition": "P0 FP32 ref_stats[2]: FG area mass on reference coverage<.9 tokens / total FG mass",
+          "gated_readout": "T from original P0 mask/T, no evidence modulation, additions, graph, or CRF when triggered",
+          "per_case_reference_only_fallback": true,
+          "C1_candidate_schema": "per-arm active_score_terms/computed_dependencies/common_crf; gate field exists only on thin09"
+        },
+        "explore_evidence": {
+          "B4": {
+            "path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_B4_assembly/seed150/report.json",
+            "sha256": "5df7903bf292911fb6cf6fbe29036d859f692ee7e43a0f423ac8fc2dc5d8472b",
+            "n": 1360,
+            "task": "B4_assembly_seed150",
+            "cohort": "seed150"
+          },
+          "A1": {
+            "path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_A1/report.json",
+            "sha256": "e1d94251f025cceead8e0b5f031a0e7c3a86232a39ed73a22162642148ae2cb6",
+            "available_at_freeze": true
+          },
+          "A2": {
+            "path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_A2/seed150/report.json",
+            "sha256": "ec9fead64808f7bcf4db4ef307383cc531eab9769bf4e6b811bdbbfff251ae75",
+            "available_at_freeze": true
+          },
+          "A6": {
+            "path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_A6/upper_report/report.json",
+            "sha256": "2d9401815c2308ef72cef4135af6ff9c884d3c5106aee252021b0b06486a430b",
+            "available_at_freeze": true
+          },
+          "B2": {
+            "path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_B2/report.json",
+            "sha256": "c65c8be90aa2e50741dd522d90d204c5cfe73a10519b7abca1a25e769c43d5eb",
+            "available_at_freeze": true
+          },
+          "B3": {
+            "path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_B3/report.json",
+            "sha256": "6d11fdf5820cac7b4407decebf5d594911e7a853b86c913a1b62a1bd67db7896",
+            "available_at_freeze": true
+          },
+          "A7": {
+            "path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_A7/seed150/report.json",
+            "sha256": "4f27978de1c3638f4c26a40b90f45dd8ed0114f553ae57b31679166d1685cf79",
+            "available_at_freeze": true
+          }
+        },
+        "explore_comparisons": {
+          "VP": {
+            "worst_domain_delta_pp": -2.5368766970510563,
+            "equal_domain_mean_delta_pp": 0.40010732698539575,
+            "FoRIS_stage_count": 2,
+            "per_domain_delta_pp": {
+              "coco": -2.28886948820071,
+              "lvis": -2.5368766970510563,
+              "pascal_part": -0.26601093073374926,
+              "paco_part": 3.9827600239793455,
+              "suim": 1.4824549462981977,
+              "isaid": 2.5039899607243825,
+              "isic": -2.480850327393057,
+              "lung": -0.42843934070194223,
+              "fundus": 5.676982290759089,
+              "deepglobe_road": -1.6440671678265417
+            },
+            "ten_domains_ge_minus_05": false
+          },
+          "VP_thin09": {
+            "worst_domain_delta_pp": -2.480850327393057,
+            "equal_domain_mean_delta_pp": 1.5212907439620813,
+            "FoRIS_stage_count": 2,
+            "per_domain_delta_pp": {
+              "coco": -2.28886948820071,
+              "lvis": -1.8148945937241407,
+              "pascal_part": -0.26601093073374926,
+              "paco_part": 3.776558106522934,
+              "suim": 0.2403485278447235,
+              "isaid": 2.5337944962345205,
+              "isic": -2.480850327393057,
+              "lung": -0.42843934070194223,
+              "fundus": 15.04071248746762,
+              "deepglobe_road": 0.9005585023046159
+            },
+            "ten_domains_ge_minus_05": false
+          }
+        },
+        "constants": {
+          "kernel_temperature": 0.05,
+          "shared_center": ".5*(mean(R)+mean(Q))",
+          "regions": "P0 K64, 6 iterations, same deterministic initialization",
+          "decision_basis": "K64_region_mean",
+          "evidence_modulation": "A4_max_J_continuous",
+          "modulation_grid": [
+            0.0,
+            0.125,
+            0.25,
+            0.375,
+            0.5,
+            0.625,
+            0.75,
+            0.875,
+            1.0
+          ],
+          "modulation_rule": "original A4 maxJ; FP16 sim_max/back_f; FP32 ind0/raw-novelty indn endpoint masks; lower-s ties; B/V/P/K still use original c",
+          "reference_rho_gate": 0.9,
+          "reference_rho_rule": "rho=1-sum(y*(y>=.9))/sum(y); strict>.9 -> raw T readout(original c), skip maxJ/graph/FoRIS/CRF",
+          "readout": "selected region/graph field -> bilinear1024 -> minmax -> >.5",
+          "graph": {
+            "input": "frozen primary c32 or c_mod32 + sum(active additions)",
+            "lambda": 16,
+            "neighbors": 20,
+            "neighbor_method": "CPU exact unit(q) cosine top20 excluding self, block256",
+            "confidence": "A7 s=minmax(input); A=(.1+abs(2*s-1))/mean(.1+abs(2*s-1))",
+            "rank_correction": false
+          },
+          "background": 0.55,
+          "vote": 0.2,
+          "prior": 0.25,
+          "tau": 0.6
+        },
+        "recomputed_confirm_fields": "FP32 P0 c/IND0/K64 formula from existing O24 on CPU; no P0 confirm field cache required",
+        "CPU_MPS_scope": "same fixed formula; no cross-device pixel-equality gate",
+        "baseline_policy": "complete P0 FoRIS sealed and bound before score; never consumed by method",
+        "workers": 1,
+        "threads": 4,
+        "source_sha256": {
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/c1_confirm.py": "adfac89c869f120b6af68136e6910b6dfa11c57c1c6ac230808c312bb27e0550",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/c1_inference.py": "400f6713deea53e384be52d2d6cc854285b2e816d550d96f5045f79e022a23da",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/a7_generic.py": "106973e4501b9b868e99f7abfe30ed566d27f3b4da8a0e4e2807abbfedd9e815",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/a4_modulation.py": "c74ffb5e62deaeb7d2c065620a9def7d3cb3a033b098762e32c8c673e1541e3a",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/b4_minimal.py": "a0e88070ed33616774fd3be83fb2101b4938ee5e37b10163ac6bfa5148b95453",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/a2_exchange.py": "a0448f1d8f1f5ec53c69d4cec4026e5a45401677bf636abaa6d35cc978fd4a55",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/plan_common.py": "79705a79918243c55e39d67d8dbddbac9f8db483ef13a3f3705de5cf77d8b1fc",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/plan_report.py": "d3802785a3c352daa532e66d0d1b288caa7b430522916016c4cd85bce489ef53",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/lab.py": "392f3d18eb0a4d0d5031c3653387e3d1ed460c0c041baac408253123ad394d48",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/b1_kshot.py": "97a80967f375e39923ea18b1ef5bf580c265aab9f5c0f37885c63379f328dceb",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/raw_feature_cache.py": "ecc92da501a781faf1f056f28cd68e3d94611810a6271ed566c1c397450a9ea9",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/native_assets/positional_basis.pt": "9b9b20755a796cbda11bb7220d246ee540106e40cb024e249a5f63f884b6a116",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/third_party/foris_official/models/foris.py": "982cf4aa91ac90370151c353efb37240d7d4d5c35a0dfe9cc9509cd554c85fa9",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/third_party/foris_official/utils/data.py": "37211b2f55391694023cad806cdc9ec210944d32346ac1de0f9502df39731b53",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/third_party/foris_official/utils/clustering.py": "9a005f19542c719ecf734e942adc65829b71fc6c4dcf8f07b2c9922cb137dd74",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/third_party/foris_official/utils/refinement.py": "038c68fe04ea5cdc127da50b926e3dd2ef16ffd400873eea356fbffc66fc188c"
+        },
+        "new_encoder_calls": 0,
+        "confirm_GT_read_at_freeze": false,
+        "post_score_reselection_allowed": false
+      }
+    },
+    "host_repair": {
+      "original_path": "evidence/local/strong_host_repair600_20261011/protocol.json",
+      "source_sha256": "b8be4adf18dbbfb8d5f94832b853b48c239c7db3794e3799113db346b57f6db8",
+      "source_bytes": 6110,
+      "retention": "full_original_JSON_content",
+      "purpose": "Frozen tested construction, matched controls and rejection gate; retain negative scope without preserving launchers.",
+      "projection": {
+        "rule": "full",
+        "retained_top_keys": null,
+        "dropped_key_names": [],
+        "omitted_keys": []
+      },
+      "content": {
+        "state": "FROZEN_ONE_EXISTING600_COMPLETE_STRONG_HOST_REPAIR_BEFORE_PREDICTIONS",
+        "n": 600,
+        "date": "2026-10-11T19:36:43.021866+00:00",
+        "arms": [
+          "strong_S_witness_vetted_complete",
+          "strong_S_witness_reference_only_complete",
+          "strong_S_mean_density_vetted_complete",
+          "same_edit_budget_foris_margin_from_S"
+        ],
+        "source_sha256": {
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong_host_repair600_20261011/core.py": "ae330faa83d670db1c06bc53771b6d703067a79cfdd855106c8b27f926b2b5eb",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong_host_repair600_20261011/producer.py": "5e7e80815e2cdccdd23541f6a19c8657c57cdc6e8537c0befde5d0dbe2f5f231",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong_host_repair600_20261011/score_and_verify.py": "ab24a27df8377ed1c89b932309e9cb61787b01bb165431287e84ef63d8612147",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong600_conflict_alignment_20261011/membership.json": "f38ac3cdf32c7deaa6ba432d0d6c4eee2616c39776fa50d452fb0a3003a54af9",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong600_conflict_alignment_20261011/protocol.frozen.json": "e1576be3484b5c661f6b8c0854a85b6532595f26b6d015f4f82f50a1b7fab2d0",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong600_conflict_alignment_20261011/report.json": "ad8d032051777ffc74ef1a6cb1ad32153f4818f81d329745e0b760de5149b971",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong600_conflict_alignment_20261011/episodes.jsonl": "4ecaa64d55c7db682720c9e6b1d77bc7881f1a5d209dd10001125db86b1df620",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/inputs.jsonl": "6704d3ddc2bfd5cc16c47287dacebb9f5b2aeb46705dd0e079aafcb5dddbde0c",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/score_bindings.jsonl": "92e79d934b2192e8e0f1da62fbe1e57bd4f6237e4d3f74ce30ea3a5cb0d1f037",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/raw_metadata.json": "8e3433e8f745e90bc6615955717f7afae5d2fad8481375be3e0704346e275858",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/producer.py": "36891fae3b360f1eb7a1abc6f31705fa79fccf2215008f01d12703bdae3fb5af",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/reference_background_conflict6200_20261011/producer.py": "07773e070a3e92258f333aafc57313e45a33d0b8561fda13175f3613f35b8014",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/reference_background_conflict6200_20261011/density_core.py": "02af8e3b957811f66b8e82586d8560ace18ad0dfb9bbb912f32c8ec4a23e5bbb",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/reference_background_conflict6200_20261011/score_and_verify.py": "7e70e0075fb14c5f66f666e061464dc4566ada0e1affc4e06ab582d47858906d",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/nine_window_execution_20261011/truth_guard.py": "c8c024b54ffa2c39ccd57690644dea35225e86779a5be4709b2ef4bee68f1c2a"
+        },
+        "candidate": "Keep the already cached complete strongest local S; adjudicate only S/whole conflicts with legal source roles and S-screened common query seeds.",
+        "scope": "Exact independent historical lvis_zoom600 manifest and its600 matched strongest outputs; not first600 of1400. Previously exposed development pool.",
+        "host": "Saved original component.query_context finalmask S, no new window/head/encoding. No refit or reconstruction of S.",
+        "roles": "Existing raw unit O24 [4096,1024], legal saved RMask NN1024 then soft16x16coverage; sameRcentre/scale forR andQ, no query translation;128 midpoint quantiles with duplicates preserved; nearest logkernel witness, tau.07 fixed.",
+        "query": "A=S_cli&B_cli&G_cli&R0_cli, soft64; vet with each full cue source LR>0 before tanh; same inputs to max-witness and inherited mean-KDE. No QGT.",
+        "composition": "CPU64 direct sameframe cue render then min foradds/max fordeletes; mS=(2S-1)*abs(dB); Dadd=~S&(B|G|R0),Ddel=S&~(B|G|R0); strict mS+.5h crossing; protectS&B, unanimous4;tiesS. Source-only no query availability gate; full arms own unavailablecue fallbackS.",
+        "mean_control": "All KDE banks use mean instead of max including role contrast, vetting and selected querybank consequences; not isolated FG-only kernel intervention.",
+        "budget": "Sameframe actual fullmethod adds/deletes relativeS, eligibleD/conf<.5; use exact originalFoRIS dB sorted addsdescending/deletesascending, rowmajor ties. Do not copy oldB budget.",
+        "precision": "MPS32 dense, CPU64 scalar/interpolation/threshold/budget; actualMPS runtime error only CPU32 fallback. Fixed first3 CPU64 noGT diagnostic only, no score precision selection.",
+        "runtime": "Sole root process, CPUthreads4; stream oldraw and release percase, no encoder/download/samples/CRF/densearchive.",
+        "evaluation": "All4800new outputs SHA/shape/padding gated before600GT. Original primary, CLI consistency. Fixedofficial920 and observed600 slots reported separately. No frame/domain/case/GT winner.",
+        "screen": {
+          "primary": "original observed600-slot class/fold mIoU",
+          "clearly_ahead_threshold_pp": 1.0,
+          "comparison": "must beat already strongest complete S by at least1.0pp; CLI must improve againstS; complete method must improve over mean/source-only/samebudget controls. Otherwise reject exact recipe and stop without6200 expansion.",
+          "rationale": "Explicitly operationalize user clear-lead600 elimination rule before scoring; small or budget-matched gains are insufficient."
+        },
+        "goal_complete": false,
+        "originality": "Standard nearestFG/BG, kernel density, queryselfsupport are existing methods. No novelty or crossdataset-theory claim before validated fullmethod evidence."
+      }
+    },
+    "query_graph": {
+      "original_path": "evidence/local/query_task_graph600_20261011/protocol.json",
+      "source_sha256": "37992a5e51b79b8fd90d25ff34290ee25b8403cf69d50e7cc5b35957ad1d3d9c",
+      "source_bytes": 7414,
+      "retention": "full_original_JSON_content",
+      "purpose": "Frozen tested construction, matched controls and rejection gate; retain negative scope without preserving launchers.",
+      "projection": {
+        "rule": "full",
+        "retained_top_keys": null,
+        "dropped_key_names": [],
+        "omitted_keys": []
+      },
+      "content": {
+        "state": "FROZEN_EXACT600_COMPLETE_TWO_ROLE_QUERY_TASK_GRAPH_BEFORE_PREDICTIONS",
+        "n": 600,
+        "arms": [
+          "query_task_graph_complete",
+          "query_feature_graph_complete",
+          "query_uniform_geometry_complete",
+          "same_edit_budget_foris_margin_from_S"
+        ],
+        "date": "2026-10-11T20:17:20.586539+00:00",
+        "source_sha256": {
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/query_task_graph600_20261011/core.py": "38aafb8a3418671bea0ac6bebb7229e19f6bb21e87863dd20fbed52f3cd18714",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/query_task_graph600_20261011/producer.py": "a2f9a4b5bbdef53e45538ce02db6d36339205322e9905ecc100e74e7c3ebac9d",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/query_task_graph600_20261011/score_and_verify.py": "8c46cfef5e542be556194444e175d868e7fd4fdc76426c0a5702fe8f13ab278b",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/query_task_graph600_20261011/numeric_sanity.json": "dacab13bb06a83b1d6d253e312bc0eba26490102dc9d29f33cf85b0275cb0100",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong600_conflict_alignment_20261011/membership.json": "f38ac3cdf32c7deaa6ba432d0d6c4eee2616c39776fa50d452fb0a3003a54af9",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong600_conflict_alignment_20261011/episodes.jsonl": "4ecaa64d55c7db682720c9e6b1d77bc7881f1a5d209dd10001125db86b1df620",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong600_conflict_alignment_20261011/protocol.frozen.json": "e1576be3484b5c661f6b8c0854a85b6532595f26b6d015f4f82f50a1b7fab2d0",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/inputs.jsonl": "6704d3ddc2bfd5cc16c47287dacebb9f5b2aeb46705dd0e079aafcb5dddbde0c",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/score_bindings.jsonl": "92e79d934b2192e8e0f1da62fbe1e57bd4f6237e4d3f74ce30ea3a5cb0d1f037",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/raw_metadata.json": "8e3433e8f745e90bc6615955717f7afae5d2fad8481375be3e0704346e275858",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/producer.py": "36891fae3b360f1eb7a1abc6f31705fa79fccf2215008f01d12703bdae3fb5af",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/reference_background_conflict6200_20261011/producer.py": "07773e070a3e92258f333aafc57313e45a33d0b8561fda13175f3613f35b8014",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/reference_background_conflict6200_20261011/density_core.py": "02af8e3b957811f66b8e82586d8560ace18ad0dfb9bbb912f32c8ec4a23e5bbb",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/reference_background_conflict6200_20261011/score_and_verify.py": "7e70e0075fb14c5f66f666e061464dc4566ada0e1affc4e06ab582d47858906d",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/nine_window_execution_20261011/truth_guard.py": "c8c024b54ffa2c39ccd57690644dea35225e86779a5be4709b2ef4bee68f1c2a",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong600_spatial_conflicts_20261011/report.json": "ad28bbcba0cbc08693fe66be5a29a7955a9989b1972e9c4a13d2861605990470",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong600_witness_provenance3_20261011/report.json": "e3db89a77120892fca79eed1e8f0206462bab5233f15725528815e0b1c72302f"
+        },
+        "membership": "Historical exact lvis_zoom600, full input identity already verified; not the first600 of1400.",
+        "evidence": "Original600 S lostB TP675694,641500 adjacent retained trueS; rejected restoration79.69%FP and91.98%TP bothattached. Adjacency alone is insufficient. Fixed3 provenance false additions mostly pureRFG matches; purity/fullBG repair rejected by counterexample.",
+        "candidate": "Four-way task consensus defines positive/negative query seed roles, solve feature/RGB weighted query graph only in complete-output disagreements. S is existing frozen complete processing, no local view/head replay.",
+        "reference_path": "Legal one reference/Mask remains consumed through unchanged fullS/FoRIS/MEAN/R0 source outputs; no QGT or source label refit. The graph does not encode reference words or new semantics.",
+        "seed": "AtCLI1024, f=area(S&B&G&R0) and b=area(~S&~B&~G&~R0) per16x16cell, soft4096. f,b are prediction-derived labels, not GT or certified semantic evidence.",
+        "graph": "4096Q nodes,16002 unique undirected8-neighbour edges. Existing unitO24 squareddistance and actualQ RGB16x16mean distance. wf=exp(-dF2/median(dF2)), full=wf*exp(-dRGB2/median(dRGB2)), geometry=1. Query-only non-label medians, zero-scale term omitted.",
+        "solve": "CPU64 (L+diag(f+b))u=f, diagonalPCG rtol1e-7,atol0,maxiter4096,explicit real residual. Allfinite exact solution obeys0<=u<=1. Both global seed roles required; unavailablefieldfallbackS. Underflow disconnected unanchored components keptneutral.5 withNNsupport gate preventing edits; no epsilon edges or invented BG.",
+        "composition": "For eachactual frame independently bilinearFP64 u64 -> frame. Dadd=~S&(B|G|R0),Ddel=S&~(B&G&R0); add ifu>.5,deleteifu<.5,tieS. Only fourway1111/0000protected. No reused |dB| confidence oralpha gating. Seed partial-cell role mixtures explicit.",
+        "controls": "FullDINO+RGB; noRGB feature-only; uniform geometry-only, same exactseeds/graph/outputdomains; actual sameframeS add/delete counts FoRISoriginaldB rank budget, rowmajor ties in same fulldomains. Not a newgraph parametergrid.",
+        "scope": "Only same600 existingQwhole raw plusactualRGB and alreadycompleteS/B/G/R0/N masks.0newencoder/download/samples/views/globaltraining/CRF/densearchive. Per-episode linear inference3fields is counted, not called0fitting.",
+        "precision": "MPS32 unitQ+adjacent feature distances; CPU64 seed/medians/colorweights/sparseCG/frame decisions/budget. ActualMPS backenderror only CPU32 edge fallback. Syntheticbalanced-role numerical sanity is implementation-only, not newbenchmarkcase.",
+        "verification": "All4800packets firstSHA/schema/padding gate beforequeryGT. Direct4completeIU/confusion/S-relativegross, protection,actual budgetcount/positions verified; rootinteger/class reconstruction separate. No semanticguarantee from maximumprinciple.",
+        "screen": {
+          "primary": "original observed600-slot class/fold mIoU",
+          "clearly_ahead_threshold_pp": 1.0,
+          "comparison": "atleastS+1pp,CLI>S and complete method betterthanrequiredfullablations/budget;otherwise reject exactformula without6200 orparameterfollowups.",
+          "predeclared": true
+        },
+        "goal_complete": false,
+        "prior_art": "Seeded graph label propagation is standard. No originality/stablecrossdataset claim for this unverified complete combination.",
+        "import_path_repair_before_any_prediction": {
+          "old_protocol_sha256": "e6a208ee27aae3b3f6f9a79c6ca439250ffce7b673208f44fffaaab702a2520d",
+          "failure_directory": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/query_task_graph600_20261011/failed_start_module_path",
+          "method_changed": false
+        }
+      }
+    },
+    "discriminant": {
+      "original_path": "evidence/local/task_discriminant600_20261011/protocol.json",
+      "source_sha256": "68cc06cf1f2acafea84e344a4c420c6425c68ee25c694d43f30271b2243b4466",
+      "source_bytes": 8442,
+      "retention": "full_original_JSON_content",
+      "purpose": "Frozen tested construction, matched controls and rejection gate; retain negative scope without preserving launchers.",
+      "projection": {
+        "rule": "full",
+        "retained_top_keys": null,
+        "dropped_key_names": [],
+        "omitted_keys": []
+      },
+      "content": {
+        "state": "FROZEN_ONE_FIXED600_COMPLETE_TASK_DISCRIMINANT_BEFORE_PRODUCTION_GT",
+        "n": 600,
+        "candidate": "joint_task_discriminant_complete",
+        "arms": [
+          "joint_task_discriminant_complete",
+          "reference_task_discriminant_complete",
+          "query_task_discriminant_complete",
+          "same_edit_budget_foris_margin_from_S"
+        ],
+        "source_sha256": {
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_discriminant600_20261011/core.py": "f9321cdb860791b71869286c798400942e37c0c46e73e04d8dd54df55b0bf640",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong600_conflict_alignment_20261011/membership.json": "f38ac3cdf32c7deaa6ba432d0d6c4eee2616c39776fa50d452fb0a3003a54af9",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong600_conflict_alignment_20261011/protocol.frozen.json": "e1576be3484b5c661f6b8c0854a85b6532595f26b6d015f4f82f50a1b7fab2d0",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/inputs.jsonl": "6704d3ddc2bfd5cc16c47287dacebb9f5b2aeb46705dd0e079aafcb5dddbde0c",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/score_bindings.jsonl": "92e79d934b2192e8e0f1da62fbe1e57bd4f6237e4d3f74ce30ea3a5cb0d1f037",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/raw_metadata.json": "8e3433e8f745e90bc6615955717f7afae5d2fad8481375be3e0704346e275858",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/producer.py": "36891fae3b360f1eb7a1abc6f31705fa79fccf2215008f01d12703bdae3fb5af",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/nine_window_execution_20261011/truth_guard.py": "c8c024b54ffa2c39ccd57690644dea35225e86779a5be4709b2ef4bee68f1c2a",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_discriminant600_20261011/producer.py": "4b4259a333b075928d30e4c6146138be9bd075a9ede7e1275dda4109e4d2b779",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_discriminant600_20261011/score_and_verify.py": "d989ee0f88f0d47f842d75430fe934e8815b286e5263e1f5ee782f99d5e7bc4c",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/reference_background_conflict6200_20261011/producer.py": "07773e070a3e92258f333aafc57313e45a33d0b8561fda13175f3613f35b8014",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/reference_background_conflict6200_20261011/density_core.py": "02af8e3b957811f66b8e82586d8560ace18ad0dfb9bbb912f32c8ec4a23e5bbb",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/reference_background_conflict6200_20261011/score_and_verify.py": "7e70e0075fb14c5f66f666e061464dc4566ada0e1affc4e06ab582d47858906d",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/dense_core.py": "317a2b0765710f8907f0ad3b5e1687acb99109950a136ea4c93207dac82e0152",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong600_conflict_alignment_20261011/episodes.jsonl": "4ecaa64d55c7db682720c9e6b1d77bc7881f1a5d209dd10001125db86b1df620",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/src/ics/official_data.py": "9927dd33f9a8c88ad47d323928e17953d6a4a65baa1576531acae4ce3d9295f5",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/task_transfer_identifiability.py": "882aefa9890e32bf08cf2edd223ab0b20ac16bf7b488b0feeaf400892da43599",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/docs/research/TASK_DISCRIMINANT600_DRAFT_20261011.md": "f7cdab7726a003517c7c5f990be630452df95babee3591ffab13ed9c0bd6e0df"
+        },
+        "scope": "Exact historical independent LVIS600 membership, existing wholeR/Q O24 and completeS/B/G/R0/N; no newencoder/view/sample/annotation/training/globalupdate or6200 expansion",
+        "host": "Saved strongest S canvas/component.query_context and original/component.query_context, eachframe independently. No reconstruction of S or window/head replay",
+        "legal_labels": {
+          "R": "Soft16x16 area coverage p from legally supplied referenceMask, FG=p,BG=1-p",
+          "Q": "CLI foreground area(S&B&G&R0),background area(~S&~B&~G&~R0); unknownpixels receive no labels",
+          "role_sampling": "Perimage perrole128 deterministic midpoint-area quantiles; rowmajor cumweight strictlygreater midpoint. No purity cutoff or GTselected sample",
+          "collapse": "Within eachimage, repeated nativeids across bothroles collapse: y=(nf-nb)/(nf+nb),a=(nf+nb)/256. Keep images separately evenifrawcachekey identical",
+          "risk": "Eachrole128 means balancedroles. Eachimage basea sums1 independently of actualFG area. Joint R and Q risk totals .5 each; singleimage arms total1. No foreground area/proportion estimate",
+          "mix": "A nativecell can contain bothpseudoFG/BG pixels; collapsedy is sample-role balance, not semanticpuretoken confidence. Original +/-1 risk restores constant sum a*(1-y^2)"
+        },
+        "heads": {
+          "unit": "Existing R/Q O24 L2unit pertoken, no newAPD/feature-scale or globalQ FGcentre translation",
+          "lambda": 0.01,
+          "formula": "mx=sum a*x,my=sum a*y;xc=x-mx,yc=y-my;dual=solve(xc@xc.T+diag(.01/a),yc);w=xc.T@dual,bias=my-mx@w",
+          "joint": "Rbaseweights*.5+Qbaseweights*.5, bothimages FG/BGrolesrequired",
+          "reference_only": "Only R balancedlabels, noQseed or availabilitygate; Qrawstill supplies readoutfeatures",
+          "query_only": "Only Q predictedseed labels, independent of Rroleavailability",
+          "fallback": "Missingrequiredimage role or numeric smallsolve/logit failure => thatarm savedS, not a borrowed otherhead",
+          "output": "Fullnative64 signed linear logit, no minmax/tanh/sigmoid or calibratedzero estimate"
+        },
+        "precision": {
+          "production": "MPSfloat32 unit/centeredGram/allQreadout. CPUfloat64 duplicateweights/centres/symmetrizedsmallGram+diagonal solve/coefficient/intercept and framebilinear/strictthreshold/budget",
+          "MPS_error": "Only actualbackend/runtimefailure may redo identical operations CPUfloat32; do not select precision/headbyGT",
+          "validate": "Optionalfixedfirst3 CPUfloat64 numerical reference with same legalroles and lambda; errors/cost only, noextraMask/scorearm or precisiongate",
+          "solve": "CPU64 Cholesky smalldual system, reportactualresidual; no lambda/norm/threshold grid"
+        },
+        "composition": "Dadd=~S&(B|G|R0),Ddel=S&~(B&G&R0). DirectFP64bilinear eachlogit64 tosameframe; addiflogit>0,deleteiflogit<0,tieS. Only fourway1111/0000 protected. No oldconfidence/alpha/Rprototype/vote gate",
+        "budget": "Actualjoint additions/deletions relativeS, separatelyeachframe. FullsameDdomains, originalFoRIS source64 FP64minmax/bilinear margin adddescending/deleteascending withrowmajorties. No conf<.5gate",
+        "stats": "Perimage role/index/target/weight hashes, collapsedmixedtargetcounts; perhead solveResidual/localfitcost/legalR and Qpseudo-role MSE plus repeated-label constant, optionalnumericalerrors. Fitloss is not queryGT utility or semanticcertificate",
+        "sealing": "All600x4x2=4800 finalpackedMasks source-bound before anyqueryGT. Onlyfinalmasks/smallrecords/integers, no dense feature/logit/bank archive",
+        "screen": "Original observed600-slot joint>=strongS+1pp,CLI>S,completejoint beats R-only/Q-only/samebudget; otherwise immediatelyreject exactrecipe, no6200 orparameterfollowup. Fixed920 reportedseparately",
+        "motivation_boundary": "Earlier same-capacity R+Q GT-oracle only demonstrates taskexpressivity gap. It is not a proof that predictedQ seeds identifycorrect direction. NoQGT training, standardridge/pseudolabel notoriginal",
+        "sole_producer": "/root",
+        "designer": "/root/nine_window_design",
+        "designer_execution": "Compile/import-only. No realfit/cue/raw/GT/prediction/producer execution",
+        "designer_draft_sha256": "04a0e55292a847b9f3272213741d7b4a338bcf647c342fa8e5213b62b3c8a6ed",
+        "frozen_utc": "2026-10-11T21:20:11.361363+00:00",
+        "per_episode_fits": "Closed-form inference-time ridge, no encoder updates/global fitting/queryGT supervision; record all actual solves",
+        "cost_measurement": "RSS and CPU trueprocessusage, backend/timedphases, MPS allocation sampled aftercompute; IO bytes requested not physical disk IO"
+      }
+    },
+    "role_edge": {
+      "original_path": "evidence/local/task_role_edge600_20261011/protocol.json",
+      "source_sha256": "fa29864180394724e8feaf8761613c2120746ba7b4a4d59d94ffc72444173624",
+      "source_bytes": 10243,
+      "retention": "full_original_JSON_content",
+      "purpose": "Frozen tested construction, matched controls and rejection gate; retain negative scope without preserving launchers.",
+      "projection": {
+        "rule": "full",
+        "retained_top_keys": null,
+        "dropped_key_names": [],
+        "omitted_keys": []
+      },
+      "content": {
+        "state": "FROZEN_FIXED600_TASK_ROLE_EDGE_FIVE_COMPLETE_ARMS_BEFORE_PRODUCTION_GT",
+        "n": 600,
+        "candidate": "source_role_edge_complete",
+        "arms": [
+          "source_role_edge_complete",
+          "source_role_edge_factorized_complete",
+          "source_role_edge_no_query_neighbor_role_complete",
+          "source_role_edge_role_marginal_shuffled_complete",
+          "same_edit_budget_foris_margin_from_S"
+        ],
+        "fields": [
+          "full",
+          "factorized",
+          "no_query_neighbor_role",
+          "role_marginal_shuffled"
+        ],
+        "source_sha256": {
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_role_edge600_20261011/core.py": "f5a950a8972926c0652ceb4017cc3ed265cddcf68b5414d038ab0f7f4c5d2efc",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong600_conflict_alignment_20261011/membership.json": "f38ac3cdf32c7deaa6ba432d0d6c4eee2616c39776fa50d452fb0a3003a54af9",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong600_conflict_alignment_20261011/protocol.frozen.json": "e1576be3484b5c661f6b8c0854a85b6532595f26b6d015f4f82f50a1b7fab2d0",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/inputs.jsonl": "6704d3ddc2bfd5cc16c47287dacebb9f5b2aeb46705dd0e079aafcb5dddbde0c",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/score_bindings.jsonl": "92e79d934b2192e8e0f1da62fbe1e57bd4f6237e4d3f74ce30ea3a5cb0d1f037",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/raw_metadata.json": "8e3433e8f745e90bc6615955717f7afae5d2fad8481375be3e0704346e275858",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong600_conflict_alignment_20261011/episodes.jsonl": "4ecaa64d55c7db682720c9e6b1d77bc7881f1a5d209dd10001125db86b1df620",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong600_witness_provenance3_20261011/report.json": "e3db89a77120892fca79eed1e8f0206462bab5233f15725528815e0b1c72302f",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/docs/research/REFERENCE_MASK_TASK_TRACE_20261010.md": "42f0d1e4b75b8ce80591d21069e37c42066f33b50280b85ca8c96a847a8143cc",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_role_edge600_20261011/producer.py": "ba8e8e9f73e819e5e97efd8e1e7d483045a351aa3603ed984cf0cbd36c50cc85",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_role_edge600_20261011/score_and_verify.py": "514bdd989e4373670719d41a1503999b75cc55b79a52e99ae6610e4f8aa3ecb1",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/reference_background_conflict6200_20261011/producer.py": "07773e070a3e92258f333aafc57313e45a33d0b8561fda13175f3613f35b8014",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/reference_background_conflict6200_20261011/density_core.py": "02af8e3b957811f66b8e82586d8560ace18ad0dfb9bbb912f32c8ec4a23e5bbb",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/reference_background_conflict6200_20261011/score_and_verify.py": "7e70e0075fb14c5f66f666e061464dc4566ada0e1affc4e06ab582d47858906d",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/dense_core.py": "317a2b0765710f8907f0ad3b5e1687acb99109950a136ea4c93207dac82e0152",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/src/ics/official_data.py": "9927dd33f9a8c88ad47d323928e17953d6a4a65baa1576531acae4ce3d9295f5",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/docs/research/TASK_ROLE_EDGE600_DRAFT_20261011.md": "8e8ab3cbb6834a135e2f09c148b7515d0acbf1d08e40ebd55bbd2e2aea591fdd"
+        },
+        "scope": "Exact historical LVIS600 membership; existing wholeR/Q O24 and saved complete S/B/G/R0/N. No new encoder, crop/view, sample, CRF, global training, GT inference label, dense archive or6200 expansion.",
+        "sole_producer": "/root",
+        "designer": "/root/nine_window_design",
+        "API": {
+          "compute": "compute(raw_r,raw_q,p,s,device=\"mps\",validate=False) -> {fields:{full,factorized,no_query_neighbor_role,role_marginal_shuffled},stats}",
+          "compose": "compose_frame(masks={S,B,G,R0,N},score64,dense) -> (five complete outputs,framecert)"
+        },
+        "inputs": {
+          "raw_r_q": "Source-bound whole O24 [4096,1024]; pertoken L2 unit only; no new APD or centering.",
+          "p": "Legally supplied R mask: original existing reader -> nearest1024 -> exact16x16 soft area/256. FG=p,BG=1-p; no purity cutoff. p must equal integer0..256/256.",
+          "s": "Entire saved S CLI 1024 mask -> exact16x16 foreground area fraction. All S positive and negative neighborhoods consumed. No fourway seed restriction, Q pseudo-label fit or foreground-mass transfer.",
+          "S_frames": "Reuse sealed S canvas/component.query_context and original/component.query_context independently; no window/head replay."
+        },
+        "reference_edges": {
+          "role_sampling": "Each R role128 deterministic midpoint area quantiles, rowmajor cumulative weight strictlygreater midpoint; collapse selected center nativeIDs into nF/nB.",
+          "edges": "Each selected center expands to all its legal8 neighbors. Center rowmajor, neighbor offset order (-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1).",
+          "weights": "w_y=n_y(center)/(128*degree(center)); each role total1; repeated midpoint multiplicity retained. Mixed centers can contribute to both roles.",
+          "neighbor_label": "p_neighbor is actual legal soft R coverage; preserve mixed boundaries, no BG purification.",
+          "orientation": "Any Q edge may compare to any selected R edge; no offset matching, coordinate homology, rotation/scale search or FG area conservation."
+        },
+        "fixed_math": {
+          "tau": 0.07,
+          "K1": "exp((cos(q_i,r_center)-1)/tau)",
+          "K2": "exp((cos(q_j,r_neighbor)-1)/tau)",
+          "compat": "s_j*p_neighbor+(1-s_j)*(1-p_neighbor)",
+          "full": "For each Q edge i->j, F/B=sum_R_edges w_F/B*K1*K2*compat; native_i=equal_mean_over_legal_Q_neighbors(log(F)-log(B)).",
+          "factorized": "Same role/edge/neighbor-label marginals; F/B=(sum w_F/B*K1)*(sum w_F/B*K2*compat); same equal_neighbor logratio mean.",
+          "no_query_neighbor_role": "Same actual source descriptor pairs, compat=1 only; same logratio mean.",
+          "role_marginal_shuffled": "Only reverse source neighbor descriptor rows within exact(nF,nB,degree,p_neighbor_integer0to256) groups in source edge order. Center descriptor,wF,wB,p_neighbor stay unchanged. Same full formula with permuted neighbor descriptors.",
+          "shuffle_certificate": "Record permutation/unchanged-changed descriptor indices, role weight masses, before-after conditional role marginal SHA and equality. No random seed or GT."
+        },
+        "precision": {
+          "production": "MPS32 unit,dot,exp,products and float32 sums. Cast F/B densities to CPU64 for logs and equal-neighbor mean. Final64 fields CPU64, frame bilinear/strictzero/budget CPU64.",
+          "blocking": "128 rowmajor Q centers per block; a common kernel only for block centers+neighbors vs unique needed source descriptors; four fields share it, no4096xedge kernel copies.",
+          "backend_error": "Only actual MPS runtime/backend error permits sole producer identical CPU32 retry, logged; no precision or formula selection by GT.",
+          "numeric_reference": "First3 episodes only, fixed first32 rowmajor Q native nodes and all their legal edges: CPU64 raw unit and actual four formulas compare density/logratio scalar errors, validity and sign differences; no extra masks/scoring or gate."
+        },
+        "fallback": {
+          "R": "Either legal R role mass0 -> all four fields None and saved S.",
+          "Q": "No Q role mass requirement; saved S may be all0/all1 and is still valid neighbor context.",
+          "density": "Any nonpositive/nonfinite legal Q-edge F/B density invalidates that entire field only -> None -> complete arm S. No epsilon, guessed sign, local fill or borrowed field.",
+          "input": "Invalid raw shape/token or nonfinite/out-of-range area fraction is explicit input error, not semantic BG."
+        },
+        "composition": "Perframe Dadd=~S&(B|G|R0),Ddel=S&~(B&G&R0); render each native signed field with CPU64 bilinear align_corners=False directly to that frame. Add iff>0,delete iff<0,tie retains S. Protect only fourway1111/0000; no old confidence/alpha. Missing field -> full saved S.",
+        "budget": "Same frame actual full additions/deletions relative S. Select exactlyK within same Dadd/Ddel by saved FoRIS score64 FP64 minmax floor1e-6 -> direct frame bilinear -> raw signed margin; adddescending/deleteascending, rowmajor ties. No confidence filter, no canonical budget assumed equal original.",
+        "stats": "Actual role/index/weight/coverage/S/shuffle SHA; conditional-marginal preserved/changed counts; eachfield actual minimum/maximum densities, nonpositive/nonfinite/invalid edges-nodes and fallback reason; synchronized phase/total cost; first3 fixed32 numerical scalar receipt.",
+        "sealing": "All600x5x2=6000 source-bound packed final masks before queryGT; only final masks/small scalar records/integers archived. root sole producer/scorer; no designer raw/GT/candidate evaluation.",
+        "screen": "Original observed600 full>=saved strongest S+1pp, CLI>S and full beats all complete factorized/noQrole/shuffled/samebudget controls. Otherwise reject exact recipe immediately; no tau/host/context adjustment or6200 expansion. Official920 and observed600 reported separately.",
+        "evidence_boundary": "Pure RFG nearest hits on bad extensions and failed fullBG veto motivate preserving source-neighbor binding plus query S negative context. They do not prove this field identifies true restoration. No natural scene isomorphism, area/shape/scale invariance, semantic certificate or KDE originality claim.",
+        "designer_check": "Compile/import-only; compute/compose never called; no raw/GT/old masks/predictions read.",
+        "designer_draft_sha256": "dea681ad8b0ed3ceab6df6ba7ac5130804c41b24a0ca9e2702e4729d501e3248",
+        "frozen_utc": "2026-10-11T22:09:30.468693+00:00",
+        "production_sole_owner": "/root",
+        "no_new_fits": true
+      }
+    },
+    "constellation": {
+      "original_path": "evidence/local/task_constellation600_20261011/protocol.json",
+      "source_sha256": "f73da7f6b3cd46dd1b2551ceac193d93ebf8d13f1d2f97e94998f307041bf5ef",
+      "source_bytes": 6901,
+      "retention": "full_original_JSON_content",
+      "purpose": "Frozen tested construction, matched controls and rejection gate; retain negative scope without preserving launchers.",
+      "projection": {
+        "rule": "full",
+        "retained_top_keys": null,
+        "dropped_key_names": [],
+        "omitted_keys": []
+      },
+      "content": {
+        "state": "FROZEN_FIXED600_TASK_CONSTELLATION_COMPLETE",
+        "n": 600,
+        "frames": [
+          "cli",
+          "original"
+        ],
+        "mask_count": 7200,
+        "arms": [
+          "task_constellation_complete",
+          "semantic_only_pose_complete",
+          "shuffled_binding_pose_complete",
+          "no_reference_BG_pose_complete",
+          "unconstrained_accepted_support_complete",
+          "same_edit_budget_foris_margin_from_S"
+        ],
+        "source_sha256": {
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_constellation600_20261011/core.py": "7eaaab93bfd65827b2dff0dd28f72e2bb4570fe0878f2ff6dd5ed07e7edc034f",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_constellation600_20261011/producer.py": "684ddc83bc0bad39816f1117be410b43c13e4ef5a99441f8d618f951010a1900",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_constellation600_20261011/score_and_verify.py": "8075b877d6a2bee4172e45eb3c2e41b3be9d49318eb92790e5207ceb16592b90",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_constellation600_20261011/numeric_sanity.json": "c211be75664a89f9499e8c2bb59d2abebf6e256e0e95d8c570dec72555239302",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong600_conflict_alignment_20261011/membership.json": "f38ac3cdf32c7deaa6ba432d0d6c4eee2616c39776fa50d452fb0a3003a54af9",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/inputs.jsonl": "6704d3ddc2bfd5cc16c47287dacebb9f5b2aeb46705dd0e079aafcb5dddbde0c",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/score_bindings.jsonl": "92e79d934b2192e8e0f1da62fbe1e57bd4f6237e4d3f74ce30ea3a5cb0d1f037",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/raw_metadata.json": "8e3433e8f745e90bc6615955717f7afae5d2fad8481375be3e0704346e275858",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/producer.py": "36891fae3b360f1eb7a1abc6f31705fa79fccf2215008f01d12703bdae3fb5af",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_conflict_execution6200_20261011/dense_core.py": "317a2b0765710f8907f0ad3b5e1687acb99109950a136ea4c93207dac82e0152",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/reference_background_conflict6200_20261011/producer.py": "07773e070a3e92258f333aafc57313e45a33d0b8561fda13175f3613f35b8014",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/reference_background_conflict6200_20261011/density_core.py": "02af8e3b957811f66b8e82586d8560ace18ad0dfb9bbb912f32c8ec4a23e5bbb",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/reference_background_conflict6200_20261011/score_and_verify.py": "7e70e0075fb14c5f66f666e061464dc4566ada0e1affc4e06ab582d47858906d",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/nine_window_execution_20261011/truth_guard.py": "c8c024b54ffa2c39ccd57690644dea35225e86779a5be4709b2ef4bee68f1c2a",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/src/ics/official_data.py": "9927dd33f9a8c88ad47d323928e17953d6a4a65baa1576531acae4ce3d9295f5",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong_stage600_20261011/inventory.json": "3ed7e6d1f482a3234ec7d26f0b667d6edfab394da2969b72d6d5910842f11a85",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/strong_stage600_20261011/reconstruction_seal.json": "7e148ac2522689bf3d0f30abc5234d43ac7539c94126387aefa4766e2311ef63",
+          "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/local/task_constellation600_20261011/static_review.json": "073201e51929a3519bf27b7a026da891cae75e4487ccd02ec26f834dcbff48f0"
+        },
+        "task_definition": "Single legalR image/Mask, frozen DINOv3 O24; originalS is retained. New constraint is legalRMask placement from coupled semantic/geometry particle assignment, not another nine head or vote threshold.",
+        "particles": {
+          "R_FG": 512,
+          "Q_S": 128,
+          "R_BG": 128,
+          "rule": "Area mass midpoints, repetitions retained. Query labels from sealedS only, noQGT."
+        },
+        "coordinates": "Undo known encoded-full R/Q W/H anisotropy in physical pixel coordinates, then legalRMask/S mass centroid and RMS normalize.",
+        "feature_cost": "1-cos(r,q)+max(max_bcos(r,b),max_bcos(q,b)), legalRBG bank. This can degenerate to a row/column offset and is not a semantic certificate.",
+        "pose": "Initial rectangular Hungarian(cost_feature) -> least squares orientation-preserving positive-scale similarity. Full:5 subsequent exact Hungarian(feature+.5distance_squared)->same pose fit updates; perstep E_assignment/E_pose cannot increase same initial fullE, tolerance1e-9 relative machine check.",
+        "shuffle": "Fixed reverse512 RFG descriptor slots relative to coordinates and unchangedMask/BG bank; exact particle feature marginals unchanged.",
+        "fallback": "Missing role/one-coordinate frame/nonfinite or zero-spread or zero direction covariance/nonpositive scale: that pose arm remainsS. No truth-dependent fit or threshold.",
+        "output": "Each actualframe inverse-warps canonical legalRMask from target pixel centres in physical image coordinates, CPU64bilinear zerooutside strict>.5. Dadd=~S_frame&B_frame&oldFP32_render(acceptedAny). Output=S|(Dadd&T_frame); no deletions.",
+        "controls": "Initial semantic-only assignment pose(no joint iterations), reversed descriptor-coordinate binding, noBG cost, wide accepted-support complete restoration, same actual added count using actualFoRIS nativefield CPU64bilinear descending stable rowmajor over fullDadd. Samebudget domain does not intersectT.",
+        "screen": {
+          "primary": "original observed600 class/fold mIoU",
+          "required_S_delta_pp": 1.0,
+          "CLI_vs_S_required": "strict positive",
+          "all_full_controls_bothframe_required": "strict positive",
+          "on_failure": "Kill without6200 expansion or changes to correspondence/pose/scale/iterations/samples/warp."
+        },
+        "scope_limits": [
+          "New fixed complete registration hypothesis; not first use of taskgeometry/Procrustes.",
+          "Matched subset is not allR or allnewpoints validated. Onepose has geometric assumptions and cannot repair S-existingFP or Q_S_empty complete misses.",
+          "QGT solely after all7200 masks seal, diagnosis/scoring only; no supervision/threshold/ablationwinner selection."
+        ],
+        "resources": {
+          "new_encoder": 0,
+          "new_FoRIS": 0,
+          "new_CRF": 0,
+          "new_encoded_views": 0,
+          "new_samples": 0,
+          "global_training": 0,
+          "dense_archives": 0,
+          "R_Q_old_raw_requests": 1200,
+          "streaming": true,
+          "CPU_threads": 4,
+          "workers": 1
+        }
+      }
+    }
+  }
+}

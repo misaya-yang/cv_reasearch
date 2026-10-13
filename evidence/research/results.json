@@ -1,0 +1,5936 @@
+{
+  "review_date": "2026-10-12 America/New_York",
+  "scope": "Compact paper and next-experiment evidence pack; copied/projected saved integers and existing reports only. No new scoring, predictions or scientific experiment.",
+  "sources": {
+    "public4000": "evidence/local/research_20261005/pipeline_verified/mean_fine_residual_transfer4000_v1/report.json",
+    "12source": "evidence/local/research_20261005/pipeline_verified/exact_family_selection_v1/public4000_v3_crossfold/report.json",
+    "13source": "evidence/local/research_20261005/pipeline_verified/exact_family_selection_v1/public4000_v4_extended_crossfold/report.json",
+    "rcg_transfer": "evidence/local/rcg_transfer_20261007/audit.json",
+    "safr": "evidence/local/m4/paco_f0_safr_149.json",
+    "mask_C1": "evidence/local/astra_granularity_20261008/candidate_C1/summary.json",
+    "false_alarm": "evidence/local/false_alarm_floor_20261010/inmask/transfer_decision.json",
+    "strong_stage": "evidence/local/strong_stage600_20261011/report.json",
+    "N6200": "evidence/local/five_dataset_unified_mechanism_20261011/evidence.json",
+    "anchor6200": "evidence/local/task_conflict_execution6200_20261011/report.json",
+    "background6200": "evidence/local/reference_background_conflict6200_20261011/report.json",
+    "ridge_coco": "evidence/local/parallel_signal_20261010/02_task_identity/ridge_coco_validation/report.json",
+    "fg_anchor": "../cv_data/a/lvis_fg_anchor200_20261009/report.json",
+    "scene600": "../cv_data/a/autonomous_scene_reconstruction600_20261010/report.json",
+    "focus200": "../cv_data/a/reference_focus_head200_20261010/report.json",
+    "A6": "../cv_data/a/x1012_A6/completion.json",
+    "A7": "../cv_data/a/x1012_A7/seed150/report.json",
+    "A4_mod": "../cv_data/a/x1012_A4/modulation/report.json",
+    "B3": "../cv_data/a/x1012_B3/completion.json",
+    "B4": "../cv_data/a/x1012_B4_assembly/seed150/report.json",
+    "C1": "../cv_data/a/x1012_C1/report.json",
+    "C1_complete": "../cv_data/a/x1012_C1/completion.json",
+    "B1": "../cv_data/a/x1012_B1/kshot_comparisons.json",
+    "completion": "../cv_data/a/x1012_P0/completion_check.json",
+    "stopped6000": "../cv_data/a/representation_premise_20261008/USER_STOPPED.json",
+    "stopped4000": "../cv_data/a/official_foris_20261008/USER_STOPPED.json",
+    "host_repair": "evidence/local/strong_host_repair600_20261011/report.json",
+    "query_graph": "evidence/local/query_task_graph600_20261011/report.json",
+    "discriminant": "evidence/local/task_discriminant600_20261011/report.json",
+    "role_edge": "evidence/local/task_role_edge600_20261011/report.json",
+    "constellation": "evidence/local/task_constellation600_20261011/report.json",
+    "tangent": "../cv_data/a/task_tangent_kernel60_20261010/report.json",
+    "tangent_midrange": "../cv_data/a/task_tangent_kernel60_20261010/common_midrange/report.json",
+    "tangent_linearized": "../cv_data/a/task_tangent_kernel60_20261010/linearized_function/report.json",
+    "context": "../cv_data/a/task_context_compatibility120_20261012/report.json",
+    "hierarchy": "../cv_data/a/task_semantic_hierarchy_five1000_20261012/report.json",
+    "axis": "../cv_data/a/foris_axis_contradictions_five_20261012/score.json",
+    "veto_reversal": "evidence/local/strong_veto_reversal600_20261011/report.json",
+    "negative_restoration": "evidence/local/negative_restoration600_20261011/report.json",
+    "negative_exposure": "evidence/local/strong_negative_exposure600_20261011/report.json"
+  },
+  "families": [
+    {
+      "id": "public4000_readouts",
+      "status": "development_success",
+      "protocol": "COCO4000 CLI1024 pooled class mIoU",
+      "evidence": {
+        "scores": {
+          "native": 60.93174091837449,
+          "rcg": 62.33367132610439,
+          "mean.control": 62.51297197709237,
+          "rcg64.control": 62.29793711712783,
+          "fine.rcg16.control": 62.709099800552,
+          "fine.rcg64": 62.65161728378793,
+          "mean_fine_residual_transfer_v1": 62.84453709002177
+        },
+        "contrasts": {
+          "native": {
+            "gain": 1.9127961716472797,
+            "ci95": [
+              1.618404182525245,
+              2.2103384508884654
+            ],
+            "up": 2509,
+            "down": 1448,
+            "tie": 43
+          },
+          "mean.control": {
+            "gain": 0.33156511292939683,
+            "ci95": [
+              0.3031934249750268,
+              0.37280458032199204
+            ],
+            "up": 2841,
+            "down": 1062,
+            "tie": 97
+          },
+          "fine.rcg16.control": {
+            "gain": 0.1354372894697633,
+            "ci95": [
+              -0.04832616355602717,
+              0.3345291398311581
+            ],
+            "up": 1978,
+            "down": 1929,
+            "tie": 93
+          }
+        },
+        "12source_scores": {
+          "heldfold_recipe": 62.96469877334337,
+          "frozen_subtoken4000_v1::native": 60.93174091837449,
+          "frozen_subtoken4000_v1::rcg": 62.33367132610439,
+          "frozen_subtoken4000_v1::mean.control": 62.51297197709237,
+          "frozen_subtoken4000_v1::rcg64.control": 62.29793711712783,
+          "frozen_subtoken4000_v1::fine.rcg16.control": 62.709099800552,
+          "frozen_subtoken4000_v1::fine.rcg64": 62.65161728378793,
+          "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control": 62.744357299397045,
+          "claude_official_4000_existing_masks::RCG_count_matched_delete": 62.17388785426425,
+          "claude_official_4000_existing_masks::conservative_delete": 60.879277977221626,
+          "claude_official_4000_existing_masks::external_mean__delete": 61.85325102842445,
+          "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG": 61.940505505697004,
+          "mean_fine_residual_transfer4000_v1::mean_fine_residual_transfer_v1": 62.84453709002177,
+          "native": 60.93174091837449
+        },
+        "12source_contrasts": {
+          "frozen_subtoken4000_v1::mean.control": {
+            "gain": 0.45172679625100187,
+            "ci95": [
+              0.23304351722922423,
+              0.6599191527965628
+            ],
+            "up": 2548,
+            "down": 1355,
+            "tie": 97
+          },
+          "frozen_subtoken4000_v1::rcg64.control": {
+            "gain": 0.6667616562155416,
+            "ci95": [
+              0.4744673116096223,
+              0.896735193076436
+            ],
+            "up": 2658,
+            "down": 1222,
+            "tie": 120
+          },
+          "frozen_subtoken4000_v1::fine.rcg16.control": {
+            "gain": 0.25559897279136834,
+            "ci95": [
+              0.09433670982719419,
+              0.3997849589060251
+            ],
+            "up": 1896,
+            "down": 1968,
+            "tie": 136
+          },
+          "mean_fine_bit_transfer4000_v1::mean_fine_bit_edit_transfer.control": {
+            "gain": 0.22034147394632697,
+            "ci95": [
+              0.009009883720580274,
+              0.41594741369100346
+            ],
+            "up": 2233,
+            "down": 1671,
+            "tie": 96
+          },
+          "native": {
+            "gain": 2.0329578549688847,
+            "ci95": [
+              1.6571506199622197,
+              2.387728823992901
+            ],
+            "up": 2388,
+            "down": 1570,
+            "tie": 42
+          },
+          "frozen_subtoken4000_v1::native": {
+            "gain": 2.0329578549688847,
+            "ci95": [
+              1.6571506199622197,
+              2.387728823992901
+            ],
+            "up": 2388,
+            "down": 1570,
+            "tie": 42
+          },
+          "frozen_subtoken4000_v1::rcg": {
+            "gain": 0.631027447238985,
+            "ci95": [
+              0.4759664688568,
+              0.7905701127773419
+            ],
+            "up": 2661,
+            "down": 1246,
+            "tie": 93
+          },
+          "frozen_subtoken4000_v1::fine.rcg64": {
+            "gain": 0.3130814895554437,
+            "ci95": [
+              0.11771000556475571,
+              0.5382949772746352
+            ],
+            "up": 2011,
+            "down": 1773,
+            "tie": 216
+          },
+          "claude_official_4000_existing_masks::RCG_count_matched_delete": {
+            "gain": 0.7908109190791208,
+            "ci95": [
+              0.4578921665894766,
+              1.158167617184743
+            ],
+            "up": 2699,
+            "down": 1194,
+            "tie": 107
+          },
+          "claude_official_4000_existing_masks::conservative_delete": {
+            "gain": 2.0854207961217455,
+            "ci95": [
+              1.3783194612722887,
+              2.7948370245326313
+            ],
+            "up": 2857,
+            "down": 1025,
+            "tie": 118
+          },
+          "claude_official_4000_existing_masks::external_mean__delete": {
+            "gain": 1.1114477449189195,
+            "ci95": [
+              0.6006770417699248,
+              1.6321093412438132
+            ],
+            "up": 2702,
+            "down": 1189,
+            "tie": 109
+          },
+          "claude_official_4000_existing_masks::external_mean_delete_sameK_RCG": {
+            "gain": 1.0241932676463676,
+            "ci95": [
+              0.5645467601919977,
+              1.5243331394009567
+            ],
+            "up": 2726,
+            "down": 1163,
+            "tie": 111
+          },
+          "mean_fine_residual_transfer4000_v1::mean_fine_residual_transfer_v1": {
+            "gain": 0.12016168332160504,
+            "ci95": [
+              -0.10303527307944726,
+              0.31982209539376916
+            ],
+            "up": 1855,
+            "down": 2012,
+            "tie": 133
+          }
+        },
+        "13source_score": 63.102198801338986
+      },
+      "limitation": "Reused development; 13-source includes label-fit sizecut.",
+      "paper_use": "strong_control_and_development_main_result",
+      "next_experiment_value": "Reuse full outputs and require fine16/residual controls; separate new contribution from inherited gain.",
+      "conclusion": "完整COCO读出涨分成立，最后残差相对fine16的额外优势未确定。",
+      "source_refs": [
+        "public4000",
+        "12source",
+        "13source"
+      ]
+    },
+    {
+      "id": "rcg_transfer",
+      "status": "mixed_local_success",
+      "protocol": "Original per-class pooled IoU; reused packs",
+      "evidence": {
+        "COCO B+C+D": {
+          "n": 1800,
+          "scores": {
+            "native": 60.51746980103096,
+            "rcg": 61.79839324073973,
+            "rcg_fine": 62.17862632058873,
+            "rcg2": 62.38027514559482
+          }
+        },
+        "PASCAL-Part": {
+          "n": 598,
+          "scores": {
+            "native": 53.8681843975277,
+            "rcg": 55.327752516477446,
+            "rcg_fine": 55.35158405122128,
+            "rcg2": 54.83176928757961
+          }
+        },
+        "SUIM": {
+          "n": 582,
+          "scores": {
+            "native": 60.94971046083258,
+            "rcg": 60.87213853017948,
+            "rcg_fine": 61.2501481337441,
+            "rcg2": 60.6126078265352
+          }
+        },
+        "PACO-Part": {
+          "n": 599,
+          "scores": {
+            "native": 41.44507390424717,
+            "rcg": 41.74469361290017,
+            "rcg_fine": 41.6910689726569,
+            "rcg2": 41.49705371197416
+          }
+        },
+        "LVIS-92i": {
+          "n": 599,
+          "scores": {
+            "native": 44.273080276029056,
+            "rcg": 44.586329350327766,
+            "rcg_fine": 45.173468990352376,
+            "rcg2": 46.77029736116171
+          }
+        }
+      },
+      "limitation": "Loader samples, not identical paper episodes; LVIS shares COCO photograph domain.",
+      "paper_use": "cross_dataset_result_and_limitation",
+      "next_experiment_value": "Address PACO/SUIM failure rather than extrapolating COCO.",
+      "conclusion": "RCG2在COCO/LVIS有局部收益，PACO/SUIM未形成统一迁移。",
+      "source_refs": [
+        "rcg_transfer"
+      ]
+    },
+    {
+      "id": "safr",
+      "status": "fixed_candidate_failed",
+      "protocol": "PACO fold0 original pooled class IoU",
+      "evidence": {
+        "n": 149,
+        "scores": {
+          "foris.crf": 38.42874928056667,
+          "foris.pre": 37.75244712045151,
+          "mean": 38.704759097999066,
+          "mean.raw_fg_bg": 39.176692872455334,
+          "mean.safr_fg": 38.50404912774056,
+          "mean.safr_fg_bg": 38.89119838356793,
+          "model.raw_mean": 31.513563455476486,
+          "model.raw_nn": 33.842101601196,
+          "rcg": 39.089080238390856
+        }
+      },
+      "limitation": "149 development episodes; adapted attention branch, not complete RSRM.",
+      "paper_use": "negative_ablation",
+      "next_experiment_value": "Reuse matched raw FG-BG control; close this fixed attention aggregate.",
+      "conclusion": "该SAFR FG-BG组合未胜RCG与更简单raw FG-BG。",
+      "source_refs": [
+        "safr"
+      ]
+    },
+    {
+      "id": "mask_C1",
+      "status": "fixed_candidate_failed",
+      "protocol": "Token-position pooled class IoU",
+      "evidence": {
+        "dev": {
+          "n": 299,
+          "classes": 139,
+          "B": 43.84531980146351,
+          "arms": {
+            "joint_mask": {
+              "miou": 39.98995357443519,
+              "delta": -3.8553662270283198,
+              "delta_ci95": [
+                -6.054917474519723,
+                -1.8487578872660948
+              ],
+              "edits_addTP_addFP_delTP_delFP": [
+                0,
+                0,
+                30901,
+                61371
+              ]
+            },
+            "center_control": {
+              "miou": 40.17787390250491,
+              "delta": -3.667445898958597,
+              "delta_ci95": [
+                -5.807532780321704,
+                -1.7089052966801808
+              ],
+              "edits_addTP_addFP_delTP_delFP": [
+                0,
+                0,
+                29740,
+                59222
+              ]
+            },
+            "permuted_control": {
+              "miou": 38.608950242799835,
+              "delta": -5.236369558663675,
+              "delta_ci95": [
+                -7.455554557931626,
+                -3.2488439782801293
+              ],
+              "edits_addTP_addFP_delTP_delFP": [
+                0,
+                0,
+                32077,
+                61957
+              ]
+            }
+          },
+          "joint_vs_center": {
+            "delta": -0.1879203280697226,
+            "ci95": [
+              -0.4651085689711179,
+              0.06585610996879188
+            ]
+          }
+        },
+        "held": {
+          "n": 300,
+          "classes": 125,
+          "B": 41.575779542810125,
+          "arms": {
+            "joint_mask": {
+              "miou": 40.252079575737255,
+              "delta": -1.3236999670728693,
+              "delta_ci95": [
+                -3.2097510527352746,
+                -0.1349576199982942
+              ],
+              "edits_addTP_addFP_delTP_delFP": [
+                0,
+                0,
+                31338,
+                69625
+              ]
+            },
+            "center_control": {
+              "miou": 39.99556768633167,
+              "delta": -1.5802118564784564,
+              "delta_ci95": [
+                -3.407406427593621,
+                -0.3557001895188495
+              ],
+              "edits_addTP_addFP_delTP_delFP": [
+                0,
+                0,
+                30850,
+                67972
+              ]
+            },
+            "permuted_control": {
+              "miou": 39.47532039903061,
+              "delta": -2.100459143779517,
+              "delta_ci95": [
+                -4.047619218083537,
+                -0.8158355832664544
+              ],
+              "edits_addTP_addFP_delTP_delFP": [
+                0,
+                0,
+                32566,
+                69911
+              ]
+            }
+          },
+          "joint_vs_center": {
+            "delta": 0.2565118894055871,
+            "ci95": [
+              -0.06868983094640856,
+              0.4752205273644232
+            ]
+          }
+        },
+        "coco": {
+          "n": 600,
+          "classes": 80,
+          "B": 64.51734708858112,
+          "arms": {
+            "joint_mask": {
+              "miou": 60.43912522519494,
+              "delta": -4.078221863386176,
+              "delta_ci95": [
+                -6.349435604374438,
+                -2.808143271454797
+              ],
+              "edits_addTP_addFP_delTP_delFP": [
+                0,
+                0,
+                26593,
+                20054
+              ]
+            },
+            "center_control": {
+              "miou": 60.888614415861184,
+              "delta": -3.6287326727199343,
+              "delta_ci95": [
+                -5.764643132396342,
+                -2.4738152326118503
+              ],
+              "edits_addTP_addFP_delTP_delFP": [
+                0,
+                0,
+                25387,
+                18890
+              ]
+            },
+            "permuted_control": {
+              "miou": 58.74875400632005,
+              "delta": -5.76859308226107,
+              "delta_ci95": [
+                -8.236174830155532,
+                -4.519751642117537
+              ],
+              "edits_addTP_addFP_delTP_delFP": [
+                0,
+                0,
+                30480,
+                21201
+              ]
+            }
+          },
+          "joint_vs_center": {
+            "delta": -0.4494891906662417,
+            "ci95": [
+              -0.9852052179706511,
+              0.09053265854723697
+            ]
+          }
+        }
+      },
+      "limitation": "PACO split packs and COCO reused development; not original resolution.",
+      "paper_use": "negative_ablation",
+      "next_experiment_value": "Reuse heldfold errors; reject this template gate only.",
+      "conclusion": "固定3×3掩码模板门在PACO留折和COCO均损失。",
+      "source_refs": [
+        "mask_C1"
+      ]
+    },
+    {
+      "id": "false_alarm",
+      "status": "transfer_gate_failed",
+      "protocol": "Original observed-fold/class slots",
+      "evidence": {
+        "state": "FAIL_PREDEFINED_TRANSFER_GATE",
+        "selection_sha256": "f305b05ad86a3ec36e5c6fca92022b9e2828698d800d0e37d62598c40530dbef",
+        "chosen": "back_auc",
+        "design_common_positive": true,
+        "worst_design_delta": 0.01028479234410895,
+        "confirm": {
+          "lvis/lvis": {
+            "report_sha256": "71c87a7cdf554d4f15315c6776009cf481fab317b2f236f3197a5463de388c0e",
+            "frame": "original",
+            "episodes": 200,
+            "observed_fold_class_slots": 200,
+            "foris": 46.84456650643816,
+            "present": 1.0,
+            "separable": 195,
+            "auc": 0.7204183354820957,
+            "kept95": 0.67224346926776,
+            "kept90": 0.5295116650217341,
+            "hits_kept": 0.9968968408284129,
+            "false_alarms_kept": 0.9649954556605048,
+            "exchange": 0.08865018043059755,
+            "changed": 0.65,
+            "rule": 46.716275453232775,
+            "delta": -0.12829105320538758,
+            "interval": [
+              -0.17524053764875772,
+              -0.07734539141080135
+            ],
+            "miss_auc": 0.9052845064930795,
+            "miss_at_1pct": 0.18931892440112716
+          },
+          "existing_zoom_crossdataset40/pascal_part": {
+            "report_sha256": "8e4d7914d2197d1bf5cb2db82a33e73b58535ac24e6c3cb78bd9c3bd2ab04dca",
+            "frame": "original",
+            "episodes": 40,
+            "observed_fold_class_slots": 27,
+            "foris": 53.309563835612536,
+            "present": 1.0,
+            "separable": 37,
+            "auc": 0.7186420225879542,
+            "kept95": 0.5396693510588436,
+            "kept90": 0.4419233882994589,
+            "hits_kept": 0.9896278694637886,
+            "false_alarms_kept": 0.9441669301296238,
+            "exchange": 0.18577037874313038,
+            "changed": 0.5,
+            "rule": 53.33165517671631,
+            "delta": 0.022091341103774198,
+            "interval": [
+              -0.35166965650558907,
+              0.24175407253326145
+            ],
+            "miss_auc": 0.8419234480184656,
+            "miss_at_1pct": 0.06212324397515851
+          }
+        },
+        "predefined_tests": {
+          "all_lower_bounds_above_minus_0_3": false,
+          "achieved_lower_bound_count": 1,
+          "required_lower_bound_count": 2,
+          "at_least_half_deltas_at_least_plus_1": false,
+          "achieved_plus_1_count": 0,
+          "required_plus_1_count": 1
+        },
+        "confirmed_datasets": 2,
+        "exposure": "Previously exposed development queues; paired episode bootstrap describes this composition only",
+        "auxiliary_mixed_report_sha256": "8e4d7914d2197d1bf5cb2db82a33e73b58535ac24e6c3cb78bd9c3bd2ab04dca",
+        "auxiliary_domains_not_counted_as_confirm": [
+          "coco",
+          "lvis",
+          "paco_part",
+          "suim"
+        ],
+        "interpretation": "A common positive design field exists; this is a failed transfer gate, not the no-common-positive rejection branch. No full-protocol/CRF follow-on or encoding expansion was triggered."
+      },
+      "limitation": "Exposed development; not independent confirmation.",
+      "paper_use": "negative_transfer_and_proxy_metric_limit",
+      "next_experiment_value": "Judge net edits in ambiguous regions rather than global AUC.",
+      "conclusion": "back_auc设计量存在微弱正差，但预定开发迁移门槛失败。",
+      "source_refs": [
+        "false_alarm"
+      ]
+    },
+    {
+      "id": "strong_stage",
+      "status": "development_success",
+      "protocol": "LVIS600 dual frames; observed600 slots",
+      "evidence": {
+        "n": 600,
+        "summary": {
+          "cli": {
+            "totals": {
+              "S_vs_B": {
+                "add_TP": 700020,
+                "add_FP": 2266334,
+                "delete_TP": 2520940,
+                "delete_FP": 9305101
+              },
+              "gate_removed_from_native": {
+                "TP": 389657,
+                "FP": 16983447,
+                "inside_B_TP": 49017,
+                "inside_B_FP": 100053
+              },
+              "partition/local_no_native_support": {
+                "TP": 930687,
+                "FP": 5883258
+              },
+              "partition/positive_views_fail_raw_majority": {
+                "TP": 1541236,
+                "FP": 3321790
+              },
+              "partition/raw_majority_lost_by_region_gate": {
+                "TP": 49017,
+                "FP": 100053
+              },
+              "details/accepted_any": {
+                "B_deleted_TP": 1535484,
+                "B_deleted_FP": 3340440,
+                "all_FN": 2355649,
+                "all_TN": 9278811
+              },
+              "details/accepted_tie": {
+                "B_deleted_TP": 1284698,
+                "B_deleted_FP": 2672457,
+                "all_FN": 1886135,
+                "all_TN": 6120090
+              },
+              "details/raw_tie": {
+                "B_deleted_TP": 1285984,
+                "B_deleted_FP": 2668012,
+                "all_FN": 2248899,
+                "all_TN": 28278121
+              }
+            },
+            "metrics": {
+              "B": {
+                "observed_600_mIoU_percent": 47.619568711544645,
+                "official_920_zero_missing_mIoU_percent": 31.056240464050855
+              },
+              "any_native": {
+                "observed_600_mIoU_percent": 23.243339656461213,
+                "official_920_zero_missing_mIoU_percent": 15.158699775952964
+              },
+              "native_majority": {
+                "observed_600_mIoU_percent": 33.97733563826132,
+                "official_920_zero_missing_mIoU_percent": 22.159131937996513
+              },
+              "S": {
+                "observed_600_mIoU_percent": 51.70240922979526,
+                "official_920_zero_missing_mIoU_percent": 33.718962541170825
+              },
+              "budget": {
+                "observed_600_mIoU_percent": 49.479666217096195,
+                "official_920_zero_missing_mIoU_percent": 32.26934753288882
+              }
+            }
+          },
+          "original": {
+            "totals": {
+              "S_vs_B": {
+                "add_TP": 197153,
+                "add_FP": 589455,
+                "delete_TP": 675694,
+                "delete_FP": 2439283
+              },
+              "gate_removed_from_native": {
+                "TP": 113193,
+                "FP": 4475364,
+                "inside_B_TP": 14014,
+                "inside_B_FP": 28665
+              },
+              "partition/local_no_native_support": {
+                "TP": 248303,
+                "FP": 1553675
+              },
+              "partition/positive_views_fail_raw_majority": {
+                "TP": 413377,
+                "FP": 856943
+              },
+              "partition/raw_majority_lost_by_region_gate": {
+                "TP": 14014,
+                "FP": 28665
+              },
+              "details/accepted_any": {
+                "B_deleted_TP": 411399,
+                "B_deleted_FP": 864170,
+                "all_FN": 641953,
+                "all_TN": 2450177
+              },
+              "details/accepted_tie": {
+                "B_deleted_TP": 337857,
+                "B_deleted_FP": 681776,
+                "all_FN": 503903,
+                "all_TN": 1582050
+              },
+              "details/raw_tie": {
+                "B_deleted_TP": 338498,
+                "B_deleted_FP": 678558,
+                "all_FN": 614935,
+                "all_TN": 7415409
+              }
+            },
+            "metrics": {
+              "B": {
+                "observed_600_mIoU_percent": 47.779371001459836,
+                "official_920_zero_missing_mIoU_percent": 31.160459348778154
+              },
+              "any_native": {
+                "observed_600_mIoU_percent": 23.320456655146188,
+                "official_920_zero_missing_mIoU_percent": 15.208993470747513
+              },
+              "native_majority": {
+                "observed_600_mIoU_percent": 34.128914892216656,
+                "official_920_zero_missing_mIoU_percent": 22.25798797318478
+              },
+              "S": {
+                "observed_600_mIoU_percent": 52.00513765913064,
+                "official_920_zero_missing_mIoU_percent": 33.91639412551998
+              },
+              "budget": {
+                "observed_600_mIoU_percent": 49.74475020235232,
+                "official_920_zero_missing_mIoU_percent": 32.44222839283847
+              }
+            }
+          }
+        }
+      },
+      "limitation": "Strong S uses real local observations and query context rejection; not general-domain success.",
+      "paper_use": "key_strong_control_and_mechanism",
+      "next_experiment_value": "Preserve real observations and contextual rejection; price recovered FP.",
+      "conclusion": "真实九窗与上下文拒识组合S是LVIS600有效强对照，必须保留。",
+      "source_refs": [
+        "strong_stage"
+      ]
+    },
+    {
+      "id": "N6200",
+      "status": "development_success_without_unique_selection_gain",
+      "protocol": "Original official-fold/class slots, missing slots zero",
+      "evidence": {
+        "coco": {
+          "cli": {
+            "miou": {
+              "FoRIS": 63.17023008939106,
+              "MEAN": 63.82731452882311,
+              "R0": 62.316423914886485,
+              "C": 63.88867893369918,
+              "N": 63.9620369013865,
+              "K": 63.94996838169183
+            },
+            "n": 200,
+            "observed_slots": 39,
+            "official_slots": 40,
+            "class_weight": "one/folds * one/official slots in that fold; missing slots zero",
+            "N_minus_FoRIS_pp": 0.7918068119954356,
+            "N_minus_C_pp": 0.07335796768731484,
+            "N_minus_K_pp": 0.01206851969466527
+          },
+          "original": {
+            "miou": {
+              "FoRIS": 63.358900092540786,
+              "MEAN": 64.0068206614723,
+              "R0": 62.459821740627135,
+              "C": 64.08028813177404,
+              "N": 64.14066736105272,
+              "K": 64.12771527123995
+            },
+            "n": 200,
+            "observed_slots": 39,
+            "official_slots": 40,
+            "class_weight": "one/folds * one/official slots in that fold; missing slots zero",
+            "N_minus_FoRIS_pp": 0.7817672685119348,
+            "N_minus_C_pp": 0.06037922927868067,
+            "N_minus_K_pp": 0.01295208981277085
+          }
+        },
+        "paco_part": {
+          "cli": {
+            "miou": {
+              "FoRIS": 38.43805304801547,
+              "MEAN": 39.230130696500325,
+              "R0": 40.44156271615176,
+              "C": 39.49223664897052,
+              "N": 39.51786068036792,
+              "K": 39.510932640917744
+            },
+            "n": 600,
+            "observed_slots": 264,
+            "official_slots": 303,
+            "class_weight": "one/folds * one/official slots in that fold; missing slots zero",
+            "N_minus_FoRIS_pp": 1.0798076323524484,
+            "N_minus_C_pp": 0.025624031397398994,
+            "N_minus_K_pp": 0.0069280394501731735
+          },
+          "original": {
+            "miou": {
+              "FoRIS": 38.460868228740864,
+              "MEAN": 39.35204516216261,
+              "R0": 40.77494411947393,
+              "C": 39.664614980300314,
+              "N": 39.68448600755559,
+              "K": 39.67840687270631
+            },
+            "n": 600,
+            "observed_slots": 264,
+            "official_slots": 303,
+            "class_weight": "one/folds * one/official slots in that fold; missing slots zero",
+            "N_minus_FoRIS_pp": 1.2236177788147273,
+            "N_minus_C_pp": 0.01987102725527734,
+            "N_minus_K_pp": 0.00607913484927991
+          }
+        },
+        "lvis": {
+          "cli": {
+            "miou": {
+              "FoRIS": 43.7624663520515,
+              "MEAN": 43.80612875321085,
+              "R0": 42.679952365147166,
+              "C": 44.398755427206034,
+              "N": 44.31761908289179,
+              "K": 44.319063307574474
+            },
+            "n": 1400,
+            "observed_slots": 876,
+            "official_slots": 920,
+            "class_weight": "one/folds * one/official slots in that fold; missing slots zero",
+            "N_minus_FoRIS_pp": 0.555152730840291,
+            "N_minus_C_pp": -0.08113634431424543,
+            "N_minus_K_pp": -0.0014442246826860128
+          },
+          "original": {
+            "miou": {
+              "FoRIS": 43.91222887176348,
+              "MEAN": 43.872533712038106,
+              "R0": 42.77140230184776,
+              "C": 44.519548066481704,
+              "N": 44.438001876942266,
+              "K": 44.43557507107027
+            },
+            "n": 1400,
+            "observed_slots": 876,
+            "official_slots": 920,
+            "class_weight": "one/folds * one/official slots in that fold; missing slots zero",
+            "N_minus_FoRIS_pp": 0.5257730051787846,
+            "N_minus_C_pp": -0.08154618953943782,
+            "N_minus_K_pp": 0.0024268058719982832
+          }
+        },
+        "pascal_part": {
+          "cli": {
+            "miou": {
+              "FoRIS": 54.78895607506079,
+              "MEAN": 55.249268141022064,
+              "R0": 55.78515692446911,
+              "C": 55.50897353666798,
+              "N": 55.6776687919711,
+              "K": 55.65904950071573
+            },
+            "n": 2000,
+            "observed_slots": 56,
+            "official_slots": 56,
+            "class_weight": "one/folds * one/official slots in that fold; missing slots zero",
+            "N_minus_FoRIS_pp": 0.8887127169103124,
+            "N_minus_C_pp": 0.16869525530312046,
+            "N_minus_K_pp": 0.01861929125536932
+          },
+          "original": {
+            "miou": {
+              "FoRIS": 55.496177981715604,
+              "MEAN": 55.7158336912373,
+              "R0": 56.534175763344685,
+              "C": 56.25580999734204,
+              "N": 56.39476860945682,
+              "K": 56.38668635948872
+            },
+            "n": 2000,
+            "observed_slots": 56,
+            "official_slots": 56,
+            "class_weight": "one/folds * one/official slots in that fold; missing slots zero",
+            "N_minus_FoRIS_pp": 0.8985906277412141,
+            "N_minus_C_pp": 0.13895861211477722,
+            "N_minus_K_pp": 0.008082249968097699
+          }
+        },
+        "suim": {
+          "cli": {
+            "miou": {
+              "FoRIS": 59.18277477243834,
+              "MEAN": 59.26017178988875,
+              "R0": 58.426354877092955,
+              "C": 59.41988461429048,
+              "N": 59.6324599212925,
+              "K": 59.62309123430456
+            },
+            "n": 2000,
+            "observed_slots": 7,
+            "official_slots": 7,
+            "class_weight": "one/folds * one/official slots in that fold; missing slots zero",
+            "N_minus_FoRIS_pp": 0.449685148854158,
+            "N_minus_C_pp": 0.21257530700201954,
+            "N_minus_K_pp": 0.009368686987940578
+          },
+          "original": {
+            "miou": {
+              "FoRIS": 59.66031132508831,
+              "MEAN": 59.549329144708096,
+              "R0": 59.169070342495964,
+              "C": 59.907918376703876,
+              "N": 60.09540320340862,
+              "K": 60.0830510126151
+            },
+            "n": 2000,
+            "observed_slots": 7,
+            "official_slots": 7,
+            "class_weight": "one/folds * one/official slots in that fold; missing slots zero",
+            "N_minus_FoRIS_pp": 0.43509187832031415,
+            "N_minus_C_pp": 0.18748482670474687,
+            "N_minus_K_pp": 0.012352190793521345
+          }
+        }
+      },
+      "limitation": "N-K gains 0.002-0.013pp; different metric denominator from x1012.",
+      "paper_use": "development_main_result_and_budget_control",
+      "next_experiment_value": "Use K control; demand information gain beyond output size.",
+      "conclusion": "N五域完整开发涨分成立，但对同预算K的额外增量极小。",
+      "source_refs": [
+        "N6200"
+      ]
+    },
+    {
+      "id": "anchor6200",
+      "status": "fixed_candidate_failed",
+      "protocol": "CLI/original fixed official class slots",
+      "evidence": {
+        "n": 6200,
+        "arms": [
+          "B",
+          "G",
+          "R0",
+          "C",
+          "N",
+          "K",
+          "anchor_relative_complete",
+          "reference_relative_complete",
+          "same_edit_budget_foris_margin"
+        ],
+        "scores": {
+          "coco": {
+            "cli": {
+              "B": 63.170230089391055,
+              "G": 63.827314528823095,
+              "R0": 62.316423914886485,
+              "C": 63.88867893369918,
+              "N": 63.962036901386504,
+              "K": 63.94996838169183,
+              "anchor_relative_complete": 62.91307885477232,
+              "same_edit_budget_foris_margin": 62.950982443934336
+            },
+            "original": {
+              "B": 63.35890009254077,
+              "G": 64.00682066147232,
+              "R0": 62.459821740627135,
+              "C": 64.08028813177404,
+              "N": 64.14066736105275,
+              "K": 64.12771527123996,
+              "anchor_relative_complete": 63.02986316826576,
+              "same_edit_budget_foris_margin": 63.06712282052855
+            }
+          },
+          "paco_part": {
+            "cli": {
+              "B": 38.43805304801546,
+              "G": 39.23013069650031,
+              "R0": 40.441562716151765,
+              "C": 39.49223664897049,
+              "N": 39.51786068036788,
+              "K": 39.510932640917694,
+              "anchor_relative_complete": 38.36258906769402,
+              "same_edit_budget_foris_margin": 38.322916775713274
+            },
+            "original": {
+              "B": 38.46086822874081,
+              "G": 39.35204516216262,
+              "R0": 40.77494411947391,
+              "C": 39.66461498030029,
+              "N": 39.68448600755557,
+              "K": 39.67840687270629,
+              "anchor_relative_complete": 38.297528837389635,
+              "same_edit_budget_foris_margin": 38.268379664360076
+            }
+          },
+          "lvis": {
+            "cli": {
+              "B": 43.7624663520515,
+              "G": 43.80612875321079,
+              "R0": 42.67995236514722,
+              "C": 44.39875542720607,
+              "N": 44.31761908289175,
+              "K": 44.31906330757448,
+              "anchor_relative_complete": 41.20826630013122,
+              "same_edit_budget_foris_margin": 41.2184151285012
+            },
+            "original": {
+              "B": 43.912228871763475,
+              "G": 43.872533712038106,
+              "R0": 42.77140230184781,
+              "C": 44.51954806648176,
+              "N": 44.438001876942245,
+              "K": 44.43557507107028,
+              "anchor_relative_complete": 41.29886402427662,
+              "same_edit_budget_foris_margin": 41.309201038952374
+            }
+          },
+          "pascal_part": {
+            "cli": {
+              "B": 54.788956075060774,
+              "G": 55.24926814102206,
+              "R0": 55.785156924469106,
+              "C": 55.50897353666798,
+              "N": 55.6776687919711,
+              "K": 55.65904950071572,
+              "anchor_relative_complete": 55.52589662309335,
+              "same_edit_budget_foris_margin": 55.4777428839011
+            },
+            "original": {
+              "B": 55.496177981715604,
+              "G": 55.715833691237314,
+              "R0": 56.53417576334469,
+              "C": 56.25580999734204,
+              "N": 56.39476860945681,
+              "K": 56.38668635948871,
+              "anchor_relative_complete": 56.236794673944004,
+              "same_edit_budget_foris_margin": 56.190964585503735
+            }
+          },
+          "suim": {
+            "cli": {
+              "B": 59.18277477243834,
+              "G": 59.26017178988876,
+              "R0": 58.42635487709296,
+              "C": 59.41988461429048,
+              "N": 59.6324599212925,
+              "K": 59.623091234304574,
+              "anchor_relative_complete": 59.84581494213421,
+              "same_edit_budget_foris_margin": 59.82913229321298
+            },
+            "original": {
+              "B": 59.66031132508831,
+              "G": 59.5493291447081,
+              "R0": 59.169070342495964,
+              "C": 59.907918376703876,
+              "N": 60.09540320340863,
+              "K": 60.083051012615115,
+              "anchor_relative_complete": 60.27147388035493,
+              "same_edit_budget_foris_margin": 60.2482209197956
+            }
+          }
+        }
+      },
+      "limitation": "Exposed development; check separate completion/interval files for lifecycle, not old intervals_state.",
+      "paper_use": "negative_fusion_ablation",
+      "next_experiment_value": "Reuse restored true/false regions and preserve strong vetoes.",
+      "conclusion": "query-anchor恢复真覆盖同时放回更多误报，统一组合失败。",
+      "source_refs": [
+        "anchor6200"
+      ]
+    },
+    {
+      "id": "background6200",
+      "status": "fixed_candidate_failed",
+      "protocol": "CLI/original fixed official class slots",
+      "evidence": {
+        "n": 6200,
+        "arms": [
+          "B",
+          "G",
+          "R0",
+          "C",
+          "N",
+          "K",
+          "old4fd6_anchor_relative_complete",
+          "old4fd6_reference_relative_complete",
+          "old4fd6_same_edit_budget_foris_margin",
+          "background_vetted_complete",
+          "unvetted_anchor_complete",
+          "reference_only_protected_complete",
+          "same_edit_budget_foris_margin"
+        ],
+        "scores": {
+          "coco": {
+            "cli": {
+              "B": 63.170230089391055,
+              "G": 63.827314528823095,
+              "R0": 62.316423914886485,
+              "C": 63.88867893369918,
+              "N": 63.962036901386504,
+              "K": 63.94996838169183,
+              "background_vetted_complete": 63.50553490004572,
+              "same_edit_budget_foris_margin": 63.465965635165546
+            },
+            "original": {
+              "B": 63.35890009254077,
+              "G": 64.00682066147232,
+              "R0": 62.459821740627135,
+              "C": 64.08028813177404,
+              "N": 64.14066736105275,
+              "K": 64.12771527123996,
+              "background_vetted_complete": 63.65968528895252,
+              "same_edit_budget_foris_margin": 63.62849779301156
+            }
+          },
+          "paco_part": {
+            "cli": {
+              "B": 38.43805304801546,
+              "G": 39.23013069650031,
+              "R0": 40.441562716151765,
+              "C": 39.49223664897049,
+              "N": 39.51786068036788,
+              "K": 39.510932640917694,
+              "background_vetted_complete": 38.522914734358146,
+              "same_edit_budget_foris_margin": 38.455723010708034
+            },
+            "original": {
+              "B": 38.46086822874081,
+              "G": 39.35204516216262,
+              "R0": 40.77494411947391,
+              "C": 39.66461498030029,
+              "N": 39.68448600755557,
+              "K": 39.67840687270629,
+              "background_vetted_complete": 38.52028396243682,
+              "same_edit_budget_foris_margin": 38.45628608686669
+            }
+          },
+          "lvis": {
+            "cli": {
+              "B": 43.7624663520515,
+              "G": 43.80612875321079,
+              "R0": 42.67995236514722,
+              "C": 44.39875542720607,
+              "N": 44.31761908289175,
+              "K": 44.31906330757448,
+              "background_vetted_complete": 42.01328002647125,
+              "same_edit_budget_foris_margin": 42.044379353289976
+            },
+            "original": {
+              "B": 43.912228871763475,
+              "G": 43.872533712038106,
+              "R0": 42.77140230184781,
+              "C": 44.51954806648176,
+              "N": 44.438001876942245,
+              "K": 44.43557507107028,
+              "background_vetted_complete": 42.10534471793494,
+              "same_edit_budget_foris_margin": 42.14171358931146
+            }
+          },
+          "pascal_part": {
+            "cli": {
+              "B": 54.788956075060774,
+              "G": 55.24926814102206,
+              "R0": 55.785156924469106,
+              "C": 55.50897353666798,
+              "N": 55.6776687919711,
+              "K": 55.65904950071572,
+              "background_vetted_complete": 55.4636608082017,
+              "same_edit_budget_foris_margin": 55.34768304533609
+            },
+            "original": {
+              "B": 55.496177981715604,
+              "G": 55.715833691237314,
+              "R0": 56.53417576334469,
+              "C": 56.25580999734204,
+              "N": 56.39476860945681,
+              "K": 56.38668635948871,
+              "background_vetted_complete": 56.11344571591235,
+              "same_edit_budget_foris_margin": 56.00923532745153
+            }
+          },
+          "suim": {
+            "cli": {
+              "B": 59.18277477243834,
+              "G": 59.26017178988876,
+              "R0": 58.42635487709296,
+              "C": 59.41988461429048,
+              "N": 59.6324599212925,
+              "K": 59.623091234304574,
+              "background_vetted_complete": 59.87476674189063,
+              "same_edit_budget_foris_margin": 59.83707678352289
+            },
+            "original": {
+              "B": 59.66031132508831,
+              "G": 59.5493291447081,
+              "R0": 59.169070342495964,
+              "C": 59.907918376703876,
+              "N": 60.09540320340863,
+              "K": 60.083051012615115,
+              "background_vetted_complete": 60.30019378225224,
+              "same_edit_budget_foris_margin": 60.28321317522179
+            }
+          }
+        }
+      },
+      "limitation": "Exposed development; check separate completion/interval files for lifecycle, not old intervals_state.",
+      "paper_use": "negative_fusion_ablation",
+      "next_experiment_value": "Reuse restored true/false regions and preserve strong vetoes.",
+      "conclusion": "背景vetting未保住LVIS强结果，固定组合失败。",
+      "source_refs": [
+        "background6200"
+      ]
+    },
+    {
+      "id": "reference_focus",
+      "status": "local_observation_signal_candidate_failed",
+      "protocol": "Deep100/PACO100 CLI1024",
+      "evidence": {
+        "n": 200,
+        "scores": {
+          "deepglobe_road": {
+            "cli1024": {
+              "actual.equal.crf": 25.619896091531057,
+              "actual.equal.direct": 25.08942755716443,
+              "actual.global.crf": 23.07995907144705,
+              "actual.global.direct": 22.599436842340676,
+              "actual.local4.crf": 26.884547740544097,
+              "actual.local4.direct": 25.94999727705397,
+              "derived.equal.crf": 26.979235652185405,
+              "derived.equal.direct": 26.268255720644273,
+              "derived.global.crf": 23.86559105728026,
+              "derived.global.direct": 23.32472494398729,
+              "derived.local4.crf": 28.33987613015733,
+              "derived.local4.direct": 27.165384190294162,
+              "foris.crf": 29.37754198192857,
+              "mean": 26.46536898651418,
+              "region.fast": 37.34402767737843
+            },
+            "original": {
+              "actual.equal.crf": 25.619896091531057,
+              "actual.equal.direct": 25.08942755716443,
+              "actual.global.crf": 23.07995907144705,
+              "actual.global.direct": 22.599436842340676,
+              "actual.local4.crf": 26.884547740544097,
+              "actual.local4.direct": 25.94999727705397,
+              "derived.equal.crf": 26.979235652185405,
+              "derived.equal.direct": 26.268255720644273,
+              "derived.global.crf": 23.86559105728026,
+              "derived.global.direct": 23.32472494398729,
+              "derived.local4.crf": 28.33987613015733,
+              "derived.local4.direct": 27.165384190294162,
+              "foris.crf": 29.37754198192857,
+              "mean": 26.46536898651418,
+              "region.fast": 37.34402767737843
+            }
+          },
+          "paco_part": {
+            "cli1024": {
+              "actual.equal.crf": 39.056804711338415,
+              "actual.equal.direct": 38.677499827022935,
+              "actual.global.crf": 41.163913115814616,
+              "actual.global.direct": 40.690219952288665,
+              "actual.local4.crf": 36.003118687112824,
+              "actual.local4.direct": 35.65050203787247,
+              "derived.equal.crf": 35.977373895777816,
+              "derived.equal.direct": 35.83901270124777,
+              "derived.global.crf": 39.782990409425416,
+              "derived.global.direct": 39.336025158761174,
+              "derived.local4.crf": 31.91182115522993,
+              "derived.local4.direct": 32.16164645354914,
+              "foris.crf": 45.6298341011623,
+              "mean": 46.82456101898022,
+              "region.fast": 40.914271282903826
+            },
+            "original": {
+              "actual.equal.crf": 39.00870099660621,
+              "actual.equal.direct": 38.64835697934163,
+              "actual.global.crf": 41.041347872896935,
+              "actual.global.direct": 40.624326544343575,
+              "actual.local4.crf": 35.995362572313695,
+              "actual.local4.direct": 35.64410342836644,
+              "derived.equal.crf": 36.060130587459255,
+              "derived.equal.direct": 35.95265039515614,
+              "derived.global.crf": 39.76182201671935,
+              "derived.global.direct": 39.31517311332469,
+              "derived.local4.crf": 32.015762558108314,
+              "derived.local4.direct": 32.271540896671695,
+              "foris.crf": 45.56391505411723,
+              "mean": 46.68794623010742,
+              "region.fast": 40.95699782941745
+            }
+          }
+        }
+      },
+      "limitation": "True focus beats interpolation only on PACO; complete method below FoRIS.",
+      "paper_use": "local_observation_mechanism_and_negative_method",
+      "next_experiment_value": "Separate true newly encoded detail from interpolation.",
+      "conclusion": "真实参考focus在PACO有超出插值的信号，完整方法仍弱于FoRIS。",
+      "source_refs": [
+        "focus200"
+      ]
+    },
+    {
+      "id": "scene600",
+      "status": "fixed_candidate_failed",
+      "protocol": "Four datasets CLI1024/original",
+      "evidence": {
+        "deepglobe_road/cli1024": {
+          "n": 100,
+          "scores": {
+            "foris.crf": 29.37754198192857,
+            "mean": 26.46536898651418,
+            "scene.crf": 15.986348830248051,
+            "scene.direct": 15.975179788284755,
+            "source_kernel.crf": 19.910110991420577,
+            "source_kernel.direct": 21.30739117904339,
+            "support_ridge.crf": 31.54541651637209,
+            "support_ridge.direct": 31.42634986650413
+          }
+        },
+        "deepglobe_road/original": {
+          "n": 100,
+          "scores": {
+            "foris.crf": 29.37754198192857,
+            "mean": 26.46536898651418,
+            "scene.crf": 15.986348830248051,
+            "scene.direct": 15.975179788284755,
+            "source_kernel.crf": 19.910110991420577,
+            "source_kernel.direct": 21.30739117904339,
+            "support_ridge.crf": 31.54541651637209,
+            "support_ridge.direct": 31.42634986650413
+          }
+        },
+        "paco_part/cli1024": {
+          "n": 100,
+          "scores": {
+            "foris.crf": 45.6298341011623,
+            "mean": 46.82456101898022,
+            "scene.crf": 44.10047933301026,
+            "scene.direct": 43.516621014985205,
+            "source_kernel.crf": 36.231941936832996,
+            "source_kernel.direct": 36.05063880518944,
+            "support_ridge.crf": 39.03659638101027,
+            "support_ridge.direct": 38.7966428201165
+          }
+        },
+        "paco_part/cli1024/fixed303": {
+          "n": 100,
+          "scores": {
+            "foris.crf": 13.055937702241758,
+            "mean": 13.385080047535377,
+            "scene.crf": 12.662241625303494,
+            "scene.direct": 12.493914549917656,
+            "source_kernel.crf": 10.369554228905855,
+            "source_kernel.direct": 10.318974802188352,
+            "support_ridge.crf": 11.087365009597747,
+            "support_ridge.direct": 11.023816651000258
+          }
+        },
+        "paco_part/original": {
+          "n": 100,
+          "scores": {
+            "foris.crf": 45.56391505411723,
+            "mean": 46.68794623010742,
+            "scene.crf": 43.94081933167031,
+            "scene.direct": 43.356657295849125,
+            "source_kernel.crf": 36.40957043215667,
+            "source_kernel.direct": 36.15976305962687,
+            "support_ridge.crf": 39.25678181530984,
+            "support_ridge.direct": 39.014532276391876
+          }
+        },
+        "paco_part/original/fixed303": {
+          "n": 100,
+          "scores": {
+            "foris.crf": 13.038154730262399,
+            "mean": 13.347793932979057,
+            "scene.crf": 12.617985911005096,
+            "scene.direct": 12.449781969637803,
+            "source_kernel.crf": 10.415395675566893,
+            "source_kernel.direct": 10.345688100331003,
+            "support_ridge.crf": 11.146233565706417,
+            "support_ridge.direct": 11.083271938135024
+          }
+        },
+        "coco/cli1024": {
+          "n": 200,
+          "scores": {
+            "foris.crf": 63.17023008939106,
+            "mean": 63.82731452882311,
+            "scene.crf": 41.62934437893996,
+            "scene.direct": 40.89889619598435,
+            "source_kernel.crf": 46.446267611351004,
+            "source_kernel.direct": 46.021264812341975,
+            "support_ridge.crf": 51.09751152662132,
+            "support_ridge.direct": 50.640811489085735
+          }
+        },
+        "coco/original": {
+          "n": 200,
+          "scores": {
+            "foris.crf": 63.358900092540765,
+            "mean": 64.00682066147232,
+            "scene.crf": 41.19400560043671,
+            "scene.direct": 40.485976284092516,
+            "source_kernel.crf": 46.45069415985916,
+            "source_kernel.direct": 46.03991041542652,
+            "support_ridge.crf": 51.054175497767446,
+            "support_ridge.direct": 50.56400490230267
+          }
+        },
+        "lvis/cli1024": {
+          "n": 200,
+          "scores": {
+            "foris.crf": 46.67998418290914,
+            "mean": 46.262734548798015,
+            "scene.crf": 28.064456980488274,
+            "scene.direct": 27.123929245581984,
+            "source_kernel.crf": 31.45106080646458,
+            "source_kernel.direct": 31.611793216242653,
+            "support_ridge.crf": 36.47645469475012,
+            "support_ridge.direct": 35.88929014447829
+          }
+        },
+        "lvis/original": {
+          "n": 200,
+          "scores": {
+            "foris.crf": 46.84456650643817,
+            "mean": 46.32981440703368,
+            "scene.crf": 28.128531765969193,
+            "scene.direct": 27.162176732295656,
+            "source_kernel.crf": 31.53536857848116,
+            "source_kernel.direct": 31.649471110092342,
+            "support_ridge.crf": 36.55783043814919,
+            "support_ridge.direct": 35.92325035928913
+          }
+        }
+      },
+      "limitation": "Scene head is not equivalent to support-ridge control.",
+      "paper_use": "negative_ablation",
+      "next_experiment_value": "Keep ridge control and cache; do not revive current scene output.",
+      "conclusion": "当前query场景重建读出四域均输FoRIS，ridge控制须独立保留。",
+      "source_refs": [
+        "scene600"
+      ]
+    },
+    {
+      "id": "fg_anchor_replication",
+      "status": "not_replicated",
+      "protocol": "LVIS200 paired CLI/original",
+      "evidence": {
+        "state": "COMPLETE",
+        "n": 200,
+        "encoder_calls": 0,
+        "development_exposed": true,
+        "frames": {
+          "cli": {
+            "miou": {
+              "foris.crf": 45.90443576631624,
+              "foris.fg_anchor.crf": 45.53328808872242
+            },
+            "pairs": {
+              "foris.fg_anchor.crf vs foris.crf": {
+                "delta_pp": -0.37114767759381806,
+                "cases_up": 95,
+                "cases_down": 94,
+                "cases_equal": 11,
+                "edits": [
+                  3087,
+                  55254,
+                  918448,
+                  2672360
+                ],
+                "exact_miou_contributions": [
+                  0.028659880616666317,
+                  -0.33946406577041677,
+                  -6.915481297764086,
+                  6.855137805324026
+                ],
+                "edit_order": [
+                  "add_TP",
+                  "add_FP",
+                  "delete_TP",
+                  "delete_FP"
+                ]
+              }
+            },
+            "pixel": {
+              "foris.crf": {
+                "precision": 0.6274819569738409,
+                "recall": 0.7566346559310612
+              },
+              "foris.fg_anchor.crf": {
+                "precision": 0.7274966306878808,
+                "recall": 0.6899117162645371
+              }
+            },
+            "zero_intersection": {
+              "foris.crf": 11,
+              "foris.fg_anchor.crf": 25
+            },
+            "empty_predictions": {
+              "foris.crf": 0,
+              "foris.fg_anchor.crf": 11
+            },
+            "per_fold": {
+              "0": {
+                "foris.crf": 47.88607026901062,
+                "foris.fg_anchor.crf": 47.32517857379125
+              },
+              "1": {
+                "foris.crf": 49.04860267016933,
+                "foris.fg_anchor.crf": 42.94725760819408
+              },
+              "2": {
+                "foris.crf": 51.92706041391549,
+                "foris.fg_anchor.crf": 52.289676696714444
+              },
+              "3": {
+                "foris.crf": 50.39919925854632,
+                "foris.fg_anchor.crf": 57.605377783502604
+              },
+              "4": {
+                "foris.crf": 42.478895380037216,
+                "foris.fg_anchor.crf": 43.93641940302614
+              },
+              "5": {
+                "foris.crf": 37.53964677880066,
+                "foris.fg_anchor.crf": 37.432580206075436
+              },
+              "6": {
+                "foris.crf": 43.18742487119748,
+                "foris.fg_anchor.crf": 41.20406946288979
+              },
+              "7": {
+                "foris.crf": 47.63517047284991,
+                "foris.fg_anchor.crf": 44.32405655371844
+              },
+              "8": {
+                "foris.crf": 37.705290337177935,
+                "foris.fg_anchor.crf": 39.40026575939294
+              },
+              "9": {
+                "foris.crf": 51.236997211457506,
+                "foris.fg_anchor.crf": 48.867998839919174
+              }
+            }
+          },
+          "original": {
+            "miou": {
+              "foris.crf": 46.00856632159231,
+              "foris.fg_anchor.crf": 45.63790025785482
+            },
+            "pairs": {
+              "foris.fg_anchor.crf vs foris.crf": {
+                "delta_pp": -0.3706660637374952,
+                "cases_up": 93,
+                "cases_down": 96,
+                "cases_equal": 11,
+                "edits": [
+                  885,
+                  13297,
+                  233448,
+                  702659
+                ],
+                "exact_miou_contributions": [
+                  0.028905316934520062,
+                  -0.3449084883864994,
+                  -6.903366313709578,
+                  6.848703421424049
+                ],
+                "edit_order": [
+                  "add_TP",
+                  "add_FP",
+                  "delete_TP",
+                  "delete_FP"
+                ]
+              }
+            },
+            "pixel": {
+              "foris.crf": {
+                "precision": 0.628857830590429,
+                "recall": 0.7558284929310848
+              },
+              "foris.fg_anchor.crf": {
+                "precision": 0.7331948770993069,
+                "recall": 0.690052665801395
+              }
+            },
+            "zero_intersection": {
+              "foris.crf": 11,
+              "foris.fg_anchor.crf": 26
+            },
+            "empty_predictions": {
+              "foris.crf": 0,
+              "foris.fg_anchor.crf": 12
+            },
+            "per_fold": {
+              "0": {
+                "foris.crf": 48.17955302570442,
+                "foris.fg_anchor.crf": 47.50572300463653
+              },
+              "1": {
+                "foris.crf": 49.22869307534053,
+                "foris.fg_anchor.crf": 43.00580014110851
+              },
+              "2": {
+                "foris.crf": 52.125810404561356,
+                "foris.fg_anchor.crf": 52.52795310122618
+              },
+              "3": {
+                "foris.crf": 50.51052244532114,
+                "foris.fg_anchor.crf": 57.78282903388489
+              },
+              "4": {
+                "foris.crf": 42.50915188493863,
+                "foris.fg_anchor.crf": 43.86848565487729
+              },
+              "5": {
+                "foris.crf": 37.69723019523228,
+                "foris.fg_anchor.crf": 37.573179413726784
+              },
+              "6": {
+                "foris.crf": 43.374815115222376,
+                "foris.fg_anchor.crf": 41.42010241417842
+              },
+              "7": {
+                "foris.crf": 47.71069299268852,
+                "foris.fg_anchor.crf": 44.45849171955227
+              },
+              "8": {
+                "foris.crf": 37.866872451112094,
+                "foris.fg_anchor.crf": 39.61014919406348
+              },
+              "9": {
+                "foris.crf": 50.882321625801815,
+                "foris.fg_anchor.crf": 48.62628890129383
+              }
+            }
+          }
+        },
+        "inference_wall_seconds": 150.74513533292338,
+        "scope": "one photo-disjoint candidate replication; previously diagnosed development pool"
+      },
+      "limitation": "Earlier +2.343 on pilot100 did not replicate.",
+      "paper_use": "failed_replication",
+      "next_experiment_value": "Reuse paired200 edit costs and explain pilot optimism.",
+      "conclusion": "FG-anchor旧100的收益未在新200复现。",
+      "source_refs": [
+        "fg_anchor"
+      ]
+    },
+    {
+      "id": "A7",
+      "status": "mixed_development_result",
+      "protocol": "x1012 CLI1024 observed fold-class equal weights",
+      "evidence": {
+        "n": 1360,
+        "scores": {
+          "coco": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 64.78584308563866,
+              "delta_to_foris_pp": 0.0
+            },
+            "IND0": {
+              "n": 150,
+              "class_miou": 55.163850731841684,
+              "delta_to_foris_pp": -9.621992353796976
+            },
+            "IND0_crf": {
+              "n": 150,
+              "class_miou": 55.80086186940589,
+              "delta_to_foris_pp": -8.984981216232768
+            },
+            "IND_graph": {
+              "n": 150,
+              "class_miou": 56.30277449500907,
+              "delta_to_foris_pp": -8.483068590629593
+            }
+          },
+          "lvis": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 46.5295358443143,
+              "delta_to_foris_pp": 0.0
+            },
+            "IND0": {
+              "n": 150,
+              "class_miou": 43.29219149641208,
+              "delta_to_foris_pp": -3.237344347902223
+            },
+            "IND0_crf": {
+              "n": 150,
+              "class_miou": 44.93599996883957,
+              "delta_to_foris_pp": -1.5935358754747355
+            },
+            "IND_graph": {
+              "n": 150,
+              "class_miou": 44.74960390122976,
+              "delta_to_foris_pp": -1.7799319430845415
+            }
+          },
+          "pascal_part": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 55.59010818676167,
+              "delta_to_foris_pp": 0.0
+            },
+            "IND0": {
+              "n": 150,
+              "class_miou": 57.003711287892486,
+              "delta_to_foris_pp": 1.4136031011308177
+            },
+            "IND0_crf": {
+              "n": 150,
+              "class_miou": 57.48974485441763,
+              "delta_to_foris_pp": 1.8996366676559617
+            },
+            "IND_graph": {
+              "n": 150,
+              "class_miou": 57.69850944403102,
+              "delta_to_foris_pp": 2.1084012572693496
+            }
+          },
+          "paco_part": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 42.40592870881469,
+              "delta_to_foris_pp": 0.0
+            },
+            "IND0": {
+              "n": 150,
+              "class_miou": 47.550515068612086,
+              "delta_to_foris_pp": 5.144586359797394
+            },
+            "IND0_crf": {
+              "n": 150,
+              "class_miou": 48.15525738878622,
+              "delta_to_foris_pp": 5.749328679971526
+            },
+            "IND_graph": {
+              "n": 150,
+              "class_miou": 48.276626523565916,
+              "delta_to_foris_pp": 5.8706978147512245
+            }
+          },
+          "suim": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 58.84849885799359,
+              "delta_to_foris_pp": 0.0
+            },
+            "IND0": {
+              "n": 150,
+              "class_miou": 52.207245853321886,
+              "delta_to_foris_pp": -6.641253004671704
+            },
+            "IND0_crf": {
+              "n": 150,
+              "class_miou": 52.74631623007955,
+              "delta_to_foris_pp": -6.10218262791404
+            },
+            "IND_graph": {
+              "n": 150,
+              "class_miou": 53.625859745299444,
+              "delta_to_foris_pp": -5.2226391126941465
+            }
+          },
+          "isaid": {
+            "FoRIS": {
+              "n": 60,
+              "class_miou": 50.42561039084567,
+              "delta_to_foris_pp": 0.0
+            },
+            "IND0": {
+              "n": 60,
+              "class_miou": 50.2081978631898,
+              "delta_to_foris_pp": -0.21741252765586694
+            },
+            "IND0_crf": {
+              "n": 60,
+              "class_miou": 50.04090357864539,
+              "delta_to_foris_pp": -0.38470681220027814
+            },
+            "IND_graph": {
+              "n": 60,
+              "class_miou": 51.25932167534962,
+              "delta_to_foris_pp": 0.8337112845039485
+            }
+          },
+          "isic": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 63.12197124232862,
+              "delta_to_foris_pp": 0.0
+            },
+            "IND0": {
+              "n": 150,
+              "class_miou": 59.13755249486885,
+              "delta_to_foris_pp": -3.9844187474597703
+            },
+            "IND0_crf": {
+              "n": 150,
+              "class_miou": 59.45658490705504,
+              "delta_to_foris_pp": -3.665386335273581
+            },
+            "IND_graph": {
+              "n": 150,
+              "class_miou": 60.06083965892926,
+              "delta_to_foris_pp": -3.0611315833993586
+            }
+          },
+          "lung": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 87.15629494745525,
+              "delta_to_foris_pp": 0.0
+            },
+            "IND0": {
+              "n": 150,
+              "class_miou": 86.58490977969272,
+              "delta_to_foris_pp": -0.5713851677625286
+            },
+            "IND0_crf": {
+              "n": 150,
+              "class_miou": 86.87524026759773,
+              "delta_to_foris_pp": -0.28105467985751886
+            },
+            "IND_graph": {
+              "n": 150,
+              "class_miou": 89.76576525066291,
+              "delta_to_foris_pp": 2.609470303207658
+            }
+          },
+          "fundus": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 19.011555438176043,
+              "delta_to_foris_pp": 0.0
+            },
+            "IND0": {
+              "n": 150,
+              "class_miou": 28.154693016333947,
+              "delta_to_foris_pp": 9.143137578157905
+            },
+            "IND0_crf": {
+              "n": 150,
+              "class_miou": 24.17643834721993,
+              "delta_to_foris_pp": 5.164882909043886
+            },
+            "IND_graph": {
+              "n": 150,
+              "class_miou": 29.6605803930044,
+              "delta_to_foris_pp": 10.649024954828356
+            }
+          },
+          "deepglobe_road": {
+            "FoRIS": {
+              "n": 100,
+              "class_miou": 29.37754198192857,
+              "delta_to_foris_pp": 0.0
+            },
+            "IND0": {
+              "n": 100,
+              "class_miou": 31.309537671009277,
+              "delta_to_foris_pp": 1.9319956890807077
+            },
+            "IND0_crf": {
+              "n": 100,
+              "class_miou": 30.514878177001656,
+              "delta_to_foris_pp": 1.137336195073086
+            },
+            "IND_graph": {
+              "n": 100,
+              "class_miou": 30.137169791947446,
+              "delta_to_foris_pp": 0.7596278100188769
+            }
+          }
+        }
+      },
+      "limitation": "1360 exposed development episodes; not uniformly above FoRIS.",
+      "paper_use": "component_ablation",
+      "next_experiment_value": "Graph improves weak base but must preserve road and strong domains.",
+      "conclusion": "图平滑改善IND0但伤道路，CRF也不是跨域通用补救。",
+      "source_refs": [
+        "A7"
+      ]
+    },
+    {
+      "id": "A4_mod",
+      "status": "mixed_development_result",
+      "protocol": "x1012 CLI1024 observed fold-class equal weights",
+      "evidence": {
+        "n": 1360,
+        "scores": {
+          "coco": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 64.78584308563866,
+              "delta_to_foris_pp": 0.0
+            },
+            "IND0": {
+              "n": 150,
+              "class_miou": 55.163850731841684,
+              "delta_to_foris_pp": -9.621992353796976
+            },
+            "INDN": {
+              "n": 150,
+              "class_miou": 60.66940217925258,
+              "delta_to_foris_pp": -4.116440906386082
+            },
+            "J_continuous": {
+              "n": 150,
+              "class_miou": 61.123200060895016,
+              "delta_to_foris_pp": -3.6626430247436446
+            }
+          },
+          "lvis": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 46.5295358443143,
+              "delta_to_foris_pp": 0.0
+            },
+            "IND0": {
+              "n": 150,
+              "class_miou": 43.29219149641208,
+              "delta_to_foris_pp": -3.237344347902223
+            },
+            "INDN": {
+              "n": 150,
+              "class_miou": 45.80279750045868,
+              "delta_to_foris_pp": -0.7267383438556223
+            },
+            "J_continuous": {
+              "n": 150,
+              "class_miou": 46.913648971854535,
+              "delta_to_foris_pp": 0.38411312754023186
+            }
+          },
+          "pascal_part": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 55.59010818676167,
+              "delta_to_foris_pp": 0.0
+            },
+            "IND0": {
+              "n": 150,
+              "class_miou": 57.003711287892486,
+              "delta_to_foris_pp": 1.4136031011308177
+            },
+            "INDN": {
+              "n": 150,
+              "class_miou": 50.58250589798098,
+              "delta_to_foris_pp": -5.007602288780689
+            },
+            "J_continuous": {
+              "n": 150,
+              "class_miou": 57.61314670940966,
+              "delta_to_foris_pp": 2.023038522647994
+            }
+          },
+          "paco_part": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 42.40592870881469,
+              "delta_to_foris_pp": 0.0
+            },
+            "IND0": {
+              "n": 150,
+              "class_miou": 47.550515068612086,
+              "delta_to_foris_pp": 5.144586359797394
+            },
+            "INDN": {
+              "n": 150,
+              "class_miou": 41.364082461737155,
+              "delta_to_foris_pp": -1.0418462470775367
+            },
+            "J_continuous": {
+              "n": 150,
+              "class_miou": 47.92654346469047,
+              "delta_to_foris_pp": 5.520614755875776
+            }
+          },
+          "suim": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 58.84849885799359,
+              "delta_to_foris_pp": 0.0
+            },
+            "IND0": {
+              "n": 150,
+              "class_miou": 52.207245853321886,
+              "delta_to_foris_pp": -6.641253004671704
+            },
+            "INDN": {
+              "n": 150,
+              "class_miou": 46.9169907825527,
+              "delta_to_foris_pp": -11.931508075440888
+            },
+            "J_continuous": {
+              "n": 150,
+              "class_miou": 54.91089641586317,
+              "delta_to_foris_pp": -3.9376024421304194
+            }
+          },
+          "isaid": {
+            "FoRIS": {
+              "n": 60,
+              "class_miou": 50.42561039084567,
+              "delta_to_foris_pp": 0.0
+            },
+            "IND0": {
+              "n": 60,
+              "class_miou": 50.2081978631898,
+              "delta_to_foris_pp": -0.21741252765586694
+            },
+            "INDN": {
+              "n": 60,
+              "class_miou": 53.03601894098336,
+              "delta_to_foris_pp": 2.6104085501376915
+            },
+            "J_continuous": {
+              "n": 60,
+              "class_miou": 54.73190320796355,
+              "delta_to_foris_pp": 4.306292817117878
+            }
+          },
+          "isic": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 63.12197124232862,
+              "delta_to_foris_pp": 0.0
+            },
+            "IND0": {
+              "n": 150,
+              "class_miou": 59.13755249486885,
+              "delta_to_foris_pp": -3.9844187474597703
+            },
+            "INDN": {
+              "n": 150,
+              "class_miou": 55.16185850887653,
+              "delta_to_foris_pp": -7.9601127334520925
+            },
+            "J_continuous": {
+              "n": 150,
+              "class_miou": 58.840300610380304,
+              "delta_to_foris_pp": -4.281670631948316
+            }
+          },
+          "lung": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 87.15629494745525,
+              "delta_to_foris_pp": 0.0
+            },
+            "IND0": {
+              "n": 150,
+              "class_miou": 86.58490977969272,
+              "delta_to_foris_pp": -0.5713851677625286
+            },
+            "INDN": {
+              "n": 150,
+              "class_miou": 86.09085452703081,
+              "delta_to_foris_pp": -1.0654404204244372
+            },
+            "J_continuous": {
+              "n": 150,
+              "class_miou": 86.54108616256175,
+              "delta_to_foris_pp": -0.6152087848934968
+            }
+          },
+          "fundus": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 19.011555438176043,
+              "delta_to_foris_pp": 0.0
+            },
+            "IND0": {
+              "n": 150,
+              "class_miou": 28.154693016333947,
+              "delta_to_foris_pp": 9.143137578157905
+            },
+            "INDN": {
+              "n": 150,
+              "class_miou": 27.277624894163413,
+              "delta_to_foris_pp": 8.26606945598737
+            },
+            "J_continuous": {
+              "n": 150,
+              "class_miou": 28.306985910690543,
+              "delta_to_foris_pp": 9.2954304725145
+            }
+          },
+          "deepglobe_road": {
+            "FoRIS": {
+              "n": 100,
+              "class_miou": 29.37754198192857,
+              "delta_to_foris_pp": 0.0
+            },
+            "IND0": {
+              "n": 100,
+              "class_miou": 31.309537671009277,
+              "delta_to_foris_pp": 1.9319956890807077
+            },
+            "INDN": {
+              "n": 100,
+              "class_miou": 31.398676328767245,
+              "delta_to_foris_pp": 2.021134346838675
+            },
+            "J_continuous": {
+              "n": 100,
+              "class_miou": 32.41246147397708,
+              "delta_to_foris_pp": 3.0349194920485125
+            }
+          }
+        }
+      },
+      "limitation": "1360 exposed development episodes; not uniformly above FoRIS.",
+      "paper_use": "proxy_and_complete_output_ablation",
+      "next_experiment_value": "High AUROC does not establish ten-domain segmentation; retain complete output.",
+      "conclusion": "合法J调制有局部增益，高预测AUC未兑换成十域完整优势。",
+      "source_refs": [
+        "A4_mod"
+      ]
+    },
+    {
+      "id": "B4",
+      "status": "mixed_development_result",
+      "protocol": "x1012 CLI1024 observed fold-class equal weights",
+      "evidence": {
+        "n": 1360,
+        "scores": {
+          "coco": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 64.78584308563866,
+              "delta_to_foris_pp": 0.0
+            },
+            "MEAN": {
+              "n": 150,
+              "class_miou": 65.73628099261855,
+              "delta_to_foris_pp": 0.9504379069798858
+            },
+            "VP_thin09": {
+              "n": 150,
+              "class_miou": 62.49697359743795,
+              "delta_to_foris_pp": -2.28886948820071
+            }
+          },
+          "lvis": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 46.5295358443143,
+              "delta_to_foris_pp": 0.0
+            },
+            "MEAN": {
+              "n": 150,
+              "class_miou": 45.954649574443465,
+              "delta_to_foris_pp": -0.5748862698708379
+            },
+            "VP_thin09": {
+              "n": 150,
+              "class_miou": 44.71464125059016,
+              "delta_to_foris_pp": -1.8148945937241407
+            }
+          },
+          "pascal_part": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 55.59010818676167,
+              "delta_to_foris_pp": 0.0
+            },
+            "MEAN": {
+              "n": 150,
+              "class_miou": 56.13503677367359,
+              "delta_to_foris_pp": 0.5449285869119223
+            },
+            "VP_thin09": {
+              "n": 150,
+              "class_miou": 55.32409725602792,
+              "delta_to_foris_pp": -0.26601093073374926
+            }
+          },
+          "paco_part": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 42.40592870881469,
+              "delta_to_foris_pp": 0.0
+            },
+            "MEAN": {
+              "n": 150,
+              "class_miou": 43.70860283976793,
+              "delta_to_foris_pp": 1.3026741309532355
+            },
+            "VP_thin09": {
+              "n": 150,
+              "class_miou": 46.182486815337626,
+              "delta_to_foris_pp": 3.776558106522934
+            }
+          },
+          "suim": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 58.84849885799359,
+              "delta_to_foris_pp": 0.0
+            },
+            "MEAN": {
+              "n": 150,
+              "class_miou": 58.342899786143505,
+              "delta_to_foris_pp": -0.5055990718500851
+            },
+            "VP_thin09": {
+              "n": 150,
+              "class_miou": 59.088847385838314,
+              "delta_to_foris_pp": 0.2403485278447235
+            }
+          },
+          "isaid": {
+            "FoRIS": {
+              "n": 60,
+              "class_miou": 50.42561039084567,
+              "delta_to_foris_pp": 0.0
+            },
+            "MEAN": {
+              "n": 60,
+              "class_miou": 49.83357357591885,
+              "delta_to_foris_pp": -0.5920368149268214
+            },
+            "VP_thin09": {
+              "n": 60,
+              "class_miou": 52.95940488708019,
+              "delta_to_foris_pp": 2.5337944962345205
+            }
+          },
+          "isic": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 63.12197124232862,
+              "delta_to_foris_pp": 0.0
+            },
+            "MEAN": {
+              "n": 150,
+              "class_miou": 64.13605962036554,
+              "delta_to_foris_pp": 1.0140883780369236
+            },
+            "VP_thin09": {
+              "n": 150,
+              "class_miou": 60.64112091493556,
+              "delta_to_foris_pp": -2.480850327393057
+            }
+          },
+          "lung": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 87.15629494745525,
+              "delta_to_foris_pp": 0.0
+            },
+            "MEAN": {
+              "n": 150,
+              "class_miou": 88.0364857409956,
+              "delta_to_foris_pp": 0.8801907935403506
+            },
+            "VP_thin09": {
+              "n": 150,
+              "class_miou": 86.72785560675331,
+              "delta_to_foris_pp": -0.42843934070194223
+            }
+          },
+          "fundus": {
+            "FoRIS": {
+              "n": 150,
+              "class_miou": 19.011555438176043,
+              "delta_to_foris_pp": 0.0
+            },
+            "MEAN": {
+              "n": 150,
+              "class_miou": 17.515507247824576,
+              "delta_to_foris_pp": -1.4960481903514662
+            },
+            "VP_thin09": {
+              "n": 150,
+              "class_miou": 34.05226792564366,
+              "delta_to_foris_pp": 15.04071248746762
+            }
+          },
+          "deepglobe_road": {
+            "FoRIS": {
+              "n": 100,
+              "class_miou": 29.37754198192857,
+              "delta_to_foris_pp": 0.0
+            },
+            "MEAN": {
+              "n": 100,
+              "class_miou": 26.46536898651418,
+              "delta_to_foris_pp": -2.912172995414391
+            },
+            "VP_thin09": {
+              "n": 100,
+              "class_miou": 30.278100484233185,
+              "delta_to_foris_pp": 0.9005585023046159
+            }
+          }
+        }
+      },
+      "limitation": "1360 exposed development episodes; not uniformly above FoRIS.",
+      "paper_use": "complete_negative_development",
+      "next_experiment_value": "New work needs different information or spatial readout rather than repeated combinations.",
+      "conclusion": "固定组件组装未过开发统一门槛。",
+      "source_refs": [
+        "B4"
+      ]
+    },
+    {
+      "id": "C1",
+      "status": "confirmation_failed",
+      "protocol": "x1012 CLI1024 observed fold-class equal weights",
+      "evidence": {
+        "n": 2136,
+        "scores": {
+          "coco": {
+            "FoRIS": {
+              "n": 360,
+              "class_miou": 62.644859336558746,
+              "delta_to_foris_pp": 0.0,
+              "paired_query_photo_bootstrap95_pp": [
+                0.0,
+                0.0
+              ]
+            },
+            "candidate": {
+              "n": 360,
+              "class_miou": 60.369208153772284,
+              "delta_to_foris_pp": -2.2756511827864614,
+              "paired_query_photo_bootstrap95_pp": [
+                -4.753220958367552,
+                -0.6328678382597822
+              ]
+            }
+          },
+          "lvis": {
+            "FoRIS": {
+              "n": 161,
+              "class_miou": 47.86054777839757,
+              "delta_to_foris_pp": 0.0,
+              "paired_query_photo_bootstrap95_pp": [
+                0.0,
+                0.0
+              ]
+            },
+            "candidate": {
+              "n": 161,
+              "class_miou": 46.99499699154306,
+              "delta_to_foris_pp": -0.8655507868545058,
+              "paired_query_photo_bootstrap95_pp": [
+                -2.7563296291276944,
+                1.8337874640957283
+              ]
+            }
+          },
+          "pascal_part": {
+            "FoRIS": {
+              "n": 369,
+              "class_miou": 52.30068793729796,
+              "delta_to_foris_pp": 0.0,
+              "paired_query_photo_bootstrap95_pp": [
+                0.0,
+                0.0
+              ]
+            },
+            "candidate": {
+              "n": 369,
+              "class_miou": 52.96804413015878,
+              "delta_to_foris_pp": 0.6673561928608223,
+              "paired_query_photo_bootstrap95_pp": [
+                -0.725990991674667,
+                1.8922375647561565
+              ]
+            }
+          },
+          "paco_part": {
+            "FoRIS": {
+              "n": 1051,
+              "class_miou": 41.565324761626385,
+              "delta_to_foris_pp": 0.0,
+              "paired_query_photo_bootstrap95_pp": [
+                0.0,
+                0.0
+              ]
+            },
+            "candidate": {
+              "n": 1051,
+              "class_miou": 42.70544006277578,
+              "delta_to_foris_pp": 1.1401153011493932,
+              "paired_query_photo_bootstrap95_pp": [
+                0.25337494309046266,
+                2.1674454005460273
+              ]
+            }
+          },
+          "suim": {
+            "FoRIS": {
+              "n": 60,
+              "class_miou": 58.38870282620061,
+              "delta_to_foris_pp": 0.0,
+              "paired_query_photo_bootstrap95_pp": [
+                0.0,
+                0.0
+              ]
+            },
+            "candidate": {
+              "n": 60,
+              "class_miou": 56.75894099098292,
+              "delta_to_foris_pp": -1.6297618352176855,
+              "paired_query_photo_bootstrap95_pp": [
+                -6.625860622831378,
+                1.6856543377185544
+              ]
+            }
+          },
+          "isaid": {
+            "FoRIS": {
+              "n": 75,
+              "class_miou": 58.18835639228415,
+              "delta_to_foris_pp": 0.0,
+              "paired_query_photo_bootstrap95_pp": [
+                0.0,
+                0.0
+              ]
+            },
+            "candidate": {
+              "n": 75,
+              "class_miou": 59.88388519551753,
+              "delta_to_foris_pp": 1.6955288032333797,
+              "paired_query_photo_bootstrap95_pp": [
+                -1.2241556328263694,
+                4.657144630625432
+              ]
+            }
+          },
+          "isic": {
+            "FoRIS": {
+              "n": 30,
+              "class_miou": 59.820000411001935,
+              "delta_to_foris_pp": 0.0,
+              "paired_query_photo_bootstrap95_pp": [
+                0.0,
+                0.0
+              ]
+            },
+            "candidate": {
+              "n": 30,
+              "class_miou": 54.49948273122593,
+              "delta_to_foris_pp": -5.320517679776003,
+              "paired_query_photo_bootstrap95_pp": [
+                -9.535731467270564,
+                -1.5229079057800436
+              ]
+            }
+          },
+          "lung": {
+            "FoRIS": {
+              "n": 10,
+              "class_miou": 89.34142623590775,
+              "delta_to_foris_pp": 0.0,
+              "paired_query_photo_bootstrap95_pp": [
+                0.0,
+                0.0
+              ]
+            },
+            "candidate": {
+              "n": 10,
+              "class_miou": 88.94339334900445,
+              "delta_to_foris_pp": -0.3980328869032945,
+              "paired_query_photo_bootstrap95_pp": [
+                -2.0543923305901757,
+                1.2198628528401332
+              ]
+            }
+          },
+          "fundus": {
+            "FoRIS": {
+              "n": 10,
+              "class_miou": 18.58556763583497,
+              "delta_to_foris_pp": 0.0,
+              "paired_query_photo_bootstrap95_pp": [
+                0.0,
+                0.0
+              ]
+            },
+            "candidate": {
+              "n": 10,
+              "class_miou": 34.13244682475843,
+              "delta_to_foris_pp": 15.546879188923462,
+              "paired_query_photo_bootstrap95_pp": [
+                12.387665533115092,
+                18.091572137993374
+              ]
+            }
+          },
+          "deepglobe_road": {
+            "FoRIS": {
+              "n": 10,
+              "class_miou": 26.997899496545998,
+              "delta_to_foris_pp": 0.0,
+              "paired_query_photo_bootstrap95_pp": [
+                0.0,
+                0.0
+              ]
+            },
+            "candidate": {
+              "n": 10,
+              "class_miou": 29.99210772311046,
+              "delta_to_foris_pp": 2.9942082265644636,
+              "paired_query_photo_bootstrap95_pp": [
+                -2.7229915197311803,
+                7.915476250807919
+              ]
+            }
+          }
+        }
+      },
+      "limitation": "C1 once frozen; seven domains old photos/new pairs; no full official benchmark claim.",
+      "paper_use": "frozen_confirmation_with_local_positive_and_overall_negative",
+      "next_experiment_value": "Retain PACO/Fundus cues and full negative-domain evidence; do not retune confirmation.",
+      "conclusion": "VP_thin09一次确认五域正五域负，PACO/Fundus局部成立而十域目标失败。",
+      "source_refs": [
+        "C1",
+        "C1_complete"
+      ]
+    },
+    {
+      "id": "A6",
+      "status": "oracle_only_and_stopped_by_gate",
+      "protocol": "11477 tasks; LVIS2684 small-target episode oracle",
+      "evidence": {
+        "state": "COMPLETE_GEOMETRY_GATE_CLOSED",
+        "cohort": "explore",
+        "n": 11477,
+        "complete_plan_cohort": true,
+        "lvis_small_target_episode_oracle": {
+          "kmeans16": {
+            "n": 2684,
+            "episode_mean_iou": 25.74791353790167
+          },
+          "kmeans32": {
+            "n": 2684,
+            "episode_mean_iou": 38.79568278487341
+          },
+          "kmeans64": {
+            "n": 2684,
+            "episode_mean_iou": 48.13490706461491
+          },
+          "kmeans128": {
+            "n": 2684,
+            "episode_mean_iou": 53.677107544007214
+          },
+          "kmeans256": {
+            "n": 2684,
+            "episode_mean_iou": 57.55805414913168
+          },
+          "average_tau0.5": {
+            "n": 2684,
+            "episode_mean_iou": 21.762316670849287
+          },
+          "average_tau0.6": {
+            "n": 2684,
+            "episode_mean_iou": 33.03160972821176
+          },
+          "average_tau0.7": {
+            "n": 2684,
+            "episode_mean_iou": 43.276922141932246
+          },
+          "spatial64": {
+            "n": 2684,
+            "episode_mean_iou": 39.769736375690854
+          }
+        },
+        "best_lvis_small_oracle": 57.55805414913168,
+        "region_geometry_bottleneck": true,
+        "supervised_diagnostics_enabled": false,
+        "gate": "LVIS <2% target: exact per-episode union-oracle mean; GT-majority is not the gate",
+        "new_encoder_calls": 0,
+        "confirm_scored": false,
+        "reason": "Even exact region IoU oracle below 70 on LVIS small targets; supervised head not run"
+      },
+      "limitation": "LVIS同2684小目标逐例IoU均值FoRIS32.814、K64 oracle48.135、K256 oracle57.558。70是旧计划门槛，不是相对FoRIS可行性的必要条件。",
+      "paper_use": "oracle_capacity_mechanism",
+      "next_experiment_value": "优先固定区域描述子能力诊断及照片隔离/LODO；不把诊断头晋级为免训练方法。",
+      "conclusion": "A6按历史70门槛止损；区域oracle仍高于同档FoRIS，监督head/LODO未测，不能判该方向无信息。",
+      "source_refs": [
+        "A6"
+      ],
+      "review_correction": "2026-10-12 cleanup: distinguish historical stopping rule from research feasibility; no source scores changed."
+    },
+    {
+      "id": "B3",
+      "status": "fixed_gate_failed",
+      "protocol": "5297 explore tasks",
+      "evidence": {
+        "state": "COMPLETE_EXPLORE_ONLY",
+        "n": 5297,
+        "gate_state": "NO_GATE_SATISFIES_EXPLORE_CRITERION",
+        "selected_arm": "IND0",
+        "threshold": null,
+        "confirm_scored": false,
+        "new_encoder_calls": 0
+      },
+      "limitation": "No universal rho gate; no confirm scored.",
+      "paper_use": "negative_gate_ablation",
+      "next_experiment_value": "No universal rho gate; avoid repeat threshold scans.",
+      "conclusion": "没有固定rho门控满足开发十域条件。",
+      "source_refs": [
+        "B3"
+      ]
+    },
+    {
+      "id": "B1",
+      "status": "multi_reference_diagnostic_success",
+      "protocol": "K1/K3 common4585, CLI1024 class IoU",
+      "evidence": {
+        "n": 5881,
+        "availability": {
+          "coco": {
+            "1": 133,
+            "2": 129,
+            "3": 129,
+            "5": 128
+          },
+          "lvis": {
+            "1": 2116,
+            "2": 1496,
+            "3": 1008,
+            "5": 0
+          },
+          "pascal_part": {
+            "1": 1493,
+            "2": 1493,
+            "3": 1493,
+            "5": 1493
+          },
+          "paco_part": {
+            "1": 284,
+            "2": 126,
+            "3": 105,
+            "5": 72
+          },
+          "suim": {
+            "1": 977,
+            "2": 977,
+            "3": 977,
+            "5": 977
+          },
+          "isaid": {
+            "1": 36,
+            "2": 31,
+            "3": 31,
+            "5": 30
+          },
+          "isic": {
+            "1": 476,
+            "2": 476,
+            "3": 476,
+            "5": 476
+          },
+          "lung": {
+            "1": 155,
+            "2": 155,
+            "3": 155,
+            "5": 155
+          },
+          "fundus": {
+            "1": 114,
+            "2": 114,
+            "3": 114,
+            "5": 114
+          },
+          "deepglobe_road": {
+            "1": 97,
+            "2": 97,
+            "3": 97,
+            "5": 97
+          }
+        },
+        "K3": {
+          "coco": {
+            "FoRIS": {
+              "n": 129,
+              "class_miou": 62.64048956237673,
+              "delta_to_foris_pp": 0.0
+            },
+            "K1/IND0": {
+              "n": 129,
+              "class_miou": 48.44996480903753,
+              "delta_to_foris_pp": -14.190524753339197
+            },
+            "K1/IND0/oracle_threshold": {
+              "n": 129,
+              "class_miou": 64.125774404316,
+              "delta_to_foris_pp": 1.4852848419392757
+            },
+            "K3/IND0": {
+              "n": 129,
+              "class_miou": 65.86758597207596,
+              "delta_to_foris_pp": 3.2270964096992287
+            },
+            "K3/IND0/oracle_threshold": {
+              "n": 129,
+              "class_miou": 77.77273699453211,
+              "delta_to_foris_pp": 15.132247432155381
+            }
+          },
+          "lvis": {
+            "FoRIS": {
+              "n": 1008,
+              "class_miou": 42.984195448551496,
+              "delta_to_foris_pp": 0.0
+            },
+            "K1/IND0": {
+              "n": 1008,
+              "class_miou": 38.49076405984935,
+              "delta_to_foris_pp": -4.493431388702149
+            },
+            "K1/IND0/oracle_threshold": {
+              "n": 1008,
+              "class_miou": 52.02856122068469,
+              "delta_to_foris_pp": 9.044365772133197
+            },
+            "K3/IND0": {
+              "n": 1008,
+              "class_miou": 49.75098869495818,
+              "delta_to_foris_pp": 6.766793246406685
+            },
+            "K3/IND0/oracle_threshold": {
+              "n": 1008,
+              "class_miou": 57.45961257107235,
+              "delta_to_foris_pp": 14.475417122520852
+            }
+          },
+          "pascal_part": {
+            "FoRIS": {
+              "n": 1493,
+              "class_miou": 52.844998907410016,
+              "delta_to_foris_pp": 0.0
+            },
+            "K1/IND0": {
+              "n": 1493,
+              "class_miou": 53.316106346998104,
+              "delta_to_foris_pp": 0.47110743958808854
+            },
+            "K1/IND0/oracle_threshold": {
+              "n": 1493,
+              "class_miou": 63.403749208629,
+              "delta_to_foris_pp": 10.558750301218986
+            },
+            "K3/IND0": {
+              "n": 1493,
+              "class_miou": 61.44820920561688,
+              "delta_to_foris_pp": 8.60321029820686
+            },
+            "K3/IND0/oracle_threshold": {
+              "n": 1493,
+              "class_miou": 69.53652447662718,
+              "delta_to_foris_pp": 16.691525569217163
+            }
+          },
+          "paco_part": {
+            "FoRIS": {
+              "n": 105,
+              "class_miou": 51.58663633426607,
+              "delta_to_foris_pp": 0.0
+            },
+            "K1/IND0": {
+              "n": 105,
+              "class_miou": 49.148399832561516,
+              "delta_to_foris_pp": -2.4382365017045515
+            },
+            "K1/IND0/oracle_threshold": {
+              "n": 105,
+              "class_miou": 64.74125063592716,
+              "delta_to_foris_pp": 13.154614301661091
+            },
+            "K3/IND0": {
+              "n": 105,
+              "class_miou": 55.02568166903444,
+              "delta_to_foris_pp": 3.439045334768373
+            },
+            "K3/IND0/oracle_threshold": {
+              "n": 105,
+              "class_miou": 65.5182419600241,
+              "delta_to_foris_pp": 13.931605625758031
+            }
+          },
+          "suim": {
+            "FoRIS": {
+              "n": 977,
+              "class_miou": 56.40003650315084,
+              "delta_to_foris_pp": 0.0
+            },
+            "K1/IND0": {
+              "n": 977,
+              "class_miou": 49.865839079036995,
+              "delta_to_foris_pp": -6.534197424113842
+            },
+            "K1/IND0/oracle_threshold": {
+              "n": 977,
+              "class_miou": 64.68976591738485,
+              "delta_to_foris_pp": 8.28972941423401
+            },
+            "K3/IND0": {
+              "n": 977,
+              "class_miou": 61.52269679651851,
+              "delta_to_foris_pp": 5.122660293367673
+            },
+            "K3/IND0/oracle_threshold": {
+              "n": 977,
+              "class_miou": 71.87609691535012,
+              "delta_to_foris_pp": 15.476060412199281
+            }
+          },
+          "isaid": {
+            "FoRIS": {
+              "n": 31,
+              "class_miou": 63.62029743349582,
+              "delta_to_foris_pp": 0.0
+            },
+            "K1/IND0": {
+              "n": 31,
+              "class_miou": 56.53048436185562,
+              "delta_to_foris_pp": -7.089813071640201
+            },
+            "K1/IND0/oracle_threshold": {
+              "n": 31,
+              "class_miou": 73.10096131541505,
+              "delta_to_foris_pp": 9.480663881919227
+            },
+            "K3/IND0": {
+              "n": 31,
+              "class_miou": 59.22119683743051,
+              "delta_to_foris_pp": -4.39910059606531
+            },
+            "K3/IND0/oracle_threshold": {
+              "n": 31,
+              "class_miou": 76.03809616675055,
+              "delta_to_foris_pp": 12.417798733254727
+            }
+          },
+          "isic": {
+            "FoRIS": {
+              "n": 476,
+              "class_miou": 62.2503574326887,
+              "delta_to_foris_pp": 0.0
+            },
+            "K1/IND0": {
+              "n": 476,
+              "class_miou": 57.18292479624659,
+              "delta_to_foris_pp": -5.067432636442113
+            },
+            "K1/IND0/oracle_threshold": {
+              "n": 476,
+              "class_miou": 81.45846100771428,
+              "delta_to_foris_pp": 19.208103575025575
+            },
+            "K3/IND0": {
+              "n": 476,
+              "class_miou": 65.2459675476556,
+              "delta_to_foris_pp": 2.995610114966894
+            },
+            "K3/IND0/oracle_threshold": {
+              "n": 476,
+              "class_miou": 82.22864828872078,
+              "delta_to_foris_pp": 19.978290856032075
+            }
+          },
+          "lung": {
+            "FoRIS": {
+              "n": 155,
+              "class_miou": 87.27540606399371,
+              "delta_to_foris_pp": 0.0
+            },
+            "K1/IND0": {
+              "n": 155,
+              "class_miou": 86.7348341858488,
+              "delta_to_foris_pp": -0.5405718781449167
+            },
+            "K1/IND0/oracle_threshold": {
+              "n": 155,
+              "class_miou": 88.40767098790216,
+              "delta_to_foris_pp": 1.1322649239084512
+            },
+            "K3/IND0": {
+              "n": 155,
+              "class_miou": 87.20752145230229,
+              "delta_to_foris_pp": -0.06788461169142579
+            },
+            "K3/IND0/oracle_threshold": {
+              "n": 155,
+              "class_miou": 88.92784381549167,
+              "delta_to_foris_pp": 1.6524377514979562
+            }
+          },
+          "fundus": {
+            "FoRIS": {
+              "n": 114,
+              "class_miou": 19.33572627135922,
+              "delta_to_foris_pp": 0.0
+            },
+            "K1/IND0": {
+              "n": 114,
+              "class_miou": 28.48644685154909,
+              "delta_to_foris_pp": 9.15072058018987
+            },
+            "K1/IND0/oracle_threshold": {
+              "n": 114,
+              "class_miou": 29.251004601482478,
+              "delta_to_foris_pp": 9.915278330123257
+            },
+            "K3/IND0": {
+              "n": 114,
+              "class_miou": 29.071367296691918,
+              "delta_to_foris_pp": 9.735641025332697
+            },
+            "K3/IND0/oracle_threshold": {
+              "n": 114,
+              "class_miou": 29.74716654205229,
+              "delta_to_foris_pp": 10.41144027069307
+            }
+          },
+          "deepglobe_road": {
+            "FoRIS": {
+              "n": 97,
+              "class_miou": 28.306223802545652,
+              "delta_to_foris_pp": 0.0
+            },
+            "K1/IND0": {
+              "n": 97,
+              "class_miou": 29.078093357984127,
+              "delta_to_foris_pp": 0.7718695554384745
+            },
+            "K1/IND0/oracle_threshold": {
+              "n": 97,
+              "class_miou": 36.59539682541838,
+              "delta_to_foris_pp": 8.289173022872731
+            },
+            "K3/IND0": {
+              "n": 97,
+              "class_miou": 31.897451415700587,
+              "delta_to_foris_pp": 3.5912276131549348
+            },
+            "K3/IND0/oracle_threshold": {
+              "n": 97,
+              "class_miou": 37.67129643573173,
+              "delta_to_foris_pp": 9.365072633186081
+            }
+          }
+        }
+      },
+      "limitation": "Changes allowed reference count; not 1-shot success. Oracle values require query GT.",
+      "paper_use": "reference_coverage_mechanism",
+      "next_experiment_value": "Test legal complementary information under single-reference constraints.",
+      "conclusion": "更多真实参考在多域同时提升自然输出和阈值oracle，提示参考覆盖缺口。",
+      "source_refs": [
+        "B1"
+      ]
+    },
+    {
+      "id": "stopped_queues",
+      "status": "user_stopped_partial",
+      "protocol": "Historical execution receipts",
+      "evidence": {
+        "6000": {
+          "utc": "2026-10-09T01:24:23.405988+00:00",
+          "reason": "User rejected6000 upfront; screen about1000 before increasing scope",
+          "no_automatic_restart": true,
+          "committed": 954,
+          "pids": [
+            24973,
+            24974
+          ],
+          "both_exited": true
+        },
+        "official4000": {
+          "state": "用户停止",
+          "dataset": "coco",
+          "stage": "infer",
+          "pid": null,
+          "utc": "2026-10-08T20:53:13.354956+00:00",
+          "run": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/official_foris_20261008/coco_run",
+          "controller_pid": null,
+          "worker_pid": null,
+          "stopped_pids": [
+            30717,
+            30718
+          ],
+          "pid_exit_confirmed": true,
+          "completed_episodes": 533,
+          "total_episodes": 4000,
+          "stopped_utc": "2026-10-08T22:41:12.473391+00:00",
+          "reason": "User explicitly stopped official/full runs; no automatic restart",
+          "retained_artifacts": [
+            "coco_run/predictions",
+            "coco_run/manifest.json",
+            "coco_run/config.json",
+            "coco_run/source",
+            "coco_run/inference.jsonl",
+            "coco_infer.log"
+          ],
+          "not_a_complete_official_result": true
+        }
+      },
+      "limitation": "Not completed full benchmarks; do not infer active process from historical PID.",
+      "paper_use": "historical_execution_only",
+      "next_experiment_value": "Keep identities, predictions and reusable features; partial queue is not a benchmark.",
+      "conclusion": "6000/官方队列为用户停止的部分资产，不能报告完整基准。",
+      "source_refs": [
+        "stopped6000",
+        "stopped4000"
+      ]
+    },
+    {
+      "id": "host_repair",
+      "status": "fixed_candidate_failed",
+      "protocol": "Same historical LVIS600 original observed600 slots; development exposed",
+      "evidence": {
+        "n": 600,
+        "scores": {
+          "B": 47.779371001459836,
+          "G": 47.68495293603093,
+          "R0": 46.024082857591274,
+          "C": 48.56265542210066,
+          "N": 48.38199327740998,
+          "K": 48.37054748684065,
+          "old4fd6_anchor_relative_complete": 44.25071491423136,
+          "old4fd6_reference_relative_complete": 45.086859797183685,
+          "old4fd6_same_edit_budget_foris_margin": 44.26424509407273,
+          "background_vetted_complete": 45.08961125284229,
+          "unvetted_anchor_complete": 45.07586117809895,
+          "reference_only_protected_complete": 44.998268760795504,
+          "same_edit_budget_foris_margin": 45.19196866593592,
+          "strong.component.query_context": 52.00513765913064,
+          "strong.component.global_agreement_budget": 49.74475020235233,
+          "strong_S_witness_vetted_complete": 47.68539247749419,
+          "strong_S_witness_reference_only_complete": 47.31315432679365,
+          "strong_S_mean_density_vetted_complete": 45.18491577597617,
+          "same_edit_budget_foris_margin_from_S": 47.88626079508039
+        },
+        "completion_state": "COMPLETE600_RECIPE_REJECTED_NO_EXPANSION_GOAL_ACTIVE"
+      },
+      "paper_use": "负消融",
+      "next_experiment_value": "核验reference/query角色裁决是否超出原margin；主臂还低同预算0.201",
+      "limitation": "Does not reject whole theoretical family or establish unseen-photo transfer.",
+      "conclusion": "角色见证修复低于S及同预算，恢复合法性不足。",
+      "source_refs": [
+        "host_repair"
+      ]
+    },
+    {
+      "id": "query_graph",
+      "status": "fixed_candidate_failed",
+      "protocol": "Same historical LVIS600 original observed600 slots; development exposed",
+      "evidence": {
+        "n": 600,
+        "scores": {
+          "B": 47.779371001459836,
+          "G": 47.68495293603093,
+          "R0": 46.024082857591274,
+          "C": 48.56265542210066,
+          "N": 48.38199327740998,
+          "K": 48.37054748684065,
+          "old4fd6_anchor_relative_complete": 44.25071491423136,
+          "old4fd6_reference_relative_complete": 45.086859797183685,
+          "old4fd6_same_edit_budget_foris_margin": 44.26424509407273,
+          "background_vetted_complete": 45.08961125284229,
+          "unvetted_anchor_complete": 45.07586117809895,
+          "reference_only_protected_complete": 44.998268760795504,
+          "same_edit_budget_foris_margin": 45.19196866593592,
+          "strong.component.query_context": 52.00513765913064,
+          "strong.component.global_agreement_budget": 49.74475020235233,
+          "query_task_graph_complete": 49.87653435163987,
+          "query_feature_graph_complete": 50.25776542635997,
+          "query_uniform_geometry_complete": 51.21881758419912,
+          "same_edit_budget_foris_margin_from_S": 49.83212282435202
+        },
+        "completion_state": "COMPLETE600_QUERY_GRAPH_REJECTED_NO_EXPANSION_GOAL_ACTIVE"
+      },
+      "paper_use": "负消融",
+      "next_experiment_value": "去RGB与uniform geometry更好；新增图结构未建立独有选择收益",
+      "limitation": "Does not reject whole theoretical family or establish unseen-photo transfer.",
+      "conclusion": "新图结构低于S及uniform geometry，未建立额外选择价值。",
+      "source_refs": [
+        "query_graph"
+      ]
+    },
+    {
+      "id": "discriminant",
+      "status": "fixed_candidate_failed",
+      "protocol": "Same historical LVIS600 original observed600 slots; development exposed",
+      "evidence": {
+        "n": 600,
+        "scores": {
+          "B": 47.779371001459836,
+          "G": 47.68495293603093,
+          "R0": 46.024082857591274,
+          "C": 48.56265542210066,
+          "N": 48.38199327740998,
+          "K": 48.37054748684065,
+          "old4fd6_anchor_relative_complete": 44.25071491423136,
+          "old4fd6_reference_relative_complete": 45.086859797183685,
+          "old4fd6_same_edit_budget_foris_margin": 44.26424509407273,
+          "background_vetted_complete": 45.08961125284229,
+          "unvetted_anchor_complete": 45.07586117809895,
+          "reference_only_protected_complete": 44.998268760795504,
+          "same_edit_budget_foris_margin": 45.19196866593592,
+          "strong.component.query_context": 52.00513765913064,
+          "strong.component.global_agreement_budget": 49.74475020235233,
+          "joint_task_discriminant_complete": 47.81235035201057,
+          "reference_task_discriminant_complete": 48.97533161677598,
+          "query_task_discriminant_complete": 48.06109282722045,
+          "same_edit_budget_foris_margin_from_S": 47.30998779678772
+        },
+        "completion_state": "COMPLETE600_TASK_DISCRIMINANT_REJECTED_NO_EXPANSION_GOAL_UNFINISHED"
+      },
+      "paper_use": "负消融",
+      "next_experiment_value": "联合R/Q低于R-only48.975及Q-only48.061；应解释伪角色约束的损失",
+      "limitation": "Does not reject whole theoretical family or establish unseen-photo transfer.",
+      "conclusion": "联合R/Q判别低于S和两种单侧控制。",
+      "source_refs": [
+        "discriminant"
+      ]
+    },
+    {
+      "id": "role_edge",
+      "status": "fixed_candidate_failed",
+      "protocol": "Same historical LVIS600 original observed600 slots; development exposed",
+      "evidence": {
+        "n": 600,
+        "scores": {
+          "B": 47.779371001459836,
+          "G": 47.68495293603093,
+          "R0": 46.024082857591274,
+          "C": 48.56265542210066,
+          "N": 48.38199327740998,
+          "K": 48.37054748684065,
+          "old4fd6_anchor_relative_complete": 44.25071491423136,
+          "old4fd6_reference_relative_complete": 45.086859797183685,
+          "old4fd6_same_edit_budget_foris_margin": 44.26424509407273,
+          "background_vetted_complete": 45.08961125284229,
+          "unvetted_anchor_complete": 45.07586117809895,
+          "reference_only_protected_complete": 44.998268760795504,
+          "same_edit_budget_foris_margin": 45.19196866593592,
+          "strong.component.query_context": 52.00513765913064,
+          "strong.component.global_agreement_budget": 49.74475020235233,
+          "source_role_edge_complete": 46.206794758413835,
+          "source_role_edge_factorized_complete": 45.85973863721971,
+          "source_role_edge_no_query_neighbor_role_complete": 43.963718642916646,
+          "source_role_edge_role_marginal_shuffled_complete": 45.79676914794896,
+          "same_edit_budget_foris_margin_from_S": 46.25544164057438
+        },
+        "completion_state": "COMPLETE600_TASK_ROLE_EDGE_REJECTED_NO_EXPANSION_GOAL_UNFINISHED"
+      },
+      "paper_use": "负消融",
+      "next_experiment_value": "full低S/FoRIS/预算；保留角色条件支持诊断，不假设修sampler必胜",
+      "limitation": "Does not reject whole theoretical family or establish unseen-photo transfer.",
+      "conclusion": "角色边模型低于S、FoRIS及预算控制。",
+      "source_refs": [
+        "role_edge"
+      ]
+    },
+    {
+      "id": "constellation",
+      "status": "fixed_candidate_failed",
+      "protocol": "Same historical LVIS600 original observed600 slots; development exposed",
+      "evidence": {
+        "cli": {
+          "metrics": {
+            "B": {
+              "observed600": 47.619568711544645,
+              "official920": 31.056240464050855
+            },
+            "S": {
+              "observed600": 51.70240922979526,
+              "official920": 33.718962541170825
+            },
+            "task_constellation_complete": {
+              "observed600": 51.300500013810975,
+              "official920": 33.456847835094116
+            },
+            "semantic_only_pose_complete": {
+              "observed600": 51.61630721927777,
+              "official920": 33.66280905605072
+            },
+            "shuffled_binding_pose_complete": {
+              "observed600": 51.365080828080764,
+              "official920": 33.498965757443976
+            },
+            "no_reference_BG_pose_complete": {
+              "observed600": 51.29907218051521,
+              "official920": 33.455916639466444
+            },
+            "unconstrained_accepted_support_complete": {
+              "observed600": 50.40956248183307,
+              "official920": 32.875801618586785
+            },
+            "same_edit_budget_foris_margin_from_S": {
+              "observed600": 51.338129723194754,
+              "official920": 33.48138894990962
+            }
+          },
+          "gross": {
+            "task_constellation_complete": {
+              "add_TP": 903586,
+              "add_FP": 1381252,
+              "delete_TP": 0,
+              "delete_FP": 0
+            },
+            "semantic_only_pose_complete": {
+              "add_TP": 488538,
+              "add_FP": 574095,
+              "delete_TP": 0,
+              "delete_FP": 0
+            },
+            "shuffled_binding_pose_complete": {
+              "add_TP": 848864,
+              "add_FP": 1288091,
+              "delete_TP": 0,
+              "delete_FP": 0
+            },
+            "no_reference_BG_pose_complete": {
+              "add_TP": 796906,
+              "add_FP": 1189487,
+              "delete_TP": 0,
+              "delete_FP": 0
+            },
+            "unconstrained_accepted_support_complete": {
+              "add_TP": 1535484,
+              "add_FP": 3340440,
+              "delete_TP": 0,
+              "delete_FP": 0
+            },
+            "same_edit_budget_foris_margin_from_S": {
+              "add_TP": 911539,
+              "add_FP": 1373299,
+              "delete_TP": 0,
+              "delete_FP": 0
+            }
+          },
+          "paired": {
+            "B": {
+              "delta_pp": 3.680931302266319,
+              "improved": 385,
+              "declined": 196,
+              "same": 19
+            },
+            "S": {
+              "delta_pp": -0.4019092159842917,
+              "improved": 185,
+              "declined": 322,
+              "same": 93
+            },
+            "semantic_only_pose_complete": {
+              "delta_pp": -0.3158072054668056,
+              "improved": 197,
+              "declined": 309,
+              "same": 94
+            },
+            "shuffled_binding_pose_complete": {
+              "delta_pp": -0.06458081426980607,
+              "improved": 241,
+              "declined": 259,
+              "same": 100
+            },
+            "no_reference_BG_pose_complete": {
+              "delta_pp": 0.0014278332957531413,
+              "improved": 240,
+              "declined": 255,
+              "same": 105
+            },
+            "unconstrained_accepted_support_complete": {
+              "delta_pp": 0.8909375319778909,
+              "improved": 333,
+              "declined": 207,
+              "same": 60
+            },
+            "same_edit_budget_foris_margin_from_S": {
+              "delta_pp": -0.03762970938378442,
+              "improved": 157,
+              "declined": 245,
+              "same": 198
+            }
+          },
+          "budget_nondegenerate_cases": 499,
+          "main_equals_wide_cases": 39
+        },
+        "original": {
+          "metrics": {
+            "B": {
+              "observed600": 47.779371001459836,
+              "official920": 31.160459348778154
+            },
+            "S": {
+              "observed600": 52.00513765913064,
+              "official920": 33.91639412551998
+            },
+            "task_constellation_complete": {
+              "observed600": 51.59195832909408,
+              "official920": 33.64692934506136
+            },
+            "semantic_only_pose_complete": {
+              "observed600": 51.91726892579973,
+              "official920": 33.85908842986939
+            },
+            "shuffled_binding_pose_complete": {
+              "observed600": 51.655963553173194,
+              "official920": 33.68867188250426
+            },
+            "no_reference_BG_pose_complete": {
+              "observed600": 51.59028100052186,
+              "official920": 33.645835435122954
+            },
+            "unconstrained_accepted_support_complete": {
+              "observed600": 50.68167054067116,
+              "official920": 33.05326339608989
+            },
+            "same_edit_budget_foris_margin_from_S": {
+              "observed600": 51.62410386060166,
+              "official920": 33.66789382213152
+            }
+          },
+          "gross": {
+            "task_constellation_complete": {
+              "add_TP": 239210,
+              "add_FP": 360267,
+              "delete_TP": 0,
+              "delete_FP": 0
+            },
+            "semantic_only_pose_complete": {
+              "add_TP": 130307,
+              "add_FP": 145813,
+              "delete_TP": 0,
+              "delete_FP": 0
+            },
+            "shuffled_binding_pose_complete": {
+              "add_TP": 224244,
+              "add_FP": 335584,
+              "delete_TP": 0,
+              "delete_FP": 0
+            },
+            "no_reference_BG_pose_complete": {
+              "add_TP": 208385,
+              "add_FP": 309724,
+              "delete_TP": 0,
+              "delete_FP": 0
+            },
+            "unconstrained_accepted_support_complete": {
+              "add_TP": 411399,
+              "add_FP": 864170,
+              "delete_TP": 0,
+              "delete_FP": 0
+            },
+            "same_edit_budget_foris_margin_from_S": {
+              "add_TP": 239566,
+              "add_FP": 359911,
+              "delete_TP": 0,
+              "delete_FP": 0
+            }
+          },
+          "paired": {
+            "B": {
+              "delta_pp": 3.812587327634248,
+              "improved": 391,
+              "declined": 190,
+              "same": 19
+            },
+            "S": {
+              "delta_pp": -0.41317933003655877,
+              "improved": 186,
+              "declined": 302,
+              "same": 112
+            },
+            "semantic_only_pose_complete": {
+              "delta_pp": -0.3253105967056523,
+              "improved": 195,
+              "declined": 299,
+              "same": 106
+            },
+            "shuffled_binding_pose_complete": {
+              "delta_pp": -0.06400522407910718,
+              "improved": 231,
+              "declined": 254,
+              "same": 115
+            },
+            "no_reference_BG_pose_complete": {
+              "delta_pp": 0.0016773285722179914,
+              "improved": 238,
+              "declined": 235,
+              "same": 127
+            },
+            "unconstrained_accepted_support_complete": {
+              "delta_pp": 0.9102877884229154,
+              "improved": 332,
+              "declined": 200,
+              "same": 68
+            },
+            "same_edit_budget_foris_margin_from_S": {
+              "delta_pp": -0.03214553150758014,
+              "improved": 146,
+              "declined": 198,
+              "same": 256
+            }
+          },
+          "budget_nondegenerate_cases": 472,
+          "main_equals_wide_cases": 48
+        }
+      },
+      "paper_use": "negative_ablation",
+      "next_experiment_value": "Initial-pose and shuffled-binding controls exceed optimized geometry; inspect recovered TP/FP, not solver energy.",
+      "conclusion": "几何优化低于初始pose和S，求解收敛未带来有效任务选择。",
+      "source_refs": [
+        "constellation"
+      ]
+    },
+    {
+      "id": "tangent",
+      "status": "fixed_candidate_failed",
+      "protocol": "3 datasets *20 photo pairs *2 tasks; photo-pair mean IoU; CLI1024",
+      "evidence": {
+        "coco": {
+          "o24_ridge": 45.85127021563133,
+          "o24_position_ridge": 48.80212107279148,
+          "hidden_ridge": 43.67520295371583,
+          "task_tangent": 41.17199613700144,
+          "mean_tangent": 40.37940621134477,
+          "foris": 55.854415091803595
+        },
+        "paco_part": {
+          "o24_ridge": 41.8787393599375,
+          "o24_position_ridge": 39.417424562387176,
+          "hidden_ridge": 40.46071229928084,
+          "task_tangent": 32.661170084937964,
+          "mean_tangent": 33.8348598507535,
+          "foris": 47.68236462017161
+        },
+        "suim": {
+          "o24_ridge": 47.10382851289696,
+          "o24_position_ridge": 50.04432707409329,
+          "hidden_ridge": 48.03901219579623,
+          "task_tangent": 46.20474331561959,
+          "mean_tangent": 45.831132527369604,
+          "foris": 60.238584601554905
+        }
+      },
+      "paper_use": "negative_ablation_and_oracle_diagnostic",
+      "next_experiment_value": "Position-removed O24 stronger; new internal features must improve effective ordering.",
+      "uncertainty_correction": "evidence/local/task_transfer_core_20261010/tangent_uncertainty_correction.json",
+      "conclusion": "末MLP任务核低于去位置O24及FoRIS，不能靠新内部量宣称突破。",
+      "source_refs": [
+        "tangent"
+      ]
+    },
+    {
+      "id": "tangent_midrange",
+      "status": "fixed_candidate_failed",
+      "protocol": "Same120 paired-photo mean IoU, CLI1024",
+      "evidence": {
+        "coco": {
+          "o24_ridge": 41.05744595355454,
+          "o24_position_ridge": 43.66807887301103,
+          "hidden_ridge": 38.779314779850196,
+          "task_tangent": 42.333562495850266,
+          "mean_tangent": 40.86830522538541,
+          "foris": 55.854415091803595
+        },
+        "paco_part": {
+          "o24_ridge": 41.010513667296514,
+          "o24_position_ridge": 43.71318673295634,
+          "hidden_ridge": 43.01216932192604,
+          "task_tangent": 45.28454695491525,
+          "mean_tangent": 44.734520230273674,
+          "foris": 47.68236462017161
+        },
+        "suim": {
+          "o24_ridge": 55.10991002232337,
+          "o24_position_ridge": 57.97368873086359,
+          "hidden_ridge": 56.71969030151915,
+          "task_tangent": 53.05695332987898,
+          "mean_tangent": 55.78024402048635,
+          "foris": 60.238584601554905
+        }
+      },
+      "paper_use": "negative_readout_ablation",
+      "next_experiment_value": "Readout variant does not rescue full task performance.",
+      "conclusion": "midrange读出未救回任务核完整性能。",
+      "source_refs": [
+        "tangent_midrange"
+      ]
+    },
+    {
+      "id": "tangent_linearized",
+      "status": "fixed_candidate_failed",
+      "protocol": "Same120 paired-photo mean IoU, CLI1024",
+      "evidence": {
+        "coco": {
+          "probe_mean/zero": 41.497304106142025,
+          "probe_mean/midrange": 33.69683064184337,
+          "linearized_task/zero": 44.314913074145515,
+          "linearized_task/midrange": 41.80449045887489,
+          "linearized_task_unit_diagonal/zero": 44.05666183969849,
+          "linearized_task_unit_diagonal/midrange": 41.604250109865625,
+          "linearized_mean_cotangent/zero": 43.86771566808497,
+          "linearized_mean_cotangent/midrange": 40.938922397456494,
+          "zero_mean_raw_task/zero": 42.97270240982894,
+          "zero_mean_raw_task/midrange": 39.21476946309031,
+          "foris": 55.854415091803595
+        },
+        "paco_part": {
+          "probe_mean/zero": 38.28500296631811,
+          "probe_mean/midrange": 35.67721599076649,
+          "linearized_task/zero": 39.35856119299202,
+          "linearized_task/midrange": 42.4850360731575,
+          "linearized_task_unit_diagonal/zero": 39.34433807260096,
+          "linearized_task_unit_diagonal/midrange": 42.35839120231244,
+          "linearized_mean_cotangent/zero": 40.21110205656844,
+          "linearized_mean_cotangent/midrange": 41.56794403081794,
+          "zero_mean_raw_task/zero": 36.623965820694906,
+          "zero_mean_raw_task/midrange": 44.58409534359775,
+          "foris": 47.68236462017161
+        },
+        "suim": {
+          "probe_mean/zero": 46.315487999414316,
+          "probe_mean/midrange": 51.05701980168211,
+          "linearized_task/zero": 46.45788225465948,
+          "linearized_task/midrange": 53.81879209977343,
+          "linearized_task_unit_diagonal/zero": 46.301034969316746,
+          "linearized_task_unit_diagonal/midrange": 53.81415433330782,
+          "linearized_mean_cotangent/zero": 46.38431873430538,
+          "linearized_mean_cotangent/midrange": 54.28310872475369,
+          "zero_mean_raw_task/zero": 47.53871609173181,
+          "zero_mean_raw_task/midrange": 53.57761919911351,
+          "foris": 60.238584601554905
+        }
+      },
+      "paper_use": "negative_readout_ablation",
+      "next_experiment_value": "Readout variant does not rescue full task performance.",
+      "conclusion": "linearized读出未救回任务核完整性能。",
+      "source_refs": [
+        "tangent_linearized"
+      ]
+    },
+    {
+      "id": "context",
+      "status": "fixed_candidate_failed",
+      "protocol": "Same120 paired-photo mean IoU, CLI1024",
+      "evidence": {
+        "scores": {
+          "coco": {
+            "context/zero": 28.759718614903967,
+            "context/minmax": 25.406674955397555,
+            "linear_context/zero": 12.507447402957565,
+            "linear_context/minmax": 20.399068241363256,
+            "null_context/zero": 3.957102997161092,
+            "null_context/minmax": 8.18813027644361,
+            "qk_density/zero": 14.492041089511938,
+            "qk_density/minmax": 14.280935218523883,
+            "o24_density/zero": 26.63610929130232,
+            "o24_density/minmax": 25.856631413214267,
+            "foris": 55.854415091803595
+          },
+          "paco_part": {
+            "context/zero": 14.999667779841161,
+            "context/minmax": 27.44846830088833,
+            "linear_context/zero": 10.625838201087179,
+            "linear_context/minmax": 26.558304043795676,
+            "null_context/zero": 9.50992592464268,
+            "null_context/minmax": 12.750364473009636,
+            "qk_density/zero": 29.06321093330439,
+            "qk_density/minmax": 24.349495594187225,
+            "o24_density/zero": 31.002366170201714,
+            "o24_density/minmax": 31.9089849154464,
+            "foris": 47.68236462017161
+          },
+          "suim": {
+            "context/zero": 31.99838980780183,
+            "context/minmax": 37.15831828419796,
+            "linear_context/zero": 25.687254921003813,
+            "linear_context/minmax": 39.953755903614194,
+            "null_context/zero": 13.505766311109824,
+            "null_context/minmax": 19.800832302269633,
+            "qk_density/zero": 31.22657987776939,
+            "qk_density/minmax": 32.315797223293444,
+            "o24_density/zero": 51.17216953455073,
+            "o24_density/minmax": 45.93803304200632,
+            "foris": 60.238584601554905
+          }
+        },
+        "oracle": {
+          "coco": {
+            "context": 52.78231480327116,
+            "o24_density": 60.12780276310664
+          },
+          "paco_part": {
+            "context": 47.351685919488716,
+            "o24_density": 57.94055530607356
+          },
+          "suim": {
+            "context": 56.48859376815826,
+            "o24_density": 62.144061327945714
+          }
+        }
+      },
+      "paper_use": "negative_ablation_and_readout_diagnostic",
+      "next_experiment_value": "Inspect nonlinear distribution vs true ranking gain; context oracle below O24 density.",
+      "conclusion": "context兼容性头完整输出与oracle均未超过强O24控制。",
+      "source_refs": [
+        "context"
+      ]
+    },
+    {
+      "id": "hierarchy",
+      "status": "fixed_candidate_failed",
+      "protocol": "Five domains200 each original observed class/fold mIoU",
+      "evidence": {
+        "coco": {
+          "adaptive": 33.01237095347379,
+          "flat": 32.68290338975266,
+          "density": 38.82481775257724,
+          "null": 2.203848977487614,
+          "FoRIS": 64.97765247564365,
+          "MEAN": 65.65199262755041,
+          "R0": 64.0524662480407,
+          "N": 65.78220123739328
+        },
+        "lvis": {
+          "adaptive": 18.982600299121632,
+          "flat": 19.118156860011872,
+          "density": 19.267204528537228,
+          "null": 1.4830763929807529,
+          "FoRIS": 46.84456650643817,
+          "MEAN": 46.32981440703367,
+          "R0": 45.82257062108135,
+          "N": 47.04973340568357
+        },
+        "pascal_part": {
+          "adaptive": 26.20065337336646,
+          "flat": 26.389383138320508,
+          "density": 31.315995072485162,
+          "null": 6.854555113349188,
+          "FoRIS": 54.61681574822858,
+          "MEAN": 55.06406755531664,
+          "R0": 57.55923545627973,
+          "N": 56.2680237727226
+        },
+        "paco_part": {
+          "adaptive": 23.090686750186638,
+          "flat": 23.11999918226544,
+          "density": 30.27842825043187,
+          "null": 5.836917241744298,
+          "FoRIS": 44.11720746199843,
+          "MEAN": 44.531024820341955,
+          "R0": 46.745279150141315,
+          "N": 45.21717037386493
+        },
+        "suim": {
+          "adaptive": 43.833852694046676,
+          "flat": 43.76523669589074,
+          "density": 54.27034322628988,
+          "null": 8.052168648845939,
+          "FoRIS": 61.4827568674746,
+          "MEAN": 62.72343268044043,
+          "R0": 60.65487856011743,
+          "N": 62.37610965169449
+        }
+      },
+      "paper_use": "negative_ablation_of_hierarchical_compression",
+      "next_experiment_value": "Compression loses within-FoRIS-mask ordering; retain density control.",
+      "limitation": "Oracle is episode mean IoU and cannot be compared to class mIoU.",
+      "conclusion": "当前语义层级压缩损失有效排序，五域完整结果失败。",
+      "source_refs": [
+        "hierarchy"
+      ]
+    },
+    {
+      "id": "axis",
+      "status": "fixed_intervention_failed",
+      "protocol": "1000 primary plus18 contradiction tasks; original observed class/fold mIoU",
+      "evidence": {
+        "n": 1018,
+        "primary_n": 1000,
+        "scores": {
+          "coco": {
+            "source.pre": 64.23186219883593,
+            "source.crf": 64.97765247564365,
+            "axis.pre": 64.05298072902356,
+            "axis.crf": 64.76366986531704,
+            "FoRIS.archive": 64.97765247564365,
+            "MEAN": 65.65199262755041,
+            "R0": 64.0524662480407,
+            "N": 65.78220123739328
+          },
+          "lvis": {
+            "source.pre": 45.01785098709168,
+            "source.crf": 46.84456650643816,
+            "axis.pre": 44.94064440166268,
+            "axis.crf": 46.636194541097304,
+            "FoRIS.archive": 46.84456650643816,
+            "MEAN": 46.32981440703368,
+            "R0": 45.82257062108134,
+            "N": 47.04973340568357
+          },
+          "pascal_part": {
+            "source.pre": 53.78402768204636,
+            "source.crf": 54.616815748228575,
+            "axis.pre": 53.6361966961833,
+            "axis.crf": 54.454296932368614,
+            "FoRIS.archive": 54.616815748228575,
+            "MEAN": 55.06406755531664,
+            "R0": 57.55923545627973,
+            "N": 56.26802377272259
+          },
+          "paco_part": {
+            "source.pre": 43.48751946019827,
+            "source.crf": 44.11720746199843,
+            "axis.pre": 43.264641576389614,
+            "axis.crf": 43.82948661076885,
+            "FoRIS.archive": 44.11720746199843,
+            "MEAN": 44.53102482034196,
+            "R0": 46.745279150141315,
+            "N": 45.217170373864924
+          },
+          "suim": {
+            "source.pre": 60.62195918516956,
+            "source.crf": 61.482756867474585,
+            "axis.pre": 58.47171991775388,
+            "axis.crf": 59.10879922410476,
+            "FoRIS.archive": 61.482756867474585,
+            "MEAN": 62.72343268044042,
+            "R0": 60.654878560117425,
+            "N": 62.37610965169449
+          }
+        }
+      },
+      "paper_use": "causal_implementation_ablation_not_new_method",
+      "next_experiment_value": "Fixing candidate normalization axis does not recover complete output; retain exact source replay.",
+      "conclusion": "候选归一化轴干预五域退步，不能作为统一失败原因。",
+      "source_refs": [
+        "axis"
+      ]
+    },
+    {
+      "id": "veto_reversal",
+      "status": "posthoc_diagnostic_only",
+      "protocol": "Historical LVIS600; frames explicitly vary",
+      "evidence": {
+        "cli": {
+          "maxrole": {
+            "reverse_S_B_TP": 671957,
+            "reverse_S_B_FP": 2208190
+          },
+          "graph": {
+            "reverse_S_B_TP": 1706150,
+            "reverse_S_B_FP": 3773586
+          },
+          "discriminant": {
+            "reverse_S_B_TP": 2260291,
+            "reverse_S_B_FP": 6111728
+          }
+        },
+        "original": {
+          "maxrole": {
+            "reverse_S_B_TP": 184173,
+            "reverse_S_B_FP": 559944
+          },
+          "graph": {
+            "reverse_S_B_TP": 451510,
+            "reverse_S_B_FP": 980153
+          },
+          "discriminant": {
+            "reverse_S_B_TP": 605033,
+            "reverse_S_B_FP": 1583417
+          }
+        }
+      },
+      "completion_state": "COMPLETE600_POSTSEAL_STRONG_VETO_REVERSAL_DIAGNOSIS",
+      "paper_use": "融合负机制；对新判据复用同分区恢复纯度",
+      "next_experiment_value": "融合负机制；对新判据复用同分区恢复纯度",
+      "limitation": "无新mIoU，不另计一个算法",
+      "conclusion": "失败修复重复撤销S有效拒识，这是事后机制证据而非新算法。",
+      "source_refs": [
+        "veto_reversal"
+      ]
+    },
+    {
+      "id": "negative_restoration",
+      "status": "posthoc_diagnostic_only",
+      "protocol": "Historical LVIS600; frames explicitly vary",
+      "evidence": {
+        "denominator/zero_BG_mass/TP": 1979279,
+        "denominator/zero_BG_mass/FP": 6819854,
+        "denominator/BG_mass_unsampled128/TP": 536041,
+        "denominator/BG_mass_unsampled128/FP": 2457629,
+        "denominator/BG_sampled128/TP": 5620,
+        "denominator/BG_sampled128/FP": 27618,
+        "graph/zero_BG_mass/TP": 1556759,
+        "graph/zero_BG_mass/FP": 3437105,
+        "graph/BG_mass_unsampled128/TP": 148661,
+        "graph/BG_mass_unsampled128/FP": 334856,
+        "graph/BG_sampled128/TP": 730,
+        "graph/BG_sampled128/FP": 1625,
+        "discriminant/zero_BG_mass/TP": 1841339,
+        "discriminant/zero_BG_mass/FP": 4761668,
+        "discriminant/BG_mass_unsampled128/TP": 415952,
+        "discriminant/BG_mass_unsampled128/FP": 1338032,
+        "discriminant/BG_sampled128/TP": 3000,
+        "discriminant/BG_sampled128/FP": 12028
+      },
+      "completion_state": "COMPLETE_POSTSEAL_DIAGNOSIS_NO_NEW_CANDIDATE",
+      "paper_use": "输入构造机制线索；需实际干预区分背景缺失与尺度/支持差异",
+      "next_experiment_value": "输入构造机制线索；需实际干预区分背景缺失与尺度/支持差异",
+      "limitation": "关联诊断，不能说补齐BG必成功",
+      "conclusion": "缺负证据组同时易恢复真与假，尚不能证明补BG的因果收益。",
+      "source_refs": [
+        "negative_restoration"
+      ]
+    },
+    {
+      "id": "negative_exposure",
+      "status": "posthoc_diagnostic_only",
+      "protocol": "Historical LVIS600; frames explicitly vary",
+      "evidence": {
+        "S_deleted_B/TP": 2520940,
+        "S_deleted_B/FP": 9305101,
+        "zero_native_BG_mass/TP": 1979279,
+        "zero_native_BG_mass/FP": 6819854,
+        "positive_native_BG_mass_not_sampled/TP": 536041,
+        "positive_native_BG_mass_not_sampled/FP": 2457629,
+        "native_BG_sampled_via_other_pixels/TP": 5620,
+        "native_BG_sampled_via_other_pixels/FP": 27618,
+        "S_added_B_foreground/TP": 700020,
+        "S_added_B_foreground/FP": 2266334,
+        "weak_mixed_S_deleted_B/TP": 820669,
+        "weak_mixed_S_deleted_B/FP": 5135545,
+        "weak_all_FG_S_deleted_B/TP": 1700271,
+        "weak_all_FG_S_deleted_B/FP": 4169556
+      },
+      "completion_state": "COMPLETE600_OLD_QUERY_ROLE_NEGATIVE_EXPOSURE_AUDIT",
+      "paper_use": "可复用seed身份和面积账本；避免忽略已有有效反证",
+      "next_experiment_value": "可复用seed身份和面积账本；避免忽略已有有效反证",
+      "limitation": "仅graph/discriminant已核输入；不能扩到全部头",
+      "conclusion": "所核graph/discriminant大量S负证据未进入BG采样，结论不得推广全部模型。",
+      "source_refs": [
+        "negative_exposure"
+      ]
+    }
+  ],
+  "index_policy": "Derived compact index only. Linked report/seal/completion files remain canonical; family count is not independent experiment count.",
+  "aggregation_contracts": {
+    "coco4000": {
+      "file": "coco4000_iu.jsonl.gz",
+      "frame": "cli1024",
+      "metric": "Pool integer I/U by 80 COCO classes, mean class IoU; folds nonoverlapping class partitions",
+      "exposure": "development reused",
+      "photo_group": "connected q/r photographs; no rebootstrap in extraction"
+    },
+    "strong600": {
+      "file": "strong600_iu.jsonl.gz",
+      "frames": [
+        "cli",
+        "original"
+      ],
+      "metric": "Observed600 class/fold slots; official920 score is a different denominator and not the headline here",
+      "photo_identity": "RGB hash, not path",
+      "exposure": "historical development cohort"
+    },
+    "N6200": {
+      "file": "n6200_iu.jsonl.gz",
+      "frames": [
+        "cli",
+        "original"
+      ],
+      "metric": "Pool I/U by class in each fold, mean over declared classes including missing=0, then mean folds",
+      "expected_class_sources": {
+        "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/consensus_supported_foreground2380_v2_20261011/expected_classes.json": {
+          "lvis": {
+            "0": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75,
+              76,
+              77,
+              78,
+              79,
+              80,
+              81,
+              82,
+              83,
+              84,
+              85,
+              86,
+              87,
+              88,
+              89,
+              90,
+              91
+            ],
+            "1": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75,
+              76,
+              77,
+              78,
+              79,
+              80,
+              81,
+              82,
+              83,
+              84,
+              85,
+              86,
+              87,
+              88,
+              89,
+              90,
+              91
+            ],
+            "2": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75,
+              76,
+              77,
+              78,
+              79,
+              80,
+              81,
+              82,
+              83,
+              84,
+              85,
+              86,
+              87,
+              88,
+              89,
+              90,
+              91
+            ],
+            "3": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75,
+              76,
+              77,
+              78,
+              79,
+              80,
+              81,
+              82,
+              83,
+              84,
+              85,
+              86,
+              87,
+              88,
+              89,
+              90,
+              91
+            ],
+            "4": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75,
+              76,
+              77,
+              78,
+              79,
+              80,
+              81,
+              82,
+              83,
+              84,
+              85,
+              86,
+              87,
+              88,
+              89,
+              90,
+              91
+            ],
+            "5": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75,
+              76,
+              77,
+              78,
+              79,
+              80,
+              81,
+              82,
+              83,
+              84,
+              85,
+              86,
+              87,
+              88,
+              89,
+              90,
+              91
+            ],
+            "6": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75,
+              76,
+              77,
+              78,
+              79,
+              80,
+              81,
+              82,
+              83,
+              84,
+              85,
+              86,
+              87,
+              88,
+              89,
+              90,
+              91
+            ],
+            "7": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75,
+              76,
+              77,
+              78,
+              79,
+              80,
+              81,
+              82,
+              83,
+              84,
+              85,
+              86,
+              87,
+              88,
+              89,
+              90,
+              91
+            ],
+            "8": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75,
+              76,
+              77,
+              78,
+              79,
+              80,
+              81,
+              82,
+              83,
+              84,
+              85,
+              86,
+              87,
+              88,
+              89,
+              90,
+              91
+            ],
+            "9": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75,
+              76,
+              77,
+              78,
+              79,
+              80,
+              81,
+              82,
+              83,
+              84,
+              85,
+              86,
+              87,
+              88,
+              89,
+              90,
+              91
+            ]
+          },
+          "pascal_part": {
+            "0": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30
+            ],
+            "1": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "2": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ],
+            "3": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15
+            ]
+          },
+          "suim": {
+            "-1": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ]
+          },
+          "deepglobe_road": {
+            "0": [
+              0
+            ]
+          },
+          "coco": {
+            "0": [
+              0,
+              4,
+              8,
+              12,
+              16,
+              20,
+              24,
+              28,
+              32,
+              36,
+              40,
+              44,
+              48,
+              52,
+              56,
+              60,
+              64,
+              68,
+              72,
+              76
+            ],
+            "1": [
+              1,
+              5,
+              9,
+              13,
+              17,
+              21,
+              25,
+              29,
+              33,
+              37,
+              41,
+              45,
+              49,
+              53,
+              57,
+              61,
+              65,
+              69,
+              73,
+              77
+            ]
+          },
+          "paco_part": {
+            "0": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75,
+              76,
+              77,
+              78
+            ],
+            "1": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75,
+              76,
+              77,
+              78,
+              79,
+              80,
+              81
+            ],
+            "2": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65
+            ],
+            "3": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75
+            ]
+          }
+        },
+        "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/consensus_official_pascal_suim4000_v1_20261011/pascal_part/composition/expected_classes.json": {
+          "pascal_part": {
+            "0": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30
+            ],
+            "1": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "2": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ],
+            "3": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15
+            ]
+          }
+        },
+        "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/consensus_official_pascal_suim4000_v1_20261011/suim/composition/expected_classes.json": {
+          "suim": {
+            "-1": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ]
+          }
+        }
+      },
+      "exposure": "development"
+    },
+    "C1": {
+      "file": "c1_confirm2136_iu.jsonl.gz",
+      "frame": "cli1024",
+      "metric": "Pool I/U within (fold,class_id), mean observed slots equally; not mean-fold first",
+      "exposure": "frozen single confirmation; seven domains old-photo new-pair; see archived P0 scope"
+    },
+    "B1": {
+      "file": "b1_common_k3_iu.jsonl.gz",
+      "frame": "cli1024",
+      "metric": "Same observed (fold,class_id) equal weighting as x1012; all arms share common4585 queries",
+      "exposure": "multi-reference development diagnostic; oracle_threshold arms use query GT",
+      "limits": "K1/K3 only; K2/K5 full records remain external archive"
+    }
+  },
+  "compact_assets": [
+    {
+      "file": "coco4000_iu.jsonl.gz",
+      "rows": 4000,
+      "bytes": 316683,
+      "sha256": "a36ac44eefcaabde5deb05896e838997d50632c150cb3c7c0632356d6c6cfbca",
+      "verification": "lossless JSON roundtrip and source row count; no metric recomputation"
+    },
+    {
+      "file": "strong600_iu.jsonl.gz",
+      "rows": 600,
+      "bytes": 129470,
+      "sha256": "40f351644e7f7adc3557d2931964c69176b88cac071daacf3b61c5269120a360",
+      "verification": "lossless JSON roundtrip and source row count; no metric recomputation"
+    },
+    {
+      "file": "n6200_iu.jsonl.gz",
+      "rows": 6200,
+      "bytes": 616844,
+      "sha256": "15ee12918cb63f4b5e9b6ab1620ce9acf723554310f166a1d27fd202b535974a",
+      "verification": "lossless JSON roundtrip and source row count; no metric recomputation"
+    },
+    {
+      "file": "c1_confirm2136_iu.jsonl.gz",
+      "rows": 2136,
+      "bytes": 84699,
+      "sha256": "2fd4e2893b37a8df83cf71022db457e4c1f6f0054050da07e745254197f4c254",
+      "verification": "lossless JSON roundtrip and source row count; no metric recomputation"
+    },
+    {
+      "file": "b1_common_k3_iu.jsonl.gz",
+      "rows": 4585,
+      "bytes": 323988,
+      "sha256": "3723a04e04e78ede04a2d8a5a34e30a202b1f8d27b66c43e6969cd733ca442e5",
+      "verification": "lossless JSON roundtrip and source row count; no metric recomputation"
+    }
+  ],
+  "archive_binding_policy": "Original repo-relative sources are retired; use source_bindings.current_path. Historical code is not an active experiment queue.",
+  "archive_root": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z",
+  "source_bindings": {
+    "public4000": {
+      "original_path": "evidence/local/research_20261005/pipeline_verified/mean_fine_residual_transfer4000_v1/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/research_20261005/pipeline_verified/mean_fine_residual_transfer4000_v1/report.json",
+      "sha256": "d794bc254291e262c8544380e967c39a88826bd91f9169c02b5367e91e75b680",
+      "bytes": 40041,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "public4000",
+        "retention": "full_original_JSON_content"
+      }
+    },
+    "12source": {
+      "original_path": "evidence/local/research_20261005/pipeline_verified/exact_family_selection_v1/public4000_v3_crossfold/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/research_20261005/pipeline_verified/exact_family_selection_v1/public4000_v3_crossfold/report.json",
+      "sha256": "17e3b7d7b16fc3e51679fa8874d5923aa7da0ac0007796eb60c0fb6bcf5d91ff",
+      "bytes": 64821,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "12source",
+        "retention": "full_original_JSON_content"
+      }
+    },
+    "13source": {
+      "original_path": "evidence/local/research_20261005/pipeline_verified/exact_family_selection_v1/public4000_v4_extended_crossfold/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/research_20261005/pipeline_verified/exact_family_selection_v1/public4000_v4_extended_crossfold/report.json",
+      "sha256": "753aa426c531f4ca96705ed23ee2de4f6f8f80f5db0b79dc562b92ef3d8a9ccf",
+      "bytes": 72983,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "13source",
+        "retention": "full_original_JSON_content"
+      }
+    },
+    "rcg_transfer": {
+      "original_path": "evidence/local/rcg_transfer_20261007/audit.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/rcg_transfer_20261007/audit.json",
+      "sha256": "a3c7a2c1b7c56c034bcacfbb14c91bcf25cbdc05d6b0068e4ffe796e466a3dba",
+      "bytes": 635471,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "rcg_transfer",
+        "retention": "exact_projection_no_recomputed_metrics"
+      }
+    },
+    "safr": {
+      "original_path": "evidence/local/m4/paco_f0_safr_149.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/m4/paco_f0_safr_149.json",
+      "sha256": "93c6331788ce792a20f5d25513d80ad97bae3b76d9d94cebb837112f9179631a",
+      "bytes": 31634,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "safr",
+        "retention": "full_original_JSON_content"
+      }
+    },
+    "mask_C1": {
+      "original_path": "evidence/local/astra_granularity_20261008/candidate_C1/summary.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/astra_granularity_20261008/candidate_C1/summary.json",
+      "sha256": "226badf2a33a9a75c4346d4f5d9e698ec9e4d2f060d64fc2db061ff856093e1a",
+      "bytes": 3567,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "mask_C1",
+        "retention": "full_original_JSON_content"
+      }
+    },
+    "false_alarm": {
+      "original_path": "evidence/local/false_alarm_floor_20261010/inmask/transfer_decision.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/false_alarm_floor_20261010/inmask/transfer_decision.json",
+      "sha256": "38959fd50469f5d75ae4325fe5060393ceb2c3aaf2596eead52362b591f303e4",
+      "bytes": 2660,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "false_alarm",
+        "retention": "full_original_JSON_content"
+      }
+    },
+    "strong_stage": {
+      "original_path": "evidence/local/strong_stage600_20261011/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/strong_stage600_20261011/report.json",
+      "sha256": "e039358f5f5d63df90f605117ee26bc41b1e95fd600e58272390b7b87852e6d0",
+      "bytes": 6177,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "strong_stage",
+        "retention": "full_original_JSON_content"
+      }
+    },
+    "N6200": {
+      "original_path": "evidence/local/five_dataset_unified_mechanism_20261011/evidence.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/five_dataset_unified_mechanism_20261011/evidence.json",
+      "sha256": "56a06b430f9d2e223be8588212188852a715158bb74d3417b1742d018054a62f",
+      "bytes": 306854,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "N6200",
+        "retention": "exact_projection_no_recomputed_metrics"
+      }
+    },
+    "anchor6200": {
+      "original_path": "evidence/local/task_conflict_execution6200_20261011/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/task_conflict_execution6200_20261011/report.json",
+      "sha256": "ce14a7fd780b2157c74e8776e12e025811836215be2240c80b2d3c38fe5001f3",
+      "bytes": 2671424,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "anchor6200",
+        "retention": "exact_projection_no_recomputed_metrics"
+      }
+    },
+    "background6200": {
+      "original_path": "evidence/local/reference_background_conflict6200_20261011/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/reference_background_conflict6200_20261011/report.json",
+      "sha256": "4d742f2202880ad4d20bf4064fee5cda7f5515fe0ecd38b566666d5ba4f6d21f",
+      "bytes": 4204951,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "background6200",
+        "retention": "exact_projection_no_recomputed_metrics"
+      }
+    },
+    "ridge_coco": {
+      "original_path": "evidence/local/parallel_signal_20261010/02_task_identity/ridge_coco_validation/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/parallel_signal_20261010/02_task_identity/ridge_coco_validation/report.json",
+      "sha256": "b5e024b8b7f7ef32c9d3ce302b08acbf87703886d39226bf7b59d857eb795194",
+      "bytes": 12974,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "ridge_coco",
+        "retention": "full_original_JSON_content"
+      }
+    },
+    "fg_anchor": {
+      "original_path": "../cv_data/a/lvis_fg_anchor200_20261009/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/lvis_fg_anchor200_20261009/report.json",
+      "sha256": "c0fd5464fdf2f8371b44147b98ba410760e67d8a5d03f94fe9786d26784231ea",
+      "bytes": 5152,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "fg_anchor",
+        "retention": "full_original_JSON_content"
+      }
+    },
+    "scene600": {
+      "original_path": "../cv_data/a/autonomous_scene_reconstruction600_20261010/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/autonomous_scene_reconstruction600_20261010/report.json",
+      "sha256": "dc83e6d399fb5f5688328d26c034f4d7cc5454160984a323603838a8de9d05a6",
+      "bytes": 517085,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "scene600",
+        "retention": "exact_projection_no_recomputed_metrics"
+      }
+    },
+    "focus200": {
+      "original_path": "../cv_data/a/reference_focus_head200_20261010/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/reference_focus_head200_20261010/report.json",
+      "sha256": "6dc5b95c1e79f43e0f4b7331fc61134daaa6f59dcb27302113c67b95db9ded6c",
+      "bytes": 690775,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "focus200",
+        "retention": "exact_projection_no_recomputed_metrics"
+      }
+    },
+    "A6": {
+      "original_path": "../cv_data/a/x1012_A6/completion.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_A6/completion.json",
+      "sha256": "a8daa56f66af2a59b01b48eef11615d4eb7bc82047755a0645ebaa2e9e26de23",
+      "bytes": 1335,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "A6",
+        "retention": "full_original_JSON_content"
+      }
+    },
+    "A7": {
+      "original_path": "../cv_data/a/x1012_A7/seed150/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_A7/seed150/report.json",
+      "sha256": "4f27978de1c3638f4c26a40b90f45dd8ed0114f553ae57b31679166d1685cf79",
+      "bytes": 5007331,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "A7",
+        "retention": "exact_projection_no_recomputed_metrics"
+      }
+    },
+    "A4_mod": {
+      "original_path": "../cv_data/a/x1012_A4/modulation/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_A4/modulation/report.json",
+      "sha256": "964472d279d79491fba8871948347173a8ca0c018c4c19bc097a99f1eab604bb",
+      "bytes": 3298502,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "A4_mod",
+        "retention": "exact_projection_no_recomputed_metrics"
+      }
+    },
+    "B3": {
+      "original_path": "../cv_data/a/x1012_B3/completion.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_B3/completion.json",
+      "sha256": "5294ab03a23e1863cd0899e01be59b5b8d9fe7db9addce80d959d00967f92534",
+      "bytes": 207,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "B3",
+        "retention": "full_original_JSON_content"
+      }
+    },
+    "B4": {
+      "original_path": "../cv_data/a/x1012_B4_assembly/seed150/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_B4_assembly/seed150/report.json",
+      "sha256": "5df7903bf292911fb6cf6fbe29036d859f692ee7e43a0f423ac8fc2dc5d8472b",
+      "bytes": 2929340,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "B4",
+        "retention": "exact_projection_no_recomputed_metrics"
+      }
+    },
+    "C1": {
+      "original_path": "../cv_data/a/x1012_C1/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_C1/report.json",
+      "sha256": "c5ad550e44a4a29d9c85d8f33947541f2f4f3283645720ad49c8fe23850c492a",
+      "bytes": 2560432,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "C1",
+        "retention": "exact_projection_no_recomputed_metrics"
+      }
+    },
+    "C1_complete": {
+      "original_path": "../cv_data/a/x1012_C1/completion.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_C1/completion.json",
+      "sha256": "3053ebddeb3cac7b9f7ac7ec20bafffd02a10319a5b57a472923c92a4b2db987",
+      "bytes": 935,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "C1_complete",
+        "retention": "full_original_JSON_content"
+      }
+    },
+    "B1": {
+      "original_path": "../cv_data/a/x1012_B1/kshot_comparisons.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_B1/kshot_comparisons.json",
+      "sha256": "4fc7fd29bccbd0e420e98a893cf6d8e3a457233a0f60b766019c8b5ac59b5e8b",
+      "bytes": 39729317,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "B1",
+        "retention": "exact_projection_no_recomputed_metrics"
+      }
+    },
+    "completion": {
+      "original_path": "../cv_data/a/x1012_P0/completion_check.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_P0/completion_check.json",
+      "sha256": "d10ae83e5a69732c5db4932bf83744a7c08eb511ed2736d9c281bd04cdc8a9cb",
+      "bytes": 9138,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "completion",
+        "retention": "full_original_JSON_content"
+      }
+    },
+    "stopped6000": {
+      "original_path": "../cv_data/a/representation_premise_20261008/USER_STOPPED.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/representation_premise_20261008/USER_STOPPED.json",
+      "sha256": "6e351b44d883f34dcd8626e3388740cdc7a118516f5536507c1e691f2ea32c5b",
+      "bytes": 244,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "stopped6000",
+        "retention": "full_original_JSON_content"
+      }
+    },
+    "stopped4000": {
+      "original_path": "../cv_data/a/official_foris_20261008/USER_STOPPED.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/official_foris_20261008/USER_STOPPED.json",
+      "sha256": "8ffa5882f4467079b63423ba4659a38b01a37e87e5d04b6b489fa12bff2055f3",
+      "bytes": 780,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "stopped4000",
+        "retention": "full_original_JSON_content"
+      }
+    },
+    "host_repair": {
+      "original_path": "evidence/local/strong_host_repair600_20261011/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/strong_host_repair600_20261011/report.json",
+      "sha256": "2ab85c13447405426007df0dacee4caf6d5a95da7fa17353f6cc9c886e0500de",
+      "bytes": 9335,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "host_repair",
+        "retention": "full_original_JSON_content"
+      }
+    },
+    "query_graph": {
+      "original_path": "evidence/local/query_task_graph600_20261011/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/query_task_graph600_20261011/report.json",
+      "sha256": "406e3bd36f6f589919e561e1a0afd6306bfba9c7a942fb8743f1823f2a9c73d4",
+      "bytes": 9130,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "query_graph",
+        "retention": "full_original_JSON_content"
+      }
+    },
+    "discriminant": {
+      "original_path": "evidence/local/task_discriminant600_20261011/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/task_discriminant600_20261011/report.json",
+      "sha256": "85907a18eb1c9897fa0729e805f54556b09693bcec5253f4e254fa27f3c14c35",
+      "bytes": 9273,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "discriminant",
+        "retention": "full_original_JSON_content"
+      }
+    },
+    "role_edge": {
+      "original_path": "evidence/local/task_role_edge600_20261011/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/task_role_edge600_20261011/report.json",
+      "sha256": "1cd33e9a8ba31b986a185fdcf4a1ead49f7f1e23be80a1f0b6f09b9f0ce7fcab",
+      "bytes": 10555,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "role_edge",
+        "retention": "full_original_JSON_content"
+      }
+    },
+    "constellation": {
+      "original_path": "evidence/local/task_constellation600_20261011/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/task_constellation600_20261011/report.json",
+      "sha256": "ecccd2ffb4cee69af04ff6245c618e04acef6fd7123594afbf7554e6de2b9eb8",
+      "bytes": 10304,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "constellation",
+        "retention": "full_original_JSON_content"
+      }
+    },
+    "tangent": {
+      "original_path": "../cv_data/a/task_tangent_kernel60_20261010/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/task_tangent_kernel60_20261010/report.json",
+      "sha256": "359cfd110b60585eb284baf66c3b40a044ce6aaa3ced01e189487fd453cb8d05",
+      "bytes": 450060,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "tangent",
+        "retention": "exact_projection_no_recomputed_metrics"
+      }
+    },
+    "tangent_midrange": {
+      "original_path": "../cv_data/a/task_tangent_kernel60_20261010/common_midrange/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/task_tangent_kernel60_20261010/common_midrange/report.json",
+      "sha256": "ddbf59b6475edc23cedad46dfd24473fb5d45120721f13a85b6edfc6b8957e4b",
+      "bytes": 324953,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "tangent_midrange",
+        "retention": "exact_projection_no_recomputed_metrics"
+      }
+    },
+    "tangent_linearized": {
+      "original_path": "../cv_data/a/task_tangent_kernel60_20261010/linearized_function/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/task_tangent_kernel60_20261010/linearized_function/report.json",
+      "sha256": "732aa9e5d234b409b1145f44ebca99cbea72a38e7218b38672961924a1b24868",
+      "bytes": 648447,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "tangent_linearized",
+        "retention": "exact_projection_no_recomputed_metrics"
+      }
+    },
+    "context": {
+      "original_path": "../cv_data/a/task_context_compatibility120_20261012/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/task_context_compatibility120_20261012/report.json",
+      "sha256": "a8ade987587f9d855cb08d480c7610067725515966a4c5e59f54186ec09e36c6",
+      "bytes": 733739,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "context",
+        "retention": "exact_projection_no_recomputed_metrics"
+      }
+    },
+    "hierarchy": {
+      "original_path": "../cv_data/a/task_semantic_hierarchy_five1000_20261012/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/task_semantic_hierarchy_five1000_20261012/report.json",
+      "sha256": "5f56743cf6028b9876c6718687e19858429505c22132f7de529aa5ef24dc2fd1",
+      "bytes": 6837271,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "hierarchy",
+        "retention": "exact_projection_no_recomputed_metrics"
+      }
+    },
+    "axis": {
+      "original_path": "../cv_data/a/foris_axis_contradictions_five_20261012/score.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/foris_axis_contradictions_five_20261012/score.json",
+      "sha256": "449e7552301ed9b80e62a7821b62f4259197979e860f0e93c89de5fd23d043d1",
+      "bytes": 5315825,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "axis",
+        "retention": "exact_projection_no_recomputed_metrics"
+      }
+    },
+    "veto_reversal": {
+      "original_path": "evidence/local/strong_veto_reversal600_20261011/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/strong_veto_reversal600_20261011/report.json",
+      "sha256": "2abdb306649808059b2698cc8e9ce5eb5fbcbc0c9d4818375a95bd88aa09cffd",
+      "bytes": 1364318,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "veto_reversal",
+        "retention": "exact_projection_no_recomputed_metrics"
+      }
+    },
+    "negative_restoration": {
+      "original_path": "evidence/local/negative_restoration600_20261011/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/negative_restoration600_20261011/report.json",
+      "sha256": "180c6aff48ddba3a006c6d9c7198155eb8172d754c53fbc2a6a0aae55ed2877e",
+      "bytes": 542947,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "negative_restoration",
+        "retention": "exact_projection_no_recomputed_metrics"
+      }
+    },
+    "negative_exposure": {
+      "original_path": "evidence/local/strong_negative_exposure600_20261011/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/strong_negative_exposure600_20261011/report.json",
+      "sha256": "14ccb8c8331a9230bf8f9010749cd6edb5363cedba18f200cb87fff5e972566e",
+      "bytes": 423906,
+      "portable_copy": {
+        "file": "primary_reports.json",
+        "entry": "negative_exposure",
+        "retention": "exact_projection_no_recomputed_metrics"
+      }
+    },
+    "compact_input_0": {
+      "original_path": "evidence/local/research_20261005/pipeline_verified/mean_fine_residual_transfer4000_v1/episodes.jsonl",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/research_20261005/pipeline_verified/mean_fine_residual_transfer4000_v1/episodes.jsonl",
+      "sha256": "2561c3245fd6fe6d2e54dac6f49a94a7531d0c9800744d50ed1a3eee6856c955",
+      "bytes": 6666958
+    },
+    "compact_input_1": {
+      "original_path": "evidence/local/research_20261005/pipeline_verified/exact_family_selection_v1/public4000_v3_crossfold/counts.npz",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/research_20261005/pipeline_verified/exact_family_selection_v1/public4000_v3_crossfold/counts.npz",
+      "sha256": "3e0e81af24ef2837ab132b6d0bb208ac48b8a623c495af7bf7c3bc7c8152ffa2",
+      "bytes": 364556
+    },
+    "compact_input_2": {
+      "original_path": "evidence/local/strong_stage600_20261011/episodes.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/strong_stage600_20261011/episodes.json",
+      "sha256": "d9d80f899ab97c507f7681d0996b6b4a781f6f4478dbee2b04017dd4a7475add",
+      "bytes": 2031370
+    },
+    "compact_input_3": {
+      "original_path": "evidence/local/strong600_conflict_alignment_20261011/membership.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/strong600_conflict_alignment_20261011/membership.json",
+      "sha256": "f38ac3cdf32c7deaa6ba432d0d6c4eee2616c39776fa50d452fb0a3003a54af9",
+      "bytes": 638484
+    },
+    "compact_input_4": {
+      "original_path": "evidence/local/five_dataset_case_mechanisms_20261011/integer_episodes.jsonl",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/five_dataset_case_mechanisms_20261011/integer_episodes.jsonl",
+      "sha256": "35e04a5964e299f93078d6a45757544ad80c788190aa944f825ec919605460a3",
+      "bytes": 41535156
+    },
+    "compact_input_5": {
+      "original_path": "../cv_data/a/x1012_C1/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_C1/report.json",
+      "sha256": "c5ad550e44a4a29d9c85d8f33947541f2f4f3283645720ad49c8fe23850c492a",
+      "bytes": 2560432
+    },
+    "compact_input_6": {
+      "original_path": "../cv_data/a/x1012_B1/common_K3/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_B1/common_K3/report.json",
+      "sha256": "94a8f54397622364eb0eaf7d6a01e914edbd0f1abecc13c6563269cbcf4fede8",
+      "bytes": 29068991
+    },
+    "compact_input_7": {
+      "original_path": "evidence/local/task_conflict_execution6200_20261011/report.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/repository_retired/20261013T014935Z/evidence/local/task_conflict_execution6200_20261011/report.json",
+      "sha256": "ce14a7fd780b2157c74e8776e12e025811836215be2240c80b2d3c38fe5001f3",
+      "bytes": 2671424
+    },
+    "compact_input_8": {
+      "original_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/consensus_supported_foreground2380_v2_20261011/expected_classes.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/consensus_supported_foreground2380_v2_20261011/expected_classes.json",
+      "sha256": "2fb86fc8ab80299427a8a140081c98ce458439d7b89b9a6a51c19a26e68d9e7f",
+      "bytes": 13583
+    },
+    "compact_input_9": {
+      "original_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/consensus_official_pascal_suim4000_v1_20261011/pascal_part/composition/expected_classes.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/consensus_official_pascal_suim4000_v1_20261011/pascal_part/composition/expected_classes.json",
+      "sha256": "e437d57a1b344544b3e58d73bdbbde5bcefcc8e4aacc42e3fcfaf56d6c081116",
+      "bytes": 625
+    },
+    "compact_input_10": {
+      "original_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/consensus_official_pascal_suim4000_v1_20261011/suim/composition/expected_classes.json",
+      "current_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/consensus_official_pascal_suim4000_v1_20261011/suim/composition/expected_classes.json",
+      "sha256": "b95cb0493ea1758ed7c55047066438f105b5bf2bc3f9240cea3405659323365f",
+      "bytes": 100
+    }
+  },
+  "portable_bundles": [
+    "primary_reports.json",
+    "mechanism_reports.json",
+    "method_specs.json"
+  ]
+}
