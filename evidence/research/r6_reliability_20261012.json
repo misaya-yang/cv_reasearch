@@ -1,0 +1,2120 @@
+{
+  "schema": "r6_reliability_diagnostic_v1",
+  "state": "COMPLETE_OFFLINE_DIAGNOSTIC",
+  "episode_n": 1860,
+  "single_conclusion": "Explanation density e is not task-label correctness: high-e false foreground and low-e true foreground coexist in both exposed cohorts. Any construction claiming to resolve both mechanisms must retain the ability to overturn the former and preserve the latter using a legal discriminating signal. R6 is retrospective diagnosis, not a successful-method prediction.",
+  "definitions": {
+    "method_unchanged": "same already frozen final tau=.475, rho>.9 unchanged raw-T fallback; R1 uses saved R4_global UN_tau475, R5 uses saved final candidate",
+    "reliability": "original e=sigmoid(log_e-median(log_e)); use saved e when available; reconstruct identical proxy from saved FP16 log_e only for R5 fallback, where e did not participate in prediction",
+    "e_strata": "native 4096-token e quartiles per episode; q1<=25%, q2<=50%, q3<=75%, q4>75%; tied e values remain together. Every 16x16 pixel block inherits its original unary e stratum.",
+    "high_confidence": "fixed diagnostic score>=.75 foreground or score<=.25 background, on unchanged bilinear1024 then minmax VP_UN. These values are never chosen using GT or used to generate a candidate.",
+    "primary_population": "rho<=.9 graph-active episodes; fallback reported separately because it did not use e",
+    "same_query_task": "dataset, fold, class, query_rgb_hash, query_mask_hash, query_crop all equal; reference RGB/mask/crop identities must differ",
+    "pair_analysis": "all available unordered different-reference pairs; errors and GT on CLI1024; cross-R1/R5 separately; no pair selection by outcomes; descriptive observational comparisons, not randomized intervention",
+    "pair_persistence": "2*intersection(error_A,error_B)/(error_A+error_B); separately FP,FN,high-confidence FP/FN. Also prediction XOR/valid, mask IoU and episode-IoU difference.",
+    "GT_role": "offline diagnosis only"
+  },
+  "counts_columns": [
+    "valid",
+    "FG",
+    "BG",
+    "TP",
+    "FP",
+    "FN",
+    "TN",
+    "highFG_TP",
+    "highFG_FP",
+    "highBG_FN",
+    "highBG_TN"
+  ],
+  "graph_active_e_quartile_counts": {
+    "R1/coco/graph_active": {
+      "n": 150,
+      "Q1_Q2_Q3_Q4": [
+        [
+          39434240,
+          1653050,
+          37781190,
+          1056961,
+          1088562,
+          596089,
+          36692628,
+          378119,
+          308659,
+          187626,
+          35151653
+        ],
+        [
+          39328256,
+          2402892,
+          36925364,
+          1469877,
+          1336993,
+          933015,
+          35588371,
+          835996,
+          386979,
+          435182,
+          33815578
+        ],
+        [
+          39283456,
+          5097057,
+          34186399,
+          3919057,
+          1547746,
+          1178000,
+          32638653,
+          2467898,
+          574485,
+          533882,
+          30617098
+        ],
+        [
+          39240448,
+          10763834,
+          28476614,
+          9912787,
+          2111956,
+          851047,
+          26364658,
+          8334218,
+          845669,
+          403531,
+          24889760
+        ]
+      ]
+    },
+    "R1/lvis/graph_active": {
+      "n": 129,
+      "Q1_Q2_Q3_Q4": [
+        [
+          33915904,
+          855955,
+          33059949,
+          290455,
+          363210,
+          565500,
+          32696739,
+          98348,
+          35381,
+          283728,
+          31637197
+        ],
+        [
+          33801472,
+          1596184,
+          32205288,
+          929656,
+          1044527,
+          666528,
+          31160761,
+          380154,
+          126859,
+          313821,
+          30032438
+        ],
+        [
+          33794304,
+          2656852,
+          31137452,
+          1960595,
+          1197757,
+          696257,
+          29939695,
+          1192534,
+          369892,
+          381040,
+          28439476
+        ],
+        [
+          33754624,
+          5046460,
+          28708164,
+          4296955,
+          1749842,
+          749505,
+          26958322,
+          3525688,
+          790824,
+          499021,
+          25498930
+        ]
+      ]
+    },
+    "R1/pascal_part/graph_active": {
+      "n": 150,
+      "Q1_Q2_Q3_Q4": [
+        [
+          39432704,
+          9362312,
+          30070392,
+          6949214,
+          1577273,
+          2413098,
+          28493119,
+          4147868,
+          728403,
+          1526103,
+          26225035
+        ],
+        [
+          39318016,
+          9537895,
+          29780121,
+          7049649,
+          2005000,
+          2488246,
+          27775121,
+          4696544,
+          743413,
+          1366031,
+          25176494
+        ],
+        [
+          39306752,
+          9646995,
+          29659757,
+          7374617,
+          2024148,
+          2272378,
+          27635609,
+          5432076,
+          788067,
+          1211103,
+          24778632
+        ],
+        [
+          39228928,
+          9694941,
+          29533987,
+          8200097,
+          2352387,
+          1494844,
+          27181600,
+          7077320,
+          1015641,
+          798638,
+          24963000
+        ]
+      ]
+    },
+    "R1/paco_part/graph_active": {
+      "n": 149,
+      "Q1_Q2_Q3_Q4": [
+        [
+          39161600,
+          8157319,
+          31004281,
+          5064897,
+          1669760,
+          3092422,
+          29334521,
+          2406296,
+          360790,
+          1821172,
+          25329827
+        ],
+        [
+          39052032,
+          7505324,
+          31546708,
+          4354777,
+          2630678,
+          3150547,
+          28916030,
+          2431355,
+          617943,
+          1821525,
+          25046636
+        ],
+        [
+          39049984,
+          6759697,
+          32290287,
+          4511180,
+          3438468,
+          2248517,
+          28851819,
+          2808644,
+          1009391,
+          1285856,
+          24432021
+        ],
+        [
+          38974208,
+          6021279,
+          32952929,
+          4882226,
+          3606819,
+          1139053,
+          29346110,
+          3770141,
+          1678709,
+          587093,
+          25288067
+        ]
+      ]
+    },
+    "R1/suim/graph_active": {
+      "n": 146,
+      "Q1_Q2_Q3_Q4": [
+        [
+          38361344,
+          11219106,
+          27142238,
+          7415479,
+          2894681,
+          3803627,
+          24247557,
+          3816978,
+          1307330,
+          1647424,
+          20910206
+        ],
+        [
+          38282752,
+          10600733,
+          27682019,
+          7957095,
+          2988940,
+          2643638,
+          24693079,
+          4788921,
+          1381571,
+          1176677,
+          22141961
+        ],
+        [
+          38255872,
+          9335979,
+          28919893,
+          7379976,
+          3537916,
+          1956003,
+          25381977,
+          5508396,
+          1835329,
+          1067752,
+          23315886
+        ],
+        [
+          38192128,
+          9106985,
+          29085143,
+          7797148,
+          2913179,
+          1309837,
+          26171964,
+          6675715,
+          1892788,
+          772960,
+          25005543
+        ]
+      ]
+    },
+    "R1/isaid/graph_active": {
+      "n": 59,
+      "Q1_Q2_Q3_Q4": [
+        [
+          15498240,
+          976224,
+          14522016,
+          484345,
+          373033,
+          491879,
+          14148983,
+          268105,
+          12817,
+          291231,
+          13029066
+        ],
+        [
+          15482880,
+          1295840,
+          14187040,
+          864391,
+          835835,
+          431449,
+          13351205,
+          452851,
+          121917,
+          274414,
+          12368078
+        ],
+        [
+          15441920,
+          1842720,
+          13599200,
+          1387033,
+          1047136,
+          455687,
+          12552064,
+          820524,
+          287726,
+          257229,
+          11164993
+        ],
+        [
+          15442944,
+          5655168,
+          9787776,
+          5298695,
+          1795334,
+          356473,
+          7992442,
+          4165999,
+          779284,
+          167718,
+          6903688
+        ]
+      ]
+    },
+    "R1/isic/graph_active": {
+      "n": 150,
+      "Q1_Q2_Q3_Q4": [
+        [
+          39429376,
+          5905813,
+          33523563,
+          2795587,
+          1781622,
+          3110226,
+          31741941,
+          749194,
+          725631,
+          1050744,
+          28504511
+        ],
+        [
+          39329536,
+          5835698,
+          33493838,
+          3344677,
+          1947553,
+          2491021,
+          31546285,
+          1489082,
+          914509,
+          1071641,
+          28976009
+        ],
+        [
+          39276288,
+          7384269,
+          31892019,
+          5242838,
+          2182782,
+          2141431,
+          29709237,
+          3246261,
+          1005656,
+          906589,
+          27193183
+        ],
+        [
+          39251200,
+          19833636,
+          19417564,
+          18432498,
+          2854955,
+          1401138,
+          16562609,
+          15632958,
+          1286539,
+          606574,
+          14567202
+        ]
+      ]
+    },
+    "R1/lung/graph_active": {
+      "n": 150,
+      "Q1_Q2_Q3_Q4": [
+        [
+          39535616,
+          5513825,
+          34021791,
+          4831828,
+          1009098,
+          681997,
+          33012693,
+          2921145,
+          75574,
+          79901,
+          26941105
+        ],
+        [
+          39452160,
+          9154522,
+          30297638,
+          8766237,
+          1065734,
+          388285,
+          29231904,
+          7111414,
+          80193,
+          41151,
+          25419222
+        ],
+        [
+          39280896,
+          14053050,
+          25227846,
+          13839321,
+          1034389,
+          213729,
+          24193457,
+          12428902,
+          62400,
+          11263,
+          21770088
+        ],
+        [
+          39017728,
+          12325489,
+          26692239,
+          12076932,
+          357602,
+          248557,
+          26334637,
+          11521057,
+          12109,
+          16563,
+          23745897
+        ]
+      ]
+    },
+    "R1/deepglobe_road/graph_active": {
+      "n": 28,
+      "Q1_Q2_Q3_Q4": [
+        [
+          7355392,
+          222402,
+          7132990,
+          11974,
+          127719,
+          210428,
+          7005271,
+          80,
+          756,
+          160253,
+          5879204
+        ],
+        [
+          7345408,
+          259164,
+          7086244,
+          44892,
+          160693,
+          214272,
+          6925551,
+          8249,
+          8893,
+          155491,
+          5756952
+        ],
+        [
+          7330816,
+          308657,
+          7022159,
+          133719,
+          273450,
+          174938,
+          6748709,
+          79570,
+          36011,
+          119800,
+          5727386
+        ],
+        [
+          7328512,
+          653992,
+          6674520,
+          477141,
+          676341,
+          176851,
+          5998179,
+          270303,
+          81599,
+          100772,
+          4913479
+        ]
+      ]
+    },
+    "R1/all_domains_pooled/graph_active": {
+      "n": 1111,
+      "Q1_Q2_Q3_Q4": [
+        [
+          292124416,
+          43866006,
+          248258410,
+          28900740,
+          10884958,
+          14965266,
+          237373452,
+          14786133,
+          3555341,
+          7048182,
+          213607804
+        ],
+        [
+          291392512,
+          48188252,
+          243204260,
+          34781251,
+          14015953,
+          13407001,
+          229188307,
+          22194566,
+          4382277,
+          6655933,
+          208733368
+        ],
+        [
+          291020288,
+          57085276,
+          233935012,
+          45748336,
+          16283792,
+          11336940,
+          217651220,
+          33984805,
+          5968957,
+          5774514,
+          197438763
+        ],
+        [
+          290430720,
+          79101784,
+          211328936,
+          71374479,
+          18418415,
+          7727305,
+          192910521,
+          60973399,
+          8383162,
+          3952870,
+          175775566
+        ]
+      ]
+    },
+    "R5/coco/graph_active": {
+      "n": 50,
+      "Q1_Q2_Q3_Q4": [
+        [
+          13135104,
+          259529,
+          12875575,
+          146407,
+          345765,
+          113122,
+          12529810,
+          119640,
+          194287,
+          75270,
+          11655536
+        ],
+        [
+          13115136,
+          951431,
+          12163705,
+          548938,
+          512205,
+          402493,
+          11651500,
+          365314,
+          138102,
+          327575,
+          11075638
+        ],
+        [
+          13101568,
+          1605954,
+          11495614,
+          1099169,
+          556553,
+          506785,
+          10939061,
+          730171,
+          124462,
+          354900,
+          10352293
+        ],
+        [
+          13076992,
+          3693110,
+          9383882,
+          3363126,
+          915784,
+          329984,
+          8468098,
+          2674931,
+          407307,
+          122671,
+          8075282
+        ]
+      ]
+    },
+    "R5/lvis/graph_active": {
+      "n": 45,
+      "Q1_Q2_Q3_Q4": [
+        [
+          11819520,
+          646303,
+          11173217,
+          259645,
+          127553,
+          386658,
+          11045664,
+          24458,
+          3772,
+          219035,
+          10386551
+        ],
+        [
+          11806208,
+          482471,
+          11323737,
+          156781,
+          184326,
+          325690,
+          11139411,
+          41834,
+          53668,
+          76543,
+          10623980
+        ],
+        [
+          11796224,
+          597955,
+          11198269,
+          270306,
+          293263,
+          327649,
+          10905006,
+          165209,
+          74993,
+          88679,
+          10443977
+        ],
+        [
+          11763968,
+          1713500,
+          10050468,
+          1467531,
+          555781,
+          245969,
+          9494687,
+          1270088,
+          258493,
+          32855,
+          9144144
+        ]
+      ]
+    },
+    "R5/pascal_part/graph_active": {
+      "n": 50,
+      "Q1_Q2_Q3_Q4": [
+        [
+          13142272,
+          2650608,
+          10491664,
+          1475002,
+          729672,
+          1175606,
+          9761992,
+          377306,
+          259077,
+          337862,
+          8237091
+        ],
+        [
+          13104128,
+          2686193,
+          10417935,
+          1785138,
+          901629,
+          901055,
+          9516306,
+          826702,
+          370336,
+          330272,
+          8284419
+        ],
+        [
+          13110784,
+          2836336,
+          10274448,
+          2465959,
+          1162762,
+          370377,
+          9111686,
+          1630264,
+          474948,
+          199488,
+          8105554
+        ],
+        [
+          13071616,
+          2919296,
+          10152320,
+          2530828,
+          1036272,
+          388468,
+          9116048,
+          2167658,
+          490591,
+          211370,
+          8451497
+        ]
+      ]
+    },
+    "R5/paco_part/graph_active": {
+      "n": 49,
+      "Q1_Q2_Q3_Q4": [
+        [
+          12886784,
+          1520069,
+          11366715,
+          934424,
+          1339335,
+          585645,
+          10027380,
+          419545,
+          415379,
+          366315,
+          8366146
+        ],
+        [
+          12837888,
+          2049298,
+          10788590,
+          1547763,
+          1140260,
+          501535,
+          9648330,
+          1066424,
+          452643,
+          283271,
+          8290047
+        ],
+        [
+          12837888,
+          2606988,
+          10230900,
+          2046696,
+          981936,
+          560292,
+          9248964,
+          1571847,
+          374074,
+          232270,
+          7973403
+        ],
+        [
+          12817664,
+          2816126,
+          10001538,
+          2513057,
+          1248450,
+          303069,
+          8753088,
+          2104387,
+          599687,
+          109318,
+          7789484
+        ]
+      ]
+    },
+    "R5/suim/graph_active": {
+      "n": 48,
+      "Q1_Q2_Q3_Q4": [
+        [
+          12607744,
+          2806058,
+          9801686,
+          1783025,
+          1714450,
+          1023033,
+          8087236,
+          967011,
+          771462,
+          244809,
+          7127130
+        ],
+        [
+          12594176,
+          3198816,
+          9395360,
+          2493629,
+          1489961,
+          705187,
+          7905399,
+          1815419,
+          574010,
+          287225,
+          6930833
+        ],
+        [
+          12569600,
+          2977936,
+          9591664,
+          2464045,
+          1203569,
+          513891,
+          8388095,
+          2078876,
+          483194,
+          277500,
+          7396414
+        ],
+        [
+          12560128,
+          2408356,
+          10151772,
+          2141410,
+          1091444,
+          266946,
+          9060328,
+          1850927,
+          602179,
+          183338,
+          8319772
+        ]
+      ]
+    },
+    "R5/isaid/graph_active": {
+      "n": 50,
+      "Q1_Q2_Q3_Q4": [
+        [
+          13132800,
+          685184,
+          12447616,
+          285438,
+          546457,
+          399746,
+          11901159,
+          71810,
+          65609,
+          225575,
+          10706259
+        ],
+        [
+          13115136,
+          1034256,
+          12080880,
+          654057,
+          762330,
+          380199,
+          11318550,
+          340108,
+          256706,
+          188549,
+          10287638
+        ],
+        [
+          13102848,
+          1711680,
+          11391168,
+          1186515,
+          1193228,
+          525165,
+          10197940,
+          623563,
+          423477,
+          119097,
+          9140155
+        ],
+        [
+          13078016,
+          4854288,
+          8223728,
+          4312243,
+          1558115,
+          542045,
+          6665613,
+          3102914,
+          579787,
+          216171,
+          5748443
+        ]
+      ]
+    },
+    "R5/isic/graph_active": {
+      "n": 50,
+      "Q1_Q2_Q3_Q4": [
+        [
+          13145344,
+          999477,
+          12145867,
+          346157,
+          501867,
+          653320,
+          11644000,
+          163574,
+          3082,
+          304822,
+          10055175
+        ],
+        [
+          13107712,
+          1089335,
+          12018377,
+          432924,
+          715427,
+          656411,
+          11302950,
+          196951,
+          59776,
+          300437,
+          9675670
+        ],
+        [
+          13099264,
+          1465458,
+          11633806,
+          908735,
+          745844,
+          556723,
+          10887962,
+          491750,
+          111178,
+          299856,
+          9506790
+        ],
+        [
+          13076480,
+          5159149,
+          7917331,
+          4836881,
+          732061,
+          322268,
+          7185270,
+          4148814,
+          163813,
+          89499,
+          5969400
+        ]
+      ]
+    },
+    "R5/lung/graph_active": {
+      "n": 50,
+      "Q1_Q2_Q3_Q4": [
+        [
+          13167616,
+          1746658,
+          11420958,
+          1545310,
+          275401,
+          201348,
+          11145557,
+          845657,
+          11984,
+          2352,
+          8999518
+        ],
+        [
+          13163520,
+          3049987,
+          10113533,
+          2898380,
+          409625,
+          151607,
+          9703908,
+          2315100,
+          59886,
+          16286,
+          8330025
+        ],
+        [
+          13108480,
+          4542610,
+          8565870,
+          4459575,
+          430985,
+          83035,
+          8134885,
+          3984628,
+          52697,
+          7655,
+          7320527
+        ],
+        [
+          12989184,
+          4112976,
+          8876208,
+          4026848,
+          113444,
+          86128,
+          8762764,
+          3867154,
+          7337,
+          15516,
+          7995450
+        ]
+      ]
+    },
+    "R5/deepglobe_road/graph_active": {
+      "n": 14,
+      "Q1_Q2_Q3_Q4": [
+        [
+          3677952,
+          91888,
+          3586064,
+          3712,
+          11141,
+          88176,
+          3574923,
+          18,
+          585,
+          53613,
+          3426152
+        ],
+        [
+          3667968,
+          115897,
+          3552071,
+          24966,
+          22434,
+          90931,
+          3529637,
+          13073,
+          6183,
+          57164,
+          3383733
+        ],
+        [
+          3671296,
+          218939,
+          3452357,
+          99842,
+          75058,
+          119097,
+          3377299,
+          60364,
+          17301,
+          71367,
+          3127749
+        ],
+        [
+          3662848,
+          424689,
+          3238159,
+          341922,
+          243156,
+          82767,
+          2995003,
+          234035,
+          72341,
+          38566,
+          2646423
+        ]
+      ]
+    },
+    "R5/all_domains_pooled/graph_active": {
+      "n": 406,
+      "Q1_Q2_Q3_Q4": [
+        [
+          106715136,
+          11405774,
+          95309362,
+          6779120,
+          5591641,
+          4626654,
+          89717721,
+          2989019,
+          1725237,
+          1829653,
+          78959558
+        ],
+        [
+          106511872,
+          14657684,
+          91854188,
+          10542576,
+          6138197,
+          4115108,
+          85715991,
+          6980925,
+          1971310,
+          1867322,
+          76881983
+        ],
+        [
+          106397952,
+          18563856,
+          87834096,
+          15000842,
+          6643198,
+          3563014,
+          81190898,
+          11336672,
+          2136324,
+          1650812,
+          73366862
+        ],
+        [
+          106096896,
+          28101490,
+          77995406,
+          25533846,
+          7494507,
+          2567644,
+          70500899,
+          21420908,
+          3181535,
+          1019304,
+          64139895
+        ]
+      ]
+    }
+  },
+  "fallback_episode_counts": {
+    "R1/lvis/fallback": 21,
+    "R1/paco_part/fallback": 1,
+    "R1/suim/fallback": 4,
+    "R1/isaid/fallback": 1,
+    "R1/fundus/fallback": 150,
+    "R1/deepglobe_road/fallback": 72,
+    "R1/all_domains_pooled/fallback": 249,
+    "R5/lvis/fallback": 5,
+    "R5/paco_part/fallback": 1,
+    "R5/suim/fallback": 2,
+    "R5/fundus/fallback": 50,
+    "R5/deepglobe_road/fallback": 36,
+    "R5/all_domains_pooled/fallback": 94
+  },
+  "recompute_formulas": {
+    "Q4_share_of_high_score_FP": "Q4.highFG_FP / sum(Q1..Q4.highFG_FP)",
+    "Q4_high_score_foreground_error_rate": "Q4.highFG_FP / (Q4.highFG_FP + Q4.highFG_TP)",
+    "Q1_share_of_GT_foreground": "Q1.FG / sum(Q1..Q4.FG)",
+    "Q1_share_of_FN": "Q1.FN / sum(Q1..Q4.FN)",
+    "symmetric_error_persistence": "2*intersection/(A+B)",
+    "error_jaccard": "intersection/union",
+    "prediction_disagreement": "prediction_xor/valid"
+  },
+  "main_evidence": {
+    "R1": {
+      "n": 1111,
+      "Q4_high_score_FP_share": 0.3760996372456077,
+      "Q4_high_score_foreground_error_rate": 0.12087049702478761,
+      "Q1_high_score_foreground_error_rate": 0.19384161818183207,
+      "Q1_GT_foreground_share": 0.19219134547759664,
+      "Q1_FN_share": 0.3154798986906963
+    },
+    "R5": {
+      "n": 406,
+      "Q4_high_score_FP_share": 0.352938951274216,
+      "Q4_high_score_foreground_error_rate": 0.12931784863803972,
+      "Q1_high_score_foreground_error_rate": 0.3659616703038613,
+      "Q1_GT_foreground_share": 0.15682609052666396,
+      "Q1_FN_share": 0.31108952006465657
+    }
+  },
+  "same_query_coverage": {
+    "coco": {
+      "episode_n": 200,
+      "query_task_n": 188,
+      "multiref_query_task_n": 12,
+      "multiref_episode_n": 24,
+      "cross_R1_R5_query_task_n": 11
+    },
+    "lvis": {
+      "episode_n": 200,
+      "query_task_n": 198,
+      "multiref_query_task_n": 2,
+      "multiref_episode_n": 4,
+      "cross_R1_R5_query_task_n": 2
+    },
+    "pascal_part": {
+      "episode_n": 200,
+      "query_task_n": 194,
+      "multiref_query_task_n": 6,
+      "multiref_episode_n": 12,
+      "cross_R1_R5_query_task_n": 3
+    },
+    "paco_part": {
+      "episode_n": 200,
+      "query_task_n": 191,
+      "multiref_query_task_n": 9,
+      "multiref_episode_n": 18,
+      "cross_R1_R5_query_task_n": 9
+    },
+    "suim": {
+      "episode_n": 200,
+      "query_task_n": 194,
+      "multiref_query_task_n": 6,
+      "multiref_episode_n": 12,
+      "cross_R1_R5_query_task_n": 2
+    },
+    "isaid": {
+      "episode_n": 110,
+      "query_task_n": 85,
+      "multiref_query_task_n": 23,
+      "multiref_episode_n": 48,
+      "cross_R1_R5_query_task_n": 22
+    },
+    "isic": {
+      "episode_n": 200,
+      "query_task_n": 182,
+      "multiref_query_task_n": 17,
+      "multiref_episode_n": 35,
+      "cross_R1_R5_query_task_n": 8
+    },
+    "lung": {
+      "episode_n": 200,
+      "query_task_n": 167,
+      "multiref_query_task_n": 31,
+      "multiref_episode_n": 64,
+      "cross_R1_R5_query_task_n": 20
+    },
+    "fundus": {
+      "episode_n": 200,
+      "query_task_n": 117,
+      "multiref_query_task_n": 55,
+      "multiref_episode_n": 138,
+      "cross_R1_R5_query_task_n": 25
+    },
+    "deepglobe_road": {
+      "episode_n": 150,
+      "query_task_n": 122,
+      "multiref_query_task_n": 23,
+      "multiref_episode_n": 51,
+      "cross_R1_R5_query_task_n": 22
+    }
+  },
+  "same_query_pair_summary": {
+    "coco/cross_R1_R5/both_graph_active": {
+      "pair_n": 11,
+      "query_task_n": 11,
+      "counts": {
+        "valid": 11534336,
+        "prediction_xor": 593696,
+        "prediction_intersection": 1549431,
+        "prediction_union": 2143127
+      },
+      "prediction_xor_fraction": 0.05147205699573864,
+      "prediction_iou": 0.7229767531275562,
+      "episode_abs_IoU_change_mean_pp": 11.860787302012108,
+      "episode_abs_IoU_change_median_pp": 4.616207343869789,
+      "e_spearman_median": 0.6877095293525751,
+      "error_overlap": {
+        "error": {
+          "counts": {
+            "A": 527800,
+            "B": 444210,
+            "intersection": 189157,
+            "union": 782853
+          },
+          "symmetric_persistence": 0.3892079299595683,
+          "jaccard": 0.24162518378290687
+        },
+        "FP": {
+          "counts": {
+            "A": 380974,
+            "B": 149895,
+            "intersection": 85856,
+            "union": 445013
+          },
+          "symmetric_persistence": 0.32345456223663466,
+          "jaccard": 0.19292919532687808
+        },
+        "FN": {
+          "counts": {
+            "A": 146826,
+            "B": 294315,
+            "intersection": 103301,
+            "union": 337840
+          },
+          "symmetric_persistence": 0.46833552084254243,
+          "jaccard": 0.3057690030783803
+        },
+        "highconf_FP": {
+          "counts": {
+            "A": 196750,
+            "B": 33415,
+            "intersection": 20801,
+            "union": 209364
+          },
+          "symmetric_persistence": 0.18074859340038668,
+          "jaccard": 0.0993532794558759
+        },
+        "highconf_FN": {
+          "counts": {
+            "A": 50179,
+            "B": 153164,
+            "intersection": 39229,
+            "union": 164114
+          },
+          "symmetric_persistence": 0.3858406731483257,
+          "jaccard": 0.23903506099418698
+        }
+      }
+    },
+    "lvis/cross_R1_R5/both_graph_active": {
+      "pair_n": 2,
+      "query_task_n": 2,
+      "counts": {
+        "valid": 2097152,
+        "prediction_xor": 34526,
+        "prediction_intersection": 13198,
+        "prediction_union": 47724
+      },
+      "prediction_xor_fraction": 0.016463279724121094,
+      "prediction_iou": 0.27654848713435587,
+      "episode_abs_IoU_change_mean_pp": 19.476933840437397,
+      "episode_abs_IoU_change_median_pp": 19.476933840437397,
+      "e_spearman_median": 0.7955664372287665,
+      "error_overlap": {
+        "error": {
+          "counts": {
+            "A": 8660,
+            "B": 42404,
+            "intersection": 8269,
+            "union": 42795
+          },
+          "symmetric_persistence": 0.3238680871063763,
+          "jaccard": 0.19322350741909103
+        },
+        "FP": {
+          "counts": {
+            "A": 6527,
+            "B": 40658,
+            "intersection": 6526,
+            "union": 40659
+          },
+          "symmetric_persistence": 0.2766133305075766,
+          "jaccard": 0.16050566910155192
+        },
+        "FN": {
+          "counts": {
+            "A": 2133,
+            "B": 1746,
+            "intersection": 1743,
+            "union": 2136
+          },
+          "symmetric_persistence": 0.8986852281515855,
+          "jaccard": 0.8160112359550562
+        },
+        "highconf_FP": {
+          "counts": {
+            "A": 437,
+            "B": 4941,
+            "intersection": 211,
+            "union": 5167
+          },
+          "symmetric_persistence": 0.0784678319077724,
+          "jaccard": 0.040836075091929554
+        },
+        "highconf_FN": {
+          "counts": {
+            "A": 1424,
+            "B": 124,
+            "intersection": 120,
+            "union": 1428
+          },
+          "symmetric_persistence": 0.15503875968992248,
+          "jaccard": 0.08403361344537816
+        }
+      }
+    },
+    "pascal_part/cross_R1_R5/both_graph_active": {
+      "pair_n": 3,
+      "query_task_n": 3,
+      "counts": {
+        "valid": 3145728,
+        "prediction_xor": 562961,
+        "prediction_intersection": 472151,
+        "prediction_union": 1035112
+      },
+      "prediction_xor_fraction": 0.17896048227945963,
+      "prediction_iou": 0.4561351815069287,
+      "episode_abs_IoU_change_mean_pp": 21.455527313545584,
+      "episode_abs_IoU_change_median_pp": 5.756998490860795,
+      "e_spearman_median": 0.5525951925930919,
+      "error_overlap": {
+        "error": {
+          "counts": {
+            "A": 623154,
+            "B": 227299,
+            "intersection": 143746,
+            "union": 706707
+          },
+          "symmetric_persistence": 0.3380457238671626,
+          "jaccard": 0.2034025416473871
+        },
+        "FP": {
+          "counts": {
+            "A": 143234,
+            "B": 222370,
+            "intersection": 139142,
+            "union": 226462
+          },
+          "symmetric_persistence": 0.7611623505213291,
+          "jaccard": 0.6144165467054076
+        },
+        "FN": {
+          "counts": {
+            "A": 479920,
+            "B": 4929,
+            "intersection": 4604,
+            "union": 480245
+          },
+          "symmetric_persistence": 0.01899147982155269,
+          "jaccard": 0.009586773417734697
+        },
+        "highconf_FP": {
+          "counts": {
+            "A": 62501,
+            "B": 137472,
+            "intersection": 59317,
+            "union": 140656
+          },
+          "symmetric_persistence": 0.5932500887619828,
+          "jaccard": 0.42171681264930044
+        },
+        "highconf_FN": {
+          "counts": {
+            "A": 411728,
+            "B": 554,
+            "intersection": 306,
+            "union": 411976
+          },
+          "symmetric_persistence": 0.0014844208575683633,
+          "jaccard": 0.000742761714274618
+        }
+      }
+    },
+    "paco_part/cross_R1_R5/both_graph_active": {
+      "pair_n": 9,
+      "query_task_n": 9,
+      "counts": {
+        "valid": 9437184,
+        "prediction_xor": 1083697,
+        "prediction_intersection": 1637480,
+        "prediction_union": 2721177
+      },
+      "prediction_xor_fraction": 0.1148326661851671,
+      "prediction_iou": 0.601754314401452,
+      "episode_abs_IoU_change_mean_pp": 18.386620574448482,
+      "episode_abs_IoU_change_median_pp": 5.891255408601253,
+      "e_spearman_median": 0.5570166810682227,
+      "error_overlap": {
+        "error": {
+          "counts": {
+            "A": 1243910,
+            "B": 1152107,
+            "intersection": 656160,
+            "union": 1739857
+          },
+          "symmetric_persistence": 0.5477089686759318,
+          "jaccard": 0.37713444265821844
+        },
+        "FP": {
+          "counts": {
+            "A": 1073940,
+            "B": 963409,
+            "intersection": 630094,
+            "union": 1407255
+          },
+          "symmetric_persistence": 0.6185430184028362,
+          "jaccard": 0.44774685469229103
+        },
+        "FN": {
+          "counts": {
+            "A": 169970,
+            "B": 188698,
+            "intersection": 26066,
+            "union": 332602
+          },
+          "symmetric_persistence": 0.14534890204869128,
+          "jaccard": 0.0783699436563821
+        },
+        "highconf_FP": {
+          "counts": {
+            "A": 523615,
+            "B": 512847,
+            "intersection": 312744,
+            "union": 723718
+          },
+          "symmetric_persistence": 0.6034837746101642,
+          "jaccard": 0.4321351686706701
+        },
+        "highconf_FN": {
+          "counts": {
+            "A": 119227,
+            "B": 91800,
+            "intersection": 4008,
+            "union": 207019
+          },
+          "symmetric_persistence": 0.037985660602671695,
+          "jaccard": 0.01936054178601964
+        }
+      }
+    },
+    "suim/cross_R1_R5/both_graph_active": {
+      "pair_n": 2,
+      "query_task_n": 2,
+      "counts": {
+        "valid": 2097152,
+        "prediction_xor": 279265,
+        "prediction_intersection": 416661,
+        "prediction_union": 695926
+      },
+      "prediction_xor_fraction": 0.1331639289855957,
+      "prediction_iou": 0.5987145184976563,
+      "episode_abs_IoU_change_mean_pp": 13.54207230283297,
+      "episode_abs_IoU_change_median_pp": 13.54207230283297,
+      "e_spearman_median": 0.6810467172981237,
+      "error_overlap": {
+        "error": {
+          "counts": {
+            "A": 344861,
+            "B": 185876,
+            "intersection": 125736,
+            "union": 405001
+          },
+          "symmetric_persistence": 0.4738165984282234,
+          "jaccard": 0.31045849269507975
+        },
+        "FP": {
+          "counts": {
+            "A": 5949,
+            "B": 66089,
+            "intersection": 5949,
+            "union": 66089
+          },
+          "symmetric_persistence": 0.16516283072822677,
+          "jaccard": 0.09001497979996671
+        },
+        "FN": {
+          "counts": {
+            "A": 338912,
+            "B": 119787,
+            "intersection": 119787,
+            "union": 338912
+          },
+          "symmetric_persistence": 0.5222902164600315,
+          "jaccard": 0.3534457322254745
+        },
+        "highconf_FP": {
+          "counts": {
+            "A": 1230,
+            "B": 25718,
+            "intersection": 1230,
+            "union": 25718
+          },
+          "symmetric_persistence": 0.09128692296274306,
+          "jaccard": 0.047826425071934055
+        },
+        "highconf_FN": {
+          "counts": {
+            "A": 288199,
+            "B": 20542,
+            "intersection": 20542,
+            "union": 288199
+          },
+          "symmetric_persistence": 0.13306946599253094,
+          "jaccard": 0.07127713836619835
+        }
+      }
+    },
+    "isaid/cross_R1_R5/both_graph_active": {
+      "pair_n": 23,
+      "query_task_n": 21,
+      "counts": {
+        "valid": 24117248,
+        "prediction_xor": 2833801,
+        "prediction_intersection": 3417394,
+        "prediction_union": 6251195
+      },
+      "prediction_xor_fraction": 0.11750101006549338,
+      "prediction_iou": 0.546678515067919,
+      "episode_abs_IoU_change_mean_pp": 16.346674375260413,
+      "episode_abs_IoU_change_median_pp": 11.540494453293547,
+      "e_spearman_median": 0.6120536578615525,
+      "error_overlap": {
+        "error": {
+          "counts": {
+            "A": 1940709,
+            "B": 3042394,
+            "intersection": 1074651,
+            "union": 3908452
+          },
+          "symmetric_persistence": 0.4313179960358034,
+          "jaccard": 0.2749556601948802
+        },
+        "FP": {
+          "counts": {
+            "A": 1528832,
+            "B": 2518470,
+            "intersection": 865440,
+            "union": 3181862
+          },
+          "symmetric_persistence": 0.4276626750363576,
+          "jaccard": 0.27199168285739606
+        },
+        "FN": {
+          "counts": {
+            "A": 411877,
+            "B": 523924,
+            "intersection": 209211,
+            "union": 726590
+          },
+          "symmetric_persistence": 0.44712711356367435,
+          "jaccard": 0.2879354243796364
+        },
+        "highconf_FP": {
+          "counts": {
+            "A": 243007,
+            "B": 974553,
+            "intersection": 107211,
+            "union": 1110349
+          },
+          "symmetric_persistence": 0.17610795361214232,
+          "jaccard": 0.096556127848091
+        },
+        "highconf_FN": {
+          "counts": {
+            "A": 92241,
+            "B": 176482,
+            "intersection": 24991,
+            "union": 243732
+          },
+          "symmetric_persistence": 0.18599822121664317,
+          "jaccard": 0.1025347512841974
+        }
+      }
+    },
+    "isic/cross_R1_R5/both_graph_active": {
+      "pair_n": 9,
+      "query_task_n": 8,
+      "counts": {
+        "valid": 9437184,
+        "prediction_xor": 701237,
+        "prediction_intersection": 1585987,
+        "prediction_union": 2287224
+      },
+      "prediction_xor_fraction": 0.07430574629041883,
+      "prediction_iou": 0.6934113143268871,
+      "episode_abs_IoU_change_mean_pp": 13.299935630063617,
+      "episode_abs_IoU_change_median_pp": 10.920502403629719,
+      "e_spearman_median": 0.5410467142780179,
+      "error_overlap": {
+        "error": {
+          "counts": {
+            "A": 983383,
+            "B": 1370226,
+            "intersection": 826186,
+            "union": 1527423
+          },
+          "symmetric_persistence": 0.702058838150262,
+          "jaccard": 0.5409018981644247
+        },
+        "FP": {
+          "counts": {
+            "A": 213586,
+            "B": 93721,
+            "intersection": 61234,
+            "union": 246073
+          },
+          "symmetric_persistence": 0.39852004672851576,
+          "jaccard": 0.24884485498205816
+        },
+        "FN": {
+          "counts": {
+            "A": 769797,
+            "B": 1276505,
+            "intersection": 764952,
+            "union": 1281350
+          },
+          "symmetric_persistence": 0.747643309736295,
+          "jaccard": 0.5969891130448355
+        },
+        "highconf_FP": {
+          "counts": {
+            "A": 31300,
+            "B": 16389,
+            "intersection": 11880,
+            "union": 35809
+          },
+          "symmetric_persistence": 0.4982281029168152,
+          "jaccard": 0.3317601720237929
+        },
+        "highconf_FN": {
+          "counts": {
+            "A": 399804,
+            "B": 708837,
+            "intersection": 396034,
+            "union": 712607
+          },
+          "symmetric_persistence": 0.7144494926671483,
+          "jaccard": 0.555753732421938
+        }
+      }
+    },
+    "lung/cross_R1_R5/both_graph_active": {
+      "pair_n": 22,
+      "query_task_n": 20,
+      "counts": {
+        "valid": 23068672,
+        "prediction_xor": 538169,
+        "prediction_intersection": 6412968,
+        "prediction_union": 6951137
+      },
+      "prediction_xor_fraction": 0.023328997872092506,
+      "prediction_iou": 0.922578277481799,
+      "episode_abs_IoU_change_mean_pp": 4.154600664203736,
+      "episode_abs_IoU_change_median_pp": 3.6251940575720774,
+      "e_spearman_median": 0.7831244830435977,
+      "error_overlap": {
+        "error": {
+          "counts": {
+            "A": 860687,
+            "B": 821910,
+            "intersection": 572214,
+            "union": 1110383
+          },
+          "symmetric_persistence": 0.6801557354494273,
+          "jaccard": 0.5153302959429314
+        },
+        "FP": {
+          "counts": {
+            "A": 604490,
+            "B": 610397,
+            "intersection": 412620,
+            "union": 802267
+          },
+          "symmetric_persistence": 0.6792730517323834,
+          "jaccard": 0.5143175526352199
+        },
+        "FN": {
+          "counts": {
+            "A": 256197,
+            "B": 211513,
+            "intersection": 159594,
+            "union": 308116
+          },
+          "symmetric_persistence": 0.6824485257958992,
+          "jaccard": 0.517967259084241
+        },
+        "highconf_FP": {
+          "counts": {
+            "A": 40596,
+            "B": 62108,
+            "intersection": 9883,
+            "union": 92821
+          },
+          "symmetric_persistence": 0.19245599002959962,
+          "jaccard": 0.10647375055213798
+        },
+        "highconf_FN": {
+          "counts": {
+            "A": 68947,
+            "B": 13726,
+            "intersection": 6745,
+            "union": 75928
+          },
+          "symmetric_persistence": 0.16317298271503392,
+          "jaccard": 0.08883415867664103
+        }
+      }
+    },
+    "deepglobe_road/cross_R1_R5/both_graph_active": {
+      "pair_n": 1,
+      "query_task_n": 1,
+      "counts": {
+        "valid": 1048576,
+        "prediction_xor": 4898,
+        "prediction_intersection": 20524,
+        "prediction_union": 25422
+      },
+      "prediction_xor_fraction": 0.0046710968017578125,
+      "prediction_iou": 0.8073322319251043,
+      "episode_abs_IoU_change_mean_pp": 0.18289319336526688,
+      "episode_abs_IoU_change_median_pp": 0.18289319336526688,
+      "e_spearman_median": 0.8656762839702049,
+      "error_overlap": {
+        "error": {
+          "counts": {
+            "A": 18834,
+            "B": 18336,
+            "intersection": 16136,
+            "union": 21034
+          },
+          "symmetric_persistence": 0.8682270648372343,
+          "jaccard": 0.767138917942379
+        },
+        "FP": {
+          "counts": {
+            "A": 17646,
+            "B": 17055,
+            "intersection": 14953,
+            "union": 19748
+          },
+          "symmetric_persistence": 0.8618195441053572,
+          "jaccard": 0.7571906015799068
+        },
+        "FN": {
+          "counts": {
+            "A": 1188,
+            "B": 1281,
+            "intersection": 1183,
+            "union": 1286
+          },
+          "symmetric_persistence": 0.9582827055488052,
+          "jaccard": 0.9199066874027994
+        },
+        "highconf_FP": {
+          "counts": {
+            "A": 1562,
+            "B": 1081,
+            "intersection": 1047,
+            "union": 1596
+          },
+          "symmetric_persistence": 0.7922814982973894,
+          "jaccard": 0.6560150375939849
+        },
+        "highconf_FN": {
+          "counts": {
+            "A": 421,
+            "B": 200,
+            "intersection": 200,
+            "union": 421
+          },
+          "symmetric_persistence": 0.644122383252818,
+          "jaccard": 0.4750593824228028
+        }
+      }
+    },
+    "all_domains_pooled/all_pairs/both_graph_active": {
+      "pair_n": 116,
+      "query_task_n": 106,
+      "counts": {
+        "valid": 121634816,
+        "prediction_xor": 9535973,
+        "prediction_intersection": 23290585,
+        "prediction_union": 32826558
+      },
+      "prediction_xor_fraction": 0.07839838389692635,
+      "prediction_iou": 0.709504328781592,
+      "episode_abs_IoU_change_mean_pp": 11.805750456152133,
+      "episode_abs_IoU_change_median_pp": 5.115303793320059,
+      "e_spearman_median": 0.6846585215302119,
+      "error_overlap": {
+        "error": {
+          "counts": {
+            "A": 9213873,
+            "B": 10187638,
+            "intersection": 4932769,
+            "union": 14468742
+          },
+          "symmetric_persistence": 0.5084932817861454,
+          "jaccard": 0.34092590772577186
+        },
+        "FP": {
+          "counts": {
+            "A": 5960883,
+            "B": 7089744,
+            "intersection": 3185911,
+            "union": 9864716
+          },
+          "symmetric_persistence": 0.4882387643137759,
+          "jaccard": 0.32296023524650885
+        },
+        "FN": {
+          "counts": {
+            "A": 3252990,
+            "B": 3097894,
+            "intersection": 1746858,
+            "union": 4604026
+          },
+          "symmetric_persistence": 0.550114913136502,
+          "jaccard": 0.3794196644415127
+        },
+        "highconf_FP": {
+          "counts": {
+            "A": 1950586,
+            "B": 2737327,
+            "intersection": 570864,
+            "union": 4117049
+          },
+          "symmetric_persistence": 0.2435471818696294,
+          "jaccard": 0.1386585391623952
+        },
+        "highconf_FN": {
+          "counts": {
+            "A": 1649458,
+            "B": 1250142,
+            "intersection": 523055,
+            "union": 2376545
+          },
+          "symmetric_persistence": 0.36077734859980687,
+          "jaccard": 0.2200905095422136
+        }
+      }
+    },
+    "all_domains_pooled/cross_R1_R5/both_graph_active": {
+      "pair_n": 82,
+      "query_task_n": 77,
+      "counts": {
+        "valid": 85983232,
+        "prediction_xor": 6632250,
+        "prediction_intersection": 15525794,
+        "prediction_union": 22158044
+      },
+      "prediction_xor_fraction": 0.07713422542665063,
+      "prediction_iou": 0.7006843203308017,
+      "episode_abs_IoU_change_mean_pp": 12.361096083253129,
+      "episode_abs_IoU_change_median_pp": 5.978455464076774,
+      "e_spearman_median": 0.687353755534583,
+      "error_overlap": {
+        "error": {
+          "counts": {
+            "A": 6551998,
+            "B": 7304762,
+            "intersection": 3612255,
+            "union": 10244505
+          },
+          "symmetric_persistence": 0.5213707966364431,
+          "jaccard": 0.3526041521771916
+        },
+        "FP": {
+          "counts": {
+            "A": 3975178,
+            "B": 4682064,
+            "intersection": 2221814,
+            "union": 6435428
+          },
+          "symmetric_persistence": 0.513284484827847,
+          "jaccard": 0.3452472780365191
+        },
+        "FN": {
+          "counts": {
+            "A": 2576820,
+            "B": 2622698,
+            "intersection": 1390441,
+            "union": 3809077
+          },
+          "symmetric_persistence": 0.5348345750509951,
+          "jaccard": 0.36503357637558914
+        },
+        "highconf_FP": {
+          "counts": {
+            "A": 1100998,
+            "B": 1768524,
+            "intersection": 524324,
+            "union": 2345198
+          },
+          "symmetric_persistence": 0.3654434431936748,
+          "jaccard": 0.223573446676997
+        },
+        "highconf_FN": {
+          "counts": {
+            "A": 1432170,
+            "B": 1165429,
+            "intersection": 492175,
+            "union": 2105424
+          },
+          "symmetric_persistence": 0.37894609599095164,
+          "jaccard": 0.23376526533372852
+        }
+      }
+    }
+  },
+  "source_paths_and_sha256": {
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_R1/manifest.json": "67eb807f3afc9c6a1615eba6b1aa5c0a5645253653118ba5f01053fea6137c72",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_R1/sealed.json": "310f94d62bac87580b002433fd2b62d681e54d6b1e8d1d85ec1a1f6846ad926b",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_R1/config.json": "f93674efdf1b526c6873ab825642bacd1b35bb99878f3cb82e410189d8b1675d",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_R4_global/report.json": "f25c1da56566ea11f1cc3c1c0c39121359b1a579eb955725fb93753313ba4cae",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_R4_global/sealed.json": "b9d44973750526bb5ce115fe06cef72f05bd2d31d8277e65fa9f5c6f8834f205",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_R4_global/config.json": "33c315f112626c5d6d685bc0eaad07324e5e1f6a4eae457058dd85f181f50f67",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_R5_candidate/manifest.json": "042842c2833b931ff294781c06db286614df7aaeb6ef9bccabdfcaab4b814431",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_R5_candidate/sealed.json": "9e2edd793488117953b2296668f19c2732202c5a1553e9456054b852c9dcc6dd",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_R5_candidate/config.json": "18640c14006f07978cb67492767e6c238607b298ca46ef78b383f47032b0db18",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_R5_candidate/final_tau0475/sealed.json": "06fb8303e3a30ea97f04ab187abcc53ccc34d23936ee88d4f2fbb81c363e953b",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_R5_candidate/final_tau0475/config.json": "abbd60d5fe54380e3b2e340e7fe977f500ccec67d59dedfbc47702aae4014b91",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_R5_results/report.json": "313454e0101f585948dc880352c721881d249742cc8ffd2d5c90d94170826d32",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_R5_results/selection.json": "7734a45006be1037fb9bce440e4f4638d7bfe0b572e0851f3abda0a07fdd7566"
+  },
+  "script_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/scripts/x1012/r6_reliability_diagnostic.py",
+  "script_sha256": "86c8c4462249f78edd00a7349f2f954d61d5c1cb4fea9474c833587cb99eaa6c",
+  "summary_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_R6_diagnostic/summary.json",
+  "summary_sha256": "2d3498a026b677780648151ef62ce5932a1ca929863621ee9e8a8d46bc5e7507",
+  "episode_counts_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_R6_diagnostic/episode_counts.json",
+  "episode_counts_sha256": "f210a6a9f6e17a08e89db2b4320c6257dcef7358e443d4402c416eb932f0574d",
+  "pair_counts_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_R6_diagnostic/pair_counts.json",
+  "pair_counts_sha256": "f597dd4e2bb168ec3e39ce50f73b88f155d42fd2a7cae5647d4f4ecb0582fc6f",
+  "config_sha256": "7a33616dad799f2a37bda8aef0feecfae2abc516b41490cdbb394c6f3be78962",
+  "all_saved_scoring_integers_reproduced": true,
+  "device": "cpu",
+  "workers": 1,
+  "threads": 1,
+  "new_encoder_calls": 0,
+  "fitted_models": 0,
+  "new_candidates": 0,
+  "post_score_parameter_changes": false,
+  "limits": [
+    "Existing exposed data only; diagnostic GT cannot enter inference.",
+    "Same-query pair availability is uneven and not a random reference experiment.",
+    "Pixel-pooled summary can be dominated by large masks; per-domain populations are provided.",
+    "Quartiles describe reference explanation density, not a calibrated probability of correctness.",
+    "No FoRIS or INSID3 method comparison is newly inferred from this diagnostic.",
+    "Only 2 cross-R1/R5 graph-active query tasks each for LVIS and SUIM; insufficient to attribute their domain-level deterioration to reference replacement.",
+    "Same-query comparisons are pair-weighted observational diagnostics; multiple pairs from the same query are dependent.",
+    "score>=.75 is a fixed diagnostic score band, not a calibrated 75-percent correctness probability."
+  ],
+  "evidence_timing": {
+    "available_before_R6": [
+      {
+        "evidence": "R1 full 1360 frozen comparison: VP_UN improved eight domain point estimates but not COCO/ISIC; direct BG suppression harmed multiple domains.",
+        "path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/docs/research/x1012_tasks/R1.md",
+        "role": "Already available motivation and negative control; not newly predicted by R6."
+      },
+      {
+        "evidence": "R4 fixed nine global taus: no ten-domain nonnegative arm; COCO-positive and ISIC-positive tested taus do not overlap.",
+        "path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/docs/research/x1012_tasks/R4_global.md",
+        "role": "Already rejects this exact scalar family before R6."
+      },
+      {
+        "evidence": "R4 JF/JFB extent objectives failed as a uniform fix.",
+        "path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/docs/research/x1012_tasks/R4_extent.md",
+        "role": "Previously completed fixed-construction negative evidence."
+      },
+      {
+        "evidence": "Frozen R5 500 scores: six positive and four negative domains, specifically COCO/LVIS/SUIM/ISIC negative.",
+        "path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/docs/research/x1012_tasks/R5_validation_final.md",
+        "role": "Observed failure being diagnosed; R6 is not a prediction of it."
+      }
+    ],
+    "newly_measured_by_R6": [
+      "Full 1860 counts stratified by original e quartiles and fixed high-score bands, including graph-active/fallback separation.",
+      "R5 highest-e quartile contains 35.29 percent of high-score FP; its high-score FG error rate is 12.93 percent. Lowest-e quartile contains 15.68 percent of GT FG and 31.11 percent of FN.",
+      "Available same-query, different-reference overlap: 268 pairs overall; 82 cross-R1/R5 pairs and 77 query tasks with both graph-active; 52.14 percent symmetric error persistence.",
+      "LVIS and SUIM each have only two cross-batch graph-active query tasks for reference-change comparison."
+    ],
+    "posthoc_boundary": "The fields and masks predate R6, but the above R6 numerical diagnoses were computed now. They cannot be retrospectively presented as pre-R5 or pre-R6 predictions. No unseen-method success probability is established."
+  },
+  "necessary_design_condition": {
+    "statement": "For a proposed training-free rule to explain and correct both observed error types, it must allow a high-e foreground decision to be overturned and low-e true foreground to remain. It must name a legal task-discriminating observable beyond the assumption that explanation density equals label correctness.",
+    "scope": "Necessary to address these two observed mechanisms together, not a mathematical necessary condition for any small aggregate gain and not a sufficient condition for beating FoRIS/INSID3 across ten domains.",
+    "not_established": "R6 has not identified a sufficient new observable or shown that any untested construction will succeed."
+  },
+  "rejected_families_with_scope": [
+    {
+      "family": "The exact nine fixed global tau values on frozen R1 VP_UN",
+      "rejection": "Measured directly in R4_global; no tested tau achieves ten-domain nonnegative deltas.",
+      "not_claimed": "No universal impossibility for every scalar or calibrated rule outside the tested family."
+    },
+    {
+      "family": "The existing R1 BG suppression construction and existing R4 JF/JFB extent constructions",
+      "rejection": "Already completed negative controls; do not restart unchanged constructions with new names.",
+      "not_claimed": "No impossibility claim for all background evidence or all bidirectional methods."
+    },
+    {
+      "family": "The explanatory assumption that high e implies correct foreground, or that low e can safely be assigned background",
+      "rejection": "Contradicted by newly measured high-e false foreground and low-e real foreground counts.",
+      "not_claimed": "R6 does not prove that every low-e-only intervention must fail to beat FoRIS; such a performance bound was not computed."
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "status": "RETROSPECTIVE_RESULT_BLINDED_FORECAST_CHECK_NOT_METHOD_VALIDATION",
+  "new_inference_runs": 0,
+  "new_encoder_calls": 0,
+  "query_GT_files_read": 0,
+  "forecast_limit": "Forecasters did not read R6/R7 result files before freezing predictions. Existing experiments had already run; this was not prospective to experiment execution.",
+  "forecast_bindings": [
+    {
+      "path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012s_prediction_audit/r6_prediction.json",
+      "sha256": "8e53040f4a304e361fee3bc44a7ca95b7e6dc7e17e545e4c2c9724d73f4eaa1f"
+    },
+    {
+      "path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012s_prediction_audit/r7_prediction.json",
+      "sha256": "6b32b358da129ca73bb032ea5fc51bb192a44d4e4f3576bb1cec7618a90acc5e"
+    }
+  ],
+  "observed_bindings": [
+    {
+      "path": "docs/research/x1012_tasks/R6_query_space.md",
+      "sha256": "1a4a2d27e60f246530345f49796133fd8c7bfad634b17a16b42ab93d37c292a4"
+    },
+    {
+      "path": "docs/research/x1012_tasks/R7_screen40.md",
+      "sha256": "530317db45b3556d101d3d3803d85ff86d8288a39b76d90a3916a4e01c5089c4"
+    }
+  ],
+  "R6": {
+    "goal_failure_forecast_supported": true,
+    "direction_comparison": [
+      {
+        "dataset": "coco",
+        "prediction": "small_positive",
+        "confidence": "low",
+        "observed_point_delta_pp": 0.138,
+        "point_sign_agrees": true
+      },
+      {
+        "dataset": "lvis",
+        "prediction": "small_negative",
+        "confidence": "medium_low",
+        "observed_point_delta_pp": -0.068,
+        "point_sign_agrees": true
+      },
+      {
+        "dataset": "pascal_part",
+        "prediction": "small_negative",
+        "confidence": "low",
+        "observed_point_delta_pp": -0.086,
+        "point_sign_agrees": true
+      },
+      {
+        "dataset": "paco_part",
+        "prediction": "small_negative",
+        "confidence": "low",
+        "observed_point_delta_pp": -0.382,
+        "point_sign_agrees": true
+      },
+      {
+        "dataset": "suim",
+        "prediction": "small_positive",
+        "confidence": "low",
+        "observed_point_delta_pp": -0.2,
+        "point_sign_agrees": false
+      },
+      {
+        "dataset": "isaid",
+        "prediction": "small_negative",
+        "confidence": "low",
+        "observed_point_delta_pp": -0.76,
+        "point_sign_agrees": true
+      },
+      {
+        "dataset": "isic",
+        "prediction": "positive",
+        "confidence": "medium_low",
+        "observed_point_delta_pp": -0.134,
+        "point_sign_agrees": false
+      },
+      {
+        "dataset": "lung",
+        "prediction": "small_positive",
+        "confidence": "medium_low",
+        "observed_point_delta_pp": -0.297,
+        "point_sign_agrees": false
+      },
+      {
+        "dataset": "fundus",
+        "prediction": "approximately_zero",
+        "confidence": "medium",
+        "observed_point_delta_pp": 0.0,
+        "point_sign_agrees": true
+      },
+      {
+        "dataset": "deepglobe_road",
+        "prediction": "small_negative",
+        "confidence": "low",
+        "observed_point_delta_pp": -0.338,
+        "point_sign_agrees": true
+      }
+    ],
+    "point_sign_agreement": 7,
+    "directions": 10,
+    "not_accuracy_estimate": "These are ten domain point-estimate signs for one prechosen method; small differences need not be statistically resolved. The forecaster lacked same-cohort R1 outcome tables and incorrectly carried over LVIS/SUIM blocker expectations from R5."
+  },
+  "R7": {
+    "goal_failure_forecast_supported": true,
+    "overoptimistic_lung": {
+      "prediction": "Most promising improvement over R_only",
+      "observed_delta_pp": -0.408
+    },
+    "overpessimistic_suim": {
+      "prediction": "Mixed or worsening relative to R_only",
+      "observed_delta_pp": 9.056
+    },
+    "seed_method_comparison": {
+      "coco": -2.524,
+      "lvis": -8.07,
+      "pascal_part": -6.701,
+      "paco_part": -8.517,
+      "suim": 3.196,
+      "isaid": -6.712,
+      "isic": 0.669,
+      "lung": -1.034,
+      "fundus": -6.216,
+      "deepglobe_road": -1.481
+    }
+  },
+  "decision": "Reject raw-graph replacement and reference-anchored query pseudolabel density as sufficient routes to the ten-domain goal in their tested forms. Do not claim reliable positive-method forecasting; specific-domain narratives still made errors. Do not launch a successor from these forecasts alone.",
+  "structural_findings": [
+    {
+      "claim": "Equal R/Q likelihood weights do not bound the Q posterior influence to one half.",
+      "formula": "p_mix(q) = E_R(q)/(E_R(q)+E_Q(q))*p_R(q) + E_Q(q)/(E_R(q)+E_Q(q))*p_Q(q)",
+      "scope": "Pointwise pre-readout positive class-conditional likelihood mixture at fixed prior; not a guarantee for final mask preservation."
+    },
+    {
+      "claim": "Positive-anchor graph harmonic readout is conditional convex averaging, not a new task-polarity oracle.",
+      "formula": "f=(A+lambda L)^(-1) A s; operator has nonnegative entries and row sums one",
+      "scope": "Symmetric nonnegative graph, strictly positive diagonal A, exact arithmetic; geometry can improve errors if valid task anchors connect."
+    },
+    {
+      "claim": "Extra real labeled references and same-image crop observations alter different information sources.",
+      "scope": "E2 does not establish E3 efficacy; E3 remains unexecuted and is not a measured negative result."
+    }
+  ]
+}

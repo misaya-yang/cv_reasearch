@@ -9,6 +9,7 @@
 - [目标与现状](docs/research/STATUS.md)
 - [结果账本](docs/research/RESULTS.md)
 - [研究缺口](docs/research/GAPS.md)
+- [单参考上下文分割领域研究](docs/research/SINGLE_REFERENCE_ICS_REVIEW_20261012.md)
 - [下一实验计划](docs/research/PLAN.md)
 - [实际清理与资产位置](docs/research/CLEANUP.md)
 

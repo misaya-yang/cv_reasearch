@@ -1,0 +1,138 @@
+{
+  "state": "FINAL_MAIN_FROZEN_BEFORE_CONFIRMATION_SCORING",
+  "frozen_at_utc": "2026-10-13T05:21:34.204598+00:00",
+  "manifest_sha256": "0810bfd1dff670a5a62da8ca8a8bd7dfcac0efcb768c35a574b9f3ed1842c718",
+  "main": {
+    "id": "G_mfu_crf",
+    "definition": "If reference rho > 0.9 return original T; otherwise apply one unchanged official FoRIS1024 CRF to strict FP64(0.5*M + 0.5*U) > 0.5.",
+    "config_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012s2_confirm1000/candidate_sources/config.json",
+    "config_sha256": "104addfa896e930aa6d60a95936903be1dda8907cf0fcdc94cfa57400302da96",
+    "seal_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012s2_confirm1000/candidate_sources/sealed.json",
+    "seal_sha256": "b73977b1e071f8c9e55eeed8020923afdd4fcff23e4970042967ade25430b229",
+    "mask_key": "G_mfu_crf",
+    "path_field": "prediction_path",
+    "sha_field": "prediction_sha256",
+    "production_timing_scope": "Natural composition of already computed M/U/T fields plus one official FoRIS1024 CRF; excludes original DINO and M/U/T producers. Complete shared runtime measured separately."
+  },
+  "runtime": {
+    "candidate": "gated_MFU",
+    "boundary": "full_crf",
+    "config_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012s2_runtime/mfu_boundary/config.json",
+    "config_sha256": "b135bb02f843ba6c76aebcf605092bf67dc56290c1824c89790e748cf96ab389"
+  },
+  "controls": {
+    "baseline_seal_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012s2_confirm1000/baseline/sealed.json",
+    "baseline_seal_sha256": "c53a88b70287db9d1a80019edf09cec8878f806f9fec1b90716455fc2112de5e",
+    "sources_seal_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012s2_runtime/confirm1000_sources/sealed.json",
+    "sources_seal_sha256": "dd3f37097607b655f90baa855f9281ac855bde07893a88df61d4ad97ac18bf05"
+  },
+  "ablations": [
+    {
+      "id": "mfu",
+      "definition": "strict FP64(0.5*M+0.5*U)>0.5",
+      "config_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012s2_confirm1000/candidate_sources/config.json",
+      "config_sha256": "104addfa896e930aa6d60a95936903be1dda8907cf0fcdc94cfa57400302da96",
+      "seal_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012s2_confirm1000/candidate_sources/sealed.json",
+      "seal_sha256": "b73977b1e071f8c9e55eeed8020923afdd4fcff23e4970042967ade25430b229",
+      "mask_key": "mfu",
+      "path_field": "prediction_path",
+      "sha_field": "prediction_sha256",
+      "production_timing_scope": "Natural composition of already computed M/U/T fields plus one official FoRIS1024 CRF; excludes original DINO and M/U/T producers. Complete shared runtime measured separately.",
+      "purpose": "Parent mixture without reference gate or CRF."
+    },
+    {
+      "id": "G_mfu",
+      "definition": "rho>0.9 ? T : mfu",
+      "config_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012s2_confirm1000/candidate_sources/config.json",
+      "config_sha256": "104addfa896e930aa6d60a95936903be1dda8907cf0fcdc94cfa57400302da96",
+      "seal_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012s2_confirm1000/candidate_sources/sealed.json",
+      "seal_sha256": "b73977b1e071f8c9e55eeed8020923afdd4fcff23e4970042967ade25430b229",
+      "mask_key": "G_mfu",
+      "path_field": "prediction_path",
+      "sha_field": "prediction_sha256",
+      "production_timing_scope": "Natural composition of already computed M/U/T fields plus one official FoRIS1024 CRF; excludes original DINO and M/U/T producers. Complete shared runtime measured separately.",
+      "purpose": "Remove CRF from the primary to measure boundary contribution conditional on the same reference gate."
+    },
+    {
+      "id": "mfu_crf",
+      "definition": "Official FoRIS1024 CRF(mfu)",
+      "config_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012s2_confirm1000/candidate_sources/config.json",
+      "config_sha256": "104addfa896e930aa6d60a95936903be1dda8907cf0fcdc94cfa57400302da96",
+      "seal_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012s2_confirm1000/candidate_sources/sealed.json",
+      "seal_sha256": "b73977b1e071f8c9e55eeed8020923afdd4fcff23e4970042967ade25430b229",
+      "mask_key": "mfu_crf",
+      "path_field": "prediction_path",
+      "sha_field": "prediction_sha256",
+      "production_timing_scope": "Natural composition of already computed M/U/T fields plus one official FoRIS1024 CRF; excludes original DINO and M/U/T producers. Complete shared runtime measured separately.",
+      "purpose": "Remove the reference gate from the primary to measure its interaction with CRF."
+    },
+    {
+      "id": "G_mfu_or_crf",
+      "definition": "rho>0.9 ? T : (mfu OR officialCRF(mfu))",
+      "config_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012s2_confirm1000/candidate_sources/config.json",
+      "config_sha256": "104addfa896e930aa6d60a95936903be1dda8907cf0fcdc94cfa57400302da96",
+      "seal_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012s2_confirm1000/candidate_sources/sealed.json",
+      "seal_sha256": "b73977b1e071f8c9e55eeed8020923afdd4fcff23e4970042967ade25430b229",
+      "mask_key": "G_mfu_or_crf",
+      "path_field": "prediction_path",
+      "sha_field": "prediction_sha256",
+      "production_timing_scope": "Natural composition of already computed M/U/T fields plus one official FoRIS1024 CRF; excludes original DINO and M/U/T producers. Complete shared runtime measured separately.",
+      "purpose": "Accept only CRF additions to distinguish the effects of adding and deleting regions."
+    },
+    {
+      "id": "G_mfu_and_crf",
+      "definition": "rho>0.9 ? T : (mfu AND officialCRF(mfu))",
+      "config_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012s2_confirm1000/candidate_sources/config.json",
+      "config_sha256": "104addfa896e930aa6d60a95936903be1dda8907cf0fcdc94cfa57400302da96",
+      "seal_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012s2_confirm1000/candidate_sources/sealed.json",
+      "seal_sha256": "b73977b1e071f8c9e55eeed8020923afdd4fcff23e4970042967ade25430b229",
+      "mask_key": "G_mfu_and_crf",
+      "path_field": "prediction_path",
+      "sha_field": "prediction_sha256",
+      "production_timing_scope": "Natural composition of already computed M/U/T fields plus one official FoRIS1024 CRF; excludes original DINO and M/U/T producers. Complete shared runtime measured separately.",
+      "purpose": "Accept only CRF deletions to distinguish the effects of adding and deleting regions."
+    }
+  ],
+  "ablation_policy": "Frozen mechanistic contrasts only. Keep G_mfu_crf as the sole primary regardless of these confirmation outcomes.",
+  "development_selection_evidence": [
+    {
+      "path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012s2_boundary_mfu/report.json",
+      "sha256": "08474bcd50eb3caa5ca0b718c601bc03621c0693d06103e0446259ecba27be0d",
+      "equal_cohort_macro10": {
+        "FoRIS": 52.094648441977625,
+        "MEAN": 52.396794851196304,
+        "U": 54.47845564618599,
+        "T": 50.68140014134573,
+        "old_soft": 54.80025135142389,
+        "mfu": 55.13182332302536,
+        "mfu_crf": 54.867722970521925,
+        "mfu_or_crf": 55.22881991680196,
+        "mfu_and_crf": 54.76958702815534,
+        "mfu_area16": 55.14023272345754,
+        "G_mfu": 55.170359241297476,
+        "G_mfu_crf": 55.421208947399435,
+        "G_mfu_or_crf": 55.28951125206185,
+        "G_mfu_and_crf": 55.304748628111255,
+        "G_mfu_area16": 55.17392396069726
+      },
+      "primary_cohort_scores": {
+        "development1360": 55.217956825242275,
+        "development500": 55.6244610695566
+      }
+    },
+    {
+      "path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012s2_reference_gate_composition/report.json",
+      "sha256": "ca4d076eec6a225d94f37382f77f04ae2d615571c0dbb9616c36539cd3f32c4a"
+    }
+  ],
+  "selection_rule": "Highest arithmetic mean of the two exposed development ten-domain class mIoU scores among fully evaluated compositions. No per-domain or per-step gain gate. Full RGB latency remains to be measured against the same-input FoRIS baseline.",
+  "constraints": [
+    "DINO features",
+    "zero training",
+    "controlled complete inference latency"
+  ],
+  "latency_reference": "User example FoRIS2s/candidate total5s is a same-condition ratio reference, not5s extra or an absolute5s claim on every platform.",
+  "confirmation_rule_selection_forbidden": true,
+  "confirmation_GT_scored_at_freeze": false,
+  "timing_evidence": []
+}

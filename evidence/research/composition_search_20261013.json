@@ -1,0 +1,2172 @@
+{
+  "development_n": 1360,
+  "boolean_chain_family_n": 5752,
+  "boolean_network_family_n": 7828352,
+  "operation_count_limit": null,
+  "v1_best": {
+    "id": "r05681",
+    "truth_table_hex": "f0e0f0e0f0e0f0c0",
+    "essential_sources": [
+      "B",
+      "M",
+      "U",
+      "T",
+      "I",
+      "J"
+    ],
+    "expression": "((((((B&I)|J)&B)|M)|T)&U)",
+    "operations": [
+      [
+        "retain",
+        "I"
+      ],
+      [
+        "add",
+        "J"
+      ],
+      [
+        "retain",
+        "B"
+      ],
+      [
+        "add",
+        "M"
+      ],
+      [
+        "add",
+        "T"
+      ],
+      [
+        "retain",
+        "U"
+      ]
+    ],
+    "macro10_class_miou": 55.07790403472285,
+    "macro_delta_to_FoRIS_pp": 3.3526151662971415,
+    "worst_domain_delta_to_FoRIS_pp": -1.3590360293564032,
+    "positive_domains_vs_FoRIS": 7,
+    "negative_domains_vs_FoRIS": 3,
+    "domains": {
+      "coco": {
+        "n": 150,
+        "class_miou": 64.75302074534127,
+        "delta_to_FoRIS_pp": -0.032822340297357755,
+        "edits_vs_FoRIS": {
+          "add_TP": 945308,
+          "add_FP": 1672119,
+          "delete_TP": 992443,
+          "delete_FP": 1066823
+        }
+      },
+      "lvis": {
+        "n": 150,
+        "class_miou": 47.67407946751382,
+        "delta_to_FoRIS_pp": 1.144543623199489,
+        "edits_vs_FoRIS": {
+          "add_TP": 562259,
+          "add_FP": 930037,
+          "delete_TP": 749035,
+          "delete_FP": 2332606
+        }
+      },
+      "pascal_part": {
+        "n": 150,
+        "class_miou": 59.10351656157838,
+        "delta_to_FoRIS_pp": 3.51340837481672,
+        "edits_vs_FoRIS": {
+          "add_TP": 2079942,
+          "add_FP": 1072038,
+          "delete_TP": 1765187,
+          "delete_FP": 2749443
+        }
+      },
+      "paco_part": {
+        "n": 150,
+        "class_miou": 48.61765412482062,
+        "delta_to_FoRIS_pp": 6.211725416005919,
+        "edits_vs_FoRIS": {
+          "add_TP": 770001,
+          "add_FP": 841860,
+          "delete_TP": 2143742,
+          "delete_FP": 6873197
+        }
+      },
+      "suim": {
+        "n": 150,
+        "class_miou": 58.84692317916619,
+        "delta_to_FoRIS_pp": -0.0015756788274075006,
+        "edits_vs_FoRIS": {
+          "add_TP": 1959752,
+          "add_FP": 1457808,
+          "delete_TP": 3036842,
+          "delete_FP": 3663214
+        }
+      },
+      "isaid": {
+        "n": 60,
+        "class_miou": 54.7192298754951,
+        "delta_to_FoRIS_pp": 4.29361948464944,
+        "edits_vs_FoRIS": {
+          "add_TP": 362570,
+          "add_FP": 479488,
+          "delete_TP": 244038,
+          "delete_FP": 1430535
+        }
+      },
+      "isic": {
+        "n": 150,
+        "class_miou": 61.76293521297222,
+        "delta_to_FoRIS_pp": -1.3590360293564032,
+        "edits_vs_FoRIS": {
+          "add_TP": 1098437,
+          "add_FP": 1049442,
+          "delete_TP": 2012880,
+          "delete_FP": 1866430
+        }
+      },
+      "lung": {
+        "n": 150,
+        "class_miou": 89.7079579247497,
+        "delta_to_FoRIS_pp": 2.5516629772944555,
+        "edits_vs_FoRIS": {
+          "add_TP": 1175656,
+          "add_FP": 926221,
+          "delete_TP": 298128,
+          "delete_FP": 1189510
+        }
+      },
+      "fundus": {
+        "n": 150,
+        "class_miou": 34.0522635561862,
+        "delta_to_FoRIS_pp": 15.040708118010155,
+        "edits_vs_FoRIS": {
+          "add_TP": 258626,
+          "add_FP": 407905,
+          "delete_TP": 3216044,
+          "delete_FP": 27904315
+        }
+      },
+      "deepglobe_road": {
+        "n": 100,
+        "class_miou": 31.541459699405006,
+        "delta_to_FoRIS_pp": 2.163917717476437,
+        "edits_vs_FoRIS": {
+          "add_TP": 388238,
+          "add_FP": 1008674,
+          "delete_TP": 302642,
+          "delete_FP": 1220991
+        }
+      }
+    }
+  },
+  "v2_best": {
+    "id": "n6714849",
+    "index": 6714849,
+    "truth_table_hex": "fee0fee0fee0fcc0",
+    "expression": "(M&U)|(M&T)|(U&T)|(B&U&I)|(B&T&I)|(B&U&J)|(B&T&J)",
+    "minimal_positive_terms": [
+      6,
+      10,
+      12,
+      21,
+      25,
+      37,
+      41
+    ],
+    "essential_sources": [
+      "B",
+      "M",
+      "U",
+      "T",
+      "I",
+      "J"
+    ],
+    "macro10_class_miou": 55.12282795213017,
+    "macro_delta_to_FoRIS_pp": 3.397539083704474,
+    "worst_delta_to_FoRIS_pp": -0.4545091857028396,
+    "domains": {
+      "coco": {
+        "class_miou": 64.96748424096444,
+        "delta_to_FoRIS_pp": 0.18164115532580638
+      },
+      "lvis": {
+        "class_miou": 47.33306388330147,
+        "delta_to_FoRIS_pp": 0.8035280389871744
+      },
+      "pascal_part": {
+        "class_miou": 59.286752089555186,
+        "delta_to_FoRIS_pp": 3.696643902793525
+      },
+      "paco_part": {
+        "class_miou": 48.74970421524935,
+        "delta_to_FoRIS_pp": 6.343775506434646
+      },
+      "suim": {
+        "class_miou": 59.222385365683536,
+        "delta_to_FoRIS_pp": 0.3738865076899316
+      },
+      "isaid": {
+        "class_miou": 53.6055913597058,
+        "delta_to_FoRIS_pp": 3.1799809688601286
+      },
+      "isic": {
+        "class_miou": 62.66746205662578,
+        "delta_to_FoRIS_pp": -0.4545091857028396
+      },
+      "lung": {
+        "class_miou": 89.6692977070544,
+        "delta_to_FoRIS_pp": 2.5130027595991464
+      },
+      "fundus": {
+        "class_miou": 34.05226792564366,
+        "delta_to_FoRIS_pp": 15.04071248746762
+      },
+      "deepglobe_road": {
+        "class_miou": 31.67427067751817,
+        "delta_to_FoRIS_pp": 2.2967286955896036
+      }
+    }
+  },
+  "v2_dependency_frontier": [
+    {
+      "id": "n6714849",
+      "index": 6714849,
+      "truth_table_hex": "fee0fee0fee0fcc0",
+      "expression": "(M&U)|(M&T)|(U&T)|(B&U&I)|(B&T&I)|(B&U&J)|(B&T&J)",
+      "minimal_positive_terms": [
+        6,
+        10,
+        12,
+        21,
+        25,
+        37,
+        41
+      ],
+      "essential_sources": [
+        "B",
+        "M",
+        "U",
+        "T",
+        "I",
+        "J"
+      ],
+      "macro10_class_miou": 55.12282795213017,
+      "macro_delta_to_FoRIS_pp": 3.397539083704474,
+      "worst_delta_to_FoRIS_pp": -0.4545091857028396,
+      "domains": {
+        "coco": {
+          "class_miou": 64.96748424096444,
+          "delta_to_FoRIS_pp": 0.18164115532580638
+        },
+        "lvis": {
+          "class_miou": 47.33306388330147,
+          "delta_to_FoRIS_pp": 0.8035280389871744
+        },
+        "pascal_part": {
+          "class_miou": 59.286752089555186,
+          "delta_to_FoRIS_pp": 3.696643902793525
+        },
+        "paco_part": {
+          "class_miou": 48.74970421524935,
+          "delta_to_FoRIS_pp": 6.343775506434646
+        },
+        "suim": {
+          "class_miou": 59.222385365683536,
+          "delta_to_FoRIS_pp": 0.3738865076899316
+        },
+        "isaid": {
+          "class_miou": 53.6055913597058,
+          "delta_to_FoRIS_pp": 3.1799809688601286
+        },
+        "isic": {
+          "class_miou": 62.66746205662578,
+          "delta_to_FoRIS_pp": -0.4545091857028396
+        },
+        "lung": {
+          "class_miou": 89.6692977070544,
+          "delta_to_FoRIS_pp": 2.5130027595991464
+        },
+        "fundus": {
+          "class_miou": 34.05226792564366,
+          "delta_to_FoRIS_pp": 15.04071248746762
+        },
+        "deepglobe_road": {
+          "class_miou": 31.67427067751817,
+          "delta_to_FoRIS_pp": 2.2967286955896036
+        }
+      }
+    },
+    {
+      "id": "n7208634",
+      "index": 7208634,
+      "truth_table_hex": "fee0fee0fce0fce0",
+      "expression": "(B&U)|(M&U)|(M&T)|(U&T)|(B&T&J)",
+      "minimal_positive_terms": [
+        5,
+        6,
+        10,
+        12,
+        41
+      ],
+      "essential_sources": [
+        "B",
+        "M",
+        "U",
+        "T",
+        "J"
+      ],
+      "macro10_class_miou": 55.12099525361181,
+      "macro_delta_to_FoRIS_pp": 3.3957063851861045,
+      "worst_delta_to_FoRIS_pp": -0.43535331051544546,
+      "domains": {
+        "coco": {
+          "class_miou": 65.07877582170445,
+          "delta_to_FoRIS_pp": 0.29293273606582204
+        },
+        "lvis": {
+          "class_miou": 47.45176901288215,
+          "delta_to_FoRIS_pp": 0.9222331685678569
+        },
+        "pascal_part": {
+          "class_miou": 59.16464151700385,
+          "delta_to_FoRIS_pp": 3.5745333302421898
+        },
+        "paco_part": {
+          "class_miou": 48.7148151091808,
+          "delta_to_FoRIS_pp": 6.308886400366092
+        },
+        "suim": {
+          "class_miou": 59.227687271632185,
+          "delta_to_FoRIS_pp": 0.37918841363858036
+        },
+        "isaid": {
+          "class_miou": 53.55363290237603,
+          "delta_to_FoRIS_pp": 3.128022511530361
+        },
+        "isic": {
+          "class_miou": 62.686617931813174,
+          "delta_to_FoRIS_pp": -0.43535331051544546
+        },
+        "lung": {
+          "class_miou": 89.6785447406308,
+          "delta_to_FoRIS_pp": 2.522249793175547
+        },
+        "fundus": {
+          "class_miou": 34.05226792564366,
+          "delta_to_FoRIS_pp": 15.04071248746762
+        },
+        "deepglobe_road": {
+          "class_miou": 31.601200303250987,
+          "delta_to_FoRIS_pp": 2.2236583213224215
+        }
+      }
+    },
+    {
+      "id": "n7208844",
+      "index": 7208844,
+      "truth_table_hex": "fee0fce0fee0fce0",
+      "expression": "(B&U)|(M&U)|(M&T)|(U&T)|(B&T&I)",
+      "minimal_positive_terms": [
+        5,
+        6,
+        10,
+        12,
+        25
+      ],
+      "essential_sources": [
+        "B",
+        "M",
+        "U",
+        "T",
+        "I"
+      ],
+      "macro10_class_miou": 55.108995378263934,
+      "macro_delta_to_FoRIS_pp": 3.383706509838214,
+      "worst_delta_to_FoRIS_pp": -0.45146605712309906,
+      "domains": {
+        "coco": {
+          "class_miou": 65.07256868385713,
+          "delta_to_FoRIS_pp": 0.28672559821849575
+        },
+        "lvis": {
+          "class_miou": 47.407662231942986,
+          "delta_to_FoRIS_pp": 0.87812638762869
+        },
+        "pascal_part": {
+          "class_miou": 59.135030539661905,
+          "delta_to_FoRIS_pp": 3.544922352900244
+        },
+        "paco_part": {
+          "class_miou": 48.6970713760161,
+          "delta_to_FoRIS_pp": 6.291142667201392
+        },
+        "suim": {
+          "class_miou": 59.20773097002726,
+          "delta_to_FoRIS_pp": 0.35923211203365213
+        },
+        "isaid": {
+          "class_miou": 53.55166170639526,
+          "delta_to_FoRIS_pp": 3.1260513155495886
+        },
+        "isic": {
+          "class_miou": 62.67050518520552,
+          "delta_to_FoRIS_pp": -0.45146605712309906
+        },
+        "lung": {
+          "class_miou": 89.65849112868183,
+          "delta_to_FoRIS_pp": 2.50219618122658
+        },
+        "fundus": {
+          "class_miou": 34.05226792564366,
+          "delta_to_FoRIS_pp": 15.04071248746762
+        },
+        "deepglobe_road": {
+          "class_miou": 31.636964035207544,
+          "delta_to_FoRIS_pp": 2.2594220532789784
+        }
+      }
+    },
+    {
+      "id": "n7208607",
+      "index": 7208607,
+      "truth_table_hex": "fce0fce0fce0fce0",
+      "expression": "(B&U)|(M&U)|(M&T)|(U&T)",
+      "minimal_positive_terms": [
+        5,
+        6,
+        10,
+        12
+      ],
+      "essential_sources": [
+        "B",
+        "M",
+        "U",
+        "T"
+      ],
+      "macro10_class_miou": 55.095070990360796,
+      "macro_delta_to_FoRIS_pp": 3.369782121935091,
+      "worst_delta_to_FoRIS_pp": -0.4953922283552714,
+      "domains": {
+        "coco": {
+          "class_miou": 65.08911532145505,
+          "delta_to_FoRIS_pp": 0.30327223581642215
+        },
+        "lvis": {
+          "class_miou": 47.535388416793644,
+          "delta_to_FoRIS_pp": 1.0058525724793483
+        },
+        "pascal_part": {
+          "class_miou": 59.172562768287584,
+          "delta_to_FoRIS_pp": 3.5824545815259228
+        },
+        "paco_part": {
+          "class_miou": 48.66257262903422,
+          "delta_to_FoRIS_pp": 6.256643920219517
+        },
+        "suim": {
+          "class_miou": 59.03610421461493,
+          "delta_to_FoRIS_pp": 0.18760535662132583
+        },
+        "isaid": {
+          "class_miou": 53.560936583970104,
+          "delta_to_FoRIS_pp": 3.1353261931244347
+        },
+        "isic": {
+          "class_miou": 62.62657901397335,
+          "delta_to_FoRIS_pp": -0.4953922283552714
+        },
+        "lung": {
+          "class_miou": 89.66856531881581,
+          "delta_to_FoRIS_pp": 2.5122703713605574
+        },
+        "fundus": {
+          "class_miou": 34.05226792564366,
+          "delta_to_FoRIS_pp": 15.04071248746762
+        },
+        "deepglobe_road": {
+          "class_miou": 31.546617711019607,
+          "delta_to_FoRIS_pp": 2.169075729091041
+        }
+      }
+    },
+    {
+      "id": "n6713398",
+      "index": 6713398,
+      "truth_table_hex": "fcc0fcc0fcc0fcc0",
+      "expression": "(M&U)|(M&T)|(U&T)",
+      "minimal_positive_terms": [
+        6,
+        10,
+        12
+      ],
+      "essential_sources": [
+        "M",
+        "U",
+        "T"
+      ],
+      "macro10_class_miou": 55.081468565443856,
+      "macro_delta_to_FoRIS_pp": 3.3561796970181548,
+      "worst_delta_to_FoRIS_pp": -0.518917711290662,
+      "domains": {
+        "coco": {
+          "class_miou": 64.95659967291544,
+          "delta_to_FoRIS_pp": 0.17075658727681287
+        },
+        "lvis": {
+          "class_miou": 47.45803122062498,
+          "delta_to_FoRIS_pp": 0.9284953763106856
+        },
+        "pascal_part": {
+          "class_miou": 59.30676718980574,
+          "delta_to_FoRIS_pp": 3.7166590030440787
+        },
+        "paco_part": {
+          "class_miou": 48.70042100609505,
+          "delta_to_FoRIS_pp": 6.2944922972803425
+        },
+        "suim": {
+          "class_miou": 59.01055671037439,
+          "delta_to_FoRIS_pp": 0.16205785238078363
+        },
+        "isaid": {
+          "class_miou": 53.58567306055994,
+          "delta_to_FoRIS_pp": 3.1600626697142715
+        },
+        "isic": {
+          "class_miou": 62.60305353103796,
+          "delta_to_FoRIS_pp": -0.518917711290662
+        },
+        "lung": {
+          "class_miou": 89.62078288803315,
+          "delta_to_FoRIS_pp": 2.4644879405778966
+        },
+        "fundus": {
+          "class_miou": 34.05226792564366,
+          "delta_to_FoRIS_pp": 15.04071248746762
+        },
+        "deepglobe_road": {
+          "class_miou": 31.52053244934828,
+          "delta_to_FoRIS_pp": 2.1429904674197147
+        }
+      }
+    },
+    {
+      "id": "n6902614",
+      "index": 6902614,
+      "truth_table_hex": "faa0faa0f0a0f0a0",
+      "expression": "(B&U)|(U&T)|(B&T&J)",
+      "minimal_positive_terms": [
+        5,
+        12,
+        41
+      ],
+      "essential_sources": [
+        "B",
+        "U",
+        "T",
+        "J"
+      ],
+      "macro10_class_miou": 55.065383021939816,
+      "macro_delta_to_FoRIS_pp": 3.3400941535141073,
+      "worst_delta_to_FoRIS_pp": -1.2876655510758255,
+      "domains": {
+        "coco": {
+          "class_miou": 64.78121350205167,
+          "delta_to_FoRIS_pp": -0.004629583586961417
+        },
+        "lvis": {
+          "class_miou": 47.64761975246158,
+          "delta_to_FoRIS_pp": 1.118083908147284
+        },
+        "pascal_part": {
+          "class_miou": 58.94391274972834,
+          "delta_to_FoRIS_pp": 3.3538045629666797
+        },
+        "paco_part": {
+          "class_miou": 48.4517257449158,
+          "delta_to_FoRIS_pp": 6.045797036101092
+        },
+        "suim": {
+          "class_miou": 58.851107775729446,
+          "delta_to_FoRIS_pp": 0.0026089177358414872
+        },
+        "isaid": {
+          "class_miou": 54.53951465582575,
+          "delta_to_FoRIS_pp": 4.1139042649800786
+        },
+        "isic": {
+          "class_miou": 61.834305691252794,
+          "delta_to_FoRIS_pp": -1.2876655510758255
+        },
+        "lung": {
+          "class_miou": 89.92211772909829,
+          "delta_to_FoRIS_pp": 2.7658227816430383
+        },
+        "fundus": {
+          "class_miou": 34.0522635561862,
+          "delta_to_FoRIS_pp": 15.040708118010155
+        },
+        "deepglobe_road": {
+          "class_miou": 31.630049062148252,
+          "delta_to_FoRIS_pp": 2.2525070802196865
+        }
+      }
+    },
+    {
+      "id": "n6904897",
+      "index": 6904897,
+      "truth_table_hex": "faa0f0a0faa0f0a0",
+      "expression": "(B&U)|(U&T)|(B&T&I)",
+      "minimal_positive_terms": [
+        5,
+        12,
+        25
+      ],
+      "essential_sources": [
+        "B",
+        "U",
+        "T",
+        "I"
+      ],
+      "macro10_class_miou": 55.038155459512936,
+      "macro_delta_to_FoRIS_pp": 3.312866591087231,
+      "worst_delta_to_FoRIS_pp": -1.3252233742897346,
+      "domains": {
+        "coco": {
+          "class_miou": 64.75862767597205,
+          "delta_to_FoRIS_pp": -0.027215409666581536
+        },
+        "lvis": {
+          "class_miou": 47.58298826005952,
+          "delta_to_FoRIS_pp": 1.0534524157452267
+        },
+        "pascal_part": {
+          "class_miou": 58.883601801713745,
+          "delta_to_FoRIS_pp": 3.2934936149520837
+        },
+        "paco_part": {
+          "class_miou": 48.404322754729954,
+          "delta_to_FoRIS_pp": 5.998394045915248
+        },
+        "suim": {
+          "class_miou": 58.82149218665124,
+          "delta_to_FoRIS_pp": -0.02700667134236312
+        },
+        "isaid": {
+          "class_miou": 54.52162518391664,
+          "delta_to_FoRIS_pp": 4.096014793070971
+        },
+        "isic": {
+          "class_miou": 61.796747868038885,
+          "delta_to_FoRIS_pp": -1.3252233742897346
+        },
+        "lung": {
+          "class_miou": 89.89648239154508,
+          "delta_to_FoRIS_pp": 2.740187444089827
+        },
+        "fundus": {
+          "class_miou": 34.0522635561862,
+          "delta_to_FoRIS_pp": 15.040708118010155
+        },
+        "deepglobe_road": {
+          "class_miou": 31.66340291631604,
+          "delta_to_FoRIS_pp": 2.2858609343874754
+        }
+      }
+    },
+    {
+      "id": "n6902476",
+      "index": 6902476,
+      "truth_table_hex": "f0a0f0a0f0a0f0a0",
+      "expression": "(B&U)|(U&T)",
+      "minimal_positive_terms": [
+        5,
+        12
+      ],
+      "essential_sources": [
+        "B",
+        "U",
+        "T"
+      ],
+      "macro10_class_miou": 55.02896584521329,
+      "macro_delta_to_FoRIS_pp": 3.3036769767875866,
+      "worst_delta_to_FoRIS_pp": -1.615765245030616,
+      "domains": {
+        "coco": {
+          "class_miou": 64.71778501229336,
+          "delta_to_FoRIS_pp": -0.06805807334527003
+        },
+        "lvis": {
+          "class_miou": 48.03853152697048,
+          "delta_to_FoRIS_pp": 1.5089956826561846
+        },
+        "pascal_part": {
+          "class_miou": 58.89565506216107,
+          "delta_to_FoRIS_pp": 3.3055468753994077
+        },
+        "paco_part": {
+          "class_miou": 48.37976959113637,
+          "delta_to_FoRIS_pp": 5.973840882321667
+        },
+        "suim": {
+          "class_miou": 58.45894686218316,
+          "delta_to_FoRIS_pp": -0.389551995810443
+        },
+        "isaid": {
+          "class_miou": 54.75296104969864,
+          "delta_to_FoRIS_pp": 4.327350658852971
+        },
+        "isic": {
+          "class_miou": 61.506205997298004,
+          "delta_to_FoRIS_pp": -1.615765245030616
+        },
+        "lung": {
+          "class_miou": 89.94090468700446,
+          "delta_to_FoRIS_pp": 2.784609739549211
+        },
+        "fundus": {
+          "class_miou": 34.0522635561862,
+          "delta_to_FoRIS_pp": 15.040708118010155
+        },
+        "deepglobe_road": {
+          "class_miou": 31.546635107201165,
+          "delta_to_FoRIS_pp": 2.1690931252725996
+        }
+      }
+    },
+    {
+      "id": "n7150920",
+      "index": 7150920,
+      "truth_table_hex": "f0f0f0f0f0f0e0e0",
+      "expression": "(B&U)|(M&U)|(U&I)|(U&J)",
+      "minimal_positive_terms": [
+        5,
+        6,
+        20,
+        36
+      ],
+      "essential_sources": [
+        "B",
+        "M",
+        "U",
+        "I",
+        "J"
+      ],
+      "macro10_class_miou": 54.87065269201577,
+      "macro_delta_to_FoRIS_pp": 3.1453638235900736,
+      "worst_delta_to_FoRIS_pp": -1.122982299769177,
+      "domains": {
+        "coco": {
+          "class_miou": 64.6528853912195,
+          "delta_to_FoRIS_pp": -0.13295769441913308
+        },
+        "lvis": {
+          "class_miou": 48.12370481843054,
+          "delta_to_FoRIS_pp": 1.5941689741162435
+        },
+        "pascal_part": {
+          "class_miou": 58.73808319251025,
+          "delta_to_FoRIS_pp": 3.1479750057485916
+        },
+        "paco_part": {
+          "class_miou": 48.56304888104598,
+          "delta_to_FoRIS_pp": 6.157120172231274
+        },
+        "suim": {
+          "class_miou": 58.27744547123948,
+          "delta_to_FoRIS_pp": -0.571053386754123
+        },
+        "isaid": {
+          "class_miou": 54.642079463615026,
+          "delta_to_FoRIS_pp": 4.216469072769357
+        },
+        "isic": {
+          "class_miou": 61.99898894255944,
+          "delta_to_FoRIS_pp": -1.122982299769177
+        },
+        "lung": {
+          "class_miou": 89.4673695208533,
+          "delta_to_FoRIS_pp": 2.311074573398045
+        },
+        "fundus": {
+          "class_miou": 33.569308684080106,
+          "delta_to_FoRIS_pp": 14.557753245904063
+        },
+        "deepglobe_road": {
+          "class_miou": 30.673612554604162,
+          "delta_to_FoRIS_pp": 1.296070572675596
+        }
+      }
+    },
+    {
+      "id": "n7150758",
+      "index": 7150758,
+      "truth_table_hex": "f0f0e0e0f0f0e0e0",
+      "expression": "(B&U)|(M&U)|(U&I)",
+      "minimal_positive_terms": [
+        5,
+        6,
+        20
+      ],
+      "essential_sources": [
+        "B",
+        "M",
+        "U",
+        "I"
+      ],
+      "macro10_class_miou": 54.86175629759346,
+      "macro_delta_to_FoRIS_pp": 3.1364674291677472,
+      "worst_delta_to_FoRIS_pp": -1.1366700330473662,
+      "domains": {
+        "coco": {
+          "class_miou": 64.64163682569924,
+          "delta_to_FoRIS_pp": -0.14420625993939495
+        },
+        "lvis": {
+          "class_miou": 48.127045047187664,
+          "delta_to_FoRIS_pp": 1.5975092028733684
+        },
+        "pascal_part": {
+          "class_miou": 58.733447665821295,
+          "delta_to_FoRIS_pp": 3.143339479059634
+        },
+        "paco_part": {
+          "class_miou": 48.565896917043084,
+          "delta_to_FoRIS_pp": 6.159968208228378
+        },
+        "suim": {
+          "class_miou": 58.26590375009428,
+          "delta_to_FoRIS_pp": -0.5825951078993228
+        },
+        "isaid": {
+          "class_miou": 54.623900507410525,
+          "delta_to_FoRIS_pp": 4.198290116564856
+        },
+        "isic": {
+          "class_miou": 61.98530120928125,
+          "delta_to_FoRIS_pp": -1.1366700330473662
+        },
+        "lung": {
+          "class_miou": 89.44848424193297,
+          "delta_to_FoRIS_pp": 2.2921892944777227
+        },
+        "fundus": {
+          "class_miou": 33.56622547049033,
+          "delta_to_FoRIS_pp": 14.554670032314288
+        },
+        "deepglobe_road": {
+          "class_miou": 30.659721340973878,
+          "delta_to_FoRIS_pp": 1.2821793590453119
+        }
+      }
+    },
+    {
+      "id": "n7143529",
+      "index": 7143529,
+      "truth_table_hex": "f0f0f0f0e0e0e0e0",
+      "expression": "(B&U)|(M&U)|(U&J)",
+      "minimal_positive_terms": [
+        5,
+        6,
+        36
+      ],
+      "essential_sources": [
+        "B",
+        "M",
+        "U",
+        "J"
+      ],
+      "macro10_class_miou": 54.85294971492734,
+      "macro_delta_to_FoRIS_pp": 3.127660846501642,
+      "worst_delta_to_FoRIS_pp": -1.1409602298075043,
+      "domains": {
+        "coco": {
+          "class_miou": 64.66731637651371,
+          "delta_to_FoRIS_pp": -0.11852670912492158
+        },
+        "lvis": {
+          "class_miou": 48.2017347091386,
+          "delta_to_FoRIS_pp": 1.6721988648243027
+        },
+        "pascal_part": {
+          "class_miou": 58.74385649839722,
+          "delta_to_FoRIS_pp": 3.1537483116355602
+        },
+        "paco_part": {
+          "class_miou": 48.56845161985423,
+          "delta_to_FoRIS_pp": 6.162522911039524
+        },
+        "suim": {
+          "class_miou": 58.2876224302292,
+          "delta_to_FoRIS_pp": -0.5608764277644056
+        },
+        "isaid": {
+          "class_miou": 54.58762946815016,
+          "delta_to_FoRIS_pp": 4.1620190773044925
+        },
+        "isic": {
+          "class_miou": 61.981011012521115,
+          "delta_to_FoRIS_pp": -1.1409602298075043
+        },
+        "lung": {
+          "class_miou": 89.47057943168917,
+          "delta_to_FoRIS_pp": 2.314284484233923
+        },
+        "fundus": {
+          "class_miou": 33.54781788618802,
+          "delta_to_FoRIS_pp": 14.536262448011978
+        },
+        "deepglobe_road": {
+          "class_miou": 30.473477716592036,
+          "delta_to_FoRIS_pp": 1.0959357346634704
+        }
+      }
+    },
+    {
+      "id": "n7227131",
+      "index": 7227131,
+      "truth_table_hex": "f0f0f0f0f0f0f0f0",
+      "expression": "(U)",
+      "minimal_positive_terms": [
+        4
+      ],
+      "essential_sources": [
+        "U"
+      ],
+      "macro10_class_miou": 54.72600729577076,
+      "macro_delta_to_FoRIS_pp": 3.000718427345053,
+      "worst_delta_to_FoRIS_pp": -1.1628606617470822,
+      "domains": {
+        "coco": {
+          "class_miou": 64.63340374797556,
+          "delta_to_FoRIS_pp": -0.15243933766306839
+        },
+        "lvis": {
+          "class_miou": 47.03226427848025,
+          "delta_to_FoRIS_pp": 0.5027284341659524
+        },
+        "pascal_part": {
+          "class_miou": 58.79033481751548,
+          "delta_to_FoRIS_pp": 3.200226630753818
+        },
+        "paco_part": {
+          "class_miou": 48.12419676729671,
+          "delta_to_FoRIS_pp": 5.718268058482003
+        },
+        "suim": {
+          "class_miou": 59.15712639148754,
+          "delta_to_FoRIS_pp": 0.308627533493933
+        },
+        "isaid": {
+          "class_miou": 54.54138085575606,
+          "delta_to_FoRIS_pp": 4.115770464910391
+        },
+        "isic": {
+          "class_miou": 61.95911058058154,
+          "delta_to_FoRIS_pp": -1.1628606617470822
+        },
+        "lung": {
+          "class_miou": 89.34910759020524,
+          "delta_to_FoRIS_pp": 2.1928126427499848
+        },
+        "fundus": {
+          "class_miou": 34.0522635561862,
+          "delta_to_FoRIS_pp": 15.040708118010155
+        },
+        "deepglobe_road": {
+          "class_miou": 29.62088437222301,
+          "delta_to_FoRIS_pp": 0.24334239029444404
+        }
+      }
+    },
+    {
+      "id": "n3880262",
+      "index": 3880262,
+      "truth_table_hex": "ff00ff00ee00ee00",
+      "expression": "(B&T)|(M&T)|(T&J)",
+      "minimal_positive_terms": [
+        9,
+        10,
+        40
+      ],
+      "essential_sources": [
+        "B",
+        "M",
+        "T",
+        "J"
+      ],
+      "macro10_class_miou": 53.31297802266205,
+      "macro_delta_to_FoRIS_pp": 1.5876891542363416,
+      "worst_delta_to_FoRIS_pp": -3.567026307257251,
+      "domains": {
+        "coco": {
+          "class_miou": 61.27182091876537,
+          "delta_to_FoRIS_pp": -3.5140221668732607
+        },
+        "lvis": {
+          "class_miou": 46.17099155697102,
+          "delta_to_FoRIS_pp": -0.35854428734327826
+        },
+        "pascal_part": {
+          "class_miou": 56.96320259354641,
+          "delta_to_FoRIS_pp": 1.3730944067847517
+        },
+        "paco_part": {
+          "class_miou": 45.130181577254994,
+          "delta_to_FoRIS_pp": 2.7242528684402885
+        },
+        "suim": {
+          "class_miou": 55.28147255073635,
+          "delta_to_FoRIS_pp": -3.567026307257251
+        },
+        "isaid": {
+          "class_miou": 53.16023634030605,
+          "delta_to_FoRIS_pp": 2.73462594946038
+        },
+        "isic": {
+          "class_miou": 60.80055437428375,
+          "delta_to_FoRIS_pp": -2.321416868044871
+        },
+        "lung": {
+          "class_miou": 89.58553106418644,
+          "delta_to_FoRIS_pp": 2.4292361167311896
+        },
+        "fundus": {
+          "class_miou": 33.5478223416321,
+          "delta_to_FoRIS_pp": 14.536266903456056
+        },
+        "deepglobe_road": {
+          "class_miou": 31.217966908937978,
+          "delta_to_FoRIS_pp": 1.840424927009412
+        }
+      }
+    },
+    {
+      "id": "n3881784",
+      "index": 3881784,
+      "truth_table_hex": "ff00ee00ff00ee00",
+      "expression": "(B&T)|(M&T)|(T&I)",
+      "minimal_positive_terms": [
+        9,
+        10,
+        24
+      ],
+      "essential_sources": [
+        "B",
+        "M",
+        "T",
+        "I"
+      ],
+      "macro10_class_miou": 53.29603930590251,
+      "macro_delta_to_FoRIS_pp": 1.570750437476812,
+      "worst_delta_to_FoRIS_pp": -3.680012867633927,
+      "domains": {
+        "coco": {
+          "class_miou": 61.10779563141959,
+          "delta_to_FoRIS_pp": -3.6780474542190404
+        },
+        "lvis": {
+          "class_miou": 46.14109516489241,
+          "delta_to_FoRIS_pp": -0.3884406794218833
+        },
+        "pascal_part": {
+          "class_miou": 56.92767629973058,
+          "delta_to_FoRIS_pp": 1.337568112968917
+        },
+        "paco_part": {
+          "class_miou": 45.05644975070143,
+          "delta_to_FoRIS_pp": 2.6505210418867264
+        },
+        "suim": {
+          "class_miou": 55.16848599035968,
+          "delta_to_FoRIS_pp": -3.680012867633927
+        },
+        "isaid": {
+          "class_miou": 53.18708212400153,
+          "delta_to_FoRIS_pp": 2.761471733155858
+        },
+        "isic": {
+          "class_miou": 60.755045441883674,
+          "delta_to_FoRIS_pp": -2.366925800444946
+        },
+        "lung": {
+          "class_miou": 89.5770798910913,
+          "delta_to_FoRIS_pp": 2.4207849436360505
+        },
+        "fundus": {
+          "class_miou": 33.56622992300727,
+          "delta_to_FoRIS_pp": 14.554674484831228
+        },
+        "deepglobe_road": {
+          "class_miou": 31.473452841937704,
+          "delta_to_FoRIS_pp": 2.0959108600091376
+        }
+      }
+    },
+    {
+      "id": "n3880170",
+      "index": 3880170,
+      "truth_table_hex": "ee00ee00ee00ee00",
+      "expression": "(B&T)|(M&T)",
+      "minimal_positive_terms": [
+        9,
+        10
+      ],
+      "essential_sources": [
+        "B",
+        "M",
+        "T"
+      ],
+      "macro10_class_miou": 53.23622767268283,
+      "macro_delta_to_FoRIS_pp": 1.5109388042571237,
+      "worst_delta_to_FoRIS_pp": -4.258775779961802,
+      "domains": {
+        "coco": {
+          "class_miou": 61.81706377333246,
+          "delta_to_FoRIS_pp": -2.968779312306175
+        },
+        "lvis": {
+          "class_miou": 46.18043039406219,
+          "delta_to_FoRIS_pp": -0.3491054502521038
+        },
+        "pascal_part": {
+          "class_miou": 56.406510659253826,
+          "delta_to_FoRIS_pp": 0.8164024724921646
+        },
+        "paco_part": {
+          "class_miou": 45.380450892538526,
+          "delta_to_FoRIS_pp": 2.9745221837238205
+        },
+        "suim": {
+          "class_miou": 54.5897230780318,
+          "delta_to_FoRIS_pp": -4.258775779961802
+        },
+        "isaid": {
+          "class_miou": 52.54886530529265,
+          "delta_to_FoRIS_pp": 2.1232549144469814
+        },
+        "isic": {
+          "class_miou": 61.5419640931962,
+          "delta_to_FoRIS_pp": -1.5800071491324204
+        },
+        "lung": {
+          "class_miou": 89.57570428125194,
+          "delta_to_FoRIS_pp": 2.4194093337966933
+        },
+        "fundus": {
+          "class_miou": 33.48206311689682,
+          "delta_to_FoRIS_pp": 14.470507678720775
+        },
+        "deepglobe_road": {
+          "class_miou": 30.83950113297187,
+          "delta_to_FoRIS_pp": 1.4619591510433025
+        }
+      }
+    },
+    {
+      "id": "n3711081",
+      "index": 3711081,
+      "truth_table_hex": "ff00ff00aa00aa00",
+      "expression": "(B&T)|(T&J)",
+      "minimal_positive_terms": [
+        9,
+        40
+      ],
+      "essential_sources": [
+        "B",
+        "T",
+        "J"
+      ],
+      "macro10_class_miou": 53.17368249568771,
+      "macro_delta_to_FoRIS_pp": 1.4483936272620064,
+      "worst_delta_to_FoRIS_pp": -3.6777693193857814,
+      "domains": {
+        "coco": {
+          "class_miou": 61.14825422373448,
+          "delta_to_FoRIS_pp": -3.637588861904149
+        },
+        "lvis": {
+          "class_miou": 46.487229536119315,
+          "delta_to_FoRIS_pp": -0.0423063081949806
+        },
+        "pascal_part": {
+          "class_miou": 56.892673982642755,
+          "delta_to_FoRIS_pp": 1.302565795881094
+        },
+        "paco_part": {
+          "class_miou": 44.99317806520951,
+          "delta_to_FoRIS_pp": 2.587249356394807
+        },
+        "suim": {
+          "class_miou": 55.17072953860782,
+          "delta_to_FoRIS_pp": -3.6777693193857814
+        },
+        "isaid": {
+          "class_miou": 53.0867531446465,
+          "delta_to_FoRIS_pp": 2.6611427538008314
+        },
+        "isic": {
+          "class_miou": 60.496929177412376,
+          "delta_to_FoRIS_pp": -2.6250420649162436
+        },
+        "lung": {
+          "class_miou": 89.00668081611788,
+          "delta_to_FoRIS_pp": 1.8503858686626273
+        },
+        "fundus": {
+          "class_miou": 33.337783912994276,
+          "delta_to_FoRIS_pp": 14.326228474818233
+        },
+        "deepglobe_road": {
+          "class_miou": 31.11661255939219,
+          "delta_to_FoRIS_pp": 1.7390705774636253
+        }
+      }
+    },
+    {
+      "id": "n3719598",
+      "index": 3719598,
+      "truth_table_hex": "ff00aa00ff00aa00",
+      "expression": "(B&T)|(T&I)",
+      "minimal_positive_terms": [
+        9,
+        24
+      ],
+      "essential_sources": [
+        "B",
+        "T",
+        "I"
+      ],
+      "macro10_class_miou": 53.1483924015199,
+      "macro_delta_to_FoRIS_pp": 1.4231035330941946,
+      "worst_delta_to_FoRIS_pp": -3.923058117653987,
+      "domains": {
+        "coco": {
+          "class_miou": 60.862784967984645,
+          "delta_to_FoRIS_pp": -3.923058117653987
+        },
+        "lvis": {
+          "class_miou": 46.21591474959542,
+          "delta_to_FoRIS_pp": -0.3136210947188758
+        },
+        "pascal_part": {
+          "class_miou": 56.84645411182876,
+          "delta_to_FoRIS_pp": 1.2563459250671016
+        },
+        "paco_part": {
+          "class_miou": 44.894364474702336,
+          "delta_to_FoRIS_pp": 2.4884357658876297
+        },
+        "suim": {
+          "class_miou": 55.00644489022659,
+          "delta_to_FoRIS_pp": -3.842053967767015
+        },
+        "isaid": {
+          "class_miou": 53.29676017935227,
+          "delta_to_FoRIS_pp": 2.8711497885065995
+        },
+        "isic": {
+          "class_miou": 60.48666896228128,
+          "delta_to_FoRIS_pp": -2.635302280047341
+        },
+        "lung": {
+          "class_miou": 89.07715454466366,
+          "delta_to_FoRIS_pp": 1.9208595972084055
+        },
+        "fundus": {
+          "class_miou": 33.37149366483094,
+          "delta_to_FoRIS_pp": 14.3599382266549
+        },
+        "deepglobe_road": {
+          "class_miou": 31.425883469733094,
+          "delta_to_FoRIS_pp": 2.048341487804528
+        }
+      }
+    },
+    {
+      "id": "n3550302",
+      "index": 3550302,
+      "truth_table_hex": "ff00ff00ff00cc00",
+      "expression": "(M&T)|(T&I)|(T&J)",
+      "minimal_positive_terms": [
+        10,
+        24,
+        40
+      ],
+      "essential_sources": [
+        "M",
+        "T",
+        "I",
+        "J"
+      ],
+      "macro10_class_miou": 53.037043691827215,
+      "macro_delta_to_FoRIS_pp": 1.3117548234015122,
+      "worst_delta_to_FoRIS_pp": -4.73826921597685,
+      "domains": {
+        "coco": {
+          "class_miou": 61.659206038496116,
+          "delta_to_FoRIS_pp": -3.1266370471425162
+        },
+        "lvis": {
+          "class_miou": 45.41666673153952,
+          "delta_to_FoRIS_pp": -1.1128691127747743
+        },
+        "pascal_part": {
+          "class_miou": 56.50541101816832,
+          "delta_to_FoRIS_pp": 0.915302831406656
+        },
+        "paco_part": {
+          "class_miou": 45.391611202823825,
+          "delta_to_FoRIS_pp": 2.9856824940091187
+        },
+        "suim": {
+          "class_miou": 54.110229642016755,
+          "delta_to_FoRIS_pp": -4.73826921597685
+        },
+        "isaid": {
+          "class_miou": 53.494843355633144,
+          "delta_to_FoRIS_pp": 3.0692329647874743
+        },
+        "isic": {
+          "class_miou": 60.68823377535664,
+          "delta_to_FoRIS_pp": -2.4337374669719765
+        },
+        "lung": {
+          "class_miou": 89.64141994030442,
+          "delta_to_FoRIS_pp": 2.4851249928491654
+        },
+        "fundus": {
+          "class_miou": 33.125292927974286,
+          "delta_to_FoRIS_pp": 14.113737489798243
+        },
+        "deepglobe_road": {
+          "class_miou": 30.337522285959146,
+          "delta_to_FoRIS_pp": 0.9599803040305801
+        }
+      }
+    },
+    {
+      "id": "n3541685",
+      "index": 3541685,
+      "truth_table_hex": "ff00ff00cc00cc00",
+      "expression": "(M&T)|(T&J)",
+      "minimal_positive_terms": [
+        10,
+        40
+      ],
+      "essential_sources": [
+        "M",
+        "T",
+        "J"
+      ],
+      "macro10_class_miou": 53.000204657825364,
+      "macro_delta_to_FoRIS_pp": 1.2749157893996543,
+      "worst_delta_to_FoRIS_pp": -4.673386505915687,
+      "domains": {
+        "coco": {
+          "class_miou": 61.834552699414054,
+          "delta_to_FoRIS_pp": -2.951290386224578
+        },
+        "lvis": {
+          "class_miou": 45.34626557012316,
+          "delta_to_FoRIS_pp": -1.1832702741911376
+        },
+        "pascal_part": {
+          "class_miou": 56.52403502575412,
+          "delta_to_FoRIS_pp": 0.9339268389924555
+        },
+        "paco_part": {
+          "class_miou": 45.466641787898745,
+          "delta_to_FoRIS_pp": 3.0607130790840387
+        },
+        "suim": {
+          "class_miou": 54.17511235207792,
+          "delta_to_FoRIS_pp": -4.673386505915687
+        },
+        "isaid": {
+          "class_miou": 53.44937816775944,
+          "delta_to_FoRIS_pp": 3.023767776913772
+        },
+        "isic": {
+          "class_miou": 60.72731067169862,
+          "delta_to_FoRIS_pp": -2.394660570630002
+        },
+        "lung": {
+          "class_miou": 89.6461813889607,
+          "delta_to_FoRIS_pp": 2.4898864415054476
+        },
+        "fundus": {
+          "class_miou": 33.08284153152638,
+          "delta_to_FoRIS_pp": 14.071286093350334
+        },
+        "deepglobe_road": {
+          "class_miou": 29.749727383040465,
+          "delta_to_FoRIS_pp": 0.37218540111189924
+        }
+      }
+    },
+    {
+      "id": "n3550202",
+      "index": 3550202,
+      "truth_table_hex": "ff00cc00ff00cc00",
+      "expression": "(M&T)|(T&I)",
+      "minimal_positive_terms": [
+        10,
+        24
+      ],
+      "essential_sources": [
+        "M",
+        "T",
+        "I"
+      ],
+      "macro10_class_miou": 52.99108019272952,
+      "macro_delta_to_FoRIS_pp": 1.2657913243038195,
+      "worst_delta_to_FoRIS_pp": -4.823422820082342,
+      "domains": {
+        "coco": {
+          "class_miou": 61.65427191640329,
+          "delta_to_FoRIS_pp": -3.131571169235343
+        },
+        "lvis": {
+          "class_miou": 45.35563234526812,
+          "delta_to_FoRIS_pp": -1.173903499046176
+        },
+        "pascal_part": {
+          "class_miou": 56.465693721314636,
+          "delta_to_FoRIS_pp": 0.8755855345529753
+        },
+        "paco_part": {
+          "class_miou": 45.382612048986665,
+          "delta_to_FoRIS_pp": 2.9766833401719595
+        },
+        "suim": {
+          "class_miou": 54.02507603791126,
+          "delta_to_FoRIS_pp": -4.823422820082342
+        },
+        "isaid": {
+          "class_miou": 53.45816758423792,
+          "delta_to_FoRIS_pp": 3.0325571933922504
+        },
+        "isic": {
+          "class_miou": 60.65438658457748,
+          "delta_to_FoRIS_pp": -2.4675846577511393
+        },
+        "lung": {
+          "class_miou": 89.5324300198355,
+          "delta_to_FoRIS_pp": 2.376135072380251
+        },
+        "fundus": {
+          "class_miou": 33.11997229453824,
+          "delta_to_FoRIS_pp": 14.1084168563622
+        },
+        "deepglobe_road": {
+          "class_miou": 30.262559374222125,
+          "delta_to_FoRIS_pp": 0.8850173922935589
+        }
+      }
+    },
+    {
+      "id": "n3710774",
+      "index": 3710774,
+      "truth_table_hex": "aa00aa00aa00aa00",
+      "expression": "(B&T)",
+      "minimal_positive_terms": [
+        9
+      ],
+      "essential_sources": [
+        "B",
+        "T"
+      ],
+      "macro10_class_miou": 52.89421108303338,
+      "macro_delta_to_FoRIS_pp": 1.1689222146076772,
+      "worst_delta_to_FoRIS_pp": -4.676294942602205,
+      "domains": {
+        "coco": {
+          "class_miou": 61.51818343892289,
+          "delta_to_FoRIS_pp": -3.2676596467157424
+        },
+        "lvis": {
+          "class_miou": 46.409831335092456,
+          "delta_to_FoRIS_pp": -0.11970450922184028
+        },
+        "pascal_part": {
+          "class_miou": 56.08170668925479,
+          "delta_to_FoRIS_pp": 0.491598502493126
+        },
+        "paco_part": {
+          "class_miou": 44.996024926068785,
+          "delta_to_FoRIS_pp": 2.5900962172540787
+        },
+        "suim": {
+          "class_miou": 54.1722039153914,
+          "delta_to_FoRIS_pp": -4.676294942602205
+        },
+        "isaid": {
+          "class_miou": 52.378499422437244,
+          "delta_to_FoRIS_pp": 1.9528890315915746
+        },
+        "isic": {
+          "class_miou": 60.860935419404235,
+          "delta_to_FoRIS_pp": -2.2610358229243843
+        },
+        "lung": {
+          "class_miou": 88.60147251944082,
+          "delta_to_FoRIS_pp": 1.4451775719855675
+        },
+        "fundus": {
+          "class_miou": 33.23697867154639,
+          "delta_to_FoRIS_pp": 14.225423233370346
+        },
+        "deepglobe_road": {
+          "class_miou": 30.686274492774817,
+          "delta_to_FoRIS_pp": 1.3087325108462515
+        }
+      }
+    },
+    {
+      "id": "n3541378",
+      "index": 3541378,
+      "truth_table_hex": "cc00cc00cc00cc00",
+      "expression": "(M&T)",
+      "minimal_positive_terms": [
+        10
+      ],
+      "essential_sources": [
+        "M",
+        "T"
+      ],
+      "macro10_class_miou": 52.45935343080246,
+      "macro_delta_to_FoRIS_pp": 0.7340645623767543,
+      "worst_delta_to_FoRIS_pp": -6.0450138073241675,
+      "domains": {
+        "coco": {
+          "class_miou": 62.256538617964964,
+          "delta_to_FoRIS_pp": -2.5293044676736685
+        },
+        "lvis": {
+          "class_miou": 45.144998470337924,
+          "delta_to_FoRIS_pp": -1.3845373739763716
+        },
+        "pascal_part": {
+          "class_miou": 55.644257570049554,
+          "delta_to_FoRIS_pp": 0.05414938328789276
+        },
+        "paco_part": {
+          "class_miou": 45.32754424727925,
+          "delta_to_FoRIS_pp": 2.9216155384645432
+        },
+        "suim": {
+          "class_miou": 52.80348505066944,
+          "delta_to_FoRIS_pp": -6.0450138073241675
+        },
+        "isaid": {
+          "class_miou": 52.318025917415426,
+          "delta_to_FoRIS_pp": 1.8924155265697564
+        },
+        "isic": {
+          "class_miou": 61.25592477916905,
+          "delta_to_FoRIS_pp": -1.8660464631595701
+        },
+        "lung": {
+          "class_miou": 89.41440268620934,
+          "delta_to_FoRIS_pp": 2.2581077387540915
+        },
+        "fundus": {
+          "class_miou": 32.942848984879106,
+          "delta_to_FoRIS_pp": 13.931293546703063
+        },
+        "deepglobe_road": {
+          "class_miou": 27.48550798405054,
+          "delta_to_FoRIS_pp": -1.892033997878027
+        }
+      }
+    },
+    {
+      "id": "n7306116",
+      "index": 7306116,
+      "truth_table_hex": "aaaaaaaaaaaa8888",
+      "expression": "(B&M)|(B&I)|(B&J)",
+      "minimal_positive_terms": [
+        3,
+        17,
+        33
+      ],
+      "essential_sources": [
+        "B",
+        "M",
+        "I",
+        "J"
+      ],
+      "macro10_class_miou": 52.08901053609733,
+      "macro_delta_to_FoRIS_pp": 0.36372166767163494,
+      "worst_delta_to_FoRIS_pp": -0.7562375729779234,
+      "domains": {
+        "coco": {
+          "class_miou": 65.44637453814862,
+          "delta_to_FoRIS_pp": 0.6605314525099857
+        },
+        "lvis": {
+          "class_miou": 46.86655974388975,
+          "delta_to_FoRIS_pp": 0.3370238995754562
+        },
+        "pascal_part": {
+          "class_miou": 56.277265099046566,
+          "delta_to_FoRIS_pp": 0.6871569122849053
+        },
+        "paco_part": {
+          "class_miou": 43.65767658386312,
+          "delta_to_FoRIS_pp": 1.251747875048416
+        },
+        "suim": {
+          "class_miou": 58.20027166585019,
+          "delta_to_FoRIS_pp": -0.6482271921434162
+        },
+        "isaid": {
+          "class_miou": 50.98457701830943,
+          "delta_to_FoRIS_pp": 0.5589666274637608
+        },
+        "isic": {
+          "class_miou": 63.04370678615903,
+          "delta_to_FoRIS_pp": -0.07826445616959177
+        },
+        "lung": {
+          "class_miou": 87.48666725469445,
+          "delta_to_FoRIS_pp": 0.33037230723920175
+        },
+        "fundus": {
+          "class_miou": 20.305702262061597,
+          "delta_to_FoRIS_pp": 1.294146823885555
+        },
+        "deepglobe_road": {
+          "class_miou": 28.621304408950643,
+          "delta_to_FoRIS_pp": -0.7562375729779234
+        }
+      }
+    },
+    {
+      "id": "n7234544",
+      "index": 7234544,
+      "truth_table_hex": "aaaaaaaa88888888",
+      "expression": "(B&M)|(B&J)",
+      "minimal_positive_terms": [
+        3,
+        33
+      ],
+      "essential_sources": [
+        "B",
+        "M",
+        "J"
+      ],
+      "macro10_class_miou": 52.05440301651686,
+      "macro_delta_to_FoRIS_pp": 0.32911414809114914,
+      "worst_delta_to_FoRIS_pp": -1.0659347754978938,
+      "domains": {
+        "coco": {
+          "class_miou": 65.45836339163421,
+          "delta_to_FoRIS_pp": 0.672520305995576
+        },
+        "lvis": {
+          "class_miou": 46.80823591172829,
+          "delta_to_FoRIS_pp": 0.2787000674139932
+        },
+        "pascal_part": {
+          "class_miou": 56.28274348651442,
+          "delta_to_FoRIS_pp": 0.6926352997527587
+        },
+        "paco_part": {
+          "class_miou": 43.66343816554684,
+          "delta_to_FoRIS_pp": 1.2575094567321372
+        },
+        "suim": {
+          "class_miou": 58.186266663503424,
+          "delta_to_FoRIS_pp": -0.6622321944901799
+        },
+        "isaid": {
+          "class_miou": 50.99149664633151,
+          "delta_to_FoRIS_pp": 0.565886255485843
+        },
+        "isic": {
+          "class_miou": 63.04348441523549,
+          "delta_to_FoRIS_pp": -0.07848682709312982
+        },
+        "lung": {
+          "class_miou": 87.4975413650895,
+          "delta_to_FoRIS_pp": 0.34124641763425245
+        },
+        "fundus": {
+          "class_miou": 20.300852913154177,
+          "delta_to_FoRIS_pp": 1.2892974749781345
+        },
+        "deepglobe_road": {
+          "class_miou": 28.311607206430672,
+          "delta_to_FoRIS_pp": -1.0659347754978938
+        }
+      }
+    },
+    {
+      "id": "n7305435",
+      "index": 7305435,
+      "truth_table_hex": "aaaa8888aaaa8888",
+      "expression": "(B&M)|(B&I)",
+      "minimal_positive_terms": [
+        3,
+        17
+      ],
+      "essential_sources": [
+        "B",
+        "M",
+        "I"
+      ],
+      "macro10_class_miou": 52.02857104921387,
+      "macro_delta_to_FoRIS_pp": 0.3032821807881717,
+      "worst_delta_to_FoRIS_pp": -0.7432640138353079,
+      "domains": {
+        "coco": {
+          "class_miou": 65.40713900811828,
+          "delta_to_FoRIS_pp": 0.6212959224796464
+        },
+        "lvis": {
+          "class_miou": 46.645414951461866,
+          "delta_to_FoRIS_pp": 0.11587910714757044
+        },
+        "pascal_part": {
+          "class_miou": 56.23198428419501,
+          "delta_to_FoRIS_pp": 0.6418760974333466
+        },
+        "paco_part": {
+          "class_miou": 43.64487205868381,
+          "delta_to_FoRIS_pp": 1.2389433498691034
+        },
+        "suim": {
+          "class_miou": 58.105234844158296,
+          "delta_to_FoRIS_pp": -0.7432640138353079
+        },
+        "isaid": {
+          "class_miou": 50.961188727393335,
+          "delta_to_FoRIS_pp": 0.5355783365476654
+        },
+        "isic": {
+          "class_miou": 62.97246655082602,
+          "delta_to_FoRIS_pp": -0.14950469150259948
+        },
+        "lung": {
+          "class_miou": 87.35337075973865,
+          "delta_to_FoRIS_pp": 0.19707581228340132
+        },
+        "fundus": {
+          "class_miou": 20.31898247012283,
+          "delta_to_FoRIS_pp": 1.307427031946787
+        },
+        "deepglobe_road": {
+          "class_miou": 28.64505683744067,
+          "delta_to_FoRIS_pp": -0.7324851444878959
+        }
+      }
+    },
+    {
+      "id": "n7232704",
+      "index": 7232704,
+      "truth_table_hex": "8888888888888888",
+      "expression": "(B&M)",
+      "minimal_positive_terms": [
+        3
+      ],
+      "essential_sources": [
+        "B",
+        "M"
+      ],
+      "macro10_class_miou": 51.79398626153327,
+      "macro_delta_to_FoRIS_pp": 0.06869739310756237,
+      "worst_delta_to_FoRIS_pp": -2.5570844670193154,
+      "domains": {
+        "coco": {
+          "class_miou": 65.31706063851124,
+          "delta_to_FoRIS_pp": 0.5312175528726044
+        },
+        "lvis": {
+          "class_miou": 46.70330379149506,
+          "delta_to_FoRIS_pp": 0.17376794718076383
+        },
+        "pascal_part": {
+          "class_miou": 56.1747811516523,
+          "delta_to_FoRIS_pp": 0.5846729648906361
+        },
+        "paco_part": {
+          "class_miou": 43.866799645800384,
+          "delta_to_FoRIS_pp": 1.4608709369856783
+        },
+        "suim": {
+          "class_miou": 57.40767015456404,
+          "delta_to_FoRIS_pp": -1.4408287034295668
+        },
+        "isaid": {
+          "class_miou": 50.61056658677259,
+          "delta_to_FoRIS_pp": 0.18495619592692236
+        },
+        "isic": {
+          "class_miou": 62.811628598809016,
+          "delta_to_FoRIS_pp": -0.31034264351960417
+        },
+        "lung": {
+          "class_miou": 87.79058549714792,
+          "delta_to_FoRIS_pp": 0.6342905496926647
+        },
+        "fundus": {
+          "class_miou": 20.437009035670883,
+          "delta_to_FoRIS_pp": 1.4254535974948404
+        },
+        "deepglobe_road": {
+          "class_miou": 26.82045751490925,
+          "delta_to_FoRIS_pp": -2.5570844670193154
+        }
+      }
+    },
+    {
+      "id": "n7820772",
+      "index": 7820772,
+      "truth_table_hex": "aaaaaaaaaaaaaaaa",
+      "expression": "(B)",
+      "minimal_positive_terms": [
+        1
+      ],
+      "essential_sources": [
+        "B"
+      ],
+      "macro10_class_miou": 51.72528886842571,
+      "macro_delta_to_FoRIS_pp": 0.0,
+      "worst_delta_to_FoRIS_pp": 0.0,
+      "domains": {
+        "coco": {
+          "class_miou": 64.78584308563863,
+          "delta_to_FoRIS_pp": 0.0
+        },
+        "lvis": {
+          "class_miou": 46.529535844314296,
+          "delta_to_FoRIS_pp": 0.0
+        },
+        "pascal_part": {
+          "class_miou": 55.59010818676166,
+          "delta_to_FoRIS_pp": 0.0
+        },
+        "paco_part": {
+          "class_miou": 42.405928708814706,
+          "delta_to_FoRIS_pp": 0.0
+        },
+        "suim": {
+          "class_miou": 58.848498857993604,
+          "delta_to_FoRIS_pp": 0.0
+        },
+        "isaid": {
+          "class_miou": 50.42561039084567,
+          "delta_to_FoRIS_pp": 0.0
+        },
+        "isic": {
+          "class_miou": 63.12197124232862,
+          "delta_to_FoRIS_pp": 0.0
+        },
+        "lung": {
+          "class_miou": 87.15629494745525,
+          "delta_to_FoRIS_pp": 0.0
+        },
+        "fundus": {
+          "class_miou": 19.011555438176043,
+          "delta_to_FoRIS_pp": 0.0
+        },
+        "deepglobe_road": {
+          "class_miou": 29.377541981928566,
+          "delta_to_FoRIS_pp": 0.0
+        }
+      }
+    },
+    {
+      "id": "n7813359",
+      "index": 7813359,
+      "truth_table_hex": "cccccccccccccccc",
+      "expression": "(M)",
+      "minimal_positive_terms": [
+        2
+      ],
+      "essential_sources": [
+        "M"
+      ],
+      "macro10_class_miou": 51.58644651382658,
+      "macro_delta_to_FoRIS_pp": -0.13884235459912625,
+      "worst_delta_to_FoRIS_pp": -2.912172995414391,
+      "domains": {
+        "coco": {
+          "class_miou": 65.73628099261855,
+          "delta_to_FoRIS_pp": 0.9504379069799143
+        },
+        "lvis": {
+          "class_miou": 45.95464957444346,
+          "delta_to_FoRIS_pp": -0.5748862698708379
+        },
+        "pascal_part": {
+          "class_miou": 56.13503677367359,
+          "delta_to_FoRIS_pp": 0.5449285869119294
+        },
+        "paco_part": {
+          "class_miou": 43.70860283976793,
+          "delta_to_FoRIS_pp": 1.3026741309532213
+        },
+        "suim": {
+          "class_miou": 58.342899786143505,
+          "delta_to_FoRIS_pp": -0.5055990718500993
+        },
+        "isaid": {
+          "class_miou": 49.83357357591885,
+          "delta_to_FoRIS_pp": -0.5920368149268214
+        },
+        "isic": {
+          "class_miou": 64.13605962036556,
+          "delta_to_FoRIS_pp": 1.0140883780369379
+        },
+        "lung": {
+          "class_miou": 88.0364857409956,
+          "delta_to_FoRIS_pp": 0.8801907935403506
+        },
+        "fundus": {
+          "class_miou": 17.515507247824576,
+          "delta_to_FoRIS_pp": -1.4960481903514662
+        },
+        "deepglobe_road": {
+          "class_miou": 26.465368986514175,
+          "delta_to_FoRIS_pp": -2.912172995414391
+        }
+      }
+    },
+    {
+      "id": "n3912168",
+      "index": 3912168,
+      "truth_table_hex": "ff00ff00ff00ff00",
+      "expression": "(T)",
+      "minimal_positive_terms": [
+        8
+      ],
+      "essential_sources": [
+        "T"
+      ],
+      "macro10_class_miou": 51.083566933602924,
+      "macro_delta_to_FoRIS_pp": -0.6417219348227775,
+      "worst_delta_to_FoRIS_pp": -10.627220095511262,
+      "domains": {
+        "coco": {
+          "class_miou": 54.15862299012737,
+          "delta_to_FoRIS_pp": -10.627220095511262
+        },
+        "lvis": {
+          "class_miou": 43.16975080621992,
+          "delta_to_FoRIS_pp": -3.3597850380943726
+        },
+        "pascal_part": {
+          "class_miou": 55.848716602234774,
+          "delta_to_FoRIS_pp": 0.25860841547311253
+        },
+        "paco_part": {
+          "class_miou": 44.641491927612854,
+          "delta_to_FoRIS_pp": 2.2355632187981485
+        },
+        "suim": {
+          "class_miou": 50.16031679749681,
+          "delta_to_FoRIS_pp": -8.688182060496793
+        },
+        "isaid": {
+          "class_miou": 49.5088050680867,
+          "delta_to_FoRIS_pp": -0.9168053227589681
+        },
+        "isic": {
+          "class_miou": 58.168125754533854,
+          "delta_to_FoRIS_pp": -4.953845487794766
+        },
+        "lung": {
+          "class_miou": 89.37827083609187,
+          "delta_to_FoRIS_pp": 2.2219758886366208
+        },
+        "fundus": {
+          "class_miou": 34.05226792564366,
+          "delta_to_FoRIS_pp": 15.04071248746762
+        },
+        "deepglobe_road": {
+          "class_miou": 31.74930062798145,
+          "delta_to_FoRIS_pp": 2.3717586460528857
+        }
+      }
+    },
+    {
+      "id": "n0595647",
+      "index": 595647,
+      "truth_table_hex": "ffffffffffff0000",
+      "expression": "(I)|(J)",
+      "minimal_positive_terms": [
+        16,
+        32
+      ],
+      "essential_sources": [
+        "I",
+        "J"
+      ],
+      "macro10_class_miou": 46.420260220890405,
+      "macro_delta_to_FoRIS_pp": -5.305028647535302,
+      "worst_delta_to_FoRIS_pp": -9.690959121267724,
+      "domains": {
+        "coco": {
+          "class_miou": 58.88917502132117,
+          "delta_to_FoRIS_pp": -5.89666806431746
+        },
+        "lvis": {
+          "class_miou": 41.24724812363382,
+          "delta_to_FoRIS_pp": -5.282287720680479
+        },
+        "pascal_part": {
+          "class_miou": 50.204122867753554,
+          "delta_to_FoRIS_pp": -5.385985319008107
+        },
+        "paco_part": {
+          "class_miou": 39.8904084181609,
+          "delta_to_FoRIS_pp": -2.5155202906538037
+        },
+        "suim": {
+          "class_miou": 52.00846042538258,
+          "delta_to_FoRIS_pp": -6.840038432611024
+        },
+        "isaid": {
+          "class_miou": 54.83533220431035,
+          "delta_to_FoRIS_pp": 4.409721813464678
+        },
+        "isic": {
+          "class_miou": 56.223333764820374,
+          "delta_to_FoRIS_pp": -6.898637477508245
+        },
+        "lung": {
+          "class_miou": 77.46533582618753,
+          "delta_to_FoRIS_pp": -9.690959121267724
+        },
+        "fundus": {
+          "class_miou": 12.176159313400099,
+          "delta_to_FoRIS_pp": -6.835396124775944
+        },
+        "deepglobe_road": {
+          "class_miou": 21.263026243933655,
+          "delta_to_FoRIS_pp": -8.11451573799491
+        }
+      }
+    },
+    {
+      "id": "n0007579",
+      "index": 7579,
+      "truth_table_hex": "ffffffff00000000",
+      "expression": "(J)",
+      "minimal_positive_terms": [
+        32
+      ],
+      "essential_sources": [
+        "J"
+      ],
+      "macro10_class_miou": 46.385009259850044,
+      "macro_delta_to_FoRIS_pp": -5.340279608575659,
+      "worst_delta_to_FoRIS_pp": -10.447526465814189,
+      "domains": {
+        "coco": {
+          "class_miou": 59.2949213615806,
+          "delta_to_FoRIS_pp": -5.490921724058033
+        },
+        "lvis": {
+          "class_miou": 42.23003618351037,
+          "delta_to_FoRIS_pp": -4.299499660803924
+        },
+        "pascal_part": {
+          "class_miou": 50.4075902255814,
+          "delta_to_FoRIS_pp": -5.18251796118026
+        },
+        "paco_part": {
+          "class_miou": 40.37160283936927,
+          "delta_to_FoRIS_pp": -2.034325869445439
+        },
+        "suim": {
+          "class_miou": 51.87507101557876,
+          "delta_to_FoRIS_pp": -6.973427842414843
+        },
+        "isaid": {
+          "class_miou": 54.76945492796377,
+          "delta_to_FoRIS_pp": 4.343844537118102
+        },
+        "isic": {
+          "class_miou": 56.095166380799384,
+          "delta_to_FoRIS_pp": -7.026804861529236
+        },
+        "lung": {
+          "class_miou": 78.33339840345786,
+          "delta_to_FoRIS_pp": -8.822896543997388
+        },
+        "fundus": {
+          "class_miou": 11.542835744544664,
+          "delta_to_FoRIS_pp": -7.468719693631378
+        },
+        "deepglobe_road": {
+          "class_miou": 18.930015516114377,
+          "delta_to_FoRIS_pp": -10.447526465814189
+        }
+      }
+    },
+    {
+      "id": "n0595480",
+      "index": 595480,
+      "truth_table_hex": "ffff0000ffff0000",
+      "expression": "(I)",
+      "minimal_positive_terms": [
+        16
+      ],
+      "essential_sources": [
+        "I"
+      ],
+      "macro10_class_miou": 46.11965312732128,
+      "macro_delta_to_FoRIS_pp": -5.605635741104433,
+      "worst_delta_to_FoRIS_pp": -10.241863216600208,
+      "domains": {
+        "coco": {
+          "class_miou": 58.380777479596176,
+          "delta_to_FoRIS_pp": -6.405065606042456
+        },
+        "lvis": {
+          "class_miou": 40.86650486424408,
+          "delta_to_FoRIS_pp": -5.663030980070218
+        },
+        "pascal_part": {
+          "class_miou": 49.87579148418788,
+          "delta_to_FoRIS_pp": -5.714316702573782
+        },
+        "paco_part": {
+          "class_miou": 39.75785715852188,
+          "delta_to_FoRIS_pp": -2.6480715502928263
+        },
+        "suim": {
+          "class_miou": 51.464245532996706,
+          "delta_to_FoRIS_pp": -7.384253324996898
+        },
+        "isaid": {
+          "class_miou": 54.71782274370912,
+          "delta_to_FoRIS_pp": 4.2922123528634515
+        },
+        "isic": {
+          "class_miou": 55.790354971927975,
+          "delta_to_FoRIS_pp": -7.3316162704006445
+        },
+        "lung": {
+          "class_miou": 76.91443173085504,
+          "delta_to_FoRIS_pp": -10.241863216600208
+        },
+        "fundus": {
+          "class_miou": 12.204725348285368,
+          "delta_to_FoRIS_pp": -6.806830089890674
+        },
+        "deepglobe_road": {
+          "class_miou": 21.224019958888487,
+          "delta_to_FoRIS_pp": -8.153522023040079
+        }
+      }
+    }
+  ],
+  "natural_library_config_sha256": "8b2cc8172025eb032263085b4bc9b235cd69bf7c80896f16570bef3dbb2d4d7f",
+  "verification_path": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012s2_composition_search/selected_mask_verification/verification.json",
+  "fresh_confirmation_GT_scored": false
+}

@@ -1,0 +1,556 @@
+{
+  "schema_version": 1,
+  "title": "Single-reference in-context image segmentation literature and repository evidence",
+  "cutoff_local_date": "2026-10-12",
+  "timezone": "America/New_York",
+  "report": "docs/research/SINGLE_REFERENCE_ICS_REVIEW_20261012.md",
+  "scope": "Literature research grounded in existing repository evidence; no new scientific experiments or encoder calls.",
+  "search_accounting": {
+    "engine": "Exa",
+    "literature_workstreams": 4,
+    "repository_workstreams": 1,
+    "search_calls": 28,
+    "requested_result_slots": 258,
+    "definition": "Sum of numResults, including duplicates and irrelevant results; not a count of unique papers or full-text reads.",
+    "by_workstream": {
+      "root": {
+        "calls": 3,
+        "slots": 23
+      },
+      "direct_methods": {
+        "calls": 9,
+        "slots": 80
+      },
+      "learned_context": {
+        "calls": 7,
+        "slots": 70
+      },
+      "protocol_frontier": {
+        "calls": 9,
+        "slots": 85
+      }
+    }
+  },
+  "unique_works": 30,
+  "sources": [
+    {
+      "id": "oslsm",
+      "name": "One-Shot Learning for Semantic Segmentation",
+      "year": 2017,
+      "urls": [
+        "https://arxiv.org/abs/1709.03410"
+      ],
+      "tier": "learned_fss",
+      "fact": "Support-conditioned segmenter; offline learned parameters."
+    },
+    {
+      "id": "panet",
+      "name": "PANet: Few-Shot Image Semantic Segmentation with Prototype Alignment",
+      "year": 2019,
+      "urls": [
+        "https://openaccess.thecvf.com/content_ICCV_2019/papers/Wang_PANet_Few-Shot_Image_Semantic_Segmentation_With_Prototype_Alignment_ICCV_2019_paper.pdf"
+      ],
+      "tier": "learned_fss",
+      "fact": "Foreground/background prototypes and episodic prototype alignment."
+    },
+    {
+      "id": "pfenet",
+      "name": "PFENet",
+      "year": 2020,
+      "urls": [
+        "https://i.cs.hku.hk/~hszhao/paper/2020_tpami_pfenet.pdf"
+      ],
+      "tier": "learned_fss",
+      "fact": "Training-free prior submodule inside a supervised feature-enrichment system."
+    },
+    {
+      "id": "hsnet",
+      "name": "Hypercorrelation Squeeze for Few-Shot Segmentation",
+      "year": 2021,
+      "urls": [
+        "https://openaccess.thecvf.com/content/ICCV2021/papers/Min_Hypercorrelation_Squeeze_for_Few-Shot_Segmentation_ICCV_2021_paper.pdf"
+      ],
+      "tier": "learned_fss",
+      "fact": "Frozen backbone does not remove supervised training of 4D correlation aggregation and decoder."
+    },
+    {
+      "id": "cyctr",
+      "name": "CyCTR",
+      "year": 2021,
+      "urls": [
+        "https://proceedings.neurips.cc/paper/2021/file/b8b12f949378552c21f28deff8ba8eb6-Paper.pdf"
+      ],
+      "tier": "learned_fss",
+      "fact": "Cycle-consistent support-pixel selection for learned cross-attention."
+    },
+    {
+      "id": "repri",
+      "name": "Few-Shot Segmentation Without Meta-Learning: A Good Transductive Inference Is All You Need?",
+      "year": 2021,
+      "urls": [
+        "https://openaccess.thecvf.com/content/CVPR2021/html/Boudiaf_Few-Shot_Segmentation_Without_Meta-Learning_A_Good_Transductive_Inference_Is_All_CVPR_2021_paper.html",
+        "https://github.com/mboudiaf/RePRI-for-Few-Shot-Segmentation"
+      ],
+      "tier": "test_time_optimization",
+      "fact": "Base-class supervised features; per-task support CE, query entropy and foreground-proportion KL. Oracle size is diagnostic."
+    },
+    {
+      "id": "painter",
+      "name": "Images Speak in Images: A Generalist Painter for In-Context Visual Learning",
+      "year": 2023,
+      "urls": [
+        "https://arxiv.org/abs/2212.02499"
+      ],
+      "tier": "learned_generalist",
+      "fact": "Multi-task supervised in-context image completion; initial preprint 2022, CVPR 2023."
+    },
+    {
+      "id": "seggpt",
+      "name": "SegGPT: Segmenting Everything In Context",
+      "year": 2023,
+      "urls": [
+        "https://arxiv.org/abs/2304.03284"
+      ],
+      "tier": "learned_generalist",
+      "fact": "Mixed segmentation supervision and random coloring; one-example inference does not imply no task training."
+    },
+    {
+      "id": "segic",
+      "name": "In-Context Segmentation via Training-Free Semantic Correspondence (SegIC)",
+      "year": 2024,
+      "version": "arXiv v3",
+      "urls": [
+        "https://arxiv.org/html/2311.14671v3"
+      ],
+      "tier": "learned_decoder",
+      "fact": "Frozen visual correspondence plus trained decoder and geometric/visual/meta instructions; check text use and data overlap by variant."
+    },
+    {
+      "id": "sine",
+      "name": "SINE: A Simple Image Segmentation Framework with In-Context Examples",
+      "year": 2024,
+      "version": "arXiv v1",
+      "urls": [
+        "https://arxiv.org/html/2410.04842v1"
+      ],
+      "tier": "learned_decoder",
+      "fact": "Identity, instance and semantic ambiguity handled by different outputs; interaction and decoder are trained."
+    },
+    {
+      "id": "sansa",
+      "name": "SANSA",
+      "year": 2025,
+      "urls": [
+        "https://arxiv.org/html/2505.21795"
+      ],
+      "tier": "learned_adapter",
+      "fact": "Frozen SAM2 with supervised AdaptFormer adapters; strict/generalist training settings differ."
+    },
+    {
+      "id": "sam3",
+      "name": "SAM 3",
+      "year": 2026,
+      "version": "ICLR 2026 proceedings",
+      "urls": [
+        "https://proceedings.iclr.cc/paper_files/paper/2026/file/e0982cbc81401df3430ee1ff780dc7a2-Paper-Conference.pdf"
+      ],
+      "tier": "foundation_model_additional_supervision",
+      "fact": "Concept segmentation with text and same-image exemplar boxes; not a native cross-image full-mask reference interface."
+    },
+    {
+      "id": "cg_ics",
+      "name": "Toward Robust In-Context Segmentation via Concept Guidance",
+      "year": 2026,
+      "version": "ECCV 2026 author paper",
+      "urls": [
+        "https://media.eventhosts.cc/Conferences/ECCV2026/pdfs/9601.pdf",
+        "https://arxiv.org/abs/2606.28149",
+        "https://github.com/Kakarot1103/CG-ICS"
+      ],
+      "tier": "frozen_multimodel_language_prior",
+      "fact": "Qwen3-VL-4B inferred concepts and SAM3 search; reference/query concatenation for exemplar grounding; no user-supplied extra class name required.",
+      "caveat": "Standard and robustness evaluation samples differ. Repository creation is not first-publication date."
+    },
+    {
+      "id": "iris",
+      "name": "Iris",
+      "year": 2025,
+      "version": "arXiv v1",
+      "urls": [
+        "https://arxiv.org/html/2503.19359v1"
+      ],
+      "tier": "adjacent_trained_3d_medical",
+      "fact": "3D UNet trained from scratch for medical context segmentation; not frozen natural-image DINO."
+    },
+    {
+      "id": "uniclsam",
+      "name": "UNICL-SAM: Uncertainty-Driven In-Context Segmentation with Part Prototype Discovery",
+      "year": 2025,
+      "urls": [
+        "https://openaccess.thecvf.com/content/CVPR2025/html/Sheng_UNICL-SAM_Uncertainty-Driven_In-Context_Segmentation_with_Part_Prototype_Discovery_CVPR_2025_paper.html"
+      ],
+      "tier": "learned_uncertainty",
+      "fact": "Trained uncertainty modeling, graph augmentation/refinement and part prototypes; prior art for generic uncertainty-graph novelty."
+    },
+    {
+      "id": "harmonic",
+      "name": "Semi-Supervised Learning Using Gaussian Fields and Harmonic Functions",
+      "year": 2003,
+      "urls": [
+        "https://mlg.eng.cam.ac.uk/pub/pdf/ZhuGhaLaf03a.pdf"
+      ],
+      "tier": "classical_method_foundation",
+      "fact": "Graph-based harmonic inference is established prior art; not a directly evaluated ICS baseline."
+    },
+    {
+      "id": "persam",
+      "name": "Personalize Segment Anything Model with One Shot",
+      "year": 2023,
+      "urls": [
+        "https://arxiv.org/abs/2305.03048",
+        "https://github.com/ZrrSkywalker/Personalize-SAM"
+      ],
+      "tier": "frozen_sam",
+      "fact": "PerSAM frozen; PerSAM-F fits two scale weights. Original emphasis includes personalized instance segmentation."
+    },
+    {
+      "id": "matcher",
+      "name": "Matcher: Segment Anything with One Shot Using All-Purpose Feature Matching",
+      "year": 2023,
+      "urls": [
+        "https://arxiv.org/html/2305.13310",
+        "https://github.com/aim-uofa/Matcher"
+      ],
+      "tier": "frozen_dino_sam",
+      "fact": "DINOv2 and SAM, forward/reverse matching, hierarchical prompts, candidate selection/merging."
+    },
+    {
+      "id": "gfsam",
+      "name": "Bridge the Points: Graph-based Few-shot Segment Anything Semantically",
+      "year": 2024,
+      "urls": [
+        "https://proceedings.neurips.cc/paper_files/paper/2024/file/3a2ef31a1e45908901adc0ca853a8faf-Paper-Conference.pdf",
+        "https://andyzaq.github.io/GF-SAM/"
+      ],
+      "tier": "frozen_dino_sam",
+      "fact": "FG/BG-guided points, point-mask coverage graph and overshooting controls."
+    },
+    {
+      "id": "dinov3",
+      "name": "DINOv3",
+      "year": 2025,
+      "version": "arXiv v1",
+      "urls": [
+        "https://arxiv.org/html/2508.10104v1",
+        "https://github.com/facebookresearch/dinov3"
+      ],
+      "tier": "self_supervised_backbone",
+      "fact": "Dense self-supervised representation and Gram anchoring; backbone is not a complete ICS algorithm."
+    },
+    {
+      "id": "fssdino",
+      "name": "Revealing the Semantic Selection Gap in DINOv3 through Training-Free Few-Shot Segmentation",
+      "year": 2026,
+      "first_public_date": "2026-02-07",
+      "version": "arXiv v1",
+      "urls": [
+        "https://arxiv.org/html/2602.07550v1",
+        "https://github.com/hussni0997/fssdino"
+      ],
+      "tier": "direct_frozen_dinov3",
+      "fact": "Original ViT-B/512; five prototypes per class including background plus support Gram energy. GT layer oracle is not deployable selection.",
+      "code_commit": "24858986ea55e312200079937989ad32360f09b2",
+      "code_status": "source inspected, not executed",
+      "caveat": "FROST reruns use ViT-L/1024. Metric global confusion aggregation and resize implementation must be pinned."
+    },
+    {
+      "id": "insid3",
+      "name": "INSID3: Training-Free In-Context Segmentation with DINOv3",
+      "year": 2026,
+      "first_public_date": "2026-03-30",
+      "version": "arXiv v1 / CVPR 2026",
+      "urls": [
+        "https://arxiv.org/html/2603.28480v1",
+        "https://github.com/visinf/INSID3",
+        "https://github.com/visinf/INSID3/blob/0c165a10cf52ab91f335883d06260de86854adbe/utils/clustering.py"
+      ],
+      "tier": "direct_frozen_dinov3",
+      "fact": "Raw intra-image features, debiased cross-image features, support-mask candidate filtering, query seed/region aggregation; paper CRF distinct from optional API default.",
+      "code_commit": "0c165a10cf52ab91f335883d06260de86854adbe",
+      "code_status": "source inspected, not executed",
+      "caveat": "Clustering has no explicit spatial connectivity constraint."
+    },
+    {
+      "id": "frost",
+      "name": "FROST: Training-Free Few-Shot Segmentation with Frozen Features and Nonparametric Statistics",
+      "year": 2026,
+      "first_public_date": "2026-06-30",
+      "version": "arXiv v1",
+      "urls": [
+        "https://arxiv.org/html/2606.31136v1",
+        "https://github.com/jhpark-ai/FROST",
+        "https://github.com/jhpark-ai/FROST/blob/b9ece69d7495a698c298e7cc3d16efacd4497a43/frost/model.py",
+        "https://github.com/jhpark-ai/FROST/blob/b9ece69d7495a698c298e7cc3d16efacd4497a43/frost/density.py"
+      ],
+      "tier": "direct_frozen_dinov3",
+      "fact": "Within-class whitening, normalized FG/BG KDE log ratio, support LOO bandwidth, propagation; includes horizontal-flip observations.",
+      "code_commit": "b9ece69d7495a698c298e7cc3d16efacd4497a43",
+      "code_status": "source inspected, not executed",
+      "caveat": "Six-domain 1-shot average trails strongest comparator in paper. Code/paper differ in propagation feature space, score kernel, spatial norm, LOO class weighting; this does not establish invalid results."
+    },
+    {
+      "id": "foris",
+      "name": "FoRIS: Progressive Foreground Refinement for Training-Free In-Context Segmentation",
+      "year": 2026,
+      "first_public_date": "2026-09-03",
+      "version": "arXiv v1",
+      "urls": [
+        "https://arxiv.org/html/2609.03384v1",
+        "https://github.com/Xi-Mu-Yu/FoRIS"
+      ],
+      "tier": "direct_frozen_dinov3",
+      "fact": "Foreground purification, localization and consolidation; DINOv3-L/1024 and complete CRF evaluation.",
+      "caveat": "Author eight-domain table is not local ten-domain table; thin-structure layer/resolution issues already studied by authors."
+    },
+    {
+      "id": "notime",
+      "name": "No time to train! Training-Free Reference-Based Instance Segmentation",
+      "year": 2025,
+      "first_public_date": "2025-07-03",
+      "version": "arXiv v4 2026-02-03",
+      "urls": [
+        "https://arxiv.org/html/2507.02798v4",
+        "https://github.com/miquel-espinosa/no-time-to-train"
+      ],
+      "tier": "adjacent_instance_segmentation",
+      "fact": "Frozen DINOv2/SAM2 prototype memory and semantic-aware soft merging; main COCO uses multishot instance AP.",
+      "caveat": "Correct arXiv identifier is 2507.02798; not 2507.01300 appearing in a secondary bibliography."
+    },
+    {
+      "id": "rebase",
+      "name": "REBASE",
+      "year": 2026,
+      "first_public_date": "2026-07-10",
+      "version": "arXiv v2 2026-10-03",
+      "urls": [
+        "https://arxiv.org/html/2607.09082v2",
+        "https://arxiv.org/abs/2607.09082",
+        "https://github.com/ai-and-lab/rebase"
+      ],
+      "tier": "frozen_dino_sam",
+      "fact": "Reference-background low-rank projection of support and query, followed by SAM points and dense prior. DINOv3 tested in supplement.",
+      "code_status": "official repository says code release coming soon",
+      "caveat": "v1/v2 background coverage threshold differs; README/paper values differ. Do not describe official code as reproduced."
+    },
+    {
+      "id": "hera",
+      "name": "HERA",
+      "year": 2026,
+      "first_public_date": "2025-10-08",
+      "version": "OpenReview first posting; arXiv 2026-05-19",
+      "urls": [
+        "https://openreview.net/forum?id=BBNrtWVMSG",
+        "https://arxiv.org/abs/2605.19340"
+      ],
+      "tier": "test_time_adaptation",
+      "fact": "Support-conditioned source-free adaptation updates a small MLP subset; not no-gradient frozen inference.",
+      "caveat": "Earliest located public posting predates arXiv; withdrawn ICLR submission and later CVPR version distinguished."
+    },
+    {
+      "id": "support_dilution",
+      "name": "Overcoming Support Dilution",
+      "year": 2025,
+      "first_public_date": "2025-01-23",
+      "urls": [
+        "https://arxiv.org/abs/2501.13529"
+      ],
+      "tier": "learned_fss_support_reliability",
+      "fact": "Support pruning and correlation modeling; additional/noisy support need not help under studied learned FSS setting."
+    },
+    {
+      "id": "vfm_benchmark",
+      "name": "A Novel Benchmark for Few-Shot Semantic Segmentation in the Era of Foundation Models",
+      "year": 2024,
+      "first_public_date": "2024-01-20",
+      "version": "arXiv v3 2025-06-03",
+      "urls": [
+        "https://arxiv.org/abs/2401.11311"
+      ],
+      "tier": "adjacent_multiclass_adaptation_benchmark",
+      "fact": "N-way K-shot needs N*K support images; adaptation rather than strict novel-class generalization.",
+      "caveat": "One-shot is not a single labeled image total; downstream class split does not prove pretraining novelty."
+    },
+    {
+      "id": "fame",
+      "name": "FAME",
+      "year": 2026,
+      "first_public_date": "2026-07-30",
+      "version": "arXiv v2 2026-08-17",
+      "urls": [
+        "https://arxiv.org/abs/2607.27856"
+      ],
+      "tier": "adjacent_medical_reliability_benchmark",
+      "fact": "Multi-anatomy/modality medical evaluation, zero/ten-shot and separate target-absence reliability.",
+      "caveat": "Not a matched one-reference ranking or replacement for local ten-domain objective."
+    }
+  ],
+  "local_evidence": [
+    {
+      "path": "docs/research/STATUS.md",
+      "role": "Current research objective and high-level conclusions",
+      "sha256": "42b42803e8e3c250c14051fdbbe01b0a1e6e910e47e3f930ccb66b1be9b22e49",
+      "bytes": 2968
+    },
+    {
+      "path": "docs/research/RESULTS.md",
+      "role": "Thirty-four result-family ledger and matched baseline evidence",
+      "sha256": "e2e18607c0154d40cc198a3711ef0ebaddad4a1b3d80cbb7da59219202de8a7c",
+      "bytes": 7333
+    },
+    {
+      "path": "docs/research/GAPS.md",
+      "role": "Unresolved questions and limits of existing evidence",
+      "sha256": "1ec8881a5ee81d9962b4feed47e5ef563623a919306482508bf4c5ce4881e628",
+      "bytes": 4912
+    },
+    {
+      "path": "docs/research/PLAN.md",
+      "role": "Concurrent execution and deferred recommendations",
+      "sha256": "779a5b6440adb40e0a1b291b533759ef9c258d18085175504cb619d64975ba22",
+      "bytes": 2485
+    },
+    {
+      "path": "evidence/research/results.json",
+      "role": "Selected historical result values, source bindings and aggregation contracts",
+      "sha256": "efdf08dd7671cbc1a672d88f339b151a3df7c09d6c043625c88900033e8100c4",
+      "bytes": 192750
+    },
+    {
+      "path": "docs/research/SINGLE_REFERENCE_NEXT_PLAN_20261012.md",
+      "role": "R1/R2/R3 predeclared controls and development gate",
+      "sha256": "31421538a70be45b0e25b4c0739b8ff972e893eb84b457cffb7f7b52e816f4f8",
+      "bytes": 6386
+    },
+    {
+      "path": "docs/research/INDEPENDENT_BASE_EXPERIMENT_REPORT_20261012.md",
+      "role": "C1, A6, B1 and independent-base study results",
+      "sha256": "1fd5dd7f98e876b1f79f3b43826895ef8aa3ca18816ae98e1a52d8ebb549bfa0",
+      "bytes": 17071
+    },
+    {
+      "path": "docs/research/x1012_tasks/B1-K3-common.md",
+      "role": "Same-query K1/K3 intervention",
+      "sha256": "7a88c6c9b23ca91a21a26540b09f9cfd021e99264abcb0d0b5aca1d1190e735d",
+      "bytes": 20484
+    },
+    {
+      "path": "docs/research/x1012_tasks/A3.md",
+      "role": "False-positive connected-component evidence",
+      "sha256": "ecf9698bf2d30fa4f39049beb3bbf38161f34176f22d01d0293a9d6ea52cfd0c",
+      "bytes": 2513
+    },
+    {
+      "path": "docs/research/x1012_tasks/R1.md",
+      "role": "Reliability graph development results",
+      "sha256": "4821e3d046c580eb2945dabd6bb61914318a7a939fd01dbbe559e48070f46cba",
+      "bytes": 29100
+    },
+    {
+      "path": "docs/research/x1012_tasks/R2.md",
+      "role": "Fixed-block-area geometry development results",
+      "sha256": "a653601ad9bdb62143267608402852cdf2f8721ffd84a675b18d63600b1a8a47",
+      "bytes": 12252
+    },
+    {
+      "path": "docs/research/x1012_tasks/R3.md",
+      "role": "Combined candidate development results",
+      "sha256": "dcf50838ce23552b24aca88b845331c6a2c0ce584a96e08f92e7f4e9d86274da",
+      "bytes": 10599
+    },
+    {
+      "path": "src/ics/methods/mean_control.py",
+      "role": "Exact local MEAN baseline semantics",
+      "sha256": "d73daa3bbeaeed1bead21e8e896dce48cfc9ecd374e1e555893e3f97b24ceb97",
+      "bytes": 2025
+    },
+    {
+      "path": "../cv_data/a/x1012_R1/mechanism_contrasts.json",
+      "role": "Paired reliability placement contrasts; generic FoRIS field means contrast control",
+      "sha256": "b7664dab1db6cee2e3d8d10ca3a5f0810048032468df893e887ffbbf72944d0e",
+      "bytes": 101487
+    },
+    {
+      "path": "../cv_data/a/x1012_R2/mechanism_contrasts.json",
+      "role": "Paired geometry component contrasts",
+      "sha256": "89571c4b0ff8ae79745a3fbfd9187458371e6de6e6ab2e3c2ba36cc378bbd74d",
+      "bytes": 51047
+    },
+    {
+      "path": "../cv_data/a/x1012_R3/completion.json",
+      "role": "Development completed; no method passed ten-domain gate",
+      "sha256": "c05b05d4cdc7642e1789c7fbaa9546778719b5aec04d36ced49c6ad5ba4110dc",
+      "bytes": 220
+    },
+    {
+      "path": "docs/research/x1012_tasks/R4_extent.md",
+      "role": "Completed full-level-set range-selection development result",
+      "sha256": "49b0470d269da22517141fe88f9b2fae66585e985162fe27c63252dfa9657321",
+      "bytes": 14789
+    },
+    {
+      "path": "docs/research/x1012_tasks/R4_global.md",
+      "role": "Nine fixed global thresholds; development selection is not confirmation",
+      "sha256": "664f7f7c60e441390c7f69c3a18660ddf81de889515770bfceca6218121a805b",
+      "bytes": 19854
+    }
+  ],
+  "limitations": [
+    "Literature claims are author reports, not new reproductions.",
+    "R1/R2/R3 are development evidence; C1 is a distinct, now-exposed confirmation cohort.",
+    "Official external source/runtime execution was not tested.",
+    "Repository contains concurrent changes; do not infer snapshot contents from HEAD alone."
+  ],
+  "repository_snapshot": {
+    "branch": "codex_m4",
+    "head": "d2503d33540d1aeb3cd50861b4927e2f4b2b3df0",
+    "read_at_utc": "2026-10-13T02:35:21.706397+00:00",
+    "working_tree_has_concurrent_changes": true,
+    "evidence_scope": "Canonical records, R1-R3 development, and available R4_extent/R4_global reports; R5 ongoing in another chat."
+  },
+  "r3_summary": {
+    "cohort_n": 1360,
+    "frame": "CLI1024",
+    "metric": "Pool integer I/U per observed (fold, global_class), then equal-weight observed slots",
+    "candidate": "UN_pixel",
+    "nominal_positive_domains_vs_foris": 8,
+    "positive_paired_95ci_domains_vs_foris": [
+      "pascal_part",
+      "paco_part",
+      "isaid",
+      "lung",
+      "fundus"
+    ],
+    "negative_point_deltas_pp": {
+      "coco": -0.178,
+      "isic": -1.162
+    },
+    "gate": "Each domain >= FoRIS - 0.5 pp",
+    "gate_passed": false,
+    "independent_confirmation": false
+  },
+  "review": {
+    "independent_scientific_review": "completed; terminology and method categorization corrections applied",
+    "new_scientific_experiments": false,
+    "external_methods_executed": false,
+    "source_count": 30
+  },
+  "report_sha256": "fa220fa4433451fa2752dbd6de61d21d54243f7603ed95efe49c0f5d776fa386",
+  "verification": {
+    "local_links": "PASS",
+    "source_ids_unique": true,
+    "R3_rows_matched": 10,
+    "placeholders": 0,
+    "repository_layout_check": "PASS",
+    "new_experiments": false
+  }
+}
