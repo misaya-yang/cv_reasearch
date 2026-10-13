@@ -14,8 +14,8 @@
 |仅用仓库复算核心表|[read_research_results.py](read_research_results.py)|Python标准库，无GT/图像/特征/GPU依赖|
 |工作树大产物检查|[check_repository.py](check_repository.py)|包含ignored文件，防GB级产物回流|
 
-实际运行依赖的模型、图像/Mask、raw O24、basis、FoRIS/CRF及平台二进制在仓库外 `../cv_data`。本机环境只是版本快照；跨机器布局、绝对路径绑定和Git同步边界见[接续说明](../docs/research/CONTINUING_ELSEWHERE.md)。
+实际运行依赖的模型、图像/Mask、raw O24、basis、FoRIS/CRF及平台二进制在仓库外 `../cv_data`，这些资产的准备和单独传输属于跨机器接续工作。本机环境只是版本快照；资产位置、路径适配和准备状态见[接续说明](../docs/research/CONTINUING_ELSEWHERE.md)。
 
-恢复历史源码保留原字节；只有不存在的文件从归档复制，当前R2等已修改版本没有被覆盖。保留旧CLI是为了研究可检查，不保证在缺资产的新机器直接执行，也不自动重跑它的默认输出目录。
+恢复历史源码保留原字节；只有不存在的文件从归档复制，当前R2等已修改版本没有被覆盖。另一台机器执行前，需补齐所选实验的资产、适配路径和环境，并验证目标入口。运行时使用新的输出目录。
 
 R2使用的像素描述子源码在 `evidence/local/autonomous_20261010/physical_pixel_evidence/frozen/diagnose.py`，部分冻结producer也以原路径保留。这里是小型源码，不是恢复大批生成物。新运行输出统一写 `../cv_data/a/<run>/`。
