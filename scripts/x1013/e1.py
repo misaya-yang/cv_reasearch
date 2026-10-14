@@ -14,6 +14,8 @@ import produce
 import score
 
 ARMS = ('C1', 'C2', 'UFraw', 'UFraw+', 'Ugm+', 'UF+')
+PREDICTION_ARMS = (*ARMS, 'M+', 'MFU')
+E1_ARMS = (*ARMS, 'M', 'M+', 'MFU')
 
 
 def top_mask(u, k):
@@ -62,14 +64,53 @@ def worker(binding):
     return str(binding['index'])
 
 
+def predict_extra(binding, missing):
+    """Frozen MEAN/MEAN+ and gated MFU arms, reusing the sealed T0/T1 fields."""
+    fields = c.load_fields(binding)
+    with np.load(c.prediction_path('T1', binding), allow_pickle=False) as archive:
+        mean_mask = c.unpack(archive['mean'])
+        t_mask = c.unpack(archive['T'])
+    outputs = {}
+    if 'M+' in missing:
+        outputs['M+'] = c.pack(produce.crf(binding, mean_mask))
+    if 'MFU' in missing:
+        if produce.fallback(fields):
+            # Frozen reference gate: rho > .9 returns T directly, without CRF.
+            mfu = t_mask
+        else:
+            with np.load(c.task_path('T1') / 'fields' / (c.key(binding) + '.npz'),
+                         allow_pickle=False) as archive:
+                mean_field = archive['mean'].astype(np.float32)
+            mean_frame = c.up(mean_field).astype(np.float64)
+            u_frame = c.rc.lab.minmax(torch.from_numpy(c.up(fields['VP_UN']))).numpy().astype(np.float64)
+            fused = .5 * mean_frame + .5 * u_frame > .5
+            mfu = produce.crf(binding, fused)
+        outputs['MFU'] = c.pack(mfu)
+    return outputs
+
+
+def extra_worker(binding):
+    path = c.prediction_path('E1', binding)
+    with np.load(path, allow_pickle=False) as archive:
+        existing = {name: archive[name].copy() for name in archive.files}
+    missing = [name for name in ('M+', 'MFU') if name not in existing]
+    if missing:
+        with c.rc.pc.inference_only(binding):
+            existing.update(predict_extra(binding, missing))
+        c.save_npz(path, **existing)
+    return str(binding['index'])
+
+
 def score_one(binding):
     fields = c.load_fields(binding)
     gt, valid = c.truth(binding)
     record = c.metadata(binding, fields)
     record.update(gt=int(gt.sum()), split='S', rho=float(fields['reference_rho'][0]))
     with np.load(c.prediction_path('E1', binding), allow_pickle=False) as archive:
-        for name in ARMS:
+        for name in PREDICTION_ARMS:
             record[name] = c.iu(c.unpack(archive[name]), gt, valid)
+    with np.load(c.prediction_path('T1', binding), allow_pickle=False) as archive:
+        record['M'] = c.iu(c.unpack(archive['mean']), gt, valid)
     with np.load(c.prediction_path('T0', binding), allow_pickle=False) as archive:
         record['candidate'] = c.iu(c.unpack(archive['candidate']), gt, valid)
     record['foris'] = c.iu(c.rc.lab.arm_cli(binding, 'B').numpy(), gt, valid)
@@ -107,6 +148,8 @@ def run(workers):
     out = c.task_path('E1')
     out.mkdir(parents=True, exist_ok=True)
     bindings = c.rows()
+    c.write(out / 'progress.json', {'state': 'EXTRA_ARMS_IN_PROGRESS', 'n': len(bindings),
+                                    'arms': list(E1_ARMS), 'T_scored': False})
     todo = [b for b in bindings if not c.prediction_path('E1', b).exists()]
     started = time.monotonic()
     print(f'E1 predict: {len(todo)} remaining / {len(bindings)}', flush=True)
@@ -115,11 +158,20 @@ def run(workers):
         for number, _ in enumerate(pool.map(worker, todo, chunksize=2), 1):
             if number % 200 == 0 or number == len(todo):
                 print(f'E1: {number}/{len(todo)}, {time.monotonic() - started:.1f}s', flush=True)
+    extra_todo = []
+    for binding in bindings:
+        with np.load(c.prediction_path('E1', binding), allow_pickle=False) as archive:
+            if not all(name in archive.files for name in ('M+', 'MFU')):
+                extra_todo.append(binding)
+    print(f'E1 frozen extras: {len(extra_todo)} remaining / {len(bindings)}', flush=True)
+    with ProcessPoolExecutor(max_workers=workers, mp_context=multiprocessing.get_context('spawn'),
+                             initializer=c.initialize) as pool:
+        for number, _ in enumerate(pool.map(extra_worker, extra_todo, chunksize=1), 1):
+            if number % 100 == 0 or number == len(extra_todo):
+                print(f'E1 extras: {number}/{len(extra_todo)}, {time.monotonic() - started:.1f}s', flush=True)
     c.write(out / 'complete.json', {'state': 'PREDICTIONS_COMPLETE', 'n': len(bindings),
-                                    'seconds': time.monotonic() - started,
+                                    'arms': list(E1_ARMS), 'seconds': time.monotonic() - started,
                                     'new_encoder_calls': 0})
-    if (out / 'scored.json').exists():
-        return
     selected = [b for b in bindings if c.half(b) == 'S']
     print(f'E1 score S: {len(selected)}', flush=True)
     with ProcessPoolExecutor(max_workers=workers, mp_context=multiprocessing.get_context('spawn'),
@@ -130,6 +182,7 @@ def run(workers):
     identity = compare_ufraw(records)
     c.write(out / 'ufraw_identity.json', identity)
     c.write(out / 'scored.json', {'n': len(records), 'pool_n': len(bindings),
+                                  'arms': list(E1_ARMS),
                                   'scope': 'S only', 'T_scored': False,
                                   'identity_gate': 'REPORT_ONLY',
                                   'seconds': time.monotonic() - started,

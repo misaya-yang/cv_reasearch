@@ -45,8 +45,62 @@ FoRIS 对 INSID3 的全面领先是召回（十域漏检率全降，未找到目
 
 ## 2026-10-13 补充：x1013 T0–T5（选择半）
 
-T3–T5 的预先声明变体都不通过保留条件，候选不变。所有变体落在“整合尺度”一条轴上：区域级整合帮大目标、伤小目标，锐化相反；该用哪端由 query 目标大小决定，参考面积选不出，候选自己的预测面积可以。用它门控聚类均值可把 ISIC、SUIM 转正，但只用特征的聚类在 Lung 上失效。详见 [T0_T5_reading.md](x1013_tasks/T0_T5_reading.md)。T1 因 MEAN 身份闸门未评，T6 运行中，T 半未读。
+T3–T5 的预先声明变体都不通过保留条件，候选不变。所有变体落在“整合尺度”一条轴上：区域级整合帮大目标、伤小目标，锐化相反；该用哪端由 query 目标大小决定，参考面积选不出，候选自己的预测面积可以。用它门控聚类均值可把 ISIC、SUIM 转正，但只用特征的聚类在 Lung 上失效。详见 [T0_T5_reading.md](x1013_tasks/T0_T5_reading.md)。修订后的 T1′、T6、E1 与 E2 结果见 [x1013 执行报告](x1013_tasks/REPORT.md)：E1 的 M+/MFU 补算已完成；E2 按 S 半规则选中 MFU，并在 T 半一次评分。MFU 对 FoRIS 十域点估计均为正，等权均值 +3.16 pp，七域区间不含 0，见 [E2 报告半结果](x1013_tasks/E2_T_REPORT.md)。可选 T8 仅用 S 半 322 例完成诊断，未读 T；见 [T8 报告](x1013_tasks/T8_S_REPORT.md)。
 
 ## 2026-10-13 补充：落后的是大目标；排序与范围拼接
 
 候选在每个域占图 >25% 的目标上输给 FoRIS（PASCAL-Part 除外），输的是切点而非排序。解图常数 λ 是真实的整合尺度旋钮，但按数据集调只多 0.7，按预测面积自动选无效。排序用候选、范围取 FoRIS 时，双方都不做 CRF 则十域全正（七域显著）；对带 CRF 的完整 FoRIS 仍有三域低 0.2–0.3。详见 [W09_W10_cut.md](x1012_tasks/W09_W10_cut.md)。下一步是给我们的掩码加同一个 CRF 做对等比较：[NEXT_EXPERIMENT_PLAN_20261013B.md](NEXT_EXPERIMENT_PLAN_20261013B.md)。
+
+## 2026-10-13 补充：预测面积门控的三种组合
+
+额外离线重评 S 半 6,752 例，比较大目标上切换 A3、加方差/簇面积锁的 F1b，以及 `C1 OR [A3 > .65]`。三臂均在 8/10 域不低于 FoRIS，但 COCO 仍为 −1.30 至 −1.63、ISIC 为 −1.12 至 −1.51 pp。S1 的 Lung 相对候选显著下降 0.27 pp；S2 避免 F1b 的 Lung 坍塌但没有救回 ISIC；S3 的 COCO +0.07 pp 未消除负差。均值都约 +2.25 pp，没有一臂达到同时拉平 COCO/ISIC 且保住 Lung 的条件，因此不据此冻结公式。该额外重评只用 S、没有新 DINOv3 推理；独立 E2 的 T 评估见上。完整十域表和配对区间见[实验报告](x1013_tasks/ADAPTIVE_FOLLOWUP.md)，逐例证据见[压缩 I/U](../../evidence/research/x1013_adaptive_followup_iu.jsonl.gz)。
+
+## 2026-10-13 补充：细结构/几何诊断计划
+
+新组织的 A/B 两项先复用 R2 与 x1013 S 半缓存，定位 Fundus/Road 的像素修正收益及断裂发生阶段，不做新 DINO；C 项先审计数据标注，因 PASCAL-Part 的左右腿已合并，暂不把“左右身份”作为可测主张。具体队列、结构指标、正负判据与算力安排见[实验计划](MECHANISM_EXPERIMENT_PLAN_20261013.md)。
+
+## 2026-10-13 补充：R1/R2/R3 固定面积组合臂
+
+三条固定面积组合在 S 半 6,752 例完成离线重评：R1 的 λ64 大目标分支仍使 COCO −1.00 pp；R2 的 F1b union 使 ISIC +0.93 pp，但 Lung −4.86 pp；R3 λ64 把 COCO 差距缩至 −0.49 pp、ISIC +0.46 pp，仍未同时通过 COCO 与 Lung 护栏。四臂均不冻结。该重评未用 T 或运行新 DINO；完整定义、十域结果、配对区间和逐例证据见[报告](x1013_tasks/FIXED_AREA_COMPOSITIONS.md)及[证据](../../evidence/research/x1013_scale_compositions_iu.jsonl.gz)。
+
+## 2026-10-13 补充：细结构与像素修正诊断
+
+R2 Fundus 的像素修正虽提高 IoU（+2.62 pp），clDice-style 未显著变化，同时骨架 precision 下降、碎片增加；Road 上像素修正和 C1 CRF 都降低中心线质量。Fundus 的 x1013 A4/C1 结构结果完全相同。当前不支持“像素修正或 CRF 恢复拓扑”的主张。完整 R2/x1013 S 半结果与指标判据见[诊断报告](x1013_tasks/MECHANISM_DIAGNOSTIC_RESULTS_20261013.md)；本轮零新 DINO、未读 T。
+
+## 2026-10-13 补充：Opus 机制实验计划完成
+
+A/B 缓存诊断及 C 的 S 半标签资格审计已完成。Fundus 像素修正的 IoU 增益没有可靠 clDice 增益；Road 上像素修正和 C1 都降低中心线质量。相对几何方向未达到资格门槛：当前 PASCAL-Part 标签已合并左右身份，PACO 仅两张 S query 照片有同母体左右按钮竞争标注。因此不启动几何模型臂。详见[执行完成报告](x1013_tasks/MECHANISM_EXPERIMENT_COMPLETION_20261013.md)及[紧凑证据](../../evidence/research/x1013_mechanism_completion.json)；无新 DINOv3 推理，未评分 x1013 T。
+
+## 2026-10-13 补充：下一步是新照片留出收尾
+
+E2 的 T 半结果已复算一致。B 计划的成功分支要求对未曝光数据确认；已冻结的新照片留出（3,211 例，双角色零曝光，主方法即 MFU）停在 2,209 例。续跑、评分及评分前写定的 `main − FoRIS` 读法见 [NEXT_EXPERIMENT_PLAN_20261013C.md](NEXT_EXPERIMENT_PLAN_20261013C.md)。
+
+## 2026-10-14 补充：新照片留出结果（MFU）
+
+3,211 个任务，双角色均未曝光，封存后评分一次。
+
+- 预先冻结的主比较 MFU − U：+0.48 [+0.11, +0.85]，确认成立。
+- 相对完整 FoRIS：十域均值 +2.62 [+1.96, +3.24]。COCO、LVIS、PASCAL、PACO、Lung、Fundus、Road 七域显著更高；没有一域显著更低。
+- iSAID 点估计 −0.71 [−2.41, +1.09]（228 例），“十域点估计全正”在新照片上不成立。
+
+详见 [PHOTO_HOLDOUT_RESULT.md](x1012s_tasks/PHOTO_HOLDOUT_RESULT.md)。报告半的消融见 [W11_T_ablation.md](x1012_tasks/W11_T_ablation.md)：只有融合在 T 上十域不低于 FoRIS，且三个面积档都为正。
+
+官方协议主表（60,981 例，`scripts/x1012/w12_official.py`）正在运行。Fundus 已完成：FoRIS 19.13，与此前 seed-0 重现逐像素一致；MFU 34.22，+15.1 [14.2, 16.0]。
+
+## 2026-10-14 余量解剖与范围路线（W13–W18，S 半小样本）
+
+- 本机只用于找方法，全量实验放到专用服务器。官方协议全量运行已在本机停止，不在本机重启。脚本 `w12_official.py` 的特征缓存已降到 96 项。
+- 约 10 个点的切点余量，是两条线共享的每例切点问题：
+  - 集中在约 20% 的例子上，这些例子的面积偏差 ≥ 2 倍，方向不定；
+  - 已关闭的路线：查询自身分组（W15）、线间选择（W16）、漏实例（W17，处于背景水平）、相对峰值去干扰物（W18）。
+
+  详见 `x1012_tasks/W14_headroom.md`、`W15_W16_extent.md`。
+- W13：FU+（U 与 FoRIS 原始分数融合）比 MFU 低 0.13，M0U+ 比 MFU 低 0.21，没有臂超过 MFU。
+- W19：不依赖 FoRIS 的头 Xp+，把 FoRIS 分数换成单原型前景/背景对比，其余与 MFU 相同。
+  - 准确率：
+    - S 半 − FoRIS +2.76，T 半 − FoRIS +3.21；
+    - 与 MFU 的差：S −0.07，T +0.04；
+    - 无一域显著低于 FoRIS；
+    - COCO、ISIC、iSAID 的点估计低于 FoRIS（不显著）。
+  - 头部时间：1.41 s，对比 FoRIS 1.59 s、MFU 2.20 s。CRF 约 1 s，是主要耗时。
+  - 详见 `x1012_tasks/W19_simple_head.md`。

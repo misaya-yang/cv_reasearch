@@ -40,6 +40,59 @@ def relative_table(records, arms, reference='foris', intervals=True):
     return rows
 
 
+def relative_to_mean_table(records, arms):
+    domains = ('coco', 'isic', 'suim')
+    header = ['变体'] + list(domains)
+    rows = ['|' + '|'.join(header) + '|', '|' + '|'.join(['---'] * len(header)) + '|']
+    rng = np.random.default_rng(c.SEED)
+    for arm in arms:
+        cells = []
+        for domain in domains:
+            subset = [r for r in records if r['dataset'] == domain]
+            cells.append(cell_delta(subset, arm, 'M', rng))
+        rows.append('|' + '|'.join([arm, *cells]) + '|')
+    return rows
+
+
+def e2_selection(records):
+    candidates = ('C1', 'UFraw+', 'Ugm+', 'UF+', 'M+', 'MFU')
+    reference = score.domain_scores(records, 'foris')
+    summaries = []
+    for arm in candidates:
+        values = {domain: score.miou([r for r in records if r['dataset'] == domain], arm) -
+                  reference[domain] for domain in c.DOMAINS}
+        summaries.append((min(values.values()), float(np.mean(list(values.values()))), arm))
+    return max(summaries, key=lambda item: (item[0], item[1]))
+
+
+def render_t8_report():
+    task = c.task_path('T8')
+    status_path = task / 'scored.json'
+    if not status_path.exists():
+        return None
+    status = c.read(status_path)
+    tables = c.read(task / 'prefix_tables.json')
+    selection_hash = __import__('hashlib').sha256((task / 'selection.json').read_bytes()).hexdigest()
+    lines = [
+        '# T8 prefix diagnosis (S half only)', '',
+        f"The frozen tail/control sample contains {status['n']} S-half cases; T labels were not read and no encoder calls were made.",
+        'Rates are fractions of selected error-region pixels classified foreground at each cached output prefix. They are a targeted diagnostic, not dataset-wide accuracy.', '',
+        'In the tail group, FoRIS `pre` foreground rates are 0.046–0.070 in candidate-only false-positive pixels and 0.912–0.964 in candidate-missed true-positive pixels; the final FoRIS mask is 0 and 1, respectively. The candidate `c_mod+V+P` prefix marks 0.077–0.381 of the latter pixels foreground, while the final candidate mask marks none. This shows disagreement already present in the frozen prefix masks for these selected cases; it does not establish a general correction rule.', '',
+        '|Domain|Group|Region|Images|Pixels|FoRIS pre|FoRIS final|Own c_mod+V+P|Own no-e|Candidate final|',
+        '|---|---|---|---:|---:|---:|---:|---:|---:|---:|'
+    ]
+    for domain in ('coco', 'isic', 'suim', 'lvis'):
+        for row in tables[domain]:
+            lines.append(f"|{domain}|{row['group']}|{row['region']}|{row['n']}|{row['pixels']}|"
+                         f"{row['foris/pre']:.3f}|{row['foris/FoRIS']:.3f}|"
+                         f"{row['own/c_mod+V+P']:.3f}|{row['own/no_e']:.3f}|{row['own/candidate']:.3f}|")
+    lines += ['', f"Selection SHA256: `{selection_hash}`.",
+              f"Per-case records: `{task / 'descriptions.jsonl'}`; case sheets: `{task / 'cases'}`.", '']
+    path = c.ROOT / 'docs/research/x1013_tasks/T8_S_REPORT.md'
+    path.write_text('\n'.join(lines))
+    return path
+
+
 def area_table(records, arms):
     bands = ('<2%', '2-20%', '>20%')
     header = ['变体'] + list(bands)
@@ -120,18 +173,23 @@ def render():
     lines += ['', f"T6 的 S-self 对照 E2 入选条件：等权均值变化 {np.mean(list(d_self.values())):+.3f} pp；最差域变化 {min(d_self.values()):+.3f} pp；{'满足' if self_keep else '不满足'}。", '',
         '## E1 CRF 对等比较（S 半）', '',
         '相对完整 FoRIS 的 class mIoU 差，单位 pp；括号为95%区间。', '']
-    lines += relative_table(e1, ('C1', 'C2', 'UFraw', 'UFraw+', 'Ugm+', 'UF+')) + ['',
+    e1_arms = ('C1', 'C2', 'UFraw', 'UFraw+', 'Ugm+', 'UF+', 'M', 'M+', 'MFU')
+    lines += relative_table(e1, e1_arms) + ['',
         '面积档逐例 IoU 差：', '']
-    lines += area_table(e1, ('C1', 'C2', 'UFraw', 'UFraw+', 'Ugm+', 'UF+')) + ['',
+    lines += area_table(e1, e1_arms) + ['',
+        'COCO、ISIC、SUIM 相对 MEAN（M）的 class mIoU 差，单位 pp；括号为95%区间：', '']
+    lines += relative_to_mean_table(e1, e1_arms) + ['',
         'UFraw 对 FoRIS-noCRF（双方都不做 CRF）的配对差：', '']
     lines += relative_table(e1, ('UFraw',), reference='foris_noCRF') + ['',
         'CRF 自身的作用（class mIoU 差，单位 pp）：', '']
     lines += effect_table(e1, (('C1 − 候选', 'C1', 'candidate'),
-                               ('UFraw+ − UFraw', 'UFraw+', 'UFraw'))) + ['',
+                               ('UFraw+ − UFraw', 'UFraw+', 'UFraw'),
+                               ('M+ − M', 'M+', 'M'))) + ['',
         '对应面积档逐例 IoU 差：', '']
     crf_area = ['|作用|<2%|2-20%|>20%|', '|---|---:|---:|---:|']
     for label, arm, reference in (('C1 − 候选', 'C1', 'candidate'),
-                                  ('UFraw+ − UFraw', 'UFraw+', 'UFraw')):
+                                  ('UFraw+ − UFraw', 'UFraw+', 'UFraw'),
+                                  ('M+ − M', 'M+', 'M')):
         cells = []
         for band in ('<2%', '2-20%', '>20%'):
             subset = [r for r in e1 if score.area_band(r) == band]
@@ -141,8 +199,22 @@ def render():
         crf_area.append('|' + '|'.join([label, *cells]) + '|')
     lines += crf_area + ['',
         f"UFraw 身份核对（S 半、排除 iSAID，与旧 W10 U@Fraw 对照）：{e1_identity}", '',
-        '本阶段只完成 S 半选择评估；E2 的 T 半一次评分等待用户确认。T8 保持可选，本轮未启动。', '',
+        f"E2 的 S 半预选（固定集合，不含未通过条件的 S-self 替换臂）：{e2_selection(e1)}；按预定规则选臂，T 半尚未用于选择。", '',
         'E1 逐例结果：[evidence/research/x1013_E1_iu.jsonl.gz](../../../evidence/research/x1013_E1_iu.jsonl.gz)。']
+    e2_report = c.ROOT / 'docs/research/x1013_tasks/E2_T_REPORT.md'
+    if e2_report.exists():
+        content = e2_report.read_text().splitlines()
+        if content and content[0].startswith('# '):
+            content = content[1:]
+        lines += ['', '## E2 报告半结果', '', *content]
+    else:
+        lines += ['', 'E2 的报告半评分尚未开始。']
+    t8_report = render_t8_report()
+    if t8_report:
+        lines += ['', '## T8 S 半前缀诊断', '',
+                  'T8 使用 S 半 322 例（161 尾部、161 对照），未读取 T 半标签；完整逐域前缀表和案例路径见 [T8 S 半报告](T8_S_REPORT.md)。']
+    else:
+        lines += ['', 'T8 是可选诊断，本轮未运行。']
     c.REPORT.write_text('\n'.join(lines) + '\n')
     print(f'Wrote {c.REPORT} ({len(lines)} lines)')
 

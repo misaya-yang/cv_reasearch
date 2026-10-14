@@ -135,7 +135,9 @@ def run_t8(workers):
     if (out / 'scored.json').exists():
         return
     began = time.monotonic()
-    base = score.read_records('T0')
+    # Keep this optional post-E1 diagnostic on the selection half. The older
+    # T8 path sampled both halves and would otherwise reopen report-half GT.
+    base = [row for row in score.read_records('T0') if row['split'] == 'S']
     if not base:
         raise RuntimeError('T8 needs the completed T0 identity gate')
     all_bindings = {str(b['index']): b for b in c.rows()}
@@ -177,7 +179,8 @@ def run_t8(workers):
     from report import case_sheets
     c.initialize()
     paths = case_sheets(selected)
-    c.write(out / 'scored.json', {'n': len(selected), 'seconds': time.monotonic() - began,
+    c.write(out / 'scored.json', {'n': len(selected), 'scope': 'S only', 'T_scored': False,
+                                'seconds': time.monotonic() - began,
                                 'identity_gate': 'PASS', 'case_paths': paths})
 
 
