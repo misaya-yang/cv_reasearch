@@ -1,12 +1,12 @@
 # 服务器确认实验
 
-本目录放在专用服务器（RTX 4080 Super 32GB）上做的确认实验。本机（M4 Max）只用来找方法；全量运行、重新编码和正式计时都在服务器上做。
+本目录放在专用服务器（RTX 4080 Super 32GB）上做的确认实验。**2026-10-14 起**，新照片留出和官方协议改在本机周末运行（[W30](../docs/research/x1012_tasks/W30_mac_confirmation_PLAN.md)）；服务器只做 E3（GPU 端到端计时），以及 W30 没跑完的域。
 
 - 实验计划：[EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md)
-- 当前状态：只有计划，代码还没写。写代码时按计划第 6 节的移植说明进行，并先通过 E0 的一致性门槛。
+- 当前状态：E3 只有计划，代码还没写。写代码时按计划第 6 节的移植说明进行，并先通过 E0 的一致性门槛。
 - 被确认的方法：FoRIS-free 头 SH，定义和本机证据见 [W23_simple_pipeline.md](../docs/research/x1012_tasks/W23_simple_pipeline.md)。
 
-## 目录约定（与 `docs/research/CONTINUING_ELSEWHERE.md` 一致）
+## 目录约定（与 `docs/research/archive/CONTINUING_ELSEWHERE.md` 一致）
 
 ```text
 paper_project/

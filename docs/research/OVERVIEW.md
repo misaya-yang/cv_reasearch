@@ -19,7 +19,7 @@
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | 60.9 | 42.8 | 55.8 | 42.3 | 59.1 | 53.6 | 62.9 | 87.6 | 19.7 | 13.3 |
 
-- **Road 的协议无法复现。** 官方代码里没有 road 的数据构建器，抽样方式不明。我们用本地的 custom200，FoRIS 在上面重现为 27.26，与 13.3 不可比，论文中单独标注（见 [protocol_inventory](autonomous_20261010/protocol_inventory.md)）。
+- **Road 的协议无法复现。** 官方代码里没有 road 的数据构建器，抽样方式不明。我们用本地的 custom200，FoRIS 在上面重现为 27.26，与 13.3 不可比，论文中单独标注（见 [protocol_inventory](archive/autonomous_20261010/protocol_inventory.md)）。
 - **其余九个基准**在官方协议下的 FoRIS 重现，与发表值相差在 0.6 以内：Fundus 19.13、ISIC 62.73、Lung 87.71。
 
 ## 2 当前方法：SH（不依赖 FoRIS 的头）
@@ -78,7 +78,7 @@
 | Lung | 87.71 | 89.57 | 87.6 |
 | Road custom200 | 27.26 | 28.61 | — |
 
-  其余六域留给服务器。
+  其余六域在 W30 中运行。
 
 ### 4.3 速度（同一套计时协议：CPU 2 线程，特征在内存中，包含 CRF）
 
@@ -92,12 +92,42 @@
 - 双图编码另需约 3 s。
 - CRF 约占 1 s。C640 可把它降到 0.46 倍，准确率不变（W21）。
 
+### 4.4 最终 SH 的严格单线消融（W27，仅 S 半）
+
+W23 同一批1,285例；直接捕获冻结 `simple_head` 内的 U0 和 M′，保持相同特征、查询图、阈值、回退和 CRF。SH/SH+ 均在1,285/1,285例上完整复现W23的整数I/U。全部预测封存后才评分，未读T或新照片留出。
+
+| 线 | CRF 前十域平均 mIoU | CRF 后十域平均 mIoU |
+|---|---:|---:|
+| U0 | 51.78 | 51.85 |
+| M′ | 49.65 | 49.89 |
+| SH固定融合 | 53.63 | 53.80 |
+
+- CRF前：SH−U0 **+1.85 [1.21,2.27]**，SH−M′ **+3.98 [3.24,5.27]** pp。
+- CRF后：SH+−U0+ **+1.95 [1.31,2.41]**，SH+−M′+ **+3.91 [3.14,5.24]** pp。
+- 非回退1,090例、九域等权：两项CRF后增益仍为 **+2.26 [1.55,2.72] / +4.88 [3.76,6.32]** pp；Fundus全部共同回退，不作为融合贡献。
+- 支持“固定融合在本机S半总体优于两条单线，优势在CRF前已存在”。不写逐域全优：SUIM的融合略低于M′（不显著），LVIS与U0接近持平。新增结果是开发消融，不替代独立确认。
+
+全部逐域六臂分数、配对区间、CRF增益和论文措辞见 [W27报告](x1012_tasks/W27_sh_single_line_REPORT.md)。
+
+### 4.5 换一批 S 样本复测（W28）
+
+从S余池排除W27任务和查询照片，固定种子取六域871例（COCO/LVIS/PASCAL/PACO/SUIM各150，ISIC121）。原批任务/查询照片重合均为0；iSAID、Lung、Fundus、Road已无剩余S任务，未混入旧例或读取T补齐。六臂定义、参数和W27推理源码保持不变。
+
+| 同一六域的批次 | 融合−U0，CRF前 | 融合−M′，CRF前 | 融合−U0+，CRF后 | 融合−M′+，CRF后 |
+|---|---:|---:|---:|---:|
+| 原批对应六域900例 | +2.77 [1.94,3.54] | +4.17 [3.13,5.52] | +2.89 [2.03,3.68] | +4.19 [3.05,5.52] |
+| 新批六域871例 | +2.18 [1.56,2.87] | +3.73 [2.58,5.08] | +2.41 [1.77,3.14] | +3.74 [2.54,5.08] |
+
+单位pp，附95%照片bootstrap区间。新批非回退849例的两项CRF后增益仍为 +2.42 [1.81,3.16] / +3.95 [2.61,5.26]。支持融合总体优势在这六个域的另一批开发任务上重复出现。SUIM、ISIC相对M′+点估计为负但不显著，LVIS与U0+接近持平；不能写逐域全优。
+
+查询照片只与W27的query隔离，参考和其他历史开发曝光仍可能重合；本次不是新照片留出，也不是十域新批确认。细节见 [W28报告](x1012_tasks/W28_sh_second_batch_REPORT.md)。
+
 ## 5 论文主张与状态
 
 | # | 主张 | 状态 |
 |---|---|---|
-| C1 | 十个基准上不低于 FoRIS，均值显著更高 | SH 只有本机子样本证据，需要服务器 E1（新照片）和 E2（官方协议）确认。COCO、ISIC 的点估计略负，措辞预计为“无一域显著更低” |
-| C2 | 点证据与原型证据互补，融合优于任一单线，不依赖 FoRIS 组件 | 本机成立：去掉调制 −1.31，单线都不够。服务器补单线消融 |
+| C1 | 十个基准上不低于 FoRIS，均值显著更高 | SH 只有本机子样本证据，由 W30 的 E1（新照片）和 E2（官方协议）确认。COCO、ISIC 的点估计略负，措辞预计为“无一域显著更低” |
+| C2 | 点证据与原型证据的固定融合总体优于两条单线，不使用 FoRIS 的分数、投票和聚类先验 | [W27严格匹配消融](x1012_tasks/W27_sh_single_line_REPORT.md)：原S批十域CRF后 +1.95/+3.91 pp；[W28换批复测](x1012_tasks/W28_sh_second_batch_REPORT.md)：新六域 +2.41/+3.74 pp，各95%区间均为正，CRF前及非回退子集亦支持。限定为开发S总体结论，保留逐域取舍，W30 再确认 |
 | C3 | 单线的失败是尺度性的：点线在大目标上漏范围，区域线在小目标上误报 | 成立（W09、W11、W24） |
 | C4 | 按目标大小选尺度不可行，融合可行 | 成立（W09、T5、S1–S3、R1–R3、W25、W26-0） |
 | C5 | 更简单、更快 | 本机成立（0.82×），服务器 E3 补 GPU 端到端计时 |
@@ -110,62 +140,93 @@
 
 详见 [PAPER_EVIDENCE_MAP_20261014](PAPER_EVIDENCE_MAP_20261014.md)。
 
-## 6 已知缺口与进行中的工作
+## 6 进行中的工作与已知缺口
 
-| 缺口 | 现状 | 去向 |
+| 事项 | 现状 | 去向 |
 |---|---|---|
-| SH 没有官方协议和新照片成绩 | 计划已写好，代码还没写 | [server/EXPERIMENT_PLAN.md](../../server/EXPERIMENT_PLAN.md)：E0 一致性门槛 → E1 → E2 → E3 |
-| COCO、ISIC 略低于 FoRIS | W26-1 三项实现检查通过；S-W26 1,750 例上，A+B+C+D 的 CRF 后留一域选择相对 SH+ 十域均值 −0.045 pp，COCO +0.25、ISIC +0.45 pp，仍低于 FoRIS（−0.20、−0.25 pp）；iSAID 显著下降，单族也不满足目标域条件 | [W26 结果](x1012_tasks/W26_scale_PLAN.md#结果w26-12026-10-14)：按 5.5 关闭路线 C，不进入 W26-2，T 半未读。SH+ 维持主方法，服务器计划不变 |
-| iSAID 在新照片上 −0.71（MFU） | 官方 10,063 例会给出更准的估计 | 服务器 E2 |
+| 新照片留出与官方协议（W30） | **运行中**（10-14 23:56 起，Claude 会话启动，占用本机唯一的 MPS 编码进程）。方法 SH+；检查 P1 40/40、P2 余弦中位数 1.000、40/40 IoU 一致。顺序 E1 → ISIC … LVIS，周末全功率；不跑 FoRIS 全量，不存特征；10-19 08:00 截止。运行期间不要另起 MPS 作业，也不要再按 W30 计划重复启动 | [W30 计划](x1012_tasks/W30_mac_confirmation_PLAN.md)。服务器只做 E3（GPU 计时）和没跑完的域 |
+| 候选范围重新编码（W31 修正版 K0） | 按用户最新要求暂停。S1285自然掩码全部逐像素复现W27；1090非回退例产生9545个去重候选，字段阶段508秒。本会话新编码0、查询GT未打开，自动启动器已停止，待用户继续。**其主臂（遮罩候选 → 冻结 CLS → 与参考比较）已由 [W31 示范匹配 K0](x1012_tasks/W31_demonstration_PLAN.md) 在同一 1,285 例、几乎相同的九级候选和渲染上跑完：相对自然 SH −10.17，不通过。按该方案 §3.3 的停止规则，建议不再恢复** | [W31 方案](x1012_tasks/W31_region_verification_PLAN.md)。独立输出 `x1013_W31_K0_revised/`；不改变 W30 的 SH+ 冻结，不读取 T 或新照片留出 |
+| 末层注意力 key 的实体结构（W32） | 运行中（10-15 00:25 起，CPU 低优先级，约 2.2 h）。读法：GT 选片段的 oracle 比切点 oracle 高 ≥ 5 → 写 W33 设计选择规则；K ≤ 16 全部低于切点 oracle → 关闭“编码器内部实体结构”通道 | [W32 计划](x1012_tasks/W32_key_entity_PLAN.md) |
+| 最终 SH 的单线匹配证据 | W27原批十域与W28另一批六域均支持总体融合优势；新批871例与原批query照片不重合，四域无剩余S故未复测 | [W27](x1012_tasks/W27_sh_single_line_REPORT.md) / [W28](x1012_tasks/W28_sh_second_batch_REPORT.md)；单线臂随 W30 一并确认，不据消融调参 |
+| COCO、ISIC 略低于 FoRIS | 子样本上差 0.3–0.8 点，区间约 ±2，在噪声以内。COCO 的差距来自用 M′ 替换 FoRIS 线：SH+ − MFU 在 S/T 半为 −1.48/−2.12，是 W20 的粒度交换。W26 的逐例选尺度未通过（十域 −0.045）。MFU 在官方 ISIC 上 +0.79 [0.04, 1.57] | 以 W30 的官方数字为准，不在子样本上继续追 |
+| iSAID 在新照片上 −0.71（MFU） | 官方 10,063 例会给出更准的估计 | W30 |
 | CRF 在 iSAID、Lung、Road 上为负 | 方法冻结，不按域开关 | 作为消融如实报告 |
-| 约 10 个点的切点余量（W14） | 两条线共享；查询分组、线间选择、漏实例、干扰物四条路都已关闭 | 没有新机制之前不开实验 |
+| 切点余量约 10 个点（W14） | 两条线共享，是方法本身最大的空间。现有构造上的小改动都没有收回它 | W30 之后，方法重新设计的起点（第 7 节） |
 
-## 7 已关闭的路线（不要重做）
+## 7 下一阶段：方法本身（W30 之后）
+
+- 已经试过的，是一个个**具体构造**，不是方向。不能据此说方法到了上限，也不按“失败了多少次”下结论。
+- 我们还没有真正的 0→1。SH 是对已有部件（核迁移、原型对比、图求解、CRF）的组合与简化。
+- W30 跑完后，从问题本身重新想方法，而不是继续修补 SH。下面这些现象，是新方法要解释并超越的，不是边界：
+  - 排序基本正确，错在范围：切点余量约 10 个点，两条线共享（W14）；
+  - 点证据与原型证据的错误互补（W27、W28）；
+  - 大目标与部件、小目标之间的粒度交换（W20、W24、W26）。
+
+## 8 已试过的构造（不要原样重做）
+
+这些构造按当时的设计和读法没有通过。换个名字重做同一个构造没有意义；但以新的机制重新进入同一问题，不受此表限制。
 
 | 路线 | 结论 | 出处 |
 |---|---|---|
-| FoRIS 上的读出增强（MEAN、RCG、fine、残差、N、S） | 涨分但依赖 FoRIS，独有贡献不成立 | [RESULTS](RESULTS.md)、[RESEARCH_GUIDE](RESEARCH_GUIDE.md) |
-| 角色、几何、判别、任务核、层级、context 等 20 余个固定构造 | 都低于强控制 | [RESULTS §2](RESULTS.md) |
-| 切点线索：Otsu、MSER、sweep cut、面积估计、逆预测、监督融合、中间层、金字塔、OT | 不优于常数，或低于 FoRIS | [TOKEN_READOUT_CEILING](TOKEN_READOUT_CEILING_20261012.md) §3–4 |
+| FoRIS 上的读出增强（MEAN、RCG、fine、残差、N、S） | 涨分但依赖 FoRIS，独有贡献不成立 | [RESULTS](archive/RESULTS.md)、[RESEARCH_GUIDE](archive/RESEARCH_GUIDE.md) |
+| 角色、几何、判别、任务核、层级、context 等 20 余个固定构造 | 都低于强控制 | [RESULTS §2](archive/RESULTS.md) |
+| 切点线索：Otsu、MSER、sweep cut、面积估计、逆预测、监督融合、中间层、金字塔、OT | 不优于常数，或低于 FoRIS | [TOKEN_READOUT_CEILING](archive/TOKEN_READOUT_CEILING_20261012.md) §3–4 |
 | 按数据集、参考面积、预测面积、FoRIS 面积、max-J 选尺度；监督选择器（现有量） | 全部失败；信息不在面积类量里 | W09/W10、[T0_T5](x1013_tasks/T0_T5_reading.md)、[ADAPTIVE](x1013_tasks/ADAPTIVE_FOLLOWUP.md)、[FIXED_AREA](x1013_tasks/FIXED_AREA_COMPOSITIONS.md)、W25、W26-0 |
 | 查询自身分组、线间选择、漏实例、相对峰值去干扰物 | 关闭 | [W15_W16_extent](x1012_tasks/W15_W16_extent.md) |
 | 聚类先验的廉价替代、CRF 的廉价替代、单一求解、常数调整 | 是域间交换或未达门槛 | [W20_W21](x1012_tasks/W20_W21_prior_crf.md)、W22、W24 |
+| 整体示范匹配选范围：候选与参考各自遮罩裁剪到 448，比较冻结 CLS（或掩码内 patch 均值） | 偏向小范围：十域 −10.17（patch 均值 −8.17），换成别类参考更差；同组候选按 J 取最大也 −1.68 | [W31 示范匹配](x1012_tasks/W31_demonstration_PLAN.md) |
 | 引入 SAM 等新模型 | 用户否决：先用同一套特征把问题做干净 | — |
 
-## 8 规则
+## 9 研究规则
+
+工作约定（文件、Git、删除、记录方式）见 [AGENTS.md](../../AGENTS.md)。这里只列研究协议。
 
 - **数据使用：**
   - S 半用于选择；T 半每个方法只读一次；
-  - 新照片留出只评分一次（MFU 已用过一次，SH 的那一次在服务器 E1）；
-  - 读法必须在运行前写下。
+  - 新照片留出只评分一次（MFU 已用过一次；SH 的那一次在 W30）；
+  - 读法必须在运行前写下，只做预定的一轮。
+- **什么算方法的提升：** 只算方法本身带来的提升。翻转、位移、更高分辨率、多视图这类通用推理设置，FoRIS 用上同样会变好，不作为方法的改进（W29 因此取消）。
 - **指标：**
   - 开发时：(fold, class) 槽池化后等权，再十域等权；照片成组 bootstrap。
   - 官方：每个 fold 内类 IoU = ΣI/ΣU，对类平均，再对 fold 平均；CLI-1024 画面。
   - 两种口径不能相减。
 - **算力：**
-  - 本机（M4 Max，14 核）只找方法：每域最多 150 例的固定种子子样本，最多 4 个 worker，留出约 30% CPU，同一时间只跑一个 MPS 编码进程。
-  - 全量运行、重新编码和正式计时都在服务器（RTX 4080 Super 32GB）上做。
-- **文件：**
-  - 生成数据写到 `../cv_data/a/`；
-  - 小证据放在 `evidence/research/`；
-  - 不要改冻结文件：`r5_candidate.py`、`scripts/x1013/*`、`REPORT.md`、`scripts/x1012s/photo_holdout.py`、x1012_* 产物；
-  - 删除和移动先问用户。
-- **环境：** `~/miniconda3/envs/aidemo/bin/python`，在仓库根目录运行。
+  - 本机（M4 Max，14 核，36 GiB）：平时用固定种子的开发子样本，最多 4 个 worker，留出约 30% CPU；同一时间只跑一个 MPS 编码进程。周末经用户批准可全功率（W30）。
+  - 服务器（RTX 4080 Super 32GB）：只做 GPU 端到端计时，以及本机没跑完的部分。
+  - 不建磁盘特征缓存；全量运行边编码边算。
+- **冻结文件：** `r5_candidate.py`、`w23_simple_pipeline.py`、`w27_sh_single_line.py`、`scripts/x1013/*`、`x1013_tasks/REPORT.md`、`scripts/x1012s/photo_holdout.py`、x1012_* 产物。
 
-## 9 文档地图
+## 10 文档地图
 
 | 想知道 | 读 |
 |---|---|
-| 术语（O24、coverage、U/M/T、rho、max-J……） | [RESEARCH_GUIDE §2](RESEARCH_GUIDE.md) |
+| 术语 | 第 11 节 |
 | 现行方法定义 | [W23_simple_pipeline](x1012_tasks/W23_simple_pipeline.md) |
 | 论文主张与证据 | [PAPER_EVIDENCE_MAP_20261014](PAPER_EVIDENCE_MAP_20261014.md) |
-| 服务器上要做什么、要复制什么 | [server/README.md](../../server/README.md)、[server/EXPERIMENT_PLAN.md](../../server/EXPERIMENT_PLAN.md) |
-| Astra 的下一个任务 | [W26_scale_PLAN](x1012_tasks/W26_scale_PLAN.md) |
-| 10-13 之后每一步的报告 | `x1012_tasks/` 的 W01–W26：W01_W02、W03、W04_W07、W09_W10、W11、W14、W15_W16（含 W13、W17、W18）、W19、W20_W21、W23（含 W22、W24、W25）、W26 |
-| Astra 的 x1013 链（T0–T9、E1/E2） | [x1013_tasks/REPORT](x1013_tasks/REPORT.md)、[T0_T5_reading](x1013_tasks/T0_T5_reading.md)、[E2_T_REPORT](x1013_tasks/E2_T_REPORT.md) |
+| 当前任务 | [W30](x1012_tasks/W30_mac_confirmation_PLAN.md)（[报告](x1012_tasks/W30_mac_confirmation_REPORT.md)）、[W32](x1012_tasks/W32_key_entity_PLAN.md) |
+| 10-12 之后每一步的计划与报告 | [x1012_tasks/](x1012_tasks/)：R1–R5、W01–W32 |
+| Astra 的 x1013 链（T0–T9、E1/E2，MFU 的来历） | [x1013_tasks/REPORT](x1013_tasks/REPORT.md)、[T0_T5_reading](x1013_tasks/T0_T5_reading.md)、[E2_T_REPORT](x1013_tasks/E2_T_REPORT.md) |
 | 新照片留出 | [PHOTO_HOLDOUT_PLAN](x1012s_tasks/PHOTO_HOLDOUT_PLAN.md)、[PHOTO_HOLDOUT_RESULT](x1012s_tasks/PHOTO_HOLDOUT_RESULT.md) |
 | 按日期追加的流水记录 | [STATUS](STATUS.md) |
-| 10-12 之前 34 个方法家族的结论 | [RESULTS](RESULTS.md)（10-12 快照） |
-| 在别的机器上接续 | [CONTINUING_ELSEWHERE](CONTINUING_ELSEWHERE.md) |
+| 服务器 | [server/README.md](../../server/README.md)、[server/EXPERIMENT_PLAN.md](../../server/EXPERIMENT_PLAN.md) |
+| 10-13 及以前的全部文档（旧地图、结果账本、计划） | [archive/](archive/README.md) |
 
-其他按日期命名的顶层文档（`COMPOSITION_*`、`FIVE_DATASET_*`、`TASK_*`、`NEXT_EXPERIMENT_PLAN_*` 等，日期 ≤ 10-13），以及 [PLAN](PLAN.md)、[GAPS](GAPS.md)（10-12 快照），都是历史记录：用来查证据，不是待办。
+## 11 术语
+
+| 名字 | 含义 |
+|---|---|
+| O24 | 冻结 DINOv3-L/16 最后一层 token。1024 输入，64×64 个 token，每个 1024 维 |
+| 去位置 | 把特征投影出位置子空间再归一化。位置子空间来自黑图特征（`positional_basis.pt`，500 维通道子空间） |
+| y（coverage） | 参考 mask 在每个 16×16 块里的前景比例，保留软值 |
+| rho | 参考前景中不落在纯前景 token（y ≥ .9）上的比例。> .9 时走细结构回退：直接输出 c > .5，不做 CRF |
+| c / T | 核迁移场：每个查询 token 对参考 token 的软前景份额（温度 .05）。T 是直接对 c 取阈值的读出 |
+| max-J | 用无标签的 J = P·C/(P + C − P·C) 选择新奇调制的强度 |
+| U0 | 点证据线：调制后的 c 在查询 kNN 图 L 上做 λ=16 求解 |
+| M′ | 原型证据线：前景原型对难负背景原型的对比，在同一张图 L 上做排序引导求解 |
+| SH / SH+ | .5·M′ + .5·U0 > .5；SH+ 再做一次官方 CRF。现行方法 |
+| FoRIS | SOTA 基线，指完整方法：前景/背景处理、投票、聚类先验和后处理 |
+| MFU | CRF(.5·FoRIS 线 + .5·U)，依赖 FoRIS 的旧主候选 |
+| MEAN / fine | 10-10 前在 FoRIS 上的增强：图求解，以及四个位移编码的细读出。已不作为方法 |
+| S 半 / T 半 | 按查询照片哈希分成的两半开发数据：S 用于选择，T 用于一次性检验 |
+| 新照片留出 | 3,211 例，参考图和查询图都没在开发中出现过。每个方法只评分一次 |
+| 官方协议 | FoRIS 代码中的 episode 列表、fold 和指标，共 60,981 例。主表只能用它 |

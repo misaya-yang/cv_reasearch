@@ -1,10 +1,19 @@
-# Research agreement
+# 工作约定
 
-1. Work toward the outcome the user actually wants. Do not change the task, reduce the deliverable, or expand the scope on your own.
-2. Choose the simplest approach that solves the problem. Every added layer of complexity must have a practical justification.
-3. Keep advancing the main task. Perform only checks and fixes that affect the current deliverable; note side issues without automatically pursuing them.
-4. Start from `docs/research/RESEARCH_GUIDE.md`, `STATUS.md`, `RESULTS.md`, `GAPS.md` and `PLAN.md`. Retired plans, queues and failed runners are not current instructions or default candidates. Read external history only for a specific evidence or reproduction need.
-5. Keep a result only when it supports a paper claim, supplies a necessary control, excludes a live hypothesis or helps a next experiment. Before a new experiment, state which existing result motivates it and how positive and negative outcomes change the next decision. Do not restart a closed construction merely under a new name.
-6. Write generated data, features, masks and logs outside this checkout, under `../cv_data/a/`. Keep selected compact evidence in `evidence/research/`; retain valuable theory, research records and positive/negative method source code in Git. Download or prepare datasets and model weights as needed; keep large files out of Git. Small frozen source dependencies may retain their original paths. Run `python -B scripts/check_repository.py` after changing artifact layout.
-7. Before removing or moving files, check current work in shared chats and files added or changed since the audit snapshot. Preserve active scripts, reports and dynamic source dependencies. Absence from an old keep-list or a momentary process list is not evidence that a file is obsolete. Never overwrite a concurrent repair with an archived version.
-8. Repository cleanup is not minimization of the current import graph. Preserve high-value failed experiments, theoretical derivations, full experimental designs and source implementations needed to understand and continue the research on another machine. Move bulky generated data and redundant execution history out instead.
+1. **入口只有一个：** [docs/research/OVERVIEW.md](docs/research/OVERVIEW.md)。它写明当前方法、证据、进行中的任务和研究规则。当前任务看 OVERVIEW 第 6 节指向的计划文件。`docs/research/archive/` 是 10-13 及以前的历史，只为查证据而读，不是待办。
+2. **做用户要的事。** 不改任务、不缩小交付、不自行扩大范围。选最简单可行的做法，每层复杂度都要有实际理由。旁支问题记下来，不自动去追。
+3. **实验先写读法。** 运行前写清动机（哪个已有结果引出它），以及正、负结果分别如何改变下一步。按 OVERVIEW 第 9 节的数据使用规则执行，只做预定的一轮，看到结果后不调参、不换门槛。
+4. **文档放在固定位置：**
+   - 任务的计划和报告：`docs/research/x1012_tasks/W*_PLAN.md`、`W*_REPORT.md`；
+   - 完成后更新 OVERVIEW 的相关节，并在 `docs/research/STATUS.md` 末尾追加一行；
+   - 不再新建顶层文档。
+5. **仓库只放代码、文档和小证据。**
+   - 生成的数据、特征、掩码和日志写到 `../cv_data/a/<run>/`；
+   - 精选的小证据放 `evidence/research/`；
+   - 改动布局后运行 `python -B scripts/check_repository.py`。
+6. **保留有价值的东西。** 失败实验的源码、理论推导和完整设计，都随仓库保留；移出的是大体积生成物和重复的执行记录。
+7. **改动别人的东西要小心：**
+   - 删除或移动文件前先问用户；
+   - 不覆盖其他会话的修改，也不改冻结文件（清单见 OVERVIEW 第 9 节）；
+   - 除非用户要求，不提交 Git。
+8. **环境：** `~/miniconda3/envs/aidemo/bin/python`，在仓库根目录运行。

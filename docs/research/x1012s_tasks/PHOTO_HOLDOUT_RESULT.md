@@ -1,6 +1,6 @@
 # 新照片留出：固定组合 MFU 的一次性评分结果
 
-2026-10-14。按 [PHOTO_HOLDOUT_PLAN.md](PHOTO_HOLDOUT_PLAN.md) 冻结的协议执行，读法按 [NEXT_EXPERIMENT_PLAN_20261013C.md](../NEXT_EXPERIMENT_PLAN_20261013C.md) H1 中评分前写定的规则。
+2026-10-14。按 [PHOTO_HOLDOUT_PLAN.md](PHOTO_HOLDOUT_PLAN.md) 冻结的协议执行，读法按 [NEXT_EXPERIMENT_PLAN_20261013C.md](../archive/NEXT_EXPERIMENT_PLAN_20261013C.md) H1 中评分前写定的规则。
 
 - 规模：3,211 个任务，3,188 张 canonical 查询原照片。参考图和查询图都与登记的开发曝光零交集，留出内部的参考池和查询池也互斥。
 - 流程：主方法和程序 SHA 未改；五臂预测全部封存（`sealed.json`）后，只评分一次。

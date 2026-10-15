@@ -1,6 +1,6 @@
 # Opus mechanism experiment plan: completion
 
-Date: 2026-10-13. This completes the cached A/B diagnostics and the C label-qualification gate in [the experiment plan](../MECHANISM_EXPERIMENT_PLAN_20261013.md). A/B reused sealed predictions and S-half labels; there were no new DINOv3 calls, no model construction, and no x1013 T scoring.
+Date: 2026-10-13. This completes the cached A/B diagnostics and the C label-qualification gate in [the experiment plan](../archive/MECHANISM_EXPERIMENT_PLAN_20261013.md). A/B reused sealed predictions and S-half labels; there were no new DINOv3 calls, no model construction, and no x1013 T scoring.
 
 ## A: output-stage and structure diagnostics
 

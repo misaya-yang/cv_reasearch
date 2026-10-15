@@ -1,6 +1,6 @@
 # 修订计划执行报告：T1′、T6 与 E1
 
-执行依据：[NEXT_EXPERIMENT_PLAN_20261013B.md](../NEXT_EXPERIMENT_PLAN_20261013B.md)。
+执行依据：[NEXT_EXPERIMENT_PLAN_20261013B.md](../archive/NEXT_EXPERIMENT_PLAN_20261013B.md)。
 数据为已曝光开发缓存；所有预测覆盖 13,613 例，T1′/T6/E1 的指标仅用 S 半（6,752 例）。T 半尚未评分。
 指标为 CLI-1024，(fold,class) 池化 I/U 后槽等权；区间为按 query 照片成组的 500 次配对 bootstrap。* 表示 95% 区间不含 0。
 

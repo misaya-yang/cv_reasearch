@@ -1,16 +1,13 @@
-# CVPR 2027 — single-reference segmentation
+# CVPR 2027：冻结 DINOv3 的单参考分割
 
-冻结DINOv3，单参考完整分割。目标是独立、统一的方法在十域超过FoRIS与强控制；目标尚未达到。
+输入一张参考图、它的完整 mask 和一张查询图，不训练、不微调 DINOv3，输出查询图的完整 mask。目标是在十个基准上超过 FoRIS。
 
-**保留对论文与后续实验有价值的成功、失败、理论分析、研究记录和代码。** 大特征/Mask及重复过程日志外置；保留历史不等于重启旧队列。
+- [研究总览](docs/research/OVERVIEW.md)：唯一入口，包括方法、证据、进行中的任务、规则和术语
+- [工作约定](AGENTS.md)
+- [流水记录](docs/research/STATUS.md)
+- [论文主张与证据](docs/research/PAPER_EVIDENCE_MAP_20261014.md)
+- [实验计划与报告](docs/research/x1012_tasks/)
+- [服务器](server/README.md) · [代码](scripts/README.md) · [证据](evidence/README.md)
+- [历史文档](docs/research/archive/README.md)：10-13 及以前的计划、结果账本和旧地图，只为查证据
 
-- [第一次接手：研究导读](docs/research/RESEARCH_GUIDE.md)
-- [在另一台机器继续](docs/research/CONTINUING_ELSEWHERE.md)
-- [目标与现状](docs/research/STATUS.md)
-- [结果账本](docs/research/RESULTS.md)
-- [研究缺口](docs/research/GAPS.md)
-- [单参考上下文分割领域研究](docs/research/SINGLE_REFERENCE_ICS_REVIEW_20261012.md)
-- [下一实验计划](docs/research/PLAN.md)
-- [实际清理与资产位置](docs/research/CLEANUP.md)
-
-[代码与环境](scripts/README.md) · [精简证据](evidence/README.md) · [工作约定](AGENTS.md)。
+模型、图像、mask 和生成数据都在仓库外的 `../cv_data/`。

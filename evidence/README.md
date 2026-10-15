@@ -13,4 +13,4 @@
 
 `local/`中只保留少量原路径的高价值研究正文与必要producer/冻结源码，避免破坏当前动态依赖；没有恢复GB级预测和特征。小型失败证据不因失败而删除，重复过程材料不因可追溯就全部带回。
 
-[人可读结果](../docs/research/RESULTS.md) · [研究导读](../docs/research/RESEARCH_GUIDE.md) · [跨机器接续](../docs/research/CONTINUING_ELSEWHERE.md) · [清理记录](../docs/research/CLEANUP.md)。
+[人可读结果](../docs/research/archive/RESULTS.md) · [研究导读](../docs/research/archive/RESEARCH_GUIDE.md) · [跨机器接续](../docs/research/archive/CONTINUING_ELSEWHERE.md) · [清理记录](../docs/research/archive/CLEANUP.md)。
