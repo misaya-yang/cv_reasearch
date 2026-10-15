@@ -254,7 +254,8 @@ def _iu(args):
     gt, valid = _truth(b['row'])
     out = dict(index=str(b['index']), dataset=b['dataset'], fold=b['row']['fold'], cls=b['row']['loader_class_id'],
                class_id=b['row'].get('global_class_id', b['row']['loader_class_id']), photo=b['row']['query_photo_id'],
-               rho=rec['rho'], gt=int(gt.sum()), valid=int(valid.sum()))
+               rho=rec['rho'], gt=int(gt.sum()), valid=int(valid.sum()),
+               qimg=b['row']['query_rgb_hash'], rimg=b['row']['reference_rgb_hash'])
     with np.load(rec['prediction_path'], allow_pickle=False) as z:
         for arm in ('SH', 'SH+'):
             m = c.unpack(z[arm]) & valid
@@ -304,12 +305,28 @@ def score_e1():
                                      'MFU': h['metrics']['main']}))
     arms = ('main', 'SH', 'FoRIS', 'MFU')
     summary = helper.point_summary(records, arms)
-    paired = helper.global_photo_bootstrap(records, arms, summary, repeats=2000, seed=2026101303)
+    paired = helper.global_photo_bootstrap(records, arms, summary, repeats=2000, seed=2026101303, debug=True)
+    samples = paired.pop('_samples'); paired.pop('_weights'); paired.pop('_photos')
+    delta = {d: samples[d]['main'] - samples[d]['FoRIS'] for d in samples}
+    paired['noninferiority_vs_FoRIS'] = {
+        'lower95_one_sided': {d: float(np.percentile(v, 5)) for d, v in delta.items()},
+        'macro_lower95_one_sided': float(np.percentile(np.mean(list(delta.values()), axis=0), 5)),
+        'all_domains_noninferior': {str(m): bool(all(np.percentile(v, 5) > -m for v in delta.values())) for m in (.5, 1., 2.)}}
     macro = {a: float(np.mean([d[a]['class_miou'] for d in summary.values()])) for a in arms}
     report = dict(part='E1', n=len(records), main='SH+', macro=macro, paired=paired,
                   per_domain={d: {a: v[a]['class_miou'] for a in arms} for d, v in summary.items()})
     write(OUT / 'scores/E1_report.json', report)
     print(json.dumps(dict(macro=macro, SHplus_minus_FoRIS=paired['macro10']['FoRIS'], SHplus_minus_MFU=paired['macro10']['MFU'])), flush=True)
+
+
+def _official_present(R, arm, layout, w):
+    """w12_official.official within one bootstrap draw, averaging only the classes present in the draw.
+    w12 scores an absent class as IoU 0, which biases bootstrap levels downward (point estimates are unaffected)."""
+    s, by_fold, n = layout
+    x = np.array([r[arm][:2] for r in R], np.float64)
+    seen = np.bincount(s, w, n) > 0
+    iou = np.bincount(s, w * x[:, 0], n) / np.maximum(np.bincount(s, w * x[:, 1], n), 1)
+    return float(np.mean([100 * iou[f[seen[f]]].mean() for f in by_fold if seen[f].any()]))
 
 
 def score_e2(name):
@@ -335,13 +352,32 @@ def score_e2(name):
     for _ in range(1000):
         w = np.bincount(rng.integers(0, len(photos), len(photos)), minlength=len(photos))[pi]
         for a in arms:
-            boot[a].append(w12.official(R, a, layout, w))
+            boot[a].append(_official_present(R, a, layout, w))
     boot = {a: np.array(v) for a, v in boot.items()}
+    # Sensitivity (written before any E2 scoring): one weight per image shared by both roles, episode weight = w(query) * w(reference).
+    images = {h: i for i, h in enumerate(sorted({r['qimg'] for r in R} | {r['rimg'] for r in R}))}
+    qi, ri = np.array([images[r['qimg']] for r in R]), np.array([images[r['rimg']] for r in R])
+    rng2 = np.random.default_rng(2026101304)
+    boot2 = {a: [] for a in arms}
+    for _ in range(1000):
+        g = np.bincount(rng2.integers(0, len(images), len(images)), minlength=len(images))
+        w = (g[qi] * g[ri]).astype(np.float64)
+        for a in arms:
+            boot2[a].append(_official_present(R, a, layout, w))
+    boot2 = {a: np.array(v) for a, v in boot2.items()}
     ci = lambda v: np.percentile(v, [2.5, 97.5]).tolist()
     published = w12.PUBLISHED.get(name)
     res = dict(part=name, n=len(R), photos=len(photos), official_miou=point, ci95={a: ci(boot[a]) for a in arms},
                published_foris=published,
-               SHplus_minus={a: dict(point=point['SH+'] - point[a], ci95=ci(boot['SH+'] - boot[a])) for a in arms if a != 'SH+'})
+               SHplus_minus={a: dict(point=point['SH+'] - point[a], ci95=ci(boot['SH+'] - boot[a]),
+                                     ci95_image2way=ci(boot2['SH+'] - boot2[a]),
+                                     lower95_one_sided=float(np.percentile(boot['SH+'] - boot[a], 5)),
+                                     lower95_one_sided_image2way=float(np.percentile(boot2['SH+'] - boot2[a], 5)),
+                                     noninferior={str(d): bool(min(np.percentile(boot['SH+'] - boot[a], 5),
+                                                                   np.percentile(boot2['SH+'] - boot2[a], 5)) > -d)
+                                                  for d in (.5, 1., 2.)})
+                             for a in arms if a != 'SH+'},
+               ci95_image2way={a: ci(boot2[a]) for a in arms}, images=len(images))
     if published is not None:
         lo, hi = res['ci95']['SH+']
         res['vs_published'] = 'significantly higher' if lo > published else 'significantly lower' if hi < published else \
