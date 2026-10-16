@@ -5,13 +5,15 @@
 | 现行方法 SH | [x1012/w23_simple_pipeline.py](x1012/w23_simple_pipeline.py)`::simple_head`。依赖 `r5_candidate.py`、`w19_simple_head.py`、`w09_integration_lambda.py`、`lab.py`，都在 `x1012/` |
 | 10-13 之后的实验 | `x1012/w*.py`（按编号）。每个文件的 docstring 写明动机和读法；计划与报告在 [docs/research/x1012_tasks/](../docs/research/x1012_tasks/)，已关闭的在 [archive/x1012_tasks/](../docs/research/archive/x1012_tasks/) |
 | 官方协议评分 | [x1012/w12_official.py](x1012/w12_official.py) |
+| 当前证据复核、ISIC 首轮账目 | [read_sh_evidence.py](read_sh_evidence.py)：Python 标准库，默认核对 W30/W27/W28；`--isic` 只读 P1 的 S 半账本 |
+| 公司 M4 Max 周末离线队列 | [x1012/w71_offline.py](x1012/w71_offline.py)：冻结 SH 的 E2 续跑及 Fundus 因子对照；[命令与验收状态](../docs/research/x1012_tasks/W71_weekend_offline_REPORT.md) |
 | FoRIS、MFU 与 x1013 链（冻结） | [x1013/](x1013/) |
 | 新照片留出（冻结） | [x1012s/photo_holdout.py](x1012s/photo_holdout.py) |
 | 方法库与数据加载 | [../src/ics/](../src/ics/) |
 | 仓库检查 | [check_repository.py](check_repository.py)：防止 GB 级生成物进入仓库 |
 
 **历史代码：**
-- 本目录顶层的 75 个脚本，以及 `x1012/` 中除 `w*.py` 和第一行列出的依赖以外的脚本，是 10-05～10-13 的实验与负结果；
+- 本目录顶层除上表入口及其测试外的脚本，以及 `x1012/` 中除 `w*.py`、`test_*.py` 和第一行列出的依赖以外的脚本，是 10-05～10-13 的实验与负结果；
 - 它们原地保留，因为内部的导入路径和冻结 SHA 依赖当前位置；
 - 它们不是当前入口，结论见 [archive](../docs/research/archive/README.md) 中对应的报告。
 

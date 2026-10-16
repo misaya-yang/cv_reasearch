@@ -1,6 +1,8 @@
 # 服务器确认实验
 
-本目录放在专用服务器（RTX 4080 Super 32GB）上做的确认实验。**2026-10-14 起**，新照片留出和官方协议改在本机周末运行（[W30](../docs/research/x1012_tasks/W30_mac_confirmation_PLAN.md)）；服务器只做 E3（GPU 端到端计时），以及 W30 没跑完的域。
+本目录记录 CUDA 服务器的资产与移植条件。当前 SH 的确认结果见 [W30](../docs/research/x1012_tasks/W30_mac_confirmation_REPORT.md)，公司 M4 Max 的剩余官方任务与 Fundus 对照由 [W71 离线队列](../docs/research/x1012_tasks/W71_weekend_offline_REPORT.md)承接；这里保留 E3（GPU 端到端计时）的计划。
+
+后续最近邻对比和方法研究按 [OVERVIEW](../docs/research/OVERVIEW.md) 与 [W73](../docs/research/x1012_tasks/W73_subproblems_PLAN.md) 接续，服务器用途不限于计时。本文是环境说明，不表示已启动远端作业。
 
 - 实验计划：[EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md)
 - 当前状态：E3 只有计划，代码还没写。写代码时按计划第 6 节的移植说明进行，并先通过 E0 的一致性门槛。
