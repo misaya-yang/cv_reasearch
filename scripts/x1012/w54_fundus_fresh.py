@@ -10,6 +10,7 @@ Plan and readings: docs/research/x1012_tasks/W54_fundus_fresh_PLAN.md (fixed bef
 """
 import gzip, hashlib, json, multiprocessing, subprocess, sys, time
 from concurrent.futures import ProcessPoolExecutor, wait, FIRST_COMPLETED
+from collections import OrderedDict
 from datetime import datetime
 from pathlib import Path
 import numpy as np
@@ -23,6 +24,7 @@ import common as c
 ASSETS = ROOT.parent / 'cv_data'
 OUT = ASSETS / 'a/x1013_W54'
 PY = Path.home() / 'miniconda3/envs/aidemo/bin/python'
+A_HOLDOUT_ENCODER = ASSETS / 'a/x1013_photo_holdout/frozen/encoder.py'   # same frozen TimmDINOv3 text as photo_holdout.predict writes
 AVSEG = ASSETS / 'datasets/ics/Fundus-AVSeg'
 RAR = ASSETS / 'setup/asset_downloads/Fundus_autonomous_20261010/FIVES_v1.rar'
 FIVES = 'FIVES A Fundus Image Dataset for AI-based Vessel Segmentation/train/'
@@ -108,12 +110,72 @@ def prepare():
 
 # ---------------------------------------------------------------- FoRIS / MFU (frozen holdout runner)
 def foris():
+    """photo_holdout.predict with one change in the encoding loop: its 4-entry reference cache can evict the query's
+    features between the lookup and the use when an image is both a reference and a query (every image here), which
+    raised KeyError at A 84/100.  Heads (photo_holdout.save_prediction -> five_masks) and record format are unchanged."""
+    import torch
+    import photo_holdout as ph
+    task = rt = encoder = None                      # the runtime may be built only once per process
     for pool in POOLS:
-        out = OUT / f'foris_{pool}'
+        out, manifest = OUT / f'foris_{pool}', OUT / f'manifest_{pool}.json'
         if (out / 'sealed.json').exists():
             continue
-        subprocess.run(['nice', '-n', '19', str(PY), '-B', str(ROOT / 'scripts/x1012s/photo_holdout.py'), 'predict',
-                        '--out', str(out), '--manifest', str(OUT / f'manifest_{pool}.json')], check=True)
+        rows = ph.freeze(out, manifest)
+        if rt is None:
+            task, rt = ph.runtime()
+            encoder = ph.module('w54_foris_encoder', A_HOLDOUT_ENCODER).TimmDINOv3(str(ph.WEIGHTS)).to('mps').eval().requires_grad_(False)
+        cache, started = OrderedDict(), time.monotonic()
+        with ProcessPoolExecutor(2, mp_context=multiprocessing.get_context('spawn'), initializer=ph.worker_init) as pool_, \
+                torch.inference_mode():
+            pending = set()
+            for n, original in enumerate(sorted(rows, key=lambda b: (b['row']['reference_rgb_hash'], str(b['index'])))):
+                key = str(original['index'])
+                if (out / 'records' / (key + '.json')).exists():
+                    old = read(out / 'records' / (key + '.json'))
+                    assert old['manifest_sha256'] == sha(manifest) and sha(old['prediction_path']) == old['prediction_sha256']
+                    continue
+                began = time.monotonic()
+                b = json.loads(json.dumps(original))
+                reference, _, query = rt.load_inputs(b['row'], ph.ASSETS)
+                inputs = {'reference': rt.host._transform(reference), 'query': rt.host._transform(query)}
+                hashes = {role: task.array_hash(x.numpy()) for role, x in inputs.items()}
+                missing = [role for role in inputs if hashes[role] not in cache]
+                if missing:
+                    maps = encoder.get_intermediate_layers(torch.stack([inputs[r] for r in missing]).to('mps'), n=1, reshape=True)[0]
+                    torch.mps.synchronize()
+                    for r, raw in zip(missing, maps.cpu().permute(0, 2, 3, 1).reshape(len(missing), 4096, 1024).contiguous().unbind(0)):
+                        assert raw.dtype == torch.float32 and torch.isfinite(raw).all()
+                        cache[hashes[r]] = raw
+                features, b['fit'] = {r: cache[hashes[r]] for r in inputs}, {}     # taken before any eviction
+                for h in hashes.values():
+                    cache.move_to_end(h)
+                while len(cache) > 8:
+                    cache.popitem(last=False)
+                for role, h in hashes.items():
+                    entry = out / 'inputs' / (h + '.json')
+                    if not entry.exists():
+                        write(entry, dict(file='in_memory.npz', input_tensor_hash=h,
+                                          storage='FP32 tensor supplied directly; no feature payload written',
+                                          raw_tensor_sha256=task.array_hash(features[role].numpy())))
+                    b['fit']['reference_raw' if role == 'reference' else 'query_raw_identity'] = {
+                        'payload_path': str(entry.parent / 'in_memory.npz'), 'entry_path': str(entry)}
+                pending.add(pool_.submit(ph.save_prediction, out, b, features,
+                                         dict(manifest_sha256=sha(manifest), new_encoded_images=len(missing),
+                                              input_and_encoder_seconds=time.monotonic() - began)))
+                while len(pending) >= 4:
+                    fin, pending = wait(pending, return_when=FIRST_COMPLETED)
+                    for f in fin:
+                        f.result()
+                if n % 20 == 0:
+                    print(json.dumps(dict(arm='foris', pool=pool, n=n, of=len(rows), seconds=round(time.monotonic() - started))), flush=True)
+            for f in pending:
+                f.result()
+        records = [read(out / 'records' / (str(b['index']) + '.json')) for b in rows]
+        assert all(sha(r['prediction_path']) == r['prediction_sha256'] for r in records)
+        write(out / 'sealed.json', dict(state='ALL_FIXED_NATURAL_OUTPUTS_COMPLETE', n=len(rows), manifest_sha256=sha(manifest),
+                                        evaluation_sha256=sha(out / 'evaluation.json'), arms=ph.ARMS, records=records,
+                                        completed_at_utc=datetime.now().isoformat()))
+        print(pool, 'foris sealed', len(records), flush=True)
 
 
 # ---------------------------------------------------------------- SH / SH+ (frozen simple_head, W30 wrapper)

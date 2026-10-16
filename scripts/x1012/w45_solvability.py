@@ -15,8 +15,9 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'scripts/x1013'))
 sys.path.insert(0, str(ROOT / 'scripts/x1012'))
 import common as c
+from diagnostic_metrics import exact_best_iou, classify_diagnostic, DIAGNOSTIC_CLASSES, SCORING_VERSION
 
-OUT = c.task_path('W45')
+OUT = c.task_path('W45_exact')  # W58 repair: retain the original W45 ledger verbatim.
 LAM = 1.0
 _bi, _bj = np.meshgrid(np.arange(64) // 8, np.arange(64) // 8, indexing='ij')
 FOLD = ((_bi + _bj) % 2).ravel().astype(bool)                     # 8x8-token-block checkerboard
@@ -32,12 +33,8 @@ def apply(w, X):
     return np.concatenate([X, np.ones((len(X), 1))], 1) @ w
 
 
-def best_cut(f, gt):
-    best = 0.
-    for t in np.quantile(f, np.linspace(0, .999, 120)):
-        m = f > t
-        best = max(best, (m & gt).sum() / max((m | gt).sum(), 1))
-    return float(best)
+def best_cut(f, gt, valid=None):
+    return exact_best_iou(f, gt, valid)
 
 
 def one(b):
@@ -69,8 +66,14 @@ def one(b):
     r = dict(w31.meta(b), rho=rho, fallback=U is None, gt=int(gt.sum()), qfrac=float(gt.mean()))
     r['SH'] = c.iu(A0, gt, valid)
     PQ, PR = up(pq), up(pr)
-    r['cut_F'] = best_cut(F, gt); r['cut_PQ'] = best_cut(PQ, gt); r['cut_PR'] = best_cut(PR, gt)
+    r['scoring'] = SCORING_VERSION
+    for name, field in (('F', F), ('PQ', PQ), ('PR', PR)):
+        r['cut_' + name] = best_cut(field, gt, valid)
+        r['cut_' + name + '_all'] = r['cut_' + name] if valid.all() else best_cut(field, gt)
     r['PQ'] = c.iu(PQ > .5, gt, valid); r['PR'] = c.iu(PR > .5, gt, valid)
+    for field, natural in (('F', 'SH'), ('PQ', 'PQ'), ('PR', 'PR')):
+        assert r['cut_' + field] + 1e-12 >= r[natural][0] / max(r[natural][1], 1)
+    r['diagnostic'] = classify_diagnostic(r)
     r['seconds'] = round(time.monotonic() - began, 2)
     return r
 
@@ -100,6 +103,8 @@ def produce_all(workers):
 def report():
     import score as sc
     R = [json.loads(l) for l in (OUT / 'episodes.jsonl').read_text().splitlines()]
+    assert len(R) == 1285 and len({r['index'] for r in R}) == 1285
+    assert all(r['scoring'] == SCORING_VERSION for r in R)
     w23 = {r['index']: r for r in map(json.loads, gzip.open(ROOT / 'evidence/research/w23_simple_pipeline_S.jsonl.gz', 'rt'))}
     w27 = {r['index']: r for r in map(json.loads, gzip.open(ROOT / 'evidence/research/w27_sh_single_line_S.jsonl.gz', 'rt'))}
     same = sum(r['SH'][:2] == w23[r['index']]['SH'][:2] for r in R)
@@ -108,15 +113,9 @@ def report():
         r['jsh'] = r['SH+'][0] / max(r['SH+'][1], 1)
     doms = list(c.DOMAINS)
 
-    def classify(r):
-        if r['cut_PQ'] < .5:
-            return 'representation'
-        if r['cut_F'] >= .5:
-            return 'readout'
-        if r['cut_PR'] < .3:
-            return 'transfer'
-        return 'other'
-    L = [f'n {len(R)}  check: SH == W23 SH {same}/{len(R)} (need >= 1280)', '']
+    classify = classify_diagnostic
+    assert same == len(R)
+    L = [f'n {len(R)}  check: SH == W23 SH {same}/{len(R)} (exact)', '']
     for tag, sel in (('catastrophic (SH+ IoU < .3)', [r for r in R if r['jsh'] < .3]),
                      ('non-catastrophic', [r for r in R if r['jsh'] >= .3])):
         L.append(f'## {tag}: n {len(sel)}')
@@ -125,15 +124,15 @@ def report():
             np.mean([r['cut_PQ'] for r in sel]), np.mean([r['PR'][0] / max(r['PR'][1], 1) for r in sel]),
             np.mean([r['PQ'][0] / max(r['PQ'][1], 1) for r in sel])))
         cls = [classify(r) for r in sel]
-        L.append('  classes: ' + '  '.join(f'{k} {cls.count(k) / len(cls):.1%}' for k in ('representation', 'readout', 'transfer', 'other')))
+        L.append('  classes: ' + '  '.join(f'{k} {cls.count(k) / len(cls):.1%}' for k in DIAGNOSTIC_CLASSES))
         for d in doms:
             D = [r for r, k in zip(sel, cls) if r['dataset'] == d]
             if D:
                 kk = [classify(r) for r in D]
-                L.append(f'    {d[:11]:12s} n {len(D):3d}  ' + '  '.join(f'{k[:5]} {kk.count(k) / len(kk):5.1%}' for k in ('representation', 'readout', 'transfer', 'other')))
+                L.append(f'    {d[:11]:12s} n {len(D):3d}  ' + '  '.join(f'{k} {kk.count(k) / len(kk):5.1%}' for k in DIAGNOSTIC_CLASSES))
         if tag.startswith('catastrophic'):
             fb = [k for r, k in zip(sel, cls) if r['fallback']]
-            L.append(f'  of which fallback episodes {len(fb)}: ' + '  '.join(f'{k} {fb.count(k)}' for k in ('representation', 'readout', 'transfer', 'other')))
+            L.append(f'  of which fallback episodes {len(fb)}: ' + '  '.join(f'{k} {fb.count(k)}' for k in DIAGNOSTIC_CLASSES))
         L.append('')
     L.append('## class mIoU (ten-domain mean, natural threshold): SH %.2f  P_R %.2f  P_Q (cross-fitted, uses query GT) %.2f' % tuple(
         np.mean([sc.miou([r for r in R if r['dataset'] == d], a) for d in doms]) for a in ('SH', 'PR', 'PQ')))
@@ -141,8 +140,9 @@ def report():
     text = '\n'.join(L)
     (OUT / 'report.txt').write_text(text + '\n')
     print(text)
-    keys = ('index', 'dataset', 'fold', 'cls', 'photo', 'gt', 'qfrac', 'rho', 'fallback', 'SH', 'PQ', 'PR', 'cut_F', 'cut_PQ', 'cut_PR')
-    with gzip.open(ROOT / 'evidence/research/w45_solvability_S.jsonl.gz', 'wt') as f:
+    keys = ('index', 'dataset', 'fold', 'cls', 'photo', 'gt', 'qfrac', 'rho', 'fallback', 'SH', 'PQ', 'PR', 'cut_F', 'cut_PQ', 'cut_PR',
+            'cut_F_all', 'cut_PQ_all', 'cut_PR_all', 'scoring', 'diagnostic')
+    with gzip.open(ROOT / 'evidence/research/w45_solvability_S_exact.jsonl.gz', 'wt') as f:
         for r in R:
             f.write(json.dumps({k: r[k] for k in keys}) + '\n')
 

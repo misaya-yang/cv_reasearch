@@ -1,0 +1,187 @@
+{
+  "original_S": {
+    "coco": {
+      "n": 150,
+      "reference_mismatch": 0,
+      "query_mismatch": 0,
+      "either": 0,
+      "catastrophic_total": 23,
+      "catastrophic_with_either": 0
+    },
+    "lvis": {
+      "n": 150,
+      "reference_mismatch": 0,
+      "query_mismatch": 0,
+      "either": 0,
+      "catastrophic_total": 60,
+      "catastrophic_with_either": 0
+    },
+    "pascal_part": {
+      "n": 150,
+      "reference_mismatch": 0,
+      "query_mismatch": 0,
+      "either": 0,
+      "catastrophic_total": 22,
+      "catastrophic_with_either": 0
+    },
+    "paco_part": {
+      "n": 150,
+      "reference_mismatch": 0,
+      "query_mismatch": 0,
+      "either": 0,
+      "catastrophic_total": 31,
+      "catastrophic_with_either": 0
+    },
+    "suim": {
+      "n": 150,
+      "reference_mismatch": 4,
+      "query_mismatch": 5,
+      "either": 9,
+      "catastrophic_total": 33,
+      "catastrophic_with_either": 3
+    },
+    "isaid": {
+      "n": 110,
+      "reference_mismatch": 0,
+      "query_mismatch": 0,
+      "either": 0,
+      "catastrophic_total": 22,
+      "catastrophic_with_either": 0
+    },
+    "isic": {
+      "n": 150,
+      "reference_mismatch": 150,
+      "query_mismatch": 150,
+      "either": 150,
+      "catastrophic_total": 20,
+      "catastrophic_with_either": 20
+    },
+    "lung": {
+      "n": 105,
+      "reference_mismatch": 0,
+      "query_mismatch": 0,
+      "either": 0,
+      "catastrophic_total": 0,
+      "catastrophic_with_either": 0
+    },
+    "fundus": {
+      "n": 108,
+      "reference_mismatch": 0,
+      "query_mismatch": 0,
+      "either": 0,
+      "catastrophic_total": 17,
+      "catastrophic_with_either": 0
+    },
+    "deepglobe_road": {
+      "n": 62,
+      "reference_mismatch": 0,
+      "query_mismatch": 0,
+      "either": 0,
+      "catastrophic_total": 33,
+      "catastrophic_with_either": 0
+    }
+  },
+  "W63": {
+    "n_tasks": 126,
+    "reference_mismatch": 0,
+    "query_mismatch": 4,
+    "mismatch_tasks": [
+      {
+        "pair_id": "suim_020",
+        "task": "A",
+        "dataset": "suim",
+        "reference": false,
+        "query": true,
+        "field_oracle_below_half": false
+      },
+      {
+        "pair_id": "suim_020",
+        "task": "B",
+        "dataset": "suim",
+        "reference": false,
+        "query": true,
+        "field_oracle_below_half": false
+      },
+      {
+        "pair_id": "suim_028",
+        "task": "A",
+        "dataset": "suim",
+        "reference": false,
+        "query": true,
+        "field_oracle_below_half": false
+      },
+      {
+        "pair_id": "suim_028",
+        "task": "B",
+        "dataset": "suim",
+        "reference": false,
+        "query": true,
+        "field_oracle_below_half": true
+      }
+    ],
+    "field_failures_with_mismatch": 1
+  },
+  "examples": [
+    {
+      "pair_id": "suim_026",
+      "task": "B",
+      "class_id": "SR",
+      "query_photo": "f_r_1539_",
+      "RGB_hw": [
+        480,
+        640
+      ],
+      "mask_hw": [
+        480,
+        640
+      ],
+      "source_mask": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/datasets/ics/SUIM/masks/SR/f_r_1539_.bmp",
+      "frozen_mask": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fresh_manifests_20261008/dev_s1_remaining/masks/query/3f17fd7541b9219c75e5c59ca1dfaa7c4e1a35aae054ccccb40108226a13c2e0.png",
+      "source_sha256": "87274d83896842f8996332b082445a9de9afa07525c22a17b243e5d4c420dd89",
+      "transfer_inventory_SHA_match": true,
+      "source_and_frozen_pixel_identity": true,
+      "values": {
+        "0": 306012,
+        "255": 1188
+      },
+      "foreground_pixels": 1188,
+      "foreground_fraction": 0.0038671875,
+      "interpretation": "Source-pool label / geometry concern from visual inspection; not a proven conversion bug or corrected annotation"
+    },
+    {
+      "pair_id": "suim_028",
+      "task": "B",
+      "class_id": "RI",
+      "query_photo": "f_r_1070_",
+      "RGB_hw": [
+        375,
+        590
+      ],
+      "mask_hw": [
+        430,
+        590
+      ],
+      "source_mask": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/datasets/ics/SUIM/masks/RI/f_r_1070_.bmp",
+      "frozen_mask": "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fresh_manifests_20261008/dev_s1_remaining/masks/query/8786f64b4361a57cb47476c4e16b30e9e9495a17a8ff883ec542f85b1b7a217f.png",
+      "source_sha256": "704c16b087040fb29969e137444283c3c0bf3eccc30ce1bec7bff426d22f7b6c",
+      "transfer_inventory_SHA_match": true,
+      "source_and_frozen_pixel_identity": true,
+      "values": {
+        "0": 252147,
+        "255": 1553
+      },
+      "foreground_pixels": 1553,
+      "foreground_fraction": 0.006121403232163973,
+      "interpretation": "Source-pool label / geometry concern from visual inspection; not a proven conversion bug or corrected annotation"
+    }
+  ],
+  "changes_to_labels_or_scores": false,
+  "limitations": "Two original color masks and RGBs recovered and ZIP CRC verified; one exact-color-loss case demonstrated. Conversion script and full-pool prevalence are not established.",
+  "upstream_update": {
+    "recovered": true,
+    "evidence": "w63_upstream_label_diagnostic.json",
+    "confirmed_case": "suim_028/B near-standard RI colors missing from exact-color binary GT",
+    "other_case": "suim_026/B original canonical colors match local labels",
+    "benchmark_labels_unchanged": true
+  }
+}
