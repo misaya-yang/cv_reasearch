@@ -1,6 +1,6 @@
 # W58：理论归档复核与仍值得推进的研究方向
 
-2026-10-15。与 [计分修复计划](W58_score_repair_PLAN.md)、[修复结果](W58_score_repair_REPORT.md)配套。此次审查不启动新候选，不干预 W57。历史方案中的执行语句不是本轮授权。
+2026-10-15。与 [计分修复计划](../archive/x1012_tasks/W58_score_repair_PLAN.md)、[修复结果](W58_score_repair_REPORT.md)配套。此次审查不启动新候选，不干预 W57。历史方案中的执行语句不是本轮授权。
 
 ## 1 审查范围与结论
 
@@ -19,18 +19,18 @@
 
 | 主张及出处 | 裁决 | 可保留的内容 |
 |---|---|---|
-| [W45](W45_solvability_PLAN.md) 的查询岭回归是“表示上限”，低分证明这层特征无解 | 撤回。固定 λ、空间划分、线性模型和近似阈值的失败不能量化整个特征的能力；交叉拟合还是多个模型，不是全局最佳线性分类器 | 高分是该诊断规则读出目标的正面见证；低分记为探针未解决 |
+| [W45](../archive/x1012_tasks/W45_solvability_PLAN.md) 的查询岭回归是“表示上限”，低分证明这层特征无解 | 撤回。固定 λ、空间划分、线性模型和近似阈值的失败不能量化整个特征的能力；交叉拟合还是多个模型，不是全局最佳线性分类器 | 高分是该诊断规则读出目标的正面见证；低分记为探针未解决 |
 | 原 98 例中“26 例训练折没有正例” | 26 是没有 y≥.5 的 token，不是没有正监督；原探针使用软覆盖率。W58 核到真正无 y>0 的是 9/98，新未解决组是 7/85 | 分别保留软正例数、硬多数数和前景质量；不能据硬标签计数断言软回归学不到前景 |
-| [W49](W49_token_resolution_PLAN.md) 的真实覆盖率插值给出全网格读出族上限，83.6 为硬上限 | 撤回。真实覆盖率是一个指定场；83.6 还是其固定 .5 阈值成绩。精确阈值也只优化这个场 | 不同网格下该重建的几何损失、好输出的存在性见证 |
+| [W49](../archive/x1012_tasks/W49_token_resolution_PLAN.md) 的真实覆盖率插值给出全网格读出族上限，83.6 为硬上限 | 撤回。真实覆盖率是一个指定场；83.6 还是其固定 .5 阈值成绩。精确阈值也只优化这个场 | 不同网格下该重建的几何损失、好输出的存在性见证 |
 | [TOKEN_READOUT_CEILING](../archive/TOKEN_READOUT_CEILING_20261012.md) 的“排序饱和”“全部在范围”“现有字段不可得” | 有限读出、监督模型或面积估计器的负结果不构成信息论上界；原档已有部分更正，但开头与结论仍过强 | 所试具体规则的完整成绩、oracle 与自然输出的差距 |
-| 同档 §5、[W54](W54_fundus_fresh_PLAN.md)、[W56](W56_contrast_boards_PLAN.md) 的 Fundus 硬 token 上限 24、FoRIS 被该上限约束 | 撤回这个机制证明。`d18_coverage_fill.py:95` 实际计算的是 `up(GT coverage) > .5`，不是最优硬 token 选择；FoRIS `_binarize_response` 先将连续分数双线性上采样再阈值，后面还可接 CRF | 血管上回退路径相对 FoRIS 的实测收益与跨来源复现保留；归因仍需同输入、同读出的干预 |
-| [W46](W46_transfer_PLAN.md) “协方差偏移被否定”“伪相关只占小部分” | 两种对齐和两种正则构造的失败不足以排除原因；旧 oracle 分数还继承计分缺陷 | 这些指定补救的自然成绩、未能可靠改善当前输出 |
-| [W48](W48_reference_specificity_PLAN.md) 自参考成功说明读出不是问题 | 自参考同时改变外观、比例、对应、背景和新颖度，且用了查询答案；不能单独定位证据/读出责任 | 高质量证据下当前机制能输出好结果；自然 true/mis 干预说明参考确有任务作用 |
-| [W51](W51_competition_PLAN.md) 的“污染/外观不符/两边都不像”是四种因果病因 | 操作性分桶不等于病因证明。低于目标 F 的中位数不等于绝对无支持，目标 B 高也不证明某一参考背景造成错误 | 恒等式、像素错误分桶、真/错参考 AUC 描述；按新 W45 分组重报 |
-| [W55](W55_propagation_FP_PLAN.md) “81% 由 minmax 造成” | 限定为所定义传播 FP、U 参与子集的反事实消失比例。`solve_abs` 用未归一化 s 重新计算置信权重，并非固定原权重；原W55未计算改变最终融合后的TP/FN代价；后续W59完整干预三臂均为负 | 指定反事实对该子集的影响。M 参与率高不证明删除 M 会提高总分，非灾难例也同样高 |
-| [W56](W56_contrast_boards_PLAN.md) 控制目标面积与域后 a>0 即参考面积独立因果效应 | 回归仍未固定参考内容、背景、类别等；参考面积与输出相关是证据，因果通道的份额待干预 | 参考质量项的代数来源；面积失配作为描述性分层 |
-| [W52](W52_category_granularity_REPORT.md) 四条件是任何单参考粒度可识别的必要条件，必须由参考参数化结构算子 | 收窄为其层级/切断邻居方案的条件。外观已足以区分部件时，逐点任务读出也能成功；某个特定层级不可表示不能推出信息不存在 | 参考 mask 与相邻非目标关系是可研究的通道；query-only 结构不能从自身增加新的 reference 输入，但能对不同参考证据产生不同、甚至正确的任务输出；W63已提供实例 |
-| [W34 Claude 稿](W34_theory_REPORT_claude.md) F 可测选择器必无益、ρ 统一筛查、1.4px 普遍界、尖温度必二值 | 沿 W34 正式汇总/A1–A9/补充撤回；条件期望不为零、几何相位、软标签反例均已在后续稿解释 | 特定 J/CLS 失败数据；有条件平方误差恒等式；需测量的候选机制 |
+| 同档 §5、[W54](W54_fundus_fresh_PLAN.md)、[W56](../archive/x1012_tasks/W56_contrast_boards_PLAN.md) 的 Fundus 硬 token 上限 24、FoRIS 被该上限约束 | 撤回这个机制证明。`d18_coverage_fill.py:95` 实际计算的是 `up(GT coverage) > .5`，不是最优硬 token 选择；FoRIS `_binarize_response` 先将连续分数双线性上采样再阈值，后面还可接 CRF | 血管上回退路径相对 FoRIS 的实测收益与跨来源复现保留；归因仍需同输入、同读出的干预 |
+| [W46](../archive/x1012_tasks/W46_transfer_PLAN.md) “协方差偏移被否定”“伪相关只占小部分” | 两种对齐和两种正则构造的失败不足以排除原因；旧 oracle 分数还继承计分缺陷 | 这些指定补救的自然成绩、未能可靠改善当前输出 |
+| [W48](../archive/x1012_tasks/W48_reference_specificity_PLAN.md) 自参考成功说明读出不是问题 | 自参考同时改变外观、比例、对应、背景和新颖度，且用了查询答案；不能单独定位证据/读出责任 | 高质量证据下当前机制能输出好结果；自然 true/mis 干预说明参考确有任务作用 |
+| [W51](../archive/x1012_tasks/W51_competition_PLAN.md) 的“污染/外观不符/两边都不像”是四种因果病因 | 操作性分桶不等于病因证明。低于目标 F 的中位数不等于绝对无支持，目标 B 高也不证明某一参考背景造成错误 | 恒等式、像素错误分桶、真/错参考 AUC 描述；按新 W45 分组重报 |
+| [W55](../archive/x1012_tasks/W55_propagation_FP_PLAN.md) “81% 由 minmax 造成” | 限定为所定义传播 FP、U 参与子集的反事实消失比例。`solve_abs` 用未归一化 s 重新计算置信权重，并非固定原权重；原W55未计算改变最终融合后的TP/FN代价；后续W59完整干预三臂均为负 | 指定反事实对该子集的影响。M 参与率高不证明删除 M 会提高总分，非灾难例也同样高 |
+| [W56](../archive/x1012_tasks/W56_contrast_boards_PLAN.md) 控制目标面积与域后 a>0 即参考面积独立因果效应 | 回归仍未固定参考内容、背景、类别等；参考面积与输出相关是证据，因果通道的份额待干预 | 参考质量项的代数来源；面积失配作为描述性分层 |
+| [W52](../archive/x1012_tasks/W52_category_granularity_REPORT.md) 四条件是任何单参考粒度可识别的必要条件，必须由参考参数化结构算子 | 收窄为其层级/切断邻居方案的条件。外观已足以区分部件时，逐点任务读出也能成功；某个特定层级不可表示不能推出信息不存在 | 参考 mask 与相邻非目标关系是可研究的通道；query-only 结构不能从自身增加新的 reference 输入，但能对不同参考证据产生不同、甚至正确的任务输出；W63已提供实例 |
+| [W34 Claude 稿](../archive/x1012_tasks/W34_theory_REPORT_claude.md) F 可测选择器必无益、ρ 统一筛查、1.4px 普遍界、尖温度必二值 | 沿 W34 正式汇总/A1–A9/补充撤回；条件期望不为零、几何相位、软标签反例均已在后续稿解释 | 特定 J/CLS 失败数据；有条件平方误差恒等式；需测量的候选机制 |
 
 W54/W55/W56 属并行会话近期记录，本轮只作带出处的窄更正，不改变其实验或数值。W57 的文件、参数、结果和进程不由本轮改写或评分。
 
@@ -38,7 +38,7 @@ W54/W55/W56 属并行会话近期记录，本轮只作带出处的窄更正，�
 
 ### 3.1 可辨识性：给出反例必须固定观测层和合法任务族
 
-来源：[旧可辨识性审计](../archive/IDENTIFIABILITY_AND_METHOD_CONSTRAINTS_20261012.md)、[W34 A1](W34_A1_identifiability_REPORT.md)、[A2](W34_A2_partition_REPORT.md)。
+来源：[旧可辨识性审计](../archive/IDENTIFIABILITY_AND_METHOD_CONSTRAINTS_20261012.md)、[W34 A1](../archive/x1012_tasks/W34_A1_identifiability_REPORT.md)、[A2](../archive/x1012_tasks/W34_A2_partition_REPORT.md)。
 
 同一允许观测对应不同合法真值，才排除该观测下的统一精确恢复。完整输入、O24、标量场、原型和 hard mask 是不同观测层；一个层上的碰撞不自动传播为所有输入不可解。6200 原生任务的历史协议审计报告完整输入无多答案证书，另有 4 个 LVIS 压缩入口别名；开放语义任务仍可能有歧义，但不能估成当前误差份额。
 
@@ -46,7 +46,7 @@ W54/W55/W56 属并行会话近期记录，本轮只作带出处的窄更正，�
 
 ### 3.2 参考拟合、跨图迁移、目标决策是三个独立缺口
 
-来源：[TASK_TRANSFER_CORE](../archive/TASK_TRANSFER_CORE_20261010.md)、[SOURCE_SPAN](../archive/TASK_TRANSFER_SOURCE_SPAN_20261010.md)、[NULL_RANK](../archive/TASK_NULL_RANK_PROBE_20261010.md)、[PHYSICAL_PRIOR](../archive/TASK_PHYSICAL_PRIOR_20261010.md)、[W39 B](W39_B_structure_REPORT.md)、[W39 总报告 §3](W39_astra_open_questions_REPORT.md)。
+来源：[TASK_TRANSFER_CORE](../archive/TASK_TRANSFER_CORE_20261010.md)、[SOURCE_SPAN](../archive/TASK_TRANSFER_SOURCE_SPAN_20261010.md)、[NULL_RANK](../archive/TASK_NULL_RANK_PROBE_20261010.md)、[PHYSICAL_PRIOR](../archive/TASK_PHYSICAL_PRIOR_20261010.md)、[W39 B](../archive/x1012_tasks/W39_B_structure_REPORT.md)、[W39 总报告 §3](../archive/x1012_tasks/W39_astra_open_questions_REPORT.md)。
 
 旧 source-span 反事实保留有限参考判断却改变查询结果，说明源判据欠约束；它不是同一完整输入多真值的证书。共同 R+Q 拟合高分也可能借查询标签与高维容量，不证明单参考可识别。旧反向核审计发现正确查询标签仍不满足所强加的参考重建要求：**先检查理想正确答案是否满足新约束**，比先写求解器更有排除力。
 
@@ -54,7 +54,7 @@ W39 的 `R_Q(hat h)-R_Q(h*) ≤ 2(ε+κ+δ)` 在给定三个一致误差界时�
 
 ### 3.3 核证据的质量先验与条件分布要分开
 
-来源：[mixture600](../archive/autonomous_20261010/REFERENCE_QUERY_MIXTURE600_RESULTS.md)、[W34 补充 §1](W34_selection_coverage_REPORT.md)、[W34 A7](W34_A7_fusion_REPORT.md)、[W36 §2.2](W36_method_directions_REPORT.md)、[W39 F §2.2](W39_F_novelty_REPORT.md)。
+来源：[mixture600](../archive/autonomous_20261010/REFERENCE_QUERY_MIXTURE600_RESULTS.md)、[W34 补充 §1](../archive/x1012_tasks/W34_selection_coverage_REPORT.md)、[W34 A7](../archive/x1012_tasks/W34_A7_fusion_REPORT.md)、[W36 §2.2](../archive/x1012_tasks/W36_method_directions_REPORT.md)、[W39 F §2.2](../archive/x1012_tasks/W39_F_novelty_REPORT.md)。
 
 对于非空前/背景的同一核与软标签，令 `πr=Σy/N`，则
 
@@ -66,7 +66,7 @@ W39 的 `R_Q(hat h)-R_Q(h*) ≤ 2(ε+κ+δ)` 在给定三个一致误差界时�
 
 ### 3.4 结构容量与选择必须分开，细分本身不降低容量
 
-来源：[W34 A2](W34_A2_partition_REPORT.md)、[A8](W34_A8_spectrum_REPORT.md)、[W39 B](W39_B_structure_REPORT.md)。
+来源：[W34 A2](../archive/x1012_tasks/W34_A2_partition_REPORT.md)、[A8](../archive/x1012_tasks/W34_A8_spectrum_REPORT.md)、[W39 B](../archive/x1012_tasks/W39_B_structure_REPORT.md)。
 
 对固定不相交划分，像素对称差可精确分为格内少数类质量与选择相对多数决策的额外错误质量。更细划分的可选并集包含原划分，并不会降低 oracle 容量；下降来自选择或附加约束。片段数量少、谱间隙大、参考上纯都不能认证查询语义纯度。
 
@@ -74,7 +74,7 @@ W39 的 `R_Q(hat h)-R_Q(h*) ≤ 2(ε+κ+δ)` 在给定三个一致误差界时�
 
 ### 3.5 融合、排序、数量和 IoU 有可执行的精确账本
 
-来源：[W34 A7](W34_A7_fusion_REPORT.md)、[W39 A](W39_A_mechanism_REPORT.md)、[C](W39_C_decision_REPORT.md)、[D](W39_D_coverage_REPORT.md)。
+来源：[W34 A7](../archive/x1012_tasks/W34_A7_fusion_REPORT.md)、[W39 A](../archive/x1012_tasks/W39_A_mechanism_REPORT.md)、[C](../archive/x1012_tasks/W39_C_decision_REPORT.md)、[D](../archive/x1012_tasks/W39_D_coverage_REPORT.md)。
 
 - 固定阈值下逐点凸融合不能改变两线共同正/负区域；这适用于实际输入场与 CRF 前输出，不推广到重标定或 CRF 后。
 - 固定排序选 k 像素，GT 数量为 s、命中 t(k)，对称差是 `|k-s|+2(min(k,s)-t(k))`。给出正确数量不代表排序正确，也未必是 IoU 最优 k。
@@ -83,11 +83,11 @@ W39 的 `R_Q(hat h)-R_Q(h*) ≤ 2(ε+κ+δ)` 在给定三个一致误差界时�
 
 这些公式应直接变成实现不变量和报告字段。W58 已把“精确阈值最优值至少不低于自然值”落实为测试与逐例断言。
 
-后续自主窗口的 [W60 支持量审计](W60_pure_background_REPORT.md#2-机制检验)进一步实测：近纯 token AUC 的正类在 Fundus/Road 中位仅覆盖2.17%/7.56%的真实前景，不能用接近1的 AUC 宣布全像素排序已好。单独 −B 的 AUC也不是密度比整体质量；应同时报告指标选择了哪些 token、覆盖多少 GT，以及完整输出。
+后续自主窗口的 [W60 支持量审计](../archive/x1012_tasks/W60_pure_background_REPORT.md#2-机制检验)进一步实测：近纯 token AUC 的正类在 Fundus/Road 中位仅覆盖2.17%/7.56%的真实前景，不能用接近1的 AUC 宣布全像素排序已好。单独 −B 的 AUC也不是密度比整体质量；应同时报告指标选择了哪些 token、覆盖多少 GT，以及完整输出。
 
 ### 3.6 证书、Bayes、minimax 有用，但不能制造缺失的信息
 
-来源：[W34 A3](W34_A3_bayes_iou_REPORT.md)、[A4](W34_A4_minimax_REPORT.md)、[W39 C](W39_C_decision_REPORT.md)。
+来源：[W34 A3](../archive/x1012_tasks/W34_A3_bayes_iou_REPORT.md)、[A4](../archive/x1012_tasks/W34_A4_minimax_REPORT.md)、[W39 C](../archive/x1012_tasks/W39_C_decision_REPORT.md)。
 
 精确 `E[I/U]`、`E[I]/E[U]` 与多个槽的加权比值不同；边际概率不足以确定一般联合标签的最优 IoU 决策。稳健编辑的正确性依赖真值确实在不确定集合中；若基线 mask 本身仍在其中，通常不可能认证严格改善。
 
@@ -95,7 +95,7 @@ W39 的 `R_Q(hat h)-R_Q(h*) ≤ 2(ε+κ+δ)` 在给定三个一致误差界时�
 
 ### 3.7 内部量与 CLS 的新增信息只相对于已有摘要定义
 
-来源：[W34 A9](W34_A9_cls_REPORT.md)、[W36](W36_method_directions_REPORT.md)、[W39 E](W39_E_native_response_REPORT.md)、[旧任务梯度核](../archive/TASK_TANGENT_KERNEL_20261010.md)、[对应绑定](../archive/TASK_CORRESPONDENCE_BINDING_20261010.md)。
+来源：[W34 A9](../archive/x1012_tasks/W34_A9_cls_REPORT.md)、[W36](../archive/x1012_tasks/W36_method_directions_REPORT.md)、[W39 E](../archive/x1012_tasks/W39_E_native_response_REPORT.md)、[旧任务梯度核](../archive/TASK_TANGENT_KERNEL_20261010.md)、[对应绑定](../archive/TASK_CORRESPONDENCE_BINDING_20261010.md)。
 
 投影头跨裁剪一致不推出原始 CLS 严格不变；小核心偏好还需异质外围或渲染/选择机制。原生 attention 的 value-nullspace 控制可以保持输出而改变候选隔离响应，但不自动对应真实图像，且可能退化。旧梯度核、物理相关与绑定提供具体负结果，未排除全部内部量。
 
@@ -103,7 +103,7 @@ W39 的 `R_Q(hat h)-R_Q(h*) ≤ 2(ε+κ+δ)` 在给定三个一致误差界时�
 
 ### 3.8 统计与贡献合同继续有效
 
-来源：[W34 A5](W34_A5_bootstrap_REPORT.md)、[A6](W34_A6_noninferiority_REPORT.md)、[W39 F](W39_F_novelty_REPORT.md)。
+来源：[W34 A5](../archive/x1012_tasks/W34_A5_bootstrap_REPORT.md)、[A6](../archive/x1012_tasks/W34_A6_noninferiority_REPORT.md)、[W39 F](../archive/x1012_tasks/W39_F_novelty_REPORT.md)。
 
 固定清单描述值、新查询风险、随机参考与查询的共同泛化不同。照片复用及跨角色依赖需要匹配估计目标，不能把 episode 数当独立照片数。“未显著更差”不是非劣效；十域总体平均优势不是逐域优势。W58 的分类比例是原 S 开发池的描述，不加独立确认标签。
 

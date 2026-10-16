@@ -30,7 +30,7 @@
 |IND0 / INDN|IND0对c做K64区域均值；INDN另用新颖度调制|新颖度抑制误报也可能抹掉陌生真目标|
 |max-J / VP_thin09|标签无关J选择调制；VP借用投票/先验，固定ρ>.9时退回T|是完整固定候选，有依赖、系数和失败边界，不是已成功基座|
 
-构造原文：[RCG/MEAN/fine/残差](parallel_signal_20261010/03_graph_readout/REPORT.md)、[B/G/R0/C/N/K与具体反例](FIVE_DATASET_CASE_MECHANISMS_20261011.md)、[S阶段](STRONG_STAGE600_RESULTS_20261011.md)、[IND计划](INDEPENDENT_BASE_PLAN_20261012.md)、[C1冻结](../x1012_tasks/C1-freeze.md)。同名臂跨批次不一定同处理链，引用时保留队列和frame。
+构造原文：[RCG/MEAN/fine/残差](parallel_signal_20261010/03_graph_readout/REPORT.md)、[B/G/R0/C/N/K与具体反例](FIVE_DATASET_CASE_MECHANISMS_20261011.md)、[S阶段](STRONG_STAGE600_RESULTS_20261011.md)、[IND计划](INDEPENDENT_BASE_PLAN_20261012.md)、[C1冻结](x1012_tasks/C1-freeze.md)。同名臂跨批次不一定同处理链，引用时保留队列和frame。
 
 ## 3. 几天研究的主链，而不是启动日志
 

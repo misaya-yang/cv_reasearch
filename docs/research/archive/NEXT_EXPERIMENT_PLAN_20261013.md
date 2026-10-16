@@ -4,7 +4,7 @@
 
 ## 1 起点（已测，不必重做）
 
-依据：[W01/W02](../x1012_tasks/W01_W02.md)。候选 = 冻结的 R1 VP_UN，调用 `scripts/x1012/r5_candidate.py::infer`（不含像素几何），读出为 min-max>.5，参考 ρ>.9 时回退原 T。它不读 FoRIS 输出，借用投票 V 和种子先验 P 两步，不带 CRF。
+依据：[W01/W02](x1012_tasks/W01_W02.md)。候选 = 冻结的 R1 VP_UN，调用 `scripts/x1012/r5_candidate.py::infer`（不含像素几何），读出为 min-max>.5，参考 ρ>.9 时回退原 T。它不读 FoRIS 输出，借用投票 V 和种子先验 P 两步，不带 CRF。
 
 在 13,613 个带完整 FoRIS 掩码的缓存配对上（候选 − FoRIS，class mIoU，pp）：COCO −0.89、LVIS +1.24、PASCAL +0.96、PACO +3.18、SUIM +0.02、iSAID +2.17、ISIC −1.12、Lung +2.08、Fundus +15.18、DeepGlobe +0.60。
 

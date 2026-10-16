@@ -1,0 +1,206 @@
+{
+  "status": "PASS",
+  "scope": "Synthetic algebra only; no real-image efficacy evidence",
+  "source_sha256": "ec1a6321a276323645d984fa3f35a11e14f9300efaaa23d42cf1b394b1628daa",
+  "real_images": 0,
+  "encoder_calls": 0,
+  "real_query_GT_reads": 0,
+  "model_parameter_updates": 0,
+  "beta": 4.0,
+  "fixture_reference_radius": 1,
+  "identities": {
+    "label_outer_product_error": 1.1102230246251565e-16,
+    "separable_filter_error": 2.220446049250313e-16,
+    "zero_strength_bit_identity": true,
+    "maximum_row_mass_error": 1.7763568394002505e-15,
+    "uniform_kernel_error": 0.0
+  },
+  "fast_operator_vs_independent_dense": [
+    {
+      "query_hw": [
+        1,
+        4
+      ],
+      "reference_hw": [
+        1,
+        4
+      ],
+      "radius": 1,
+      "maximum_error": 4.85722573273506e-17
+    },
+    {
+      "query_hw": [
+        3,
+        4
+      ],
+      "reference_hw": [
+        4,
+        5
+      ],
+      "radius": 2,
+      "maximum_error": 1.457167719820518e-16
+    },
+    {
+      "query_hw": [
+        1,
+        1
+      ],
+      "reference_hw": [
+        3,
+        2
+      ],
+      "radius": 1,
+      "maximum_error": 0.0
+    },
+    {
+      "query_hw": [
+        2,
+        2
+      ],
+      "reference_hw": [
+        3,
+        3
+      ],
+      "radius": 9,
+      "maximum_error": 0.0
+    }
+  ],
+  "positive_witness": {
+    "reference_labels": [
+      1.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    "kernel": [
+      [
+        9.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        5.0,
+        5.0,
+        1.0
+      ],
+      [
+        1.0,
+        5.0,
+        5.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        9.0
+      ]
+    ],
+    "before": [
+      0.8333333333333334,
+      0.5,
+      0.5,
+      0.16666666666666666
+    ],
+    "after": [
+      0.7878636384441102,
+      0.791391472673955,
+      0.20860852732604493,
+      0.21213636155588977
+    ],
+    "message": [
+      [
+        -0.08333333333333334,
+        0.08333333333333334,
+        0.08333333333333334,
+        -0.08333333333333334
+      ],
+      [
+        0.16666666666666669,
+        0.16666666666666669,
+        -0.16666666666666669,
+        -0.16666666666666669
+      ],
+      [
+        -0.16666666666666669,
+        -0.16666666666666669,
+        0.16666666666666669,
+        0.16666666666666669
+      ],
+      [
+        -0.08333333333333334,
+        0.08333333333333334,
+        0.08333333333333334,
+        -0.08333333333333334
+      ]
+    ]
+  },
+  "relation_permutation_control": {
+    "permutation": [
+      1,
+      0,
+      3,
+      2
+    ],
+    "after": [
+      0.7878636384441102,
+      0.7506538176015726,
+      0.24934618239842735,
+      0.21213636155588977
+    ],
+    "original_unary_and_kernel_unchanged": true,
+    "relation_spectrum_unchanged": true
+  },
+  "counterexample": {
+    "wrong_anchor_kernel": [
+      [
+        1.0,
+        1.0,
+        1.0,
+        9.0
+      ],
+      [
+        1.0,
+        5.0,
+        5.0,
+        1.0
+      ],
+      [
+        1.0,
+        5.0,
+        5.0,
+        1.0
+      ],
+      [
+        9.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "after": [
+      0.21213636155588977,
+      0.20860852732604493,
+      0.791391472673955,
+      0.7878636384441102
+    ],
+    "conclusion": "Incorrect but confident context can reverse both middle decisions"
+  },
+  "stronger_edit_capacity": {
+    "before": 0.8999992000015999,
+    "after": 0.0571754240440425,
+    "conclusion": "Can overturn high membership; correctness is unverified"
+  },
+  "no_column_mass_constraint": {
+    "reference_share": 0.5,
+    "mean_output_share": 0.9997054574206494
+  },
+  "old_bounded_message_rule": {
+    "maximum_log_odds_change": 1.0,
+    "unflippable_foreground_above": 0.7310585786300049,
+    "unflippable_background_below": 0.2689414213699951,
+    "prior_09_minimum_posterior": 0.7680306833159262
+  }
+}

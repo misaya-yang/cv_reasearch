@@ -645,6 +645,52 @@ def write_text_report(R):
     print('\n'.join(L))
 
 
+def explore():
+    """POST HOC, outside the preregistration (added after reading report.txt; no threshold or cue was changed).
+    X1 within GT-size bins: rho_r and its partial on log natural area (are the GT-bin relations inherited?)
+    X2 can the cues tell which episodes need a move: AUC of |x_r| for top-20% membership
+    X3 value of a direction-blind move of +-d octaves, and of each cue applied only on the GT top 20%
+    X4 Road (n=16) point estimates"""
+    D = load_table()
+    n = len(D['dom'])
+    hr = D['oracle'] - D['natural']
+    top = np.zeros(n, bool)
+    top[np.argsort(-hr, kind='stable')[:int(round(.2 * n))]] = True
+    yr = np.log2((D['k_star'] + 1) / (D['k_nat'] + 1))
+    lognat = np.log2(np.maximum(D['natf'], 2 ** -20))
+    xr = {k: (lognat if k == 'nat_area' else np.log2((D['kc'][k] + 1) / (D['k_nat'] + 1))) for k in CUES}
+    L = ['POST HOC (not preregistered)', '\n## X1 rho_r / partial on log natural area, within GT-size bins']
+    L.append(f"{'cue':12s}" + ''.join(f'{b:>14s}' for b in BIN_NAMES))
+    for k in CUES:
+        cells = []
+        for lo, hi in zip(BINS[:-1], BINS[1:]):
+            m = (D['gt_frac'] >= lo) & (D['gt_frac'] < hi)
+            pr = partial_spearman(xr[k][m], yr[m], lognat[m]) if k != 'nat_area' else float('nan')
+            cells.append(f"{spearman(xr[k][m], yr[m]):+7.2f}/{pr:+5.2f}")
+        L.append(f'{k:12s}' + ''.join(cells))
+    L.append('\n## X2 does the size of the suggested move identify the top-20% episodes?  AUC(|x_r| -> top20), Spearman(|x_r|, headroom)')
+    for k in CUES:
+        if k != 'nat_area':
+            L.append(f"{k:12s} AUC {auc(np.abs(xr[k]), top):.2f}   rho {spearman(np.abs(xr[k]), hr):+.2f}   median |x_r| top20 {np.median(np.abs(xr[k][top])):.2f} rest {np.median(np.abs(xr[k][~top])):.2f}")
+    L.append(f"{'|y_r| (GT)':12s} median top20 {np.median(np.abs(yr[top])):.2f} rest {np.median(np.abs(yr[~top])):.2f}")
+    L.append('\n## X3a direction-blind move: mean IoU change of .5*(IoU(+d) + IoU(-d)) - natural, d in octaves')
+    for d in (.1, .25, .5, 1., 1.5):
+        j1, j2 = int(np.argmin(np.abs(RGRID - d))), int(np.argmin(np.abs(RGRID + d)))
+        sym = .5 * (D['curve'][:, j1] + D['curve'][:, j2]) - D['natural']
+        L.append(f'd={d:4.2f}  top20 {sym[top].mean():+6.2f}  rest {sym[~top].mean():+6.2f}  all {sym.mean():+6.2f}')
+    L.append('\n## X3b each cue applied only on the GT top 20% (natural elsewhere): mean IoU change over all 1,970')
+    for k in CUES:
+        if k != 'nat_area':
+            L.append(f"{k:12s} {np.where(top, D['iouc'][k] - D['natural'], 0).mean():+6.2f}")
+    m = D['dom'] == 'deepglobe_road'
+    up = D['k_star'] > D['k_nat']
+    L.append(f"\n## X4 Road n={int(m.sum())}: rho_r, AUC, delta (point only)")
+    for k in CUES:
+        L.append(f"{k:12s} {spearman(xr[k][m], yr[m]):+6.2f} {auc(xr[k][m], up[m]) if min(up[m].sum(), (~up[m]).sum()) >= 10 else float('nan'):6.2f} {np.mean(D['iouc'][k][m] - D['natural'][m]):+7.2f}")
+    (OUT / 'exploratory.txt').write_text('\n'.join(L) + '\n')
+    print('\n'.join(L))
+
+
 if __name__ == '__main__':
     phase = sys.argv[1]
     if phase == 'cues':
@@ -653,3 +699,5 @@ if __name__ == '__main__':
         run_truth()
     elif phase == 'report':
         report()
+    elif phase == 'explore':
+        explore()

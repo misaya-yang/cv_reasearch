@@ -1,0 +1,676 @@
+{
+  "scope": "Existing sealed predictions and counts only; descriptive reanalysis, no new evaluation run",
+  "cohorts": {
+    "FIVES_official": {
+      "n": 200,
+      "query_photos": 120,
+      "arms": {
+        "SH": {
+          "n": 200,
+          "counts": {
+            "TP": 6912613,
+            "FP": 5143362,
+            "FN": 8143128,
+            "GT": 15055741,
+            "predicted": 12055975,
+            "I": 6912613,
+            "U": 20199103
+          },
+          "pooled_IoU": 34.2223761124442,
+          "precision": 57.33765207708211,
+          "recall": 45.91346915439101,
+          "FP_per_GT": 0.34162131242826244,
+          "FN_per_GT": 0.5408653084560899,
+          "predicted_per_GT": 0.8007560039721725
+        },
+        "FoRIS": {
+          "n": 200,
+          "counts": {
+            "TP": 10777413,
+            "FP": 41291268,
+            "FN": 4278328,
+            "GT": 15055741,
+            "predicted": 52068681,
+            "I": 10777413,
+            "U": 56347009
+          },
+          "pooled_IoU": 19.126859067177815,
+          "precision": 20.698455948980154,
+          "recall": 71.58341127148773,
+          "FP_per_GT": 2.742559665445892,
+          "FN_per_GT": 0.28416588728512265,
+          "predicted_per_GT": 3.458393778160769
+        }
+      },
+      "SH_minus_FoRIS": {
+        "IoU_pp": 15.095517045266387,
+        "precision_pp": 36.63919612810196,
+        "recall_pp": -25.669942117096724,
+        "FP_reduction_percent": 87.54370536647119,
+        "fewer_FP_tasks": 200,
+        "fewer_TP_tasks": 196,
+        "both_fewer_FP_and_TP": 196,
+        "IoU_wins": 197
+      }
+    },
+    "Fundus_AVSeg": {
+      "n": 100,
+      "query_photos": 100,
+      "arms": {
+        "SH": {
+          "n": 100,
+          "counts": {
+            "TP": 4105500,
+            "FP": 2838572,
+            "FN": 5455678,
+            "GT": 9561178,
+            "predicted": 6944072,
+            "I": 4105500,
+            "U": 12399750
+          },
+          "pooled_IoU": 33.10953849876005,
+          "precision": 59.122370850993484,
+          "recall": 42.939269617195706,
+          "FP_per_GT": 0.29688517460923747,
+          "FN_per_GT": 0.5706073038280429,
+          "predicted_per_GT": 0.7262778707811945
+        },
+        "FoRIS": {
+          "n": 100,
+          "counts": {
+            "TP": 6496879,
+            "FP": 19445850,
+            "FN": 3064299,
+            "GT": 9561178,
+            "predicted": 25942729,
+            "I": 6496879,
+            "U": 29007028
+          },
+          "pooled_IoU": 22.39760309122327,
+          "precision": 25.043159491817534,
+          "recall": 67.9506123617822,
+          "FP_per_GT": 2.033834115419669,
+          "FN_per_GT": 0.320493876382178,
+          "predicted_per_GT": 2.7133402390374908
+        }
+      },
+      "SH_minus_FoRIS": {
+        "IoU_pp": 10.711935407536782,
+        "precision_pp": 34.07921135917595,
+        "recall_pp": -25.0113427445865,
+        "FP_reduction_percent": 85.40268489163498,
+        "fewer_FP_tasks": 99,
+        "fewer_TP_tasks": 99,
+        "both_fewer_FP_and_TP": 98,
+        "IoU_wins": 97
+      }
+    },
+    "FIVES_train": {
+      "n": 200,
+      "query_photos": 200,
+      "arms": {
+        "SH": {
+          "n": 200,
+          "counts": {
+            "TP": 7175115,
+            "FP": 4892935,
+            "FN": 8559916,
+            "GT": 15735031,
+            "predicted": 12068050,
+            "I": 7175115,
+            "U": 20627966
+          },
+          "pooled_IoU": 34.783434294976054,
+          "precision": 59.45546297869167,
+          "recall": 45.59962417614557,
+          "FP_per_GT": 0.31095807818872423,
+          "FN_per_GT": 0.5440037582385443,
+          "predicted_per_GT": 0.7669543199501799
+        },
+        "FoRIS": {
+          "n": 200,
+          "counts": {
+            "TP": 11409328,
+            "FP": 44437245,
+            "FN": 4325703,
+            "GT": 15735031,
+            "predicted": 55846573,
+            "I": 11409328,
+            "U": 60172276
+          },
+          "pooled_IoU": 18.961104279984358,
+          "precision": 20.429772834941904,
+          "recall": 72.50909133893667,
+          "FP_per_GT": 2.8240964380686635,
+          "FN_per_GT": 0.2749090866106333,
+          "predicted_per_GT": 3.54918735145803
+        }
+      },
+      "SH_minus_FoRIS": {
+        "IoU_pp": 15.822330014991696,
+        "precision_pp": 39.02569014374977,
+        "recall_pp": -26.909467162791103,
+        "FP_reduction_percent": 88.98911262388116,
+        "fewer_FP_tasks": 200,
+        "fewer_TP_tasks": 197,
+        "both_fewer_FP_and_TP": 197,
+        "IoU_wins": 194
+      }
+    }
+  },
+  "matched_layers": {
+    "19": {
+      "n": 50,
+      "query_photos": 47,
+      "arms": {
+        "SH": {
+          "n": 50,
+          "counts": {
+            "TP": 1977450,
+            "FP": 1545054,
+            "FN": 1672868,
+            "GT": 3650318,
+            "predicted": 3522504,
+            "I": 1977450,
+            "U": 5195372
+          },
+          "pooled_IoU": 38.06175958141207,
+          "precision": 56.13762255486438,
+          "recall": 54.17199268666456,
+          "FP_per_GT": 0.42326558946371245,
+          "FN_per_GT": 0.4582800731333544,
+          "predicted_per_GT": 0.9649855163303581
+        },
+        "FoRIS": {
+          "n": 50,
+          "counts": {
+            "TP": 1039853,
+            "FP": 459526,
+            "FN": 2610465,
+            "GT": 3650318,
+            "predicted": 1499379,
+            "I": 1039853,
+            "U": 4109844
+          },
+          "pooled_IoU": 25.301519960368324,
+          "precision": 69.35224516283074,
+          "recall": 28.48664143781446,
+          "FP_per_GT": 0.12588656659501993,
+          "FN_per_GT": 0.7151335856218554,
+          "predicted_per_GT": 0.41075298097316454
+        }
+      },
+      "SH_minus_FoRIS": {
+        "IoU_pp": 12.760239621043745,
+        "precision_pp": -13.214622607966362,
+        "recall_pp": 25.6853512488501,
+        "FP_reduction_percent": -236.22776513189677,
+        "fewer_FP_tasks": 3,
+        "fewer_TP_tasks": 2,
+        "both_fewer_FP_and_TP": 2,
+        "IoU_wins": 48
+      }
+    },
+    "20": {
+      "n": 50,
+      "query_photos": 47,
+      "arms": {
+        "SH": {
+          "n": 50,
+          "counts": {
+            "TP": 1970781,
+            "FP": 1545892,
+            "FN": 1679537,
+            "GT": 3650318,
+            "predicted": 3516673,
+            "I": 1970781,
+            "U": 5196210
+          },
+          "pooled_IoU": 37.927277765910155,
+          "precision": 56.04106494974085,
+          "recall": 53.989296275009465,
+          "FP_per_GT": 0.4234951585039988,
+          "FN_per_GT": 0.46010703724990537,
+          "predicted_per_GT": 0.9633881212540935
+        },
+        "FoRIS": {
+          "n": 50,
+          "counts": {
+            "TP": 943246,
+            "FP": 406982,
+            "FN": 2707072,
+            "GT": 3650318,
+            "predicted": 1350228,
+            "I": 943246,
+            "U": 4057300
+          },
+          "pooled_IoU": 23.248120671382445,
+          "precision": 69.85827578749662,
+          "recall": 25.84010488949182,
+          "FP_per_GT": 0.111492204240836,
+          "FN_per_GT": 0.7415989511050818,
+          "predicted_per_GT": 0.3698932531357542
+        }
+      },
+      "SH_minus_FoRIS": {
+        "IoU_pp": 14.67915709452771,
+        "precision_pp": -13.817210837755773,
+        "recall_pp": 28.149191385517646,
+        "FP_reduction_percent": -279.8428431724253,
+        "fewer_FP_tasks": 4,
+        "fewer_TP_tasks": 3,
+        "both_fewer_FP_and_TP": 3,
+        "IoU_wins": 47
+      }
+    },
+    "23": {
+      "n": 50,
+      "query_photos": 47,
+      "arms": {
+        "SH": {
+          "n": 50,
+          "counts": {
+            "TP": 1660176,
+            "FP": 1184869,
+            "FN": 1990142,
+            "GT": 3650318,
+            "predicted": 2845045,
+            "I": 1660176,
+            "U": 4835187
+          },
+          "pooled_IoU": 34.33530078567799,
+          "precision": 58.353242215852475,
+          "recall": 45.480311578333726,
+          "FP_per_GT": 0.3245933641945715,
+          "FN_per_GT": 0.5451968842166628,
+          "predicted_per_GT": 0.7793964799779087
+        },
+        "FoRIS": {
+          "n": 50,
+          "counts": {
+            "TP": 2591375,
+            "FP": 10173385,
+            "FN": 1058943,
+            "GT": 3650318,
+            "predicted": 12764760,
+            "I": 2591375,
+            "U": 13823703
+          },
+          "pooled_IoU": 18.745881620865262,
+          "precision": 20.301008401254705,
+          "recall": 70.99039042625876,
+          "FP_per_GT": 2.7869859557441297,
+          "FN_per_GT": 0.29009609573741246,
+          "predicted_per_GT": 3.4968898600067173
+        }
+      },
+      "SH_minus_FoRIS": {
+        "IoU_pp": 15.589419164812725,
+        "precision_pp": 38.05223381459777,
+        "recall_pp": -25.51007884792503,
+        "FP_reduction_percent": 88.3532472230236,
+        "fewer_FP_tasks": 50,
+        "fewer_TP_tasks": 49,
+        "both_fewer_FP_and_TP": 49,
+        "IoU_wins": 50
+      }
+    }
+  },
+  "matched_layer_note": "50 existing development pairs / 47 query photos. SH here is the shared T fallback. Input and metric 1024; 2048 input never run.",
+  "old_single_field_interventions": {
+    "n": 150,
+    "query_photos": 101,
+    "arms": {
+      "FoRIS": {
+        "n": 150,
+        "counts": {
+          "TP": 8096888,
+          "FP": 31324965,
+          "FN": 3167445,
+          "GT": 11264333,
+          "predicted": 39421853,
+          "I": 8096888,
+          "U": 42589298
+        },
+        "pooled_IoU": 19.011555438176043,
+        "precision": 20.53908526319146,
+        "recall": 71.88075849675253,
+        "FP_per_GT": 2.780898345246008,
+        "FN_per_GT": 0.2811924150324746,
+        "predicted_per_GT": 3.4997059302135334
+      },
+      "MEAN": {
+        "n": 150,
+        "counts": {
+          "TP": 8293472,
+          "FP": 36084978,
+          "FN": 2970861,
+          "GT": 11264333,
+          "predicted": 44378450,
+          "I": 8293472,
+          "U": 47349311
+        },
+        "pooled_IoU": 17.515507247824576,
+        "precision": 18.688061435223627,
+        "recall": 73.62594838060984,
+        "FP_per_GT": 3.203472233997344,
+        "FN_per_GT": 0.2637405161939016,
+        "predicted_per_GT": 3.939731717803442
+      },
+      "T": {
+        "n": 150,
+        "counts": {
+          "TP": 5139471,
+          "FP": 3828556,
+          "FN": 6124862,
+          "GT": 11264333,
+          "predicted": 8968027,
+          "I": 5139471,
+          "U": 15092889
+        },
+        "pooled_IoU": 34.05226792564366,
+        "precision": 57.30882612195525,
+        "recall": 45.62605704217018,
+        "FP_per_GT": 0.33988306276101743,
+        "FN_per_GT": 0.5437394295782981,
+        "predicted_per_GT": 0.7961436331827193
+      },
+      "IND0": {
+        "n": 150,
+        "counts": {
+          "TP": 5325019,
+          "FP": 7649100,
+          "FN": 5939314,
+          "GT": 11264333,
+          "predicted": 12974119,
+          "I": 5325019,
+          "U": 18913433
+        },
+        "pooled_IoU": 28.154693016333947,
+        "precision": 41.043395701858444,
+        "recall": 47.27327397014985,
+        "FP_per_GT": 0.67905485393587,
+        "FN_per_GT": 0.5272672602985015,
+        "predicted_per_GT": 1.1517875936373685
+      },
+      "raw_G0": {
+        "n": 150,
+        "counts": {
+          "TP": 5138272,
+          "FP": 6059239,
+          "FN": 6126061,
+          "GT": 11264333,
+          "predicted": 11197511,
+          "I": 5138272,
+          "U": 17323572
+        },
+        "pooled_IoU": 29.6605803930044,
+        "precision": 45.887626276946726,
+        "recall": 45.615412825597396,
+        "FP_per_GT": 0.537913696265904,
+        "FN_per_GT": 0.543845871744026,
+        "predicted_per_GT": 0.994067824521878
+      },
+      "raw_BG": {
+        "n": 150,
+        "counts": {
+          "TP": 3564440,
+          "FP": 3843133,
+          "FN": 7699893,
+          "GT": 11264333,
+          "predicted": 7407573,
+          "I": 3564440,
+          "U": 15107466
+        },
+        "pooled_IoU": 23.593897216118176,
+        "precision": 48.11886430278851,
+        "recall": 31.64359576372609,
+        "FP_per_GT": 0.3411771473730402,
+        "FN_per_GT": 0.683564042362739,
+        "predicted_per_GT": 0.6576131050103011
+      },
+      "raw_UN": {
+        "n": 150,
+        "counts": {
+          "TP": 4915418,
+          "FP": 5833570,
+          "FN": 6348915,
+          "GT": 11264333,
+          "predicted": 10748988,
+          "I": 4915418,
+          "U": 17097903
+        },
+        "pooled_IoU": 28.748659996491966,
+        "precision": 45.729123523070264,
+        "recall": 43.63700895561237,
+        "FP_per_GT": 0.5178797537324225,
+        "FN_per_GT": 0.5636299104438762,
+        "predicted_per_GT": 0.9542498432885462
+      },
+      "raw_PERM": {
+        "n": 150,
+        "counts": {
+          "TP": 4994185,
+          "FP": 5683800,
+          "FN": 6270148,
+          "GT": 11264333,
+          "predicted": 10677985,
+          "I": 4994185,
+          "U": 16948133
+        },
+        "pooled_IoU": 29.467464056365383,
+        "precision": 46.770856111897515,
+        "recall": 44.336269178121775,
+        "FP_per_GT": 0.5045838044738201,
+        "FN_per_GT": 0.5566373082187822,
+        "predicted_per_GT": 0.9479464962550379
+      }
+    }
+  },
+  "old_single_field_note": "Read actual source before interpreting IND0/graph as causal interventions; these are not FoRIS-internal ablations.",
+  "existing_threshold_oracle": {
+    "n": 108,
+    "query_photos": 60,
+    "current_SH_integer_identity": 108,
+    "all_fallback": true,
+    "archived_field_dtypes": {
+      "float32": 108
+    },
+    "episode_mean_IoU": {
+      "foris": 19.616934256906276,
+      "foris_noCRF": 19.726452854855395,
+      "T": 33.427879770662784,
+      "oracle_foris": 29.49563455300563,
+      "oracle_candidate": 35.605383588046124
+    },
+    "pooled_IoU": {
+      "foris": 19.014481578616785,
+      "foris_noCRF": 19.35881028485914,
+      "T": 34.36908965924756,
+      "oracle_foris": 29.91083872134077,
+      "oracle_candidate": 36.34316985092053
+    },
+    "natural_SH_exceeds_FoRIS_oracle": 98,
+    "limitations": "Cached score field, bilinear 1024 readout, per-episode strict threshold oracle before CRF. Not a pooled-IoU upper bound, full PR dominance, or bound over all methods/layers/settings."
+  },
+  "execution": {
+    "new_predictions": 0,
+    "new_encoder_calls": 0,
+    "feature_reads": 0,
+    "query_GT_file_reads": 0,
+    "model_parameter_updates": 0,
+    "existing_layer_prediction_files": 50,
+    "mps": 0
+  },
+  "sources_sha256": {
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/research/w30_E2_iu.jsonl.gz": "fbffcea5000e12cae7a1af610ef8b154069438df248713a69158727f089fd886",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1013_official/scores/fundus.jsonl.gz": "0af8f759cf391622b346ab794c413340d1d38c76ad06b86ac0a19abc2a239491",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/research/w54_fundus_fresh.jsonl.gz": "c74ecb1f0d5c7b10fcc3db3f95d9d6075551eb8d87f205bb868d55f8336dc586",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/report.json": "3bedfd9d1d5511f088703fd4c768ca3f94a6c775f1354180b8607c388c0f2525",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions_complete.json": "384b66943a6e803fe5d73814b0c5dcab84c2318284215f3a90da30c68b1ededb",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_90ba019f121dcd16f728.npz": "6d0971625be27327790102689fe6c37435a19d1f6a679c1e8e5e18f31747315c",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_71aba66fe1d43952e27e.npz": "da6f88be184a059ab7e9a7bed053e1f6e0436b40eba3974c81d8fb5c262acf2b",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_194fd2c640ce44c77795.npz": "1712498787e2ea9c3057e9c06aa4f8ba27ef4c8f7a53a8dc80fa91baa19393f7",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_38b38611cde963682e8f.npz": "bb586843e35b2d3035dcc83285ada76d2389a98fb21a79787f8209a8be23c167",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_d0270b2a5e3bd5715d4d.npz": "88bed48a4993f0fd976e6a2f2ca8933e71c194a94d7e00eb3eb7e48ebc2111a3",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_aca6888e28e3a759b092.npz": "9071888869b2649191ddf1ad32bb3069eb3f91e5a1561f583ed64589718156ff",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_45e0b4bba3ce880cf66f.npz": "450ecf0680bdb51e9821c08ed97903a8ccc9b3d59561bcec645f300b8820b78e",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_930e36441e00535bd054.npz": "83568b8db49a3f5856fd1d24c8a63a63637a97ecbf3f1bf5708c78681d46538f",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_45d4f2d868fc2fc63186.npz": "fe907e728490b66cb75cb2cfaa1b049f741d6b5515de69932856d36ac60611ff",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_71093e88d738d2a26078.npz": "c16b44dfc89d928d824b29576cc7a670578d0ebe6d2aa788d2987049533ad5c3",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_f6f591d415dca67acc17.npz": "fca146f31cf1d53ed8f4ee19fe82366e9bdd4d6b0bbc6d4387f27414cdd4e160",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_ee5cde99c5fbf087e921.npz": "f789d719fc02565dc858ea420da1b79680b60fd8df8d36e6c76954060dda8ea0",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_7c2d8b462fb11bab5421.npz": "fc19f15bd81273468670656bf74d9a74ec552de8ec3b8a6cef55c37ca5c54521",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_3de5cb8608b5012ac149.npz": "5a873eb95f44a608c85522fe393fa01458937e03f1af5d2dc930ef5e25b841f1",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_7780ea12be734acbd536.npz": "0d4e62fce4b3099caf25891e1d2712e1cb75c9db364fab0733b76faed84909ab",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_86e03d771af57e2dc3dc.npz": "2148f535bbf8c8a7e7f062de4d2bee6abd72ce168bdec97c85a798d7e6b3961e",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_36e35ce39f15c0214714.npz": "aa5ba2cca0bbbb57ba677e1382dc79153cb17256a7c5a66860d9d34957146fe2",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_8abfcdf7d0fbeb662259.npz": "69876bb0478ad72d1029c3bb77309a562791d9edf567d4001c6b2a8d7e15420e",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_859583d9c77feca9b417.npz": "fbb7085a7568e4e20e8814afbe246110c6ddbe074adc937c6db288624141df0c",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_06a80cb7e4d739305362.npz": "5aa9fa93b2e593ec693d77fe05c09ced5cfb71b40be970bdf8de54d974a7a885",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_736b7f59647f127aa615.npz": "0c51a7123b18c0750e1321ee46ed1a386a24ab6e445ef3468cccd77777c3e8b2",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_fc944f6ddf9c7d5d9ccd.npz": "e0e6575b1004c02d1235c4deb05c9adc85721c7f9d5ddca62c331de7c7773871",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_cba414c237491a735840.npz": "56c517353c157adae1f86b4275a4921e9330503651568c55f63ef09fb6f8f2c4",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_ec7fbcdc01f95925e93b.npz": "8443e42a4a0c58b9fbe130db4ae7a5e7fcc10ef028cd5287e48e1984d07124dd",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_004c1287a9759ce6aa37.npz": "95a639053733fd525abbf8435ee130a2efba470c226fc404b41c67d229d89bf6",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_1898a8f1a8df706179cf.npz": "8311685c672a5f40569646a815c38cf9e441a5cc881637ccf07988d861b3a005",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_738cdbce789fdd5ab6fd.npz": "dc83dd267472e1764076feadf5e1d700da5c97595212a8caa98dcdea80b3a3ed",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_ea25561697d323273b20.npz": "3e0ed2065b23c779793f02de2ac4f153b001751f095a1a7b63be197bc8f4ee4d",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_92cc9f05e1f62a6222de.npz": "62ca5e1475dd17bf8ab1bc2aab7d2b6e89c4845f91280a2a33f912129222f3fb",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_5aa30f1da8a9952078c7.npz": "0b9e990a8019f1cec1c5326b15b2d1f8309a72b2a46d3e55e7dff963ede35823",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_c25ea67ca209162b48b4.npz": "b58753c1936d246e69e6ad62a66f4f1a16b6ffa509e6fc170e5bb0869ac3ec44",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_cdd120fc6eb7eafa2d63.npz": "0ce651fc9f1a42d986666a646ab2db11c3692ed2d9e54aea86b39c4aee550845",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_ae7ea00edab7fbd3b952.npz": "edf2f829e7f10f27db40912c4d5784be51d3d571b31655e460550888d32f36f5",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_bea774259a2b47cae8ff.npz": "2cc6a5791411f81fb94bdea60e21b62dd5c954de7f020d73fdc41619d47c2daf",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_50693853cb44fd855292.npz": "17f6d2129ad1d6ec7c1eedea12a734dc804bc2814314f3536eb72ef9ed781912",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_d1c888822e1dea8c8967.npz": "d09590de7173f234c4f31796658f58b3a17183003f3289b13112e9f4393ef2d6",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_a03fbfbfda08cbcb4a80.npz": "8af2584db0813ee9ed05470d55e3bc296a32ab64c94956ebfa52cb86f3fa7a68",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_d7282f9ccf9b2a05e381.npz": "5b4c48dc25148b9998d2852c07f834c4e7c18269a9dacdd6bb47a2447d6ac3d9",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_5ce7b2b9a1db64640fcf.npz": "1a911317fb3830e7765941a5c4358c56e572566c97456844f0930f1f33a54b8b",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_f7c1fcdfe9a024a389aa.npz": "52b9f7de1bbbd98a9e8103c5b70d87d694597dd52824bce3956dfec45e025346",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_c79d5ccfc62d8547a58c.npz": "22e6027c194fe42b319dd85cadbb99aa08dbaf730218329946cd6d4179f7c47c",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_3589ad8ae2a2c95e49b9.npz": "afa01e57e02ca47b9ebbb0559faa54383a337e8f487c045ba4bfce80656e900c",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_827ec7fea49cd4224ebd.npz": "e1f396b7fa81a85635a394ac229a39d8ea0d7a8335ffee540df4e554ecb20f28",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_cdf3073f063e77f8759c.npz": "2129d6631e7cc2e2522ad1f07e8f8de4a13e68cce492814cdd254553c431619c",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_9006a4f88c08dccc57cd.npz": "27fd8e2f033a7c619506c043ebd882fc11c240bc3616a20409be804c884719a6",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_d0404db2b131cad47fc9.npz": "1ebcba89bd0d61ca87df0f66ba28080b7c2d49d4295c16ac6f1293f83601b4f5",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_64f21f1e67eabc149b1c.npz": "8ed414d02776dae3c3d84867145c1faead601918ad6b32534f3de832ba446d8d",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_a23dd4aed91be4de3ef9.npz": "4601567918e256305aff4dd2b9b1744cedc6057bb32236fd5c3f9cef91a5817b",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_da520e3e5188c25cc79c.npz": "44d7c52b588ee895a69b6f9c40656a67ce026629d0f6f9928efb8e61a6f27e66",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_layer_resolution50_20261013/predictions/1024_cf13_59c7ff615ca87131f2b6.npz": "352564fec51008405a3937484aab7f42e3c2ae1b2d54d44f52cf45fb00dee0d7",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_R1/report.json": "ee0e93d981531fb004f2b5f12984e6a0a7616985cc591b0a378fe1b3c2c150f1",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1013_T1/iu.jsonl.gz": "990e4815e6c8bd707cb26b715bf39db862a3ba8d98dd8ef57e435d23d2f36e39",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_reasearch/evidence/research/w23_simple_pipeline_S.jsonl.gz": "abef0381fa036b6c3181cdca8c2f0190646751f1852c5af81b7718ff3c52f13a",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_P0/explore.json": "d20188e8af89375f93aa9e39782cb6c53ea7e02db58547ee4014cba5c1796a63",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_P0/confirm.json": "bba8ea8a253554066cebedb220cda1ecaa2cd3245953b26fe24c2eb7741be1c1",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000000.npz": "822984bcfa6482f211ac1393d258fcbca8b59a14de679a432711a9f1c1fb8bab",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000002.npz": "e6e3f15af14ea7d3f0cb54da6b32d7ce5388a451ba6743b8e9038ee3028d5884",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000005.npz": "54a3e137c68f24cbcb83aef86deae83c72c7b8ef2e33b5383986073f9f38cf98",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000012.npz": "84e87acfbbb75d19db5dcafcbf62fa5442bfc2740925cb7bfb5b81776580d2f7",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000021.npz": "9aeba29ca575f2291a956c76d2064b19c160f753e371ec4007e2d365633d9c13",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000022.npz": "75868e607e90fb1a01abd104a79a93144fd8af93090ba08c94bb4043cf442add",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000023.npz": "dbb0e10be1c7261fe35b268bb51a2d517b6c347e4a4225e6cd9700bb92ca6349",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000026.npz": "3346778669ade3932d54b39be31ecd9fabbc01d071fa5dd92f47f8bf38480441",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000027.npz": "b690059647e8d8f4dcc18296e29d117093c31ad2836ca09580c1850d97f40b44",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000028.npz": "f9e4e96ff423a07822a621aaaea6f8cdb1c909f4d14a68be4ad0a89f666bdcf9",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000029.npz": "c1443972858ccb5aad1e30f226a3b3e78f413c02f4461ed070abb6384e610d63",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000032.npz": "d9d7efe0aefb4f544ee9cbed886ef166d16d9ccd3855bb47822b9dc85b295593",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000033.npz": "ffc26e56b0173b474c92e6d1a6e9b8c8c21c8186c95ba77e7940e6f1252d00b4",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000036.npz": "58b048e9b1ef41a52a274416ca1483fadc0af881a93d921c85cda8375845475d",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000037.npz": "5eaa613aa709333110437e3cd913f443a4bbe7debce067b3a5e3e54a38138bfb",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000038.npz": "37d7e68ea952468cca10c7e73bef522f28a804de827c5ffdd44fabf97df8c380",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000039.npz": "700b5a14aef72380a28da8cac9eab1bc629860def5afc8649a038ba45779b87c",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000040.npz": "8ee5d79b103098e5b12aef9eaed92c18e733db455df65982ade17e8fd0e8492f",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000041.npz": "46bbc32715dd0d0986eb63b72c51f3290fc4c8d32a5bb2934de10a913864e7b8",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000042.npz": "de2ee956b7df13cce3b7e08c41ebc4b5d5b389a6c026e82c7cb1ce0548e1e747",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000043.npz": "4dfdba792a4c5b49c28eb8bc76e32baca24e3896de535c28b39be662edd6b7e3",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000046.npz": "2671164ed830d842d2be728db6a43d38a33b7b69c30959c11239b3ac15743d36",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000050.npz": "2c450cb6936ef6d33b126b2df30a5341bbd6d730d7eb634ab18a3657486beca1",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000052.npz": "0a4c9b8256cfc54164393abbd75f96f2cbff4ae31f6d4047f553d092f7e1d230",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000055.npz": "a14ddbdc9dc018db2eaadec19793efae77851258fe6785e78cd409f87384b1f3",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000059.npz": "c5823665944159cfae33bec8a815164c14922def99faf946d6ea33bb259323e5",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000060.npz": "f0fd388e985b2432e3c1d405e089b202d99cd1958ae184b07c9ac21048de79b0",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000062.npz": "c8569861b9c542b0a6eb00d307e4b7bbd369659496884ea902dd1c9008588188",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000063.npz": "19edcd493f414f78c438c6db66d2d77cd8455838d5b65edaf93f8b6f764fd6d1",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000065.npz": "d418b7f61d01021c04f9be707fe48aa703a68dc23168e7343b61c6f8f93b1d5a",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000066.npz": "2434302200b3ed012a7e902613aa3ebe753d20be08e119d8cd266caf654364cc",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000067.npz": "a37af74f77c3bc954ec8071743c568a40966185e65d6bdd44a16fea344b37c59",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000068.npz": "751edf996cff1d3274248a2bcbcc5e8bee2788d71b9af530bc7cb39e5e9a8b61",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000070.npz": "6e32e48c97d65e7aa0b32afd8547a77ade670ce717eca5582d9b944ba5317f17",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000074.npz": "ae87528c78025f2b6415a486af9583bc8831bf63ba72970f5d9351e0682d3412",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000077.npz": "6985e52c3185741a2c3b9f28edc1c75aa9e6ff27ce482e68ec273c2f195a9299",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000078.npz": "c505a395683ee401de020ed632a3b8298ca80c5447845a24363a8bdcf0fab26e",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000079.npz": "96c25bbb5b59cfe0711e14693ca3b581899e5edc65b4f570fe1b5680e9883ed4",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000083.npz": "aeedcfc239d8a066aef54b3d45dbc2274491bb9e4e16af4cda8d54e9b7d53db9",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000084.npz": "3fedfddb6581e6e5c1317e6707b5a2fbbf0b4917ba9990d841741c2b0ef4226e",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000086.npz": "e14c32395ce290e681186406b1c10765bb3991fb1ca2d472ea30afa125dd5163",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000090.npz": "7e133cac97b26aab1635378328f170788292d0c0f28078439df803fab73c74dd",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000092.npz": "ca10fec1631d3649299cb52ba8a5b9fd38346bf2f79ffdf51f08efcdc26daa3f",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000093.npz": "9565d35e89c749fd4ba66c2b9b71796dfdbe4376815dd3cd8fa68773629c23f6",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000096.npz": "e37b8f480e2374e295834b1b76c9e631cd4a1d87b816fac72f31692abaf6d178",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000102.npz": "08b2639c7018ec87b71348918416f732ff6b81bcf82f2b5ac5162edcf33e2a55",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000103.npz": "15fe17a05f293b39705b5d8b3a636466a9ee607b51b0a50522552359fa987242",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000104.npz": "f20eb9fe6e1bf7cf68d4b84b42dfb846417c58aeb59822ded3c66f8f7d27e6fe",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000108.npz": "6ced050c66e3741342fd98b680419e0cbf40452b9210f6bb3081c8b3036b3c61",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000109.npz": "4594170622c307e2033c62ece0e166bef8005f4354aee32393aa0674444440d7",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000113.npz": "988abb6a5f663423fb5e3b93c0f35b478c5f5c1599f0ff2aafac736ced747e59",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000114.npz": "f9881fa834899ac478159ad6a4444d3dd7e577ef37489dcebeecff5385ce958a",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000116.npz": "397a6868f7243f99626227b18387f57db2c9f9521666e0ddb2449fdb4b594af0",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000117.npz": "425234ad10b55c97120a0e054ac4d559d076f2b4cbe2e71ceaf5157f2cd50c1b",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000126.npz": "0e18314b2853443238ac02cabe40910c50df38bafcd3cb5ce706d0e04093d4bd",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000128.npz": "e8eed9d41897b5180fc82f936bc9170349748b711f84c77d6715418ab3e552c6",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000131.npz": "03836a5135908800a06314b63f1fe2d80f33a04ce6c9060822d271a798ddd522",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000133.npz": "12162078e7e138cbe0f361dcd29db30f6fbf55999b671298c3de698f0f2f8cfa",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000135.npz": "667001f0255b6c431d8c1115f5fd9c992e8e7c1604634358d7a2ca4bd29e3c24",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000137.npz": "57bd3f2b2c6ddf45b41b0a5847590d32864fa1a5831d0439462185c45c85b0b3",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000139.npz": "e0b1c171e14db25166f2464218a9339aad7d79f891db74aa87c6101e77a2cad5",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000140.npz": "d4b7a324206feca270da634c47fc76a285fb19dc0be50e7b301517499f2aac16",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000141.npz": "0805ae9662fa36826907a1f480baa61fe3dd888e6aa4e8b162e7882786ec6a25",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000142.npz": "32e008bed2d91016a19a04f85984976853c744512d1358598f424291c3152cc8",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000143.npz": "62b6e5192824813cfb6f5ecc6f54277fffc60fb38d4a0fb75e8985465cc3e5a7",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000144.npz": "4c3f8011f66a21d9d0478eb8ce3a8adea4bffedabfb383d2d4c649d803c5706d",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000145.npz": "c8676c1a3cb66923d6b19e9643b1bae91872cf39bd9c2480930dfaa325707919",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000146.npz": "d7cac131ce76fad01e33d8bc8b993605ad4de4a9963f073e7e33828de68d890c",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000148.npz": "d818c0bdbb8d9d5aef5c589de3c8c898814f4c791357cf655233be0c71323522",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000150.npz": "30a6cb7be87fe0e669305a97a6991c6f786c81eef9331f724433f32a606b6276",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000151.npz": "50f7e04322019c0461ecf41be002a1c4e432b019caebb7f47a5bcaef960b0dff",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000154.npz": "567cda8de4995db639d0a95f080a92c14c2fc7f1a4798d1a3f20753bd3280104",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000156.npz": "32a8dfd73233c32de5d86ff77196158a0d378f76d1c76eefe1c89a743d546e7d",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000157.npz": "9ce80441a63e15960304b3f9c59eea3326b3a55537413d5060f4ef5daeb6f38e",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000159.npz": "6a3832b85daa5dad9cc812144c8c4d87fc1076ccacbe37bf453d6f992845c7d1",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000160.npz": "0b7c3784070c8d2a1e9575c2093072a00b8e6be0de995c2ec0a328a0ec53ca40",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000164.npz": "49aead18993b862c0586f0e02987b6624147019a0d570479d69e1bc6f62a6423",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000165.npz": "fc7a845c3254d2d45a2f8cff6b315f7302e7575eaddc69118bfd83cf21f168ca",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000167.npz": "cdd9f9c049cd01fe0859630432616d3e43171facd98c4ba5083ff05fa1109c43",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000170.npz": "9fff03ce17202dc414254835d0ebb034f8bfe08942e80d9cf91ba056927e58c0",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000173.npz": "8ee5d79b103098e5b12aef9eaed92c18e733db455df65982ade17e8fd0e8492f",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000175.npz": "8cbee6637b1de3d78bc55b5c74ea29ec584a4faa94dec6b0997900d6f48828e1",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000176.npz": "4210c534d6cd51b22321fef49c3fc59602a46585a97897751e748727e02c0f21",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000177.npz": "c0ed1ed976a0662903629faa5bc188d87a9362d9df19ca492971d0b01f170b5a",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000178.npz": "0f6d93303b35e9bf6806133cce99f0fe78c117a4dda3a36f954906f0ce80fbcb",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000181.npz": "05f84ed6b2f4cc28847b00ba69ea7f72cf9a1c5efcac57805e10fe80cf76deca",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000183.npz": "055fa55d4ae657b20a116c87f2753f6f14cec14b96c4347250f124af92ce9ceb",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000189.npz": "cd0e833f4a791c4bce172badcbbfed17d1a81ceff9e89d794dcb471301d239ca",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000190.npz": "7d55d886e3bed9e8a54e9241704374644f6320056b7ebb82678d32a3da158444",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000191.npz": "cf71f2b740dec6d6f33a1f55e947ed37426af5b37c7c4cc6984a018067bce597",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000192.npz": "9814b8aa29ea737ec47e8797544a59cdf524f44f0147c7fe123c5bce3229d38c",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000193.npz": "fc8bda3591f13670a0ae48da3fb9a94d2c594952cd2ee469ccccf0ec2f0a47ad",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000197.npz": "ca980628c215ac7f740efb11cd5cc998a75468aa0147b38bd8a3093e33e7f06e",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/fundus_foris_seed0_20261010/fields/000198.npz": "e146157262ccdd323e4eb2bd7ce351ab4f90d3a7b04b11fd5f8ecfc2e5a0481e",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_P0/foris/new/fields/new_d7f0151862f7e16b2e7b.npz": "f131d86d804f99e2e209add05902cc375cb3710543ff64eba4cfaa600dc778c5",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_P0/foris/new/fields/new_e1fbc2fa0f4cf94e7988.npz": "ce663254ee9b0a7ef96d034dcb343c40d88057aacc5552b35360196b7655b771",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_P0/foris/new/fields/new_887d63de5ff6b366df26.npz": "e65871d15f8a33dee2ff30b9ac020fca6acdefe65cd9711b659b0157de1037dc",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_P0/foris/new/fields/new_9b0359ee63f41cf88ec5.npz": "1d437580e1e068c821b29f041a894b2bfa077bac50046ae03574df6a16f2c6e0",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_P0/foris/new/fields/new_8cc57fe0d723f7423b5f.npz": "1f4c8f12af2e70a509a0ae251f0f6b587cc94bac064ee7ae73e061839f9b0c42",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_P0/foris/new/fields/new_1ebe994ad51049d49c32.npz": "28f92a510e6f28bd06b9f6ed5616e19a4e4c21498fd9d217c3f42315a31141b6",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_P0/foris/new/fields/new_03ede2ec5fa14bf207a9.npz": "51f892b5b2ed525893a6b3216ed2cc551638256abd11b201f8eb643f4f12fab2",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_P0/foris/new/fields/new_e221ab907418e3ffe18b.npz": "97713aabfe07012e5d568edf262244af08a83670b35d9d7b6a7a6addef65b157",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_P0/foris/new/fields/new_0689a1333936bf3f233d.npz": "a6520f62e86ca1ab1e63d3aa0eaade2b1ea5108891bbc04e512b6ca60f8dbb92",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_P0/foris/new/fields/new_ea7f2de04a41b90a46c5.npz": "71fd2326d2bf2a41b3d70fd1e2a66cef05b04d69206a14c6e3c5dc88559ccabb",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_P0/foris/new/fields/new_01d7e44526a1c2429329.npz": "3d451f51708d2c03a39485f7bd8cedfbf883bb9d5cdeaaa7e62c818513e6b09a",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_P0/foris/new/fields/new_a571db21419b1e1f2fd0.npz": "8a28ce5136347a682efffca72c722d6604b2f026dad902776c65e6864559f639",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_P0/foris/new/fields/new_1ded0a9542d034ddf2bb.npz": "352fed2ca48cfed7bc3e0a6e4a17702382e5f544f1b1bdc238a16353f5ea0696",
+    "/Users/misaya.yanghejazfs.com.au/paper_project/cv_data/a/x1012_P0/foris/new/fields/new_b9cba32cbd08091291bc.npz": "304178cc8f2844aae8af34c8d56e6ca81afb976efb135ffb489f223d9d2c24b3"
+  },
+  "script_sha256": "27ef502113f3e6c3ccefd0242a0afc3feea2b19cbc406ab8ca50a906870547ed"
+}

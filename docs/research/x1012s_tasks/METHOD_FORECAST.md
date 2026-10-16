@@ -26,4 +26,4 @@ R6预判输入没有提供同队列R1结果表，分析者虽注明队列不同�
 
 当前没有据此批准的新候选。目标仍未解决，E2追加停止、E3未执行；本记录只将已经获得的拒绝依据和预测错误固定下来，避免后续把同一论证重新当作新动机。
 
-完整输入身份、冻结预判、逐域核对和误差见[精简证据](../../../evidence/research/method_forecast_20261012.json)。原观察结果为[R6](../x1012_tasks/R6_query_space.md)和[R7](../x1012_tasks/R7_screen40.md)。
+完整输入身份、冻结预判、逐域核对和误差见[精简证据](../../../evidence/research/method_forecast_20261012.json)。原观察结果为[R6](../archive/x1012_tasks/R6_query_space.md)和[R7](../archive/x1012_tasks/R7_screen40.md)。

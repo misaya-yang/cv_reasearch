@@ -1,6 +1,6 @@
 # W28：另一批 S 样本的最终 SH 单线消融
 
-2026-10-14。抽样与读法见 [预先固定的计划](W28_sh_second_batch_PLAN.md)。
+2026-10-14。抽样与读法见 [预先固定的计划](../archive/x1012_tasks/W28_sh_second_batch_PLAN.md)。
 
 ## 1 样本与实现检查
 

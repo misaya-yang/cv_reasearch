@@ -3,7 +3,7 @@
 | 用途 | 入口 |
 |---|---|
 | 现行方法 SH | [x1012/w23_simple_pipeline.py](x1012/w23_simple_pipeline.py)`::simple_head`。依赖 `r5_candidate.py`、`w19_simple_head.py`、`w09_integration_lambda.py`、`lab.py`，都在 `x1012/` |
-| 10-13 之后的实验 | `x1012/w01_*.py`～`w30_*.py`。每个文件的 docstring 写明动机和读法；计划与报告在 [docs/research/x1012_tasks/](../docs/research/x1012_tasks/) |
+| 10-13 之后的实验 | `x1012/w*.py`（按编号）。每个文件的 docstring 写明动机和读法；计划与报告在 [docs/research/x1012_tasks/](../docs/research/x1012_tasks/)，已关闭的在 [archive/x1012_tasks/](../docs/research/archive/x1012_tasks/) |
 | 官方协议评分 | [x1012/w12_official.py](x1012/w12_official.py) |
 | FoRIS、MFU 与 x1013 链（冻结） | [x1013/](x1013/) |
 | 新照片留出（冻结） | [x1012s/photo_holdout.py](x1012s/photo_holdout.py) |
